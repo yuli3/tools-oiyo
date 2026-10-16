@@ -1,0 +1,256 @@
+---
+import Layout from "../../components/Layout.astro";
+---
+
+<Layout
+  title="법정 퇴직금 계산기"
+  description="근로자퇴직급여 보장법 제8조 및 근로기준법 제2조에 따른 3개월 평균임금 및 통상임금을 대조하여 법정 퇴직금을 실시간 정밀 모의계산합니다."
+>
+  <div class="mx-auto w-full max-w-2xl px-4 py-8 sm:px-8">
+    <div class="mb-6">
+      <a href="/" class="text-xs font-semibold text-muted-foreground hover:text-primary transition-colors mb-3 inline-block">← 전체 도구 목록</a>
+      <div class="inline-flex items-center gap-1.5 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-semibold text-primary mb-3">
+        근로자퇴직급여 보장법 제8조 공식 적용
+      </div>
+      <h1 class="text-2xl font-black tracking-tight text-foreground sm:text-3xl">
+        법정 퇴직금 계산기
+      </h1>
+      <p class="mt-2 text-xs text-muted-foreground sm:text-sm leading-relaxed">
+        입사일과 퇴사일, 최근 3개월 급여 및 상여금을 입력하여 법정 퇴직금 예상 수령액을 즉시 산출합니다. (평균임금이 통상임금에 미달하는 경우 통상임금 자동 보장)
+      </p>
+    </div>
+
+    <div class="rounded-xl border border-border bg-card p-6 shadow-xs space-y-6">
+      <!-- 재직 기간 입력 -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label for="start-date" class="block text-xs font-bold text-foreground">입사일자</label>
+          <input
+            type="date"
+            id="start-date"
+            value="2023-01-01"
+            class="mt-2 w-full rounded-lg border border-input bg-background px-4 py-3 text-sm text-foreground focus-visible:outline-2 focus-visible:outline-ring"
+          />
+        </div>
+        <div>
+          <label for="end-date" class="block text-xs font-bold text-foreground">퇴사일자 (마지막 근무일 익일)</label>
+          <input
+            type="date"
+            id="end-date"
+            value="2026-01-01"
+            class="mt-2 w-full rounded-lg border border-input bg-background px-4 py-3 text-sm text-foreground focus-visible:outline-2 focus-visible:outline-ring"
+          />
+        </div>
+      </div>
+
+      <!-- 급여 정보 -->
+      <div class="space-y-4">
+        <div>
+          <label for="salary-3m" class="block text-xs font-bold text-foreground">
+            퇴직 전 3개월간 기본급 및 수당 총액 (세전, 원)
+          </label>
+          <div class="mt-2 relative">
+            <input
+              type="number"
+              id="salary-3m"
+              value="9000000"
+              step="100000"
+              min="0"
+              class="w-full rounded-lg border border-input bg-background px-4 py-3 text-sm font-mono text-foreground focus-visible:outline-2 focus-visible:outline-ring"
+            />
+            <span class="absolute right-4 top-3.5 text-xs text-muted-foreground">원</span>
+          </div>
+          <p class="mt-1 text-[11px] text-muted-foreground">월 300만원 기준 3개월 합산 9,000,000원</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label for="annual-bonus" class="block text-xs font-bold text-foreground">연간 상여금 총액 (원)</label>
+            <div class="mt-2 relative">
+              <input
+                type="number"
+                id="annual-bonus"
+                value="0"
+                step="100000"
+                min="0"
+                class="w-full rounded-lg border border-input bg-background px-4 py-3 text-sm font-mono text-foreground focus-visible:outline-2 focus-visible:outline-ring"
+              />
+              <span class="absolute right-4 top-3.5 text-xs text-muted-foreground">원</span>
+            </div>
+            <p class="mt-1 text-[11px] text-muted-foreground">최근 1년간 정기 상여금 (3/12 반영)</p>
+          </div>
+
+          <div>
+            <label for="annual-leave" class="block text-xs font-bold text-foreground">연차수당 총액 (원)</label>
+            <div class="mt-2 relative">
+              <input
+                type="number"
+                id="annual-leave"
+                value="0"
+                step="50000"
+                min="0"
+                class="w-full rounded-lg border border-input bg-background px-4 py-3 text-sm font-mono text-foreground focus-visible:outline-2 focus-visible:outline-ring"
+              />
+              <span class="absolute right-4 top-3.5 text-xs text-muted-foreground">원</span>
+            </div>
+            <p class="mt-1 text-[11px] text-muted-foreground">전년도 미사용 연차정산액 (3/12 반영)</p>
+          </div>
+        </div>
+
+        <!-- 통상임금 기준 보장 대조 입력 -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 border-t border-border/40">
+          <div>
+            <label for="hourly-wage" class="block text-xs font-bold text-foreground">통상시급 (원)</label>
+            <div class="mt-2 relative">
+              <input
+                type="number"
+                id="hourly-wage"
+                value="10030"
+                step="100"
+                min="10030"
+                class="w-full rounded-lg border border-input bg-background px-4 py-3 text-sm font-mono text-foreground focus-visible:outline-2 focus-visible:outline-ring"
+              />
+              <span class="absolute right-4 top-3.5 text-xs text-muted-foreground">원</span>
+            </div>
+            <p class="mt-1 text-[11px] text-muted-foreground">2026 최저시급 10,030원</p>
+          </div>
+
+          <div>
+            <label for="daily-hours" class="block text-xs font-bold text-foreground">1일 소정근로시간</label>
+            <select
+              id="daily-hours"
+              class="mt-2 w-full rounded-lg border border-input bg-background px-4 py-3 text-sm text-foreground focus-visible:outline-2 focus-visible:outline-ring"
+            >
+              <option value="8" selected>8시간 (일반 전일제)</option>
+              <option value="7">7시간</option>
+              <option value="6">6시간</option>
+              <option value="5">5시간</option>
+              <option value="4">4시간 (단시간 근로)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- 결과 상자 -->
+      <div class="rounded-lg border border-primary/20 bg-primary/5 p-6 space-y-4">
+        <div class="text-center pb-4 border-b border-border/60">
+          <span class="text-xs font-medium text-muted-foreground">예상 법정 퇴직금 (세전)</span>
+          <div class="mt-1 flex items-baseline justify-center gap-1">
+            <span id="res-severance" class="text-3xl font-black tracking-tight text-primary font-mono sm:text-4xl">0</span>
+            <span class="text-lg font-bold text-foreground">원</span>
+          </div>
+          <div id="eligibility-badge" class="mt-2 inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-bold">
+            <!-- 수급 요건 충족 상태 -->
+          </div>
+        </div>
+
+        <div class="space-y-2 text-xs">
+          <div class="flex justify-between font-medium text-muted-foreground">
+            <span>총 재직일수</span>
+            <span id="res-service-days" class="font-mono text-foreground font-bold">0일</span>
+          </div>
+          <div class="flex justify-between font-medium text-muted-foreground">
+            <span>3개월 평균임금 (1일)</span>
+            <span id="res-avg-wage" class="font-mono text-foreground font-bold">0원</span>
+          </div>
+          <div class="flex justify-between font-medium text-muted-foreground">
+            <span>통상임금 (1일 기준)</span>
+            <span id="res-ord-wage" class="font-mono text-foreground font-bold">0원</span>
+          </div>
+          <div class="flex justify-between font-bold text-primary pt-2 border-t border-border/60">
+            <span>최종 적용 1일 임금</span>
+            <span id="res-eff-wage" class="font-mono">0원</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- B2A API 안내 -->
+      <div class="border-t border-border pt-4 text-xs text-muted-foreground">
+        <p class="font-medium text-foreground">api.oiyo.net B2A 무비용 연동 엔드포인트:</p>
+        <p class="mt-1 font-mono text-[11px] bg-muted p-2 rounded border border-border break-all">
+          GET https://api.oiyo.net/v1/labor/kr/severance-pay?startDate=2023-01-01&endDate=2026-01-01&threeMonthSalary=9000000
+        </p>
+      </div>
+    </div>
+
+    <div class="mt-8 rounded-lg border border-border bg-muted/30 p-4 text-center text-xs text-muted-foreground">
+      근거 법령: 근로자퇴직급여 보장법 제8조 및 근로기준법 제2조 제2항 (산출 공식: 1일 평균임금 × 30일 × 재직일수 ÷ 365)
+    </div>
+
+    <script>
+      const startDateInput = document.getElementById("start-date") as HTMLInputElement;
+      const endDateInput = document.getElementById("end-date") as HTMLInputElement;
+      const salary3mInput = document.getElementById("salary-3m") as HTMLInputElement;
+      const annualBonusInput = document.getElementById("annual-bonus") as HTMLInputElement;
+      const annualLeaveInput = document.getElementById("annual-leave") as HTMLInputElement;
+      const hourlyWageInput = document.getElementById("hourly-wage") as HTMLInputElement;
+      const dailyHoursSelect = document.getElementById("daily-hours") as HTMLSelectElement;
+
+      const resSeverance = document.getElementById("res-severance")!;
+      const eligibilityBadge = document.getElementById("eligibility-badge")!;
+      const resServiceDays = document.getElementById("res-service-days")!;
+      const resAvgWage = document.getElementById("res-avg-wage")!;
+      const resOrdWage = document.getElementById("res-ord-wage")!;
+      const resEffWage = document.getElementById("res-eff-wage")!;
+
+      function formatWon(num: number) {
+        return Math.floor(num).toLocaleString("ko-KR") + "원";
+      }
+
+      function calculate() {
+        const start = new Date(startDateInput.value || "2023-01-01");
+        const end = new Date(endDateInput.value || "2026-01-01");
+        const diffTime = end.getTime() - start.getTime();
+        const serviceDays = Math.max(0, Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1);
+
+        const isEligible = serviceDays >= 365;
+
+        const threeMonthSalary = Math.max(0, parseFloat(salary3mInput.value) || 0);
+        const annualBonus = Math.max(0, parseFloat(annualBonusInput.value) || 0);
+        const annualLeave = Math.max(0, parseFloat(annualLeaveInput.value) || 0);
+
+        const bonusShare = Math.floor(annualBonus * (3 / 12));
+        const leaveShare = Math.floor(annualLeave * (3 / 12));
+        const totalThreeMonthWage = threeMonthSalary + bonusShare + leaveShare;
+
+        const threeMonthDays = 92;
+        const dailyAverageWage = totalThreeMonthWage > 0 ? Math.floor(totalThreeMonthWage / threeMonthDays) : 0;
+
+        const wage = Math.max(10030, parseFloat(hourlyWageInput.value) || 10030);
+        const hours = Math.max(1, Math.min(8, parseFloat(dailyHoursSelect.value) || 8));
+        const dailyOrdinaryWage = wage * hours;
+
+        const effectiveDailyWage = Math.max(dailyAverageWage, dailyOrdinaryWage);
+        const severancePay = isEligible ? Math.floor(effectiveDailyWage * 30 * (serviceDays / 365)) : 0;
+
+        resSeverance.textContent = Math.floor(severancePay).toLocaleString("ko-KR");
+        resServiceDays.textContent = `${serviceDays.toLocaleString("ko-KR")}일 (${(serviceDays / 365).toFixed(2)}년)`;
+        resAvgWage.textContent = formatWon(dailyAverageWage);
+        resOrdWage.textContent = formatWon(dailyOrdinaryWage);
+        
+        if (effectiveDailyWage === dailyOrdinaryWage && dailyOrdinaryWage > dailyAverageWage) {
+          resEffWage.textContent = `${formatWon(effectiveDailyWage)} (통상임금 보장 적용)`;
+        } else {
+          resEffWage.textContent = `${formatWon(effectiveDailyWage)} (평균임금 적용)`;
+        }
+
+        if (isEligible) {
+          eligibilityBadge.className = "mt-2 inline-flex items-center gap-1 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 px-2.5 py-0.5 text-xs font-bold";
+          eligibilityBadge.textContent = "법정 퇴직금 지급 대상 (계속근로 1년 이상 충족)";
+        } else {
+          eligibilityBadge.className = "mt-2 inline-flex items-center gap-1 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 px-2.5 py-0.5 text-xs font-bold";
+          eligibilityBadge.textContent = `계속근로 1년(365일) 미만 — 법정 퇴직금 미발생 (현재 ${serviceDays}일)`;
+        }
+      }
+
+      startDateInput.addEventListener("change", calculate);
+      endDateInput.addEventListener("change", calculate);
+      salary3mInput.addEventListener("input", calculate);
+      annualBonusInput.addEventListener("input", calculate);
+      annualLeaveInput.addEventListener("input", calculate);
+      hourlyWageInput.addEventListener("input", calculate);
+      dailyHoursSelect.addEventListener("change", calculate);
+      calculate();
+    </script>
+  </div>
+</Layout>
