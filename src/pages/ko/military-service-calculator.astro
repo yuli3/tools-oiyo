@@ -1,0 +1,216 @@
+---
+import "../../styles/global.css";
+---
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>군 복무일 · 전역일 및 진급일 계산기 — OIYO tools</title>
+    <meta name="description" content="병역법 복무기간(육군/해병대 18개월, 해군 20개월, 공군/사회복무요원 21개월)에 따른 전역일, 총 복무일수, 현재 복무율(%), 일병/상병/병장 진급 예정일을 실시간 정확히 계산합니다." />
+  </head>
+  <body class="min-h-screen flex flex-col bg-background text-foreground">
+    <header class="border-b border-border bg-card px-4 py-3 sm:px-8">
+      <div class="mx-auto flex max-w-5xl items-center justify-between">
+        <a href="/" class="text-sm font-bold text-muted-foreground hover:text-foreground">← tools 홈</a>
+        <span class="text-xs font-semibold uppercase tracking-widest text-primary">MILITARY SERVICE</span>
+      </div>
+    </header>
+
+    <main class="flex-1 mx-auto w-full max-w-3xl px-4 py-8 sm:px-8">
+      <div class="mb-6">
+        <div class="inline-flex items-center gap-1.5 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-semibold text-primary mb-3">
+          대한민국 병역법 및 국방부 복무기간 기준
+        </div>
+        <h1 class="text-2xl sm:text-3xl font-black tracking-tight text-foreground">
+          군 복무일 · 전역일 및 진급일 계산기
+        </h1>
+        <p class="mt-2 text-sm leading-relaxed text-muted-foreground">
+          입대일과 군별 복무구분을 선택하면 법정 전역일, 복무율(%), 남은 일수, 계급별 진급일을 자동으로 정확히 산출합니다.
+        </p>
+      </div>
+
+      <!-- Card -->
+      <div class="rounded-xl border border-border bg-card p-6 shadow-sm mb-8 space-y-6">
+        <div>
+          <label for="enlistmentDate" class="text-sm font-bold text-foreground block mb-1.5">
+            입대일 (YYYY-MM-DD)
+          </label>
+          <input
+            type="date"
+            id="enlistmentDate"
+            value="2026-03-02"
+            class="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm font-semibold text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+          />
+        </div>
+
+        <div>
+          <label class="text-xs font-bold text-foreground block mb-2">군별 / 복무 형태</label>
+          <div class="grid grid-cols-2 gap-2.5 sm:grid-cols-3">
+            <label class="flex items-center gap-2 p-2.5 rounded-lg border border-border cursor-pointer hover:bg-muted/50 transition-colors has-[:checked]:border-primary has-[:checked]:bg-primary/5">
+              <input type="radio" name="branch" value="army" checked class="text-primary" />
+              <span class="text-xs font-semibold text-foreground">육군/카투사 (18개월)</span>
+            </label>
+            <label class="flex items-center gap-2 p-2.5 rounded-lg border border-border cursor-pointer hover:bg-muted/50 transition-colors has-[:checked]:border-primary has-[:checked]:bg-primary/5">
+              <input type="radio" name="branch" value="marines" class="text-primary" />
+              <span class="text-xs font-semibold text-foreground">해병대 (18개월)</span>
+            </label>
+            <label class="flex items-center gap-2 p-2.5 rounded-lg border border-border cursor-pointer hover:bg-muted/50 transition-colors has-[:checked]:border-primary has-[:checked]:bg-primary/5">
+              <input type="radio" name="branch" value="navy" class="text-primary" />
+              <span class="text-xs font-semibold text-foreground">해군 (20개월)</span>
+            </label>
+            <label class="flex items-center gap-2 p-2.5 rounded-lg border border-border cursor-pointer hover:bg-muted/50 transition-colors has-[:checked]:border-primary has-[:checked]:bg-primary/5">
+              <input type="radio" name="branch" value="airforce" class="text-primary" />
+              <span class="text-xs font-semibold text-foreground">공군 (21개월)</span>
+            </label>
+            <label class="col-span-2 sm:col-span-2 flex items-center gap-2 p-2.5 rounded-lg border border-border cursor-pointer hover:bg-muted/50 transition-colors has-[:checked]:border-primary has-[:checked]:bg-primary/5">
+              <input type="radio" name="branch" value="social" class="text-primary" />
+              <span class="text-xs font-semibold text-foreground">사회복무요원 (보충역, 21개월)</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Result Summary -->
+        <div class="rounded-xl border border-primary/30 bg-primary/5 p-5 space-y-4">
+          <div class="flex items-baseline justify-between border-b border-primary/20 pb-3">
+            <div>
+              <span class="text-xs font-bold uppercase tracking-wider text-primary block">전역 예정일</span>
+              <span id="resCurrentRank" class="inline-block mt-1 text-xs font-bold bg-primary/20 text-primary px-2 py-0.5 rounded">
+                이병
+              </span>
+            </div>
+            <div class="text-right">
+              <span id="resDischargeDate" class="text-2xl sm:text-3xl font-black text-foreground">2027-09-01</span>
+            </div>
+          </div>
+
+          <!-- Progress Bar -->
+          <div>
+            <div class="flex justify-between text-xs font-semibold mb-1 text-muted-foreground">
+              <span>복무 진행률</span>
+              <span id="resProgressText" class="text-primary font-bold">0%</span>
+            </div>
+            <div class="w-full bg-muted h-2.5 rounded-full overflow-hidden">
+              <div id="resProgressBar" class="bg-primary h-full w-0 transition-all duration-300"></div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-3 gap-2 text-center text-xs pt-1">
+            <div class="bg-card p-2 rounded-lg border border-border">
+              <span class="text-muted-foreground block text-[11px]">총 복무일</span>
+              <span id="resTotalDays" class="font-bold text-foreground">549 일</span>
+            </div>
+            <div class="bg-card p-2 rounded-lg border border-border">
+              <span class="text-muted-foreground block text-[11px]">현재 복무일</span>
+              <span id="resServedDays" class="font-bold text-foreground">0 일</span>
+            </div>
+            <div class="bg-card p-2 rounded-lg border border-border">
+              <span class="text-muted-foreground block text-[11px]">남은 복무일</span>
+              <span id="resRemainingDays" class="font-bold text-primary">549 일</span>
+            </div>
+          </div>
+
+          <!-- Promotions -->
+          <div class="border-t border-primary/20 pt-3">
+            <span class="text-xs font-bold text-muted-foreground block mb-2">계급별 진급 예정일</span>
+            <div class="grid grid-cols-3 gap-2 text-center text-xs">
+              <div class="bg-card p-2 rounded-lg border border-border">
+                <span class="text-muted-foreground block text-[11px]">일병</span>
+                <span id="resPromoPfc" class="font-semibold text-foreground text-[11px]">-</span>
+              </div>
+              <div class="bg-card p-2 rounded-lg border border-border">
+                <span class="text-muted-foreground block text-[11px]">상병</span>
+                <span id="resPromoCpl" class="font-semibold text-foreground text-[11px]">-</span>
+              </div>
+              <div class="bg-card p-2 rounded-lg border border-border">
+                <span class="text-muted-foreground block text-[11px]">병장</span>
+                <span id="resPromoSgt" class="font-semibold text-foreground text-[11px]">-</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- API Box -->
+      <div class="rounded-xl border border-border bg-muted/40 p-5 text-xs text-muted-foreground leading-relaxed mb-8">
+        <p class="font-bold text-foreground mb-1">api.oiyo.net B2A 무비용 연동 엔드포인트</p>
+        <p class="mb-2">에이전트 및 앱에서 복무일 계산 API를 무료로 직접 호출할 수 있습니다.</p>
+        <code class="block rounded bg-background p-2.5 font-mono text-[11px] text-foreground border border-border break-all">
+          GET https://api.oiyo.net/v1/military/kr/service-calculator?enlistmentDate=2026-03-02&branch=army
+        </code>
+      </div>
+    </main>
+
+    <footer class="border-t border-border bg-card px-4 py-6 text-center text-xs text-muted-foreground">
+      <p>© 2026 OIYO tools · 대한민국 국방부 및 병무청 규정 준수</p>
+    </footer>
+
+    <script>
+      const MONTHS_MAP: Record<string, number> = {
+        army: 18,
+        marines: 18,
+        navy: 20,
+        airforce: 21,
+        social: 21,
+      };
+
+      function updateMilitaryCalc() {
+        const dateInput = document.getElementById('enlistmentDate') as HTMLInputElement;
+        const branchInput = document.querySelector('input[name="branch"]:checked') as HTMLInputElement;
+
+        const dateStr = dateInput.value;
+        if (!dateStr) return;
+
+        const branch = branchInput ? branchInput.value : 'army';
+        const months = MONTHS_MAP[branch] || 18;
+
+        const [y, m, d] = dateStr.split('-').map(Number);
+        const start = new Date(Date.UTC(y, m - 1, d));
+
+        const discharge = new Date(Date.UTC(y, m - 1 + months, d));
+        discharge.setUTCDate(discharge.getUTCDate() - 1);
+
+        const dischargeStr = discharge.toISOString().slice(0, 10);
+
+        const today = new Date();
+        const now = new Date(Date.UTC(today.getFullYear(), today.getMonth(), today.getDate()));
+
+        const msPerDay = 1000 * 60 * 60 * 24;
+        const totalDays = Math.round((discharge.getTime() - start.getTime()) / msPerDay) + 1;
+        const daysFromStart = Math.round((now.getTime() - start.getTime()) / msPerDay) + 1;
+
+        const servedDays = Math.max(0, Math.min(totalDays, daysFromStart));
+        const remainingDays = Math.max(0, totalDays - servedDays);
+        const progressPercent = Number(((servedDays / totalDays) * 100).toFixed(1));
+
+        const promoPfc = new Date(Date.UTC(y, m - 1 + 2, 1));
+        const promoCpl = new Date(Date.UTC(y, m - 1 + 8, 1));
+        const promoSgt = new Date(Date.UTC(y, m - 1 + 14, 1));
+
+        let rank = "이병";
+        if (now >= discharge) rank = "전역";
+        else if (now >= promoSgt) rank = "병장";
+        else if (now >= promoCpl) rank = "상병";
+        else if (now >= promoPfc) rank = "일병";
+
+        document.getElementById('resDischargeDate')!.textContent = dischargeStr;
+        document.getElementById('resCurrentRank')!.textContent = rank;
+        document.getElementById('resProgressText')!.textContent = progressPercent + '%';
+        (document.getElementById('resProgressBar') as HTMLElement).style.width = progressPercent + '%';
+        document.getElementById('resTotalDays')!.textContent = totalDays + ' 일';
+        document.getElementById('resServedDays')!.textContent = servedDays + ' 일';
+        document.getElementById('resRemainingDays')!.textContent = remainingDays + ' 일';
+
+        document.getElementById('resPromoPfc')!.textContent = promoPfc.toISOString().slice(0, 10);
+        document.getElementById('resPromoCpl')!.textContent = promoCpl.toISOString().slice(0, 10);
+        document.getElementById('resPromoSgt')!.textContent = promoSgt.toISOString().slice(0, 10);
+      }
+
+      document.getElementById('enlistmentDate')?.addEventListener('change', updateMilitaryCalc);
+      document.querySelectorAll('input[name="branch"]').forEach(r => r.addEventListener('change', updateMilitaryCalc));
+
+      updateMilitaryCalc();
+    </script>
+  </body>
+</html>

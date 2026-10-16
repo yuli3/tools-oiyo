@@ -1,0 +1,237 @@
+---
+import "../../styles/global.css";
+---
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>2026 실업급여(구직급여) 모의 계산기 — OIYO tools</title>
+    <meta name="description" content="2026년 최저시급(10,030원) 하한액(64,192원) 및 상한액(66,000원) 기준 실업급여 수급일수와 예상 총 수령액을 즉시 계산합니다." />
+  </head>
+  <body class="min-h-screen flex flex-col bg-background text-foreground">
+    <header class="border-b border-border bg-card px-4 py-3 sm:px-8">
+      <div class="mx-auto flex max-w-5xl items-center justify-between">
+        <a href="/" class="text-sm font-bold text-muted-foreground hover:text-foreground">← tools 홈</a>
+        <span class="text-xs font-semibold uppercase tracking-widest text-primary">LABOR & WELFARE</span>
+      </div>
+    </header>
+
+    <main class="flex-1 mx-auto w-full max-w-2xl px-4 py-8 sm:px-8">
+      <div class="mb-6">
+        <div class="inline-flex items-center gap-1.5 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-semibold text-primary mb-3">
+          2026년 최저임금(10,030원) 반영
+        </div>
+        <h1 class="text-2xl font-black tracking-tight text-foreground sm:text-3xl">
+          실업급여(구직급여) 모의 계산기
+        </h1>
+        <p class="mt-2 text-xs text-muted-foreground sm:text-sm leading-relaxed">
+          고용보험법 제40조~제50조에 따른 소정급여일수와 2026년 법정 상·하한액을 기준으로 예상 실업급여 총액과 월 실수령액을 모의 계산합니다.
+        </p>
+      </div>
+
+      <div class="rounded-xl border border-border bg-card p-6 shadow-xs space-y-6">
+        <!-- 연령 구분 -->
+        <div>
+          <label class="block text-xs font-bold text-foreground">이직(퇴사) 당시 만 나이</label>
+          <div class="mt-2 grid grid-cols-2 gap-3">
+            <button
+              type="button"
+              data-age="under"
+              class="age-btn rounded-lg border border-primary bg-primary/10 px-4 py-3 text-xs font-bold text-primary text-center transition-colors"
+            >
+              만 50세 미만
+            </button>
+            <button
+              type="button"
+              data-age="over"
+              class="age-btn rounded-lg border border-border bg-background px-4 py-3 text-xs font-medium text-muted-foreground text-center transition-colors hover:bg-muted/50"
+            >
+              만 50세 이상 및 장애인
+            </button>
+          </div>
+        </div>
+
+        <!-- 고용보험 가입기간 -->
+        <div>
+          <label for="period-select" class="block text-xs font-bold text-foreground">고용보험 총 가입기간 (피보험기간)</label>
+          <select
+            id="period-select"
+            class="mt-2 w-full rounded-lg border border-input bg-background px-4 py-3 text-sm text-foreground focus-visible:outline-2 focus-visible:outline-ring"
+          >
+            <option value="p1">1년 미만</option>
+            <option value="p2">1년 이상 ~ 3년 미만</option>
+            <option value="p3" selected>3년 이상 ~ 5년 미만</option>
+            <option value="p4">5년 이상 ~ 10년 미만</option>
+            <option value="p5">10년 이상</option>
+          </select>
+        </div>
+
+        <!-- 1일 소정근로시간 -->
+        <div>
+          <label for="hours-select" class="block text-xs font-bold text-foreground">퇴직 전 1일 소정근로시간</label>
+          <select
+            id="hours-select"
+            class="mt-2 w-full rounded-lg border border-input bg-background px-4 py-3 text-sm text-foreground focus-visible:outline-2 focus-visible:outline-ring"
+          >
+            <option value="8" selected>8시간 (일반 전일제)</option>
+            <option value="7">7시간</option>
+            <option value="6">6시간</option>
+            <option value="5">5시간</option>
+            <option value="4">4시간 이하 (단시간)</option>
+          </select>
+        </div>
+
+        <!-- 퇴직 전 3개월 월 평균 급여 -->
+        <div>
+          <label for="wage-input" class="block text-xs font-bold text-foreground">퇴직 전 3개월간 월 평균 급여 (세전, 원)</label>
+          <div class="mt-2 relative">
+            <input
+              type="number"
+              id="wage-input"
+              value="3000000"
+              step="100000"
+              min="500000"
+              class="w-full rounded-lg border border-input bg-background px-4 py-3 text-sm font-mono text-foreground focus-visible:outline-2 focus-visible:outline-ring"
+            />
+            <span class="absolute right-4 top-3.5 text-xs text-muted-foreground">원</span>
+          </div>
+          <p class="mt-1 text-[11px] text-muted-foreground">기본급, 정기수당, 상여금 등 세전 총액 기준</p>
+        </div>
+
+        <!-- 결과 영역 -->
+        <div class="rounded-lg border border-border bg-muted/20 p-5 space-y-4">
+          <span class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">실업급여 예상 수급액 산출 결과</span>
+          
+          <div class="grid grid-cols-2 gap-3 text-center sm:grid-cols-3">
+            <div class="rounded-md border border-border bg-card p-3">
+              <span class="text-[11px] text-muted-foreground block">1일 지급액</span>
+              <span id="res-daily" class="text-base font-extrabold text-foreground sm:text-lg">64,192원</span>
+              <span id="res-limit-tag" class="text-[10px] text-primary font-medium block">하한액 적용</span>
+            </div>
+            <div class="rounded-md border border-border bg-card p-3">
+              <span class="text-[11px] text-muted-foreground block">소정급여일수</span>
+              <span id="res-days" class="text-base font-extrabold text-foreground sm:text-lg">180일</span>
+              <span class="text-[10px] text-muted-foreground block">약 6개월 수급</span>
+            </div>
+            <div class="col-span-2 sm:col-span-1 rounded-md border border-primary/30 bg-primary/10 p-3">
+              <span class="text-[11px] text-primary font-semibold block">총 예상 수급액</span>
+              <span id="res-total" class="text-base font-black text-primary sm:text-lg">11,554,560원</span>
+              <span class="text-[10px] text-primary/80 block">전액 비과세 수령</span>
+            </div>
+          </div>
+
+          <div class="rounded-md border border-border bg-background p-3 text-xs space-y-1.5">
+            <div class="flex justify-between text-muted-foreground">
+              <span>월 환산 예상액 (30일 기준):</span>
+              <span id="res-monthly" class="font-bold text-foreground">1,925,760원</span>
+            </div>
+            <div class="flex justify-between text-muted-foreground">
+              <span>2026년 법정 일액 기준:</span>
+              <span class="font-mono text-[11px]">하한 64,192원 ~ 상한 66,000원</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 법적 안내 및 수급 요건 -->
+        <div class="border-t border-border pt-4 text-xs space-y-2 text-muted-foreground">
+          <p class="font-bold text-foreground">💡 실업급여 필수 수급 요건:</p>
+          <ul class="list-disc list-inside space-y-1 pl-1 text-[11px] leading-relaxed">
+            <li>퇴사일 이전 18개월간 고용보험 가입기간(피보험 단위기간)이 통산 <strong>180일 이상</strong>이어야 합니다.</li>
+            <li>퇴사 사유가 계약만료, 권고사직, 폐업 등 <strong>비자발적 이직</strong>이어야 합니다 (정당한 사유 없는 자진퇴사는 제외).</li>
+            <li>근로 의사와 능력이 있음에도 불구하고 취업하지 못한 상태에서 적극적으로 재취업 활동을 증명해야 합니다.</li>
+          </ul>
+        </div>
+
+        <!-- API 연동 안내 -->
+        <div class="border-t border-border pt-4 text-xs text-muted-foreground">
+          <p class="font-medium text-foreground">API 연동 안내:</p>
+          <p class="mt-1 font-mono text-[11px] bg-muted p-2 rounded border border-border">
+            GET https://api.oiyo.net/v1/labor/kr/unemployment-benefits?wage=3000000&age=under&period=p3
+          </p>
+        </div>
+      </div>
+    </main>
+
+    <footer class="border-t border-border bg-muted/30 px-4 py-6 text-center text-xs text-muted-foreground">
+      <p>근거 법령: 대한민국 고용보험법 제40조~제50조 (2026년 최저임금 기준) · OIYO tools</p>
+    </footer>
+
+    <script>
+      let currentAge = "under"; // "under" | "over"
+      const ageButtons = document.querySelectorAll<HTMLButtonElement>(".age-btn");
+      const periodSelect = document.getElementById("period-select") as HTMLSelectElement;
+      const hoursSelect = document.getElementById("hours-select") as HTMLSelectElement;
+      const wageInput = document.getElementById("wage-input") as HTMLInputElement;
+
+      const resDaily = document.getElementById("res-daily")!;
+      const resLimitTag = document.getElementById("res-limit-tag")!;
+      const resDays = document.getElementById("res-days")!;
+      const resTotal = document.getElementById("res-total")!;
+      const resMonthly = document.getElementById("res-monthly")!;
+
+      // 소정급여일수 매트릭스
+      const DAYS_TABLE: Record<string, Record<string, number>> = {
+        under: { p1: 120, p2: 150, p3: 180, p4: 210, p5: 240 },
+        over: { p1: 120, p2: 180, p3: 210, p4: 240, p5: 270 },
+      };
+
+      // 2026년 기준
+      const MIN_WAGE_HOURLY = 10030;
+      const MAX_DAILY = 66000;
+
+      function calculate() {
+        const hours = parseInt(hoursSelect.value, 10) || 8;
+        const monthlyWage = parseFloat(wageInput.value) || 0;
+        const period = periodSelect.value;
+
+        // 일 하한액: 최저임금의 80% * 근로시간 (최대 8시간)
+        const effectiveHours = Math.min(hours, 8);
+        const minDaily = Math.floor(MIN_WAGE_HOURLY * 0.8 * effectiveHours);
+
+        // 1일 평균임금 추정: 월급여 / 30일
+        const estimatedDailyWage = monthlyWage / 30;
+        let dailyBenefit = Math.floor(estimatedDailyWage * 0.6);
+
+        let tag = "일반 산정";
+        if (dailyBenefit >= MAX_DAILY) {
+          dailyBenefit = MAX_DAILY;
+          tag = "상한액 적용";
+        } else if (dailyBenefit <= minDaily) {
+          dailyBenefit = minDaily;
+          tag = "하한액 적용";
+        }
+
+        const days = DAYS_TABLE[currentAge][period] || 120;
+        const total = dailyBenefit * days;
+        const monthly = dailyBenefit * 30;
+
+        resDaily.textContent = dailyBenefit.toLocaleString() + "원";
+        resLimitTag.textContent = tag;
+        resDays.textContent = days + "일";
+        resTotal.textContent = total.toLocaleString() + "원";
+        resMonthly.textContent = monthly.toLocaleString() + "원";
+      }
+
+      ageButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          ageButtons.forEach((b) => {
+            b.classList.remove("border-primary", "bg-primary/10", "text-primary", "font-bold");
+            b.classList.add("border-border", "bg-background", "text-muted-foreground", "font-medium");
+          });
+          btn.classList.add("border-primary", "bg-primary/10", "text-primary", "font-bold");
+          btn.classList.remove("border-border", "bg-background", "text-muted-foreground", "font-medium");
+          currentAge = btn.getAttribute("data-age") || "under";
+          calculate();
+        });
+      });
+
+      periodSelect.addEventListener("change", calculate);
+      hoursSelect.addEventListener("change", calculate);
+      wageInput.addEventListener("input", calculate);
+
+      calculate();
+    </script>
+  </body>
+</html>

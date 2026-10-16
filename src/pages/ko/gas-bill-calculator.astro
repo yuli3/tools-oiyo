@@ -1,0 +1,166 @@
+---
+import "../../styles/global.css";
+---
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>도시가스 요금 계산기 (난방비·취사비) — OIYO tools</title>
+    <meta name="description" content="한국가스공사 및 도시가스 공급규정에 따른 계량기 사용량(m³)의 열량(MJ) 변환, 주택용 난방·취사 단가, 기본료(1,000원), 부가세(10%)를 반영한 도시가스 청구금액을 실시간 정확히 모의 계산합니다." />
+  </head>
+  <body class="min-h-screen flex flex-col bg-background text-foreground">
+    <header class="border-b border-border bg-card px-4 py-3 sm:px-8">
+      <div class="mx-auto flex max-w-5xl items-center justify-between">
+        <a href="/" class="text-sm font-bold text-muted-foreground hover:text-foreground">← tools 홈</a>
+        <span class="text-xs font-semibold uppercase tracking-widest text-primary">ENERGY & UTILITIES</span>
+      </div>
+    </header>
+
+    <main class="flex-1 mx-auto w-full max-w-3xl px-4 py-8 sm:px-8">
+      <div class="mb-6">
+        <div class="inline-flex items-center gap-1.5 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-semibold text-primary mb-3">
+          한국가스공사 공식 열량단가 규정 반영
+        </div>
+        <h1 class="text-2xl sm:text-3xl font-black tracking-tight text-foreground">
+          도시가스 요금 계산기 (난방비 · 취사)
+        </h1>
+        <p class="mt-2 text-sm leading-relaxed text-muted-foreground">
+          계량기 사용량(m³)을 평균발열량(42.8 MJ/m³)으로 환산하여 주택용 난방·취사 요금 및 부가세를 산출합니다.
+        </p>
+      </div>
+
+      <!-- Card -->
+      <div class="rounded-xl border border-border bg-card p-6 shadow-sm mb-8 space-y-6">
+        <div>
+          <label class="text-xs font-bold text-foreground block mb-2">가스 공급 용도</label>
+          <div class="grid grid-cols-2 gap-3">
+            <label class="flex items-center gap-2 p-3 rounded-lg border border-border cursor-pointer hover:bg-muted/50 transition-colors has-[:checked]:border-primary has-[:checked]:bg-primary/5">
+              <input type="radio" name="usageType" value="heating" checked class="text-primary" />
+              <div>
+                <span class="text-xs font-bold text-foreground block">주택용 난방 (개별난방)</span>
+                <span class="text-[11px] text-muted-foreground">22.15 원/MJ (보일러 난방+온수)</span>
+              </div>
+            </label>
+            <label class="flex items-center gap-2 p-3 rounded-lg border border-border cursor-pointer hover:bg-muted/50 transition-colors has-[:checked]:border-primary has-[:checked]:bg-primary/5">
+              <input type="radio" name="usageType" value="cooking" class="text-primary" />
+              <div>
+                <span class="text-xs font-bold text-foreground block">주택용 취사 (가스레인지)</span>
+                <span class="text-[11px] text-muted-foreground">21.05 원/MJ (취사 전용)</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <div>
+          <div class="flex justify-between items-center mb-1.5">
+            <label for="usageM3" class="text-sm font-bold text-foreground">이번 달 사용량 (m³)</label>
+            <span class="text-xs text-muted-foreground">계량기 당월지침 - 전월지침</span>
+          </div>
+          <input
+            type="number"
+            id="usageM3"
+            value="50"
+            min="0"
+            step="1"
+            class="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm font-semibold text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+          />
+        </div>
+
+        <!-- Presets -->
+        <div class="flex flex-wrap gap-2 text-xs">
+          <button type="button" class="preset-btn px-2.5 py-1 bg-muted hover:bg-muted/80 rounded text-foreground font-medium transition-colors" data-val="10">취사 전용 (10 m³)</button>
+          <button type="button" class="preset-btn px-2.5 py-1 bg-muted hover:bg-muted/80 rounded text-foreground font-medium transition-colors" data-val="30">1인 가구 봄/가을 (30 m³)</button>
+          <button type="button" class="preset-btn px-2.5 py-1 bg-muted hover:bg-muted/80 rounded text-foreground font-medium transition-colors" data-val="70">4인 가구 난방 (70 m³)</button>
+          <button type="button" class="preset-btn px-2.5 py-1 bg-muted hover:bg-muted/80 rounded text-foreground font-medium transition-colors" data-val="120">겨울 집중난방 (120 m³)</button>
+        </div>
+
+        <!-- Result Summary -->
+        <div class="rounded-xl border border-primary/30 bg-primary/5 p-5 space-y-4">
+          <div class="flex items-baseline justify-between border-b border-primary/20 pb-3">
+            <span class="text-xs font-bold uppercase tracking-wider text-primary">예상 청구금액</span>
+            <div class="text-right">
+              <span id="resTotalBilled" class="text-2xl sm:text-3xl font-black text-foreground">0</span>
+              <span class="text-xs font-bold text-muted-foreground ml-1">원</span>
+            </div>
+          </div>
+
+          <div class="space-y-2 text-xs">
+            <div class="flex justify-between">
+              <span class="text-muted-foreground">환산 소비 열량 (MJ)</span>
+              <span id="resEnergyMJ" class="font-semibold text-foreground">0 MJ</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-muted-foreground">기본요금 (월정액)</span>
+              <span class="font-semibold text-foreground">1,000 원</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-muted-foreground">가스 사용요금</span>
+              <span id="resUsageCharge" class="font-semibold text-foreground">0 원</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-muted-foreground">부가가치세 (10%)</span>
+              <span id="resVat" class="font-semibold text-foreground">0 원</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- API Box -->
+      <div class="rounded-xl border border-border bg-muted/40 p-5 text-xs text-muted-foreground leading-relaxed mb-8">
+        <p class="font-bold text-foreground mb-1">api.oiyo.net B2A 무비용 연동 엔드포인트</p>
+        <p class="mb-2">에너지 시뮬레이션 및 가스 요금 계산 API를 무료로 직접 호출할 수 있습니다.</p>
+        <code class="block rounded bg-background p-2.5 font-mono text-[11px] text-foreground border border-border break-all">
+          GET https://api.oiyo.net/v1/energy/kr/gas-bill?usageM3=50&type=heating
+        </code>
+      </div>
+    </main>
+
+    <footer class="border-t border-border bg-card px-4 py-6 text-center text-xs text-muted-foreground">
+      <p>© 2026 OIYO tools · 한국가스공사 및 도시가스 공급규정 준수</p>
+    </footer>
+
+    <script>
+      const AVG_CALORIFIC = 42.8;
+      const HEATING_RATE = 22.15;
+      const COOKING_RATE = 21.05;
+      const BASE_FEE = 1000;
+
+      function updateGasCalc() {
+        const usageInput = document.getElementById('usageM3') as HTMLInputElement;
+        const typeInput = document.querySelector('input[name="usageType"]:checked') as HTMLInputElement;
+
+        const m3 = Math.max(0, Number(usageInput.value) || 0);
+        const isCooking = typeInput && typeInput.value === 'cooking';
+        const unitPrice = isCooking ? COOKING_RATE : HEATING_RATE;
+
+        const energyMJ = Number((m3 * AVG_CALORIFIC).toFixed(1));
+        const usageCharge = Math.floor(energyMJ * unitPrice);
+        const supply = BASE_FEE + usageCharge;
+        const vat = Math.floor(supply * 0.1);
+        const totalBilled = Math.floor((supply + vat) / 10) * 10;
+
+        document.getElementById('resEnergyMJ')!.textContent = energyMJ.toLocaleString('ko-KR') + ' MJ';
+        document.getElementById('resUsageCharge')!.textContent = usageCharge.toLocaleString('ko-KR') + ' 원';
+        document.getElementById('resVat')!.textContent = vat.toLocaleString('ko-KR') + ' 원';
+        document.getElementById('resTotalBilled')!.textContent = totalBilled.toLocaleString('ko-KR');
+      }
+
+      document.getElementById('usageM3')?.addEventListener('input', updateGasCalc);
+      document.querySelectorAll('input[name="usageType"]').forEach(r => r.addEventListener('change', updateGasCalc));
+
+      document.querySelectorAll('.preset-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const val = (e.currentTarget as HTMLElement).getAttribute('data-val');
+          if (val) {
+            (document.getElementById('usageM3') as HTMLInputElement).value = val;
+            updateGasCalc();
+          }
+        });
+      });
+
+      updateGasCalc();
+    </script>
+  </body>
+</html>

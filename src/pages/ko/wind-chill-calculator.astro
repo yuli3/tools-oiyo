@@ -1,0 +1,146 @@
+---
+import "../../styles/global.css";
+---
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>체감온도 및 온열지수 실시간 계산기 — OIYO tools</title>
+    <meta name="description" content="기상청 공식 JAG/TI 겨울철 체감온도 공식과 여름철 온열지수를 이용해 풍속과 습도에 따른 실제 인체 체감온도를 정밀 계산합니다." />
+  </head>
+  <body class="min-h-screen flex flex-col bg-background text-foreground">
+    <header class="border-b border-border bg-card px-4 py-3 sm:px-8">
+      <div class="mx-auto flex max-w-5xl items-center justify-between">
+        <a href="/" class="text-sm font-bold text-muted-foreground hover:text-foreground">← tools 홈</a>
+        <span class="text-xs font-semibold uppercase tracking-widest text-primary">WEATHER</span>
+      </div>
+    </header>
+
+    <main class="flex-1 mx-auto w-full max-w-3xl px-4 py-8 sm:px-8">
+      <div class="mb-6">
+        <h1 class="text-2xl font-black tracking-tight text-foreground sm:text-3xl">
+          체감온도 및 온열지수 실시간 계산기
+        </h1>
+        <p class="mt-2 text-xs text-muted-foreground sm:text-sm">
+          기상청 공식 JAG/TI 모델 및 습도 대류 방정식 적용. 슬라이더를 조작하면 체감온도가 즉각 산출됩니다.
+        </p>
+      </div>
+
+      <div class="rounded-xl border border-border bg-card p-6 shadow-xs">
+        <div class="grid gap-6 sm:grid-cols-2">
+          <!-- Inputs -->
+          <div class="space-y-4">
+            <div>
+              <div class="flex justify-between text-xs font-semibold">
+                <label for="c-temp">기온 (℃)</label>
+                <span id="t-disp" class="font-mono text-primary font-bold">-5 ℃</span>
+              </div>
+              <input type="range" id="c-temp" min="-20" max="40" value="-5" step="1" class="mt-2 w-full accent-primary" />
+            </div>
+
+            <div>
+              <div class="flex justify-between text-xs font-semibold">
+                <label for="c-wind">풍속 (m/s)</label>
+                <span id="w-disp" class="font-mono text-primary font-bold">5.0 m/s</span>
+              </div>
+              <input type="range" id="c-wind" min="0" max="20" value="5" step="0.5" class="mt-2 w-full accent-primary" />
+            </div>
+
+            <div>
+              <div class="flex justify-between text-xs font-semibold">
+                <label for="c-hum">상대습도 (%)</label>
+                <span id="h-disp" class="font-mono text-primary font-bold">50 %</span>
+              </div>
+              <input type="range" id="c-hum" min="10" max="100" value="50" step="5" class="mt-2 w-full accent-primary" />
+            </div>
+          </div>
+
+          <!-- Result -->
+          <div class="flex flex-col justify-center items-center rounded-lg border border-border bg-muted/20 p-6 text-center">
+            <span class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">체감온도</span>
+            <div class="my-2 flex items-baseline gap-1">
+              <span id="out-temp" class="text-5xl font-black tracking-tight font-mono text-foreground sm:text-6xl">-11.4</span>
+              <span class="text-xl font-bold text-muted-foreground">℃</span>
+            </div>
+            <span id="out-badge" class="mt-2 inline-flex rounded-md border border-warning/30 bg-warning/10 px-3 py-1 text-xs font-bold text-warning">
+              주의: 저체온증 유의
+            </span>
+          </div>
+        </div>
+
+        <div class="mt-6 border-t border-border pt-4 text-xs text-muted-foreground leading-relaxed">
+          <strong class="font-semibold text-foreground">수식 원리:</strong>
+          겨울철(10℃ 이하)은 기상청 JAG/TI 풍속 대류 냉각 공식(Twc = 13.12 + 0.6215T - 11.37V^0.16 + 0.3965TV^0.16)을 적용하며, 여름철은 습구 온열지수 증발 저해 모델을 적용합니다.
+        </div>
+      </div>
+    </main>
+
+    <footer class="border-t border-border bg-muted/30 px-4 py-6 text-center text-xs text-muted-foreground">
+      <p>공식: 대한민국 기상청 기상선진화 체감온도 산정 규정</p>
+    </footer>
+
+    <script>
+      const cTemp = document.getElementById("c-temp") as HTMLInputElement;
+      const cWind = document.getElementById("c-wind") as HTMLInputElement;
+      const cHum = document.getElementById("c-hum") as HTMLInputElement;
+
+      const tDisp = document.getElementById("t-disp");
+      const wDisp = document.getElementById("w-disp");
+      const hDisp = document.getElementById("h-disp");
+
+      const outTemp = document.getElementById("out-temp");
+      const outBadge = document.getElementById("out-badge");
+
+      function update() {
+        if (!cTemp || !cWind || !cHum || !outTemp || !outBadge) return;
+        const T = parseFloat(cTemp.value);
+        const W = parseFloat(cWind.value);
+        const H = parseFloat(cHum.value);
+
+        if (tDisp) tDisp.textContent = `${T} ℃`;
+        if (wDisp) wDisp.textContent = `${W.toFixed(1)} m/s`;
+        if (hDisp) hDisp.textContent = `${H} %`;
+
+        let apparent = T;
+        let badge = "쾌적/보통: 야외 활동 적합";
+        let badgeCls = "border-primary/20 bg-primary/10 text-primary";
+
+        if (T <= 10) {
+          const V = W * 3.6;
+          if (V >= 4.8) {
+            const vPow = Math.pow(V, 0.16);
+            apparent = 13.12 + 0.6215 * T - 11.37 * vPow + 0.3965 * T * vPow;
+          }
+          if (apparent <= -25) {
+            badge = "경고: 노출 피부 동상 위험";
+            badgeCls = "border-destructive bg-destructive/10 text-destructive";
+          } else if (apparent <= -10) {
+            badge = "주의: 방한복 필수, 저체온증 유의";
+            badgeCls = "border-warning/30 bg-warning/10 text-warning";
+          }
+        } else {
+          const vapor = (H / 100) * 6.105 * Math.exp((17.27 * T) / (237.7 + T));
+          apparent = T + 0.33 * vapor - 0.7 * W - 4.0;
+          if (apparent >= 35) {
+            badge = "폭염 경보: 야외 작업 중단 권고";
+            badgeCls = "border-destructive bg-destructive/10 text-destructive";
+          } else if (apparent >= 33) {
+            badge = "폭염 주의보: 온열질환 주의";
+            badgeCls = "border-warning/30 bg-warning/10 text-warning";
+          }
+        }
+
+        outTemp.textContent = apparent.toFixed(1);
+        outBadge.textContent = badge;
+        outBadge.className = `mt-2 inline-flex rounded-md border px-3 py-1 text-xs font-bold ${badgeCls}`;
+      }
+
+      cTemp?.addEventListener("input", update);
+      cWind?.addEventListener("input", update);
+      cHum?.addEventListener("input", update);
+      update();
+    </script>
+  </body>
+</html>

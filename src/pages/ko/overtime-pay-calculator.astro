@@ -1,0 +1,190 @@
+---
+import "../../styles/global.css";
+---
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>연장·야간·휴일수당 가산수당 계산기 — OIYO tools</title>
+    <meta name="description" content="근로기준법 제56조에 따른 연장근로(1.5배), 야간근로(0.5배 가산), 휴일근로(8시간 이내 1.5배 / 8시간 초과 2.0배) 가산수당을 2026년 최저임금 기준으로 실시간 정확히 모의 계산합니다." />
+  </head>
+  <body class="min-h-screen flex flex-col bg-background text-foreground">
+    <header class="border-b border-border bg-card px-4 py-3 sm:px-8">
+      <div class="mx-auto flex max-w-5xl items-center justify-between">
+        <a href="/" class="text-sm font-bold text-muted-foreground hover:text-foreground">← tools 홈</a>
+        <span class="text-xs font-semibold uppercase tracking-widest text-primary">LABOR & WAGES</span>
+      </div>
+    </header>
+
+    <main class="flex-1 mx-auto w-full max-w-3xl px-4 py-8 sm:px-8">
+      <div class="mb-6">
+        <div class="inline-flex items-center gap-1.5 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-semibold text-primary mb-3">
+          근로기준법 제56조 가산율 공식 반영
+        </div>
+        <h1 class="text-2xl sm:text-3xl font-black tracking-tight text-foreground">
+          연장 · 야간 · 휴일수당 계산기
+        </h1>
+        <p class="mt-2 text-sm leading-relaxed text-muted-foreground">
+          통상시급을 기준으로 연장(1.5배), 야간(0.5배 가산), 휴일근로(8시간 이내 1.5배 / 초과 2.0배)를 정밀 계산합니다.
+        </p>
+      </div>
+
+      <!-- Card -->
+      <div class="rounded-xl border border-border bg-card p-6 shadow-sm mb-8 space-y-6">
+        <div>
+          <div class="flex justify-between items-center mb-1.5">
+            <label for="hourlyWage" class="text-sm font-bold text-foreground">통상시급 (원)</label>
+            <span class="text-xs text-primary font-semibold">2026 법정최저 10,030원</span>
+          </div>
+          <input
+            type="number"
+            id="hourlyWage"
+            value="10030"
+            min="10030"
+            step="10"
+            class="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm font-semibold text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+          />
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label for="overtimeHours" class="text-xs font-bold text-foreground block mb-1">
+              연장근로 시간 (150%)
+            </label>
+            <input
+              type="number"
+              id="overtimeHours"
+              value="10"
+              min="0"
+              step="0.5"
+              class="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm font-semibold text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+            />
+          </div>
+
+          <div>
+            <label for="nightHours" class="text-xs font-bold text-foreground block mb-1">
+              야간근로 시간 (+50% 가산)
+            </label>
+            <input
+              type="number"
+              id="nightHours"
+              value="5"
+              min="0"
+              step="0.5"
+              class="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm font-semibold text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+            />
+          </div>
+
+          <div>
+            <label for="holidayUnder8" class="text-xs font-bold text-foreground block mb-1">
+              휴일 8시간 이내 (150%)
+            </label>
+            <input
+              type="number"
+              id="holidayUnder8"
+              value="8"
+              min="0"
+              max="8"
+              step="0.5"
+              class="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm font-semibold text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+            />
+          </div>
+
+          <div>
+            <label for="holidayOver8" class="text-xs font-bold text-foreground block mb-1">
+              휴일 8시간 초과분 (200%)
+            </label>
+            <input
+              type="number"
+              id="holidayOver8"
+              value="0"
+              min="0"
+              step="0.5"
+              class="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm font-semibold text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+            />
+          </div>
+        </div>
+
+        <!-- Result Summary -->
+        <div class="rounded-xl border border-primary/30 bg-primary/5 p-5 space-y-4">
+          <div class="flex items-baseline justify-between border-b border-primary/20 pb-3">
+            <span class="text-xs font-bold uppercase tracking-wider text-primary">총 가산수당 합계</span>
+            <div class="text-right">
+              <span id="resTotalExtra" class="text-2xl sm:text-3xl font-black text-foreground">0</span>
+              <span class="text-xs font-bold text-muted-foreground ml-1">원</span>
+            </div>
+          </div>
+
+          <div class="space-y-2 text-xs">
+            <div class="flex justify-between">
+              <span class="text-muted-foreground">연장근로수당 (150%)</span>
+              <span id="resOvertimePay" class="font-semibold text-foreground">0 원</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-muted-foreground">야간근로 가산수당 (50%)</span>
+              <span id="resNightPay" class="font-semibold text-foreground">0 원</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-muted-foreground">휴일근로 (8h 이내, 150%)</span>
+              <span id="resHolUnder8" class="font-semibold text-foreground">0 원</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-muted-foreground">휴일연장 (8h 초과, 200%)</span>
+              <span id="resHolOver8" class="font-semibold text-foreground">0 원</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- API Box -->
+      <div class="rounded-xl border border-border bg-muted/40 p-5 text-xs text-muted-foreground leading-relaxed mb-8">
+        <p class="font-bold text-foreground mb-1">api.oiyo.net B2A 무비용 연동 엔드포인트</p>
+        <p class="mb-2">에이전트 및 급여 계산 파이프라인에서 동일 공식을 직접 호출할 수 있습니다.</p>
+        <code class="block rounded bg-background p-2.5 font-mono text-[11px] text-foreground border border-border break-all">
+          GET https://api.oiyo.net/v1/labor/kr/overtime-pay?hourlyWage=10030&overtimeHours=10&nightHours=5
+        </code>
+      </div>
+    </main>
+
+    <footer class="border-t border-border bg-card px-4 py-6 text-center text-xs text-muted-foreground">
+      <p>© 2026 OIYO tools · 근로기준법 제56조 법정 가산율 준수</p>
+    </footer>
+
+    <script>
+      function updateCalculations() {
+        const wageInput = document.getElementById('hourlyWage') as HTMLInputElement;
+        const otInput = document.getElementById('overtimeHours') as HTMLInputElement;
+        const ntInput = document.getElementById('nightHours') as HTMLInputElement;
+        const hol8Input = document.getElementById('holidayUnder8') as HTMLInputElement;
+        const holOverInput = document.getElementById('holidayOver8') as HTMLInputElement;
+
+        const wage = Math.max(10030, Number(wageInput.value) || 10030);
+        const otH = Math.max(0, Number(otInput.value) || 0);
+        const ntH = Math.max(0, Number(ntInput.value) || 0);
+        const hol8H = Math.max(0, Number(hol8Input.value) || 0);
+        const holOverH = Math.max(0, Number(holOverInput.value) || 0);
+
+        const overtimePay = Math.floor(otH * wage * 1.5);
+        const nightPay = Math.floor(ntH * wage * 0.5);
+        const holUnderPay = Math.floor(hol8H * wage * 1.5);
+        const holOverPay = Math.floor(holOverH * wage * 2.0);
+
+        const totalExtra = overtimePay + nightPay + holUnderPay + holOverPay;
+
+        document.getElementById('resOvertimePay')!.textContent = overtimePay.toLocaleString('ko-KR') + ' 원';
+        document.getElementById('resNightPay')!.textContent = nightPay.toLocaleString('ko-KR') + ' 원';
+        document.getElementById('resHolUnder8')!.textContent = holUnderPay.toLocaleString('ko-KR') + ' 원';
+        document.getElementById('resHolOver8')!.textContent = holOverPay.toLocaleString('ko-KR') + ' 원';
+        document.getElementById('resTotalExtra')!.textContent = totalExtra.toLocaleString('ko-KR');
+      }
+
+      document.querySelectorAll('input').forEach(input => {
+        input.addEventListener('input', updateCalculations);
+      });
+
+      updateCalculations();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,8 @@
+{
+  "name": "oiyo-tools",
+  "compatibility_date": "2026-10-16",
+  "pages_build_output_dir": "dist",
+  "routes": [
+    { "pattern": "tools.oiyo.net", "custom_domain": true }
+  ]
+}

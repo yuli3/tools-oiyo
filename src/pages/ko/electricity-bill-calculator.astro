@@ -1,0 +1,299 @@
+---
+import "../../styles/global.css";
+---
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>주택용 전기요금 누진제 계산기 (한전 공식 요율) — OIYO tools</title>
+    <meta name="description" content="한국전력공사 주택용 전력(저압/고압) 3단계 누진제 요금표, 하계 누진구간 완화, 기후환경요금, 연료비조정액, 부가세 및 기반기금을 정밀 계산합니다." />
+  </head>
+  <body class="min-h-screen flex flex-col bg-background text-foreground">
+    <header class="border-b border-border bg-card px-4 py-3 sm:px-8">
+      <div class="mx-auto flex max-w-5xl items-center justify-between">
+        <a href="/" class="text-sm font-bold text-muted-foreground hover:text-foreground">← tools 홈</a>
+        <span class="text-xs font-semibold uppercase tracking-widest text-primary">ENERGY & UTILITY</span>
+      </div>
+    </header>
+
+    <main class="flex-1 mx-auto w-full max-w-2xl px-4 py-8 sm:px-8">
+      <div class="mb-6">
+        <div class="inline-flex items-center gap-1.5 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-semibold text-primary mb-3">
+          한전 전기공급약관 공식 요율
+        </div>
+        <h1 class="text-2xl font-black tracking-tight text-foreground sm:text-3xl">
+          주택용 전기요금 누진제 계산기
+        </h1>
+        <p class="mt-2 text-xs text-muted-foreground sm:text-sm leading-relaxed">
+          월 사용량(kWh)에 따른 3단계 누진 기본요금, 전력량요금, 기후환경요금(9원), 연료비조정액(+5원), 부가세 및 전력기금을 정확히 산출합니다.
+        </p>
+      </div>
+
+      <div class="rounded-xl border border-border bg-card p-6 shadow-xs space-y-6">
+        <!-- 전압 및 계약종별 -->
+        <div>
+          <label class="block text-xs font-bold text-foreground">주거 유형 (계약 전압)</label>
+          <div class="mt-2 grid grid-cols-2 gap-3">
+            <button
+              type="button"
+              data-type="low"
+              class="voltage-btn rounded-lg border border-primary bg-primary/10 px-4 py-3 text-xs font-bold text-primary text-center transition-colors"
+            >
+              주택용 저압 (단독·빌라·일반주택)
+            </button>
+            <button
+              type="button"
+              data-type="high"
+              class="voltage-btn rounded-lg border border-border bg-background px-4 py-3 text-xs font-medium text-muted-foreground text-center transition-colors hover:bg-muted/50"
+            >
+              주택용 고압 (대단지 아파트)
+            </button>
+          </div>
+        </div>
+
+        <!-- 사용 계절 선택 -->
+        <div>
+          <label class="block text-xs font-bold text-foreground">적용 계절 (하계 누진 완화 여부)</label>
+          <div class="mt-2 grid grid-cols-2 gap-3">
+            <button
+              type="button"
+              data-season="other"
+              class="season-btn rounded-lg border border-primary bg-primary/10 px-4 py-2.5 text-xs font-bold text-primary text-center transition-colors"
+            >
+              기타 계절 (봄·가을·겨울)
+            </button>
+            <button
+              type="button"
+              data-season="summer"
+              class="season-btn rounded-lg border border-border bg-background px-4 py-2.5 text-xs font-medium text-muted-foreground text-center transition-colors hover:bg-muted/50"
+            >
+              하계 (7월 1일 ~ 8월 31일)
+            </button>
+          </div>
+        </div>
+
+        <!-- 월간 사용량 슬라이더 & 입력 -->
+        <div>
+          <div class="flex justify-between items-center">
+            <label for="usage-input" class="block text-xs font-bold text-foreground">월간 전력 사용량 (kWh)</label>
+            <div class="flex items-center gap-1 font-mono text-sm font-bold text-primary">
+              <input
+                type="number"
+                id="usage-input"
+                min="0"
+                max="1000"
+                value="350"
+                class="w-20 text-right rounded border border-input bg-background px-2 py-1 text-sm font-mono text-foreground focus-visible:outline-2 focus-visible:outline-ring"
+              />
+              <span>kWh</span>
+            </div>
+          </div>
+          <input
+            type="range"
+            id="usage-slider"
+            min="0"
+            max="1000"
+            value="350"
+            step="5"
+            class="mt-3 w-full accent-primary cursor-pointer"
+          />
+          <div class="flex justify-between text-[10px] text-muted-foreground mt-1">
+            <span>0 kWh</span>
+            <span>200 (1단계)</span>
+            <span>400 (2단계)</span>
+            <span>600 (3단계 누진)</span>
+            <span>1,000 kWh</span>
+          </div>
+        </div>
+
+        <!-- 결과 상자 -->
+        <div class="rounded-lg border border-border bg-muted/20 p-5 space-y-4">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">최종 예상 청구 금액</span>
+            <span id="tier-badge" class="inline-flex rounded-md border border-primary/20 bg-primary/10 px-2.5 py-0.5 text-xs font-bold text-primary">
+              2단계 누진 구간 적용
+            </span>
+          </div>
+
+          <div class="text-center py-2">
+            <span class="text-xs text-muted-foreground block">총 납부 청구액 (원 미만 절사)</span>
+            <span id="res-total-bill" class="text-3xl font-black text-primary tracking-tight sm:text-4xl">65,580원</span>
+          </div>
+
+          <!-- 세부 명세 그리드 -->
+          <div class="rounded-md border border-border bg-background p-3 text-xs space-y-2">
+            <div class="flex justify-between text-muted-foreground">
+              <span>기본요금:</span>
+              <span id="res-base-fee" class="font-mono font-medium text-foreground">1,600원</span>
+            </div>
+            <div class="flex justify-between text-muted-foreground">
+              <span>전력량요금 (누진 합산):</span>
+              <span id="res-energy-fee" class="font-mono font-medium text-foreground">56,190원</span>
+            </div>
+            <div class="flex justify-between text-muted-foreground">
+              <span>기후환경요금 (9.0원/kWh):</span>
+              <span id="res-climate-fee" class="font-mono text-foreground">3,150원</span>
+            </div>
+            <div class="flex justify-between text-muted-foreground">
+              <span>연료비조정액 (+5.0원/kWh):</span>
+              <span id="res-fuel-fee" class="font-mono text-foreground">1,750원</span>
+            </div>
+            <div class="border-t border-border pt-1.5 flex justify-between text-muted-foreground">
+              <span>전기요금 계:</span>
+              <span id="res-subtotal" class="font-mono font-bold text-foreground">62,690원</span>
+            </div>
+            <div class="flex justify-between text-[11px] text-muted-foreground">
+              <span>부가가치세 (10%) + 전력산업기반기금 (3.7%):</span>
+              <span id="res-tax-fund" class="font-mono">6,269원 + 2,310원</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 누진제 안내 -->
+        <div class="border-t border-border pt-4 text-xs space-y-2 text-muted-foreground">
+          <p class="font-bold text-foreground">📊 한전 주택용 전기요금 누진 구간 안내:</p>
+          <ul class="list-disc list-inside space-y-1 pl-1 text-[11px] leading-relaxed">
+            <li><strong>기타 계절 (봄/가을/겨울)</strong>: 1단계(~200kWh: 120.0원) → 2단계(201~400kWh: 214.6원) → 3단계(400kWh 초과: 307.3원).</li>
+            <li><strong>하계 완화 (7~8월)</strong>: 폭염 냉방 지원으로 1단계(~300kWh), 2단계(301~450kWh), 3단계(450kWh 초과)로 각 50~100kWh 구간이 확장됩니다.</li>
+            <li>400kWh(여름철 450kWh)를 넘어서는 순간 3단계 최고 단가가 적용되어 전기요금이 가파르게 증가하므로 계량기 수치를 점검하는 것이 유리합니다.</li>
+          </ul>
+        </div>
+      </div>
+    </main>
+
+    <footer class="border-t border-border bg-muted/30 px-4 py-6 text-center text-xs text-muted-foreground">
+      <p>근거: 한국전력공사 기본공급약관 별표1 (주택용 전력 요금표) · OIYO tools</p>
+    </footer>
+
+    <script>
+      let voltageType = "low"; // "low" | "high"
+      let season = "other"; // "other" | "summer"
+
+      const voltageButtons = document.querySelectorAll<HTMLButtonElement>(".voltage-btn");
+      const seasonButtons = document.querySelectorAll<HTMLButtonElement>(".season-btn");
+      const usageInput = document.getElementById("usage-input") as HTMLInputElement;
+      const usageSlider = document.getElementById("usage-slider") as HTMLInputElement;
+
+      const tierBadge = document.getElementById("tier-badge")!;
+      const resTotalBill = document.getElementById("res-total-bill")!;
+      const resBaseFee = document.getElementById("res-base-fee")!;
+      const resEnergyFee = document.getElementById("res-energy-fee")!;
+      const resClimateFee = document.getElementById("res-climate-fee")!;
+      const resFuelFee = document.getElementById("res-fuel-fee")!;
+      const resSubtotal = document.getElementById("res-subtotal")!;
+      const resTaxFund = document.getElementById("res-tax-fund")!;
+
+      // 한전 주택용 단가 테이블
+      const RATES = {
+        low: {
+          base: [910, 1600, 7300],
+          unit: [120.0, 214.6, 307.3],
+        },
+        high: {
+          base: [730, 1260, 6060],
+          unit: [105.0, 174.0, 242.3],
+        },
+      };
+
+      function calculate() {
+        const usage = Math.max(0, parseFloat(usageInput.value) || 0);
+
+        // 누진 경계치 (하계 vs 기타)
+        const t1Limit = season === "summer" ? 300 : 200;
+        const t2Limit = season === "summer" ? 450 : 400;
+
+        let baseFee = 0;
+        let energyFee = 0;
+        let tierText = "";
+
+        const currentRate = RATES[voltageType as "low" | "high"];
+
+        if (usage <= t1Limit) {
+          baseFee = currentRate.base[0];
+          energyFee = usage * currentRate.unit[0];
+          tierText = "1단계 기본 누진 구간";
+        } else if (usage <= t2Limit) {
+          baseFee = currentRate.base[1];
+          energyFee = t1Limit * currentRate.unit[0] + (usage - t1Limit) * currentRate.unit[1];
+          tierText = "2단계 중간 누진 구간";
+        } else {
+          baseFee = currentRate.base[2];
+          energyFee =
+            t1Limit * currentRate.unit[0] +
+            (t2Limit - t1Limit) * currentRate.unit[1] +
+            (usage - t2Limit) * currentRate.unit[2];
+          tierText = "3단계 최고 누진 구간 (주의)";
+        }
+
+        // 기후환경요금: 9.0원/kWh, 연료비조정액: +5.0원/kWh
+        const climateFee = Math.floor(usage * 9.0);
+        const fuelFee = Math.floor(usage * 5.0);
+
+        const subtotal = Math.floor(baseFee + energyFee + climateFee + fuelFee);
+
+        // 부가세: 10% (반올림)
+        const vat = Math.round(subtotal * 0.1);
+        // 전력산업기반기금: 3.7% (10원 미만 절사)
+        const fund = Math.floor((subtotal * 0.037) / 10) * 10;
+
+        // 최종 청구금액: 10원 미만 절사
+        const totalBill = Math.floor((subtotal + vat + fund) / 10) * 10;
+
+        tierBadge.textContent = tierText;
+        if (usage > t2Limit) {
+          tierBadge.className = "inline-flex rounded-md border border-destructive/30 bg-destructive/10 px-2.5 py-0.5 text-xs font-bold text-destructive";
+        } else {
+          tierBadge.className = "inline-flex rounded-md border border-primary/20 bg-primary/10 px-2.5 py-0.5 text-xs font-bold text-primary";
+        }
+
+        resTotalBill.textContent = totalBill.toLocaleString() + "원";
+        resBaseFee.textContent = baseFee.toLocaleString() + "원";
+        resEnergyFee.textContent = Math.floor(energyFee).toLocaleString() + "원";
+        resClimateFee.textContent = climateFee.toLocaleString() + "원";
+        resFuelFee.textContent = fuelFee.toLocaleString() + "원";
+        resSubtotal.textContent = subtotal.toLocaleString() + "원";
+        resTaxFund.textContent = vat.toLocaleString() + "원 + " + fund.toLocaleString() + "원";
+      }
+
+      voltageButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          voltageButtons.forEach((b) => {
+            b.classList.remove("border-primary", "bg-primary/10", "text-primary", "font-bold");
+            b.classList.add("border-border", "bg-background", "text-muted-foreground", "font-medium");
+          });
+          btn.classList.add("border-primary", "bg-primary/10", "text-primary", "font-bold");
+          btn.classList.remove("border-border", "bg-background", "text-muted-foreground", "font-medium");
+          voltageType = btn.getAttribute("data-type") || "low";
+          calculate();
+        });
+      });
+
+      seasonButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          seasonButtons.forEach((b) => {
+            b.classList.remove("border-primary", "bg-primary/10", "text-primary", "font-bold");
+            b.classList.add("border-border", "bg-background", "text-muted-foreground", "font-medium");
+          });
+          btn.classList.add("border-primary", "bg-primary/10", "text-primary", "font-bold");
+          btn.classList.remove("border-border", "bg-background", "text-muted-foreground", "font-medium");
+          season = btn.getAttribute("data-season") || "other";
+          calculate();
+        });
+      });
+
+      usageInput.addEventListener("input", () => {
+        usageSlider.value = usageInput.value;
+        calculate();
+      });
+
+      usageSlider.addEventListener("input", () => {
+        usageInput.value = usageSlider.value;
+        calculate();
+      });
+
+      calculate();
+    </script>
+  </body>
+</html>

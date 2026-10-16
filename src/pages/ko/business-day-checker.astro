@@ -1,0 +1,139 @@
+---
+import "../../styles/global.css";
+---
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>대한민국 법정 영업일·공휴일 조회기 — OIYO tools</title>
+    <meta name="description" content="관공서 공휴일에 관한 규정 및 대체공휴일 픽스처를 기반으로 특정 날짜의 영업일 여부와 휴일 사유를 실시간 판별합니다." />
+  </head>
+  <body class="min-h-screen flex flex-col bg-background text-foreground">
+    <header class="border-b border-border bg-card px-4 py-3 sm:px-8">
+      <div class="mx-auto flex max-w-5xl items-center justify-between">
+        <a href="/" class="text-sm font-bold text-muted-foreground hover:text-foreground">← tools 홈</a>
+        <span class="text-xs font-semibold uppercase tracking-widest text-primary">CALENDAR</span>
+      </div>
+    </header>
+
+    <main class="flex-1 mx-auto w-full max-w-2xl px-4 py-8 sm:px-8">
+      <div class="mb-6">
+        <h1 class="text-2xl font-black tracking-tight text-foreground sm:text-3xl">
+          대한민국 법정 영업일·공휴일 판별기
+        </h1>
+        <p class="mt-2 text-xs text-muted-foreground sm:text-sm">
+          관공서 공휴일에 관한 규정 및 대체공휴일 적용 여부를 판별하여 영업일(비즈니스 데이)인지 확인합니다.
+        </p>
+      </div>
+
+      <div class="rounded-xl border border-border bg-card p-6 shadow-xs space-y-6">
+        <div>
+          <label for="date-input" class="block text-xs font-bold text-foreground">조회할 날짜 선택</label>
+          <input
+            type="date"
+            id="date-input"
+            value="2026-10-16"
+            class="mt-2 w-full rounded-lg border border-input bg-background px-4 py-3 text-sm font-mono text-foreground focus-visible:outline-2 focus-visible:outline-ring"
+          />
+        </div>
+
+        <div id="result-box" class="rounded-lg border border-border bg-muted/20 p-5 text-center">
+          <span class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">판정 결과</span>
+          <div class="my-2">
+            <span id="res-badge" class="inline-flex rounded-md border border-primary/20 bg-primary/10 px-4 py-1.5 text-base font-bold text-primary">
+              정상 영업일 (Business Day)
+            </span>
+          </div>
+          <p id="res-desc" class="mt-2 text-xs text-muted-foreground">
+            2026년 10월 16일 (금요일)은 주말이나 법정 공휴일이 아닌 정상 근무일입니다.
+          </p>
+        </div>
+
+        <div class="border-t border-border pt-4 text-xs text-muted-foreground">
+          <p class="font-medium text-foreground">API 연동 안내:</p>
+          <p class="mt-1 font-mono text-[11px] bg-muted p-2 rounded border border-border">
+            GET https://api.oiyo.net/v1/kr/calendar/is-business-day?date=YYYY-MM-DD
+          </p>
+        </div>
+      </div>
+    </main>
+
+    <footer class="border-t border-border bg-muted/30 px-4 py-6 text-center text-xs text-muted-foreground">
+      <p>데이터 제공: api.oiyo.net B2A 무비용 천문·역법 게이트웨이</p>
+    </footer>
+
+    <script>
+      const FIXED = {
+        "01-01": "신정",
+        "03-01": "3·1절",
+        "05-05": "어린이날",
+        "06-06": "현충일",
+        "08-15": "광복절",
+        "10-03": "개천절",
+        "10-09": "한글날",
+        "12-25": "기독탄신일",
+      };
+
+      const FIXTURES: Record<string, string> = {
+        "2026-02-16": "설날 연휴",
+        "2026-02-17": "설날",
+        "2026-02-18": "설날 연휴",
+        "2026-03-02": "3·1절 대체공휴일",
+        "2026-05-24": "부처님오신날",
+        "2026-05-25": "부처님오신날 대체공휴일",
+        "2026-08-17": "광복절 대체공휴일",
+        "2026-09-24": "추석 연휴",
+        "2026-09-25": "추석",
+        "2026-09-26": "추석 연휴",
+        "2026-10-05": "개천절 대체공휴일",
+      };
+
+      const input = document.getElementById("date-input") as HTMLInputElement;
+      const resBadge = document.getElementById("res-badge");
+      const resDesc = document.getElementById("res-desc");
+
+      const DAYS = ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"];
+
+      function check() {
+        if (!input || !resBadge || !resDesc) return;
+        const val = input.value;
+        if (!val) return;
+
+        const [y, m, d] = val.split("-").map((v) => parseInt(v, 10));
+        const dt = new Date(Date.UTC(y, m - 1, d));
+        const dayIdx = dt.getUTCDay();
+        const dayName = DAYS[dayIdx];
+        const mdKey = `${String(m).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
+
+        let isBiz = true;
+        let reason = "";
+
+        if (dayIdx === 0 || dayIdx === 6) {
+          isBiz = false;
+          reason = dayName;
+        } else if (FIXED[mdKey as keyof typeof FIXED]) {
+          isBiz = false;
+          reason = FIXED[mdKey as keyof typeof FIXED];
+        } else if (FIXTURES[val]) {
+          isBiz = false;
+          reason = FIXTURES[val];
+        }
+
+        if (isBiz) {
+          resBadge.textContent = "정상 영업일 (Business Day)";
+          resBadge.className = "inline-flex rounded-md border border-primary/20 bg-primary/10 px-4 py-1.5 text-base font-bold text-primary";
+          resDesc.textContent = `${y}년 ${m}월 ${d}일 (${dayName})은 정상 영업일입니다.`;
+        } else {
+          resBadge.textContent = `휴일 / 비영업일 (${reason})`;
+          resBadge.className = "inline-flex rounded-md border border-destructive/20 bg-destructive/10 px-4 py-1.5 text-base font-bold text-destructive";
+          resDesc.textContent = `${y}년 ${m}월 ${d}일 (${dayName})은 [${reason}] 사유로 인한 휴일(비영업일)입니다.`;
+        }
+      }
+
+      input?.addEventListener("change", check);
+      check();
+    </script>
+  </body>
+</html>
