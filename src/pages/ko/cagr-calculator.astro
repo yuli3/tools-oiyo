@@ -1,0 +1,229 @@
+---
+import Layout from "../../components/Layout.astro";
+import RelatedTools from "../../components/RelatedTools.astro";
+---
+
+<Layout
+  title="CAGR 연평균 복합 성장률 계산기 (복리 수익률 & 자산 추이)"
+  description="투자 원금, 최종 평가금액, 투자 기간(년)을 바탕으로 연평균 복합 성장률(CAGR)과 총 수익률, 원금 2배 달성 소요 기간을 실시간 정밀 산출합니다."
+>
+  <div class="mx-auto w-full max-w-2xl px-4 py-8 sm:px-8">
+    <div class="mb-6">
+      <a href="/" class="text-xs font-semibold text-muted-foreground hover:text-primary transition-colors mb-3 inline-block">← 전체 도구 목록</a>
+      <div class="inline-flex items-center gap-1.5 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-semibold text-primary mb-3">
+        금융공학 공식 적용: CAGR = (최종가 ÷ 시작가)^(1 ÷ 년수) - 1
+      </div>
+      <h1 class="text-2xl font-black tracking-tight text-foreground sm:text-3xl">
+        CAGR 연평균 복합 성장률 계산기
+      </h1>
+      <p class="mt-2 text-xs text-muted-foreground sm:text-sm leading-relaxed">
+        주식, 펀드, 부동산, 사업 매출의 연도별 복리 성장률을 측정하고, 동일 수익률 유지 시 원금이 2배가 되는 시점(72의 법칙)을 산출합니다.
+      </p>
+    </div>
+
+    <div class="rounded-xl border border-border bg-card p-6 shadow-xs space-y-6">
+      <!-- 입력 폼 -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label for="initial-val" class="block text-xs font-bold text-foreground">투자 원금 (초기 금액, 원)</label>
+          <input
+            type="number"
+            id="initial-val"
+            value="10000000"
+            step="100000"
+            min="1"
+            class="mt-2 w-full rounded-lg border border-input bg-background px-4 py-3 text-sm font-bold font-mono text-foreground focus-visible:outline-2 focus-visible:outline-ring"
+          />
+        </div>
+        <div>
+          <label for="final-val" class="block text-xs font-bold text-foreground">최종 금액 (현재 평가액, 원)</label>
+          <input
+            type="number"
+            id="final-val"
+            value="25000000"
+            step="100000"
+            min="1"
+            class="mt-2 w-full rounded-lg border border-input bg-background px-4 py-3 text-sm font-bold font-mono text-foreground focus-visible:outline-2 focus-visible:outline-ring"
+          />
+        </div>
+      </div>
+
+      <div>
+        <div class="flex justify-between items-center">
+          <label for="years-val" class="block text-xs font-bold text-foreground">투자 기간 (년)</label>
+          <span id="years-display" class="font-mono text-xs font-bold text-primary">5 년</span>
+        </div>
+        <input
+          type="range"
+          id="years-val"
+          min="1"
+          max="30"
+          value="5"
+          step="0.5"
+          class="mt-2 w-full accent-primary cursor-pointer"
+        />
+        <div class="flex justify-between text-[11px] text-muted-foreground mt-1">
+          <span>1년</span>
+          <span>5년</span>
+          <span>10년</span>
+          <span>20년</span>
+          <span>30년</span>
+        </div>
+      </div>
+
+      <!-- 프리셋 칩 -->
+      <div>
+        <span class="block text-xs font-semibold text-muted-foreground mb-2">역사적 대표 지수 & 투자 프리셋:</span>
+        <div class="flex flex-wrap gap-1.5">
+          <button type="button" class="preset-chip rounded-md border border-border bg-muted/40 px-2.5 py-1 text-xs font-medium text-foreground hover:border-primary/50" data-init="10000000" data-final="20000000" data-years="5">5년 2배 (CAGR 14.9%)</button>
+          <button type="button" class="preset-chip rounded-md border border-border bg-muted/40 px-2.5 py-1 text-xs font-medium text-foreground hover:border-primary/50" data-init="10000000" data-final="25937424" data-years="10">S&P 500 역사적 평균 (연 10%)</button>
+          <button type="button" class="preset-chip rounded-md border border-border bg-muted/40 px-2.5 py-1 text-xs font-medium text-foreground hover:border-primary/50" data-init="10000000" data-final="52338355" data-years="10">나스닥 100 10년 (연 18%)</button>
+          <button type="button" class="preset-chip rounded-md border border-border bg-muted/40 px-2.5 py-1 text-xs font-medium text-foreground hover:border-primary/50" data-init="10000000" data-final="61917364" data-years="10">워런 버핏 연평균 (연 20%)</button>
+        </div>
+      </div>
+
+      <!-- 결과 상자 -->
+      <div class="rounded-lg border border-primary/20 bg-primary/5 p-6 space-y-4">
+        <div class="text-center pb-4 border-b border-border/60">
+          <span class="text-xs font-medium text-muted-foreground">연평균 복합 성장률 (CAGR)</span>
+          <div class="mt-1 flex items-baseline justify-center gap-1">
+            <span id="res-cagr" class="text-4xl font-black tracking-tight text-primary font-mono sm:text-5xl">20.11</span>
+            <span class="text-xl font-bold text-foreground">%</span>
+          </div>
+          <p id="res-summary" class="mt-2 text-xs text-muted-foreground">
+            5년 동안 원금 대비 <strong id="res-total-gain" class="text-foreground font-mono">150.0%</strong> 성장 (+15,000,000원)
+          </p>
+        </div>
+
+        <div class="space-y-2 text-xs">
+          <div class="flex justify-between font-medium text-muted-foreground">
+            <span>총 투자 수익률</span>
+            <span id="res-absolute-return" class="font-mono text-foreground font-bold">+150.00%</span>
+          </div>
+          <div class="flex justify-between font-medium text-muted-foreground">
+            <span>총 순수익 금액</span>
+            <span id="res-net-profit" class="font-mono text-foreground font-bold">+15,000,000 원</span>
+          </div>
+          <div class="flex justify-between font-medium text-muted-foreground">
+            <span>원금 2배 도달 소요기간 (72의 법칙)</span>
+            <span id="res-rule-72" class="font-mono text-foreground font-bold">약 3.6 년</span>
+          </div>
+          <div class="flex justify-between font-bold text-primary pt-2 border-t border-border/60">
+            <span>산출 공식</span>
+            <span id="res-formula-view" class="font-mono text-[11px]">(25,000,000 ÷ 10,000,000)^(1 ÷ 5) - 1</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 연도별 자산 성장 시뮬레이션 표 -->
+      <div class="mt-4">
+        <h3 class="text-xs font-bold text-foreground mb-2">연도별 복리 자산 성장 추이</h3>
+        <div class="overflow-x-auto rounded-lg border border-border">
+          <table class="w-full text-left text-xs">
+            <thead class="bg-muted text-muted-foreground border-b border-border">
+              <tr>
+                <th class="py-2 px-3">경과 기간</th>
+                <th class="py-2 px-3 text-right">예상 평가액 (원)</th>
+                <th class="py-2 px-3 text-right">누적 수익률</th>
+              </tr>
+            </thead>
+            <tbody id="growth-tbody" class="divide-y divide-border font-mono">
+              <!-- JS 렌더링 -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- B2A API 안내 -->
+      <div class="border-t border-border pt-4 text-xs text-muted-foreground">
+        <p class="font-medium text-foreground">api.oiyo.net B2A 무비용 연동 엔드포인트:</p>
+        <p class="mt-1 font-mono text-[11px] bg-muted p-2 rounded border border-border break-all">
+          GET https://api.oiyo.net/v1/finance/cagr?initialValue=10000000&finalValue=25000000&years=5
+        </p>
+      </div>
+    </div>
+
+    <div class="mt-8 rounded-lg border border-border bg-muted/30 p-4 text-center text-xs text-muted-foreground">
+      금융 산출 기준: Compound Annual Growth Rate (CAGR) 기하평균 공식 준수 · OIYO tools
+    </div>
+
+    <RelatedTools currentId="cagr" />
+
+    <script>
+      const initialInput = document.getElementById("initial-val") as HTMLInputElement;
+      const finalInput = document.getElementById("final-val") as HTMLInputElement;
+      const yearsInput = document.getElementById("years-val") as HTMLInputElement;
+      const yearsDisplay = document.getElementById("years-display")!;
+
+      const resCagr = document.getElementById("res-cagr")!;
+      const resTotalGain = document.getElementById("res-total-gain")!;
+      const resSummary = document.getElementById("res-summary")!;
+      const resAbsoluteReturn = document.getElementById("res-absolute-return")!;
+      const resNetProfit = document.getElementById("res-net-profit")!;
+      const resRule72 = document.getElementById("res-rule-72")!;
+      const resFormulaView = document.getElementById("res-formula-view")!;
+      const growthTbody = document.getElementById("growth-tbody")!;
+      const presetChips = document.querySelectorAll<HTMLButtonElement>(".preset-chip");
+
+      function formatWon(num: number): string {
+        return Math.floor(num).toLocaleString("ko-KR") + " 원";
+      }
+
+      function calculate() {
+        const initial = Math.max(1, parseFloat(initialInput.value) || 1);
+        const finalVal = Math.max(0, parseFloat(finalInput.value) || 0);
+        const years = Math.max(0.1, parseFloat(yearsInput.value) || 1);
+
+        yearsDisplay.textContent = `${years} 년`;
+
+        // CAGR = (final / initial) ^ (1 / years) - 1
+        const ratio = finalVal / initial;
+        const cagr = (Math.pow(ratio, 1 / years) - 1) * 100;
+        const absoluteReturn = ((finalVal - initial) / initial) * 100;
+        const profit = finalVal - initial;
+        const rule72Years = cagr > 0 ? (72 / cagr).toFixed(1) : "—";
+
+        resCagr.textContent = cagr.toFixed(2);
+        resAbsoluteReturn.textContent = `${absoluteReturn >= 0 ? "+" : ""}${absoluteReturn.toFixed(2)}%`;
+        resNetProfit.textContent = `${profit >= 0 ? "+" : ""}${formatWon(profit)}`;
+        resTotalGain.textContent = `${absoluteReturn >= 0 ? "+" : ""}${absoluteReturn.toFixed(1)}%`;
+        resRule72.textContent = cagr > 0 ? `약 ${rule72Years} 년` : "마이너스 수익률 (해당 없음)";
+        resFormulaView.textContent = `(${finalVal.toLocaleString()} ÷ ${initial.toLocaleString()})^(1 ÷ ${years}) - 1`;
+
+        // 연도별 성장 테이블 렌더링 (최대 10개 행)
+        let rowsHtml = "";
+        const cagrRate = cagr / 100;
+        const wholeYears = Math.min(10, Math.ceil(years));
+        const step = years > 10 ? Math.ceil(years / 8) : 1;
+
+        for (let y = 1; y <= years; y += step) {
+          const projected = initial * Math.pow(1 + cagrRate, y);
+          const ret = ((projected - initial) / initial) * 100;
+          rowsHtml += `
+            <tr class="hover:bg-muted/40 transition-colors">
+              <td class="py-1.5 px-3 text-muted-foreground">${y}년차</td>
+              <td class="py-1.5 px-3 text-right font-bold text-foreground">${Math.floor(projected).toLocaleString("ko-KR")}</td>
+              <td class="py-1.5 px-3 text-right ${ret >= 0 ? "text-primary" : "text-destructive"} font-bold">${ret >= 0 ? "+" : ""}${ret.toFixed(1)}%</td>
+            </tr>
+          `;
+        }
+        growthTbody.innerHTML = rowsHtml;
+      }
+
+      initialInput.addEventListener("input", calculate);
+      finalInput.addEventListener("input", calculate);
+      yearsInput.addEventListener("input", calculate);
+
+      presetChips.forEach((chip) => {
+        chip.addEventListener("click", () => {
+          initialInput.value = chip.getAttribute("data-init")!;
+          finalInput.value = chip.getAttribute("data-final")!;
+          yearsInput.value = chip.getAttribute("data-years")!;
+          calculate();
+        });
+      });
+
+      calculate();
+    </script>
+  </div>
+</Layout>

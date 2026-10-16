@@ -98,13 +98,29 @@ const tools = [
     category: "캘린더/행정",
     badge: "B2A 연동",
   },
+  {
+    id: "pyeong-sqm",
+    title: "부동산 평수 ↔ ㎡ 면적 변환기",
+    desc: "계량에 관한 법률 기준 1평(3.305785㎡) 및 1㎡(0.3025평) 양방향 정밀 환산 및 아파트 전용 59㎡·84㎡ 조견표를 제공합니다.",
+    href: "/ko/pyeong-sqm-converter/",
+    category: "생활/부동산",
+    badge: "부동산 필수",
+  },
+  {
+    id: "cagr",
+    title: "CAGR 연평균 복합 성장률 계산기",
+    desc: "투자 원금, 최종금액, 투자 기간을 바탕으로 연평균 복리 수익률(CAGR), 누적 수익률, 원금 2배 달성 소요 기간을 계산합니다.",
+    href: "/ko/cagr-calculator/",
+    category: "금융/투자",
+    badge: "투자/재테크",
+  },
 ];
 import Layout from "../components/Layout.astro";
 ---
 
 <Layout
   title="OIYO tools — 일상을 돕는 정밀 웹 유틸리티 허브"
-  description="광고 공해 없이 빠르고 정확한 웹 도구 모음. 노동 수당, 주택용 전기·도시가스 요금, 군 복무 계산기, 생활폐기물 분리배출 판별기 등을 제공합니다."
+  description="광고 공해 없이 빠르고 정확한 웹 도구 모음. 노동 수당, 주택용 전기·도시가스 요금, 부동산 평수 변환, CAGR 복리 계산기 등을 제공합니다."
 >
   <div class="mx-auto w-full max-w-5xl px-4 py-12 sm:px-8">
     <div class="mb-10 text-center sm:text-left">
@@ -128,7 +144,7 @@ import Layout from "../components/Layout.astro";
         class="filter-btn rounded-lg border border-primary bg-primary px-3.5 py-1.5 text-xs font-bold text-primary-foreground transition shadow-xs"
         data-filter="all"
       >
-        전체 보기 (12)
+        전체 보기 (14)
       </button>
       <button
         type="button"
@@ -142,7 +158,14 @@ import Layout from "../components/Layout.astro";
         class="filter-btn rounded-lg border border-border bg-card px-3.5 py-1.5 text-xs font-medium text-muted-foreground transition hover:border-primary/40 hover:text-foreground"
         data-filter="living"
       >
-        생활 · 공공요금 (3)
+        생활 · 부동산 · 공과금 (4)
+      </button>
+      <button
+        type="button"
+        class="filter-btn rounded-lg border border-border bg-card px-3.5 py-1.5 text-xs font-medium text-muted-foreground transition hover:border-primary/40 hover:text-foreground"
+        data-filter="finance"
+      >
+        금융 · 재테크 (1)
       </button>
       <button
         type="button"
@@ -171,7 +194,8 @@ import Layout from "../components/Layout.astro";
     <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3" id="tools-grid">
       {tools.map((tool) => {
         let group = "labor";
-        if (["electricity-bill", "gas-bill", "waste-sorter"].includes(tool.id)) group = "living";
+        if (["electricity-bill", "gas-bill", "waste-sorter", "pyeong-sqm"].includes(tool.id)) group = "living";
+        else if (tool.id === "cagr") group = "finance";
         else if (tool.id === "military-service") group = "military";
         else if (tool.id === "wind-chill") group = "environment";
         else if (tool.id === "business-day") group = "calendar";

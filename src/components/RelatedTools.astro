@@ -111,21 +111,39 @@ const ALL_TOOLS: Record<string, ToolItem> = {
     badge: "B2A 지원",
     category: "캘린더/행정",
   },
+  "pyeong-sqm": {
+    id: "pyeong-sqm",
+    title: "부동산 평수 ↔ ㎡ 면적 변환기",
+    desc: "아파트 평수와 전용/공급면적(㎡)의 소수점 오차 없는 법정 양방향 환산",
+    href: "/ko/pyeong-sqm-converter/",
+    badge: "부동산 필수",
+    category: "생활/부동산",
+  },
+  "cagr": {
+    id: "cagr",
+    title: "CAGR 연평균 복합 성장률 계산기",
+    desc: "원금·현재평가액·기간 기준 연평균 복리 수익률 및 자산성장 추이",
+    href: "/ko/cagr-calculator/",
+    badge: "투자/재테크",
+    category: "금융/투자",
+  },
 };
 
 const RECOMMENDATIONS: Record<string, string[]> = {
-  "net-salary": ["severance-pay", "annual-leave", "unemployment-benefits"],
-  "severance-pay": ["net-salary", "annual-leave", "unemployment-benefits"],
+  "net-salary": ["severance-pay", "cagr", "annual-leave"],
+  "severance-pay": ["net-salary", "cagr", "unemployment-benefits"],
   "annual-leave": ["net-salary", "overtime-pay", "severance-pay"],
   "unemployment-benefits": ["net-salary", "severance-pay", "weekly-holiday"],
   "weekly-holiday": ["overtime-pay", "net-salary", "annual-leave"],
   "overtime-pay": ["weekly-holiday", "annual-leave", "net-salary"],
-  "electricity-bill": ["gas-bill", "waste-sorter", "wind-chill"],
-  "gas-bill": ["electricity-bill", "wind-chill", "waste-sorter"],
+  "electricity-bill": ["gas-bill", "pyeong-sqm", "waste-sorter"],
+  "gas-bill": ["electricity-bill", "pyeong-sqm", "waste-sorter"],
   "waste-sorter": ["electricity-bill", "gas-bill", "business-day"],
   "wind-chill": ["gas-bill", "electricity-bill", "business-day"],
   "military-service": ["net-salary", "business-day", "unemployment-benefits"],
   "business-day": ["annual-leave", "military-service", "waste-sorter"],
+  "pyeong-sqm": ["electricity-bill", "gas-bill", "cagr"],
+  "cagr": ["net-salary", "severance-pay", "pyeong-sqm"],
 };
 
 const targetIds = RECOMMENDATIONS[currentId] ?? ["net-salary", "severance-pay", "business-day"];
