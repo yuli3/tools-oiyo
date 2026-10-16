@@ -1,0 +1,21 @@
+# OIYO Tools (tools.oiyo.net)
+
+> Deterministic, zero-tracking utility tools and calculators for everyday life, labor regulations, utility bills, and public standards.
+
+## About
+OIYO Tools provides client-side, zero-token deterministic computation for statutory wages, energy tariffs, military service, and civil life calculations in South Korea.
+
+## Tools Directory
+- `/ko/unemployment-benefits-calculator/`: Korean Employment Insurance Jobseeker Allowance (실업급여) simulation (floor 64,192 KRW, ceiling 66,000 KRW, 120-270 days duration based on age and insured period).
+- `/ko/weekly-holiday-allowance/`: Weekly Holiday Allowance (주휴수당) calculator based on Labor Standards Act Article 55 (40-hr standard, proportional for part-time >= 15 hrs).
+- `/ko/electricity-bill-calculator/`: Residential Electricity Tariff Calculator (주택용 저압/고압 3단계 누진제, 하계 7-8월 완화 구간, 기후환경요금 및 부가세 10%).
+- `/ko/overtime-pay-calculator/`: Overtime, Night, and Holiday Premium Pay Calculator (근로기준법 56조: 연장 1.5배, 야간 0.5배 가산, 휴일 1.5배/2.0배).
+- `/ko/military-service-calculator/`: Military Service Duration and Promotion Calculator (육군·해병대 18개월, 해군 20개월, 공군·사회복무 21개월, 계급별 진급일 및 잔여일수).
+- `/ko/gas-bill-calculator/`: Residential City Gas Bill Calculator (KOGAS 발열량 단가, 주택용 난방·취사 단가, 기본료 및 부가세).
+- `/ko/waste-sorter/`: Domestic Waste Sorting Helper (생활폐기물 종량제·음식물·재활용·특수규격봉투 16대 품목 판정).
+- `/ko/wind-chill-calculator/`: Wind Chill and Heat Index Calculator (KMA 공식 JAG/TI 체감온도 모델).
+- `/ko/business-day-checker/`: Korean Statutory Business Day & Holiday Checker (관공서의 공휴일에 관한 규정 및 대체공휴일 판정).
+
+## API
+For programmatic access, see our B2A Gateway at `https://api.oiyo.net`.
+OpenAPI Specification: `https://api.oiyo.net/openapi.json`.

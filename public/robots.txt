@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Host
+Host: https://tools.oiyo.net
+
+# Sitemaps
+Sitemap: https://tools.oiyo.net/sitemap-index.xml

@@ -1,0 +1,86 @@
+---
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  canonicalURL?: URL | string;
+  keywords?: string[];
+}
+
+const {
+  title = "OIYO tools — 일상을 돕는 정밀 웹 유틸리티",
+  description = "광고 공해 없이 빠르고 정확한 웹 도구 모음. 노동 수당, 공과금, 병역, 생활규약 등 필수 계산기를 제공합니다.",
+  image = "https://tools.oiyo.net/icon-512.png",
+  canonicalURL = new URL(Astro.url.pathname, Astro.site ?? "https://tools.oiyo.net"),
+  keywords = ["계산기", "실업급여", "주휴수당", "전기요금 누진제", "군 복무일 계산", "도시가스 요금", "분리배출", "체감온도", "영업일 판정", "OIYO", "tools"],
+} = Astro.props;
+
+const siteTitle = title.includes("OIYO") ? title : `${title} | OIYO tools`;
+const googleAnalyticsId = "G-915L6V38X6";
+const googleAdsenseId = "ca-pub-9541920090543312";
+const naverVerification = "e1043bad51e3be143affbe491f12354fa985fa6a";
+---
+
+<!-- Global Metadata -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+<link rel="icon" href="/favicon.ico" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+<link rel="manifest" href="/manifest.json" />
+<meta name="generator" content={Astro.generator} />
+<meta name="theme-color" content="#65a30d" />
+
+<!-- Verification Tags -->
+<meta name="naver-site-verification" content={naverVerification} />
+
+<!-- Robots & Indexing -->
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+<meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+
+<!-- Canonical URL -->
+<link rel="canonical" href={canonicalURL} />
+
+<!-- Primary Meta Tags -->
+<title>{siteTitle}</title>
+<meta name="title" content={siteTitle} />
+<meta name="description" content={description} />
+<meta name="keywords" content={keywords.join(", ")} />
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website" />
+<meta property="og:url" content={Astro.url} />
+<meta property="og:site_name" content="OIYO tools" />
+<meta property="og:title" content={siteTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={image} />
+<meta property="og:locale" content="ko_KR" />
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content={siteTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={image} />
+
+<!-- Preconnect -->
+<link rel="preconnect" href="https://www.googletagmanager.com" />
+<link rel="preconnect" href="https://pagead2.googlesyndication.com" />
+
+<!-- Google Analytics 4 -->
+<script is:inline define:vars={{ googleAnalyticsId }}>
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = function () { window.dataLayer.push(arguments); };
+  if (!/^(localhost|127\.0\.0\.1|0\.0\.0\.0|\[::1\])$/.test(location.hostname)) {
+    gtag('js', new Date());
+    gtag('config', googleAnalyticsId);
+    var s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=' + googleAnalyticsId;
+    document.head.appendChild(s);
+  }
+</script>
+
+<!-- Google AdSense -->
+<script is:inline async src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${googleAdsenseId}`} crossorigin="anonymous"></script>

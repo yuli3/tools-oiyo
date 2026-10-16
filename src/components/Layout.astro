@@ -1,0 +1,79 @@
+---
+import SEO from "./SEO.astro";
+import "../styles/global.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+  keywords?: string[];
+}
+
+const { title, description, keywords } = Astro.props;
+
+const FAMILY = [
+  { host: "oiyo.net", name: "OIYO tests", label: "심리테스트" },
+  { host: "blog.oiyo.net", name: "OIYO blog", label: "강의·해설" },
+  { host: "wiki.oiyo.net", name: "OIYO wiki", label: "지식창고" },
+  { host: "game.oiyo.net", name: "OIYO game", label: "웹게임" },
+  { host: "news.oiyo.net", name: "OIYO news", label: "AI·증시뉴스" },
+  { host: "api.oiyo.net", name: "OIYO api", label: "B2A 게이트웨이" },
+];
+---
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <SEO title={title} description={description} keywords={keywords} />
+  </head>
+  <body class="min-h-screen flex flex-col bg-background text-foreground selection:bg-primary/20">
+    <!-- Header -->
+    <header class="sticky top-0 z-50 border-b border-border/80 bg-background/80 backdrop-blur-md px-4 py-3 sm:px-8">
+      <div class="mx-auto flex max-w-5xl items-center justify-between">
+        <div class="flex items-center gap-3">
+          <a href="/" class="flex items-center gap-1.5 text-lg font-black tracking-tight text-foreground sm:text-xl">
+            <svg class="w-6 h-6 text-primary" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="100" height="100" rx="22" fill="currentColor"/>
+              <path d="M68 32 C64 24 54 22 46 26 L56 36 L52 40 L42 30 C38 38 40 48 48 52 L30 70 C28 72 28 76 30 78 C32 80 36 80 38 78 L56 60 C60 68 70 70 78 66 C82 58 80 48 72 44 L62 54 L58 50 L68 40 Z" fill="#ffffff"/>
+            </svg>
+            <span>OIYO <span class="text-primary font-bold">tools</span></span>
+          </a>
+        </div>
+        <nav class="flex items-center gap-3 text-xs font-semibold text-muted-foreground">
+          <a href="/" class="hover:text-primary transition-colors">도구 전체</a>
+          <span class="text-border">|</span>
+          <a href="https://wiki.oiyo.net/ko/" class="hover:text-primary transition-colors">wiki</a>
+          <a href="https://blog.oiyo.net/ko/" class="hover:text-primary transition-colors">blog</a>
+          <a href="https://api.oiyo.net/" class="hover:text-primary transition-colors">api</a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Content Slot -->
+    <main class="flex-1">
+      <slot />
+    </main>
+
+    <!-- Footer with Family Links -->
+    <footer class="border-t border-border bg-muted/30 px-4 py-12 text-center text-xs text-muted-foreground sm:px-8">
+      <div class="mx-auto max-w-5xl space-y-6">
+        <div>
+          <p class="font-bold uppercase tracking-wider text-muted-foreground/80 mb-3">OIYO Family Network</p>
+          <div class="flex flex-wrap justify-center gap-x-6 gap-y-2 text-xs">
+            {FAMILY.map((item) => (
+              <a
+                href={`https://${item.host}/?utm_source=tools&utm_medium=footer&utm_campaign=family_nav`}
+                class="hover:text-primary transition-colors"
+              >
+                <span class="font-medium text-foreground">{item.name}</span>
+                <span class="text-muted-foreground ml-1">({item.label})</span>
+              </a>
+            ))}
+          </div>
+        </div>
+        <div class="pt-4 border-t border-border/50 text-[11px] text-muted-foreground/70">
+          <p>© 2026 OIYO. 클라이언트 결정론적 연산 기반의 제로 트래킹 유틸리티 포털입니다.</p>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
