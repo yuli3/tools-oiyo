@@ -1,5 +1,6 @@
 ---
 import Layout from "../../components/Layout.astro";
+import RelatedTools from "../../components/RelatedTools.astro";
 ---
 
 <Layout
@@ -163,6 +164,8 @@ import Layout from "../../components/Layout.astro";
     <div class="mt-8 rounded-lg border border-border bg-muted/30 p-4 text-center text-xs text-muted-foreground">
       근거 법령: 국민연금법·국민건강보험법·고용보험법 및 국세청 근로소득 간이세액표 (2026 기준)
     </div>
+
+    <RelatedTools currentId="net-salary" />
 
     <script>
       let isAnnualMode = false;

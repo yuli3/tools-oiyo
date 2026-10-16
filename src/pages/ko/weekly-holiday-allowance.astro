@@ -1,5 +1,6 @@
 ---
 import Layout from "../../components/Layout.astro";
+import RelatedTools from "../../components/RelatedTools.astro";
 ---
 
 <Layout
@@ -154,6 +155,8 @@ import Layout from "../../components/Layout.astro";
       <div class="mt-8 rounded-lg border border-border bg-muted/30 p-4 text-center text-xs text-muted-foreground">
         근거 법령: 대한민국 근로기준법 제55조 및 시행령 제30조 · OIYO tools
       </div>
+
+      <RelatedTools currentId="weekly-holiday" />
 
     <script>
       let taxMode = "none"; // "none" | "freelance" | "four"

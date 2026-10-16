@@ -1,0 +1,169 @@
+---
+interface ToolItem {
+  id: string;
+  title: string;
+  desc: string;
+  href: string;
+  badge: string;
+  category: string;
+}
+
+interface Props {
+  currentId: string;
+}
+
+const { currentId } = Astro.props;
+
+const ALL_TOOLS: Record<string, ToolItem> = {
+  "net-salary": {
+    id: "net-salary",
+    title: "2026 연봉 & 월급 실수령액 계산기",
+    desc: "4대보험 요율과 간이세액표를 반영한 세후 통장 입금액 산출",
+    href: "/ko/net-salary-calculator/",
+    badge: "2026 최신",
+    category: "급여/세무",
+  },
+  "severance-pay": {
+    id: "severance-pay",
+    title: "법정 퇴직금 계산기",
+    desc: "3개월 평균임금 및 통상임금 보장 기준 법정 퇴직금 산출",
+    href: "/ko/severance-pay-calculator/",
+    badge: "법정 기준",
+    category: "근로/수당",
+  },
+  "annual-leave": {
+    id: "annual-leave",
+    title: "법정 연차일수 & 연차수당 계산기",
+    desc: "근속연수별 법정 연차일수 및 미사용 연차정산 수당 산출",
+    href: "/ko/annual-leave-calculator/",
+    badge: "근로기준법",
+    category: "근로/휴가",
+  },
+  "unemployment-benefits": {
+    id: "unemployment-benefits",
+    title: "실업급여(구직급여) 모의 계산기",
+    desc: "2026년 최저시급 상·하한액 기준 소정급여일수와 총 수급액",
+    href: "/ko/unemployment-benefits-calculator/",
+    badge: "2026 신설",
+    category: "노동/복지",
+  },
+  "weekly-holiday": {
+    id: "weekly-holiday",
+    title: "주휴수당 & 알바 시급 계산기",
+    desc: "주 15시간 이상 근무 시 법정보장 주휴수당과 실질 시급",
+    href: "/ko/weekly-holiday-allowance/",
+    badge: "2026 최저임금",
+    category: "근로/급여",
+  },
+  "overtime-pay": {
+    id: "overtime-pay",
+    title: "연장·야간·휴일수당 계산기",
+    desc: "근로기준법 제56조 1.5배~2.0배 법정 가산수당 정밀 산출",
+    href: "/ko/overtime-pay-calculator/",
+    badge: "가산수당",
+    category: "근로/수당",
+  },
+  "electricity-bill": {
+    id: "electricity-bill",
+    title: "주택용 전기요금 누진제 계산기",
+    desc: "한전 공식 요율 기반 3단계 누진제 및 계절별 전력량요금",
+    href: "/ko/electricity-bill-calculator/",
+    badge: "한전 공식",
+    category: "생활/공공요금",
+  },
+  "gas-bill": {
+    id: "gas-bill",
+    title: "도시가스 요금 계산기 (난방·취사)",
+    desc: "열량단가 및 기본료, 부가세 10% 반영 예상 청구액 산출",
+    href: "/ko/gas-bill-calculator/",
+    badge: "가스공사 공식",
+    category: "생활/공공요금",
+  },
+  "waste-sorter": {
+    id: "waste-sorter",
+    title: "생활 폐기물 분리배출 판별기",
+    desc: "16대 생활 품목의 종량제·음식물·재활용 분류 기준 실시간 검색",
+    href: "/ko/waste-sorter/",
+    badge: "인기",
+    category: "생활 규약",
+  },
+  "wind-chill": {
+    id: "wind-chill",
+    title: "체감온도 및 온열지수 계산기",
+    desc: "기상청 JAG/TI 모델 및 여름철 습구 온열지수 정밀 연산",
+    href: "/ko/wind-chill-calculator/",
+    badge: "기상청 공식",
+    category: "기상 환경",
+  },
+  "military-service": {
+    id: "military-service",
+    title: "군 복무일 · 전역일 및 진급일 계산기",
+    desc: "군별 복무기간 기준 전역일, 남은 일수, 복무율(%) 산출",
+    href: "/ko/military-service-calculator/",
+    badge: "병역법",
+    category: "생활/병무",
+  },
+  "business-day": {
+    id: "business-day",
+    title: "대한민국 법정 영업일·공휴일 조회기",
+    desc: "관공서 공휴일 규정 및 대체공휴일 기준 영업일 여부 판별",
+    href: "/ko/business-day-checker/",
+    badge: "B2A 지원",
+    category: "캘린더/행정",
+  },
+};
+
+const RECOMMENDATIONS: Record<string, string[]> = {
+  "net-salary": ["severance-pay", "annual-leave", "unemployment-benefits"],
+  "severance-pay": ["net-salary", "annual-leave", "unemployment-benefits"],
+  "annual-leave": ["net-salary", "overtime-pay", "severance-pay"],
+  "unemployment-benefits": ["net-salary", "severance-pay", "weekly-holiday"],
+  "weekly-holiday": ["overtime-pay", "net-salary", "annual-leave"],
+  "overtime-pay": ["weekly-holiday", "annual-leave", "net-salary"],
+  "electricity-bill": ["gas-bill", "waste-sorter", "wind-chill"],
+  "gas-bill": ["electricity-bill", "wind-chill", "waste-sorter"],
+  "waste-sorter": ["electricity-bill", "gas-bill", "business-day"],
+  "wind-chill": ["gas-bill", "electricity-bill", "business-day"],
+  "military-service": ["net-salary", "business-day", "unemployment-benefits"],
+  "business-day": ["annual-leave", "military-service", "waste-sorter"],
+};
+
+const targetIds = RECOMMENDATIONS[currentId] ?? ["net-salary", "severance-pay", "business-day"];
+const items = targetIds.map((id) => ALL_TOOLS[id]).filter(Boolean);
+---
+
+<div class="mt-8 border-t border-border pt-6">
+  <div class="flex items-center justify-between mb-4">
+    <h3 class="text-sm font-bold text-foreground">함께 많이 찾는 도구</h3>
+    <a href="/" class="text-xs font-semibold text-primary hover:underline">전체 보기 →</a>
+  </div>
+  <div class="grid gap-3 sm:grid-cols-3">
+    {items.map((item) => (
+      <a
+        href={item.href}
+        class="group flex flex-col justify-between rounded-xl border border-border bg-card p-4 transition hover:border-primary/60 hover:shadow-xs"
+      >
+        <div>
+          <div class="flex items-center justify-between gap-1 mb-2">
+            <span class="rounded bg-muted px-1.5 py-0.5 text-[11px] font-semibold text-muted-foreground">
+              {item.category}
+            </span>
+            <span class="rounded bg-primary/10 px-1.5 py-0.5 text-[11px] font-bold text-primary">
+              {item.badge}
+            </span>
+          </div>
+          <h4 class="text-xs font-bold text-foreground group-hover:text-primary transition-colors">
+            {item.title}
+          </h4>
+          <p class="mt-1 text-[11px] text-muted-foreground leading-relaxed line-clamp-2">
+            {item.desc}
+          </p>
+        </div>
+        <div class="mt-3 flex items-center gap-1 text-[11px] font-bold text-primary">
+          <span>계산하기</span>
+          <span aria-hidden="true" class="transition-transform group-hover:translate-x-0.5">→</span>
+        </div>
+      </a>
+    ))}
+  </div>
+</div>

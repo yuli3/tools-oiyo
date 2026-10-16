@@ -1,5 +1,6 @@
 ---
 import Layout from "../../components/Layout.astro";
+import RelatedTools from "../../components/RelatedTools.astro";
 ---
 
 <Layout
@@ -145,6 +146,8 @@ import Layout from "../../components/Layout.astro";
       <div class="mt-8 rounded-lg border border-border bg-muted/30 p-4 text-center text-xs text-muted-foreground">
         근거 법령: 대한민국 고용보험법 제40조~제50조 (2026년 최저임금 기준) · OIYO tools
       </div>
+
+      <RelatedTools currentId="unemployment-benefits" />
 
     <script>
       let currentAge = "under"; // "under" | "over"

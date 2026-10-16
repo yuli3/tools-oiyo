@@ -1,5 +1,6 @@
 ---
 import Layout from "../../components/Layout.astro";
+import RelatedTools from "../../components/RelatedTools.astro";
 ---
 
 <Layout
@@ -176,6 +177,8 @@ import Layout from "../../components/Layout.astro";
     <div class="mt-8 rounded-lg border border-border bg-muted/30 p-4 text-center text-xs text-muted-foreground">
       근거 법령: 근로자퇴직급여 보장법 제8조 및 근로기준법 제2조 제2항 (산출 공식: 1일 평균임금 × 30일 × 재직일수 ÷ 365)
     </div>
+
+    <RelatedTools currentId="severance-pay" />
 
     <script>
       const startDateInput = document.getElementById("start-date") as HTMLInputElement;

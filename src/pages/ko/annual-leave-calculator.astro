@@ -1,5 +1,6 @@
 ---
 import Layout from "../../components/Layout.astro";
+import RelatedTools from "../../components/RelatedTools.astro";
 ---
 
 <Layout
@@ -131,6 +132,8 @@ import Layout from "../../components/Layout.astro";
     <div class="mt-8 rounded-lg border border-border bg-muted/30 p-4 text-center text-xs text-muted-foreground">
       근거 법령: 근로기준법 제60조 (연차유급휴가) 및 제61조 (연차유급휴가의 사용 촉진). 1년 이상 근무 시 15일 기본 부여, 3년차부터 매 2년마다 1일씩 가산되어 최대 25일까지 발생합니다.
     </div>
+
+    <RelatedTools currentId="annual-leave" />
 
     <script>
       const yearsInput = document.getElementById("years-service") as HTMLInputElement;
