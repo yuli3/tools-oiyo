@@ -1,11 +1,16 @@
 ---
 import Layout from "../../components/Layout.astro";
 import RelatedTools from "../../components/RelatedTools.astro";
+import { KR_RATES_2026 } from "../../lib/kr-rates-2026.mjs";
+
+// 2026-10-17 (FAANG audit S-1): 최저임금은 SSOT에서만 읽어요(고용노동부고시 제2025-47호, 10,320원).
+const MIN_WAGE = KR_RATES_2026.minimumWage;
+const MIN_WAGE_TEXT = MIN_WAGE.toLocaleString("ko-KR");
 ---
 
 <Layout
   title="법정 퇴직금 계산기"
-  description="근로자퇴직급여 보장법 제8조 및 근로기준법 제2조에 따른 3개월 평균임금 및 통상임금을 대조하여 법정 퇴직금을 실시간 정밀 모의계산합니다."
+  description="근로자퇴직급여 보장법 제8조 및 근로기준법 제2조에 따른 3개월 평균임금 및 통상임금을 대조하여 법정 퇴직금을 실시간 정밀 모의계산해요."
 >
   <div class="mx-auto w-full max-w-2xl px-4 py-8 sm:px-8">
     <div class="mb-6">
@@ -17,7 +22,7 @@ import RelatedTools from "../../components/RelatedTools.astro";
         법정 퇴직금 계산기
       </h1>
       <p class="mt-2 text-xs text-muted-foreground sm:text-sm leading-relaxed">
-        입사일과 퇴사일, 최근 3개월 급여 및 상여금을 입력하여 법정 퇴직금 예상 수령액을 즉시 산출합니다. (평균임금이 통상임금에 미달하는 경우 통상임금 자동 보장)
+        입사일과 퇴사일, 최근 3개월 급여 및 상여금을 입력하여 법정 퇴직금 예상 수령액을 즉시 산출해요. (평균임금이 통상임금에 미달하는 경우 통상임금 자동 보장)
       </p>
     </div>
 
@@ -106,14 +111,14 @@ import RelatedTools from "../../components/RelatedTools.astro";
               <input
                 type="number"
                 id="hourly-wage"
-                value="10320"
+                value={MIN_WAGE}
                 step="100"
-                min="10320"
+                min={MIN_WAGE}
                 class="w-full rounded-lg border border-input bg-background px-4 py-3 text-sm font-mono text-foreground focus-visible:outline-2 focus-visible:outline-ring"
               />
               <span class="absolute right-4 top-3.5 text-xs text-muted-foreground">원</span>
             </div>
-            <p class="mt-1 text-[11px] text-muted-foreground">2026 최저시급 10,320원</p>
+            <p class="mt-1 text-[11px] text-muted-foreground">2026 최저시급 {MIN_WAGE_TEXT}원</p>
           </div>
 
           <div>
@@ -181,6 +186,8 @@ import RelatedTools from "../../components/RelatedTools.astro";
     <RelatedTools currentId="severance-pay" />
 
     <script>
+      import { KR_RATES_2026 } from "../../lib/kr-rates-2026.mjs";
+
       const startDateInput = document.getElementById("start-date") as HTMLInputElement;
       const endDateInput = document.getElementById("end-date") as HTMLInputElement;
       const salary3mInput = document.getElementById("salary-3m") as HTMLInputElement;
@@ -219,7 +226,7 @@ import RelatedTools from "../../components/RelatedTools.astro";
         const threeMonthDays = 92;
         const dailyAverageWage = totalThreeMonthWage > 0 ? Math.floor(totalThreeMonthWage / threeMonthDays) : 0;
 
-        const wage = Math.max(10320, parseFloat(hourlyWageInput.value) || 10320);
+        const wage = Math.max(KR_RATES_2026.minimumWage, parseFloat(hourlyWageInput.value) || KR_RATES_2026.minimumWage);
         const hours = Math.max(1, Math.min(8, parseFloat(dailyHoursSelect.value) || 8));
         const dailyOrdinaryWage = wage * hours;
 

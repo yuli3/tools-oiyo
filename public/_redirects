@@ -1,0 +1,9 @@
+# Cloudflare Pages redirects — tools.oiyo.net
+# 2026-10-17 (audit A-8): one canonical unemployment calculator. The 10-17 duplicate
+# (unemployment-benefit-calculator, singular) is merged into the 10-16 URL.
+/ko/unemployment-benefit-calculator /ko/unemployment-benefits-calculator/ 301
+/ko/unemployment-benefit-calculator/ /ko/unemployment-benefits-calculator/ 301
+# 2026-10-17 (content audit §2 "tools SEO 92"): /ko/ has no page; it was served by the SPA
+# fallback with the home canonical. Send it to the real home.
+/ko /  301
+/ko/ / 301

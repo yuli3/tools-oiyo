@@ -1,19 +1,26 @@
 ---
 import "../styles/global.css";
+import { KR_RATES_2026 } from "../lib/kr-rates-2026.mjs";
+
+// 2026-10-17 (FAANG audit S-1~S-4): 카드 설명의 법정 수치는 SSOT에서 읽어요.
+const R = KR_RATES_2026;
+const won = (n: number) => n.toLocaleString("ko-KR");
+// 부동소수 표시 오차(0.009*100=0.8999…)를 막으려고 소수 셋째 자리에서 정리해요.
+const pct = (r: number) => Number((r * 100).toFixed(3));
 
 const tools = [
   {
     id: "net-salary",
     title: "2026 연봉 & 월급 실수령액 계산기",
-    desc: "2026년 4대보험 요율(국민·건강·요양·고용)과 근로소득세 간이세액표를 반영하여 세전 급여 대비 실제 통장 입금액을 즉시 계산합니다.",
+    desc: `2026년 4대보험 요율(국민연금 ${pct(R.pension.employee)}%·건강 ${pct(R.health.employee)}%·고용 ${pct(R.employment.employee)}%)로 세전 급여에서 공제액을 빼고 예상 입금액을 계산해요. 소득세는 추정치예요.`,
     href: "/ko/net-salary-calculator/",
     category: "급여/세무",
-    badge: "2026 최신",
+    badge: "2026 요율",
   },
   {
     id: "severance-pay",
     title: "법정 퇴직금 계산기",
-    desc: "근로자퇴직급여 보장법 제8조 기준 3개월 평균임금과 통상임금을 상호 대조하여 퇴직금 예상액을 정밀 산출합니다.",
+    desc: "근로자퇴직급여 보장법 제8조 기준 3개월 평균임금과 통상임금을 상호 대조하여 퇴직금 예상액을 정밀 산출해요.",
     href: "/ko/severance-pay-calculator/",
     category: "근로/수당",
     badge: "법정 기준",
@@ -21,7 +28,7 @@ const tools = [
   {
     id: "annual-leave",
     title: "법정 연차일수 & 연차수당 계산기",
-    desc: "근로기준법 제60조 근속연수별 법정 연차일수 부여 기준과 미사용 연차유급휴가 정산 수당을 통상임금으로 연산합니다.",
+    desc: "근로기준법 제60조 근속연수별 법정 연차일수 부여 기준과 미사용 연차유급휴가 정산 수당을 통상임금으로 연산해요.",
     href: "/ko/annual-leave-calculator/",
     category: "근로/휴가",
     badge: "근로기준법 60조",
@@ -29,7 +36,7 @@ const tools = [
   {
     id: "unemployment-benefits",
     title: "실업급여(구직급여) 모의 계산기",
-    desc: "2026년 최저시급(10,320원) 하한액(66,048원) 및 상한액(68,100원) 기준 연령·가입기간별 소정급여일수와 총 수급액을 계산합니다.",
+    desc: `2026년 구직급여 하한액(1일 ${won(R.unemployment.dailyFloor8h)}원)·상한액(1일 ${won(R.unemployment.dailyCap)}원)과 나이·가입기간별 소정급여일수(120~270일)로 총 수급액을 계산해요.`,
     href: "/ko/unemployment-benefits-calculator/",
     category: "노동/복지",
     badge: "2026 신설",
@@ -37,7 +44,7 @@ const tools = [
   {
     id: "weekly-holiday",
     title: "주휴수당 & 알바 시급 계산기",
-    desc: "주 15시간 이상 근무 시 법정보장 주휴수당과 주휴 포함 실질 시급, 4대보험/3.3% 공제 선택에 따른 월 실수령액을 즉시 산출합니다.",
+    desc: "주 15시간 이상 근무 시 법정보장 주휴수당과 주휴 포함 실질 시급, 4대보험/3.3% 공제 선택에 따른 월 실수령액을 즉시 산출해요.",
     href: "/ko/weekly-holiday-allowance/",
     category: "근로/급여",
     badge: "2026 최저임금",
@@ -45,7 +52,7 @@ const tools = [
   {
     id: "electricity-bill",
     title: "주택용 전기요금 누진제 계산기",
-    desc: "한전 전기공급약관 공식 요율 기반 저압·고압 3단계 누진 전력량요금, 하계(7~8월) 완화 구간, 기후환경요금 및 부가세를 정밀 연산합니다.",
+    desc: "한전 전기공급약관 공식 요율 기반 저압·고압 3단계 누진 전력량요금, 하계(7~8월) 완화 구간, 기후환경요금 및 부가세를 정밀 연산해요.",
     href: "/ko/electricity-bill-calculator/",
     category: "생활/공공요금",
     badge: "한전 공식",
@@ -53,7 +60,7 @@ const tools = [
   {
     id: "overtime-pay",
     title: "연장·야간·휴일수당 가산수당 계산기",
-    desc: "근로기준법 제56조 법정 가산율(연장 1.5배, 야간 +0.5배, 휴일 1.5~2.0배) 기반 주간/월간 수당을 즉시 산출합니다.",
+    desc: "근로기준법 제56조 법정 가산율(연장 1.5배, 야간 +0.5배, 휴일 1.5~2.0배) 기반 주간/월간 수당을 즉시 산출해요.",
     href: "/ko/overtime-pay-calculator/",
     category: "근로/수당",
     badge: "근로기준법 56조",
@@ -61,7 +68,7 @@ const tools = [
   {
     id: "military-service",
     title: "군 복무일 · 전역일 및 진급일 계산기",
-    desc: "육군/해병대(18개월), 해군(20개월), 공군/사회복무(21개월) 복무기간 기준 전역일, 남은 일수, 복무율(%), 계급별 진급일을 계산합니다.",
+    desc: "육군/해병대(18개월), 해군(20개월), 공군/사회복무(21개월) 복무기간 기준 전역일, 남은 일수, 복무율(%), 계급별 진급일을 계산해요.",
     href: "/ko/military-service-calculator/",
     category: "생활/병무",
     badge: "병역법 기준",
@@ -69,7 +76,7 @@ const tools = [
   {
     id: "gas-bill",
     title: "도시가스 요금 계산기 (난방비·취사)",
-    desc: "계량기 사용량(m³)을 평균발열량(42.8 MJ/m³)으로 변환하여 주택용 난방·취사 단가, 기본료, 부가세 10%를 반영한 예상 청구액을 산출합니다.",
+    desc: "계량기 사용량(m³)을 평균발열량(42.8 MJ/m³)으로 변환하여 주택용 난방·취사 단가, 기본료, 부가세 10%를 반영한 예상 청구액을 산출해요.",
     href: "/ko/gas-bill-calculator/",
     category: "생활/공공요금",
     badge: "가스공사 공식",
@@ -77,7 +84,7 @@ const tools = [
   {
     id: "waste-sorter",
     title: "생활 폐기물 분리배출 판별기",
-    desc: "헷갈리는 16대 생활 품목의 종량제·음식물·불연성마대·재활용 분류 기준 및 폐기물관리법 근거를 실시간 검색합니다.",
+    desc: "헷갈리는 16대 생활 품목의 종량제·음식물·불연성마대·재활용 분류 기준 및 폐기물관리법 근거를 실시간 검색해요.",
     href: "/ko/waste-sorter/",
     category: "생활 규약",
     badge: "인기",
@@ -85,7 +92,7 @@ const tools = [
   {
     id: "wind-chill",
     title: "체감온도 및 온열지수 계산기",
-    desc: "기상청 공식 JAG/TI 대류 열손실 모델 및 여름철 습구 온열지수 수식으로 실제 피부 체감온도를 정밀 계산합니다.",
+    desc: "기상청 공식 JAG/TI 대류 열손실 모델 및 여름철 습구 온열지수 수식으로 실제 피부 체감온도를 정밀 계산해요.",
     href: "/ko/wind-chill-calculator/",
     category: "기상 환경",
     badge: "기상청 공식",
@@ -93,7 +100,7 @@ const tools = [
   {
     id: "business-day",
     title: "대한민국 법정 영업일·공휴일 조회기",
-    desc: "관공서 공휴일에 관한 규정 및 대체공휴일 픽스처를 기반으로 특정 날짜의 영업일 여부와 휴일 사유를 판별합니다.",
+    desc: "관공서 공휴일에 관한 규정 및 대체공휴일 픽스처를 기반으로 특정 날짜의 영업일 여부와 휴일 사유를 판별해요.",
     href: "/ko/business-day-checker/",
     category: "캘린더/행정",
     badge: "B2A 연동",
@@ -101,7 +108,7 @@ const tools = [
   {
     id: "pyeong-sqm",
     title: "부동산 평수 ↔ ㎡ 면적 변환기",
-    desc: "계량에 관한 법률 기준 1평(3.305785㎡) 및 1㎡(0.3025평) 양방향 정밀 환산 및 아파트 전용 59㎡·84㎡ 조견표를 제공합니다.",
+    desc: "계량에 관한 법률 기준 1평(3.305785㎡) 및 1㎡(0.3025평) 양방향 정밀 환산 및 아파트 전용 59㎡·84㎡ 조견표를 제공해요.",
     href: "/ko/pyeong-sqm-converter/",
     category: "생활/부동산",
     badge: "부동산 필수",
@@ -109,7 +116,7 @@ const tools = [
   {
     id: "cagr",
     title: "CAGR 연평균 복합 성장률 계산기",
-    desc: "투자 원금, 최종금액, 투자 기간을 바탕으로 연평균 복리 수익률(CAGR), 누적 수익률, 원금 2배 달성 소요 기간을 계산합니다.",
+    desc: "투자 원금, 최종금액, 투자 기간을 바탕으로 연평균 복리 수익률(CAGR), 누적 수익률, 원금 2배 달성 소요 기간을 계산해요.",
     href: "/ko/cagr-calculator/",
     category: "금융/투자",
     badge: "투자/재테크",
@@ -117,7 +124,7 @@ const tools = [
   {
     id: "dday",
     title: "D-day 디데이 & 기념일 · 수습기간 계산기",
-    desc: "목표일 D-day 및 경과일 카운트다운, 커플 100일·1주년 기념일 및 직장인 수습 3개월 만료일을 실시간 정확히 계산합니다.",
+    desc: "목표일 D-day 및 경과일 카운트다운, 커플 100일·1주년 기념일 및 직장인 수습 3개월 만료일을 실시간 정확히 계산해요.",
     href: "/ko/dday-calculator/",
     category: "생활/일정",
     badge: "실시간",
@@ -125,7 +132,7 @@ const tools = [
   {
     id: "loan-repayment",
     title: "대출 이자 및 월별 상환액 계산기",
-    desc: "원리금균등, 원금균등, 만기일시상환 방식에 따른 총 이자, 첫 회차 납입액 및 원금·이자 변동 스케줄을 정밀 산출합니다.",
+    desc: "원리금균등, 원금균등, 만기일시상환 방식에 따른 총 이자, 첫 회차 납입액 및 원금·이자 변동 스케줄을 정밀 산출해요.",
     href: "/ko/loan-repayment-calculator/",
     category: "금융/대출",
     badge: "금융 공식",
@@ -133,15 +140,15 @@ const tools = [
   {
     id: "acquisition-tax",
     title: "부동산 취득세 & 양도세 간편 계산기",
-    desc: "주택 취득 시 취득세·지방교육세·생애최초 감면액과 매도 시 1세대 1주택 비과세 및 장특공제 양도소득세를 정밀 계산합니다.",
+    desc: "주택 취득 시 취득세·지방교육세·생애최초 감면액과 매도 시 1세대 1주택 비과세 및 장특공제 양도소득세를 정밀 계산해요.",
     href: "/ko/acquisition-tax-calculator/",
     category: "부동산/세무",
-    badge: "2026 최신 세법",
+    badge: "취득·양도세",
   },
   {
     id: "freelancer-tax",
     title: "프리랜서 3.3% 세금 & 5월 환급 계산기",
-    desc: "사업소득 3.3% 원천징수 실수령액 역산과 5월 종합소득세 단순경비율 적용 시 예상 국세환급금을 정밀 시뮬레이션합니다.",
+    desc: "사업소득 3.3% 원천징수 실수령액 역산과 5월 종합소득세 단순경비율 적용 시 예상 국세환급금을 정밀 시뮬레이션해요.",
     href: "/ko/freelancer-tax-calculator/",
     category: "세무/소득",
     badge: "국세청 기준",
@@ -149,7 +156,7 @@ const tools = [
   {
     id: "youth-savings",
     title: "청년도약계좌 & 청년주택드림 만기 계산기",
-    desc: "월 납입액과 소득 구간별 정부 기여금 매칭(최대 2.4만) 및 15.4% 비과세 절세액, 5년 5천만원 목돈 형성 수령액을 계산합니다.",
+    desc: "월 납입액과 소득 구간별 정부 기여금 매칭(최대 2.4만) 및 15.4% 비과세 절세액, 5년 5천만원 목돈 형성 수령액을 계산해요.",
     href: "/ko/youth-savings-calculator/",
     category: "금융/청년정책",
     badge: "2026 청년금융",
@@ -157,23 +164,15 @@ const tools = [
   {
     id: "car-tax",
     title: "자동차 취득세 & 자동차세 연납 계산기",
-    desc: "차량가액 및 차종별 취득세(전기차 140만 감면)와 배기량(cc)·연식별 자동차세, 1월 연납 4.6% 할인 절세액을 산출합니다.",
+    desc: "차량가액 및 차종별 취득세(전기차 140만 감면)와 배기량(cc)·연식별 자동차세, 1월 연납 4.6% 할인 절세액을 산출해요.",
     href: "/ko/car-tax-calculator/",
     category: "세무/자동차",
     badge: "연납할인 반영",
   },
   {
-    id: "unemployment-benefit",
-    title: "실업급여(구직급여) 모의계산기",
-    desc: "퇴직 전 3개월 평균임금과 나이, 고용보험 가입기간 기준 1일 구직급여(상한 6.6만·하한 6.3만) 및 소정급여일수(120~270일) 총 실수령액을 산출합니다.",
-    href: "/ko/unemployment-benefit-calculator/",
-    category: "노동/고용보험",
-    badge: "2026 최신개정",
-  },
-  {
     id: "parental-leave",
     title: "육아휴직 급여 & 6+6 부모육아휴직 계산기",
-    desc: "통상임금 기준 일반 육아휴직 매월 급여(사후지급금 25% 포함) 및 6+6 부모 특례 시 첫 6개월 최대 월 450만원 단계별 혜택을 비교합니다.",
+    desc: "2025년 개편 기준(사후지급금 없이 매월 전액) 일반 육아휴직 급여와 6+6 부모 특례(1·2개월 차 250만 원~6개월 차 450만 원) 월별 수령액을 비교해요.",
     href: "/ko/parental-leave-calculator/",
     category: "복지/육아휴직",
     badge: "부모특례 450만",
@@ -181,7 +180,7 @@ const tools = [
   {
     id: "brokerage-fee",
     title: "부동산 중개보수 (복비) 계산기",
-    desc: "2026년 공인중개사법 시행규칙 기준 매매·임대차 법정 상한요율(0.3%~0.9%)과 한도액, 부가세 10%를 자동 연산합니다.",
+    desc: "2026년 공인중개사법 시행규칙 기준 매매·임대차 법정 상한요율(0.3%~0.9%)과 한도액, 부가세 10%를 자동 연산해요.",
     href: "/ko/brokerage-fee-calculator/",
     category: "부동산/거래",
     badge: "법정 상한요율",
@@ -189,7 +188,7 @@ const tools = [
   {
     id: "property-tax",
     title: "부동산 보유세 (재산세·종부세) 계산기",
-    desc: "1세대 1주택자 12억 공제(고령·장기보유 최대 80% 공제) 및 다주택자 9억 공제, 공정시장가액비율 60% 반영 보유세를 산출합니다.",
+    desc: "1세대 1주택자 12억 공제(고령·장기보유 최대 80% 공제) 및 다주택자 9억 공제, 공정시장가액비율 60% 반영 보유세를 산출해요.",
     href: "/ko/property-tax-calculator/",
     category: "부동산/세무",
     badge: "2026 개정세법",
@@ -197,7 +196,7 @@ const tools = [
   {
     id: "health-insurance",
     title: "국민건강보험료 지역가입자 & 피부양자 판정기",
-    desc: "소득정률제 7.19% 및 재산세 과표 5,000만원 기본공제 반영 건보료와 금융소득·사업소득 피부양자 자격을 판정합니다.",
+    desc: `2026년 건강보험료율 ${pct(R.health.total)}%·재산 점수당 ${R.regional.pointValue}원·재산 기본공제 1억 원으로 지역 건보료를 계산하고 피부양자 자격을 확인해요.`,
     href: "/ko/health-insurance-calculator/",
     category: "급여/세무",
     badge: "2026 개편",
@@ -205,7 +204,7 @@ const tools = [
   {
     id: "hug-guarantee",
     title: "HUG 전세보증금 반환보증 126% 진단기",
-    desc: "공시가격 140% × 담보인정 90% = 126% 룰 기준 전세반환보증보험 가입 가능 여부와 아파트·빌라별 보증료를 계산합니다.",
+    desc: "공시가격 140% × 담보인정 90% = 126% 룰 기준 전세반환보증보험 가입 가능 여부와 아파트·빌라별 보증료를 계산해요.",
     href: "/ko/hug-guarantee-calculator/",
     category: "부동산/금융",
     badge: "126% 룰",
@@ -213,7 +212,7 @@ const tools = [
   {
     id: "capital-gains-tax",
     title: "부동산 양도소득세 1주택 비과세 계산기",
-    desc: "1세대 1주택 12억 원 비과세 및 고가주택 안분, 보유·거주기간별 장기보유특별공제(최대 80%)를 반영한 정밀 세액 계산기입니다.",
+    desc: "1세대 1주택 12억 원 비과세 및 고가주택 안분, 보유·거주기간별 장기보유특별공제(최대 80%)를 반영한 정밀 세액 계산기예요.",
     href: "/ko/capital-gains-tax-calculator/",
     category: "부동산/세무",
     badge: "2026 세법",
@@ -221,7 +220,7 @@ const tools = [
   {
     id: "vat-comparison",
     title: "일반과세 vs 간이과세 부가세 비교 계산기",
-    desc: "연간 매출·매입액과 업종별 부가가치율(15~40%) 기준 일반과세자 매입세액공제/환급과 간이과세자의 실납부액 유불리를 비교합니다.",
+    desc: "연간 매출·매입액과 업종별 부가가치율(15~40%) 기준 일반과세자 매입세액공제/환급과 간이과세자의 실납부액 유불리를 비교해요.",
     href: "/ko/vat-comparison-calculator/",
     category: "세무/사업",
     badge: "사업자 필수",
@@ -229,7 +228,7 @@ const tools = [
   {
     id: "temporary-two-house",
     title: "일시적 2주택 비과세 처분기한 시뮬레이터",
-    desc: "신규주택 1년 경과 취득 요건, 전국 통일 3년 처분기한 마감일 D-Day 및 비과세 충족 여부를 정밀 판정합니다.",
+    desc: "신규주택 1년 경과 취득 요건, 전국 통일 3년 처분기한 마감일 D-Day 및 비과세 충족 여부를 정밀 판정해요.",
     href: "/ko/temporary-two-house-tax-calculator/",
     category: "부동산/세무",
     badge: "1-2-3 법칙",
@@ -237,7 +236,7 @@ const tools = [
   {
     id: "sole-proprietor-vs-corp",
     title: "개인사업자 vs 법인전환 세금 비교 계산기",
-    desc: "순이익 대비 개인 종합소득세·지역건보료와 법인세·급여소득세·직장보험료를 비교하여 법인전환 손익분기점을 산출합니다.",
+    desc: "순이익 대비 개인 종합소득세·지역건보료와 법인세·급여소득세·직장보험료를 비교하여 법인전환 손익분기점을 산출해요.",
     href: "/ko/sole-proprietor-vs-corp-calculator/",
     category: "세무/사업",
     badge: "절세 전략",
@@ -280,20 +279,21 @@ import Layout from "../components/Layout.astro";
 
 <Layout
   title="OIYO tools — 일상을 돕는 정밀 웹 유틸리티 허브"
-  description="광고 공해 없이 빠르고 정확한 웹 도구 모음. 노동 수당, 주택용 전기·도시가스 요금, 부동산 평수 변환, CAGR 복리 계산기 등을 제공합니다."
+  description="입력값을 브라우저에서 바로 계산하는 생활 계산기 모음이에요. 2026년 요율 기준 급여·노동 수당, 주택용 전기·도시가스 요금, 부동산 평수 변환, CAGR 복리 계산기 등을 제공해요."
+  canonicalURL="https://tools.oiyo.net/"
 >
   <div class="mx-auto w-full max-w-5xl px-4 py-12 sm:px-8">
     <div class="mb-10 text-center sm:text-left">
       <div class="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-bold text-primary mb-3">
         <span>⚡ 100% 클라이언트 연산</span>
         <span>•</span>
-        <span>데이터 수집 없음</span>
+        <span>입력값 서버 전송 없음</span>
       </div>
       <h1 class="text-3xl font-black tracking-tight text-foreground sm:text-4xl">
         더 정확하고 빠른 웹 유틸리티 도구 허브
       </h1>
       <p class="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base">
-        불필요한 스크롤과 로딩 없이 필요한 계산과 분류 결과를 즉시 제공합니다.
+        불필요한 스크롤과 로딩 없이 필요한 계산과 분류 결과를 바로 보여 드려요. 방문 통계(Google Analytics)와 광고(AdSense)는 사용해요.
       </p>
     </div>
 

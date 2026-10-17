@@ -1,24 +1,26 @@
 ---
 import Layout from "../../components/Layout.astro";
 import RelatedTools from "../../components/RelatedTools.astro";
+import RatesAsOf from "../../components/RatesAsOf.astro";
 ---
 
 <Layout
   title="2026 연봉 & 월급 실수령액 계산기"
-  description="2026년 최신 4대보험 요율(국민연금 4.5%, 건강보험 3.595%, 장기요양 13.14%, 고용보험 0.9%) 및 근로소득세 간이세액표를 반영한 정밀 실수령액 모의계산기입니다."
+  description="2026년 법정 4대보험 요율(국민연금 4.75%, 건강보험 3.595%, 장기요양 건보료의 13.14%, 고용보험 0.9%)로 월급·연봉 실수령액을 계산해요. 근로소득세는 연간 환산 추정치예요."
 >
   <div class="mx-auto w-full max-w-2xl px-4 py-8 sm:px-8">
     <div class="mb-6">
       <a href="/" class="text-xs font-semibold text-muted-foreground hover:text-primary transition-colors mb-3 inline-block">← 전체 도구 목록</a>
       <div class="inline-flex items-center gap-1.5 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-semibold text-primary mb-3">
-        2026년 4대보험 요율 및 간이세액표 적용
+        2026년 4대보험 요율 적용 · 소득세는 추정
       </div>
       <h1 class="text-2xl font-black tracking-tight text-foreground sm:text-3xl">
         2026 연봉 & 월급 실수령액 계산기
       </h1>
       <p class="mt-2 text-xs text-muted-foreground sm:text-sm leading-relaxed">
-        월급 또는 연봉을 입력하면 국민연금, 건강보험, 요양보험, 고용보험 및 근로소득세·지방소득세를 공제한 실제 통장 입금액을 즉시 계산합니다.
+        월급이나 연봉을 넣으면 국민연금·건강보험·장기요양보험·고용보험과 근로소득세·지방소득세(추정)를 뺀 예상 입금액을 바로 계산해요.
       </p>
+      <RatesAsOf note="국민연금 기준소득월액 상·하한은 2026년 7월분부터 41만~659만 원이에요(1~6월분은 40만~637만 원)." sources="최저임금 고시 제2025-47호, 국민건강보험법 시행령 제44조, 보건복지부고시 제2026-31호" />
     </div>
 
     <div class="rounded-xl border border-border bg-card p-6 shadow-xs space-y-6">
@@ -120,7 +122,7 @@ import RelatedTools from "../../components/RelatedTools.astro";
 
           <div class="pt-2 border-t border-border/40 space-y-1.5 text-muted-foreground">
             <div class="flex justify-between">
-              <span>국민연금 (4.5%)</span>
+              <span>국민연금 (4.75%)</span>
               <span id="res-pension" class="font-mono text-foreground">0원</span>
             </div>
             <div class="flex justify-between">
@@ -128,7 +130,7 @@ import RelatedTools from "../../components/RelatedTools.astro";
               <span id="res-health" class="font-mono text-foreground">0원</span>
             </div>
             <div class="flex justify-between">
-              <span>장기요양보험 (건보의 13.14%)</span>
+              <span>장기요양보험 (건보료의 13.14%)</span>
               <span id="res-care" class="font-mono text-foreground">0원</span>
             </div>
             <div class="flex justify-between">
@@ -136,11 +138,11 @@ import RelatedTools from "../../components/RelatedTools.astro";
               <span id="res-emp" class="font-mono text-foreground">0원</span>
             </div>
             <div class="flex justify-between">
-              <span>근로소득세 (간이세액)</span>
+              <span>근로소득세 (추정)</span>
               <span id="res-tax" class="font-mono text-foreground">0원</span>
             </div>
             <div class="flex justify-between">
-              <span>지방소득세 (소득세의 10%)</span>
+              <span>지방소득세 (소득세의 10%, 추정)</span>
               <span id="res-local-tax" class="font-mono text-foreground">0원</span>
             </div>
           </div>
@@ -154,7 +156,7 @@ import RelatedTools from "../../components/RelatedTools.astro";
 
       <!-- B2A API 안내 -->
       <div class="border-t border-border pt-4 text-xs text-muted-foreground">
-        <p class="font-medium text-foreground">api.oiyo.net B2A 무비용 연동 엔드포인트:</p>
+        <p class="font-medium text-foreground">api.oiyo.net에서 같은 계산을 무료로 호출할 수 있어요:</p>
         <p class="mt-1 font-mono text-[11px] bg-muted p-2 rounded border border-border break-all">
           GET https://api.oiyo.net/v1/labor/kr/net-salary?salary=3500000&nonTaxable=200000
         </p>
@@ -162,12 +164,14 @@ import RelatedTools from "../../components/RelatedTools.astro";
     </div>
 
     <div class="mt-8 rounded-lg border border-border bg-muted/30 p-4 text-center text-xs text-muted-foreground">
-      근거 법령: 국민연금법·국민건강보험법·고용보험법 및 국세청 근로소득 간이세액표 (2026 기준)
+      근거 법령: 국민연금법·국민건강보험법·고용보험법(2026년 요율). 근로소득세는 국세청 간이세액표가 아니라 근로소득공제·기본공제(1인 150만 원)·보험료 공제·근로소득세액공제·표준세액공제를 연간으로 환산한 추정치예요. 실제 원천징수액은 회사가 쓰는 간이세액표에 따라 달라요.
     </div>
 
     <RelatedTools currentId="net-salary" />
 
     <script>
+      import { netSalary2026 } from "../../lib/kr-rates-2026.mjs";
+
       let isAnnualMode = false;
       const salaryInput = document.getElementById("salary-input") as HTMLInputElement;
       const nonTaxInput = document.getElementById("non-tax-input") as HTMLInputElement;
@@ -193,62 +197,26 @@ import RelatedTools from "../../components/RelatedTools.astro";
       }
 
       function calculate() {
-        const rawSalary = parseFloat(salaryInput.value) || 0;
-        const grossMonthly = isAnnualMode ? Math.floor(rawSalary / 12) : rawSalary;
-        const nonTax = Math.min(grossMonthly, Math.max(0, parseFloat(nonTaxInput.value) || 0));
-        const taxable = Math.max(0, grossMonthly - nonTax);
+        // 2026-10-17: 요율·공식은 SSOT(src/lib/kr-rates-2026.mjs, api와 바이트 동일)에서만 가져와요.
+        const r = netSalary2026({
+          salary: parseFloat(salaryInput.value) || 0,
+          isAnnual: isAnnualMode,
+          nonTaxable: parseFloat(nonTaxInput.value) || 0,
+          dependents: parseInt(depSelect.value, 10) || 1,
+        });
 
-        // 1. 국민연금 4.5% (상한 6,170,000, 하한 390,000)
-        const pensionBase = Math.min(6170000, Math.max(390000, taxable));
-        const nationalPension = Math.round(pensionBase * 0.045);
-
-        // 2. 건강보험 3.595% (2026년 기준)
-        const healthInsurance = Math.round(taxable * 0.03595);
-
-        // 3. 장기요양보험 (건보의 13.14%)
-        const longTermCare = Math.round(healthInsurance * 0.1314);
-
-        // 4. 고용보험 0.9%
-        const employmentInsurance = Math.round(taxable * 0.009);
-
-        const totalInsurance = nationalPension + healthInsurance + longTermCare + employmentInsurance;
-
-        // 5. 근로소득세
-        const depCount = parseInt(depSelect.value, 10) || 1;
-        let incomeTax = 0;
-        if (taxable > 1060000) {
-          if (taxable <= 3000000) {
-            incomeTax = Math.floor((taxable - 1000000) * 0.03);
-          } else if (taxable <= 5000000) {
-            incomeTax = Math.floor(60000 + (taxable - 3000000) * 0.08);
-          } else if (taxable <= 8000000) {
-            incomeTax = Math.floor(220000 + (taxable - 5000000) * 0.16);
-          } else {
-            incomeTax = Math.floor(700000 + (taxable - 8000000) * 0.24);
-          }
-          if (depCount > 1) {
-            incomeTax = Math.max(0, incomeTax - (depCount - 1) * 15000);
-          }
-        }
-
-        const localTax = Math.floor(incomeTax * 0.1);
-        const totalTax = incomeTax + localTax;
-        const totalDeductions = totalInsurance + totalTax;
-        const netPay = grossMonthly - totalDeductions;
-        const deductionRate = grossMonthly > 0 ? ((totalDeductions / grossMonthly) * 100).toFixed(1) : "0.0";
-
-        resNetMonthly.textContent = Math.floor(netPay).toLocaleString("ko-KR");
-        resNetAnnual.textContent = formatWon(netPay * 12);
-        resGross.textContent = formatWon(grossMonthly);
-        resTaxable.textContent = formatWon(taxable);
-        resPension.textContent = formatWon(nationalPension);
-        resHealth.textContent = formatWon(healthInsurance);
-        resCare.textContent = formatWon(longTermCare);
-        resEmp.textContent = formatWon(employmentInsurance);
-        resTax.textContent = formatWon(incomeTax);
-        resLocalTax.textContent = formatWon(localTax);
-        resTotalDeductions.textContent = formatWon(totalDeductions);
-        resDeductionRate.textContent = `${deductionRate}%`;
+        resNetMonthly.textContent = Math.floor(r.netPayMonthly).toLocaleString("ko-KR");
+        resNetAnnual.textContent = formatWon(r.netPayMonthly * 12);
+        resGross.textContent = formatWon(r.grossMonthly);
+        resTaxable.textContent = formatWon(r.taxable);
+        resPension.textContent = formatWon(r.insurances.nationalPension);
+        resHealth.textContent = formatWon(r.insurances.healthInsurance);
+        resCare.textContent = formatWon(r.insurances.longTermCare);
+        resEmp.textContent = formatWon(r.insurances.employmentInsurance);
+        resTax.textContent = formatWon(r.taxes.incomeTax);
+        resLocalTax.textContent = formatWon(r.taxes.localTax);
+        resTotalDeductions.textContent = formatWon(r.totalDeductions);
+        resDeductionRate.textContent = `${r.deductionRatePercentage.toFixed(1)}%`;
       }
 
       modeButtons.forEach((btn) => {

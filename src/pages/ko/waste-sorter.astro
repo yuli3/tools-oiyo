@@ -3,22 +3,22 @@ import "../../styles/global.css";
 import Layout from "../../components/Layout.astro";
 
 const wasteItems = [
-  { id: "pet-clear", name: "투명 페트병 (생수·음료)", category: "recyclable", categoryLabel: "투명페트 별도배출", method: "내용물을 비우고 라벨을 뗀 뒤 압착하여 뚜껑을 닫아 배출합니다.", basis: "고품질 의류용 장섬유 및 Bottle-to-Bottle 재생 원료." },
-  { id: "stained-plastic", name: "양념·기름에 물든 배달용기", category: "general", categoryLabel: "일반 종량제 봉투", method: "붉은 고추기름이나 착색이 지워지지 않는 용기는 종량제 봉투에 배출합니다.", basis: "착색된 플라스틱은 재활용 펠릿 제조 시 불량 유발." },
-  { id: "egg-shell", name: "달걀·메추리알 껍데기", category: "general", categoryLabel: "일반 종량제 봉투", method: "음식물이 아닌 일반 종량제 봉투에 넣어 배출합니다.", basis: "탄산칼슘 석회질로 사료화 분쇄 시설 마모." },
-  { id: "animal-bone", name: "소·돼지·닭 뼈 및 조개껍데기", category: "general", categoryLabel: "일반 종량제 봉투", method: "살코기를 분리한 단단한 뼈와 껍데기는 일반 종량제 봉투에 버립니다.", basis: "가축 장기 천공 위험 및 파쇄기 칼날 손상." },
-  { id: "onion-peel", name: "양파·마늘·생강 껍질 / 옥수수 수염", category: "general", categoryLabel: "일반 종량제 봉투", method: "일반 종량제 봉투에 담아 배출합니다.", basis: "질긴 불용성 식이섬유질로 가축 소화 불가." },
-  { id: "fruit-seed", name: "복숭아·살구·자두 등 과일 씨앗", category: "general", categoryLabel: "일반 종량제 봉투", method: "단단한 씨앗은 일반 종량제 봉투에 배출합니다.", basis: "파쇄 장비 파손 및 발효 불가." },
-  { id: "sap-ice-pack", name: "젤 아이스팩 (고흡수성수지 SAP)", category: "general", categoryLabel: "일반 종량제 봉투", method: "뜯지 않고 통째로 일반 종량제 봉투에 배출합니다. (싱크대 투기 금지)", basis: "미세플라스틱 수생태계 오염 방지." },
-  { id: "water-ice-pack", name: "친환경 물 아이스팩", category: "recyclable", categoryLabel: "비닐류 분리배출", method: "가위로 잘라 물은 싱크대에 버리고 겉포장재는 비닐로 배출합니다.", basis: "물은 무해 방류, 비닐은 열분해 재활용." },
-  { id: "medication", name: "유효기간 지난 폐의약품", category: "special", categoryLabel: "약국·보건소 전용 수거함", method: "포장재를 제거해 알약끼리 모아 약국·보건소 전용 수거함에 배출합니다.", basis: "수계 유입 시 생태계 교란 및 슈퍼박테리아 유발." },
-  { id: "broken-glass", name: "깨진 유리·거울·도자기·타일", category: "non-combustible", categoryLabel: "불연성 특수규격마대", method: "신문지로 감싼 후 지자체 불연성 마대(특수규격봉투)에 배출합니다.", basis: "소각로 화격자 파손 방지 및 미화원 자상 방지." },
+  { id: "pet-clear", name: "투명 페트병 (생수·음료)", category: "recyclable", categoryLabel: "투명페트 별도배출", method: "내용물을 비우고 라벨을 뗀 뒤 압착하여 뚜껑을 닫아 배출해요.", basis: "고품질 의류용 장섬유 및 Bottle-to-Bottle 재생 원료." },
+  { id: "stained-plastic", name: "양념·기름에 물든 배달용기", category: "general", categoryLabel: "일반 종량제 봉투", method: "붉은 고추기름이나 착색이 지워지지 않는 용기는 종량제 봉투에 배출해요.", basis: "착색된 플라스틱은 재활용 펠릿 제조 시 불량 유발." },
+  { id: "egg-shell", name: "달걀·메추리알 껍데기", category: "general", categoryLabel: "일반 종량제 봉투", method: "음식물이 아닌 일반 종량제 봉투에 넣어 배출해요.", basis: "탄산칼슘 석회질로 사료화 분쇄 시설 마모." },
+  { id: "animal-bone", name: "소·돼지·닭 뼈 및 조개껍데기", category: "general", categoryLabel: "일반 종량제 봉투", method: "살코기를 분리한 단단한 뼈와 껍데기는 일반 종량제 봉투에 버려요.", basis: "가축 장기 천공 위험 및 파쇄기 칼날 손상." },
+  { id: "onion-peel", name: "양파·마늘·생강 껍질 / 옥수수 수염", category: "general", categoryLabel: "일반 종량제 봉투", method: "일반 종량제 봉투에 담아 배출해요.", basis: "질긴 불용성 식이섬유질로 가축 소화 불가." },
+  { id: "fruit-seed", name: "복숭아·살구·자두 등 과일 씨앗", category: "general", categoryLabel: "일반 종량제 봉투", method: "단단한 씨앗은 일반 종량제 봉투에 배출해요.", basis: "파쇄 장비 파손 및 발효 불가." },
+  { id: "sap-ice-pack", name: "젤 아이스팩 (고흡수성수지 SAP)", category: "general", categoryLabel: "일반 종량제 봉투", method: "뜯지 않고 통째로 일반 종량제 봉투에 배출해요. (싱크대 투기 금지)", basis: "미세플라스틱 수생태계 오염 방지." },
+  { id: "water-ice-pack", name: "친환경 물 아이스팩", category: "recyclable", categoryLabel: "비닐류 분리배출", method: "가위로 잘라 물은 싱크대에 버리고 겉포장재는 비닐로 배출해요.", basis: "물은 무해 방류, 비닐은 열분해 재활용." },
+  { id: "medication", name: "유효기간 지난 폐의약품", category: "special", categoryLabel: "약국·보건소 전용 수거함", method: "포장재를 제거해 알약끼리 모아 약국·보건소 전용 수거함에 배출해요.", basis: "수계 유입 시 생태계 교란 및 슈퍼박테리아 유발." },
+  { id: "broken-glass", name: "깨진 유리·거울·도자기·타일", category: "non-combustible", categoryLabel: "불연성 특수규격마대", method: "신문지로 감싼 후 지자체 불연성 마대(특수규격봉투)에 배출해요.", basis: "소각로 화격자 파손 방지 및 미화원 자상 방지." },
 ];
 ---
 
 <Layout
   title="생활 폐기물 분리배출 스마트 판별기"
-  description="버리려는 품목의 이름을 검색하면 종량제, 음식물, 불연성마대, 재활용 등 합법적 배출 분류와 법적 근거를 즉시 안내합니다."
+  description="버리려는 품목의 이름을 검색하면 종량제, 음식물, 불연성마대, 재활용 등 합법적 배출 분류와 법적 근거를 즉시 안내해요."
 >
   <div class="mx-auto w-full max-w-4xl px-4 py-8 sm:px-8">
     <div class="mb-6">
@@ -27,7 +27,7 @@ const wasteItems = [
           생활 폐기물 분리배출 스마트 판별기
         </h1>
         <p class="mt-2 text-xs text-muted-foreground sm:text-sm">
-          환경부 자원순환포털 및 폐기물관리법 시행규칙 기준. 검색어를 입력하면 배출 경로가 즉각 필터링됩니다.
+          환경부 자원순환포털 및 폐기물관리법 시행규칙 기준. 검색어를 입력하면 배출 경로가 즉각 필터링돼요.
         </p>
       </div>
 

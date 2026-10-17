@@ -1,0 +1,21 @@
+---
+// 요율 기준일 표시(2026-10-17, FAANG audit S-1~S-4): 계산기 숫자가 어느 시점 법령 값인지
+// 사용자가 바로 알 수 있게 한다. 값은 SSOT(src/lib/kr-rates-2026.mjs)에서만 읽는다.
+import { RATES_EFFECTIVE_FROM, RATES_VERIFIED_ON } from "../lib/kr-rates-2026.mjs";
+
+interface Props {
+  /** 페이지별 추가 안내(예: 국민연금 상·하한 적용 구간). */
+  note?: string;
+  /** 근거 기관·법령 한 줄. */
+  sources?: string;
+}
+
+const { note, sources } = Astro.props;
+---
+
+<p class="mt-3 rounded-lg border border-border bg-muted/30 px-3 py-2 text-xs leading-relaxed text-muted-foreground">
+  <strong class="font-semibold text-foreground">요율 기준일 {RATES_EFFECTIVE_FROM}</strong>
+  <span> · 2026년 법정 요율로 계산해요 · 공식 자료 확인일 {RATES_VERIFIED_ON}</span>
+  {note && <span class="block">{note}</span>}
+  {sources && <span class="block">근거: {sources}</span>}
+</p>

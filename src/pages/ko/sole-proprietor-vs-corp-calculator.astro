@@ -5,7 +5,7 @@ import RelatedTools from "../../components/RelatedTools.astro";
 
 <Layout
   title="개인사업자 vs 법인전환 세금 비교 계산기 (2026 최신 종합소득세·법인세율)"
-  description="개인사업자 종합소득세율(6%~45%) 및 지역건보료와 법인세율(9%~19%) 및 대표자 급여 소득세를 비교하여 법인전환 손익분기점과 절세액을 정밀 계산합니다."
+  description="개인사업자 종합소득세율(6%~45%) 및 지역건보료와 법인세율(9%~19%) 및 대표자 급여 소득세를 비교하여 법인전환 손익분기점과 절세액을 정밀 계산해요."
 >
   <div class="mx-auto w-full max-w-3xl px-4 py-8 sm:px-8">
     <div class="mb-6">
@@ -16,7 +16,7 @@ import RelatedTools from "../../components/RelatedTools.astro";
         개인사업자 vs 법인전환 세금 비교 계산기
       </h1>
       <p class="mt-2 text-sm leading-relaxed text-muted-foreground">
-        연 순이익 대비 개인사업자의 종합소득세 및 지역건강보험료와 법인전환 시 법인세, 대표자 급여 소득세, 직장건보료를 나란히 대조하여 실질 절세 효과를 진단합니다.
+        연 순이익 대비 개인사업자의 종합소득세 및 지역건강보험료와 법인전환 시 법인세, 대표자 급여 소득세, 직장건보료를 나란히 대조하여 실질 절세 효과를 진단해요.
       </p>
     </div>
 
@@ -58,10 +58,10 @@ import RelatedTools from "../../components/RelatedTools.astro";
       <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
           <h2 id="verdictTitle" class="text-base font-black text-foreground">
-            진단: 법인 전환이 세금 및 건보료상 유리합니다
+            진단: 법인 전환이 세금 및 건보료상 유리해요
           </h2>
           <p id="verdictDesc" class="text-xs text-muted-foreground mt-1">
-            대표자 급여 분산 및 9% 법인세율 적용으로 연간 수백만 원 이상의 세무·건보 부담을 줄일 수 있습니다.
+            대표자 급여 분산 및 9% 법인세율 적용으로 연간 수백만 원 이상의 세무·건보 부담을 줄일 수 있어요.
           </p>
         </div>
         <div class="text-right">
@@ -145,13 +145,13 @@ import RelatedTools from "../../components/RelatedTools.astro";
       </h3>
       <ul class="text-xs space-y-2 text-muted-foreground leading-relaxed">
         <li>
-          <strong class="text-foreground">손익분기점 (순이익 7,000만~1억 원):</strong> 순이익이 7,000만 원 미만일 때는 법인 설립 비용과 추가 세무 기장료, 자금 인출 제약을 고려할 때 개인사업자가 유리하나, 1억 원을 초과하면 최고세율 격차(45% vs 9%)로 인해 법인 전환의 절세 효과가 매우 뚜렷해집니다.
+          <strong class="text-foreground">손익분기점 (순이익 7,000만~1억 원):</strong> 순이익이 7,000만 원 미만일 때는 법인 설립 비용과 추가 세무 기장료, 자금 인출 제약을 고려할 때 개인사업자가 유리하나, 1억 원을 초과하면 최고세율 격차(45% vs 9%)로 인해 법인 전환의 절세 효과가 매우 뚜렷해져요.
         </li>
         <li>
-          <strong class="text-foreground">건강보험료 직장가입자 전환 이점:</strong> 개인사업자는 사업소득 전체와 보유 부동산 등에 지역건보료가 부과되지만, 법인 전환 후에는 책정된 월 급여만을 기준으로 직장보험료가 부과되어 건보료 부담이 대폭 줄어듭니다.
+          <strong class="text-foreground">건강보험료 직장가입자 전환 이점:</strong> 개인사업자는 사업소득 전체와 보유 부동산 등에 지역건보료가 부과되지만, 법인 전환 후에는 책정된 월 급여만을 기준으로 직장보험료가 부과되어 건보료 부담이 대폭 줄어들어요.
         </li>
         <li>
-          <strong class="text-foreground">법인 자금 인출 규제 (가지급금):</strong> 법인의 자금은 대표자의 개인 돈이 아니므로 적법한 급여나 배당 없이 인출하면 가지급금으로 처리되어 연 4.6%의 인정이자가 대표자 상여로 과세되며 법인세 손금불산입 및 횡령 배임 위험이 발생합니다.
+          <strong class="text-foreground">법인 자금 인출 규제 (가지급금):</strong> 법인의 자금은 대표자의 개인 돈이 아니므로 적법한 급여나 배당 없이 인출하면 가지급금으로 처리되어 연 4.6%의 인정이자가 대표자 상여로 과세되며 법인세 손금불산입 및 횡령 배임 위험이 발생해요.
         </li>
       </ul>
     </div>
@@ -241,15 +241,15 @@ import RelatedTools from "../../components/RelatedTools.astro";
 
       if (isCorpBetter) {
         verdictBanner.className = "rounded-xl border border-primary/20 bg-primary/5 p-6 space-y-4 mt-6";
-        verdictTitle.textContent = "진단: 법인 전환이 세금 및 건보료상 유리합니다";
-        verdictDesc.textContent = `대표자 급여 분산 및 9% 법인세율 적용으로 연간 약 ${Math.abs(diff).toLocaleString()}원의 세무·건보 부담을 줄일 수 있습니다.`;
+        verdictTitle.textContent = "진단: 법인 전환이 세금 및 건보료상 유리해요";
+        verdictDesc.textContent = `대표자 급여 분산 및 9% 법인세율 적용으로 연간 약 ${Math.abs(diff).toLocaleString()}원의 세무·건보 부담을 줄일 수 있어요.`;
         verdictLabel.textContent = "연간 예상 절감액";
         verdictSavings.className = "text-xl sm:text-2xl font-black text-primary";
         verdictSavings.textContent = `연 ${Math.abs(diff).toLocaleString()}원 절감`;
       } else {
         verdictBanner.className = "rounded-xl border border-border bg-muted/20 p-6 space-y-4 mt-6";
-        verdictTitle.textContent = "진단: 개인사업자 유지가 실익상 유리합니다";
-        verdictDesc.textContent = "순이익 규모 대비 법인 설립·기장료·자금 인출 규제를 고려할 때 개인사업자 유지가 간편합니다.";
+        verdictTitle.textContent = "진단: 개인사업자 유지가 실익상 유리해요";
+        verdictDesc.textContent = "순이익 규모 대비 법인 설립·기장료·자금 인출 규제를 고려할 때 개인사업자 유지가 간편해요.";
         verdictLabel.textContent = "개인사업자 유지 이익";
         verdictSavings.className = "text-xl sm:text-2xl font-black text-foreground";
         verdictSavings.textContent = `연 ${Math.abs(diff).toLocaleString()}원 유리`;

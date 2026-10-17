@@ -1,0 +1,14 @@
+---
+// 2026-10-17 (content audit §2, FAANG audit A-8): 404 페이지가 없어서 Cloudflare Pages가 SPA 모드로
+// 없는 주소마다 홈(200, canonical "/")을 돌려줬어요(soft-404). 이 파일이 있으면 Pages가 진짜 404를 보내요.
+import Layout from "../components/Layout.astro";
+---
+
+<Layout title="페이지를 찾을 수 없어요" description="요청한 주소에 페이지가 없어요." noindex>
+  <div class="mx-auto max-w-xl px-4 py-20 text-center">
+    <p class="text-sm font-bold text-primary">404</p>
+    <h1 class="mt-2 text-2xl font-extrabold tracking-tight text-foreground">페이지를 찾을 수 없어요</h1>
+    <p class="mt-3 text-sm text-muted-foreground">주소가 바뀌었거나 없는 페이지예요. 전체 도구 목록에서 다시 찾아 주세요.</p>
+    <a href="/" class="mt-6 inline-flex rounded-xl bg-primary px-4 py-2 text-sm font-bold text-primary-foreground">도구 전체 보기</a>
+  </div>
+</Layout>

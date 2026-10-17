@@ -8,7 +8,11 @@
     "preview": "astro preview",
     "astro": "astro",
     "type-check": "astro check",
-    "lint": "astro check"
+    "lint": "astro check && npm run lint:shadcn",
+    "lint:shadcn": "eslint --pass-on-unpruned-suppressions src",
+    "lint:shadcn:prune": "eslint --prune-suppressions src",
+    "test": "node --test scripts/kr-rates.test.mjs",
+    "sync:kr-rates": "node scripts/sync-kr-rates.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.0",
@@ -18,6 +22,10 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
+    "@shadcn/lint": "^0.2.1",
+    "@typescript-eslint/parser": "^8.71.2",
+    "astro-eslint-parser": "^3.2.0",
+    "eslint": "^10.13.0",
     "typescript": "^5.9.3"
   }
 }

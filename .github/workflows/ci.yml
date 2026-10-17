@@ -18,4 +18,8 @@ jobs:
           cache: 'npm'
       - run: npm ci
       - run: npm run type-check
+      - name: shadcn lint
+        run: npm run lint:shadcn
+      - name: kr-rates parity + vectors
+        run: npm test
       - run: npm run build
