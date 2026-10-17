@@ -1,11 +1,18 @@
 ---
 import Layout from "../../components/Layout.astro";
 import RelatedTools from "../../components/RelatedTools.astro";
+import RatesAsOf from "../../components/RatesAsOf.astro";
+// 2026-10-17: 공제율·한도는 SSOT(src/lib/kr-rates-2026.mjs, api와 바이트 동일)에서만 읽어요.
+import { KR_RATES_2026 } from "../../lib/kr-rates-2026.mjs";
+
+const C = KR_RATES_2026.cardDeduction;
+const man = (won: number) => `${(won / 10_000).toLocaleString("ko-KR")}만 원`;
+const pct = (rate: number) => `${Math.round(rate * 100)}%`;
 ---
 
 <Layout
   title="2026 연말정산 카드 소득공제 황금비율 계산기 — 신용카드 vs 체크카드 최적화"
-  description="2026년 소득세법 기준 총급여 25% 문턱, 신용카드(15%) vs 체크카드·현금영수증(30%) 공제율과 한도를 반영하여 최대 환급을 위한 황금 소비 비율을 계산합니다."
+  description="2026년 조세특례제한법 기준 총급여 25% 최저사용금액, 신용카드 15%·체크카드 30% 공제율, 자녀 수별 기본한도로 카드 소득공제와 절세액을 추정해요."
 >
   <div class="mx-auto w-full max-w-4xl px-4 py-8 sm:px-6 sm:py-12">
     <div class="mb-6">
@@ -14,8 +21,9 @@ import RelatedTools from "../../components/RelatedTools.astro";
         2026 연말정산 카드 소득공제 황금비율 계산기
       </h1>
       <p class="mt-2 text-xs text-muted-foreground sm:text-sm leading-relaxed">
-        신용카드(15%)와 체크카드(30%)의 공제율 차이를 분석하여, 총급여의 25% 문턱까지는 혜택 높은 신용카드로 채우고 초과분은 체크카드로 환급을 극대화하는 소비 전략을 산출합니다.
+        총급여의 25%까지는 어떤 카드로 써도 공제가 없어요. 그 금액은 혜택이 큰 신용카드로 채우고, 넘는 금액을 공제율이 2배인 체크카드·현금영수증으로 쓰면 공제를 더 받을 수 있어요.
       </p>
+      <RatesAsOf note={`2026년 지출분부터 기본한도가 자녀 수에 따라 올라요: 총급여 7천만 원 이하 ${man(C.baseLimitUpToTier[0])}·${man(C.baseLimitUpToTier[1])}·${man(C.baseLimitUpToTier[2])}, 초과 ${man(C.baseLimitOverTier[0])}·${man(C.baseLimitOverTier[1])}·${man(C.baseLimitOverTier[2])}(자녀 0·1·2명 이상).`} sources="조세특례제한법 제126조의2(2025-12-23 개정), 소득공제신청서 별지 제74호의6 산식" />
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
@@ -38,6 +46,20 @@ import RelatedTools from "../../components/RelatedTools.astro";
               <span class="absolute right-4 top-3.5 text-xs text-muted-foreground">원</span>
             </div>
             <p id="salary-ko" class="mt-1 text-xs text-muted-foreground">5,000만 원 (공제 문턱: 1,250만 원)</p>
+          </div>
+
+          <div>
+            <label for="children" class="block text-xs font-bold text-foreground">
+              기본공제 받는 자녀·손자녀 수
+            </label>
+            <select
+              id="children"
+              class="mt-2 w-full rounded-lg border border-input bg-background px-4 py-3 text-sm text-foreground focus-visible:outline-2 focus-visible:outline-ring"
+            >
+              <option value="0" selected>없음</option>
+              <option value="1">1명</option>
+              <option value="2">2명 이상</option>
+            </select>
           </div>
 
           <div>
@@ -77,7 +99,7 @@ import RelatedTools from "../../components/RelatedTools.astro";
           <div class="grid grid-cols-2 gap-4">
             <div>
               <label for="culture-spend" class="block text-xs font-bold text-foreground">
-                도서·공연·미술관 (원)
+                도서·공연·영화·체육시설 (원)
               </label>
               <div class="mt-2 relative">
                 <input
@@ -94,7 +116,7 @@ import RelatedTools from "../../components/RelatedTools.astro";
 
             <div>
               <label for="market-spend" class="block text-xs font-bold text-foreground">
-                전통시장·대중교통 (원)
+                전통시장·대중교통 ({pct(C.rates.market)}, 원)
               </label>
               <div class="mt-2 relative">
                 <input
@@ -133,11 +155,11 @@ import RelatedTools from "../../components/RelatedTools.astro";
               <span id="res-excess-spend" class="font-mono text-foreground font-semibold">0원</span>
             </div>
             <div class="flex justify-between">
-              <span class="text-muted-foreground">신용카드 공제액 (15%)</span>
+              <span class="text-muted-foreground">신용카드 공제액 ({pct(C.rates.credit)})</span>
               <span id="res-credit-ded" class="font-mono text-foreground">0원</span>
             </div>
             <div class="flex justify-between">
-              <span class="text-muted-foreground">체크카드·현금 공제액 (30%)</span>
+              <span class="text-muted-foreground">체크카드·현금 공제액 ({pct(C.rates.debitCash)})</span>
               <span id="res-check-ded" class="font-mono text-foreground font-bold text-primary">0원</span>
             </div>
             <div class="flex justify-between">
@@ -145,7 +167,7 @@ import RelatedTools from "../../components/RelatedTools.astro";
               <span id="res-extra-ded" class="font-mono text-foreground">0원</span>
             </div>
             <div class="flex justify-between border-t border-border pt-2">
-              <span class="font-bold text-foreground">예상 세금 환급액 (한계세율 기준)</span>
+              <span class="font-bold text-foreground">절세액 추정 (한계세율 × 공제액)</span>
               <span id="res-tax-refund" class="font-mono font-black text-primary text-sm">0원</span>
             </div>
           </div>
@@ -156,14 +178,14 @@ import RelatedTools from "../../components/RelatedTools.astro";
           <p class="font-bold text-foreground text-sm">💡 2026 연말정산 최적 황금비율 가이드</p>
           <div id="golden-rule-box" class="rounded-xl bg-muted/40 p-4 text-xs leading-relaxed space-y-2">
             <p id="rule-step1" class="text-foreground font-semibold">
-              1단계: 총급여 25%인 1,250만 원까지는 할인·항공마일리지 혜택이 많은 <strong>신용카드</strong>를 우선 사용하세요.
+              1단계: 총급여 25%인 1,250만 원까지는 할인·마일리지 혜택이 큰 <strong>신용카드</strong>로 먼저 쓰세요.
             </p>
             <p id="rule-step2" class="text-foreground">
-              2단계: 1,250만 원 초과분부터는 공제율이 2배 높은 <strong>체크카드(30%)</strong>나 <strong>현금영수증</strong>으로 결제해야 한도를 꽉 채울 수 있습니다.
+              2단계: 1,250만 원을 넘는 금액은 공제율이 2배인 <strong>체크카드(30%)</strong>나 <strong>현금영수증</strong>으로 쓰면 한도를 더 빨리 채워요.
             </p>
           </div>
           <p class="text-xs text-muted-foreground">
-            ※ 총급여 7,000만 원 이하자의 기본 소득공제 한도는 300만 원, 7,000만 원 초과자는 250만 원입니다.
+            ※ 절세액은 총급여에서 근로소득공제·본인 기본공제만 뺀 과세표준의 한계세율로 어림한 값이에요. 실제 환급액은 다른 공제·세액공제에 따라 달라져요. 총급여 7천만 원 초과자의 문화비는 신용카드 사용분으로 계산해요.
           </p>
         </div>
       </div>
@@ -173,7 +195,10 @@ import RelatedTools from "../../components/RelatedTools.astro";
   </div>
 
   <script>
+    import { cardDeduction2026 } from "../../lib/kr-rates-2026.mjs";
+
     const salaryInput = document.getElementById("annual-salary") as HTMLInputElement;
+    const childrenSelect = document.getElementById("children") as HTMLSelectElement;
     const creditInput = document.getElementById("credit-spend") as HTMLInputElement;
     const checkInput = document.getElementById("check-spend") as HTMLInputElement;
     const cultureInput = document.getElementById("culture-spend") as HTMLInputElement;
@@ -190,87 +215,40 @@ import RelatedTools from "../../components/RelatedTools.astro";
     const ruleStep1 = document.getElementById("rule-step1")!;
     const ruleStep2 = document.getElementById("rule-step2")!;
 
+    const value = (el: HTMLInputElement) => Math.max(0, parseFloat(el.value) || 0);
     function formatKRW(val: number): string {
       return Math.round(val).toLocaleString("ko-KR") + "원";
     }
 
     function calculate() {
-      const salary = Math.max(0, parseFloat(salaryInput.value) || 0);
-      const credit = Math.max(0, parseFloat(creditInput.value) || 0);
-      const check = Math.max(0, parseFloat(checkInput.value) || 0);
-      const culture = Math.max(0, parseFloat(cultureInput.value) || 0);
-      const market = Math.max(0, parseFloat(marketInput.value) || 0);
-
-      const threshold = salary * 0.25;
-      const totalSpend = credit + check + culture + market;
-      const excessSpend = Math.max(0, totalSpend - threshold);
-
+      const salary = value(salaryInput);
+      if (salary <= 0) return;
+      // 2026-10-17: 최저사용금액 순서·공제율·자녀 수별 한도·한계세율은 SSOT 함수 하나로 계산해요
+      // (api /v1/tax/card-deduction과 같은 식). 전통시장·대중교통은 둘 다 40%라 한 칸으로 받아요.
+      const r = cardDeduction2026({
+        annualSalary: salary,
+        creditCardSpend: value(creditInput),
+        checkCardSpend: value(checkInput),
+        cultureSpend: value(cultureInput),
+        traditionalMarketSpend: value(marketInput),
+        children: Number(childrenSelect.value),
+      });
+      const threshold = r.threshold25Percent;
       salaryKo.textContent = `${Math.floor(salary / 10000).toLocaleString("ko-KR")}만 원 (공제 문턱: ${Math.floor(threshold / 10000).toLocaleString("ko-KR")}만 원)`;
 
-      // Tax rules: Deductions apply after meeting the 25% threshold.
-      // Order of meeting the threshold: Lowest rate first (Credit card 15% -> Check card 30% -> Culture 30% -> Market 40%).
-      let remainingThreshold = threshold;
-
-      // 1. Credit Card (15%)
-      const creditAppliedToThreshold = Math.min(credit, remainingThreshold);
-      remainingThreshold -= creditAppliedToThreshold;
-      const eligibleCredit = credit - creditAppliedToThreshold;
-      const creditDeduction = eligibleCredit * 0.15;
-
-      // 2. Check Card & Cash (30%)
-      const checkAppliedToThreshold = Math.min(check, remainingThreshold);
-      remainingThreshold -= checkAppliedToThreshold;
-      const eligibleCheck = check - checkAppliedToThreshold;
-      const checkDeduction = eligibleCheck * 0.30;
-
-      // 3. Culture (30%) - only for salary <= 70M
-      const isUnder70M = salary <= 70000000;
-      const cultureAppliedToThreshold = Math.min(culture, remainingThreshold);
-      remainingThreshold -= cultureAppliedToThreshold;
-      const eligibleCulture = isUnder70M ? (culture - cultureAppliedToThreshold) : 0;
-      const cultureDeduction = eligibleCulture * 0.30;
-
-      // 4. Market & Public Transit (40%)
-      const marketAppliedToThreshold = Math.min(market, remainingThreshold);
-      remainingThreshold -= marketAppliedToThreshold;
-      const eligibleMarket = market - marketAppliedToThreshold;
-      const marketDeduction = eligibleMarket * 0.40;
-
-      // Basic Limit: 3M under 70M, 2.5M over 70M
-      const baseLimit = isUnder70M ? 3000000 : 2500000;
-      const rawBaseDeduction = creditDeduction + checkDeduction;
-      const actualBaseDeduction = Math.min(baseLimit, rawBaseDeduction);
-
-      // Additional Limit: Culture + Market (up to 3M under 70M, or 2M over 70M)
-      const extraLimit = isUnder70M ? 3000000 : 2000000;
-      const rawExtraDeduction = cultureDeduction + marketDeduction;
-      const actualExtraDeduction = Math.min(extraLimit, rawExtraDeduction);
-
-      const totalDeduction = actualBaseDeduction + actualExtraDeduction;
-
-      // Marginal tax rate estimation based on salary:
-      // <= 14M: 6%, <= 50M: 15%, <= 88M: 24%, > 88M: 35%
-      let marginalRate = 0.15;
-      if (salary <= 14000000) marginalRate = 0.06;
-      else if (salary <= 50000000) marginalRate = 0.15;
-      else if (salary <= 88000000) marginalRate = 0.24;
-      else marginalRate = 0.35;
-
-      const estimatedRefund = totalDeduction * marginalRate * 1.1; // with local tax 10%
-
-      resTotalDeduction.textContent = formatKRW(totalDeduction);
+      resTotalDeduction.textContent = formatKRW(r.totalDeduction);
       resThreshold.textContent = formatKRW(threshold);
-      resExcessSpend.textContent = formatKRW(excessSpend);
-      resCreditDed.textContent = formatKRW(creditDeduction);
-      resCheckDed.textContent = formatKRW(checkDeduction);
-      resExtraDed.textContent = formatKRW(actualExtraDeduction);
-      resTaxRefund.textContent = `약 ${formatKRW(estimatedRefund)}`;
+      resExcessSpend.textContent = formatKRW(Math.max(0, r.totalSpend - threshold));
+      resCreditDed.textContent = formatKRW(r.creditDeduction);
+      resCheckDed.textContent = formatKRW(r.checkDeduction);
+      resExtraDed.textContent = formatKRW(r.actualExtraDeduction);
+      resTaxRefund.textContent = `약 ${formatKRW(r.estimatedTaxRefund)} (한계세율 ${Math.round(r.marginalRate * 100)}%)`;
 
-      ruleStep1.innerHTML = `1단계: 총급여 25%인 <strong>${formatKRW(threshold)}</strong>까지는 부가서비스·포인트 혜택이 큰 <strong>신용카드</strong>를 우선 쓰세요.`;
-      ruleStep2.innerHTML = `2단계: <strong>${formatKRW(threshold)}</strong> 초과 소비액부터는 공제율이 2배인 <strong>체크카드·현금영수증(30%)</strong>으로 전환하여 한도(${formatKRW(baseLimit)})를 채우는 것이 최적입니다.`;
+      ruleStep1.innerHTML = `1단계: 총급여 25%인 <strong>${formatKRW(threshold)}</strong>까지는 부가서비스·포인트 혜택이 큰 <strong>신용카드</strong>로 먼저 쓰세요.`;
+      ruleStep2.innerHTML = `2단계: <strong>${formatKRW(threshold)}</strong>을 넘는 금액은 공제율이 2배인 <strong>체크카드·현금영수증(30%)</strong>으로 쓰면 기본 한도(${formatKRW(r.baseLimit)})를 더 빨리 채워요.`;
     }
 
-    [salaryInput, creditInput, checkInput, cultureInput, marketInput].forEach((el) => {
+    [salaryInput, childrenSelect, creditInput, checkInput, cultureInput, marketInput].forEach((el) => {
       el.addEventListener("input", calculate);
       el.addEventListener("change", calculate);
     });
