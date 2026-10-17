@@ -1,11 +1,27 @@
 ---
 import Layout from "../../components/Layout.astro";
 import RelatedTools from "../../components/RelatedTools.astro";
+import RatesAsOf from "../../components/RatesAsOf.astro";
+// 2026-10-17: 세율·공제·할증 값은 SSOT(src/lib/kr-rates-2026.mjs, api와 바이트 동일)에서만 읽어요.
+import { KR_RATES_2026 } from "../../lib/kr-rates-2026.mjs";
+
+const G = KR_RATES_2026.inheritanceGift;
+const manwon = (won: number) => {
+  const eok = Math.floor(won / 100_000_000);
+  const man = Math.floor((won % 100_000_000) / 10_000);
+  return `${eok ? `${eok}억 ` : ""}${man ? `${man.toLocaleString("ko-KR")}만 ` : ""}원`.replace(/^ 원$/, "0원");
+};
+const pctText = (rate: number) => `${Math.round(rate * 100)}%`;
+const bracketRows = G.brackets.map(([upper, rate, progressive], i) => {
+  const lower = i === 0 ? 0 : G.brackets[i - 1][0];
+  const range = upper === Infinity ? `${manwon(lower)} 초과` : i === 0 ? `${manwon(upper)} 이하` : `${manwon(lower)} 초과 ~ ${manwon(upper)} 이하`;
+  return { range, rate: pctText(rate), progressive: progressive ? manwon(progressive) : "0원" };
+});
 ---
 
 <Layout
   title="2026 상속세 & 증여세 모의 계산기 — 과세표준 누진세율 및 공제 시뮬레이션"
-  description="2026년 상속세 및 증여세법 기준 배우자·자녀 공제, 5단계 누진세율(10%~50%), 세대생략 할증 및 신고세액공제(3%)를 반영하여 상속세와 증여세를 즉시 비교 계산합니다."
+  description="2026년 상속세 및 증여세법 기준 배우자·자녀 공제, 혼인·출산 증여공제, 5단계 누진세율(10~50%), 세대생략 할증, 신고세액공제(3%)로 상속세와 증여세를 모의 계산해요."
 >
   <div class="mx-auto w-full max-w-4xl px-4 py-8 sm:px-6 sm:py-12">
     <div class="mb-6">
@@ -14,8 +30,9 @@ import RelatedTools from "../../components/RelatedTools.astro";
         2026 상속세 & 증여세 모의 계산기
       </h1>
       <p class="mt-2 text-xs text-muted-foreground sm:text-sm leading-relaxed">
-        재산가액, 관계별 공제 한도, 5단계 누진세율 및 자진신고공제(3%)를 적용하여 납부 예상세액을 실시간으로 산출합니다.
+        재산가액, 관계별 공제 한도, 5단계 누진세율, 신고세액공제(3%)로 낼 세금을 바로 계산해요. 10년 안에 받은 다른 증여와 재산 평가는 넣지 않은 모의 계산이에요.
       </p>
+      <RatesAsOf note="2024·2025년 정부가 낸 최고세율 40%·자녀공제 5억 원 개정안은 국회를 통과하지 않아 2026년에도 10~50% 세율이 그대로예요." sources="상속세 및 증여세법 제19·21·26·27·53·53조의2·57·69조(2026-01-02 시행), 국세청 증여세 개요" />
     </div>
 
     <!-- Mode Selector Tab -->
@@ -84,13 +101,19 @@ import RelatedTools from "../../components/RelatedTools.astro";
             id="gift-relation"
             class="mt-2 w-full rounded-lg border border-input bg-background px-4 py-3 text-sm text-foreground focus-visible:outline-2 focus-visible:outline-ring"
           >
-            <option value="spouse" selected>배우자 (10년 6억 원 공제)</option>
-            <option value="child-adult">성인 자녀·손자 (10년 5,000만 원 공제)</option>
-            <option value="child-minor">미성년 자녀 (10년 2,000만 원 공제)</option>
-            <option value="parent">직계존속·부모 (10년 5,000만 원 공제)</option>
-            <option value="other-relative">기타 친족(형제·며느리·사위 등, 10년 1,000만 원)</option>
+            <option value="spouse" selected>배우자에게서 받음 (10년 {manwon(G.giftDeductions.spouse)} 공제)</option>
+            <option value="child_adult">성년 자녀·손자녀가 부모·조부모에게서 받음 (10년 {manwon(G.giftDeductions.child_adult)})</option>
+            <option value="child_minor">미성년 자녀·손자녀가 받음 (10년 {manwon(G.giftDeductions.child_minor)})</option>
+            <option value="parent">부모가 자녀에게서 받음 (10년 {manwon(G.giftDeductions.parent)})</option>
+            <option value="other_relative">기타 친족(6촌 혈족·4촌 인척, 10년 {manwon(G.giftDeductions.other_relative)})</option>
             <option value="other">타인 (공제 0원)</option>
           </select>
+          <div id="marriage-birth-row" class="mt-3 flex items-start gap-3">
+            <input type="checkbox" id="marriage-birth" class="mt-0.5 h-4 w-4 rounded border-input text-primary focus:ring-primary" />
+            <label for="marriage-birth" class="text-xs text-foreground cursor-pointer">
+              혼인·출산 증여공제 {manwon(G.marriageBirthDeduction)} 함께 적용 (부모·조부모에게서 혼인신고 전후 2년 또는 출생 2년 안에 받은 경우, 평생 합산 한도)
+            </label>
+          </div>
         </div>
 
         <!-- Inheritance Specific: Deductions -->
@@ -103,7 +126,7 @@ import RelatedTools from "../../components/RelatedTools.astro";
                 id="btn-spouse-yes"
                 class="rounded-lg border border-primary bg-primary/10 py-3 text-xs font-bold text-primary transition-all text-center"
               >
-                배우자 있음 (최소 5억 공제)
+                배우자 있음 (최소 {manwon(G.spouseInheritanceMin)} 공제)
               </button>
               <button
                 type="button"
@@ -115,7 +138,7 @@ import RelatedTools from "../../components/RelatedTools.astro";
             </div>
           </div>
           <div class="rounded-lg bg-muted/40 p-3 text-xs text-muted-foreground leading-relaxed">
-            상속세 기본 일괄공제 5억 원과 배우자 상속공제(법정 지분 내 최소 5억~최대 30억 원)가 적용되어, 배우자와 자녀가 함께 상속받으면 최소 10억 원까지 상속세가 발생하지 않습니다.
+            일괄공제 {manwon(G.inheritanceLumpSum)}과 배우자상속공제(법정상속분 안에서 최소 {manwon(G.spouseInheritanceMin)}~최대 {manwon(G.spouseInheritanceMax)})를 넣어요. 이 계산기는 배우자공제를 최소액으로 잡아서, 배우자와 자녀가 함께 상속받으면 10억 원까지는 상속세가 없다고 보여 줘요. 금융재산·동거주택 공제는 넣지 않았어요.
           </div>
         </div>
 
@@ -127,7 +150,7 @@ import RelatedTools from "../../components/RelatedTools.astro";
             class="h-4 w-4 rounded border-input text-primary focus:ring-primary"
           />
           <label for="generation-skip" class="text-xs font-semibold text-foreground cursor-pointer">
-            세대생략 증여/상속 (손자·손녀에게 직접 이전 시 30% 할증)
+            세대생략 증여·상속 (손자녀에게 바로 넘기면 {pctText(G.generationSkipSurcharge)} 할증, 미성년자가 20억 원 넘게 받으면 {pctText(G.generationSkipSurchargeMinorLarge)})
           </label>
         </div>
 
@@ -140,7 +163,7 @@ import RelatedTools from "../../components/RelatedTools.astro";
             class="h-4 w-4 rounded border-input text-primary focus:ring-primary"
           />
           <label for="report-credit" class="text-xs font-semibold text-foreground cursor-pointer">
-            신고기한 내 자진신고 (3% 세액공제 적용)
+            신고기한 안에 신고 ({pctText(G.filingCredit)} 신고세액공제)
           </label>
         </div>
       </div>
@@ -178,11 +201,11 @@ import RelatedTools from "../../components/RelatedTools.astro";
               <span id="res-calculated-tax" class="font-mono text-foreground">0원</span>
             </div>
             <div class="flex justify-between text-muted-foreground">
-              <span>세대생략 할증액 (30%)</span>
+              <span id="res-skip-label">세대생략 할증액</span>
               <span id="res-skip-surcharge" class="font-mono text-foreground">+0원</span>
             </div>
             <div class="flex justify-between text-muted-foreground">
-              <span>자진신고 세액공제 (3%)</span>
+              <span>신고세액공제 ({pctText(G.filingCredit)})</span>
               <span id="res-report-credit-val" class="font-mono text-foreground text-primary">-0원</span>
             </div>
           </div>
@@ -201,31 +224,13 @@ import RelatedTools from "../../components/RelatedTools.astro";
                 </tr>
               </thead>
               <tbody class="divide-y divide-border/50">
-                <tr>
-                  <td class="py-1.5 pr-2">1억 원 이하</td>
-                  <td class="py-1.5 px-2 font-mono">10%</td>
-                  <td class="py-1.5 pl-2 text-right font-mono">0원</td>
-                </tr>
-                <tr>
-                  <td class="py-1.5 pr-2">1억 초과 ~ 5억 이하</td>
-                  <td class="py-1.5 px-2 font-mono">20%</td>
-                  <td class="py-1.5 pl-2 text-right font-mono">1,000만 원</td>
-                </tr>
-                <tr>
-                  <td class="py-1.5 pr-2">5억 초과 ~ 10억 이하</td>
-                  <td class="py-1.5 px-2 font-mono">30%</td>
-                  <td class="py-1.5 pl-2 text-right font-mono">6,000만 원</td>
-                </tr>
-                <tr>
-                  <td class="py-1.5 pr-2">10억 초과 ~ 30억 이하</td>
-                  <td class="py-1.5 px-2 font-mono">40%</td>
-                  <td class="py-1.5 pl-2 text-right font-mono">1억 6,000만 원</td>
-                </tr>
-                <tr>
-                  <td class="py-1.5 pr-2">30억 원 초과</td>
-                  <td class="py-1.5 px-2 font-mono">50%</td>
-                  <td class="py-1.5 pl-2 text-right font-mono">4억 6,000만 원</td>
-                </tr>
+                {bracketRows.map((row) => (
+                  <tr>
+                    <td class="py-1.5 pr-2">{row.range}</td>
+                    <td class="py-1.5 px-2 font-mono">{row.rate}</td>
+                    <td class="py-1.5 pl-2 text-right font-mono">{row.progressive}</td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
@@ -237,6 +242,8 @@ import RelatedTools from "../../components/RelatedTools.astro";
   </div>
 
   <script>
+    import { inheritanceGiftTax2026 } from "../../lib/kr-rates-2026.mjs";
+
     let mode: "gift" | "inheritance" = "gift";
     let hasSpouse = true;
 
@@ -250,6 +257,9 @@ import RelatedTools from "../../components/RelatedTools.astro";
     const relationSelect = document.getElementById("gift-relation") as HTMLSelectElement;
     const skipCheckbox = document.getElementById("generation-skip") as HTMLInputElement;
     const reportCreditCheckbox = document.getElementById("report-credit") as HTMLInputElement;
+    const marriageBirthCheckbox = document.getElementById("marriage-birth") as HTMLInputElement;
+    const marriageBirthRow = document.getElementById("marriage-birth-row")!;
+    const resSkipLabel = document.getElementById("res-skip-label")!;
 
     const btnSpouseYes = document.getElementById("btn-spouse-yes")!;
     const btnSpouseNo = document.getElementById("btn-spouse-no")!;
@@ -284,67 +294,35 @@ import RelatedTools from "../../components/RelatedTools.astro";
       const debt = Math.max(0, parseFloat(debtInput.value) || 0);
       assetKoDisplay.textContent = formatKoreanUnits(asset);
 
-      const netValue = Math.max(0, asset - debt);
+      const relation = relationSelect.value;
+      const canUseMarriageBirth = relation === "child_adult" || relation === "child_minor";
+      marriageBirthRow.classList.toggle("hidden", !canUseMarriageBirth);
 
-      let totalDeduction = 0;
-
-      if (mode === "gift") {
-        const relation = relationSelect.value;
-        if (relation === "spouse") totalDeduction = 600000000;
-        else if (relation === "child-adult") totalDeduction = 50000000;
-        else if (relation === "child-minor") totalDeduction = 20000000;
-        else if (relation === "parent") totalDeduction = 50000000;
-        else if (relation === "other-relative") totalDeduction = 10000000;
-        else totalDeduction = 0;
-      } else {
-        // Inheritance: Basic lump sum 500M + spouse min 500M
-        const lumpSum = 500000000;
-        const spouseDeduction = hasSpouse ? 500000000 : 0;
-        totalDeduction = lumpSum + spouseDeduction;
-      }
-
-      const taxableBase = Math.max(0, netValue - totalDeduction);
-
-      let rate = 0.1;
-      let progressiveDeduction = 0;
-      if (taxableBase <= 100000000) {
-        rate = 0.1;
-        progressiveDeduction = 0;
-      } else if (taxableBase <= 500000000) {
-        rate = 0.2;
-        progressiveDeduction = 10000000;
-      } else if (taxableBase <= 1000000000) {
-        rate = 0.3;
-        progressiveDeduction = 60000000;
-      } else if (taxableBase <= 3000000000) {
-        rate = 0.4;
-        progressiveDeduction = 160000000;
-      } else {
-        rate = 0.5;
-        progressiveDeduction = 460000000;
-      }
-
-      const calculatedTax = taxableBase > 0 ? Math.max(0, taxableBase * rate - progressiveDeduction) : 0;
-
-      let surcharge = 0;
-      if (skipCheckbox.checked && calculatedTax > 0) {
-        surcharge = Math.floor(calculatedTax * 0.3);
-      }
-
-      const subtotal = calculatedTax + surcharge;
-      let reportCredit = 0;
-      if (reportCreditCheckbox.checked && subtotal > 0) {
-        reportCredit = Math.floor(subtotal * 0.03);
-      }
-
-      const finalTax = Math.max(0, subtotal - reportCredit);
+      // 2026-10-17: 공제·세율·할증·신고세액공제는 SSOT 함수 하나로 계산해요(api /v1/tax/inheritance-gift와 같은 식).
+      const r = inheritanceGiftTax2026({
+        mode,
+        assetValue: asset,
+        debtValue: debt,
+        relationship: relation,
+        marriageBirthDeduction: canUseMarriageBirth && marriageBirthCheckbox.checked ? Infinity : 0,
+        hasSpouse,
+        isGenerationSkipping: skipCheckbox.checked,
+        hasVoluntaryReporting: reportCreditCheckbox.checked,
+      });
+      const netValue = r.netAssetValue;
+      const taxableBase = r.taxableBase;
+      const calculatedTax = r.calculatedTax;
+      const surcharge = r.generationSkipSurcharge;
+      const reportCredit = r.voluntaryReportCredit;
+      const finalTax = r.finalTax;
 
       resBadge.textContent = mode === "gift" ? "증여세 모의 산출 결과" : "상속세 모의 산출 결과";
       resFinalTax.textContent = formatKRW(finalTax);
       resTaxBaseValue.textContent = formatKRW(netValue);
-      resDeductionValue.textContent = `-${formatKRW(Math.min(netValue, totalDeduction))}`;
+      resDeductionValue.textContent = `-${formatKRW(r.deductionAmount)}`;
       resTaxableBase.textContent = formatKRW(taxableBase);
-      resBracketInfo.textContent = `${Math.round(rate * 100)}% (-${formatKRW(progressiveDeduction)})`;
+      resBracketInfo.textContent = `${Math.round(r.bracketRate * 100)}% (-${formatKRW(r.progressiveDeduction)})`;
+      resSkipLabel.textContent = r.generationSkipSurchargeRate ? `세대생략 할증액 (${Math.round(r.generationSkipSurchargeRate * 100)}%)` : "세대생략 할증액";
       resCalculatedTax.textContent = formatKRW(calculatedTax);
       resSkipSurcharge.textContent = `+${formatKRW(surcharge)}`;
       resReportCreditVal.textContent = `-${formatKRW(reportCredit)}`;
@@ -390,7 +368,7 @@ import RelatedTools from "../../components/RelatedTools.astro";
       calculate();
     });
 
-    [assetInput, debtInput, relationSelect, skipCheckbox, reportCreditCheckbox].forEach((el) => {
+    [assetInput, debtInput, relationSelect, skipCheckbox, reportCreditCheckbox, marriageBirthCheckbox].forEach((el) => {
       el.addEventListener("input", calculate);
       el.addEventListener("change", calculate);
     });
