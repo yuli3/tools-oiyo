@@ -5,7 +5,7 @@ import RelatedTools from "../../components/RelatedTools.astro";
 
 <Layout
   title="실업급여 모의계산기 — 2026년 구직급여 일일 상한·하한액 및 총 수령액 계산"
-  description="퇴직 전 3개월 평균임금, 나이, 고용보험 가입기간을 입력하여 2026년 기준 1일 구직급여 상한(66,000원)·하한액 및 소정급여일수(120~270일) 총 실업급여 예상 수령액을 즉시 계산해보세요."
+  description="퇴직 전 3개월 평균임금, 나이, 고용보험 가입기간을 입력하여 2026년 기준 1일 구직급여 상한(68,100원)·하한액 및 소정급여일수(120~270일) 총 실업급여 예상 수령액을 즉시 계산해보세요."
 >
   <div class="mx-auto max-w-4xl px-4 py-8 sm:px-6 sm:py-12">
     <!-- Header -->
@@ -211,8 +211,8 @@ import RelatedTools from "../../components/RelatedTools.astro";
         const rawDaily = Math.round(dailyWage * 0.6);
 
         // 2. Ceiling & Floor (2026 criteria)
-        const ceiling = 66000;
-        const minHourlyWage = 10030;
+        const ceiling = 68100;
+        const minHourlyWage = 10320;
         const floor = Math.round(minHourlyWage * hours * 0.8);
 
         let appliedDaily = rawDaily;

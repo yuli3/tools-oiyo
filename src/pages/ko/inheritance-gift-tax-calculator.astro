@@ -1,0 +1,400 @@
+---
+import Layout from "../../components/Layout.astro";
+import RelatedTools from "../../components/RelatedTools.astro";
+---
+
+<Layout
+  title="2026 상속세 & 증여세 모의 계산기 — 과세표준 누진세율 및 공제 시뮬레이션"
+  description="2026년 상속세 및 증여세법 기준 배우자·자녀 공제, 5단계 누진세율(10%~50%), 세대생략 할증 및 신고세액공제(3%)를 반영하여 상속세와 증여세를 즉시 비교 계산합니다."
+>
+  <div class="mx-auto w-full max-w-4xl px-4 py-8 sm:px-6 sm:py-12">
+    <div class="mb-6">
+      <a href="/" class="text-xs font-semibold text-muted-foreground hover:text-primary transition-colors mb-3 inline-block">← 전체 도구 목록</a>
+      <h1 class="text-2xl font-black tracking-tight text-foreground sm:text-3xl">
+        2026 상속세 & 증여세 모의 계산기
+      </h1>
+      <p class="mt-2 text-xs text-muted-foreground sm:text-sm leading-relaxed">
+        재산가액, 관계별 공제 한도, 5단계 누진세율 및 자진신고공제(3%)를 적용하여 납부 예상세액을 실시간으로 산출합니다.
+      </p>
+    </div>
+
+    <!-- Mode Selector Tab -->
+    <div class="mb-6 flex rounded-xl border border-border bg-muted/30 p-1">
+      <button
+        type="button"
+        id="btn-mode-gift"
+        class="flex-1 rounded-lg py-3 text-sm font-bold transition-all bg-card text-foreground shadow-xs"
+      >
+        증여세 계산 (생전 증여)
+      </button>
+      <button
+        type="button"
+        id="btn-mode-inheritance"
+        class="flex-1 rounded-lg py-3 text-sm font-medium text-muted-foreground transition-all hover:text-foreground"
+      >
+        상속세 계산 (사후 상속)
+      </button>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      <!-- Input Panel -->
+      <div class="lg:col-span-6 bg-card border border-border rounded-2xl p-6 shadow-xs space-y-5">
+        <div>
+          <label for="asset-value" class="block text-xs font-bold text-foreground">
+            재산가액 (원)
+          </label>
+          <div class="mt-2 relative">
+            <input
+              type="number"
+              id="asset-value"
+              value="500000000"
+              step="10000000"
+              min="0"
+              class="w-full rounded-lg border border-input bg-background px-4 py-3 text-sm font-mono text-foreground focus-visible:outline-2 focus-visible:outline-ring"
+            />
+            <span class="absolute right-4 top-3.5 text-xs text-muted-foreground">원</span>
+          </div>
+          <p id="asset-value-ko" class="mt-1 text-xs text-muted-foreground">5억 원</p>
+        </div>
+
+        <div>
+          <label for="debt-value" class="block text-xs font-bold text-foreground">
+            채무 및 부담부 금액 (원)
+          </label>
+          <div class="mt-2 relative">
+            <input
+              type="number"
+              id="debt-value"
+              value="0"
+              step="5000000"
+              min="0"
+              class="w-full rounded-lg border border-input bg-background px-4 py-3 text-sm font-mono text-foreground focus-visible:outline-2 focus-visible:outline-ring"
+            />
+            <span class="absolute right-4 top-3.5 text-xs text-muted-foreground">원</span>
+          </div>
+          <p class="mt-1 text-xs text-muted-foreground">전세보증금이나 담보대출 등 수증인/상속인이 승계하는 채무액</p>
+        </div>
+
+        <!-- Gift Specific: Relationship -->
+        <div id="gift-relation-section">
+          <label for="gift-relation" class="block text-xs font-bold text-foreground">
+            수증자(받는 사람)와의 관계
+          </label>
+          <select
+            id="gift-relation"
+            class="mt-2 w-full rounded-lg border border-input bg-background px-4 py-3 text-sm text-foreground focus-visible:outline-2 focus-visible:outline-ring"
+          >
+            <option value="spouse" selected>배우자 (10년 6억 원 공제)</option>
+            <option value="child-adult">성인 자녀·손자 (10년 5,000만 원 공제)</option>
+            <option value="child-minor">미성년 자녀 (10년 2,000만 원 공제)</option>
+            <option value="parent">직계존속·부모 (10년 5,000만 원 공제)</option>
+            <option value="other-relative">기타 친족(형제·며느리·사위 등, 10년 1,000만 원)</option>
+            <option value="other">타인 (공제 0원)</option>
+          </select>
+        </div>
+
+        <!-- Inheritance Specific: Deductions -->
+        <div id="inheritance-deduction-section" class="hidden space-y-4">
+          <div>
+            <label class="block text-xs font-bold text-foreground">배우자 상속 여부</label>
+            <div class="mt-2 grid grid-cols-2 gap-3">
+              <button
+                type="button"
+                id="btn-spouse-yes"
+                class="rounded-lg border border-primary bg-primary/10 py-3 text-xs font-bold text-primary transition-all text-center"
+              >
+                배우자 있음 (최소 5억 공제)
+              </button>
+              <button
+                type="button"
+                id="btn-spouse-no"
+                class="rounded-lg border border-border bg-background py-3 text-xs font-medium text-muted-foreground transition-all hover:bg-muted/50 text-center"
+              >
+                배우자 없음 (0원)
+              </button>
+            </div>
+          </div>
+          <div class="rounded-lg bg-muted/40 p-3 text-xs text-muted-foreground leading-relaxed">
+            상속세 기본 일괄공제 5억 원과 배우자 상속공제(법정 지분 내 최소 5억~최대 30억 원)가 적용되어, 배우자와 자녀가 함께 상속받으면 최소 10억 원까지 상속세가 발생하지 않습니다.
+          </div>
+        </div>
+
+        <!-- Generation Skip Checkbox -->
+        <div class="flex items-center gap-3 pt-2">
+          <input
+            type="checkbox"
+            id="generation-skip"
+            class="h-4 w-4 rounded border-input text-primary focus:ring-primary"
+          />
+          <label for="generation-skip" class="text-xs font-semibold text-foreground cursor-pointer">
+            세대생략 증여/상속 (손자·손녀에게 직접 이전 시 30% 할증)
+          </label>
+        </div>
+
+        <!-- Report Credit Checkbox -->
+        <div class="flex items-center gap-3">
+          <input
+            type="checkbox"
+            id="report-credit"
+            checked
+            class="h-4 w-4 rounded border-input text-primary focus:ring-primary"
+          />
+          <label for="report-credit" class="text-xs font-semibold text-foreground cursor-pointer">
+            신고기한 내 자진신고 (3% 세액공제 적용)
+          </label>
+        </div>
+      </div>
+
+      <!-- Result Panel -->
+      <div class="lg:col-span-6 space-y-6">
+        <div class="rounded-2xl border border-border bg-card p-6 shadow-xs">
+          <p id="res-badge" class="text-xs font-bold text-primary mb-1">
+            증여세 모의 산출 결과
+          </p>
+          <div class="flex items-baseline justify-between mt-2 border-b border-border pb-4">
+            <span class="text-xs text-muted-foreground">최종 납부 예상세액</span>
+            <span id="res-final-tax" class="text-2xl sm:text-3xl font-black text-foreground font-mono">0원</span>
+          </div>
+
+          <div class="mt-4 space-y-2.5 text-xs">
+            <div class="flex justify-between text-muted-foreground">
+              <span>과세가액 (재산 - 채무)</span>
+              <span id="res-tax-base-value" class="font-mono text-foreground">0원</span>
+            </div>
+            <div class="flex justify-between text-muted-foreground">
+              <span>인적·재산 공제 합계</span>
+              <span id="res-deduction-value" class="font-mono text-foreground text-primary">-0원</span>
+            </div>
+            <div class="flex justify-between text-muted-foreground">
+              <span>과세표준</span>
+              <span id="res-taxable-base" class="font-mono text-foreground font-semibold">0원</span>
+            </div>
+            <div class="flex justify-between text-muted-foreground">
+              <span>적용 한계세율 / 누진공제</span>
+              <span id="res-bracket-info" class="font-mono text-foreground">0% (0원)</span>
+            </div>
+            <div class="flex justify-between text-muted-foreground">
+              <span>산출세액</span>
+              <span id="res-calculated-tax" class="font-mono text-foreground">0원</span>
+            </div>
+            <div class="flex justify-between text-muted-foreground">
+              <span>세대생략 할증액 (30%)</span>
+              <span id="res-skip-surcharge" class="font-mono text-foreground">+0원</span>
+            </div>
+            <div class="flex justify-between text-muted-foreground">
+              <span>자진신고 세액공제 (3%)</span>
+              <span id="res-report-credit-val" class="font-mono text-foreground text-primary">-0원</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2026 Tax Brackets Table -->
+        <div class="rounded-2xl border border-border bg-card p-5 text-xs space-y-3">
+          <p class="font-bold text-foreground text-sm">2026년 상속·증여세 법정 세율표</p>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-muted-foreground">
+              <thead>
+                <tr class="border-b border-border text-foreground font-bold">
+                  <th class="py-1.5 pr-2">과세표준 구간</th>
+                  <th class="py-1.5 px-2">세율</th>
+                  <th class="py-1.5 pl-2 text-right">누진공제액</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-border/50">
+                <tr>
+                  <td class="py-1.5 pr-2">1억 원 이하</td>
+                  <td class="py-1.5 px-2 font-mono">10%</td>
+                  <td class="py-1.5 pl-2 text-right font-mono">0원</td>
+                </tr>
+                <tr>
+                  <td class="py-1.5 pr-2">1억 초과 ~ 5억 이하</td>
+                  <td class="py-1.5 px-2 font-mono">20%</td>
+                  <td class="py-1.5 pl-2 text-right font-mono">1,000만 원</td>
+                </tr>
+                <tr>
+                  <td class="py-1.5 pr-2">5억 초과 ~ 10억 이하</td>
+                  <td class="py-1.5 px-2 font-mono">30%</td>
+                  <td class="py-1.5 pl-2 text-right font-mono">6,000만 원</td>
+                </tr>
+                <tr>
+                  <td class="py-1.5 pr-2">10억 초과 ~ 30억 이하</td>
+                  <td class="py-1.5 px-2 font-mono">40%</td>
+                  <td class="py-1.5 pl-2 text-right font-mono">1억 6,000만 원</td>
+                </tr>
+                <tr>
+                  <td class="py-1.5 pr-2">30억 원 초과</td>
+                  <td class="py-1.5 px-2 font-mono">50%</td>
+                  <td class="py-1.5 pl-2 text-right font-mono">4억 6,000만 원</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <RelatedTools currentId="inheritance-gift" />
+  </div>
+
+  <script>
+    let mode: "gift" | "inheritance" = "gift";
+    let hasSpouse = true;
+
+    const btnModeGift = document.getElementById("btn-mode-gift")!;
+    const btnModeInheritance = document.getElementById("btn-mode-inheritance")!;
+    const giftSection = document.getElementById("gift-relation-section")!;
+    const inheritanceSection = document.getElementById("inheritance-deduction-section")!;
+
+    const assetInput = document.getElementById("asset-value") as HTMLInputElement;
+    const debtInput = document.getElementById("debt-value") as HTMLInputElement;
+    const relationSelect = document.getElementById("gift-relation") as HTMLSelectElement;
+    const skipCheckbox = document.getElementById("generation-skip") as HTMLInputElement;
+    const reportCreditCheckbox = document.getElementById("report-credit") as HTMLInputElement;
+
+    const btnSpouseYes = document.getElementById("btn-spouse-yes")!;
+    const btnSpouseNo = document.getElementById("btn-spouse-no")!;
+
+    const assetKoDisplay = document.getElementById("asset-value-ko")!;
+    const resBadge = document.getElementById("res-badge")!;
+    const resFinalTax = document.getElementById("res-final-tax")!;
+    const resTaxBaseValue = document.getElementById("res-tax-base-value")!;
+    const resDeductionValue = document.getElementById("res-deduction-value")!;
+    const resTaxableBase = document.getElementById("res-taxable-base")!;
+    const resBracketInfo = document.getElementById("res-bracket-info")!;
+    const resCalculatedTax = document.getElementById("res-calculated-tax")!;
+    const resSkipSurcharge = document.getElementById("res-skip-surcharge")!;
+    const resReportCreditVal = document.getElementById("res-report-credit-val")!;
+
+    function formatKRW(val: number): string {
+      return Math.round(val).toLocaleString("ko-KR") + "원";
+    }
+
+    function formatKoreanUnits(num: number): string {
+      if (num <= 0) return "0원";
+      const eok = Math.floor(num / 100000000);
+      const man = Math.floor((num % 100000000) / 10000);
+      let res = "";
+      if (eok > 0) res += `${eok}억 `;
+      if (man > 0) res += `${man.toLocaleString("ko-KR")}만 `;
+      return res.trim() + "원";
+    }
+
+    function calculate() {
+      const asset = Math.max(0, parseFloat(assetInput.value) || 0);
+      const debt = Math.max(0, parseFloat(debtInput.value) || 0);
+      assetKoDisplay.textContent = formatKoreanUnits(asset);
+
+      const netValue = Math.max(0, asset - debt);
+
+      let totalDeduction = 0;
+
+      if (mode === "gift") {
+        const relation = relationSelect.value;
+        if (relation === "spouse") totalDeduction = 600000000;
+        else if (relation === "child-adult") totalDeduction = 50000000;
+        else if (relation === "child-minor") totalDeduction = 20000000;
+        else if (relation === "parent") totalDeduction = 50000000;
+        else if (relation === "other-relative") totalDeduction = 10000000;
+        else totalDeduction = 0;
+      } else {
+        // Inheritance: Basic lump sum 500M + spouse min 500M
+        const lumpSum = 500000000;
+        const spouseDeduction = hasSpouse ? 500000000 : 0;
+        totalDeduction = lumpSum + spouseDeduction;
+      }
+
+      const taxableBase = Math.max(0, netValue - totalDeduction);
+
+      let rate = 0.1;
+      let progressiveDeduction = 0;
+      if (taxableBase <= 100000000) {
+        rate = 0.1;
+        progressiveDeduction = 0;
+      } else if (taxableBase <= 500000000) {
+        rate = 0.2;
+        progressiveDeduction = 10000000;
+      } else if (taxableBase <= 1000000000) {
+        rate = 0.3;
+        progressiveDeduction = 60000000;
+      } else if (taxableBase <= 3000000000) {
+        rate = 0.4;
+        progressiveDeduction = 160000000;
+      } else {
+        rate = 0.5;
+        progressiveDeduction = 460000000;
+      }
+
+      const calculatedTax = taxableBase > 0 ? Math.max(0, taxableBase * rate - progressiveDeduction) : 0;
+
+      let surcharge = 0;
+      if (skipCheckbox.checked && calculatedTax > 0) {
+        surcharge = Math.floor(calculatedTax * 0.3);
+      }
+
+      const subtotal = calculatedTax + surcharge;
+      let reportCredit = 0;
+      if (reportCreditCheckbox.checked && subtotal > 0) {
+        reportCredit = Math.floor(subtotal * 0.03);
+      }
+
+      const finalTax = Math.max(0, subtotal - reportCredit);
+
+      resBadge.textContent = mode === "gift" ? "증여세 모의 산출 결과" : "상속세 모의 산출 결과";
+      resFinalTax.textContent = formatKRW(finalTax);
+      resTaxBaseValue.textContent = formatKRW(netValue);
+      resDeductionValue.textContent = `-${formatKRW(Math.min(netValue, totalDeduction))}`;
+      resTaxableBase.textContent = formatKRW(taxableBase);
+      resBracketInfo.textContent = `${Math.round(rate * 100)}% (-${formatKRW(progressiveDeduction)})`;
+      resCalculatedTax.textContent = formatKRW(calculatedTax);
+      resSkipSurcharge.textContent = `+${formatKRW(surcharge)}`;
+      resReportCreditVal.textContent = `-${formatKRW(reportCredit)}`;
+    }
+
+    btnModeGift.addEventListener("click", () => {
+      mode = "gift";
+      btnModeGift.classList.add("bg-card", "text-foreground", "font-bold", "shadow-xs");
+      btnModeGift.classList.remove("text-muted-foreground", "font-medium");
+      btnModeInheritance.classList.remove("bg-card", "text-foreground", "font-bold", "shadow-xs");
+      btnModeInheritance.classList.add("text-muted-foreground", "font-medium");
+      giftSection.classList.remove("hidden");
+      inheritanceSection.classList.add("hidden");
+      calculate();
+    });
+
+    btnModeInheritance.addEventListener("click", () => {
+      mode = "inheritance";
+      btnModeInheritance.classList.add("bg-card", "text-foreground", "font-bold", "shadow-xs");
+      btnModeInheritance.classList.remove("text-muted-foreground", "font-medium");
+      btnModeGift.classList.remove("bg-card", "text-foreground", "font-bold", "shadow-xs");
+      btnModeGift.classList.add("text-muted-foreground", "font-medium");
+      inheritanceSection.classList.remove("hidden");
+      giftSection.classList.add("hidden");
+      calculate();
+    });
+
+    btnSpouseYes.addEventListener("click", () => {
+      hasSpouse = true;
+      btnSpouseYes.classList.add("border-primary", "bg-primary/10", "text-primary", "font-bold");
+      btnSpouseYes.classList.remove("border-border", "bg-background", "text-muted-foreground", "font-medium");
+      btnSpouseNo.classList.remove("border-primary", "bg-primary/10", "text-primary", "font-bold");
+      btnSpouseNo.classList.add("border-border", "bg-background", "text-muted-foreground", "font-medium");
+      calculate();
+    });
+
+    btnSpouseNo.addEventListener("click", () => {
+      hasSpouse = false;
+      btnSpouseNo.classList.add("border-primary", "bg-primary/10", "text-primary", "font-bold");
+      btnSpouseNo.classList.remove("border-border", "bg-background", "text-muted-foreground", "font-medium");
+      btnSpouseYes.classList.remove("border-primary", "bg-primary/10", "text-primary", "font-bold");
+      btnSpouseYes.classList.add("border-border", "bg-background", "text-muted-foreground", "font-medium");
+      calculate();
+    });
+
+    [assetInput, debtInput, relationSelect, skipCheckbox, reportCreditCheckbox].forEach((el) => {
+      el.addEventListener("input", calculate);
+      el.addEventListener("change", calculate);
+    });
+
+    calculate();
+  </script>
+</Layout>

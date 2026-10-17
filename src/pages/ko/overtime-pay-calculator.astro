@@ -26,13 +26,13 @@ import RelatedTools from "../../components/RelatedTools.astro";
         <div>
           <div class="flex justify-between items-center mb-1.5">
             <label for="hourlyWage" class="text-sm font-bold text-foreground">통상시급 (원)</label>
-            <span class="text-xs text-primary font-semibold">2026 법정최저 10,030원</span>
+            <span class="text-xs text-primary font-semibold">2026 법정최저 10,320원</span>
           </div>
           <input
             type="number"
             id="hourlyWage"
-            value="10030"
-            min="10030"
+            value="10320"
+            min="10320"
             step="10"
             class="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm font-semibold text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
           />
@@ -133,7 +133,7 @@ import RelatedTools from "../../components/RelatedTools.astro";
         <p class="font-bold text-foreground mb-1">api.oiyo.net B2A 무비용 연동 엔드포인트</p>
         <p class="mb-2">에이전트 및 급여 계산 파이프라인에서 동일 공식을 직접 호출할 수 있습니다.</p>
         <code class="block rounded bg-background p-2.5 font-mono text-[11px] text-foreground border border-border break-all">
-          GET https://api.oiyo.net/v1/labor/kr/overtime-pay?hourlyWage=10030&overtimeHours=10&nightHours=5
+          GET https://api.oiyo.net/v1/labor/kr/overtime-pay?hourlyWage=10320&overtimeHours=10&nightHours=5
         </code>
       </div>
 
@@ -151,7 +151,7 @@ import RelatedTools from "../../components/RelatedTools.astro";
         const hol8Input = document.getElementById('holidayUnder8') as HTMLInputElement;
         const holOverInput = document.getElementById('holidayOver8') as HTMLInputElement;
 
-        const wage = Math.max(10030, Number(wageInput.value) || 10030);
+        const wage = Math.max(10320, Number(wageInput.value) || 10320);
         const otH = Math.max(0, Number(otInput.value) || 0);
         const ntH = Math.max(0, Number(ntInput.value) || 0);
         const hol8H = Math.max(0, Number(hol8Input.value) || 0);

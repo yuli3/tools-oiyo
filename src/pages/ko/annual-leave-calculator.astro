@@ -48,14 +48,14 @@ import RelatedTools from "../../components/RelatedTools.astro";
             <input
               type="number"
               id="hourly-wage"
-              value="10030"
+              value="10320"
               step="100"
-              min="10030"
+              min="10320"
               class="w-full rounded-lg border border-input bg-background px-4 py-3 text-sm font-mono text-foreground focus-visible:outline-2 focus-visible:outline-ring"
             />
             <span class="absolute right-4 top-3.5 text-xs text-muted-foreground">원</span>
           </div>
-          <p class="mt-1 text-[11px] text-muted-foreground">2026 최저시급 10,030원</p>
+          <p class="mt-1 text-[11px] text-muted-foreground">2026 최저시급 10,320원</p>
         </div>
 
         <div>
@@ -153,7 +153,7 @@ import RelatedTools from "../../components/RelatedTools.astro";
 
       function calculate() {
         const years = Math.max(0, parseInt(yearsInput.value, 10) || 0);
-        const wage = Math.max(10030, parseFloat(hourlyWageInput.value) || 10030);
+        const wage = Math.max(10320, parseFloat(hourlyWageInput.value) || 10320);
         const hours = Math.max(1, Math.min(8, parseFloat(dailyHoursSelect.value) || 8));
         const unused = Math.max(0, parseFloat(unusedDaysInput.value) || 0);
 

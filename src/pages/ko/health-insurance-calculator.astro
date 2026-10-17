@@ -5,7 +5,7 @@ import RelatedTools from "../../components/RelatedTools.astro";
 
 <Layout
   title="국민건강보험료 지역가입자 계산기 & 피부양자 자격 판정 — 2026년 개편 부과체계"
-  description="소득정률제 7.09%, 재산세 과표 5,000만원 기본공제, 자동차 부과 폐지 반영 건강보험료 모의계산 및 금융소득 2,000만원·사업소득 피부양자 박탈 기준을 즉시 판정합니다."
+  description="2026년 소득정률제 7.19%, 재산세 과표 5,000만원 기본공제, 자동차 부과 폐지 반영 건강보험료 모의계산 및 금융소득 2,000만원·사업소득 피부양자 박탈 기준을 즉시 판정합니다."
 >
   <div class="mx-auto max-w-4xl px-4 py-8 sm:px-6 sm:py-12">
     <!-- Header -->
@@ -152,7 +152,7 @@ import RelatedTools from "../../components/RelatedTools.astro";
 
           <div class="mt-6 space-y-2.5 border-t border-border pt-4 text-xs">
             <div class="flex justify-between text-muted-foreground">
-              <span>소득분 건강보험료 (7.09%)</span>
+              <span>소득분 건강보험료 (7.19%)</span>
               <span id="res-income-premium" class="font-semibold text-foreground">0 원</span>
             </div>
             <div class="flex justify-between text-muted-foreground">
@@ -160,7 +160,7 @@ import RelatedTools from "../../components/RelatedTools.astro";
               <span id="res-property-premium" class="font-semibold text-foreground">0 원</span>
             </div>
             <div class="flex justify-between text-muted-foreground">
-              <span>장기요양보험료 (건보료의 12.95%)</span>
+              <span>장기요양보험료 (건보료의 13.14%)</span>
               <span id="res-care-premium" class="font-semibold text-foreground">2,270 원</span>
             </div>
             <div class="flex justify-between text-muted-foreground border-t border-dashed border-border pt-2 font-bold text-foreground">
@@ -204,7 +204,7 @@ import RelatedTools from "../../components/RelatedTools.astro";
           <ul class="list-disc list-inside space-y-1">
             <li><strong>자동차 건보료 완전 폐지</strong>: 배기량이나 차량 가액에 관계없이 자동차에 매기던 건보료가 전면 폐지되었습니다.</li>
             <li><strong>재산 기본공제 5,000만 원</strong>: 재산세 과표에서 5,000만 원을 일괄 공제하여 영세 1주택자의 부담이 경감되었습니다.</li>
-            <li><strong>소득정률제 도입</strong>: 등급제가 폐지되고 직장가입자와 동일하게 소득의 <strong>7.09%</strong> 정률 부과됩니다.</li>
+            <li><strong>소득정률제 도입</strong>: 등급제가 폐지되고 직장가입자와 동일하게 소득의 <strong>7.19%</strong> 정률 부과됩니다.</li>
           </ul>
         </div>
       </div>
@@ -280,10 +280,10 @@ import RelatedTools from "../../components/RelatedTools.astro";
 
         const totalAnnualIncome = bizIncome + financeIncome + otherIncome;
 
-        // 1. 소득분 건강보험료 (소득정률제 7.09%)
+        // 1. 소득분 건강보험료 (2026 소득정률제 7.19%)
         let monthlyIncomePrem = 0;
         if (totalAnnualIncome > 3360000) {
-          monthlyIncomePrem = (totalAnnualIncome / 12) * 0.0709;
+          monthlyIncomePrem = (totalAnnualIncome / 12) * 0.0719;
         }
 
         // 2. 재산분 건강보험료
@@ -296,8 +296,8 @@ import RelatedTools from "../../components/RelatedTools.astro";
           monthlyHealthPrem = 19780;
         }
 
-        // 4. 장기요양보험료 (12.95%)
-        const monthlyCarePrem = monthlyHealthPrem * 0.1295;
+        // 4. 장기요양보험료 (13.14%)
+        const monthlyCarePrem = monthlyHealthPrem * 0.1314;
         const totalMonthly = monthlyHealthPrem + monthlyCarePrem;
 
         resIncomePrem.textContent = `${formatNum(monthlyIncomePrem)} 원`;

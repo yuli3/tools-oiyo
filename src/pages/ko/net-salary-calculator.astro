@@ -5,7 +5,7 @@ import RelatedTools from "../../components/RelatedTools.astro";
 
 <Layout
   title="2026 연봉 & 월급 실수령액 계산기"
-  description="2026년 최신 4대보험 요율(국민연금 4.5%, 건강보험 3.545%, 장기요양 12.95%, 고용보험 0.9%) 및 근로소득세 간이세액표를 반영한 정밀 실수령액 모의계산기입니다."
+  description="2026년 최신 4대보험 요율(국민연금 4.5%, 건강보험 3.595%, 장기요양 13.14%, 고용보험 0.9%) 및 근로소득세 간이세액표를 반영한 정밀 실수령액 모의계산기입니다."
 >
   <div class="mx-auto w-full max-w-2xl px-4 py-8 sm:px-8">
     <div class="mb-6">
@@ -124,11 +124,11 @@ import RelatedTools from "../../components/RelatedTools.astro";
               <span id="res-pension" class="font-mono text-foreground">0원</span>
             </div>
             <div class="flex justify-between">
-              <span>건강보험 (3.545%)</span>
+              <span>건강보험 (3.595%)</span>
               <span id="res-health" class="font-mono text-foreground">0원</span>
             </div>
             <div class="flex justify-between">
-              <span>장기요양보험 (건보의 12.95%)</span>
+              <span>장기요양보험 (건보의 13.14%)</span>
               <span id="res-care" class="font-mono text-foreground">0원</span>
             </div>
             <div class="flex justify-between">
@@ -202,11 +202,11 @@ import RelatedTools from "../../components/RelatedTools.astro";
         const pensionBase = Math.min(6170000, Math.max(390000, taxable));
         const nationalPension = Math.round(pensionBase * 0.045);
 
-        // 2. 건강보험 3.545%
-        const healthInsurance = Math.round(taxable * 0.03545);
+        // 2. 건강보험 3.595% (2026년 기준)
+        const healthInsurance = Math.round(taxable * 0.03595);
 
-        // 3. 장기요양보험 (건보의 12.95%)
-        const longTermCare = Math.round(healthInsurance * 0.1295);
+        // 3. 장기요양보험 (건보의 13.14%)
+        const longTermCare = Math.round(healthInsurance * 0.1314);
 
         // 4. 고용보험 0.9%
         const employmentInsurance = Math.round(taxable * 0.009);

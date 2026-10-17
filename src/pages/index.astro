@@ -29,7 +29,7 @@ const tools = [
   {
     id: "unemployment-benefits",
     title: "실업급여(구직급여) 모의 계산기",
-    desc: "2026년 최저시급(10,030원) 하한액(64,192원) 및 상한액(66,000원) 기준 연령·가입기간별 소정급여일수와 총 수급액을 계산합니다.",
+    desc: "2026년 최저시급(10,320원) 하한액(66,048원) 및 상한액(68,100원) 기준 연령·가입기간별 소정급여일수와 총 수급액을 계산합니다.",
     href: "/ko/unemployment-benefits-calculator/",
     category: "노동/복지",
     badge: "2026 신설",
@@ -197,7 +197,7 @@ const tools = [
   {
     id: "health-insurance",
     title: "국민건강보험료 지역가입자 & 피부양자 판정기",
-    desc: "소득정률제 7.09% 및 재산세 과표 5,000만원 기본공제 반영 건보료와 금융소득·사업소득 피부양자 자격을 판정합니다.",
+    desc: "소득정률제 7.19% 및 재산세 과표 5,000만원 기본공제 반영 건보료와 금융소득·사업소득 피부양자 자격을 판정합니다.",
     href: "/ko/health-insurance-calculator/",
     category: "급여/세무",
     badge: "2026 개편",
@@ -241,6 +241,38 @@ const tools = [
     href: "/ko/sole-proprietor-vs-corp-calculator/",
     category: "세무/사업",
     badge: "절세 전략",
+  },
+  {
+    id: "inheritance-gift",
+    title: "상속세 & 증여세 모의 계산기",
+    desc: "2026년 상증세법 기준 배우자·자녀 공제, 5단계 누진세율(10~50%), 세대생략 할증 및 자진신고공제(3%)를 반영하여 상속세와 증여세를 비교 계산합니다.",
+    href: "/ko/inheritance-gift-tax-calculator/",
+    category: "세무/자산",
+    badge: "2026 상증세",
+  },
+  {
+    id: "loan-refinance",
+    title: "대출 중도상환수수료 & 대환대출 실익 계산기",
+    desc: "기존 금리 vs 신규 대환 금리 차이, 중도상환수수료 잔여일수 감액 및 부대비용을 감안하여 갈아타기 손익분기점(회수 개월수)을 산출합니다.",
+    href: "/ko/loan-refinance-calculator/",
+    category: "금융/대출",
+    badge: "갈아타기 실익",
+  },
+  {
+    id: "card-tax-deduction",
+    title: "연말정산 카드 소득공제 황금비율 계산기",
+    desc: "총급여 25% 문턱과 신용카드(15%) vs 체크카드·현금(30%) 공제율 최적화로 최대 환급을 받는 황금 소비 전략을 시뮬레이션합니다.",
+    href: "/ko/card-tax-deduction-calculator/",
+    category: "연말정산/세무",
+    badge: "연말정산 필승",
+  },
+  {
+    id: "car-bond-refund",
+    title: "자동차 채권 환급금 & 공채 할인 매도 계산기",
+    desc: "차량 가격과 등록 지역별 법정 공채 매입금액, 1,600cc 미만 면제 기준, 당일 즉시 할인 매도 시 본인부담금 및 만기 환급액을 계산합니다.",
+    href: "/ko/car-bond-refund-calculator/",
+    category: "자동차/세무",
+    badge: "차량 공채",
   },
 ];
 import Layout from "../components/Layout.astro";

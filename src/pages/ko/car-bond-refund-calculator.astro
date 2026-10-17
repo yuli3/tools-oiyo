@@ -1,0 +1,224 @@
+---
+import Layout from "../../components/Layout.astro";
+import RelatedTools from "../../components/RelatedTools.astro";
+---
+
+<Layout
+  title="자동차 채권 환급금 & 공채 할인 매도 계산기 — 2026년 지자체별 매입 면제 기준"
+  description="2026년 자동차 등록 시 지자체별 공채(지역개발·도시철도채권) 매입 의무액, 1,600cc 미만 면제 기준, 즉시 할인 매도 시 본인 부담금 및 5년 만기 상환액을 즉시 계산합니다."
+>
+  <div class="mx-auto w-full max-w-4xl px-4 py-8 sm:px-6 sm:py-12">
+    <div class="mb-6">
+      <a href="/" class="text-xs font-semibold text-muted-foreground hover:text-primary transition-colors mb-3 inline-block">← 전체 도구 목록</a>
+      <h1 class="text-2xl font-black tracking-tight text-foreground sm:text-3xl">
+        자동차 채권 환급금 & 공채 할인 매도 계산기
+      </h1>
+      <p class="mt-2 text-xs text-muted-foreground sm:text-sm leading-relaxed">
+        차량 가격과 배기량, 등록 지역을 선택하면 법정 공채 매입금액과 당일 즉시 할인 매도 시 실부담금(할인료), 만기 보유 시 원리금 환급액을 계산합니다.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      <!-- Input Column -->
+      <div class="lg:col-span-6 space-y-6">
+        <div class="bg-card border border-border rounded-2xl p-6 shadow-xs space-y-5">
+          <div>
+            <label for="car-price" class="block text-xs font-bold text-foreground">
+              차량 가격 (부가가치세 제외 공급가액, 원)
+            </label>
+            <div class="mt-2 relative">
+              <input
+                type="number"
+                id="car-price"
+                value="35000000"
+                step="1000000"
+                min="5000000"
+                class="w-full rounded-lg border border-input bg-background px-4 py-3 text-sm font-mono text-foreground focus-visible:outline-2 focus-visible:outline-ring"
+              />
+              <span class="absolute right-4 top-3.5 text-xs text-muted-foreground">원</span>
+            </div>
+            <p id="car-price-ko" class="mt-1 text-xs text-muted-foreground">3,500만 원</p>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label for="region-select" class="block text-xs font-bold text-foreground">
+                등록 지역 (지자체)
+              </label>
+              <select
+                id="region-select"
+                class="mt-2 w-full rounded-lg border border-input bg-background px-4 py-3 text-sm text-foreground focus-visible:outline-2 focus-visible:outline-ring"
+              >
+                <option value="seoul" selected>서울특별시 (도시철도채권)</option>
+                <option value="gyeonggi">경기도 (지역개발채권)</option>
+                <option value="busan">부산·대구 (도시철도채권)</option>
+                <option value="incheon">인천·기타 광역시</option>
+                <option value="province">기타 도 지역 (강원/충청/전라/경상)</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="engine-size" class="block text-xs font-bold text-foreground">
+                배기량 및 차종
+              </label>
+              <select
+                id="engine-size"
+                class="mt-2 w-full rounded-lg border border-input bg-background px-4 py-3 text-sm text-foreground focus-visible:outline-2 focus-visible:outline-ring"
+              >
+                <option value="under1600">1,600cc 미만 (전액 면제)</option>
+                <option value="mid2000" selected>1,600cc ~ 2,000cc 미만</option>
+                <option value="over2000">2,000cc 이상 대형차</option>
+                <option value="ev">전기차·수소차 (친환경 감면)</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label for="discount-rate" class="block text-xs font-bold text-foreground">
+              공채 할인율 (당일 은행 채권 매도 할인율, %)
+            </label>
+            <div class="mt-2 relative">
+              <input
+                type="number"
+                id="discount-rate"
+                value="8.5"
+                step="0.1"
+                min="1"
+                max="25"
+                class="w-full rounded-lg border border-input bg-background px-4 py-3 text-sm font-mono text-foreground focus-visible:outline-2 focus-visible:outline-ring"
+              />
+              <span class="absolute right-4 top-3.5 text-xs text-muted-foreground">%</span>
+            </div>
+            <p class="mt-1 text-xs text-muted-foreground">한국거래소(KRX) 유통 수익률 기준 실시간 은행 할인율 (통상 7~10%)</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Result Column -->
+      <div class="lg:col-span-6 space-y-6">
+        <div class="rounded-2xl border border-border bg-card p-6 shadow-xs">
+          <p class="text-xs font-bold text-primary mb-1">
+            자동차 공채 산출 결과
+          </p>
+          <div class="flex items-baseline justify-between mt-2 border-b border-border pb-4">
+            <span class="text-xs text-muted-foreground">당일 즉시 매도 시 실부담액</span>
+            <span id="res-discount-loss" class="text-2xl sm:text-3xl font-black text-foreground font-mono">297,500원</span>
+          </div>
+
+          <div class="mt-4 space-y-3 text-xs">
+            <div class="flex justify-between">
+              <span class="text-muted-foreground">적용 법정 매입요율</span>
+              <span id="res-bond-rate" class="font-mono text-foreground font-semibold">10%</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-muted-foreground">법정 채권 총 매입금액</span>
+              <span id="res-bond-amount" class="font-mono text-foreground">3,500,000원</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-muted-foreground">즉시 할인 매도 시 은행 지급액</span>
+              <span id="res-bank-payout" class="font-mono text-foreground">3,202,500원</span>
+            </div>
+            <div class="flex justify-between border-t border-border pt-2">
+              <span class="text-muted-foreground">5년 만기 보유 시 원리금 환급액</span>
+              <span id="res-maturity-refund" class="font-mono font-bold text-primary">3,732,000원</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2026 Exemption & Claim Guide -->
+        <div class="rounded-2xl border border-border bg-card p-6 shadow-xs space-y-3">
+          <p class="font-bold text-foreground text-sm">💡 2026년 공채 매입 면제 & 환급 팁</p>
+          <ul class="list-disc list-inside space-y-2 text-xs text-muted-foreground leading-relaxed">
+            <li><strong>1,600cc 미만 소형차 의무 면제</strong>: 2023년 개정 이후 2026년 현재도 1,600cc 미만 비영업용 승용차(아반떼·코나 1.6·소형 SUV 등)는 공채 매입이 <strong>100% 면제(0원)</strong>됩니다.</li>
+            <li><strong>친환경차(전기·수소) 감면</strong>: 지자체에 따라 도시철도/지역개발채권 최대 250만 원까지 감면됩니다.</li>
+            <li><strong>숨은 미환급 채권 찾기</strong>: 5년 전 채권을 즉시 매도하지 않고 실물 매입했던 경우, 만기 후 5년(소멸시효) 내에 위택스(Wetax) 또는 각 시도 금고 은행(신한/농협 등)에서 본인 계좌로 즉시 환급받을 수 있습니다.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <RelatedTools currentId="car-bond-refund" />
+  </div>
+
+  <script>
+    const priceInput = document.getElementById("car-price") as HTMLInputElement;
+    const regionSelect = document.getElementById("region-select") as HTMLSelectElement;
+    const engineSelect = document.getElementById("engine-size") as HTMLSelectElement;
+    const discountInput = document.getElementById("discount-rate") as HTMLInputElement;
+
+    const priceKo = document.getElementById("car-price-ko")!;
+    const resDiscountLoss = document.getElementById("res-discount-loss")!;
+    const resBondRate = document.getElementById("res-bond-rate")!;
+    const resBondAmount = document.getElementById("res-bond-amount")!;
+    const resBankPayout = document.getElementById("res-bank-payout")!;
+    const resMaturityRefund = document.getElementById("res-maturity-refund")!;
+
+    function formatKRW(val: number): string {
+      return Math.round(val).toLocaleString("ko-KR") + "원";
+    }
+
+    function formatKoreanUnits(num: number): string {
+      if (num <= 0) return "0원";
+      const eok = Math.floor(num / 100000000);
+      const man = Math.floor((num % 100000000) / 10000);
+      let res = "";
+      if (eok > 0) res += `${eok}억 `;
+      if (man > 0) res += `${man.toLocaleString("ko-KR")}만 `;
+      return res.trim() + "원";
+    }
+
+    function calculate() {
+      const price = Math.max(0, parseFloat(priceInput.value) || 0);
+      priceKo.textContent = formatKoreanUnits(price);
+
+      const region = regionSelect.value;
+      const engine = engineSelect.value;
+      const discountRate = Math.max(0, parseFloat(discountInput.value) || 0) / 100;
+
+      // 1. Determine statutory rate based on engine size & region
+      let rate = 0;
+      if (engine === "under1600") {
+        rate = 0; // Exempted under 2026 laws
+      } else if (engine === "ev") {
+        // 친환경차: 통상 250만원 한도 감면, 초과분 부과
+        rate = region === "seoul" ? 0.05 : 0.03;
+      } else if (engine === "mid2000") {
+        if (region === "seoul") rate = 0.12;
+        else if (region === "gyeonggi") rate = 0.06;
+        else if (region === "busan") rate = 0.08;
+        else rate = 0.06;
+      } else {
+        // over 2000cc
+        if (region === "seoul") rate = 0.20;
+        else if (region === "gyeonggi") rate = 0.12;
+        else if (region === "busan") rate = 0.10;
+        else rate = 0.08;
+      }
+
+      let rawBond = Math.floor((price * rate) / 5000) * 5000; // 5000원 단위 절사
+      if (engine === "ev") {
+        rawBond = Math.max(0, rawBond - 2500000);
+      }
+
+      // 2. Immediate Discount Sale
+      const discountLoss = Math.floor(rawBond * discountRate);
+      const bankPayout = Math.max(0, rawBond - discountLoss);
+
+      // 3. 5-year Maturity Refund (Compounded at ~1.05% annually)
+      const maturityRefund = Math.floor(rawBond * Math.pow(1 + 0.0105, 5));
+
+      resBondRate.textContent = rate === 0 ? "0% (면제)" : `${(rate * 100).toFixed(1)}%`;
+      resBondAmount.textContent = formatKRW(rawBond);
+      resDiscountLoss.textContent = formatKRW(discountLoss);
+      resBankPayout.textContent = formatKRW(bankPayout);
+      resMaturityRefund.textContent = formatKRW(maturityRefund);
+    }
+
+    [priceInput, regionSelect, engineSelect, discountInput].forEach((el) => {
+      el.addEventListener("input", calculate);
+      el.addEventListener("change", calculate);
+    });
+
+    calculate();
+  </script>
+</Layout>

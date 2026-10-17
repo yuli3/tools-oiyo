@@ -1,0 +1,280 @@
+---
+import Layout from "../../components/Layout.astro";
+import RelatedTools from "../../components/RelatedTools.astro";
+---
+
+<Layout
+  title="2026 연말정산 카드 소득공제 황금비율 계산기 — 신용카드 vs 체크카드 최적화"
+  description="2026년 소득세법 기준 총급여 25% 문턱, 신용카드(15%) vs 체크카드·현금영수증(30%) 공제율과 한도를 반영하여 최대 환급을 위한 황금 소비 비율을 계산합니다."
+>
+  <div class="mx-auto w-full max-w-4xl px-4 py-8 sm:px-6 sm:py-12">
+    <div class="mb-6">
+      <a href="/" class="text-xs font-semibold text-muted-foreground hover:text-primary transition-colors mb-3 inline-block">← 전체 도구 목록</a>
+      <h1 class="text-2xl font-black tracking-tight text-foreground sm:text-3xl">
+        2026 연말정산 카드 소득공제 황금비율 계산기
+      </h1>
+      <p class="mt-2 text-xs text-muted-foreground sm:text-sm leading-relaxed">
+        신용카드(15%)와 체크카드(30%)의 공제율 차이를 분석하여, 총급여의 25% 문턱까지는 혜택 높은 신용카드로 채우고 초과분은 체크카드로 환급을 극대화하는 소비 전략을 산출합니다.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      <!-- Input Column -->
+      <div class="lg:col-span-6 space-y-6">
+        <div class="bg-card border border-border rounded-2xl p-6 shadow-xs space-y-5">
+          <div>
+            <label for="annual-salary" class="block text-xs font-bold text-foreground">
+              총급여액 (연봉, 비과세 제외, 원)
+            </label>
+            <div class="mt-2 relative">
+              <input
+                type="number"
+                id="annual-salary"
+                value="50000000"
+                step="1000000"
+                min="10000000"
+                class="w-full rounded-lg border border-input bg-background px-4 py-3 text-sm font-mono text-foreground focus-visible:outline-2 focus-visible:outline-ring"
+              />
+              <span class="absolute right-4 top-3.5 text-xs text-muted-foreground">원</span>
+            </div>
+            <p id="salary-ko" class="mt-1 text-xs text-muted-foreground">5,000만 원 (공제 문턱: 1,250만 원)</p>
+          </div>
+
+          <div>
+            <label for="credit-spend" class="block text-xs font-bold text-foreground">
+              신용카드 연간 사용액 (원)
+            </label>
+            <div class="mt-2 relative">
+              <input
+                type="number"
+                id="credit-spend"
+                value="15000000"
+                step="500000"
+                min="0"
+                class="w-full rounded-lg border border-input bg-background px-4 py-3 text-sm font-mono text-foreground focus-visible:outline-2 focus-visible:outline-ring"
+              />
+              <span class="absolute right-4 top-3.5 text-xs text-muted-foreground">원</span>
+            </div>
+          </div>
+
+          <div>
+            <label for="check-spend" class="block text-xs font-bold text-foreground">
+              체크카드 및 현금영수증 사용액 (원)
+            </label>
+            <div class="mt-2 relative">
+              <input
+                type="number"
+                id="check-spend"
+                value="10000000"
+                step="500000"
+                min="0"
+                class="w-full rounded-lg border border-input bg-background px-4 py-3 text-sm font-mono text-foreground focus-visible:outline-2 focus-visible:outline-ring"
+              />
+              <span class="absolute right-4 top-3.5 text-xs text-muted-foreground">원</span>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label for="culture-spend" class="block text-xs font-bold text-foreground">
+                도서·공연·미술관 (원)
+              </label>
+              <div class="mt-2 relative">
+                <input
+                  type="number"
+                  id="culture-spend"
+                  value="1000000"
+                  step="100000"
+                  min="0"
+                  class="w-full rounded-lg border border-input bg-background px-4 py-3 text-sm font-mono text-foreground focus-visible:outline-2 focus-visible:outline-ring"
+                />
+                <span class="absolute right-4 top-3.5 text-xs text-muted-foreground">원</span>
+              </div>
+            </div>
+
+            <div>
+              <label for="market-spend" class="block text-xs font-bold text-foreground">
+                전통시장·대중교통 (원)
+              </label>
+              <div class="mt-2 relative">
+                <input
+                  type="number"
+                  id="market-spend"
+                  value="1200000"
+                  step="100000"
+                  min="0"
+                  class="w-full rounded-lg border border-input bg-background px-4 py-3 text-sm font-mono text-foreground focus-visible:outline-2 focus-visible:outline-ring"
+                />
+                <span class="absolute right-4 top-3.5 text-xs text-muted-foreground">원</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Result Column -->
+      <div class="lg:col-span-6 space-y-6">
+        <div class="rounded-2xl border border-border bg-card p-6 shadow-xs">
+          <p class="text-xs font-bold text-primary mb-1">
+            소득공제 산출 결과
+          </p>
+          <div class="flex items-baseline justify-between mt-2 border-b border-border pb-4">
+            <span class="text-xs text-muted-foreground">최종 소득공제 인정액</span>
+            <span id="res-total-deduction" class="text-2xl sm:text-3xl font-black text-foreground font-mono">0원</span>
+          </div>
+
+          <div class="mt-4 space-y-3 text-xs">
+            <div class="flex justify-between">
+              <span class="text-muted-foreground">소비 문턱 (총급여 25%)</span>
+              <span id="res-threshold" class="font-mono text-foreground">0원</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-muted-foreground">공제 대상 초과 소비액</span>
+              <span id="res-excess-spend" class="font-mono text-foreground font-semibold">0원</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-muted-foreground">신용카드 공제액 (15%)</span>
+              <span id="res-credit-ded" class="font-mono text-foreground">0원</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-muted-foreground">체크카드·현금 공제액 (30%)</span>
+              <span id="res-check-ded" class="font-mono text-foreground font-bold text-primary">0원</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-muted-foreground">문화·시장·교통 추가공제</span>
+              <span id="res-extra-ded" class="font-mono text-foreground">0원</span>
+            </div>
+            <div class="flex justify-between border-t border-border pt-2">
+              <span class="font-bold text-foreground">예상 세금 환급액 (한계세율 기준)</span>
+              <span id="res-tax-refund" class="font-mono font-black text-primary text-sm">0원</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Golden Rule Strategy Card -->
+        <div class="rounded-2xl border border-border bg-card p-6 shadow-xs space-y-3">
+          <p class="font-bold text-foreground text-sm">💡 2026 연말정산 최적 황금비율 가이드</p>
+          <div id="golden-rule-box" class="rounded-xl bg-muted/40 p-4 text-xs leading-relaxed space-y-2">
+            <p id="rule-step1" class="text-foreground font-semibold">
+              1단계: 총급여 25%인 1,250만 원까지는 할인·항공마일리지 혜택이 많은 <strong>신용카드</strong>를 우선 사용하세요.
+            </p>
+            <p id="rule-step2" class="text-foreground">
+              2단계: 1,250만 원 초과분부터는 공제율이 2배 높은 <strong>체크카드(30%)</strong>나 <strong>현금영수증</strong>으로 결제해야 한도를 꽉 채울 수 있습니다.
+            </p>
+          </div>
+          <p class="text-xs text-muted-foreground">
+            ※ 총급여 7,000만 원 이하자의 기본 소득공제 한도는 300만 원, 7,000만 원 초과자는 250만 원입니다.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <RelatedTools currentId="card-tax-deduction" />
+  </div>
+
+  <script>
+    const salaryInput = document.getElementById("annual-salary") as HTMLInputElement;
+    const creditInput = document.getElementById("credit-spend") as HTMLInputElement;
+    const checkInput = document.getElementById("check-spend") as HTMLInputElement;
+    const cultureInput = document.getElementById("culture-spend") as HTMLInputElement;
+    const marketInput = document.getElementById("market-spend") as HTMLInputElement;
+
+    const salaryKo = document.getElementById("salary-ko")!;
+    const resTotalDeduction = document.getElementById("res-total-deduction")!;
+    const resThreshold = document.getElementById("res-threshold")!;
+    const resExcessSpend = document.getElementById("res-excess-spend")!;
+    const resCreditDed = document.getElementById("res-credit-ded")!;
+    const resCheckDed = document.getElementById("res-check-ded")!;
+    const resExtraDed = document.getElementById("res-extra-ded")!;
+    const resTaxRefund = document.getElementById("res-tax-refund")!;
+    const ruleStep1 = document.getElementById("rule-step1")!;
+    const ruleStep2 = document.getElementById("rule-step2")!;
+
+    function formatKRW(val: number): string {
+      return Math.round(val).toLocaleString("ko-KR") + "원";
+    }
+
+    function calculate() {
+      const salary = Math.max(0, parseFloat(salaryInput.value) || 0);
+      const credit = Math.max(0, parseFloat(creditInput.value) || 0);
+      const check = Math.max(0, parseFloat(checkInput.value) || 0);
+      const culture = Math.max(0, parseFloat(cultureInput.value) || 0);
+      const market = Math.max(0, parseFloat(marketInput.value) || 0);
+
+      const threshold = salary * 0.25;
+      const totalSpend = credit + check + culture + market;
+      const excessSpend = Math.max(0, totalSpend - threshold);
+
+      salaryKo.textContent = `${Math.floor(salary / 10000).toLocaleString("ko-KR")}만 원 (공제 문턱: ${Math.floor(threshold / 10000).toLocaleString("ko-KR")}만 원)`;
+
+      // Tax rules: Deductions apply after meeting the 25% threshold.
+      // Order of meeting the threshold: Lowest rate first (Credit card 15% -> Check card 30% -> Culture 30% -> Market 40%).
+      let remainingThreshold = threshold;
+
+      // 1. Credit Card (15%)
+      const creditAppliedToThreshold = Math.min(credit, remainingThreshold);
+      remainingThreshold -= creditAppliedToThreshold;
+      const eligibleCredit = credit - creditAppliedToThreshold;
+      const creditDeduction = eligibleCredit * 0.15;
+
+      // 2. Check Card & Cash (30%)
+      const checkAppliedToThreshold = Math.min(check, remainingThreshold);
+      remainingThreshold -= checkAppliedToThreshold;
+      const eligibleCheck = check - checkAppliedToThreshold;
+      const checkDeduction = eligibleCheck * 0.30;
+
+      // 3. Culture (30%) - only for salary <= 70M
+      const isUnder70M = salary <= 70000000;
+      const cultureAppliedToThreshold = Math.min(culture, remainingThreshold);
+      remainingThreshold -= cultureAppliedToThreshold;
+      const eligibleCulture = isUnder70M ? (culture - cultureAppliedToThreshold) : 0;
+      const cultureDeduction = eligibleCulture * 0.30;
+
+      // 4. Market & Public Transit (40%)
+      const marketAppliedToThreshold = Math.min(market, remainingThreshold);
+      remainingThreshold -= marketAppliedToThreshold;
+      const eligibleMarket = market - marketAppliedToThreshold;
+      const marketDeduction = eligibleMarket * 0.40;
+
+      // Basic Limit: 3M under 70M, 2.5M over 70M
+      const baseLimit = isUnder70M ? 3000000 : 2500000;
+      const rawBaseDeduction = creditDeduction + checkDeduction;
+      const actualBaseDeduction = Math.min(baseLimit, rawBaseDeduction);
+
+      // Additional Limit: Culture + Market (up to 3M under 70M, or 2M over 70M)
+      const extraLimit = isUnder70M ? 3000000 : 2000000;
+      const rawExtraDeduction = cultureDeduction + marketDeduction;
+      const actualExtraDeduction = Math.min(extraLimit, rawExtraDeduction);
+
+      const totalDeduction = actualBaseDeduction + actualExtraDeduction;
+
+      // Marginal tax rate estimation based on salary:
+      // <= 14M: 6%, <= 50M: 15%, <= 88M: 24%, > 88M: 35%
+      let marginalRate = 0.15;
+      if (salary <= 14000000) marginalRate = 0.06;
+      else if (salary <= 50000000) marginalRate = 0.15;
+      else if (salary <= 88000000) marginalRate = 0.24;
+      else marginalRate = 0.35;
+
+      const estimatedRefund = totalDeduction * marginalRate * 1.1; // with local tax 10%
+
+      resTotalDeduction.textContent = formatKRW(totalDeduction);
+      resThreshold.textContent = formatKRW(threshold);
+      resExcessSpend.textContent = formatKRW(excessSpend);
+      resCreditDed.textContent = formatKRW(creditDeduction);
+      resCheckDed.textContent = formatKRW(checkDeduction);
+      resExtraDed.textContent = formatKRW(actualExtraDeduction);
+      resTaxRefund.textContent = `약 ${formatKRW(estimatedRefund)}`;
+
+      ruleStep1.innerHTML = `1단계: 총급여 25%인 <strong>${formatKRW(threshold)}</strong>까지는 부가서비스·포인트 혜택이 큰 <strong>신용카드</strong>를 우선 쓰세요.`;
+      ruleStep2.innerHTML = `2단계: <strong>${formatKRW(threshold)}</strong> 초과 소비액부터는 공제율이 2배인 <strong>체크카드·현금영수증(30%)</strong>으로 전환하여 한도(${formatKRW(baseLimit)})를 채우는 것이 최적입니다.`;
+    }
+
+    [salaryInput, creditInput, checkInput, cultureInput, marketInput].forEach((el) => {
+      el.addEventListener("input", calculate);
+      el.addEventListener("change", calculate);
+    });
+
+    calculate();
+  </script>
+</Layout>
