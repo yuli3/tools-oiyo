@@ -2,6 +2,8 @@
   "name": "tools-oiyo",
   "type": "module",
   "version": "0.0.1",
+  "private": true,
+  "license": "UNLICENSED",
   "scripts": {
     "dev": "ASTRO_TELEMETRY_DISABLED=1 astro dev",
     "build": "ASTRO_TELEMETRY_DISABLED=1 astro build",
