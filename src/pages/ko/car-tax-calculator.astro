@@ -17,7 +17,7 @@ import RelatedTools from "../../components/RelatedTools.astro";
         자동차 취득세 & 자동차세 계산기
       </h1>
       <p class="text-sm text-muted-foreground max-w-xl mx-auto">
-        신차·중고차 등록 취득세(전기차·하이브리드 감면)와 배기량별 연간 자동차세, 연납 할인 절세액을 정확하게 산출합니다.
+        신차·중고차 등록 취득세(전기차·하이브리드 감면)와 배기량별 연간 자동차세, 연납 할인 절세액을 정확하게 산출해요.
       </p>
     </div>
 
@@ -206,7 +206,7 @@ import RelatedTools from "../../components/RelatedTools.astro";
             2,450,000원
           </p>
           <p id="res-note" class="text-xs font-medium text-muted-foreground mt-2">
-            차량 등록 시 위택스(Wetax) 또는 지자체 차량등록사업소에 일시 납부합니다.
+            차량 등록 시 위택스(Wetax) 또는 지자체 차량등록사업소에 일시 납부해요.
           </p>
         </div>
       </div>
@@ -298,7 +298,7 @@ import RelatedTools from "../../components/RelatedTools.astro";
         resDiscount.textContent = ecoDiscount > 0 ? `-${formatWon(ecoDiscount)}` : '0원';
         labelTotal.textContent = '최종 납부 취득세';
         resTotal.textContent = formatWon(finalTax);
-        resNote.textContent = '취득세는 차량 등록일로부터 60일 이내(통상 등록 당일) 납부합니다.';
+        resNote.textContent = '취득세는 차량 등록일로부터 60일 이내(통상 등록 당일) 납부해요.';
       } else {
         // Annual Car Tax
         const power = annualPower.value;
@@ -364,7 +364,7 @@ import RelatedTools from "../../components/RelatedTools.astro";
         resTotal.textContent = formatWon(finalAnnualTax);
         resNote.textContent = payMonth === 'regular'
           ? `정기분 1회당 납부액: ${formatWon(finalAnnualTax / 2)} (6월 및 12월 2회 분납)`
-          : `1월 위택스에서 연납 신청 시 ${formatWon(prepaymentDiscount)}를 절약할 수 있습니다.`;
+          : `1월 위택스에서 연납 신청 시 ${formatWon(prepaymentDiscount)}를 절약할 수 있어요.`;
       }
     }
 

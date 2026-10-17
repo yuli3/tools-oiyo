@@ -4,7 +4,7 @@ import Layout from "../../components/Layout.astro";
 
 <Layout
   title="D-day 디데이 & 기념일 · 수습기간 계산기"
-  description="목표일까지 남은 D-day, 지난 날짜수, 커플 100일·200일·1주년 기념일, 직장인 수습 3개월 만료일, 시험 및 프로젝트 D-day를 실시간 정확히 계산합니다."
+  description="목표일까지 남은 D-day, 지난 날짜수, 커플 100일·200일·1주년 기념일, 직장인 수습 3개월 만료일, 시험 및 프로젝트 D-day를 실시간 정확히 계산해요."
 >
   <div class="mx-auto w-full max-w-3xl px-4 py-8 sm:px-8">
     <div class="mb-6">
@@ -16,7 +16,7 @@ import Layout from "../../components/Layout.astro";
         D-day 디데이 & 기념일 · 수습 만료일 계산기
       </h1>
       <p class="mt-2 text-sm leading-relaxed text-muted-foreground">
-        기준일과 목표일을 입력하면 남은 D-day와 경과일은 물론, 수습 3개월 만료일 및 100일·200일·1년 기념일을 한눈에 확인합니다.
+        기준일과 목표일을 입력하면 남은 D-day와 경과일은 물론, 수습 3개월 만료일 및 100일·200일·1년 기념일을 한눈에 확인해요.
       </p>
     </div>
 
@@ -79,7 +79,7 @@ import Layout from "../../components/Layout.astro";
             D-0
           </div>
           <p id="ddayDesc" class="text-sm font-semibold text-foreground">
-            오늘이 목표일입니다.
+            오늘이 목표일이에요.
           </p>
         </div>
       </div>
@@ -110,9 +110,9 @@ import Layout from "../../components/Layout.astro";
     <div class="rounded-xl border border-border bg-card p-6 space-y-4 text-xs text-muted-foreground leading-relaxed">
       <h2 class="text-sm font-bold text-foreground">💡 D-day 및 수습기간 계산 팁</h2>
       <ul class="list-disc pl-4 space-y-1.5">
-        <li><strong>D-day 기본 표기</strong>: 목표일까지 날짜가 남아있으면 <code class="text-foreground">D-N</code>, 목표일 당일은 <code class="text-foreground">D-Day (D-0)</code>, 지난 날짜는 <code class="text-foreground">D+N</code>으로 표기됩니다.</li>
-        <li><strong>직장인 수습 3개월 만료일</strong>: 근로기준법상 월 단위 기간 계산(민법 제160조)에 따라, 입사일로부터 3개월이 경과한 날의 전날 자정에 수습기간이 만료됩니다. (예: 3월 2일 입사 시 6월 1일 만료, 6월 2일부터 본채용)</li>
-        <li><strong>커플 100일 기념일</strong>: 사귀기 시작한 첫날을 1일째로 포함하여 계산하는 것이 일반적입니다. (체크박스를 활성화하세요)</li>
+        <li><strong>D-day 기본 표기</strong>: 목표일까지 날짜가 남아있으면 <code class="text-foreground">D-N</code>, 목표일 당일은 <code class="text-foreground">D-Day (D-0)</code>, 지난 날짜는 <code class="text-foreground">D+N</code>으로 표기돼요.</li>
+        <li><strong>직장인 수습 3개월 만료일</strong>: 근로기준법상 월 단위 기간 계산(민법 제160조)에 따라, 입사일로부터 3개월이 경과한 날의 전날 자정에 수습기간이 만료돼요. (예: 3월 2일 입사 시 6월 1일 만료, 6월 2일부터 본채용)</li>
+        <li><strong>커플 100일 기념일</strong>: 사귀기 시작한 첫날을 1일째로 포함하여 계산하는 것이 일반적이에요. (체크박스를 활성화하세요)</li>
       </ul>
     </div>
   </div>
@@ -157,16 +157,16 @@ import Layout from "../../components/Layout.astro";
       if (diffDays === 0) {
         ddayBadge.textContent = 'D-Day';
         ddayBadge.className = 'text-4xl sm:text-5xl font-black text-emerald-500 font-mono my-2';
-        ddayDesc.textContent = '오늘이 목표 당일입니다! 🎉';
+        ddayDesc.textContent = '오늘이 목표 당일이에요! 🎉';
       } else if (diffDays > 0) {
         ddayBadge.textContent = `D-${diffDays}`;
         ddayBadge.className = 'text-4xl sm:text-5xl font-black text-primary font-mono my-2';
-        ddayDesc.textContent = `목표일까지 ${diffDays}일 남았습니다.`;
+        ddayDesc.textContent = `목표일까지 ${diffDays}일 남았어요.`;
       } else {
         const past = Math.abs(diffDays);
         ddayBadge.textContent = `D+${past}`;
         ddayBadge.className = 'text-4xl sm:text-5xl font-black text-muted-foreground font-mono my-2';
-        ddayDesc.textContent = `목표일로부터 ${past}일 지났습니다.`;
+        ddayDesc.textContent = `목표일로부터 ${past}일 지났어요.`;
       }
     }
 

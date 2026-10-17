@@ -1,11 +1,16 @@
 ---
 import Layout from "../../components/Layout.astro";
 import RelatedTools from "../../components/RelatedTools.astro";
+import { KR_RATES_2026 } from "../../lib/kr-rates-2026.mjs";
+
+// 2026-10-17 (FAANG audit S-1): 최저임금은 SSOT에서만 읽어요(고용노동부고시 제2025-47호, 10,320원).
+const MIN_WAGE = KR_RATES_2026.minimumWage;
+const MIN_WAGE_TEXT = MIN_WAGE.toLocaleString("ko-KR");
 ---
 
 <Layout
   title="법정 연차일수 & 연차수당 계산기"
-  description="근로기준법 제60조에 따른 근속연수별 법정 연차유급휴가 발생 일수와 미사용 연차유급휴가 정산 수당을 실시간 정밀 모의계산합니다."
+  description="근로기준법 제60조에 따른 근속연수별 법정 연차유급휴가 발생 일수와 미사용 연차유급휴가 정산 수당을 실시간 정밀 모의계산해요."
 >
   <div class="mx-auto w-full max-w-2xl px-4 py-8 sm:px-8">
     <div class="mb-6">
@@ -17,7 +22,7 @@ import RelatedTools from "../../components/RelatedTools.astro";
         법정 연차일수 & 연차수당 계산기
       </h1>
       <p class="mt-2 text-xs text-muted-foreground sm:text-sm leading-relaxed">
-        근속 연수에 따라 법적으로 부여되는 연차휴가 일수를 확인하고, 연도 말 또는 퇴사 시 정산받는 미사용 연차수당을 통상임금 기준으로 계산합니다.
+        근속 연수에 따라 법적으로 부여되는 연차휴가 일수를 확인하고, 연도 말 또는 퇴사 시 정산받는 미사용 연차수당을 통상임금 기준으로 계산해요.
       </p>
     </div>
 
@@ -48,14 +53,14 @@ import RelatedTools from "../../components/RelatedTools.astro";
             <input
               type="number"
               id="hourly-wage"
-              value="10320"
+              value={MIN_WAGE}
               step="100"
-              min="10320"
+              min={MIN_WAGE}
               class="w-full rounded-lg border border-input bg-background px-4 py-3 text-sm font-mono text-foreground focus-visible:outline-2 focus-visible:outline-ring"
             />
             <span class="absolute right-4 top-3.5 text-xs text-muted-foreground">원</span>
           </div>
-          <p class="mt-1 text-[11px] text-muted-foreground">2026 최저시급 10,320원</p>
+          <p class="mt-1 text-[11px] text-muted-foreground">2026 최저시급 {MIN_WAGE_TEXT}원</p>
         </div>
 
         <div>
@@ -130,12 +135,14 @@ import RelatedTools from "../../components/RelatedTools.astro";
     </div>
 
     <div class="mt-8 rounded-lg border border-border bg-muted/30 p-4 text-center text-xs text-muted-foreground">
-      근거 법령: 근로기준법 제60조 (연차유급휴가) 및 제61조 (연차유급휴가의 사용 촉진). 1년 이상 근무 시 15일 기본 부여, 3년차부터 매 2년마다 1일씩 가산되어 최대 25일까지 발생합니다.
+      근거 법령: 근로기준법 제60조 (연차유급휴가) 및 제61조 (연차유급휴가의 사용 촉진). 1년 이상 근무 시 15일 기본 부여, 3년차부터 매 2년마다 1일씩 가산되어 최대 25일까지 발생해요.
     </div>
 
     <RelatedTools currentId="annual-leave" />
 
     <script>
+      import { KR_RATES_2026 } from "../../lib/kr-rates-2026.mjs";
+
       const yearsInput = document.getElementById("years-service") as HTMLInputElement;
       const hourlyWageInput = document.getElementById("hourly-wage") as HTMLInputElement;
       const dailyHoursSelect = document.getElementById("daily-hours") as HTMLSelectElement;
@@ -153,7 +160,7 @@ import RelatedTools from "../../components/RelatedTools.astro";
 
       function calculate() {
         const years = Math.max(0, parseInt(yearsInput.value, 10) || 0);
-        const wage = Math.max(10320, parseFloat(hourlyWageInput.value) || 10320);
+        const wage = Math.max(KR_RATES_2026.minimumWage, parseFloat(hourlyWageInput.value) || KR_RATES_2026.minimumWage);
         const hours = Math.max(1, Math.min(8, parseFloat(dailyHoursSelect.value) || 8));
         const unused = Math.max(0, parseFloat(unusedDaysInput.value) || 0);
 

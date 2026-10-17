@@ -1,0 +1,173 @@
+{
+  "src/components/Layout.astro": {
+    "shadcn/no-arbitrary-values": {
+      "count": 1
+    },
+    "shadcn/no-raw-colors": {
+      "count": 1
+    }
+  },
+  "src/components/RelatedTools.astro": {
+    "shadcn/no-arbitrary-values": {
+      "count": 4
+    }
+  },
+  "src/pages/index.astro": {
+    "shadcn/no-unknown-classes": {
+      "count": 8
+    }
+  },
+  "src/pages/ko/acquisition-tax-calculator.astro": {
+    "shadcn/no-arbitrary-values": {
+      "count": 1
+    },
+    "shadcn/no-raw-colors": {
+      "count": 4
+    }
+  },
+  "src/pages/ko/annual-leave-calculator.astro": {
+    "shadcn/no-arbitrary-values": {
+      "count": 5
+    }
+  },
+  "src/pages/ko/brokerage-fee-calculator.astro": {
+    "shadcn/no-unknown-classes": {
+      "count": 6
+    }
+  },
+  "src/pages/ko/business-day-checker.astro": {
+    "shadcn/no-arbitrary-values": {
+      "count": 1
+    }
+  },
+  "src/pages/ko/cagr-calculator.astro": {
+    "shadcn/no-arbitrary-values": {
+      "count": 3
+    },
+    "shadcn/no-unknown-classes": {
+      "count": 4
+    }
+  },
+  "src/pages/ko/car-tax-calculator.astro": {
+    "shadcn/no-unknown-classes": {
+      "count": 9
+    }
+  },
+  "src/pages/ko/dday-calculator.astro": {
+    "shadcn/no-unknown-classes": {
+      "count": 2
+    }
+  },
+  "src/pages/ko/electricity-bill-calculator.astro": {
+    "shadcn/no-arbitrary-values": {
+      "count": 3
+    },
+    "shadcn/no-unknown-classes": {
+      "count": 4
+    }
+  },
+  "src/pages/ko/freelancer-tax-calculator.astro": {
+    "shadcn/no-arbitrary-values": {
+      "count": 1
+    },
+    "shadcn/no-raw-colors": {
+      "count": 2
+    }
+  },
+  "src/pages/ko/gas-bill-calculator.astro": {
+    "shadcn/no-arbitrary-values": {
+      "count": 3
+    },
+    "shadcn/no-unknown-classes": {
+      "count": 4
+    }
+  },
+  "src/pages/ko/health-insurance-calculator.astro": {
+    "shadcn/no-arbitrary-values": {
+      "count": 4
+    }
+  },
+  "src/pages/ko/hug-guarantee-calculator.astro": {
+    "shadcn/no-arbitrary-values": {
+      "count": 2
+    }
+  },
+  "src/pages/ko/loan-repayment-calculator.astro": {
+    "shadcn/no-arbitrary-values": {
+      "count": 5
+    }
+  },
+  "src/pages/ko/military-service-calculator.astro": {
+    "shadcn/no-arbitrary-values": {
+      "count": 10
+    }
+  },
+  "src/pages/ko/net-salary-calculator.astro": {
+    "shadcn/no-arbitrary-values": {
+      "count": 2
+    },
+    "shadcn/no-unknown-classes": {
+      "count": 2
+    }
+  },
+  "src/pages/ko/overtime-pay-calculator.astro": {
+    "shadcn/no-arbitrary-values": {
+      "count": 1
+    }
+  },
+  "src/pages/ko/parental-leave-calculator.astro": {
+    "shadcn/no-arbitrary-values": {
+      "count": 6
+    },
+    "shadcn/no-unknown-classes": {
+      "count": 4
+    }
+  },
+  "src/pages/ko/property-tax-calculator.astro": {
+    "shadcn/no-arbitrary-values": {
+      "count": 23
+    },
+    "shadcn/no-unknown-classes": {
+      "count": 11
+    }
+  },
+  "src/pages/ko/pyeong-sqm-converter.astro": {
+    "shadcn/no-arbitrary-values": {
+      "count": 2
+    },
+    "shadcn/no-unknown-classes": {
+      "count": 10
+    }
+  },
+  "src/pages/ko/severance-pay-calculator.astro": {
+    "shadcn/no-arbitrary-values": {
+      "count": 5
+    }
+  },
+  "src/pages/ko/unemployment-benefits-calculator.astro": {
+    "shadcn/no-arbitrary-values": {
+      "count": 10
+    },
+    "shadcn/no-unknown-classes": {
+      "count": 2
+    }
+  },
+  "src/pages/ko/vat-comparison-calculator.astro": {
+    "shadcn/no-arbitrary-values": {
+      "count": 2
+    }
+  },
+  "src/pages/ko/weekly-holiday-allowance.astro": {
+    "shadcn/no-arbitrary-values": {
+      "count": 10
+    },
+    "shadcn/no-unknown-classes": {
+      "count": 3
+    }
+  },
+  "src/pages/ko/youth-savings-calculator.astro": {
+    "shadcn/no-unknown-classes": {
+      "count": 7
+    }
+  }
+}

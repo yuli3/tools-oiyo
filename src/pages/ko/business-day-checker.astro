@@ -4,7 +4,7 @@ import Layout from "../../components/Layout.astro";
 
 <Layout
   title="대한민국 법정 영업일·공휴일 조회기"
-  description="관공서 공휴일에 관한 규정 및 대체공휴일 픽스처를 기반으로 특정 날짜의 영업일 여부와 휴일 사유를 실시간 판별합니다."
+  description="관공서 공휴일에 관한 규정 및 대체공휴일 픽스처를 기반으로 특정 날짜의 영업일 여부와 휴일 사유를 실시간 판별해요."
 >
   <div class="mx-auto w-full max-w-2xl px-4 py-8 sm:px-8">
     <div class="mb-6">
@@ -13,7 +13,7 @@ import Layout from "../../components/Layout.astro";
           대한민국 법정 영업일·공휴일 판별기
         </h1>
         <p class="mt-2 text-xs text-muted-foreground sm:text-sm">
-          관공서 공휴일에 관한 규정 및 대체공휴일 적용 여부를 판별하여 영업일(비즈니스 데이)인지 확인합니다.
+          관공서 공휴일에 관한 규정 및 대체공휴일 적용 여부를 판별하여 영업일(비즈니스 데이)인지 확인해요.
         </p>
       </div>
 
@@ -36,7 +36,7 @@ import Layout from "../../components/Layout.astro";
             </span>
           </div>
           <p id="res-desc" class="mt-2 text-xs text-muted-foreground">
-            2026년 10월 16일 (금요일)은 주말이나 법정 공휴일이 아닌 정상 근무일입니다.
+            2026년 10월 16일 (금요일)은 주말이나 법정 공휴일이 아닌 정상 근무일이에요.
           </p>
         </div>
 
@@ -112,11 +112,11 @@ import Layout from "../../components/Layout.astro";
         if (isBiz) {
           resBadge.textContent = "정상 영업일 (Business Day)";
           resBadge.className = "inline-flex rounded-md border border-primary/20 bg-primary/10 px-4 py-1.5 text-base font-bold text-primary";
-          resDesc.textContent = `${y}년 ${m}월 ${d}일 (${dayName})은 정상 영업일입니다.`;
+          resDesc.textContent = `${y}년 ${m}월 ${d}일 (${dayName})은 정상 영업일이에요.`;
         } else {
           resBadge.textContent = `휴일 / 비영업일 (${reason})`;
           resBadge.className = "inline-flex rounded-md border border-destructive/20 bg-destructive/10 px-4 py-1.5 text-base font-bold text-destructive";
-          resDesc.textContent = `${y}년 ${m}월 ${d}일 (${dayName})은 [${reason}] 사유로 인한 휴일(비영업일)입니다.`;
+          resDesc.textContent = `${y}년 ${m}월 ${d}일 (${dayName})은 [${reason}] 사유로 인한 휴일(비영업일)이에요.`;
         }
       }
 

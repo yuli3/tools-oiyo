@@ -6,9 +6,11 @@ interface Props {
   title?: string;
   description?: string;
   keywords?: string[];
+  canonicalURL?: URL | string;
+  noindex?: boolean;
 }
 
-const { title, description, keywords } = Astro.props;
+const { title, description, keywords, canonicalURL, noindex } = Astro.props;
 
 const FAMILY = [
   { host: "oiyo.net", name: "OIYO tests", label: "심리테스트" },
@@ -23,7 +25,7 @@ const FAMILY = [
 <!doctype html>
 <html lang="ko">
   <head>
-    <SEO title={title} description={description} keywords={keywords} />
+    <SEO title={title} description={description} keywords={keywords} canonicalURL={canonicalURL} noindex={noindex} />
   </head>
   <body class="min-h-screen flex flex-col bg-background text-foreground selection:bg-primary/20">
     <!-- Header -->
@@ -71,7 +73,7 @@ const FAMILY = [
           </div>
         </div>
         <div class="pt-4 border-t border-border/50 text-[11px] text-muted-foreground/70">
-          <p>© 2026 OIYO. 클라이언트 결정론적 연산 기반의 제로 트래킹 유틸리티 포털입니다.</p>
+          <p>© 2026 OIYO. 계산은 브라우저에서 하고 입력값은 서버로 보내지 않아요. 방문 통계(Google Analytics)와 광고(AdSense)는 사용해요.</p>
         </div>
       </div>
     </footer>
