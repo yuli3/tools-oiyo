@@ -2,6 +2,7 @@
 import "../styles/global.css";
 import { KR_RATES_2026 } from "../lib/kr-rates-2026.mjs";
 import Layout from "../components/Layout.astro";
+import SavingsQuickLinks from "../components/SavingsQuickLinks.astro";
 
 // 2026-10-17: 카드 설명의 법정 수치는 SSOT에서 읽고, blog.oiyo.net과 겹치지 않는
 // 11개 고유 도구만 tools.oiyo.net에 배치해요(세운 결정 2026-10-17).
@@ -207,6 +208,8 @@ const tools = [
         );
       })}
     </div>
+
+    <SavingsQuickLinks />
 
     <script>
       const buttons = document.querySelectorAll<HTMLButtonElement>(".filter-btn");

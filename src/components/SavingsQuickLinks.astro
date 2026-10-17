@@ -1,0 +1,41 @@
+---
+// 공공 절약·혜택 공식 바로가기 (hotdeal MVP, 2026-10-17 세운 승인 계획).
+// WHY: 크롤링·제휴 없이 정부·공공기관 공식 신청 페이지로만 보낸다. 지원 금액·자격은 해마다
+// 바뀌고 이 저장소가 실측하지 않았으므로 숫자를 적지 않고 "어디서 확인하는지"만 안내한다.
+// 페이지 맥락에 맞는 항목만 고르려면 ids 를 넘긴다(예: 가스요금 계산기 → energy-voucher, energy-cashback).
+interface Props {
+  ids?: string[];
+  heading?: string;
+}
+
+const ALL = [
+  { id: "energy-voucher", title: "에너지바우처", desc: "취약계층 난방·냉방비 지원. 대상 여부와 신청 기간을 확인해요.", org: "한국에너지공단", href: "https://www.energyv.or.kr/" },
+  { id: "energy-cashback", title: "에너지캐시백", desc: "전기·도시가스 사용량을 줄이면 절감량만큼 돌려받는 제도예요.", org: "한국에너지공단", href: "https://en-ter.co.kr/" },
+  { id: "k-pass", title: "K-패스", desc: "대중교통비 일부 환급. 연령·소득별 환급 기준을 확인해요.", org: "국토교통부", href: "https://korea-pass.kr/" },
+  { id: "bokjiro", title: "복지로 모의계산", desc: "받을 수 있는 복지 서비스를 조건 입력으로 찾아봐요.", org: "보건복지부", href: "https://www.bokjiro.go.kr/" },
+  { id: "gov24-benefits", title: "보조금24", desc: "나에게 해당하는 정부 혜택을 한 번에 조회해요.", org: "행정안전부 정부24", href: "https://www.gov.kr/portal/rcvfvrSvc/main" },
+  { id: "earned-income-credit", title: "근로·자녀장려금", desc: "신청 대상 안내와 신청은 홈택스에서 해요.", org: "국세청 홈택스", href: "https://www.hometax.go.kr/" },
+];
+
+const { ids, heading = "놓치기 쉬운 공공 절약·혜택 — 공식 신청처" } = Astro.props;
+const items = ids ? ALL.filter((x) => ids.includes(x.id)) : ALL;
+---
+<section class="mt-12" aria-labelledby="savings-links-title">
+  <h2 id="savings-links-title" class="text-lg font-bold text-foreground">{heading}</h2>
+  <p class="mt-1 text-xs leading-relaxed text-muted-foreground">
+    지원 금액과 자격은 해마다 바뀌어요. 숫자는 각 기관 공식 페이지에서 확인하세요. 제휴·광고 링크가 아니에요.
+  </p>
+  <div class="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+    {items.map((x) => (
+      <a
+        href={x.href}
+        rel="noopener"
+        class="flex flex-col rounded-xl border border-border bg-card p-4 transition hover:border-primary/60"
+      >
+        <span class="text-xs font-semibold text-muted-foreground">{x.org}</span>
+        <span class="mt-1 text-sm font-bold text-foreground">{x.title} →</span>
+        <span class="mt-1 text-xs leading-relaxed text-muted-foreground">{x.desc}</span>
+      </a>
+    ))}
+  </div>
+</section>
