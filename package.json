@@ -11,7 +11,7 @@
     "lint": "astro check && npm run lint:shadcn",
     "lint:shadcn": "eslint --pass-on-unpruned-suppressions src",
     "lint:shadcn:prune": "eslint --prune-suppressions src",
-    "test": "node --test scripts/kr-rates.test.mjs",
+    "test": "node --test scripts/kr-rates.test.mjs scripts/car-bond.test.mjs",
     "sync:kr-rates": "node scripts/sync-kr-rates.mjs"
   },
   "dependencies": {
