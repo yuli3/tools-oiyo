@@ -1,0 +1,270 @@
+---
+import Layout from "../../components/Layout.astro";
+import RelatedTools from "../../components/RelatedTools.astro";
+---
+
+<Layout
+  title="개인사업자 일반과세 vs 간이과세 부가세 비교 계산기 (2026 최신 부가율)"
+  description="개인사업자 일반과세자(10% 매입세액공제 및 환급)와 간이과세자(업종별 부가율 15~40%, 0.5% 공제, 4,800만 원 미만 면제)의 실제 부가가치세 납부액과 유불리를 즉시 비교 분석합니다."
+>
+  <div class="mx-auto w-full max-w-3xl px-4 py-8 sm:px-8">
+    <div class="mb-6">
+      <a href="/" class="text-xs font-semibold text-muted-foreground hover:text-primary transition-colors mb-4 inline-flex items-center gap-1">
+        <span aria-hidden="true">←</span> 전체 도구 목록
+      </a>
+      <h1 class="text-2xl sm:text-3xl font-black tracking-tight text-foreground">
+        일반과세 vs 간이과세 부가세 비교 계산기
+      </h1>
+      <p class="mt-2 text-sm leading-relaxed text-muted-foreground">
+        연간 매출과 매입액, 업종별 부가가치율(15%~40%)을 바탕으로 일반과세자와 간이과세자의 부가가치세 납부액 및 환급 여부를 정밀 대조하여 가장 유리한 과세유형을 진단합니다.
+      </p>
+    </div>
+
+    <!-- Input Form -->
+    <div class="rounded-xl border border-border bg-card p-6 shadow-xs space-y-6">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <!-- Industry Type -->
+        <div class="sm:col-span-2">
+          <label for="industryType" class="text-xs font-bold text-foreground block mb-2">
+            업종 선택 (간이과세 부가가치율 결정)
+          </label>
+          <select
+            id="industryType"
+            class="w-full min-h-12 rounded-lg border border-input bg-background px-3 py-2.5 text-sm font-semibold text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+          >
+            <option value="15_food_retail" selected>음식점업 / 소매업 / 숙박업 (부가율 15%)</option>
+            <option value="20_mfg">제조업 / 농림어업 / 전기·가스·수도 (부가율 20%)</option>
+            <option value="30_construction">건설업 / 운수·창고업 / 정보통신업 (부가율 30%)</option>
+            <option value="30_service">기타 서비스업 / 학원·수리·미용 등 (부가율 30%)</option>
+            <option value="40_estate_pro">부동산임대업 / 전문·과학·기술 서비스 (부가율 40%)</option>
+          </select>
+        </div>
+
+        <!-- Annual Revenue (연간 매출액 / 공급대가) -->
+        <div>
+          <label for="annualRevenue" class="text-xs font-bold text-foreground block mb-1.5">
+            연간 총 매출액 (공급대가, 부가세 포함)
+          </label>
+          <input
+            type="number"
+            id="annualRevenue"
+            value="80000000"
+            step="1000000"
+            class="w-full min-h-12 rounded-lg border border-input bg-background px-3 py-2.5 text-sm font-semibold text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+          />
+          <span id="annualRevenueKor" class="text-xs text-muted-foreground mt-1.5 block">8,000만 원</span>
+        </div>
+
+        <!-- Annual Purchases (연간 매입액 / 세금계산서 수취분) -->
+        <div>
+          <label for="annualPurchase" class="text-xs font-bold text-foreground block mb-1.5">
+            연간 매입액 (적격 세금계산서·카드 수취분)
+          </label>
+          <input
+            type="number"
+            id="annualPurchase"
+            value="45000000"
+            step="1000000"
+            class="w-full min-h-12 rounded-lg border border-input bg-background px-3 py-2.5 text-sm font-semibold text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+          />
+          <span id="annualPurchaseKor" class="text-xs text-muted-foreground mt-1.5 block">4,500만 원</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Comparison Verdict Banner -->
+    <div id="verdictBanner" class="rounded-xl border border-primary/20 bg-primary/5 p-6 space-y-4 mt-6">
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <div>
+          <h2 class="text-base font-black text-foreground" id="verdictTitle">
+            진단 결과: 간이과세자가 유리합니다
+          </h2>
+          <p class="text-xs text-muted-foreground mt-1" id="verdictDesc">
+            현재 매출 및 매입 구조에서는 간이과세자로 등록 시 부가가치세를 연간 수백만 원 절감할 수 있습니다.
+          </p>
+        </div>
+        <div class="text-right">
+          <span class="text-xs font-bold text-muted-foreground block">연간 예상 절세액</span>
+          <span id="verdictSavings" class="text-xl sm:text-2xl font-black text-primary">
+            연 2,205,000원 절감
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Side-by-Side Comparison Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
+      <!-- General Taxpayer Card -->
+      <div class="rounded-xl border border-border bg-card p-5 space-y-4 shadow-xs">
+        <div class="flex items-center justify-between border-b border-border pb-3">
+          <h3 class="text-sm font-black text-foreground">일반과세자</h3>
+          <span class="rounded bg-muted px-2 py-0.5 text-xs font-bold text-foreground">세율 10%</span>
+        </div>
+        
+        <div class="space-y-2 text-xs">
+          <div class="flex justify-between">
+            <span class="text-muted-foreground">매출세액 (매출 / 1.1 × 10%)</span>
+            <span id="generalSalesTax" class="font-bold text-foreground">7,272,727원</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-muted-foreground">매입세액 공제 (매입 / 1.1 × 10%)</span>
+            <span id="generalPurchaseTax" class="font-bold text-foreground">-4,090,909원</span>
+          </div>
+          <div class="flex justify-between border-t border-border pt-2 text-sm font-black">
+            <span>최종 납부(환급) 세액</span>
+            <span id="generalFinalTax" class="text-foreground">3,181,818원</span>
+          </div>
+        </div>
+
+        <ul class="text-[11px] text-muted-foreground space-y-1.5 border-t border-border pt-3">
+          <li>✓ 세금계산서 상시 의무 발급 가능 (B2B 거래에 최적)</li>
+          <li>✓ 매입이 매출을 초과하는 초기 설비투자 시 <strong class="text-foreground">환급 수령 가능</strong></li>
+          <li>✓ 연 2회 확정신고 (1월, 7월) 및 2회 예정고지/신고</li>
+        </ul>
+      </div>
+
+      <!-- Simplified Taxpayer Card -->
+      <div class="rounded-xl border border-primary/30 bg-card p-5 space-y-4 shadow-xs">
+        <div class="flex items-center justify-between border-b border-border pb-3">
+          <h3 class="text-sm font-black text-primary">간이과세자</h3>
+          <span id="simplifiedRateBadge" class="rounded bg-primary/10 px-2 py-0.5 text-xs font-bold text-primary">부가율 15%</span>
+        </div>
+        
+        <div class="space-y-2 text-xs">
+          <div class="flex justify-between">
+            <span class="text-muted-foreground">매출세액 (매출 × 부가율 × 10%)</span>
+            <span id="simplifiedSalesTax" class="font-bold text-foreground">1,200,000원</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-muted-foreground">세금계산서 수취공제 (매입 × 0.5%)</span>
+            <span id="simplifiedPurchaseTax" class="font-bold text-foreground">-225,000원</span>
+          </div>
+          <div class="flex justify-between border-t border-border pt-2 text-sm font-black">
+            <span>최종 납부 세액</span>
+            <span id="simplifiedFinalTax" class="text-primary">975,000원</span>
+          </div>
+        </div>
+
+        <ul class="text-[11px] text-muted-foreground space-y-1.5 border-t border-border pt-3">
+          <li id="simplifiedNotice1">✓ 연 매출 4,800만 원 이상 시 세금계산서 발급 가능</li>
+          <li id="simplifiedNotice2">✓ 연 매출 4,800만 원 미만 시 부가세 전액 납부 면제</li>
+          <li class="text-destructive font-semibold">✕ 매입세액이 더 많아도 마이너스 환급 불가 (최저 0원)</li>
+          <li>✓ 연 1회(다음 해 1월)만 신고 및 납부</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Statutory Explanations -->
+    <div class="mt-8 rounded-xl border border-border bg-card p-6 space-y-4">
+      <h3 class="text-sm font-black text-foreground">
+        2026년 부가가치세법 핵심 기준 해설
+      </h3>
+      <ul class="text-xs space-y-2 text-muted-foreground leading-relaxed">
+        <li>
+          <strong class="text-foreground">간이과세 적용 기준금액 (1억 400만 원):</strong> 직전 연도 재화와 용역의 공급대가 합계액이 1억 400만 원(부동산임대업 및 과세유흥장소는 4,800만 원)에 미달하는 개인사업자는 간이과세를 적용받을 수 있습니다.
+        </li>
+        <li>
+          <strong class="text-foreground">세금계산서 발급 의무 기준 (4,800만 원):</strong> 간이과세자 중 연 매출 4,800만 원 이상 1억 400만 원 미만 사업자는 세금계산서 발급 의무가 있습니다. 4,800만 원 미만 사업자는 영수증만 발급 가능합니다.
+        </li>
+        <li>
+          <strong class="text-foreground">4,800만 원 미만 납부의무 면제:</strong> 간이과세자의 1년간 공급대가 합계액이 4,800만 원 미만인 경우 부가가치세 납부 의무가 면제됩니다(단, 신고는 반드시 완료해야 합니다).
+        </li>
+        <li>
+          <strong class="text-foreground">환급 가능 여부:</strong> 인테리어 공사비나 기계장치 등 초기 설비 매입이 많은 경우 일반과세자는 10% 전액을 환급받을 수 있으나, 간이과세자는 환급 제도가 없으므로 초기 비용이 클 때는 일반과세자 등록이 유리할 수 있습니다.
+        </li>
+      </ul>
+    </div>
+
+    <!-- Related Tools Recommendation -->
+    <RelatedTools currentId="vat-comparison" />
+  </div>
+
+  <script>
+    function formatWon(val: number): string {
+      return Math.round(val).toLocaleString() + "원";
+    }
+
+    function update() {
+      const industryValue = (document.getElementById("industryType") as HTMLSelectElement).value;
+      const revenue = Number((document.getElementById("annualRevenue") as HTMLInputElement).value) || 0;
+      const purchase = Number((document.getElementById("annualPurchase") as HTMLInputElement).value) || 0;
+
+      // Update inputs Korean labels
+      const revMan = Math.round(revenue / 10000);
+      const purMan = Math.round(purchase / 10000);
+      (document.getElementById("annualRevenueKor") as HTMLElement).textContent = `${revMan.toLocaleString()}만 원`;
+      (document.getElementById("annualPurchaseKor") as HTMLElement).textContent = `${purMan.toLocaleString()}만 원`;
+
+      // Rates by industry
+      let vatRate = 0.15;
+      if (industryValue.startsWith("20")) vatRate = 0.20;
+      else if (industryValue.startsWith("30")) vatRate = 0.30;
+      else if (industryValue.startsWith("40")) vatRate = 0.40;
+
+      (document.getElementById("simplifiedRateBadge") as HTMLElement).textContent = `부가율 ${Math.round(vatRate * 100)}%`;
+
+      // 1. General Taxpayer Calculation
+      // 공급가액 = 공급대가 / 1.1
+      const genSalesTax = Math.round((revenue / 1.1) * 0.1);
+      const genPurchaseTax = Math.round((purchase / 1.1) * 0.1);
+      const genFinalTax = genSalesTax - genPurchaseTax; // Can be negative (refund)
+
+      (document.getElementById("generalSalesTax") as HTMLElement).textContent = formatWon(genSalesTax);
+      (document.getElementById("generalPurchaseTax") as HTMLElement).textContent = `-${formatWon(genPurchaseTax)}`;
+      
+      const genFinalDisplay = genFinalTax < 0 
+        ? `${formatWon(Math.abs(genFinalTax))} 환급` 
+        : formatWon(genFinalTax);
+      (document.getElementById("generalFinalTax") as HTMLElement).textContent = genFinalDisplay;
+
+      // 2. Simplified Taxpayer Calculation
+      // 매출세액 = 공급대가 × 부가율 × 10%
+      const simpSalesTax = Math.round(revenue * vatRate * 0.1);
+      // 세금계산서 수취 매입세액 공제 = 매입 공급대가 × 0.5%
+      const simpPurchaseDeduction = Math.round(purchase * 0.005);
+      
+      let simpFinalTax = Math.max(0, simpSalesTax - simpPurchaseDeduction);
+      const isExempt = revenue < 48000000;
+      if (isExempt) {
+        simpFinalTax = 0;
+      }
+
+      (document.getElementById("simplifiedSalesTax") as HTMLElement).textContent = formatWon(simpSalesTax);
+      (document.getElementById("simplifiedPurchaseTax") as HTMLElement).textContent = `-${formatWon(simpPurchaseDeduction)}`;
+      (document.getElementById("simplifiedFinalTax") as HTMLElement).textContent = isExempt ? "0원 (납부면제)" : formatWon(simpFinalTax);
+
+      // 3. Verdict & Comparison
+      const diff = genFinalTax - simpFinalTax;
+      const verdictTitle = document.getElementById("verdictTitle") as HTMLElement;
+      const verdictDesc = document.getElementById("verdictDesc") as HTMLElement;
+      const verdictSavings = document.getElementById("verdictSavings") as HTMLElement;
+
+      if (revenue >= 104000000) {
+        verdictTitle.textContent = "진단 결과: 일반과세자 의무 대상입니다 (1억 400만 원 이상)";
+        verdictDesc.textContent = "연간 매출이 1억 400만 원을 초과하면 간이과세 적용이 불가하며 일반과세자로 의무 전환됩니다.";
+        verdictSavings.textContent = "일반과세 대상";
+      } else if (genFinalTax < 0 && Math.abs(genFinalTax) > simpFinalTax) {
+        verdictTitle.textContent = "진단 결과: 일반과세자가 유리합니다 (초기 투자 부가세 환급)";
+        verdictDesc.textContent = "설비·인테리어 등 매입액이 커 일반과세자 등록 시 부가세를 직접 통장으로 환급받을 수 있습니다.";
+        verdictSavings.textContent = `${formatWon(Math.abs(genFinalTax))} 환급 이익`;
+      } else if (diff > 0) {
+        verdictTitle.textContent = "진단 결과: 간이과세자가 훨씬 유리합니다";
+        verdictDesc.textContent = isExempt 
+          ? "연간 매출 4,800만 원 미만으로 부가가치세 납부의무가 전액 면제되어 세부담이 0원입니다."
+          : `업종별 낮은 부가가치율(${Math.round(vatRate * 100)}%)이 적용되어 일반과세 대비 세부담이 크게 낮습니다.`;
+        verdictSavings.textContent = `연 ${formatWon(diff)} 절감`;
+      } else {
+        verdictTitle.textContent = "진단 결과: 일반과세자와 간이과세자 세액이 유사합니다";
+        verdictDesc.textContent = "B2B 세금계산서 발급 필요성 및 거래처 신뢰도를 종합적으로 고려하여 선택하세요.";
+        verdictSavings.textContent = "세액 차이 미미";
+      }
+    }
+
+    document.querySelectorAll("input, select").forEach((el) => {
+      el.addEventListener("input", update);
+      el.addEventListener("change", update);
+    });
+
+    update();
+  </script>
+</Layout>

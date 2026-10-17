@@ -1,0 +1,295 @@
+---
+import Layout from "../../components/Layout.astro";
+import RelatedTools from "../../components/RelatedTools.astro";
+---
+
+<Layout
+  title="일시적 2주택 비과세 처분기한(3년) 시뮬레이터 (1-2-3 법칙 D-Day 계산)"
+  description="소득세법 시행령 제155조 기준 신규주택 1년 경과 취득 요건, 전국 통일 3년 처분기한, 혼인(5년)·동거봉양(10년) 특례 및 잔여 처분기한 D-Day를 정밀 계산합니다."
+>
+  <div class="mx-auto w-full max-w-3xl px-4 py-8 sm:px-8">
+    <div class="mb-6">
+      <a href="/" class="text-xs font-semibold text-muted-foreground hover:text-primary transition-colors mb-4 inline-flex items-center gap-1">
+        <span aria-hidden="true">←</span> 전체 도구 목록
+      </a>
+      <h1 class="text-2xl sm:text-3xl font-black tracking-tight text-foreground">
+        일시적 2주택 비과세 처분기한 시뮬레이터
+      </h1>
+      <p class="mt-2 text-sm leading-relaxed text-muted-foreground">
+        종전주택 취득 후 1년 경과 요건, 전국 통일 3년 처분기한 마감일(D-Day), 혼인·동거봉양 특례 및 비과세 충족 여부를 실시간으로 정밀 진단합니다.
+      </p>
+    </div>
+
+    <!-- Input Form -->
+    <div class="rounded-xl border border-border bg-card p-6 shadow-xs space-y-6">
+      <!-- Special Type -->
+      <div>
+        <label for="specialType" class="text-xs font-bold text-foreground block mb-2">
+          일시적 2주택 특례 유형
+        </label>
+        <select
+          id="specialType"
+          class="w-full min-h-12 rounded-lg border border-input bg-background px-3 py-2.5 text-sm font-semibold text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+        >
+          <option value="general_move" selected>이사·갈아타기 일시적 2주택 (신규 취득 후 3년 이내 처분)</option>
+          <option value="marriage">혼인합가 특례 (혼인신고일로부터 5년 이내 처분)</option>
+          <option value="parents">동거봉양 특례 (만 60세 이상 직계존속 합가 후 10년 이내 처분)</option>
+        </select>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <!-- Existing House Acquisition Date -->
+        <div>
+          <label for="existingAcqDate" class="text-xs font-bold text-foreground block mb-1.5">
+            종전(기존) 주택 취득일 (잔금/등기접수일)
+          </label>
+          <input
+            type="date"
+            id="existingAcqDate"
+            value="2022-03-15"
+            class="w-full min-h-12 rounded-lg border border-input bg-background px-3 py-2.5 text-sm font-semibold text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+          />
+        </div>
+
+        <!-- New House Acquisition Date -->
+        <div>
+          <label for="newAcqDate" class="text-xs font-bold text-foreground block mb-1.5">
+            신규 주택 취득일 (또는 혼인·합가일)
+          </label>
+          <input
+            type="date"
+            id="newAcqDate"
+            value="2024-06-20"
+            class="w-full min-h-12 rounded-lg border border-input bg-background px-3 py-2.5 text-sm font-semibold text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+          />
+        </div>
+
+        <!-- Estimated Gain -->
+        <div>
+          <label for="estimatedGain" class="text-xs font-bold text-foreground block mb-1.5">
+            종전주택 예상 양도차익 (원)
+          </label>
+          <input
+            type="number"
+            id="estimatedGain"
+            value="400000000"
+            step="10000000"
+            class="w-full min-h-12 rounded-lg border border-input bg-background px-3 py-2.5 text-sm font-semibold text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+          />
+          <span id="estimatedGainKor" class="text-xs text-muted-foreground mt-1.5 block">4억 원</span>
+        </div>
+
+        <!-- Reg Zone & Residence -->
+        <div class="flex flex-col justify-end space-y-2 pt-2">
+          <label class="flex items-center gap-2 cursor-pointer text-xs font-bold text-foreground min-h-6">
+            <input
+              type="checkbox"
+              id="isRegZone"
+              class="w-4 h-4 rounded border-input text-primary focus:ring-primary"
+            />
+            <span>취득 당시 조정대상지역 (2년 거주 요건 필수)</span>
+          </label>
+          <div id="residenceWrap" class="hidden items-center gap-2 text-xs">
+            <span class="text-muted-foreground">실제 거주 기간:</span>
+            <select
+              id="residenceYears"
+              class="rounded border border-input bg-background px-2.5 py-1.5 text-xs font-bold text-foreground"
+            >
+              <option value="0">거주 안 함</option>
+              <option value="1">1년</option>
+              <option value="2" selected>2년 이상 충족</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Simulator Verdict Card -->
+    <div id="verdictCard" class="rounded-xl border border-primary/20 bg-primary/5 p-6 space-y-5 mt-6">
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-border/60 pb-4">
+        <div>
+          <h2 id="verdictTitle" class="text-lg font-black text-foreground">
+            일시적 2주택 비과세 요건 충족 중
+          </h2>
+          <p class="text-xs text-muted-foreground mt-1">
+            법정 처분기한 마감일: <strong id="deadlineDateDisplay" class="text-foreground">2027-06-20</strong>까지 종전주택을 양도해야 합니다.
+          </p>
+        </div>
+        <div class="text-right">
+          <span class="text-xs font-bold text-muted-foreground block">처분 잔여 기한</span>
+          <span id="remainingDaysDisplay" class="text-2xl sm:text-3xl font-black text-primary">
+            D-일
+          </span>
+        </div>
+      </div>
+
+      <!-- 3 Major Checkpoints -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+        <div class="rounded-lg bg-card p-3 border border-border">
+          <span class="text-muted-foreground block mb-1">1. 신규주택 1년 경과 취득</span>
+          <span id="check1" class="font-bold text-success">✓ 충족</span>
+        </div>
+
+        <div class="rounded-lg bg-card p-3 border border-border">
+          <span class="text-muted-foreground block mb-1">2. 종전주택 2년 보유/거주</span>
+          <span id="check2" class="font-bold text-success">✓ 충족</span>
+        </div>
+
+        <div class="rounded-lg bg-card p-3 border border-border">
+          <span id="check3Title" class="text-muted-foreground block mb-1">3. 3년 이내 종전주택 매도</span>
+          <span id="check3" class="font-bold text-success">✓ 유효</span>
+        </div>
+      </div>
+
+      <!-- Tax Savings Display -->
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-t border-border/60 pt-4 text-xs">
+        <span class="text-muted-foreground">
+          처분기한 내 정상 매도 시 비과세 절세 효과 (일반과세 대비)
+        </span>
+        <span id="savingsDisplay" class="text-base font-black text-foreground">
+          약 0원 절감 (실납부 0원)
+        </span>
+      </div>
+    </div>
+
+    <!-- Statutory Explanations -->
+    <div class="mt-8 rounded-xl border border-border bg-card p-6 space-y-4">
+      <h3 class="text-sm font-black text-foreground">
+        소득세법 시행령 제155조 일시적 2주택 핵심 규정
+      </h3>
+      <ul class="text-xs space-y-2 text-muted-foreground leading-relaxed">
+        <li>
+          <strong class="text-foreground">1-2-3 법칙의 기본 원리:</strong> 종전주택을 취득한 날로부터 최소 1년이 지난 후 새 주택을 사야 하며(1), 종전주택을 최소 2년 이상 보유하고(2), 새 주택 취득일로부터 3년 이내에 종전주택을 양도해야(3) 비과세가 완성됩니다.
+        </li>
+        <li>
+          <strong class="text-foreground">전국 처분기한 3년 일원화:</strong> 2023년 세법 개정으로 종전주택과 신규주택의 조정대상지역 지정 여부와 관계없이 전국 어디든 신규주택 취득일로부터 3년 이내에 종전주택을 매도하면 1세대 1주택 비과세가 적용됩니다.
+        </li>
+        <li>
+          <strong class="text-foreground">혼인 및 동거봉양 특례:</strong> 혼인으로 1세대 2주택이 된 경우 혼인신고일로부터 5년 이내, 만 60세 이상 부모 동거봉양 합가인 경우 10년 이내에 먼저 양도하는 주택이 비과세됩니다.
+        </li>
+      </ul>
+    </div>
+
+    <!-- Related Tools Recommendation -->
+    <RelatedTools currentId="temporary-two-house" />
+  </div>
+
+  <script>
+    function update() {
+      const specialType = (document.getElementById("specialType") as HTMLSelectElement).value;
+      const existingAcqDateStr = (document.getElementById("existingAcqDate") as HTMLInputElement).value;
+      const newAcqDateStr = (document.getElementById("newAcqDate") as HTMLInputElement).value;
+      const estimatedGain = Number((document.getElementById("estimatedGain") as HTMLInputElement).value) || 0;
+      const isRegZone = (document.getElementById("isRegZone") as HTMLInputElement).checked;
+      const residenceYears = Number((document.getElementById("residenceYears") as HTMLSelectElement).value) || 0;
+
+      const residenceWrap = document.getElementById("residenceWrap") as HTMLElement;
+      if (isRegZone) {
+        residenceWrap.classList.remove("hidden");
+        residenceWrap.classList.add("flex");
+      } else {
+        residenceWrap.classList.add("hidden");
+        residenceWrap.classList.remove("flex");
+      }
+
+      const gainEok = (estimatedGain / 100000000).toFixed(1);
+      (document.getElementById("estimatedGainKor") as HTMLElement).textContent = `${gainEok}억 원`;
+
+      const existingDate = new Date(existingAcqDateStr);
+      const newDate = new Date(newAcqDateStr);
+      const today = new Date();
+
+      if (isNaN(existingDate.getTime()) || isNaN(newDate.getTime())) return;
+
+      // 1. Requirement 1: 1 year gap
+      const diffTime = newDate.getTime() - existingDate.getTime();
+      const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+      const passedOneYear = diffDays >= 365;
+
+      // 2. Deadline
+      let deadlineYears = 3;
+      if (specialType === "marriage") deadlineYears = 5;
+      else if (specialType === "parents") deadlineYears = 10;
+
+      const deadlineDate = new Date(newDate);
+      deadlineDate.setFullYear(deadlineDate.getFullYear() + deadlineYears);
+      const deadlineStr = deadlineDate.toISOString().slice(0, 10);
+
+      // 3. Remaining days (D-Day)
+      const remainingTime = deadlineDate.getTime() - today.getTime();
+      const remainingDays = Math.ceil(remainingTime / (1000 * 60 * 60 * 24));
+      const isExpired = remainingDays < 0;
+
+      // 4. Holding & Residence check
+      const holdingDays = Math.floor((today.getTime() - existingDate.getTime()) / (1000 * 60 * 60 * 24));
+      const hasHeldTwoYears = holdingDays >= 730;
+      const hasMetResidence = !isRegZone || residenceYears >= 2;
+
+      const isFullyQualified = passedOneYear && hasHeldTwoYears && hasMetResidence && !isExpired;
+
+      // 5. Estimated Tax Savings
+      let estimatedRegularTax = 0;
+      if (estimatedGain > 0) {
+        const base = Math.max(0, estimatedGain * 0.8 - 2500000);
+        if (base <= 14000000) estimatedRegularTax = base * 0.06;
+        else if (base <= 50000000) estimatedRegularTax = base * 0.15 - 1260000;
+        else if (base <= 88000000) estimatedRegularTax = base * 0.24 - 5760000;
+        else if (base <= 150000000) estimatedRegularTax = base * 0.35 - 15440000;
+        else if (base <= 300000000) estimatedRegularTax = base * 0.38 - 19940000;
+        else if (base <= 500000000) estimatedRegularTax = base * 0.40 - 25940000;
+        else estimatedRegularTax = base * 0.42 - 35940000;
+        estimatedRegularTax = Math.round(estimatedRegularTax * 1.1);
+      }
+
+      // Update DOM
+      const verdictCard = document.getElementById("verdictCard") as HTMLElement;
+      const verdictTitle = document.getElementById("verdictTitle") as HTMLElement;
+      const remainingDaysDisplay = document.getElementById("remainingDaysDisplay") as HTMLElement;
+
+      if (isFullyQualified) {
+        verdictCard.className = "rounded-xl border border-primary/20 bg-primary/5 p-6 space-y-5 mt-6";
+        verdictTitle.textContent = "일시적 2주택 비과세 요건 충족 중";
+        remainingDaysDisplay.className = "text-2xl sm:text-3xl font-black text-primary";
+        remainingDaysDisplay.textContent = `D-${remainingDays}일`;
+      } else if (isExpired) {
+        verdictCard.className = "rounded-xl border border-destructive/30 bg-destructive/5 p-6 space-y-5 mt-6";
+        verdictTitle.textContent = "처분 기한 만료: 비과세 불가 (일반과세 대상)";
+        remainingDaysDisplay.className = "text-2xl sm:text-3xl font-black text-destructive";
+        remainingDaysDisplay.textContent = "기한 경과";
+      } else {
+        verdictCard.className = "rounded-xl border border-destructive/30 bg-destructive/5 p-6 space-y-5 mt-6";
+        verdictTitle.textContent = "비과세 필수 요건 미충족 경고";
+        remainingDaysDisplay.className = "text-2xl sm:text-3xl font-black text-destructive";
+        remainingDaysDisplay.textContent = `D-${remainingDays}일`;
+      }
+
+      (document.getElementById("deadlineDateDisplay") as HTMLElement).textContent = deadlineStr;
+
+      const check1 = document.getElementById("check1") as HTMLElement;
+      check1.textContent = passedOneYear ? `✓ 충족 (${diffDays}일 경과)` : `✕ 미달 (${diffDays}일: 1년 미만)`;
+      check1.className = `font-bold ${passedOneYear ? "text-success" : "text-destructive"}`;
+
+      const check2 = document.getElementById("check2") as HTMLElement;
+      check2.textContent = hasHeldTwoYears && hasMetResidence ? "✓ 2년 요건 충족" : "✕ 보유 또는 거주 미달";
+      check2.className = `font-bold ${hasHeldTwoYears && hasMetResidence ? "text-success" : "text-destructive"}`;
+
+      const check3Title = document.getElementById("check3Title") as HTMLElement;
+      check3Title.textContent = `3. ${deadlineYears}년 이내 종전주택 매도`;
+      const check3 = document.getElementById("check3") as HTMLElement;
+      check3.textContent = !isExpired ? `✓ 유효 (${remainingDays}일 남음)` : "✕ 처분기한 만료";
+      check3.className = `font-bold ${!isExpired ? "text-success" : "text-destructive"}`;
+
+      const savingsDisplay = document.getElementById("savingsDisplay") as HTMLElement;
+      savingsDisplay.textContent = isFullyQualified 
+        ? `약 ${estimatedRegularTax.toLocaleString()}원 절감 (실납부 0원)`
+        : "일반 과세 적용 (비과세 혜택 없음)";
+    }
+
+    document.querySelectorAll("input, select").forEach((el) => {
+      el.addEventListener("input", update);
+      el.addEventListener("change", update);
+    });
+
+    update();
+  </script>
+</Layout>

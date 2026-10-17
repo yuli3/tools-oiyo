@@ -159,6 +159,38 @@ const ALL_TOOLS: Record<string, ToolItem> = {
     badge: "126% 룰",
     category: "부동산/금융",
   },
+  "capital-gains-tax": {
+    id: "capital-gains-tax",
+    title: "부동산 양도소득세 1주택 비과세 계산기",
+    desc: "1세대 1주택 12억 비과세 및 고가주택 안분, 장특공 최대 80% 반영 양도세 산출",
+    href: "/ko/capital-gains-tax-calculator/",
+    badge: "2026 세법",
+    category: "부동산/세무",
+  },
+  "vat-comparison": {
+    id: "vat-comparison",
+    title: "일반과세 vs 간이과세 부가세 비교 계산기",
+    desc: "연 매출·매입 및 업종별 부가율(15~40%) 기준 부가가치세 납부액 유불리 비교",
+    href: "/ko/vat-comparison-calculator/",
+    badge: "사업자 필수",
+    category: "세무/사업",
+  },
+  "temporary-two-house": {
+    id: "temporary-two-house",
+    title: "일시적 2주택 비과세 처분기한 시뮬레이터",
+    desc: "신규주택 1년 경과 취득 요건, 3년 처분기한 마감일 D-Day 및 비과세 충족 진단",
+    href: "/ko/temporary-two-house-tax-calculator/",
+    badge: "1-2-3 법칙",
+    category: "부동산/세무",
+  },
+  "sole-proprietor-vs-corp": {
+    id: "sole-proprietor-vs-corp",
+    title: "개인사업자 vs 법인전환 세금 비교 계산기",
+    desc: "순이익 기준 종합소득세·지역건보료와 법인세·급여소득세 비교 및 손익분기점 산출",
+    href: "/ko/sole-proprietor-vs-corp-calculator/",
+    badge: "절세 전략",
+    category: "세무/사업",
+  },
 };
 
 const RECOMMENDATIONS: Record<string, string[]> = {
@@ -175,11 +207,15 @@ const RECOMMENDATIONS: Record<string, string[]> = {
   "military-service": ["net-salary", "business-day", "unemployment-benefits"],
   "business-day": ["annual-leave", "military-service", "waste-sorter"],
   "pyeong-sqm": ["brokerage-fee", "property-tax", "cagr"],
-  "brokerage-fee": ["property-tax", "hug-guarantee", "pyeong-sqm"],
-  "property-tax": ["brokerage-fee", "hug-guarantee", "health-insurance"],
+  "brokerage-fee": ["property-tax", "hug-guarantee", "capital-gains-tax"],
+  "property-tax": ["brokerage-fee", "capital-gains-tax", "temporary-two-house"],
   "cagr": ["net-salary", "severance-pay", "health-insurance"],
-  "health-insurance": ["property-tax", "net-salary", "cagr"],
+  "health-insurance": ["property-tax", "vat-comparison", "sole-proprietor-vs-corp"],
   "hug-guarantee": ["brokerage-fee", "property-tax", "pyeong-sqm"],
+  "capital-gains-tax": ["property-tax", "temporary-two-house", "brokerage-fee"],
+  "vat-comparison": ["sole-proprietor-vs-corp", "health-insurance", "net-salary"],
+  "temporary-two-house": ["capital-gains-tax", "property-tax", "brokerage-fee"],
+  "sole-proprietor-vs-corp": ["vat-comparison", "health-insurance", "net-salary"],
 };
 
 const targetIds = RECOMMENDATIONS[currentId] ?? ["net-salary", "severance-pay", "business-day"];

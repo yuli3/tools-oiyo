@@ -210,6 +210,38 @@ const tools = [
     category: "부동산/금융",
     badge: "126% 룰",
   },
+  {
+    id: "capital-gains-tax",
+    title: "부동산 양도소득세 1주택 비과세 계산기",
+    desc: "1세대 1주택 12억 원 비과세 및 고가주택 안분, 보유·거주기간별 장기보유특별공제(최대 80%)를 반영한 정밀 세액 계산기입니다.",
+    href: "/ko/capital-gains-tax-calculator/",
+    category: "부동산/세무",
+    badge: "2026 세법",
+  },
+  {
+    id: "vat-comparison",
+    title: "일반과세 vs 간이과세 부가세 비교 계산기",
+    desc: "연간 매출·매입액과 업종별 부가가치율(15~40%) 기준 일반과세자 매입세액공제/환급과 간이과세자의 실납부액 유불리를 비교합니다.",
+    href: "/ko/vat-comparison-calculator/",
+    category: "세무/사업",
+    badge: "사업자 필수",
+  },
+  {
+    id: "temporary-two-house",
+    title: "일시적 2주택 비과세 처분기한 시뮬레이터",
+    desc: "신규주택 1년 경과 취득 요건, 전국 통일 3년 처분기한 마감일 D-Day 및 비과세 충족 여부를 정밀 판정합니다.",
+    href: "/ko/temporary-two-house-tax-calculator/",
+    category: "부동산/세무",
+    badge: "1-2-3 법칙",
+  },
+  {
+    id: "sole-proprietor-vs-corp",
+    title: "개인사업자 vs 법인전환 세금 비교 계산기",
+    desc: "순이익 대비 개인 종합소득세·지역건보료와 법인세·급여소득세·직장보험료를 비교하여 법인전환 손익분기점을 산출합니다.",
+    href: "/ko/sole-proprietor-vs-corp-calculator/",
+    category: "세무/사업",
+    badge: "절세 전략",
+  },
 ];
 import Layout from "../components/Layout.astro";
 ---
@@ -290,9 +322,9 @@ import Layout from "../components/Layout.astro";
     <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3" id="tools-grid">
       {tools.map((tool) => {
         let group = "labor";
-        if (["electricity-bill", "gas-bill", "waste-sorter", "pyeong-sqm", "brokerage-fee", "property-tax"].includes(tool.id)) group = "living";
-        else if (["cagr", "loan-repayment", "youth-savings"].includes(tool.id)) group = "finance";
-        else if (["acquisition-tax", "freelancer-tax", "car-tax"].includes(tool.id)) group = "living";
+        if (["electricity-bill", "gas-bill", "waste-sorter", "pyeong-sqm", "brokerage-fee", "property-tax", "capital-gains-tax", "temporary-two-house", "hug-guarantee"].includes(tool.id)) group = "living";
+        else if (["cagr", "loan-repayment", "youth-savings", "vat-comparison", "sole-proprietor-vs-corp"].includes(tool.id)) group = "finance";
+        else if (["acquisition-tax", "freelancer-tax", "car-tax", "health-insurance"].includes(tool.id)) group = "living";
         else if (tool.id === "military-service") group = "military";
         else if (tool.id === "wind-chill") group = "environment";
         else if (["business-day", "dday"].includes(tool.id)) group = "calendar";

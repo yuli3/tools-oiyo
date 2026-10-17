@@ -1,0 +1,331 @@
+---
+import Layout from "../../components/Layout.astro";
+import RelatedTools from "../../components/RelatedTools.astro";
+---
+
+<Layout
+  title="부동산 양도소득세 1세대 1주택 비과세 & 장특공 계산기 (2026 최신 세법)"
+  description="1세대 1주택 12억 원 비과세 및 고가주택 안분계산, 보유기간(최대 40%)과 거주기간(최대 40%) 장기보유특별공제(최대 80%), 기본공제 250만 원 및 2026년 누진세율을 반영한 정밀 양도세 계산기입니다."
+>
+  <div class="mx-auto w-full max-w-3xl px-4 py-8 sm:px-8">
+    <div class="mb-6">
+      <a href="/" class="text-xs font-semibold text-muted-foreground hover:text-primary transition-colors mb-4 inline-flex items-center gap-1">
+        <span aria-hidden="true">←</span> 전체 도구 목록
+      </a>
+      <h1 class="text-2xl sm:text-3xl font-black tracking-tight text-foreground">
+        부동산 양도소득세 계산기
+      </h1>
+      <p class="mt-2 text-sm leading-relaxed text-muted-foreground">
+        1세대 1주택 12억 원 비과세, 보유·거주기간별 장기보유특별공제(최대 80%), 고가주택 안분계산 및 기본공제 250만 원을 반영하여 실납부 세액과 비과세 절세효과를 정밀 산출합니다.
+      </p>
+    </div>
+
+    <!-- Main Input Form -->
+    <div class="rounded-xl border border-border bg-card p-6 shadow-xs space-y-6">
+      <!-- Housing Type Selector -->
+      <div>
+        <label for="houseType" class="text-xs font-bold text-foreground block mb-2">
+          주택 보유 및 비과세 요건
+        </label>
+        <select
+          id="houseType"
+          class="w-full min-h-12 rounded-lg border border-input bg-background px-3 py-2.5 text-sm font-semibold text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+        >
+          <option value="1home_exempt" selected>1세대 1주택 (2년 이상 보유·거주 요건 충족, 12억 비과세)</option>
+          <option value="1home_non_exempt">1세대 1주택 (2년 미만 보유/미충족 일반과세)</option>
+          <option value="2home_general">다주택자 (일반 누진세율 적용 및 표1 장특공)</option>
+        </select>
+        <p id="houseTypeNote" class="text-xs text-muted-foreground mt-1.5">
+          12억 원 이하 양도가액은 전액 비과세되며, 12억 원 초과분만 비율 안분하여 과세됩니다.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <!-- Transfer Price (양도가액) -->
+        <div>
+          <label for="transferPrice" class="text-xs font-bold text-foreground block mb-1.5">
+            양도가액 (매도가, 원)
+          </label>
+          <input
+            type="number"
+            id="transferPrice"
+            value="1500000000"
+            step="10000000"
+            class="w-full min-h-12 rounded-lg border border-input bg-background px-3 py-2.5 text-sm font-semibold text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+          />
+          <span id="transferPriceKor" class="text-xs text-muted-foreground mt-1.5 block">15억 원</span>
+        </div>
+
+        <!-- Acquisition Price (취득가액) -->
+        <div>
+          <label for="acquisitionPrice" class="text-xs font-bold text-foreground block mb-1.5">
+            취득가액 (매수가, 원)
+          </label>
+          <input
+            type="number"
+            id="acquisitionPrice"
+            value="900000000"
+            step="10000000"
+            class="w-full min-h-12 rounded-lg border border-input bg-background px-3 py-2.5 text-sm font-semibold text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+          />
+          <span id="acquisitionPriceKor" class="text-xs text-muted-foreground mt-1.5 block">9억 원</span>
+        </div>
+
+        <!-- Necessary Expenses (필요경비) -->
+        <div>
+          <label for="expenses" class="text-xs font-bold text-foreground block mb-1.5">
+            필요경비 (취득세, 중개보수, 섀시·발코니 등 자본적 지출)
+          </label>
+          <input
+            type="number"
+            id="expenses"
+            value="30000000"
+            step="1000000"
+            class="w-full min-h-12 rounded-lg border border-input bg-background px-3 py-2.5 text-sm font-semibold text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+          />
+          <span id="expensesKor" class="text-xs text-muted-foreground mt-1.5 block">3,000만 원</span>
+        </div>
+
+        <!-- Holding & Residence Years -->
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label for="holdingYears" class="text-xs font-bold text-foreground block mb-1.5">
+              보유기간 (년)
+            </label>
+            <select
+              id="holdingYears"
+              class="w-full min-h-12 rounded-lg border border-input bg-background px-2.5 py-2.5 text-sm font-semibold text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+            >
+              <option value="1">1년 미만</option>
+              <option value="2">2년</option>
+              <option value="3">3년</option>
+              <option value="4">4년</option>
+              <option value="5">5년</option>
+              <option value="6">6년</option>
+              <option value="7">7년</option>
+              <option value="8">8년</option>
+              <option value="9">9년</option>
+              <option value="10" selected>10년 이상</option>
+            </select>
+          </div>
+          <div>
+            <label for="residenceYears" class="text-xs font-bold text-foreground block mb-1.5">
+              거주기간 (년)
+            </label>
+            <select
+              id="residenceYears"
+              class="w-full min-h-12 rounded-lg border border-input bg-background px-2.5 py-2.5 text-sm font-semibold text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+            >
+              <option value="0">거주 안함</option>
+              <option value="1">1년</option>
+              <option value="2">2년</option>
+              <option value="3">3년</option>
+              <option value="4">4년</option>
+              <option value="5">5년</option>
+              <option value="6">6년</option>
+              <option value="7">7년</option>
+              <option value="8">8년</option>
+              <option value="9">9년</option>
+              <option value="10" selected>10년 이상</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Result Card -->
+    <div class="rounded-xl border border-primary/20 bg-primary/5 p-6 space-y-6 mt-6">
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-border/60 pb-4">
+        <div>
+          <h2 class="text-lg font-black text-foreground">
+            최종 납부 예상 세액
+          </h2>
+          <p id="resultStatusDesc" class="text-xs text-muted-foreground mt-0.5">
+            1세대 1주택 고가주택 안분 과세 및 장기보유특별공제 적용 결과
+          </p>
+        </div>
+        <div class="text-right">
+          <span id="totalTaxDisplay" class="text-2xl sm:text-3xl font-black text-primary">
+            0원
+          </span>
+          <span id="effectiveTaxRate" class="block text-xs font-semibold text-muted-foreground">
+            실효세율: 0.0%
+          </span>
+        </div>
+      </div>
+
+      <!-- Tax Breakdown Grid -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs">
+        <div class="rounded-lg bg-card p-3 border border-border">
+          <span class="text-muted-foreground block mb-1">총 양도차익</span>
+          <span id="totalProfit" class="font-bold text-foreground text-sm">5억 7,000만 원</span>
+        </div>
+        <div class="rounded-lg bg-card p-3 border border-border">
+          <span class="text-muted-foreground block mb-1">과세대상 차익</span>
+          <span id="taxableProfit" class="font-bold text-foreground text-sm">1억 1,400만 원</span>
+        </div>
+        <div class="rounded-lg bg-card p-3 border border-border">
+          <span class="text-muted-foreground block mb-1">장특공제율 (금액)</span>
+          <span id="specialDeduction" class="font-bold text-foreground text-sm">80% (9,120만 원)</span>
+        </div>
+        <div class="rounded-lg bg-card p-3 border border-border">
+          <span class="text-muted-foreground block mb-1">과세표준</span>
+          <span id="taxBase" class="font-bold text-foreground text-sm">2,030만 원</span>
+        </div>
+      </div>
+
+      <!-- Detailed Calculation Rows -->
+      <div class="space-y-2.5 text-xs text-muted-foreground border-t border-border/60 pt-4">
+        <div class="flex justify-between items-center">
+          <span>양도소득세 (국세, 기본세율 6~45%)</span>
+          <span id="incomeTax" class="font-bold text-foreground">0원</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span>지방소득세 (양도세의 10%)</span>
+          <span id="localTax" class="font-bold text-foreground">0원</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span>기본공제 (1인 연간 1회)</span>
+          <span class="font-bold text-foreground">2,500,000원 공제 완료</span>
+        </div>
+        <div class="flex justify-between items-center text-success font-bold pt-2 border-t border-border/40">
+          <span>1세대 1주택 비과세 절세효과</span>
+          <span id="taxSavings">약 0원 절감</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Statutory Explanations -->
+    <div class="mt-8 rounded-xl border border-border bg-card p-6 space-y-4">
+      <h3 class="text-sm font-black text-foreground">
+        2026년 주택 양도소득세 핵심 과세 체계
+      </h3>
+      <ul class="text-xs space-y-2 text-muted-foreground leading-relaxed">
+        <li>
+          <strong class="text-foreground">1세대 1주택 비과세 요건:</strong> 양도일 현재 1세대가 국내에 1주택을 보유하고 보유기간 2년 이상(취득 당시 조정대상지역인 경우 보유기간 2년 및 거주기간 2년 이상)인 경우 실거래가 12억 원 이하까지 양도소득세가 전액 비과세됩니다.
+        </li>
+        <li>
+          <strong class="text-foreground">12억 원 초과 고가주택 안분계산:</strong> 양도가액이 12억 원을 초과하는 경우, 초과 비율인 <code class="bg-muted px-1 py-0.5 rounded text-foreground font-semibold">양도차익 × (양도가액 - 12억 원) ÷ 양도가액</code> 산식으로 과세대상 양도차익을 정밀 산정합니다.
+        </li>
+        <li>
+          <strong class="text-foreground">장기보유특별공제율 (표 2):</strong> 1세대 1주택자는 보유기간 연 4%(최대 40%)와 거주기간 연 4%(최대 40%)를 합산하여 최대 80%를 공제받습니다(단, 거주기간 2년 미만인 경우 일반 표 1이 적용되어 연 2% 최대 30%로 제한).
+        </li>
+        <li>
+          <strong class="text-foreground">법적 근거:</strong> 소득세법 제89조(비과세 양도소득), 제95조(양도소득금액), 제104조(양도소득세의 세율).
+        </li>
+      </ul>
+    </div>
+
+    <!-- Related Tools Recommendation -->
+    <RelatedTools currentId="capital-gains-tax" />
+  </div>
+
+  <script>
+    function formatKorWon(value: number): string {
+      if (value <= 0) return "0원";
+      const eok = Math.floor(value / 100000000);
+      const man = Math.floor((value % 100000000) / 10000);
+      let res = "";
+      if (eok > 0) res += `${eok}억 `;
+      if (man > 0) res += `${man.toLocaleString()}만 `;
+      return res.trim() + "원";
+    }
+
+    function calculateProgressiveTax(taxBase: number): number {
+      if (taxBase <= 0) return 0;
+      if (taxBase <= 14000000) return Math.round(taxBase * 0.06);
+      if (taxBase <= 50000000) return Math.round(taxBase * 0.15 - 1260000);
+      if (taxBase <= 88000000) return Math.round(taxBase * 0.24 - 5760000);
+      if (taxBase <= 150000000) return Math.round(taxBase * 0.35 - 15440000);
+      if (taxBase <= 300000000) return Math.round(taxBase * 0.38 - 19940000);
+      if (taxBase <= 500000000) return Math.round(taxBase * 0.40 - 25940000);
+      if (taxBase <= 1000000000) return Math.round(taxBase * 0.42 - 35940000);
+      return Math.round(taxBase * 0.45 - 65940000);
+    }
+
+    function update() {
+      const houseType = (document.getElementById("houseType") as HTMLSelectElement).value;
+      const transferPrice = Number((document.getElementById("transferPrice") as HTMLInputElement).value) || 0;
+      const acquisitionPrice = Number((document.getElementById("acquisitionPrice") as HTMLInputElement).value) || 0;
+      const expenses = Number((document.getElementById("expenses") as HTMLInputElement).value) || 0;
+      const holdingYears = Number((document.getElementById("holdingYears") as HTMLSelectElement).value) || 0;
+      const residenceYears = Number((document.getElementById("residenceYears") as HTMLSelectElement).value) || 0;
+
+      // Update text displays
+      (document.getElementById("transferPriceKor") as HTMLElement).textContent = formatKorWon(transferPrice);
+      (document.getElementById("acquisitionPriceKor") as HTMLElement).textContent = formatKorWon(acquisitionPrice);
+      (document.getElementById("expensesKor") as HTMLElement).textContent = formatKorWon(expenses);
+
+      // Total Capital Profit
+      const totalProfit = Math.max(0, transferPrice - acquisitionPrice - expenses);
+      (document.getElementById("totalProfit") as HTMLElement).textContent = formatKorWon(totalProfit);
+
+      let taxableProfit = totalProfit;
+      let specialRate = 0;
+      const EXEMPT_THRESHOLD = 1200000000; // 12억 원
+
+      if (houseType === "1home_exempt") {
+        if (transferPrice <= EXEMPT_THRESHOLD) {
+          taxableProfit = 0;
+          specialRate = 0;
+        } else {
+          // 고가주택 안분비율
+          taxableProfit = Math.round(totalProfit * ((transferPrice - EXEMPT_THRESHOLD) / transferPrice));
+          // 표 2 장특공: 보유(3년 이상 4%씩 최대 40%) + 거주(2년 이상 4%씩 최대 40%)
+          if (holdingYears >= 3 && residenceYears >= 2) {
+            const holdingRate = Math.min(40, holdingYears * 4);
+            const residenceRate = Math.min(40, residenceYears * 4);
+            specialRate = (holdingRate + residenceRate) / 100;
+          } else if (holdingYears >= 3) {
+            // 거주 2년 미만이면 일반 표1 적용 (연 2% 최대 30%)
+            specialRate = Math.min(0.30, holdingYears * 0.02);
+          }
+        }
+      } else {
+        // 일반과세 또는 다주택자
+        taxableProfit = totalProfit;
+        if (holdingYears >= 3) {
+          // 표 1 일반 장특공: 3년 이상 매년 2%씩 최대 30%
+          specialRate = Math.min(0.30, holdingYears * 0.02);
+        }
+      }
+
+      const specialDeductionAmount = Math.round(taxableProfit * specialRate);
+      const incomeAmount = Math.max(0, taxableProfit - specialDeductionAmount);
+      const taxBase = Math.max(0, incomeAmount - 2500000); // 기본공제 250만 원
+
+      const incomeTax = calculateProgressiveTax(taxBase);
+      const localTax = Math.floor(incomeTax * 0.1);
+      const totalTax = incomeTax + localTax;
+
+      // 일반과세(비과세 혜택 미적용 시) 가정 세액 계산
+      const regularDeductionRate = holdingYears >= 3 ? Math.min(0.30, holdingYears * 0.02) : 0;
+      const regularDeduction = Math.round(totalProfit * regularDeductionRate);
+      const regularTaxBase = Math.max(0, totalProfit - regularDeduction - 2500000);
+      const regularTax = calculateProgressiveTax(regularTaxBase);
+      const regularTotalTax = Math.round(regularTax * 1.1);
+      const savings = Math.max(0, regularTotalTax - totalTax);
+
+      // Render Results
+      (document.getElementById("taxableProfit") as HTMLElement).textContent = formatKorWon(taxableProfit);
+      (document.getElementById("specialDeduction") as HTMLElement).textContent = `${Math.round(specialRate * 100)}% (${formatKorWon(specialDeductionAmount)})`;
+      (document.getElementById("taxBase") as HTMLElement).textContent = formatKorWon(taxBase);
+      (document.getElementById("incomeTax") as HTMLElement).textContent = `${incomeTax.toLocaleString()}원`;
+      (document.getElementById("localTax") as HTMLElement).textContent = `${localTax.toLocaleString()}원`;
+      (document.getElementById("totalTaxDisplay") as HTMLElement).textContent = `${totalTax.toLocaleString()}원`;
+      
+      const effectiveRate = transferPrice > 0 ? ((totalTax / transferPrice) * 100).toFixed(2) : "0.0";
+      (document.getElementById("effectiveTaxRate") as HTMLElement).textContent = `양도가액 대비 실효세율: ${effectiveRate}%`;
+      (document.getElementById("taxSavings") as HTMLElement).textContent = houseType === "1home_exempt" 
+        ? `약 ${formatKorWon(savings)} 절감 (비과세 미적용 대비)`
+        : "일반 과세 구간 적용 중";
+    }
+
+    document.querySelectorAll("input, select").forEach((el) => {
+      el.addEventListener("input", update);
+      el.addEventListener("change", update);
+    });
+
+    update();
+  </script>
+</Layout>
