@@ -1,0 +1,352 @@
+---
+import Layout from "../../components/Layout.astro";
+import RelatedTools from "../../components/RelatedTools.astro";
+---
+
+<Layout
+  title="국민건강보험료 지역가입자 계산기 & 피부양자 자격 판정 — 2026년 개편 부과체계"
+  description="소득정률제 7.09%, 재산세 과표 5,000만원 기본공제, 자동차 부과 폐지 반영 건강보험료 모의계산 및 금융소득 2,000만원·사업소득 피부양자 박탈 기준을 즉시 판정합니다."
+>
+  <div class="mx-auto max-w-4xl px-4 py-8 sm:px-6 sm:py-12">
+    <!-- Header -->
+    <div class="mb-8 text-center">
+      <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold mb-3">
+        2024~2026년 국민건강보험료 2단계 부과체계 개편 반영
+      </div>
+      <h1 class="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight mb-2">
+        국민건강보험료 지역가입자 계산기 & 피부양자 판정
+      </h1>
+      <p class="text-sm text-muted-foreground max-w-xl mx-auto">
+        직장에서 퇴사하거나 부업·사업소득이 발생했을 때 부과되는 지역건강보험료를 모의 계산하고, 건보료 피부양자 자격 유지 여부를 판정합니다.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      <!-- Input Form -->
+      <div class="lg:col-span-6 bg-card border border-border rounded-2xl p-6 shadow-sm space-y-5">
+        <h2 class="text-base font-bold text-foreground border-b border-border pb-3">
+          1. 소득 및 재산 정보 입력
+        </h2>
+
+        <!-- Business Income -->
+        <div>
+          <label for="business-income" class="block text-xs font-bold text-foreground mb-1">
+            연간 사업소득금액 (매출 - 필요경비)
+          </label>
+          <div class="relative">
+            <input
+              id="business-income"
+              type="number"
+              min="0"
+              step="100000"
+              value="0"
+              placeholder="예: 10000000"
+              class="w-full rounded-xl border border-border bg-background px-4 py-2.5 text-sm font-semibold text-foreground focus:border-primary focus:outline-hidden"
+            />
+            <span class="absolute right-4 top-2.5 text-xs text-muted-foreground">원/년</span>
+          </div>
+          <p class="text-[11px] text-muted-foreground mt-1">
+            * 3.3% 프리랜서 또는 개인사업자의 5월 종합소득세 신고 소득금액
+          </p>
+        </div>
+
+        <!-- Business Registration -->
+        <div>
+          <label class="block text-xs font-bold text-foreground mb-1.5">
+            사업자등록증 보유 여부
+          </label>
+          <div class="grid grid-cols-2 gap-2">
+            <button
+              id="biz-reg-no"
+              type="button"
+              class="py-2 rounded-xl text-xs font-bold border transition-colors bg-primary text-primary-foreground border-primary"
+            >
+              없음 (3.3% 프리랜서)
+            </button>
+            <button
+              id="biz-reg-yes"
+              type="button"
+              class="py-2 rounded-xl text-xs font-bold border transition-colors bg-muted/30 text-muted-foreground border-border hover:bg-muted"
+            >
+              있음 (개인사업자)
+            </button>
+          </div>
+        </div>
+
+        <!-- Financial Income -->
+        <div>
+          <label for="finance-income" class="block text-xs font-bold text-foreground mb-1">
+            연간 금융소득 (이자소득 + 배당소득)
+          </label>
+          <div class="relative">
+            <input
+              id="finance-income"
+              type="number"
+              min="0"
+              step="100000"
+              value="0"
+              placeholder="예: 5000000"
+              class="w-full rounded-xl border border-border bg-background px-4 py-2.5 text-sm font-semibold text-foreground focus:border-primary focus:outline-hidden"
+            />
+            <span class="absolute right-4 top-2.5 text-xs text-muted-foreground">원/년</span>
+          </div>
+          <p class="text-[11px] text-muted-foreground mt-1">
+            * 2,000만 원 초과 시 금융소득 전액에 건강보험료 부과 및 피부양자 박탈
+          </p>
+        </div>
+
+        <!-- Other Income -->
+        <div>
+          <label for="other-income" class="block text-xs font-bold text-foreground mb-1">
+            기타 공적연금 및 근로소득 (연간 합계)
+          </label>
+          <div class="relative">
+            <input
+              id="other-income"
+              type="number"
+              min="0"
+              step="100000"
+              value="0"
+              placeholder="0"
+              class="w-full rounded-xl border border-border bg-background px-4 py-2.5 text-sm font-semibold text-foreground focus:border-primary focus:outline-hidden"
+            />
+            <span class="absolute right-4 top-2.5 text-xs text-muted-foreground">원/년</span>
+          </div>
+        </div>
+
+        <!-- Property Tax Base -->
+        <div>
+          <label for="property-base" class="block text-xs font-bold text-foreground mb-1">
+            보유 부동산 재산세 과세표준 (주택·토지·건물)
+          </label>
+          <div class="relative">
+            <input
+              id="property-base"
+              type="number"
+              min="0"
+              step="1000000"
+              value="0"
+              placeholder="예: 200000000 (2억)"
+              class="w-full rounded-xl border border-border bg-background px-4 py-2.5 text-sm font-semibold text-foreground focus:border-primary focus:outline-hidden"
+            />
+            <span class="absolute right-4 top-2.5 text-xs text-muted-foreground">원</span>
+          </div>
+          <p class="text-[11px] text-muted-foreground mt-1">
+            * 재산세 고지서상의 과세표준액 (시세가 아닌 공시가격의 60% 수준), 기본공제 5천만 원 일괄 적용
+          </p>
+        </div>
+      </div>
+
+      <!-- Result Card -->
+      <div class="lg:col-span-6 space-y-6">
+        <!-- Monthly Premium Box -->
+        <div class="bg-card border border-border rounded-2xl p-6 shadow-sm">
+          <span class="text-xs font-bold text-muted-foreground">지역가입자 전환 시 예상 월 보험료</span>
+          <div class="mt-2 flex items-baseline gap-2">
+            <span id="res-total-monthly" class="text-3xl font-extrabold text-foreground">19,780</span>
+            <span class="text-sm font-bold text-foreground">원 / 월</span>
+          </div>
+          <p class="text-xs text-muted-foreground mt-1">
+            (연간 예상 납부액: <span id="res-total-annual" class="font-bold text-foreground">237,360</span>원)
+          </p>
+
+          <div class="mt-6 space-y-2.5 border-t border-border pt-4 text-xs">
+            <div class="flex justify-between text-muted-foreground">
+              <span>소득분 건강보험료 (7.09%)</span>
+              <span id="res-income-premium" class="font-semibold text-foreground">0 원</span>
+            </div>
+            <div class="flex justify-between text-muted-foreground">
+              <span>재산분 건강보험료 (점수당 208.4원)</span>
+              <span id="res-property-premium" class="font-semibold text-foreground">0 원</span>
+            </div>
+            <div class="flex justify-between text-muted-foreground">
+              <span>장기요양보험료 (건보료의 12.95%)</span>
+              <span id="res-care-premium" class="font-semibold text-foreground">2,270 원</span>
+            </div>
+            <div class="flex justify-between text-muted-foreground border-t border-dashed border-border pt-2 font-bold text-foreground">
+              <span>최저보험료 보장 기준</span>
+              <span>월 19,780원 적용</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dependent Status Verdict Box -->
+        <div id="verdict-card" class="bg-card border rounded-2xl p-6 shadow-sm border-border">
+          <div class="flex items-center gap-2 mb-2">
+            <span id="verdict-badge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-primary/10 text-primary">
+              피부양자 자격 유지 가능
+            </span>
+          </div>
+          <h3 id="verdict-title" class="text-base font-bold text-foreground mb-1">
+            현재 건강보험 피부양자 자격을 유지할 수 있습니다.
+          </h3>
+          <p id="verdict-desc" class="text-xs text-muted-foreground leading-relaxed">
+            연간 소득합계 2,000만 원 이하이며 사업소득 및 재산 요건을 충족합니다.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Legal Criteria Guide -->
+    <div class="mt-12 space-y-6">
+      <h2 class="text-xl font-bold text-foreground">건강보험료 부과체계 및 피부양자 박탈 기준</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs text-muted-foreground leading-relaxed">
+        <div class="bg-card border border-border rounded-xl p-5 space-y-2">
+          <h3 class="font-bold text-foreground text-sm">피부양자 자격 탈락 3대 기준</h3>
+          <ul class="list-disc list-inside space-y-1">
+            <li><strong>소득 기준</strong>: 연간 합산소득(사업+금융+근로+연금)이 <strong>2,000만 원을 초과</strong>하는 경우</li>
+            <li><strong>사업소득 기준</strong>: 사업자등록증이 있고 사업소득이 <strong>1원이라도 발생</strong>하거나, 프리랜서(미등록) 연 사업소득이 <strong>500만 원을 초과</strong>하는 경우</li>
+            <li><strong>재산 기준</strong>: 재산세 과표가 <strong>9억 원을 초과</strong>하거나, <strong>5.4억~9억 원이면서 연소득 1,000만 원을 초과</strong>하는 경우</li>
+          </ul>
+        </div>
+        <div class="bg-card border border-border rounded-xl p-5 space-y-2">
+          <h3 class="font-bold text-foreground text-sm">2024~2026년 개편 핵심 요약</h3>
+          <ul class="list-disc list-inside space-y-1">
+            <li><strong>자동차 건보료 완전 폐지</strong>: 배기량이나 차량 가액에 관계없이 자동차에 매기던 건보료가 전면 폐지되었습니다.</li>
+            <li><strong>재산 기본공제 5,000만 원</strong>: 재산세 과표에서 5,000만 원을 일괄 공제하여 영세 1주택자의 부담이 경감되었습니다.</li>
+            <li><strong>소득정률제 도입</strong>: 등급제가 폐지되고 직장가입자와 동일하게 소득의 <strong>7.09%</strong> 정률 부과됩니다.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <RelatedTools currentId="health-insurance" />
+  </div>
+
+  <script is:inline>
+    (function () {
+      let hasBizReg = false;
+
+      const bizIncomeInput = document.getElementById("business-income");
+      const financeIncomeInput = document.getElementById("finance-income");
+      const otherIncomeInput = document.getElementById("other-income");
+      const propertyBaseInput = document.getElementById("property-base");
+
+      const btnBizNo = document.getElementById("biz-reg-no");
+      const btnBizYes = document.getElementById("biz-reg-yes");
+
+      const resTotalMonthly = document.getElementById("res-total-monthly");
+      const resTotalAnnual = document.getElementById("res-total-annual");
+      const resIncomePrem = document.getElementById("res-income-premium");
+      const resPropertyPrem = document.getElementById("res-property-premium");
+      const resCarePrem = document.getElementById("res-care-premium");
+
+      const verdictCard = document.getElementById("verdict-card");
+      const verdictBadge = document.getElementById("verdict-badge");
+      const verdictTitle = document.getElementById("verdict-title");
+      const verdictDesc = document.getElementById("verdict-desc");
+
+      btnBizNo?.addEventListener("click", () => {
+        hasBizReg = false;
+        btnBizNo.className = "py-2 rounded-xl text-xs font-bold border transition-colors bg-primary text-primary-foreground border-primary";
+        btnBizYes.className = "py-2 rounded-xl text-xs font-bold border transition-colors bg-muted/30 text-muted-foreground border-border hover:bg-muted";
+        calculate();
+      });
+
+      btnBizYes?.addEventListener("click", () => {
+        hasBizReg = true;
+        btnBizYes.className = "py-2 rounded-xl text-xs font-bold border transition-colors bg-primary text-primary-foreground border-primary";
+        btnBizNo.className = "py-2 rounded-xl text-xs font-bold border transition-colors bg-muted/30 text-muted-foreground border-border hover:bg-muted";
+        calculate();
+      });
+
+      function formatNum(n) {
+        return Math.round(n).toLocaleString();
+      }
+
+      function calculatePropertyScore(taxBase) {
+        const netBase = Math.max(0, taxBase - 50000000); // 5천만원 기본공제
+        if (netBase <= 0) return 0;
+        if (netBase <= 12000000) return 22;
+        if (netBase <= 24000000) return 55;
+        if (netBase <= 36000000) return 86;
+        if (netBase <= 48000000) return 117;
+        if (netBase <= 60000000) return 147;
+        if (netBase <= 80000000) return 188;
+        if (netBase <= 100000000) return 228;
+        if (netBase <= 150000000) return 308;
+        if (netBase <= 200000000) return 385;
+        if (netBase <= 300000000) return 530;
+        if (netBase <= 500000000) return 760;
+        if (netBase <= 800000000) return 1020;
+        return 1300;
+      }
+
+      function calculate() {
+        const bizIncome = Math.max(0, parseFloat(bizIncomeInput.value) || 0);
+        const financeIncome = Math.max(0, parseFloat(financeIncomeInput.value) || 0);
+        const otherIncome = Math.max(0, parseFloat(otherIncomeInput.value) || 0);
+        const propertyBase = Math.max(0, parseFloat(propertyBaseInput.value) || 0);
+
+        const totalAnnualIncome = bizIncome + financeIncome + otherIncome;
+
+        // 1. 소득분 건강보험료 (소득정률제 7.09%)
+        let monthlyIncomePrem = 0;
+        if (totalAnnualIncome > 3360000) {
+          monthlyIncomePrem = (totalAnnualIncome / 12) * 0.0709;
+        }
+
+        // 2. 재산분 건강보험료
+        const propScore = calculatePropertyScore(propertyBase);
+        const monthlyPropertyPrem = propScore * 208.4;
+
+        // 3. 최저보험료 (19,780원)
+        let monthlyHealthPrem = monthlyIncomePrem + monthlyPropertyPrem;
+        if (monthlyHealthPrem < 19780) {
+          monthlyHealthPrem = 19780;
+        }
+
+        // 4. 장기요양보험료 (12.95%)
+        const monthlyCarePrem = monthlyHealthPrem * 0.1295;
+        const totalMonthly = monthlyHealthPrem + monthlyCarePrem;
+
+        resIncomePrem.textContent = `${formatNum(monthlyIncomePrem)} 원`;
+        resPropertyPrem.textContent = `${formatNum(monthlyPropertyPrem)} 원`;
+        resCarePrem.textContent = `${formatNum(monthlyCarePrem)} 원`;
+        resTotalMonthly.textContent = formatNum(totalMonthly);
+        resTotalAnnual.textContent = formatNum(totalMonthly * 12);
+
+        // 5. 피부양자 판정
+        let isDisqualified = false;
+        let disqualifyReason = "";
+
+        if (totalAnnualIncome > 20000000) {
+          isDisqualified = true;
+          disqualifyReason = `연간 합산 소득이 ${formatNum(totalAnnualIncome)}원으로 법정 기준(2,000만 원)을 초과하여 피부양자 자격이 상실됩니다.`;
+        } else if (hasBizReg && bizIncome > 0) {
+          isDisqualified = true;
+          disqualifyReason = `사업자등록증이 있는 상태에서 사업소득금액(${formatNum(bizIncome)}원)이 단 1원이라도 발생하여 피부양자 자격이 상실됩니다.`;
+        } else if (!hasBizReg && bizIncome > 5000000) {
+          isDisqualified = true;
+          disqualifyReason = `프리랜서(3.3%) 사업소득금액이 ${formatNum(bizIncome)}원으로 미등록 기준(500만 원)을 초과하여 피부양자 자격이 상실됩니다.`;
+        } else if (propertyBase > 900000000) {
+          isDisqualified = true;
+          disqualifyReason = `재산세 과세표준이 ${formatNum(propertyBase)}원으로 법정 상한선(9억 원)을 초과하여 피부양자에서 제외됩니다.`;
+        } else if (propertyBase > 540000000 && totalAnnualIncome > 10000000) {
+          isDisqualified = true;
+          disqualifyReason = `재산세 과세표준이 5.4억 원을 초과하면서 연간 소득이 1,000만 원을 초과하여 피부양자 자격이 상실됩니다.`;
+        }
+
+        if (isDisqualified) {
+          verdictCard.className = "bg-destructive/5 border border-destructive/30 rounded-2xl p-6 shadow-sm";
+          verdictBadge.className = "px-2.5 py-0.5 rounded-full text-xs font-bold bg-destructive/15 text-destructive";
+          verdictBadge.textContent = "피부양자 자격 상실 대상";
+          verdictTitle.textContent = "지역가입자로 전환되어 보험료가 고지됩니다.";
+          verdictDesc.textContent = disqualifyReason;
+        } else {
+          verdictCard.className = "bg-primary/5 border border-primary/30 rounded-2xl p-6 shadow-sm";
+          verdictBadge.className = "px-2.5 py-0.5 rounded-full text-xs font-bold bg-primary/15 text-primary";
+          verdictBadge.textContent = "피부양자 자격 유지 가능";
+          verdictTitle.textContent = "현재 건강보험 피부양자 자격을 유지할 수 있습니다.";
+          verdictDesc.textContent = "연간 소득합계 2,000만 원 이하이며 사업소득 및 재산 과표 요건을 모두 충족합니다.";
+        }
+      }
+
+      [bizIncomeInput, financeIncomeInput, otherIncomeInput, propertyBaseInput].forEach((el) => {
+        el?.addEventListener("input", calculate);
+      });
+
+      calculate();
+    })();
+  </script>
+</Layout>

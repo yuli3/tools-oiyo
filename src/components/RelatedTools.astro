@@ -143,6 +143,22 @@ const ALL_TOOLS: Record<string, ToolItem> = {
     badge: "투자/재테크",
     category: "금융/투자",
   },
+  "health-insurance": {
+    id: "health-insurance",
+    title: "국민건강보험료 지역가입자 & 피부양자 판정기",
+    desc: "소득정률제 7.09% 및 재산세 과표 5,000만원 기본공제 반영 건보료와 피부양자 자격 판정",
+    href: "/ko/health-insurance-calculator/",
+    badge: "2026 개편",
+    category: "세무/복지",
+  },
+  "hug-guarantee": {
+    id: "hug-guarantee",
+    title: "HUG 전세보증금 반환보증 126% 진단기",
+    desc: "공시가 140% × 90% 담보인정 126% 룰 기준 가입 가능 여부 및 보증료율 계산",
+    href: "/ko/hug-guarantee-calculator/",
+    badge: "126% 룰",
+    category: "부동산/금융",
+  },
 };
 
 const RECOMMENDATIONS: Record<string, string[]> = {
@@ -159,9 +175,11 @@ const RECOMMENDATIONS: Record<string, string[]> = {
   "military-service": ["net-salary", "business-day", "unemployment-benefits"],
   "business-day": ["annual-leave", "military-service", "waste-sorter"],
   "pyeong-sqm": ["brokerage-fee", "property-tax", "cagr"],
-  "brokerage-fee": ["property-tax", "pyeong-sqm", "cagr"],
-  "property-tax": ["brokerage-fee", "pyeong-sqm", "cagr"],
-  "cagr": ["net-salary", "severance-pay", "pyeong-sqm"],
+  "brokerage-fee": ["property-tax", "hug-guarantee", "pyeong-sqm"],
+  "property-tax": ["brokerage-fee", "hug-guarantee", "health-insurance"],
+  "cagr": ["net-salary", "severance-pay", "health-insurance"],
+  "health-insurance": ["property-tax", "net-salary", "cagr"],
+  "hug-guarantee": ["brokerage-fee", "property-tax", "pyeong-sqm"],
 };
 
 const targetIds = RECOMMENDATIONS[currentId] ?? ["net-salary", "severance-pay", "business-day"];
