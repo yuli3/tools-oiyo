@@ -178,6 +178,22 @@ const tools = [
     category: "복지/육아휴직",
     badge: "부모특례 450만",
   },
+  {
+    id: "brokerage-fee",
+    title: "부동산 중개보수 (복비) 계산기",
+    desc: "2026년 공인중개사법 시행규칙 기준 매매·임대차 법정 상한요율(0.3%~0.9%)과 한도액, 부가세 10%를 자동 연산합니다.",
+    href: "/ko/brokerage-fee-calculator/",
+    category: "부동산/거래",
+    badge: "법정 상한요율",
+  },
+  {
+    id: "property-tax",
+    title: "부동산 보유세 (재산세·종부세) 계산기",
+    desc: "1세대 1주택자 12억 공제(고령·장기보유 최대 80% 공제) 및 다주택자 9억 공제, 공정시장가액비율 60% 반영 보유세를 산출합니다.",
+    href: "/ko/property-tax-calculator/",
+    category: "부동산/세무",
+    badge: "2026 개정세법",
+  },
 ];
 import Layout from "../components/Layout.astro";
 ---
@@ -208,49 +224,49 @@ import Layout from "../components/Layout.astro";
         class="filter-btn rounded-lg border border-primary bg-primary px-3.5 py-1.5 text-xs font-bold text-primary-foreground transition shadow-xs"
         data-filter="all"
       >
-        전체 보기 (14)
+        전체 보기
       </button>
       <button
         type="button"
         class="filter-btn rounded-lg border border-border bg-card px-3.5 py-1.5 text-xs font-medium text-muted-foreground transition hover:border-primary/40 hover:text-foreground"
         data-filter="labor"
       >
-        급여 · 노동 · 수당 (6)
+        급여 · 노동 · 수당
       </button>
       <button
         type="button"
         class="filter-btn rounded-lg border border-border bg-card px-3.5 py-1.5 text-xs font-medium text-muted-foreground transition hover:border-primary/40 hover:text-foreground"
         data-filter="living"
       >
-        생활 · 부동산 · 공과금 (4)
+        생활 · 부동산 · 공과금
       </button>
       <button
         type="button"
         class="filter-btn rounded-lg border border-border bg-card px-3.5 py-1.5 text-xs font-medium text-muted-foreground transition hover:border-primary/40 hover:text-foreground"
         data-filter="finance"
       >
-        금융 · 재테크 (1)
+        금융 · 재테크
       </button>
       <button
         type="button"
         class="filter-btn rounded-lg border border-border bg-card px-3.5 py-1.5 text-xs font-medium text-muted-foreground transition hover:border-primary/40 hover:text-foreground"
         data-filter="military"
       >
-        병무 · 전역 (1)
+        병무 · 전역
       </button>
       <button
         type="button"
         class="filter-btn rounded-lg border border-border bg-card px-3.5 py-1.5 text-xs font-medium text-muted-foreground transition hover:border-primary/40 hover:text-foreground"
         data-filter="environment"
       >
-        기상 · 환경 (1)
+        기상 · 환경
       </button>
       <button
         type="button"
         class="filter-btn rounded-lg border border-border bg-card px-3.5 py-1.5 text-xs font-medium text-muted-foreground transition hover:border-primary/40 hover:text-foreground"
         data-filter="calendar"
       >
-        캘린더 · 공휴일 (1)
+        캘린더 · 공휴일
       </button>
     </div>
 
@@ -258,11 +274,12 @@ import Layout from "../components/Layout.astro";
     <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3" id="tools-grid">
       {tools.map((tool) => {
         let group = "labor";
-        if (["electricity-bill", "gas-bill", "waste-sorter", "pyeong-sqm"].includes(tool.id)) group = "living";
-        else if (tool.id === "cagr") group = "finance";
+        if (["electricity-bill", "gas-bill", "waste-sorter", "pyeong-sqm", "brokerage-fee", "property-tax"].includes(tool.id)) group = "living";
+        else if (["cagr", "loan-repayment", "youth-savings"].includes(tool.id)) group = "finance";
+        else if (["acquisition-tax", "freelancer-tax", "car-tax"].includes(tool.id)) group = "living";
         else if (tool.id === "military-service") group = "military";
         else if (tool.id === "wind-chill") group = "environment";
-        else if (tool.id === "business-day") group = "calendar";
+        else if (["business-day", "dday"].includes(tool.id)) group = "calendar";
 
         return (
           <a

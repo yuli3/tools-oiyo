@@ -119,6 +119,22 @@ const ALL_TOOLS: Record<string, ToolItem> = {
     badge: "부동산 필수",
     category: "생활/부동산",
   },
+  "brokerage-fee": {
+    id: "brokerage-fee",
+    title: "부동산 중개보수 (복비) 계산기",
+    desc: "2026년 공인중개사법 시행규칙 기준 매매·임대차 법정 상한요율과 부가세 산출",
+    href: "/ko/brokerage-fee-calculator/",
+    badge: "법정 상한",
+    category: "부동산/거래",
+  },
+  "property-tax": {
+    id: "property-tax",
+    title: "부동산 보유세 (재산세·종부세) 계산기",
+    desc: "1주택자 12억 공제·다주택자 9억 공제 및 공정시장가액비율 반영 보유세 산출",
+    href: "/ko/property-tax-calculator/",
+    badge: "2026 세법",
+    category: "부동산/세무",
+  },
   "cagr": {
     id: "cagr",
     title: "CAGR 연평균 복합 성장률 계산기",
@@ -142,7 +158,9 @@ const RECOMMENDATIONS: Record<string, string[]> = {
   "wind-chill": ["gas-bill", "electricity-bill", "business-day"],
   "military-service": ["net-salary", "business-day", "unemployment-benefits"],
   "business-day": ["annual-leave", "military-service", "waste-sorter"],
-  "pyeong-sqm": ["electricity-bill", "gas-bill", "cagr"],
+  "pyeong-sqm": ["brokerage-fee", "property-tax", "cagr"],
+  "brokerage-fee": ["property-tax", "pyeong-sqm", "cagr"],
+  "property-tax": ["brokerage-fee", "pyeong-sqm", "cagr"],
   "cagr": ["net-salary", "severance-pay", "pyeong-sqm"],
 };
 
