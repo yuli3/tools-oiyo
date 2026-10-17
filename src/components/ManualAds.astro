@@ -1,0 +1,73 @@
+---
+/**
+ * Hand-placed AdSense unit for OIYO Tools, alongside Auto ads (세운 결정 2026-10-17: 하이브리드 전환).
+ *
+ * Places a responsive display unit strictly AFTER the calculator result section
+ * (right before RelatedTools / footer), ensuring:
+ * 1) Never interrupts the user's input-to-result calculation flow.
+ * 2) Height reservation (min-h-72) to prevent Cumulative Layout Shift (CLS).
+ * 3) IntersectionObserver lazy loading (requests ad only within 300px of viewport).
+ * 4) MutationObserver auto-hiding when AdSense returns 'unfilled'.
+ */
+interface Props {
+  noindex?: boolean;
+}
+
+const { noindex = false } = Astro.props as Props;
+
+const payload = JSON.stringify({
+  client: "ca-pub-9541920090543312",
+  slot: "2768903568",
+  label: "광고",
+});
+
+const active = !noindex;
+---
+
+{active && (
+  <script is:inline set:html={`(function(){
+  var cfg=${payload};
+  var host=location.hostname;
+  var preview=false;try{preview=localStorage.getItem("oiyo:ads-preview")==="1"}catch(e){}
+  if(!/(^|\\.)oiyo\\.net$/.test(host)&&!preview)return;
+  var main=document.getElementById("main-content");
+  if(!main)return;
+  var wrap=document.createElement("aside");
+  wrap.className="mx-auto my-8 max-w-4xl min-h-72 rounded-2xl border border-border bg-card/60 p-3 shadow-xs";
+  wrap.setAttribute("data-manual-ad","tools-result-end");
+  wrap.setAttribute("aria-label",cfg.label);
+  var tag=document.createElement("p");
+  tag.className="mb-1 text-center text-xs text-muted-foreground";
+  tag.textContent=cfg.label;
+  var ins=document.createElement("ins");
+  ins.className="adsbygoogle block";
+  ins.setAttribute("data-ad-client",cfg.client);
+  if(cfg.slot)ins.setAttribute("data-ad-slot",cfg.slot);
+  ins.setAttribute("data-ad-format","auto");
+  ins.setAttribute("data-full-width-responsive","true");
+  wrap.appendChild(tag);wrap.appendChild(ins);
+  if("MutationObserver" in window){
+    new MutationObserver(function(){
+      if(ins.getAttribute("data-ad-status")==="unfilled")wrap.hidden=true;
+    }).observe(ins,{attributes:true,attributeFilter:["data-ad-status"]});
+  }
+  var related=main.querySelector("[data-related-tools], section:last-of-type");
+  if(related&&related.parentNode){
+    related.parentNode.insertBefore(wrap,related);
+  }else{
+    main.appendChild(wrap);
+  }
+  function fill(el){try{(window.adsbygoogle=window.adsbygoogle||[]).push({})}catch(e){}el.setAttribute("data-manual-ad-requested","1")}
+  if(!("IntersectionObserver" in window)){fill(wrap);return}
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(!e.isIntersecting)return;
+      var el=e.target;
+      if(el.getAttribute("data-manual-ad-requested"))return;
+      fill(el);
+      io.unobserve(el);
+    });
+  },{rootMargin:"300px 0px"});
+  io.observe(wrap);
+})()`} />
+)}
