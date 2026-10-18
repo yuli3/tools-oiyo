@@ -41,6 +41,8 @@ const naverVerification: string | undefined = undefined;
 <meta name="theme-color" content="#65a30d" />
 
 <!-- Verification Tags -->
+<!-- 2026-10-18: confirmed by Bing GetUserSites for this domain; not an IndexNow key. -->
+<meta name="msvalidate.01" content="783A69A1E6B2817777BDE8F3083852CD" />
 {naverVerification && <meta name="naver-site-verification" content={naverVerification} />}
 
 <!-- Robots & Indexing -->
@@ -90,4 +92,13 @@ const naverVerification: string | undefined = undefined;
 </script>
 
 <!-- Google AdSense -->
-<script is:inline async src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${googleAdsenseId}`} crossorigin="anonymous"></script>
+{!noindex && <script is:inline define:vars={{ googleAdsenseId }}>
+  // 2026-10-18: local/preview and noindex pages must not request production ads.
+  if (location.hostname === 'tools.oiyo.net') {
+    var adLoader = document.createElement('script');
+    adLoader.async = true;
+    adLoader.crossOrigin = 'anonymous';
+    adLoader.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=' + googleAdsenseId;
+    document.head.appendChild(adLoader);
+  }
+</script>}
