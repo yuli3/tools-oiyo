@@ -11,10 +11,10 @@ test('built Tools baseline preserves public verification, crawl files and manual
   assert.match(await readFile(new URL('llms.txt', dist), 'utf8'), /tools\.oiyo\.net/);
   const home = await readFile(new URL('index.html', dist), 'utf8');
   assert.match(home, /G-915L6V38X6/);
-  assert.match(home, /2768903568/);
+  assert.match(home, /1685510894/);
   assert.match(home, /783A69A1E6B2817777BDE8F3083852CD/);
   const missing = await readFile(new URL('404.html', dist), 'utf8');
   assert.match(missing, /noindex/);
   assert.doesNotMatch(missing, /rel="canonical"/);
-  assert.doesNotMatch(missing, /adsbygoogle\.js|2768903568/);
+  assert.doesNotMatch(missing, /adsbygoogle\.js|1685510894/);
 });
