@@ -1,5 +1,7 @@
 ---
 interface Props {
+  locale?: import('../lib/i18n').Locale;
+  availableLocales?: import('../lib/i18n').Locale[];
   title?: string;
   description?: string;
   image?: string;
@@ -10,6 +12,8 @@ interface Props {
 }
 
 const {
+  locale = 'ko',
+  availableLocales = [],
   title = "OIYO tools — 일상을 돕는 정밀 웹 유틸리티",
   description = "입력값을 브라우저에서 바로 계산하는 생활 계산기 모음이에요. 노동 수당, 공과금, 병역, 생활 규정 등 자주 쓰는 계산기를 제공해요.",
   image = "https://tools.oiyo.net/icon-512.png",
@@ -26,6 +30,8 @@ const googleAdsenseId = "ca-pub-9541920090543312";
 // TODO(2026-10-17, audit A-9): 네이버 서치어드바이저에 tools.oiyo.net을 따로 등록하고 발급받은 토큰을 넣어요.
 // 이전 값은 wiki.oiyo.net 토큰을 복사한 것이라 tools 소유 확인이 되지 않아서 지웠어요(public/naverfeb….html도 함께 삭제).
 const naverVerification: string | undefined = undefined;
+const ogLocales = { ko: 'ko_KR', en: 'en_US', ja: 'ja_JP', zh: 'zh_CN', fr: 'fr_FR', es: 'es_ES' };
+const alternateSlug = Astro.url.pathname.split('/').filter(Boolean)[1];
 ---
 
 <!-- Global Metadata -->
@@ -51,6 +57,8 @@ const naverVerification: string | undefined = undefined;
 
 <!-- Canonical URL (404에는 넣지 않아요: 없는 주소가 홈/다른 URL로 합쳐지지 않게) -->
 {!noindex && <link rel="canonical" href={canonicalURL} />}
+{!noindex && availableLocales.map(lang => <link rel="alternate" hreflang={lang} href={`https://tools.oiyo.net/${lang}/${alternateSlug}/`} />)}
+{!noindex && availableLocales.includes('en') && <link rel="alternate" hreflang="x-default" href={`https://tools.oiyo.net/en/${alternateSlug}/`} />}
 
 <!-- Primary Meta Tags -->
 <title>{siteTitle}</title>
@@ -65,7 +73,7 @@ const naverVerification: string | undefined = undefined;
 <meta property="og:title" content={siteTitle} />
 <meta property="og:description" content={description} />
 <meta property="og:image" content={image} />
-<meta property="og:locale" content="ko_KR" />
+<meta property="og:locale" content={ogLocales[locale]} />
 
 <!-- Twitter -->
 <meta name="twitter:card" content="summary" />

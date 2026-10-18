@@ -5,12 +5,15 @@ import Layout from "../components/Layout.astro";
 import SavingsQuickLinks from "../components/SavingsQuickLinks.astro";
 
 // 2026-10-17: 카드 설명의 법정 수치는 SSOT에서 읽고, blog.oiyo.net과 겹치지 않는
-// 11개 고유 도구만 tools.oiyo.net에 배치해요(세운 결정 2026-10-17).
+// 고유 계산기와 2026-10-19 이관한 파일 도구를 정본 주소로 안내해요.
 const R = KR_RATES_2026;
 const won = (n: number) => n.toLocaleString("ko-KR");
 const pct = (r: number) => Number((r * 100).toFixed(3));
 
 const tools = [
+  { id: 'image-converter', title: '이미지 변환·압축', desc: 'HEIC·WebP·PNG·JPG를 바꾸고 목표 용량에 맞춰요. 파일은 브라우저에서 처리해요.', href: '/ko/image-converter/', category: '파일 유틸리티', badge: '6개 언어' },
+  { id: 'pdf-merge-split', title: 'PDF 합치기·나누기', desc: '파일 순서를 정해 합치거나 페이지 범위로 나눠요. 원본은 그대로 보관하세요.', href: '/ko/pdf-merge-split/', category: '파일 유틸리티', badge: '6개 언어' },
+  { id: 'qr-code-generator', title: 'QR 코드 생성기', desc: '텍스트·URL·이메일·Wi-Fi 정보를 QR 코드로 만들어요. 입력값은 브라우저에서 처리해요.', href: '/ko/qr-code-generator/', category: '파일 유틸리티', badge: '6개 언어' },
   {
     id: "unemployment-benefits",
     title: "실업급여(구직급여) 모의 계산기",

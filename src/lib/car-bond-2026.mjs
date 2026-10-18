@@ -88,7 +88,8 @@ export const CAR_BOND_REGIONS = [
     source: "경기도 광주시청 취득세율·공채율(경기도 기준), 경기도 보도(하이브리드 매입 의무화)",
     url: "https://corona.gjcity.go.kr/depart/contents.do?mId=0409080000",
   },
-  ...[
+  // Keep tuple positions typed: inferred string[] unions hide numeric rate columns (2026-10-19).
+  .../** @type {Array<[string, string, number, number]>} */ ([
     ["gwangju", "광주광역시", 0.04, 0.05],
     ["daejeon", "대전광역시", 0.12, 0.2],
     ["ulsan", "울산광역시", 0.08, 0.12],
@@ -99,7 +100,7 @@ export const CAR_BOND_REGIONS = [
     ["jeonbuk", "전북특별자치도", 0.04, 0.05],
     ["jeonnam", "전라남도", 0.06, 0.1],
     ["gyeongbuk", "경상북도", 0.04, 0.08],
-  ].map(([id, name, mid, large]) => ({
+  ]).map(([id, name, mid, large]) => ({
     id,
     name,
     bond: null,

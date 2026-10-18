@@ -11,15 +11,17 @@
  */
 interface Props {
   noindex?: boolean;
+  locale?: import('../lib/i18n').Locale;
 }
 
-const { noindex = false } = Astro.props as Props;
+const { noindex = false, locale = 'ko' } = Astro.props as Props;
+const adLabels = { ko: '광고', en: 'Advertisement', ja: '広告', zh: '广告', fr: 'Publicité', es: 'Publicidad' };
 
 const payload = JSON.stringify({
   client: "ca-pub-9541920090543312",
   // 2026-10-18: separate Tools revenue from Blog's article-end ad unit.
   slot: "1685510894",
-  label: "광고",
+  label: adLabels[locale],
 });
 
 const active = !noindex;

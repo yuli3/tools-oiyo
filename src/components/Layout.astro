@@ -2,6 +2,7 @@
 import SEO from "./SEO.astro";
 import ManualAds from "./ManualAds.astro";
 import "../styles/global.css";
+import { shellCopy, type Locale } from '../lib/i18n';
 
 interface Props {
   title?: string;
@@ -9,9 +10,13 @@ interface Props {
   keywords?: string[];
   canonicalURL?: URL | string;
   noindex?: boolean;
+  locale?: Locale;
+  availableLocales?: Locale[];
 }
 
-const { title, description, keywords, canonicalURL, noindex } = Astro.props;
+const { title, description, keywords, canonicalURL, noindex, locale = 'ko', availableLocales = [] } = Astro.props;
+const copy = shellCopy[locale];
+const pageSlug = Astro.url.pathname.split('/').filter(Boolean)[1];
 
 const FAMILY = [
   { host: "oiyo.net", name: "OIYO tests", label: "심리테스트" },
@@ -25,14 +30,14 @@ const FAMILY = [
 ---
 
 <!doctype html>
-<html lang="ko">
+<html lang={locale}>
   <head>
-    <SEO title={title} description={description} keywords={keywords} canonicalURL={canonicalURL} noindex={noindex} />
+    <SEO title={title} description={description} keywords={keywords} canonicalURL={canonicalURL} noindex={noindex} locale={locale} availableLocales={availableLocales} />
   </head>
   <body class="min-h-screen flex flex-col bg-background text-foreground selection:bg-primary/20">
     <!-- Header -->
     <header class="sticky top-0 z-50 border-b border-border/80 bg-background/80 backdrop-blur-md px-4 py-3 sm:px-8">
-      <div class="mx-auto flex max-w-5xl items-center justify-between">
+      <div class="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-2">
         <div class="flex items-center gap-3">
           <a href="/" class="flex items-center gap-1.5 text-lg font-black tracking-tight text-foreground sm:text-xl">
             <svg class="w-6 h-6 text-primary" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -42,13 +47,11 @@ const FAMILY = [
             <span>OIYO <span class="text-primary font-bold">tools</span></span>
           </a>
         </div>
-        <nav class="flex items-center gap-3 text-xs font-semibold text-muted-foreground">
-          <a href="/" class="hover:text-primary transition-colors">도구 전체</a>
-          <span class="text-border">|</span>
-          <a href="https://wiki.oiyo.net/ko/" class="hover:text-primary transition-colors">wiki</a>
-          <a href="https://blog.oiyo.net/ko/" class="hover:text-primary transition-colors">blog</a>
-          <a href="https://show.oiyo.net/" class="hover:text-primary transition-colors">show</a>
-          <a href="https://api.oiyo.net/" class="hover:text-primary transition-colors">api</a>
+        <nav class="flex flex-wrap items-center gap-3 text-xs font-semibold text-muted-foreground">
+          <a href="/" class="inline-flex min-h-11 items-center hover:text-primary transition-colors">{copy.all}</a>
+          {availableLocales.length > 1 && <label class="flex items-center gap-2">{copy.language}<select class="min-h-11 rounded-lg border border-border bg-background px-2" data-locale-switch aria-label={copy.language}>
+            {availableLocales.map(lang => <option value={`/${lang}/${pageSlug}/`} selected={lang === locale}>{lang.toUpperCase()}</option>)}
+          </select></label>}
         </nav>
       </div>
     </header>
@@ -56,7 +59,7 @@ const FAMILY = [
     <!-- Content Slot -->
     <main id="main-content" class="flex-1">
       <slot />
-      <ManualAds noindex={noindex} />
+      <ManualAds noindex={noindex} locale={locale} />
     </main>
 
     <!-- Footer with Family Links -->
@@ -71,15 +74,22 @@ const FAMILY = [
                 class="hover:text-primary transition-colors"
               >
                 <span class="font-medium text-foreground">{item.name}</span>
-                <span class="text-muted-foreground ml-1">({item.label})</span>
+                {locale === 'ko' && <span class="text-muted-foreground ml-1">({item.label})</span>}
               </a>
             ))}
           </div>
         </div>
         <div class="pt-4 border-t border-border/50 text-[11px] text-muted-foreground/70">
-          <p>© {new Date().getFullYear()} Oiyo Tech · <a href="https://blog.oiyo.net/ko/license/" class="hover:text-primary">라이선스</a> · 계산은 브라우저에서 하고 입력값은 서버로 보내지 않아요. 방문 통계(Google Analytics)와 광고(AdSense)는 사용해요.</p>
+          <p>© {new Date().getFullYear()} Oiyo Tech · <a href={`https://blog.oiyo.net/${locale}/license/`} class="hover:text-primary">{copy.license}</a> · {copy.note}</p>
         </div>
       </div>
     </footer>
   </body>
 </html>
+
+<script>
+  // 2026-10-19: switch only between the same utility's existing locale routes.
+  document.querySelectorAll<HTMLSelectElement>('[data-locale-switch]').forEach(select => {
+    select.addEventListener('change', () => { window.location.assign(select.value); });
+  });
+</script>
