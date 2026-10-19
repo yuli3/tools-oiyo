@@ -5,7 +5,7 @@ import RelatedTools from "../../components/RelatedTools.astro";
 
 <Layout
   title="일시적 2주택 비과세 처분기한(3년) 시뮬레이터 (1-2-3 법칙 D-Day 계산)"
-  description="소득세법 시행령 제155조 기준 신규주택 1년 경과 취득 요건, 전국 통일 3년 처분기한, 혼인(5년)·동거봉양(10년) 특례 및 잔여 처분기한 D-Day를 정밀 계산해요."
+  description="소득세법 시행령 제155조 기준 신규주택 1년 경과 취득 요건, 전국 통일 3년 처분기한, 혼인(10년)·동거봉양(10년) 특례 및 잔여 처분기한 D-Day를 정밀 계산해요."
 >
   <div class="mx-auto w-full max-w-3xl px-4 py-8 sm:px-8">
     <div class="mb-6">
@@ -32,7 +32,7 @@ import RelatedTools from "../../components/RelatedTools.astro";
           class="w-full min-h-12 rounded-lg border border-input bg-background px-3 py-2.5 text-sm font-semibold text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
         >
           <option value="general_move" selected>이사·갈아타기 일시적 2주택 (신규 취득 후 3년 이내 처분)</option>
-          <option value="marriage">혼인합가 특례 (혼인신고일로부터 5년 이내 처분)</option>
+          <option value="marriage">혼인합가 특례 (혼인한 날부터 10년 이내 처분)</option>
           <option value="parents">동거봉양 특례 (만 60세 이상 직계존속 합가 후 10년 이내 처분)</option>
         </select>
       </div>
@@ -165,7 +165,7 @@ import RelatedTools from "../../components/RelatedTools.astro";
           <strong class="text-foreground">전국 처분기한 3년 일원화:</strong> 2023년 세법 개정으로 종전주택과 신규주택의 조정대상지역 지정 여부와 관계없이 전국 어디든 신규주택 취득일로부터 3년 이내에 종전주택을 매도하면 1세대 1주택 비과세가 적용돼요.
         </li>
         <li>
-          <strong class="text-foreground">혼인 및 동거봉양 특례:</strong> 혼인으로 1세대 2주택이 된 경우 혼인신고일로부터 5년 이내, 만 60세 이상 부모 동거봉양 합가인 경우 10년 이내에 먼저 양도하는 주택이 비과세돼요.
+          <strong class="text-foreground">혼인 및 동거봉양 특례:</strong> 혼인으로 1세대 2주택이 된 경우 혼인한 날부터 10년 이내(2024년 11월 12일 이후 양도분), 만 60세 이상 부모 동거봉양 합가인 경우 10년 이내에 먼저 양도하는 주택이 비과세돼요.
         </li>
       </ul>
     </div>
@@ -204,11 +204,14 @@ import RelatedTools from "../../components/RelatedTools.astro";
       // 1. Requirement 1: 1 year gap
       const diffTime = newDate.getTime() - existingDate.getTime();
       const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-      const passedOneYear = diffDays >= 365;
+      // 1년 경과 요건은 이사·갈아타기에만 있다. 혼인합가·동거봉양에는 없다(소득세법 시행령 제155조).
+      const needsGap = specialType === "general_move";
+      const passedOneYear = !needsGap || diffDays >= 365;
 
       // 2. Deadline
       let deadlineYears = 3;
-      if (specialType === "marriage") deadlineYears = 5;
+      // 혼인합가는 2024-11-12 시행령 개정으로 5년 → 10년.
+      if (specialType === "marriage") deadlineYears = 10;
       else if (specialType === "parents") deadlineYears = 10;
 
       const deadlineDate = new Date(newDate);
@@ -220,9 +223,11 @@ import RelatedTools from "../../components/RelatedTools.astro";
       const remainingDays = Math.ceil(remainingTime / (1000 * 60 * 60 * 24));
       const isExpired = remainingDays < 0;
 
-      // 4. Holding & Residence check
-      const holdingDays = Math.floor((today.getTime() - existingDate.getTime()) / (1000 * 60 * 60 * 24));
-      const hasHeldTwoYears = holdingDays >= 730;
+      // 4. Holding & Residence check: 보유 2년은 파는 날 기준이라, 처분 기한 안에 2년이 차는지 본다.
+      const twoYearDate = new Date(existingDate);
+      twoYearDate.setFullYear(twoYearDate.getFullYear() + 2);
+      const twoYearStr = twoYearDate.toISOString().slice(0, 10);
+      const hasHeldTwoYears = twoYearDate.getTime() <= deadlineDate.getTime();
       const hasMetResidence = !isRegZone || residenceYears >= 2;
 
       const isFullyQualified = passedOneYear && hasHeldTwoYears && hasMetResidence && !isExpired;
@@ -237,7 +242,8 @@ import RelatedTools from "../../components/RelatedTools.astro";
         else if (base <= 150000000) estimatedRegularTax = base * 0.35 - 15440000;
         else if (base <= 300000000) estimatedRegularTax = base * 0.38 - 19940000;
         else if (base <= 500000000) estimatedRegularTax = base * 0.40 - 25940000;
-        else estimatedRegularTax = base * 0.42 - 35940000;
+        else if (base <= 1000000000) estimatedRegularTax = base * 0.42 - 35940000;
+        else estimatedRegularTax = base * 0.45 - 65940000;
         estimatedRegularTax = Math.round(estimatedRegularTax * 1.1);
       }
 
@@ -266,11 +272,11 @@ import RelatedTools from "../../components/RelatedTools.astro";
       (document.getElementById("deadlineDateDisplay") as HTMLElement).textContent = deadlineStr;
 
       const check1 = document.getElementById("check1") as HTMLElement;
-      check1.textContent = passedOneYear ? `✓ 충족 (${diffDays}일 경과)` : `✕ 미달 (${diffDays}일: 1년 미만)`;
+      check1.textContent = !needsGap ? "해당 없음 (혼인·동거봉양 특례)" : passedOneYear ? `✓ 충족 (${diffDays}일 경과)` : `✕ 미달 (${diffDays}일: 1년 미만)`;
       check1.className = `font-bold ${passedOneYear ? "text-success" : "text-destructive"}`;
 
       const check2 = document.getElementById("check2") as HTMLElement;
-      check2.textContent = hasHeldTwoYears && hasMetResidence ? "✓ 2년 요건 충족" : "✕ 보유 또는 거주 미달";
+      check2.textContent = !hasMetResidence ? "✕ 거주 2년 미달" : hasHeldTwoYears ? `✓ ${twoYearStr} 이후에 팔면 보유 2년 충족` : `✕ 기한 안에 보유 2년이 안 됨 (${twoYearStr})`;
       check2.className = `font-bold ${hasHeldTwoYears && hasMetResidence ? "text-success" : "text-destructive"}`;
 
       const check3Title = document.getElementById("check3Title") as HTMLElement;
@@ -281,7 +287,7 @@ import RelatedTools from "../../components/RelatedTools.astro";
 
       const savingsDisplay = document.getElementById("savingsDisplay") as HTMLElement;
       savingsDisplay.textContent = isFullyQualified 
-        ? `약 ${estimatedRegularTax.toLocaleString()}원 절감 (실납부 0원)`
+        ? `약 ${estimatedRegularTax.toLocaleString()}원 절감 추정 (양도가액 12억 원 이하일 때. 12억 넘으면 넘는 비율만큼 과세, 장기보유공제 20% 가정)`
         : "일반 과세 적용 (비과세 혜택 없음)";
     }
 

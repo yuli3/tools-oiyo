@@ -156,8 +156,11 @@ import Layout from "../../components/Layout.astro";
         const [y, m, d] = dateStr.split('-').map(Number);
         const start = new Date(Date.UTC(y, m - 1, d));
 
-        const discharge = new Date(Date.UTC(y, m - 1 + months, d));
-        discharge.setUTCDate(discharge.getUTCDate() - 1);
+        // 전역일 = 복무 개월 뒤 같은 날의 전날. 그 달에 같은 날이 없으면 그 달 말일(민법 제160조③).
+        const lastDay = new Date(Date.UTC(y, m - 1 + months + 1, 0)).getUTCDate();
+        const discharge = d > lastDay
+          ? new Date(Date.UTC(y, m - 1 + months, lastDay))
+          : new Date(Date.UTC(y, m - 1 + months, d - 1));
 
         const dischargeStr = discharge.toISOString().slice(0, 10);
 
@@ -176,8 +179,11 @@ import Layout from "../../components/Layout.astro";
         const promoCpl = new Date(Date.UTC(y, m - 1 + 8, 1));
         const promoSgt = new Date(Date.UTC(y, m - 1 + 14, 1));
 
-        let rank = "이병";
-        if (now >= discharge) rank = "전역";
+        // 사회복무요원은 군인 계급이 없어서 소집해제 여부만 보여 준다.
+        const isSocial = branch === 'social';
+        let rank = isSocial ? "복무 중" : "이병";
+        if (now >= discharge) rank = isSocial ? "소집해제" : "전역";
+        else if (isSocial) rank = "복무 중";
         else if (now >= promoSgt) rank = "병장";
         else if (now >= promoCpl) rank = "상병";
         else if (now >= promoPfc) rank = "일병";
@@ -190,9 +196,9 @@ import Layout from "../../components/Layout.astro";
         document.getElementById('resServedDays')!.textContent = servedDays + ' 일';
         document.getElementById('resRemainingDays')!.textContent = remainingDays + ' 일';
 
-        document.getElementById('resPromoPfc')!.textContent = promoPfc.toISOString().slice(0, 10);
-        document.getElementById('resPromoCpl')!.textContent = promoCpl.toISOString().slice(0, 10);
-        document.getElementById('resPromoSgt')!.textContent = promoSgt.toISOString().slice(0, 10);
+        document.getElementById('resPromoPfc')!.textContent = isSocial ? '해당 없음' : promoPfc.toISOString().slice(0, 10);
+        document.getElementById('resPromoCpl')!.textContent = isSocial ? '해당 없음' : promoCpl.toISOString().slice(0, 10);
+        document.getElementById('resPromoSgt')!.textContent = isSocial ? '해당 없음' : promoSgt.toISOString().slice(0, 10);
       }
 
       document.getElementById('enlistmentDate')?.addEventListener('change', updateMilitaryCalc);
