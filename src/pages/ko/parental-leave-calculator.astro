@@ -5,8 +5,8 @@ import RatesAsOf from "../../components/RatesAsOf.astro";
 ---
 
 <Layout
-  title="육아휴직 급여 & 6+6 부모육아휴직제 계산기 — 2026년 상한액·월별 수령액"
-  description="통상임금과 사용 개월 수를 넣으면 2025년 개편 기준 일반 육아휴직 급여(사후지급금 없이 매월 전액)와 6+6 부모육아휴직제(첫 6개월 부모 합산 최대 4,000만 원) 월별 수령액을 계산해요."
+  title="육아휴직 급여 계산기 2026 — 6+6 부모육아휴직제·한부모·월별 수령액"
+  description="통상임금과 사용 개월 수를 넣으면 2025년 개편 기준 일반 육아휴직 급여(사후지급금 없이 매월 전액), 6+6 부모육아휴직제(첫 6개월 부모 합산 최대 4,000만 원), 한부모 특례의 월별 수령액을 계산해요."
 >
   <div class="mx-auto max-w-4xl px-4 py-8 sm:px-6 sm:py-12">
     <!-- Header -->
@@ -38,6 +38,13 @@ import RatesAsOf from "../../components/RatesAsOf.astro";
         class="flex-1 py-2 text-xs sm:text-sm font-medium rounded-lg transition-all text-muted-foreground hover:text-foreground"
       >
         6+6 부모육아휴직제 (부모 동시/순차)
+      </button>
+      <button
+        id="mode-tab-single"
+        type="button"
+        class="flex-1 py-2 text-xs sm:text-sm font-medium rounded-lg transition-all text-muted-foreground hover:text-foreground"
+      >
+        한부모
       </button>
     </div>
 
@@ -77,14 +84,40 @@ import RatesAsOf from "../../components/RatesAsOf.astro";
             <option value="3">3개월</option>
             <option value="6">6개월</option>
             <option value="9">9개월</option>
-            <option value="12" selected>12개월 (최대 1년)</option>
+            <option value="12" selected>12개월 (1년)</option>
+            <option value="15" data-ext>15개월</option>
+            <option value="18" data-ext>18개월 (1년 6개월)</option>
           </select>
+          <p id="months-note" class="mt-1.5 text-xs text-muted-foreground">1년 6개월은 부모가 각각 3개월 이상 쓰거나 한부모일 때 쓸 수 있어요.</p>
+        </div>
+
+        <div id="other-months-wrap" class="hidden">
+          <label for="other-months" class="block text-xs font-bold text-foreground mb-1.5">
+            배우자가 쓰는 육아휴직 기간
+          </label>
+          <select
+            id="other-months"
+            class="w-full px-3.5 py-2.5 rounded-xl border border-border bg-background text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20"
+          >
+            <option value="1">1개월</option>
+            <option value="2">2개월</option>
+            <option value="3">3개월</option>
+            <option value="4">4개월</option>
+            <option value="5">5개월</option>
+            <option value="6" selected>6개월 이상</option>
+          </select>
+          <p class="mt-1.5 text-xs text-muted-foreground">특례 상한은 두 사람 중 짧게 쓰는 기간까지만 붙어요. 배우자가 3개월이면 나도 3개월 차까지만 특례예요.</p>
         </div>
 
         <div id="bonus-info-card" class="hidden rounded-xl border border-primary/20 bg-primary/5 p-4 text-xs text-muted-foreground space-y-1.5">
           <span class="font-bold text-primary block text-sm">💡 6+6 부모육아휴직제 혜택이란?</span>
           <p>자녀 생후 18개월 안에 부모가 함께 또는 차례로 쓰면 첫 6개월 동안 통상임금의 100%를 받아요.</p>
           <p>상한액은 1·2개월 차 250만 원, 3개월 차부터 매월 50만 원씩 올라 <strong>6개월 차에는 최대 450만 원</strong>이에요.</p>
+        </div>
+
+        <div id="single-info-card" class="hidden rounded-xl border border-primary/20 bg-primary/5 p-4 text-xs text-muted-foreground space-y-1.5">
+          <span class="font-bold text-primary block text-sm">💡 한부모 육아휴직 급여</span>
+          <p>1~3개월 차 상한이 월 300만 원으로 일반(250만 원)보다 높고, 4~6개월 차는 200만 원, 7개월 차부터 통상임금 80%(월 160만 원)예요. 기간은 1년 6개월까지 쓸 수 있어요.</p>
         </div>
       </div>
 
@@ -122,6 +155,21 @@ import RatesAsOf from "../../components/RatesAsOf.astro";
               <span id="res-avg-monthly" class="font-bold text-foreground font-mono">1,925,000원</span>
             </div>
           </div>
+        </div>
+
+        <div class="bg-card border border-border rounded-2xl p-5 shadow-sm space-y-3">
+          <h4 class="font-bold text-foreground text-xs">개월별 받는 돈</h4>
+          <table class="w-full text-xs">
+            <thead>
+              <tr class="text-left text-muted-foreground">
+                <th class="py-1 font-medium">개월</th>
+                <th class="py-1 font-medium">구분</th>
+                <th class="py-1 text-right font-medium">받는 돈</th>
+              </tr>
+            </thead>
+            <tbody id="res-rows"></tbody>
+          </table>
+          <p id="res-short" class="text-xs text-muted-foreground"></p>
         </div>
 
         <!-- 6+6 Schedule Breakdown Table -->
@@ -186,11 +234,20 @@ import RatesAsOf from "../../components/RatesAsOf.astro";
   <script>
     // 2026-10-17 (FAANG audit S-3): 2025년 개편 반영. 사후지급금 25% 유보 폐지, 6+6 1개월 차 상한 250만 원.
     // 금액표는 SSOT(src/lib/kr-rates-2026.mjs)에서만 가져와요.
-    import { parentalLeaveSchedule2026 } from "../../lib/kr-rates-2026.mjs";
+    // 2026-10-19: 6+6은 두 부모 중 짧은 쪽 개월까지만 특례, 한부모 상한, 1년 6개월, 단기 육아휴직 반영.
+    import { parentalLeaveSchedule2026, shortParentalLeave2026 } from "../../lib/kr-rates-2026.mjs";
 
-    let isBonusMode = false;
+    type Mode = "general" | "sixPlusSix" | "singleParent";
+    let mode: Mode = "general";
     const tabStandard = document.getElementById("mode-tab-standard")!;
     const tabBonus = document.getElementById("mode-tab-bonus")!;
+    const tabSingle = document.getElementById("mode-tab-single")!;
+    const otherWrap = document.getElementById("other-months-wrap")!;
+    const otherMonthsSelect = document.getElementById("other-months") as HTMLSelectElement;
+    const singleInfoCard = document.getElementById("single-info-card")!;
+    const resRows = document.getElementById("res-rows")!;
+    const resShort = document.getElementById("res-short")!;
+    const SCHEME: Record<string, string> = { general: "일반", six_plus_six: "6+6 특례", single_parent: "한부모" };
     const baseWageInput = document.getElementById("base-wage") as HTMLInputElement;
     const leaveMonthsSelect = document.getElementById("leave-months") as HTMLSelectElement;
     const bonusInfoCard = document.getElementById("bonus-info-card")!;
@@ -204,33 +261,40 @@ import RatesAsOf from "../../components/RatesAsOf.astro";
     const IDLE = "flex-1 py-2 text-xs sm:text-sm font-medium rounded-lg transition-all text-muted-foreground hover:text-foreground";
 
     function calculate() {
+      const otherParentMonths = parseInt(otherMonthsSelect.value, 10) || 6;
       const r = parentalLeaveSchedule2026({
         monthlyWage: parseFloat(baseWageInput.value) || 0,
         leaveMonths: parseInt(leaveMonthsSelect.value, 10) || 12,
-        isParental6Plus6: isBonusMode,
+        mode,
+        otherParentMonths,
       });
+      if (parseInt(leaveMonthsSelect.value, 10) > r.maxMonths) leaveMonthsSelect.value = String(r.maxMonths);
+      leaveMonthsSelect.querySelectorAll<HTMLOptionElement>("option[data-ext]").forEach((o) => { o.disabled = r.maxMonths < 18; });
 
-      resBadge.textContent = isBonusMode ? "6+6 부모 특례 적용" : "일반 육아휴직";
-      bonusInfoCard.classList.toggle("hidden", !isBonusMode);
+      resBadge.textContent = mode === "sixPlusSix" ? `6+6 특례 ${r.specialUntil}개월 적용` : mode === "singleParent" ? "한부모 특례 적용" : "일반 육아휴직";
+      bonusInfoCard.classList.toggle("hidden", mode !== "sixPlusSix");
+      otherWrap.classList.toggle("hidden", mode !== "sixPlusSix");
+      singleInfoCard.classList.toggle("hidden", mode !== "singleParent");
+      resRows.innerHTML = r.monthlyBreakdown
+        .map((m) => `<tr class="border-t border-border/60"><td class="py-1">${m.month}개월 차</td><td class="py-1 text-muted-foreground">${SCHEME[m.scheme] ?? m.scheme}</td><td class="py-1 text-right font-mono">${m.grossAmount.toLocaleString()}원</td></tr>`)
+        .join("");
+      const first = r.monthlyBreakdown[0]?.grossAmount ?? 0;
+      resShort.textContent = `1주 단기 육아휴직(연 1회)이면 첫 달 기준 약 ${shortParentalLeave2026(first, 7).toLocaleString()}원, 2주면 약 ${shortParentalLeave2026(first, 14).toLocaleString()}원이에요.`;
 
       resTotalSum.textContent = r.totalBenefit.toLocaleString();
       resMonthlySum.textContent = r.totalBenefit.toLocaleString() + "원";
       resAvgMonthly.textContent = r.monthlyAverage.toLocaleString() + "원";
     }
 
-    tabStandard.addEventListener("click", () => {
-      isBonusMode = false;
-      tabStandard.className = ACTIVE;
-      tabBonus.className = IDLE;
-      calculate();
+    const tabs: [HTMLElement, Mode][] = [[tabStandard, "general"], [tabBonus, "sixPlusSix"], [tabSingle, "singleParent"]];
+    tabs.forEach(([tab, m]) => {
+      tab.addEventListener("click", () => {
+        mode = m;
+        tabs.forEach(([t, tm]) => { t.className = tm === m ? ACTIVE : IDLE; });
+        calculate();
+      });
     });
-
-    tabBonus.addEventListener("click", () => {
-      isBonusMode = true;
-      tabBonus.className = ACTIVE;
-      tabStandard.className = IDLE;
-      calculate();
-    });
+    otherMonthsSelect.addEventListener("change", calculate);
 
     baseWageInput.addEventListener("input", calculate);
     leaveMonthsSelect.addEventListener("change", calculate);
