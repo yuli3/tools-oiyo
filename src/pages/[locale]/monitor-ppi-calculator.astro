@@ -1,0 +1,53 @@
+---
+import Layout from '../../components/Layout.astro';
+import MonitorPpiCalculator from '../../components/tools/MonitorPpiCalculator';
+import { monitorPpiCopy, type PpiLocale } from '../../data/monitor-ppi-copy';
+import { locales } from '../../lib/i18n';
+export function getStaticPaths() {
+  return locales.map(locale => ({params:{locale}, props:{locale}}));
+}
+const {locale} = Astro.props as {locale:PpiLocale};
+const t = monitorPpiCopy[locale];
+const url = `https://tools.oiyo.net/${locale}/monitor-ppi-calculator/`;
+const schema = {'@context':'https://schema.org', '@type':'WebApplication', name:t.title,
+  description:t.description, url, inLanguage:locale, applicationCategory:'UtilityApplication',
+  operatingSystem:'All', offers:{'@type':'Offer',price:'0',priceCurrency:'USD'}};
+---
+<Layout title={t.title} description={t.description} locale={locale} availableLocales={[...locales]} canonicalURL={url}>
+  <div class="mx-auto max-w-3xl px-4 py-6">
+    <p class="text-xs font-semibold text-primary">{t.eyebrow}</p>
+    <h1 class="mt-2 text-2xl font-bold tracking-tight">{t.title}</h1>
+    <p class="mb-5 mt-2 text-sm text-muted-foreground">{t.description}</p>
+    <MonitorPpiCalculator client:visible locale={locale} />
+    <section class="mt-5 space-y-4 rounded-xl border border-border bg-card p-4">
+      <h2 class="text-lg font-semibold">{t.mathTitle}</h2>
+      <!-- WHY 2026-10-21: geometry, not a Retina or eyesight rating. Numeric
+           results remain in the calculator; this static diagram explains axes. -->
+      <svg role="img" aria-labelledby="ppi-geometry-title ppi-geometry-desc" viewBox="0 0 360 240" class="w-full text-primary">
+        <title id="ppi-geometry-title">{t.mathTitle}</title>
+        <desc id="ppi-geometry-desc">{t.math}</desc>
+        <rect x="65" y="25" width="250" height="155" rx="4" fill="none" stroke="currentColor" stroke-width="2" />
+        <path d="M65 180 L315 25 M65 186 V195 H315 V186 M57 25 H48 V180 H57" fill="none" stroke="currentColor" stroke-width="2" />
+        <text x="190" y="218" text-anchor="middle" fill="currentColor" font-size="20">W</text>
+        <text x="24" y="110" text-anchor="middle" fill="currentColor" font-size="20">H</text>
+        <text x="177" y="85" fill="currentColor" font-size="20">D</text>
+      </svg>
+      <dl class="space-y-1 text-sm">
+        <div><dt class="inline font-semibold">W: </dt><dd class="inline">{t.width}</dd></div>
+        <div><dt class="inline font-semibold">H: </dt><dd class="inline">{t.height}</dd></div>
+        <div><dt class="inline font-semibold">D: </dt><dd class="inline">{t.diagonal}</dd></div>
+      </dl>
+      <p class="text-sm leading-relaxed">{t.math}</p>
+      <p class="rounded-lg border border-border bg-background p-3 text-sm">{t.example}</p>
+      <p class="text-sm text-muted-foreground">{t.note}</p>
+      <h2 class="text-lg font-semibold">{t.scalingTitle}</h2>
+      <p class="text-sm leading-relaxed">{t.scaling}</p>
+      <h2 class="text-lg font-semibold">{t.sources}</h2>
+      <ul class="list-disc space-y-2 pl-5 text-sm">
+        <li><a class="text-primary underline" href="https://www.nist.gov/pml/owm/si-units-length">{t.nist}</a></li>
+        <li><a class="text-primary underline" href="https://support.apple.com/guide/mac-help/change-your-displays-resolution-mchl86d72b76/mac">{t.apple}</a></li>
+      </ul>
+    </section>
+  </div>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+</Layout>

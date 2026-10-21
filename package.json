@@ -13,7 +13,9 @@
     "lint": "ASTRO_TELEMETRY_DISABLED=1 astro check && npm run lint:shadcn",
     "lint:shadcn": "eslint --pass-on-unpruned-suppressions src",
     "lint:shadcn:prune": "eslint --prune-suppressions src",
-    "test": "node --test scripts/kr-rates.test.mjs scripts/car-bond.test.mjs && npm run test:file-utilities",
+    "test": "node --test scripts/kr-rates.test.mjs scripts/car-bond.test.mjs && npm run test:file-utilities && npm run test:monitor-ppi",
+    "test:monitor-ppi": "node --experimental-strip-types --test src/lib/monitor-ppi.test.ts",
+    "test:monitor-ppi-html": "node --test scripts/monitor-ppi-html.test.mjs",
     "test:file-utilities": "node --experimental-strip-types --test src/lib/image-fit.test.ts src/lib/pdf-ranges.test.ts src/lib/qr-payload.test.ts",
     "test:file-utilities-html": "node --test scripts/file-utilities.test.mjs",
     "sync:kr-rates": "node scripts/sync-kr-rates.mjs"
