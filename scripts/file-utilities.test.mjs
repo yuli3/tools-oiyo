@@ -29,6 +29,10 @@ for (const locale of locales) for (const slug of slugs) {
 test('home exposes all three tools; 404 stays outside sitemap and ads', () => {
   const home = read('index.html');
   for (const slug of slugs) assert.ok(home.includes(`href="/ko/${slug}/"`));
+  // WHY (2026-10-21): crawlers and no-JS users need anchors, not only a select-driven language switch.
+  for (const locale of locales) for (const slug of slugs) {
+    assert.ok(home.includes(`href="/${locale}/${slug}/"`), `home must directly link ${locale}/${slug}`);
+  }
   assert.doesNotMatch(sitemap, /https:\/\/tools.oiyo.net\/404\/?</);
   const error = read('404.html');
   assert.match(error, /noindex/);
