@@ -23,3 +23,5 @@ jobs:
       - name: kr-rates parity + vectors
         run: npm test
       - run: npm run build
+      - name: Loan comparison six-locale HTML
+        run: npm run test:loan-comparison-html
