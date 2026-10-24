@@ -126,6 +126,9 @@ const tools = [
       <p class="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base">
         불필요한 스크롤과 로딩 없이 필요한 계산과 분류 결과를 바로 보여 드려요. 방문 통계(Google Analytics)와 광고(AdSense)는 사용해요.
       </p>
+      <nav aria-label="도구 언어 선택" class="mt-3 flex flex-wrap gap-3 text-sm">
+        {locales.filter(lang=>lang!=='ko').map(lang=><a href={`/${lang}/`} lang={lang} class="inline-flex min-h-11 items-center text-primary underline underline-offset-4">{{en:'English',ja:'日本語',zh:'中文',fr:'Français',es:'Español'}[lang]}</a>)}
+      </nav>
     </div>
 
     <!-- Category Filters -->

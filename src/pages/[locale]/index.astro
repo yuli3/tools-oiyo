@@ -1,0 +1,18 @@
+---
+import Layout from '../../components/Layout.astro';
+import {locales,shellCopy,utilityLabels,utilitySlugs,type Locale} from '../../lib/i18n';
+import {monitorPpiCopy} from '../../data/monitor-ppi-copy';
+import {laborToolsForLocale} from '../../data/country-labor';
+export function getStaticPaths(){return locales.filter(l=>l!=='ko').map(locale=>({params:{locale},props:{locale}}));}
+const {locale}=Astro.props as {locale:Locale};
+const copy=shellCopy[locale],labor=laborToolsForLocale(locale);
+const heading={ko:'도구',en:'Tools in English',ja:'日本語のツール',zh:'中文工具',fr:'Outils en français',es:'Herramientas en español'}[locale];
+---
+<Layout title={heading} description={heading} locale={locale} canonicalURL={`https://tools.oiyo.net/${locale}/`}>
+  <div class="mx-auto max-w-3xl space-y-5 px-4 py-6">
+    <h1 class="text-2xl font-bold tracking-tight">{heading}</h1>
+    {labor.map(t=><section class="space-y-2 border-b border-border pb-4" lang={t.languageTag} data-country-tool={t.slug}><h2 class="text-lg font-semibold"><a href={`/${t.locale}/${t.slug}/`} class="text-primary underline underline-offset-4">{t.title}</a></h2><p class="text-sm leading-relaxed">{t.description}</p><p class="text-sm text-muted-foreground">{t.jurisdiction}</p></section>)}
+    <section class="space-y-3"><h2 class="text-lg font-semibold">{copy.related}</h2><ul class="space-y-2 text-sm">{utilitySlugs.map((slug,i)=><li><a href={`/${locale}/${slug}/`} class="inline-flex min-h-11 items-center text-primary underline underline-offset-4">{utilityLabels[locale][i]}</a></li>)}<li><a class="inline-flex min-h-11 items-center text-primary underline underline-offset-4" href={`/${locale}/monitor-ppi-calculator/`}>{monitorPpiCopy[locale].title}</a></li></ul></section>
+    <nav aria-label={copy.language} class="flex flex-wrap gap-3 text-sm">{locales.map(lang=><a href={lang==='ko'?'/':`/${lang}/`} lang={lang} class="inline-flex min-h-11 items-center text-primary underline underline-offset-4">{lang.toUpperCase()}</a>)}</nav>
+  </div>
+</Layout>

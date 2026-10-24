@@ -2,6 +2,7 @@
 interface Props {
   locale?: import('../lib/i18n').Locale;
   availableLocales?: import('../lib/i18n').Locale[];
+  ogLocale?: string;
   title?: string;
   description?: string;
   image?: string;
@@ -20,6 +21,7 @@ const {
   canonicalURL = new URL(Astro.url.pathname, Astro.site ?? "https://tools.oiyo.net"),
   keywords = ["계산기", "실업급여", "주휴수당", "전기요금 누진제", "군 복무일 계산", "도시가스 요금", "분리배출", "체감온도", "영업일 판정", "OIYO", "tools"],
   noindex = false,
+  ogLocale,
 } = Astro.props;
 
 const robots = noindex ? "noindex, follow" : "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1";
@@ -73,7 +75,7 @@ const alternateSlug = Astro.url.pathname.split('/').filter(Boolean)[1];
 <meta property="og:title" content={siteTitle} />
 <meta property="og:description" content={description} />
 <meta property="og:image" content={image} />
-<meta property="og:locale" content={ogLocales[locale]} />
+<meta property="og:locale" content={ogLocale ?? ogLocales[locale]} />
 
 <!-- Twitter -->
 <meta name="twitter:card" content="summary" />
