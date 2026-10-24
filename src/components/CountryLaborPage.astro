@@ -1,0 +1,24 @@
+---
+import Layout from './Layout.astro';
+import CountryLaborCalculator from './tools/CountryLaborCalculator';
+import {countryLabor,type LaborTool} from '../data/country-labor';
+const {tool}=Astro.props as {tool:LaborTool};
+const t=countryLabor[tool];
+const url=`https://tools.oiyo.net/${t.locale}/${t.slug}/`;
+const schema={'@context':'https://schema.org','@type':'WebApplication',name:t.title,url,inLanguage:t.languageTag,description:t.description,applicationCategory:'FinanceApplication',operatingSystem:'All',isAccessibleForFree:true};
+---
+<Layout title={t.title} description={t.description} locale={t.locale} languageTag={t.languageTag} ogLocale={t.ogLocale} keywords={[t.title,t.jurisdiction]} canonicalURL={url}>
+  <article class="mx-auto max-w-3xl space-y-5 px-4 py-6">
+    <header class="space-y-2"><h1 class="text-2xl font-bold tracking-tight sm:text-3xl">{t.title}</h1><p class="text-sm leading-relaxed text-muted-foreground">{t.description}</p><p class="text-sm font-medium">{t.jurisdiction}</p></header>
+    <p class="text-sm leading-relaxed">{t.intro}</p>
+    <CountryLaborCalculator client:load tool={tool}/>
+    <section class="space-y-3 border-t border-border pt-4">
+      <h2 class="text-lg font-semibold">{t.sources}</h2>
+      <p class="text-sm leading-relaxed">{t.method}</p>
+      <p class="text-sm leading-relaxed text-muted-foreground">{t.note}</p>
+      <ul class="list-disc space-y-2 pl-5 text-sm">{t.sourcesList.map(([name,url])=><li><a class="text-primary underline underline-offset-4" href={url}>{name}</a></li>)}</ul>
+      <p class="text-xs text-muted-foreground">{t.date}</p>
+    </section>
+  </article>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)}/>
+</Layout>

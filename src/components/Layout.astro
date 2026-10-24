@@ -12,10 +12,13 @@ interface Props {
   noindex?: boolean;
   locale?: Locale;
   availableLocales?: Locale[];
+  languageTag?: string;
+  ogLocale?: string;
 }
 
-const { title, description, keywords, canonicalURL, noindex, locale = 'ko', availableLocales = [] } = Astro.props;
-const copy = shellCopy[locale];
+const { title, description, keywords, canonicalURL, noindex, locale = 'ko', availableLocales = [], languageTag = locale, ogLocale } = Astro.props;
+const copy = languageTag==='zh-Hant-TW'?{all:'所有工具',related:'檔案工具',language:'語言',license:'授權',note:'輸入內容在瀏覽器內計算。本站使用訪問統計與廣告。'}:shellCopy[locale];
+const home=locale==='ko'?'/':`/${locale}/`;
 const pageSlug = Astro.url.pathname.split('/').filter(Boolean)[1];
 
 const FAMILY = [
@@ -30,16 +33,16 @@ const FAMILY = [
 ---
 
 <!doctype html>
-<html lang={locale}>
+<html lang={languageTag}>
   <head>
-    <SEO title={title} description={description} keywords={keywords} canonicalURL={canonicalURL} noindex={noindex} locale={locale} availableLocales={availableLocales} />
+    <SEO title={title} description={description} keywords={keywords} canonicalURL={canonicalURL} noindex={noindex} locale={locale} availableLocales={availableLocales} ogLocale={ogLocale} />
   </head>
   <body class="min-h-screen flex flex-col bg-background text-foreground selection:bg-primary/20">
     <!-- Header -->
     <header class="sticky top-0 z-50 border-b border-border/80 bg-background/80 backdrop-blur-md px-4 py-3 sm:px-8">
       <div class="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-2">
         <div class="flex items-center gap-3">
-          <a href="/" class="flex items-center gap-1.5 text-lg font-black tracking-tight text-foreground sm:text-xl">
+          <a href={home} class="flex items-center gap-1.5 text-lg font-black tracking-tight text-foreground sm:text-xl">
             <svg class="w-6 h-6 text-primary" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
               <rect width="100" height="100" rx="22" fill="currentColor"/>
               <path d="M68 32 C64 24 54 22 46 26 L56 36 L52 40 L42 30 C38 38 40 48 48 52 L30 70 C28 72 28 76 30 78 C32 80 36 80 38 78 L56 60 C60 68 70 70 78 66 C82 58 80 48 72 44 L62 54 L58 50 L68 40 Z" fill="#ffffff"/>
@@ -48,7 +51,7 @@ const FAMILY = [
           </a>
         </div>
         <nav class="flex flex-wrap items-center gap-3 text-xs font-semibold text-muted-foreground">
-          <a href="/" class="inline-flex min-h-11 items-center hover:text-primary transition-colors">{copy.all}</a>
+          <a href={home} class="inline-flex min-h-11 items-center hover:text-primary transition-colors">{copy.all}</a>
           {availableLocales.length > 1 && <label class="flex items-center gap-2">{copy.language}<select class="min-h-11 rounded-lg border border-border bg-background px-2" data-locale-switch aria-label={copy.language}>
             {availableLocales.map(lang => <option value={`/${lang}/${pageSlug}/`} selected={lang === locale}>{lang.toUpperCase()}</option>)}
           </select></label>}

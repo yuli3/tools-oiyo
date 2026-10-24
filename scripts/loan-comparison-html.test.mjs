@@ -3,6 +3,8 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 const locales = ['ko','en','ja','zh','fr','es'];
 for(const locale of locales) test(`${locale}: real build retains static schedules, graphs, currency and six-language owner`,()=>{
+  const hub=readFileSync(new URL(locale==='ko'?'../dist/index.html':`../dist/${locale}/index.html`,import.meta.url),'utf8');
+  assert.ok(hub.includes(`href="/${locale}/loan-comparison-calculator/"`));
   const html=readFileSync(new URL(`../dist/${locale}/loan-comparison-calculator/index.html`,import.meta.url),'utf8');
   assert.equal((html.match(/<h1(?:\s|>)/g)||[]).length,1);
   assert.ok(html.includes(`data-loan-comparison="${locale}"`));
