@@ -1,0 +1,25 @@
+{
+  "base": "KRW",
+  "unit": "KRW per 1 unit of currency",
+  "asOf": "2026-10-23",
+  "source": "European Central Bank via Frankfurter (api.frankfurter.dev)",
+  "fetchedAt": "2026-10-24T22:00:42.372Z",
+  "rates": {
+    "USD": 1324.4528,
+    "EUR": 1482.46,
+    "JPY": 8.4465842,
+    "GBP": 1770.5666,
+    "CNY": 198.56148,
+    "HKD": 168.85857,
+    "CAD": 946.35174,
+    "AUD": 930.08344,
+    "CHF": 1606.6544,
+    "SGD": 1035.9609,
+    "THB": 39.24863,
+    "MYR": 324.18378,
+    "PHP": 20.810837,
+    "IDR": 0.073142669,
+    "INR": 13.949676,
+    "NZD": 753.20598
+  }
+}

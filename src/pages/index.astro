@@ -7,6 +7,8 @@ import { locales, utilityLabels, utilitySlugs } from "../lib/i18n";
 import { monitorPpiCopy } from "../data/monitor-ppi-copy";
 import { loanCopy } from "../lib/loan-comparison-copy";
 import { usageCostCopy } from "../data/usage-cost-copy";
+import { converterCopy } from "../lib/fx-copy";
+import { EXCHANGE_COPY } from "../components/tools/ForeignExchangeFeeCalculator";
 
 // 2026-10-17: 카드 설명의 법정 수치는 SSOT에서 읽고, blog.oiyo.net과 겹치지 않는
 // 고유 계산기와 2026-10-19 이관한 파일 도구를 정본 주소로 안내해요.
@@ -16,6 +18,8 @@ const pct = (r: number) => Number((r * 100).toFixed(3));
 
 const tools = [
   { id: 'usage-cost-calculator', title: usageCostCopy.ko.title, desc: usageCostCopy.ko.description, href: '/ko/usage-cost-calculator/', category: '생활·사용비 비교', badge: '6개 언어' },
+  { id: 'currency-converter', title: converterCopy.ko.title, desc: converterCopy.ko.description, href: '/ko/currency-converter/', category: '환율·해외 결제', badge: '6개 언어' },
+  { id: 'foreign-exchange-fee-calculator', title: EXCHANGE_COPY.ko[0], desc: '현지 통화 결제와 DCC(원화 결제) 제시 금액을 같은 환율·수수료 가정으로 비교해요.', href: '/ko/foreign-exchange-fee-calculator/', category: '환율·해외 결제', badge: '6개 언어' },
   { id: 'loan-comparison-calculator', title: loanCopy.ko.title, desc: loanCopy.ko.description, href: '/ko/loan-comparison-calculator/', category: '대출·상환 비교', badge: '6개 언어' },
   { id: 'monitor-ppi-calculator', title: monitorPpiCopy.ko.title, desc: monitorPpiCopy.ko.description, href: '/ko/monitor-ppi-calculator/', category: '화면·디스플레이', badge: '6개 언어' },
   { id: 'image-converter', title: '이미지 변환·압축', desc: 'HEIC·WebP·PNG·JPG를 바꾸고 목표 용량에 맞춰요. 파일은 브라우저에서 처리해요.', href: '/ko/image-converter/', category: '파일 유틸리티', badge: '6개 언어' },

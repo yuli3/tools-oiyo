@@ -1,0 +1,28 @@
+---
+import Layout from '../../components/Layout.astro';
+import ForeignExchangeFeeCalculator, { EXCHANGE_COPY } from '../../components/tools/ForeignExchangeFeeCalculator';
+import { feeGuide } from '../../lib/fx-fee-guide';
+import { converterCopy } from '../../lib/fx-copy';
+import { locales, type Locale } from '../../lib/i18n';
+export function getStaticPaths() {
+  return locales.map(locale=>({params:{locale},props:{locale}}));
+}
+const {locale} = Astro.props as {locale:Locale};
+const t = EXCHANGE_COPY[locale];
+const guide = feeGuide[locale];
+const url = `https://tools.oiyo.net/${locale}/foreign-exchange-fee-calculator/`;
+const schema = {'@context':'https://schema.org','@type':'WebApplication',name:t[0],description:t[22],url,inLanguage:locale,applicationCategory:'FinanceApplication',operatingSystem:'All',offers:{'@type':'Offer',price:'0',priceCurrency:'USD'}};
+---
+<Layout title={t[0]} description={t[22]} locale={locale} availableLocales={[...locales]} canonicalURL={url}>
+  <article class="mx-auto max-w-3xl px-4 py-6">
+    <h1 class="text-2xl font-bold tracking-tight">{t[0]}</h1>
+    <p class="mb-4 mt-2 text-sm leading-relaxed text-muted-foreground">{t[22]}</p>
+    <ForeignExchangeFeeCalculator locale={locale} client:load/>
+    <section class="mt-6 space-y-4 border-t border-border pt-4">
+      {[0, 2, 4].map((i) => <div><h2 class="text-lg font-semibold">{guide[i]}</h2><p class="mt-2 text-sm leading-relaxed">{guide[i + 1]}</p></div>)}
+      <p class="text-sm"><a class="inline-flex min-h-11 items-center text-primary underline underline-offset-4" href="https://www.visa.co.uk/travel-with-visa/dynamic-currency-conversion.html">Visa — Dynamic Currency Conversion</a></p>
+      <p class="text-sm"><a href={`/${locale}/currency-converter/`} class="inline-flex min-h-11 items-center text-primary underline underline-offset-4">{converterCopy[locale].title}</a></p>
+    </section>
+  </article>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)}/>
+</Layout>
