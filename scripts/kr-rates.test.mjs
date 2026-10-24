@@ -7,7 +7,8 @@ import assert from "node:assert/strict";
 import { existsSync, readFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { findApiRates, LOCAL_RATES } from "./sync-kr-rates.mjs";
+import { findApiRates, LOCAL_RATES, RATE_FILES } from "./sync-kr-rates.mjs";
+import { minimumWageForYear } from "../src/lib/kr-rates-registry.mjs";
 import {
   KR_RATES_2026,
   RATES_EFFECTIVE_FROM,
@@ -19,6 +20,23 @@ import {
 } from "../src/lib/kr-rates-2026.mjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+
+test("year registry preserves unknown rates and rejects unsupported years", () => {
+  assert.equal(minimumWageForYear(2026).hourly, 10320);
+  const next = minimumWageForYear(2027);
+  assert.equal(next.hourly, 10700);
+  assert.equal(next.payrollSupported, false);
+  assert.equal(next.insurance.value, null);
+  assert.throws(() => minimumWageForYear(2028));
+});
+
+test("complete year registry is byte-identical to API", (t) => {
+  const api = findApiRates();
+  if (!api) return t.skip("api checkout not found; set OIYO_API_DIR to run");
+  for (const name of RATE_FILES) {
+    assert.equal(readFileSync(resolve(root, "src/lib", name), "utf8"), readFileSync(resolve(dirname(api), name), "utf8"), name);
+  }
+});
 
 test("tools copy is byte-identical to the api SSOT", (t) => {
   const api = findApiRates();
