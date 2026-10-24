@@ -10,6 +10,7 @@ import { fileURLToPath } from "node:url";
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 export const API_RATES_REL = "src/modules/kr-rates-2026.mjs";
 export const LOCAL_RATES = resolve(root, "src/lib/kr-rates-2026.mjs");
+export const RATE_FILES = ["kr-rates-2026.mjs", "kr-rates-2027.mjs", "kr-rates-registry.mjs"];
 
 export function findApiRates() {
   for (const dir of [process.env.OIYO_API_DIR, resolve(root, "../api"), resolve(root, "../../api")].filter(Boolean)) {
@@ -25,6 +26,16 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
     console.error("api checkout not found; set OIYO_API_DIR=/path/to/api");
     process.exit(1);
   }
-  copyFileSync(source, LOCAL_RATES);
-  console.log(`synced ${source} -> ${LOCAL_RATES}`);
+  // 2026-10-25: validate the whole set before copying, so an old API checkout
+  // cannot silently produce a mixed-year registry. Existing calculators stay 2026.
+  const sources = RATE_FILES.map(name => resolve(dirname(source), name));
+  if (sources.some(file => !existsSync(file))) {
+    console.error("canonical rate set incomplete; update OIYO_API_DIR before syncing");
+    process.exit(1);
+  }
+  for (const file of sources) {
+    const target = resolve(root, "src/lib", file.split("/").at(-1));
+    copyFileSync(file, target);
+    console.log(`synced ${file} -> ${target}`);
+  }
 }
