@@ -1,0 +1,27 @@
+---
+import Layout from '../../components/Layout.astro';
+import UsageCostCalculator from '../../components/tools/UsageCostCalculator';
+import { usageCostCopy } from '../../data/usage-cost-copy';
+import { locales, type Locale } from '../../lib/i18n';
+export function getStaticPaths() {
+  return locales.map(locale => ({params:{locale},props:{locale}}));
+}
+const {locale} = Astro.props as {locale:Locale};
+const c = usageCostCopy[locale];
+const url = `https://tools.oiyo.net/${locale}/usage-cost-calculator/`;
+const schema = {'@context':'https://schema.org','@type':'WebApplication',name:c.title,description:c.description,url,inLanguage:locale,applicationCategory:'UtilitiesApplication',operatingSystem:'All',offers:{'@type':'Offer',price:'0',priceCurrency:'USD'}};
+---
+<Layout title={c.title} description={c.description} locale={locale} availableLocales={[...locales]} canonicalURL={url}>
+  <article class="mx-auto max-w-3xl px-4 py-6">
+    <h1 class="text-2xl font-bold tracking-tight">{c.title}</h1>
+    <p class="mb-4 mt-2 text-sm leading-relaxed text-muted-foreground">{c.description}</p>
+    <UsageCostCalculator locale={locale} client:load/>
+    <section class="mt-5 space-y-2 border-t border-border pt-4">
+      <h2 class="text-lg font-semibold">{c.mathTitle}</h2>
+      <p class="text-sm leading-relaxed">{c.math}</p>
+      <p class="text-sm leading-relaxed">{c.judgment}</p>
+      <p class="text-sm leading-relaxed text-muted-foreground">{c.privacy}</p>
+    </section>
+  </article>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)}/>
+</Layout>
