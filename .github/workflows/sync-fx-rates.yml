@@ -1,0 +1,42 @@
+name: Sync FX rates
+
+on:
+  schedule:
+    # Weekdays after ECB publishes reference rates (~16:00 CET); second run is a retry.
+    - cron: '30 16 * * 1-5'
+    - cron: '30 17 * * 1-5'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-fx-rates
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+      - run: npm ci
+      - name: Sync ECB rates (exits non-zero without clobbering on bad feed)
+        run: npm run sync:fx-rates
+      - name: Commit if changed
+        run: |
+          git add public/data/fx src/data/fx-snapshot.json
+          if git diff --cached --quiet; then
+            echo "No FX changes."
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m "chore(fx): update ECB rates $(date -u +%F)"
+          git pull --rebase origin main
+          git push origin HEAD:main
