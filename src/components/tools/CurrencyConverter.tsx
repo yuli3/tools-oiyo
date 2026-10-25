@@ -1,14 +1,14 @@
 import { useEffect, useId, useState } from 'react';
 import type { Locale } from '../../lib/i18n';
 import { converterCopy } from '../../lib/fx-copy';
-import { FX_CURRENCIES, convertViaKrw, validateFeed } from '../../lib/fx-feed.mjs';
+import { FX_CURRENCIES, convertViaKrw, validateFeed, type FxSourceId } from '../../lib/fx-feed.mjs';
 import snapshot from '../../data/fx-snapshot.json';
 
-// 2026-10-25: blog-oiyo 정적 환율(2026-06)을 ECB 일일 피드로 바꿨어요.
+// 2026-10-25: blog-oiyo 정적 환율(2026-06)을 키 없는 일일 피드(Frankfurter v2 + fawazahmed0 보충)로 바꿨어요. 원래 20개 통화 그대로예요.
 // 화면은 빌드 시 스냅샷으로 먼저 그리고, /data/fx/latest.json이 유효하면 그 값으로 바꿔요.
 const CURRENCIES = ['KRW', ...FX_CURRENCIES] as const;
 type Currency = typeof CURRENCIES[number];
-type Feed = { asOf: string; rates: Record<string, number> };
+type Feed = { asOf: string; rates: Record<string, number>; sources?: Record<string, FxSourceId> };
 const PRESETS: [Currency, Currency][] = [['USD','KRW'],['JPY','KRW'],['EUR','KRW'],['CNY','KRW']];
 const inputClass = 'mt-1 min-h-11 w-full min-w-0 rounded-lg border border-input bg-background px-3 py-2 text-foreground focus-visible:outline-2 focus-visible:outline-primary';
 
@@ -33,6 +33,7 @@ export default function CurrencyConverter({ locale }: { locale: Locale }) {
   const fmt = (n: number, cur: Currency) => new Intl.NumberFormat(locale, { style: 'currency', currency: cur, maximumFractionDigits: n !== 0 && Math.abs(n) < 1 ? 6 : undefined }).format(n);
   const result = ok ? convertViaKrw(value, from, to, feed.rates) : NaN;
   const unitRate = convertViaKrw(1, from, to, feed.rates);
+  const usedSources = [...new Set(Object.values(feed.sources ?? { USD: 'frankfurter-v2' as FxSourceId }))].map(id => c.sourceNames[id] ?? id).join(', ');
   const select = (label: string, cur: Currency, set: (c: Currency) => void) => (
     <label className="grid text-sm font-medium">{label}
       <select value={cur} onChange={e => set(e.target.value as Currency)} className={inputClass}>
@@ -66,7 +67,7 @@ export default function CurrencyConverter({ locale }: { locale: Locale }) {
         <p className="text-2xl font-bold">{ok ? fmt(result, to) : '—'}</p>
         <p className="mt-1 text-sm">{c.rate}: 1 {from} = {fmt(unitRate, to)}</p>
       </div>
-      <p className="text-sm text-muted-foreground" data-fx-as-of={feed.asOf}>{c.asOf} {feed.asOf} · {c.source} · {c.note}</p>
+      <p className="text-sm text-muted-foreground" data-fx-as-of={feed.asOf}><span className="font-medium text-foreground">{c.label}</span> · {c.asOf} {feed.asOf} · {c.source}: {usedSources} · {c.note}</p>
       {fallback && <p className="text-sm text-muted-foreground">{c.fallback}</p>}
     </section>
   );
