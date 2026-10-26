@@ -17,7 +17,7 @@ interface Props {
 }
 
 const { title, description, keywords, canonicalURL, noindex, locale = 'ko', availableLocales = [], languageTag = locale, ogLocale } = Astro.props;
-const copy = languageTag==='zh-Hant-TW'?{all:'所有工具',related:'檔案工具',language:'語言',license:'授權',note:'輸入內容在瀏覽器內計算。本站使用訪問統計與廣告。'}:shellCopy[locale];
+const copy = (languageTag==='zh-Hant-TW'||languageTag==='zh-Hant-HK')?{all:'所有工具',related:'檔案工具',language:'語言',license:'授權',note:'輸入內容在瀏覽器內計算。本站使用訪問統計與廣告。'}:shellCopy[locale];
 const home=locale==='ko'?'/':`/${locale}/`;
 const pageSlug = Astro.url.pathname.split('/').filter(Boolean)[1];
 

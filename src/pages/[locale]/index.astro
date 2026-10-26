@@ -3,13 +3,14 @@ import Layout from '../../components/Layout.astro';
 import {locales,shellCopy,utilityLabels,utilitySlugs,type Locale} from '../../lib/i18n';
 import {monitorPpiCopy} from '../../data/monitor-ppi-copy';
 import {laborToolsForLocale} from '../../data/country-labor';
+import {regionalLaborForLocale} from '../../data/regional-labor';
 import {loanCopy} from '../../lib/loan-comparison-copy';
 import {usageCostCopy} from '../../data/usage-cost-copy';
 import {converterCopy} from '../../lib/fx-copy';
 import {EXCHANGE_COPY} from '../../components/tools/ForeignExchangeFeeCalculator';
 export function getStaticPaths(){return locales.filter(l=>l!=='ko').map(locale=>({params:{locale},props:{locale}}));}
 const {locale}=Astro.props as {locale:Locale};
-const copy=shellCopy[locale],labor=laborToolsForLocale(locale);
+const copy=shellCopy[locale],labor=[...laborToolsForLocale(locale),...regionalLaborForLocale(locale)];
 const heading={ko:'도구',en:'Tools in English',ja:'日本語のツール',zh:'中文工具',fr:'Outils en français',es:'Herramientas en español'}[locale];
 ---
 <Layout title={heading} description={heading} locale={locale} canonicalURL={`https://tools.oiyo.net/${locale}/`}>
