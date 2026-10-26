@@ -1,6 +1,7 @@
 ---
 import SEO from "./SEO.astro";
 import ManualAds from "./ManualAds.astro";
+import ToolTelemetry from "./ToolTelemetry.astro";
 import "../styles/global.css";
 import { shellCopy, type Locale } from '../lib/i18n';
 
@@ -63,6 +64,7 @@ const FAMILY = [
     <main id="main-content" class="flex-1">
       <slot />
       <ManualAds noindex={noindex} locale={locale} />
+      {!noindex && <ToolTelemetry />}
     </main>
 
     <!-- Footer with Family Links -->

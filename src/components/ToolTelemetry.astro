@@ -1,0 +1,51 @@
+---
+// GA4 도구 사용 이벤트. 계약·이유는 src/lib/tool-telemetry.ts 머리말.
+//   tool_engage    : 페이지에서 처음 입력·선택·버튼을 누른 순간 (1회)
+//   tool_calculate : 그 뒤 본문(광고 제외)이 처음 바뀐 순간 (1회) — 계산률 분자
+---
+
+<script>
+  import { isIgnoredNode, toolIdFromPath } from '../lib/tool-telemetry';
+
+  const toolId = toolIdFromPath(location.pathname);
+  const main = document.getElementById('main-content');
+  const send = (name: string) => {
+    const gtag = (window as unknown as { gtag?: (...args: unknown[]) => void }).gtag;
+    if (typeof gtag === 'function' && toolId) {
+      gtag('event', name, { tool_id: toolId, tool_locale: document.documentElement.lang || '' });
+    }
+  };
+
+  if (toolId && main) {
+    let engaged = false;
+    let calculated = false;
+    let observer: MutationObserver | null = null;
+
+    const onCalculate = () => {
+      if (calculated) return;
+      calculated = true;
+      observer?.disconnect();
+      send('tool_calculate');
+    };
+
+    const onEngage = (event: Event) => {
+      const target = event.target as Element | null;
+      if (engaged || !target || isIgnoredNode(target)) return;
+      // 내비게이션 링크는 사용이 아니다. 버튼·입력·선택만 센다.
+      if (event.type === 'click' && !target.closest('button, [role="button"], input, select, label')) return;
+      engaged = true;
+      send('tool_engage');
+      observer = new MutationObserver((records) => {
+        // 입력칸 자체의 변화(React value 동기화 등)는 결과가 아니다.
+        const isResult = (r: MutationRecord) =>
+          !isIgnoredNode(r.target as Element) && !(r.target instanceof Element && r.target.matches('input, select, textarea, option'));
+        if (records.some(isResult)) onCalculate();
+      });
+      observer.observe(main, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: ['hidden'] });
+    };
+
+    for (const type of ['input', 'change', 'click']) {
+      main.addEventListener(type, onEngage, { capture: true, passive: true });
+    }
+  }
+</script>
