@@ -1,0 +1,16 @@
+import {useEffect,useId,useState} from 'react';
+import {leavePay,type LeavePayId} from '../../data/labor-wave5';
+export default function LeavePayWorksheet({tool}:{tool:LeavePayId}){
+ const t=leavePay[tool],id=useId(),[ready,setReady]=useState(false),[confirmed,setConfirmed]=useState(false);
+ const [values,setValues]=useState<Record<string,string>>(()=>Object.fromEntries(t.fields.map(f=>[f.id,f.initial])));
+ useEffect(()=>setReady(true),[]);
+ const result=confirmed?t.run(values):null;
+ const invalid=tool==='au-leave'?'Enter complete, finite, non-negative values. Ordinary weekly hours must be greater than zero.':tool==='ca-holiday'?'Enter confirmed, finite, non-negative eligible wages of no more than CAD 100,000,000.':'Enter complete, finite, non-negative wages of no more than CAD 100,000,000 and whole completed service years.';
+ const format=(value:number,unit:string)=>unit==='CAD'?new Intl.NumberFormat(t.languageTag,{style:'currency',currency:'CAD'}).format(value):`${new Intl.NumberFormat(t.languageTag,{maximumFractionDigits:4}).format(value)} ${unit}`;
+ return <section aria-label={t.title} className="space-y-3">
+ <p className="text-sm text-muted-foreground">Prefilled values are examples. Replace them with verified records; a blank field is not zero.</p>
+ <fieldset disabled={!ready} className="space-y-3"><div className="grid gap-3 sm:grid-cols-2">{t.fields.map(f=><label key={f.id} htmlFor={id+f.id} className="block space-y-1 text-sm"><span>{f.label}</span><input id={id+f.id} type="number" min="0" step={f.id==='years'?'1':'any'} value={values[f.id]} onChange={e=>setValues(old=>({...old,[f.id]:e.target.value}))} className="min-h-11 w-full rounded-lg border border-input bg-background px-3 py-2"/></label>)}</div><label className="flex min-h-11 items-start gap-3 rounded-lg border border-border p-3 text-sm leading-relaxed"><input type="checkbox" checked={confirmed} onChange={e=>setConfirmed(e.target.checked)} className="mt-1 h-5 w-5 shrink-0"/>{t.ack}</label></fieldset>
+ {!ready&&<p className="text-sm">Preparing calculator…</p>}
+ <div role="status" aria-live="polite">{!confirmed?<p className="text-sm text-muted-foreground">Confirm the supported scope to see the estimate.</p>:result&&!result.ok?<p className="text-sm text-destructive">{result.reason==='unsupported'?'Outside this version’s supported hours, weeks or completed-service range.':invalid} Previous results are removed.</p>:result?.ok?<div data-leave-result={tool} className="space-y-3 rounded-lg border border-border p-3"><h2 className="text-lg font-semibold">{t.resultTitle}: {format(result.value,result.unit)}</h2><p className="text-xs text-muted-foreground">Displayed rounding is not a payroll rounding instruction. This is not an individual entitlement or unpaid-wage determination.</p><table className="w-full text-left text-sm"><caption className="mb-2 text-left">Time, wage base and calculation breakdown</caption><thead><tr><th className="p-2">Component</th><th className="p-2">Value</th></tr></thead><tbody>{result.rows.map(row=><tr key={row.label} className="border-t border-border"><th className="p-2 font-medium">{row.label}</th><td className="p-2 tabular-nums">{format(row.value,row.unit)}</td></tr>)}</tbody></table></div>:null}</div>
+ </section>;
+}

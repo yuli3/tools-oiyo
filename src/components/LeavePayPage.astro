@@ -1,0 +1,16 @@
+---
+import Layout from './Layout.astro';
+import LeavePayWorksheet from './tools/LeavePayWorksheet';
+import {leavePay,type LeavePayId} from '../data/labor-wave5';
+const {tool}=Astro.props as {tool:LeavePayId};
+const t=leavePay[tool],url=`https://tools.oiyo.net/en/${t.slug}/`;
+const schema={'@context':'https://schema.org','@type':'WebApplication',name:t.title,description:t.description,url,inLanguage:t.languageTag,applicationCategory:'BusinessApplication',operatingSystem:'All',isAccessibleForFree:true};
+---
+<Layout title={t.title} description={t.description} locale="en" languageTag={t.languageTag} ogLocale={t.ogLocale} canonicalURL={url}>
+ <article class="mx-auto max-w-3xl space-y-4 px-4 py-6"><header class="space-y-2"><h1 class="text-2xl font-bold tracking-tight sm:text-3xl">{t.title}</h1><p class="text-sm leading-relaxed">{t.description}</p><p class="text-sm font-semibold">{t.jurisdiction}</p></header>
+ <section class="space-y-2 rounded-lg border border-border p-3"><h2 class="font-semibold">Supported scope and exclusions</h2><p class="text-sm leading-relaxed">{t.scope}</p></section>
+ <section aria-label="Calculation guide" class="space-y-2"><h2 class="font-semibold">How the estimate works</h2><ol class="grid gap-2 sm:grid-cols-3">{t.steps.map((step,i)=><li class="rounded-lg border border-border p-3 text-sm leading-relaxed"><span class="mb-1 block font-semibold">{i+1}</span>{step}</li>)}</ol></section>
+ <LeavePayWorksheet tool={tool} client:load/>
+ <section class="space-y-3 border-t border-border pt-4"><h2 class="text-lg font-semibold">Method, assumptions and official sources</h2>{t.notes.map(note=><p class="text-sm leading-relaxed">{note}</p>)}<ul class="list-disc space-y-2 pl-5 text-sm">{t.sources.map(([name,href])=><li><a href={href} class="text-primary underline underline-offset-4">{name}</a></li>)}</ul><p class="text-xs text-muted-foreground">Official guidance checked: 27 October 2026. Future changes are not forecast. Inputs stay in browser calculation memory and are not added to the URL.</p></section>
+ </article><script type="application/ld+json" set:html={JSON.stringify(schema)}/>
+</Layout>
