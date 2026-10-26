@@ -1,0 +1,5 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {compareJapanFixedOvertime} from './japan-fixed-overtime.ts';
+const run=(hours:number,allowance=30000)=>compareJapanFixedOvertime({hourly:1500,hours,allowance,scopeConfirmed:true});
+test('compares full 1.25 overtime pay, retaining signed gaps',()=>{for(const [h,gap] of [[20,7500],[16,0],[8,-15000]]){const r=run(h);assert.ok(r.ok);assert.equal(r.difference,gap);}const z=run(0);assert.ok(z.ok);assert.equal(z.calculated,0);});
+test('60-hour boundary is explicit and larger months are unsupported',()=>{assert.ok(run(60).ok);assert.deepEqual(run(60.01),{ok:false,reason:'unsupported'});});
+test('scope and invalid inputs never produce a difference',()=>{assert.deepEqual(compareJapanFixedOvertime({hourly:1500,hours:20,allowance:30000,scopeConfirmed:false}),{ok:false,reason:'scope'});for(const bad of [NaN,Infinity,-1])for(const key of ['hourly','hours','allowance'])assert.equal(compareJapanFixedOvertime({...{hourly:1500,hours:20,allowance:30000},[key]:bad,scopeConfirmed:true}).ok,false);});
