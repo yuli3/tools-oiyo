@@ -1,0 +1,5 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {calculateTaiwanOvertime} from './taiwan-overtime.ts';
+const run=(kind:'workday'|'restday'|'holiday',hours:number)=>calculateTaiwanOvertime({hourly:150,hours,kind,scopeConfirmed:true});
+test('MOL tiers keep workday and rest-day additional pay separate',()=>{const a=run('workday',3),b=run('restday',6);assert.ok(a.ok&&b.ok);assert.equal(a.total,650);assert.equal(b.total,1400);assert.equal(a.firstPay+a.secondPay,a.total);});
+test('monthly-paid holiday adds full day even for one hour, but zero is zero',()=>{for(const h of [0.1,1,8]){const r=run('holiday',h);assert.ok(r.ok);assert.equal(r.total,1200);}const z=run('holiday',0);assert.ok(z.ok);assert.equal(z.total,0);});
+test('unreviewed hours and invalid inputs produce no estimate',()=>{assert.deepEqual(run('workday',4.01),{ok:false,reason:'unsupported'});assert.deepEqual(run('restday',8.01),{ok:false,reason:'unsupported'});for(const v of [-1,NaN,Infinity])assert.equal(run('workday',v).ok,false);assert.equal(calculateTaiwanOvertime({hourly:150,hours:2,kind:'workday',scopeConfirmed:false}).ok,false);});
