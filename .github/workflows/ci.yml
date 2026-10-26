@@ -27,3 +27,5 @@ jobs:
         run: npm run test:loan-comparison-html
       - name: Native-language labor tools and discovery
         run: npm run test:country-labor-html
+      - name: Regional labor scope and native discovery
+        run: npm run test:regional-labor-html

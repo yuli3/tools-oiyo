@@ -13,7 +13,7 @@
     "lint": "ASTRO_TELEMETRY_DISABLED=1 astro check && npm run lint:shadcn",
     "lint:shadcn": "eslint --pass-on-unpruned-suppressions src",
     "lint:shadcn:prune": "eslint --prune-suppressions src",
-    "test": "node --test scripts/kr-rates.test.mjs scripts/car-bond.test.mjs && npm run test:file-utilities && npm run test:monitor-ppi && npm run test:loan-comparison && npm run test:country-labor && npm run test:usage-cost && npm run test:fx",
+    "test": "node --test scripts/kr-rates.test.mjs scripts/car-bond.test.mjs && npm run test:file-utilities && npm run test:monitor-ppi && npm run test:loan-comparison && npm run test:country-labor && npm run test:usage-cost && npm run test:fx && npm run test:regional-labor",
     "test:usage-cost": "node --experimental-strip-types --test src/lib/usage-cost.test.ts",
     "test:usage-cost-html": "node --test scripts/usage-cost-html.test.mjs",
     "test:loan-comparison": "node --experimental-strip-types --test src/lib/loan-comparison.test.ts",
@@ -26,7 +26,9 @@
     "test:file-utilities-html": "node --test scripts/file-utilities.test.mjs",
     "sync:kr-rates": "node scripts/sync-kr-rates.mjs",
     "test:fx": "node --test src/lib/fx-feed.test.mjs && node --experimental-strip-types --test src/lib/foreign-exchange-comparison.test.ts",
-    "sync:fx-rates": "node scripts/sync-fx-rates.mjs"
+    "sync:fx-rates": "node scripts/sync-fx-rates.mjs",
+    "test:regional-labor": "node --experimental-strip-types --test src/lib/california-overtime.test.ts src/lib/gb-holiday-entitlement.test.ts src/lib/hong-kong-work-hours.test.ts",
+    "test:regional-labor-html": "node --test scripts/regional-labor-html.test.mjs"
   },
   "dependencies": {
     "@astrojs/react": "^4.4.2",

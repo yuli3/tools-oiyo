@@ -1,0 +1,22 @@
+---
+import Layout from './Layout.astro';
+import {regionalLabor,type RegionalLaborTool} from '../data/regional-labor';
+import CaliforniaOvertimeCalculator from './tools/CaliforniaOvertimeCalculator';
+import GbHolidayCalculator from './tools/GbHolidayCalculator';
+import HongKongWorkHoursTracker from './tools/HongKongWorkHoursTracker';
+const {tool}=Astro.props as {tool:RegionalLaborTool};
+const t=regionalLabor[tool],url=`https://tools.oiyo.net/${t.locale}/${t.slug}/`;
+const schema={'@context':'https://schema.org','@type':'WebApplication',name:t.title,url,inLanguage:t.languageTag,description:t.description,applicationCategory:'BusinessApplication',operatingSystem:'All',isAccessibleForFree:true};
+---
+<Layout title={t.title} description={t.description} locale={t.locale} languageTag={t.languageTag} ogLocale={t.ogLocale} canonicalURL={url} keywords={[t.title,t.jurisdiction]}>
+ <article class="mx-auto max-w-3xl space-y-5 px-4 py-6">
+  <header class="space-y-2"><h1 class="text-2xl font-bold tracking-tight sm:text-3xl">{t.title}</h1><p class="text-sm leading-relaxed text-muted-foreground">{t.description}</p><p class="text-sm font-semibold">{t.jurisdiction}</p></header>
+  <p class="text-sm leading-relaxed">{t.intro}</p>
+  <details class="rounded-lg border border-border p-3" open><summary class="min-h-11 cursor-pointer text-sm font-semibold">{tool==='hk'?'使用範圍與不支援情況':'Supported scope and exclusions'}</summary><p class="text-sm leading-relaxed text-muted-foreground">{t.note}</p></details>
+  {tool==='ca'&&<CaliforniaOvertimeCalculator client:load/>}
+  {tool==='gb'&&<GbHolidayCalculator client:load/>}
+  {tool==='hk'&&<HongKongWorkHoursTracker client:load/>}
+  <section class="space-y-3 border-t border-border pt-4"><h2 class="text-lg font-semibold">{tool==='hk'?'計算方法與官方資料':'Method and official sources'}</h2><p class="text-sm leading-relaxed">{t.method}</p><ul class="list-disc space-y-2 pl-5 text-sm">{t.sources.map(([name,href])=><li><a href={href} class="text-primary underline underline-offset-4">{name}</a></li>)}</ul><p class="text-xs text-muted-foreground">{tool==='hk'?'官方資料確認：2026-10-26。未作個案法律裁定。':'Official guidance checked: 26 October 2026. No individual legal determination.'}</p></section>
+ </article>
+ <script type="application/ld+json" set:html={JSON.stringify(schema)}/>
+</Layout>

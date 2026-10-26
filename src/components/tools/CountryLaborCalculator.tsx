@@ -22,6 +22,9 @@ export default function CountryLaborCalculator({tool}:{tool:LaborTool}) {
     <fieldset disabled={!ready} className="grid gap-3 sm:grid-cols-2">
       {t.fields.map((f,i)=><div key={f[0]}><label htmlFor={id+'-'+i} className="mb-1 block text-sm font-medium">{f[0]}</label>
         <input id={id+'-'+i} type={f[2]} value={values[i]} inputMode={f[2]==='number'?'decimal':undefined} min={f[2]==='number'?'0':undefined} step="any"
+          // WHY 2026-10-26: date-picker input events must update the calculation
+          // immediately; otherwise the visible date and computed period can differ.
+          onInput={f[2]==='date'?e=>{const value=e.currentTarget.value;setValues(v=>v.map((old,j)=>j===i?value:old));}:undefined}
           onChange={e=>setValues(v=>v.map((old,j)=>j===i?e.target.value:old))}
           className="min-h-11 w-full rounded-lg border border-input bg-background px-3 py-2 text-foreground focus-visible:outline-2 focus-visible:outline-ring"/>
       </div>)}
