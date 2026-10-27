@@ -1,0 +1,37 @@
+---
+// Shell for the W8 Korean finance tools moved from Blog on 2026-10-27. Takes Blog's ToolShell copy
+// shape (highlights + {q,a} FAQs) so each page keeps its Blog text verbatim.
+import Layout from './Layout.astro';
+import UtilityArticle, { type UtilityContent } from './UtilityArticle.astro';
+import RelatedUtilities from './RelatedUtilities.astro';
+import { locales, type Locale } from '../lib/i18n';
+import { utilityJsonLd } from '../lib/utility-jsonld';
+export interface BlogShellCopy {
+  introTitle: string; intro: string; howToTitle: string; steps: string[];
+  highlightsTitle: string; highlights: { title: string; body: string }[]; disclaimer: string;
+}
+interface Props {
+  slug: string; locale: Locale; title: string; description: string;
+  shell?: BlogShellCopy; faqs?: { q: string; a: string }[]; faqTitle?: string; note?: string; koOnly?: boolean;
+}
+const { slug, locale, title, description, shell, faqs = [], faqTitle = '자주 묻는 질문', note, koOnly = false } = Astro.props;
+const url = `https://tools.oiyo.net/${locale}/${slug}/`;
+const c: UtilityContent | null = shell ? {
+  introTitle: shell.introTitle, intro: shell.intro, formulaTitle: shell.highlightsTitle, formulas: shell.highlights,
+  howToTitle: shell.howToTitle, steps: shell.steps, faqTitle, faqs: faqs.map((f) => ({ question: f.q, answer: f.a })), disclaimer: shell.disclaimer,
+} : null;
+const ld = utilityJsonLd({ name: title, description, url, locale, steps: c?.steps ?? [], faqs: c?.faqs ?? [] });
+// Pages without Blog copy only describe the app; empty HowTo/FAQ blocks would be invalid.
+const schema = c ? ld : ld.slice(0, 1);
+---
+<Layout title={title} description={description} locale={locale} availableLocales={koOnly ? ['ko'] : [...locales]} canonicalURL={url}>
+  <div class="mx-auto max-w-3xl px-4 py-6">
+    <h1 class="text-2xl font-bold tracking-tight">{title}</h1>
+    <p class="mb-5 mt-2 text-sm text-muted-foreground">{description}</p>
+    <slot />
+    {note && <p class="mt-4 text-xs text-muted-foreground">{note}</p>}
+    {c && <UtilityArticle c={c} />}
+    <RelatedUtilities locale={locale} current={slug} group="money" />
+  </div>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+</Layout>
