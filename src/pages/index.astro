@@ -9,6 +9,7 @@ import { loanCopy } from "../lib/loan-comparison-copy";
 import { usageCostCopy } from "../data/usage-cost-copy";
 import { converterCopy } from "../lib/fx-copy";
 import { EXCHANGE_COPY } from "../components/tools/ForeignExchangeFeeCalculator";
+import { utilityCatalog, utilityGroups } from "../data/utility-catalog";
 
 // 2026-10-17: 카드 설명의 법정 수치는 SSOT에서 읽고, blog.oiyo.net과 겹치지 않는
 // 고유 계산기와 2026-10-19 이관한 파일 도구를 정본 주소로 안내해요.
@@ -22,6 +23,8 @@ const tools = [
   { id: 'foreign-exchange-fee-calculator', title: EXCHANGE_COPY.ko[0], desc: '현지 통화 결제와 DCC(원화 결제) 제시 금액을 같은 환율·수수료 가정으로 비교해요.', href: '/ko/foreign-exchange-fee-calculator/', category: '환율·해외 결제', badge: '6개 언어' },
   { id: 'loan-comparison-calculator', title: loanCopy.ko.title, desc: loanCopy.ko.description, href: '/ko/loan-comparison-calculator/', category: '대출·상환 비교', badge: '6개 언어' },
   { id: 'monitor-ppi-calculator', title: monitorPpiCopy.ko.title, desc: monitorPpiCopy.ko.description, href: '/ko/monitor-ppi-calculator/', category: '화면·디스플레이', badge: '6개 언어' },
+  // 2026-10-27 W1: screen and developer utilities migrated from Blog.
+  ...utilityCatalog.map((t) => ({ id: t.slug, title: t.title.ko, desc: t.description.ko, href: `/ko/${t.slug}/`, category: utilityGroups[t.group].ko, badge: '6개 언어' })),
   { id: 'image-converter', title: '이미지 변환·압축', desc: 'HEIC·WebP·PNG·JPG를 바꾸고 목표 용량에 맞춰요. 파일은 브라우저에서 처리해요.', href: '/ko/image-converter/', category: '파일 유틸리티', badge: '6개 언어' },
   { id: 'pdf-merge-split', title: 'PDF 합치기·나누기', desc: '파일 순서를 정해 합치거나 페이지 범위로 나눠요. 원본은 그대로 보관하세요.', href: '/ko/pdf-merge-split/', category: '파일 유틸리티', badge: '6개 언어' },
   { id: 'qr-code-generator', title: 'QR 코드 생성기', desc: '텍스트·URL·이메일·Wi-Fi 정보를 QR 코드로 만들어요. 입력값은 브라우저에서 처리해요.', href: '/ko/qr-code-generator/', category: '파일 유틸리티', badge: '6개 언어' },
@@ -183,6 +186,13 @@ const tools = [
       >
         캘린더 · 공휴일
       </button>
+      <button
+        type="button"
+        class="filter-btn rounded-lg border border-border bg-card px-3.5 py-1.5 text-xs font-medium text-muted-foreground transition hover:border-primary/40 hover:text-foreground"
+        data-filter="utility"
+      >
+        파일 · 화면 · 개발
+      </button>
     </div>
 
     <!-- Tools Grid -->
@@ -194,6 +204,7 @@ const tools = [
         else if (tool.id === "military-service") group = "military";
         else if (tool.id === "wind-chill") group = "environment";
         else if (tool.id === "business-day") group = "calendar";
+        else if (["image-converter", "pdf-merge-split", "qr-code-generator", "monitor-ppi-calculator", ...utilityCatalog.map((t) => t.slug)].includes(tool.id)) group = "utility";
 
         return (
           <a
@@ -230,7 +241,7 @@ const tools = [
 
     {/* WHY (2026-10-21): expose real locale links without requiring JavaScript or a language select. */}
     <section class="mt-6 border-t border-border pt-4" aria-labelledby="file-tool-languages">
-      <h2 id="file-tool-languages" class="text-base font-semibold text-foreground">파일·화면 도구 · 언어별 바로가기</h2>
+      <h2 id="file-tool-languages" class="text-base font-semibold text-foreground">파일·화면·개발 도구 · 언어별 바로가기</h2>
       <div class="mt-2 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {locales.map((lang) => (
           <nav lang={lang} aria-label={`${lang.toUpperCase()} file tools`} class="rounded-lg border border-border p-3">
@@ -238,6 +249,7 @@ const tools = [
             <ul>
               {utilitySlugs.map((slug, i) => <li><a class="inline-flex min-h-11 items-center text-sm text-primary underline" href={`/${lang}/${slug}/`}>{utilityLabels[lang][i]}</a></li>)}
               <li><a class="inline-flex min-h-11 items-center text-sm text-primary underline" href={`/${lang}/monitor-ppi-calculator/`}>{monitorPpiCopy[lang].title}</a></li>
+              {utilityCatalog.map((t) => <li><a class="inline-flex min-h-11 items-center text-sm text-primary underline" href={`/${lang}/${t.slug}/`}>{t.title[lang]}</a></li>)}
             </ul>
           </nav>
         ))}

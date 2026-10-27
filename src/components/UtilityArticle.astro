@@ -1,0 +1,40 @@
+---
+// Explanatory block shared by utilities migrated from Blog (2026-10-27).
+export interface UtilityContent {
+  introTitle: string; intro: string; formulaTitle: string; formulas: { title: string; body: string }[];
+  howToTitle: string; steps: string[]; faqTitle: string; faqs: { question: string; answer: string }[]; disclaimer: string;
+}
+interface Props { c: UtilityContent; mono?: boolean }
+const { c, mono = false } = Astro.props;
+---
+<section class="mt-8 border-t border-border pt-6">
+  <h2 class="text-xl font-bold">{c.introTitle}</h2>
+  <p class="mt-3 leading-7 text-muted-foreground">{c.intro}</p>
+</section>
+<section class="mt-8">
+  <h2 class="text-lg font-bold">{c.formulaTitle}</h2>
+  <div class="mt-3 grid gap-3 md:grid-cols-3">
+    {c.formulas.map((item) => (
+      <article class="rounded-xl border border-border bg-card p-4">
+        <h3 class="font-semibold">{item.title}</h3>
+        <p class:list={["mt-2 text-sm leading-6", mono ? "font-mono text-primary" : "text-muted-foreground"]}>{item.body}</p>
+      </article>
+    ))}
+  </div>
+</section>
+<section class="mt-8">
+  <h2 class="text-lg font-bold">{c.howToTitle}</h2>
+  <ol class="mt-3 list-decimal space-y-2 pl-5 text-muted-foreground">{c.steps.map((s) => <li class="leading-7">{s}</li>)}</ol>
+</section>
+<section class="mt-8">
+  <h2 class="text-lg font-bold">{c.faqTitle}</h2>
+  <div class="mt-3 divide-y divide-border rounded-xl border border-border bg-card">
+    {c.faqs.map((faq) => (
+      <details class="p-4">
+        <summary class="min-h-11 cursor-pointer font-semibold">{faq.question}</summary>
+        <p class="mt-2 text-sm leading-6 text-muted-foreground">{faq.answer}</p>
+      </details>
+    ))}
+  </div>
+</section>
+<p class="mt-6 rounded-xl border border-warning/30 bg-warning/10 px-4 py-3 text-sm leading-6">{c.disclaimer}</p>
