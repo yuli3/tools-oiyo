@@ -1,0 +1,62 @@
+---
+// Shared shell for the W7 date, time and everyday tools moved from Blog on 2026-10-27.
+import Layout from './Layout.astro';
+import UtilityArticle from './UtilityArticle.astro';
+import RelatedUtilities from './RelatedUtilities.astro';
+import DateCalculator from './tools/DateCalculator';
+import DdayCounter from './tools/DdayCounter';
+import HoursCalculator from './tools/HoursCalculator';
+import WorldClock from './tools/WorldClock';
+import CountdownTimer from './tools/CountdownTimer';
+import PomodoroTimer from './tools/PomodoroTimer';
+import Metronome from './tools/Metronome';
+import PercentageCalculator from './tools/PercentageCalculator';
+import RatioCalculator from './tools/RatioCalculator';
+import DiscountCalculator from './tools/DiscountCalculator';
+import TipCalculator from './tools/TipCalculator';
+import DutchPayCalculator from './tools/DutchPayCalculator';
+import UnitPriceCalculator from './tools/UnitPriceCalculator';
+import TravelBudgetCalculator from './tools/TravelBudgetCalculator';
+import FuelCostCalculator from './tools/FuelCostCalculator';
+import FuelEfficiencyCalculator from './tools/FuelEfficiencyCalculator';
+import BasicCalculator from './tools/BasicCalculator';
+import WordCounterTool from './tools/WordCounterTool';
+import { locales, type Locale } from '../lib/i18n';
+import { utilityJsonLd } from '../lib/utility-jsonld';
+import { w7Pages, w7TimeSlugs, type W7Slug } from '../data/w7-pages';
+interface Props { slug: W7Slug; locale: Locale }
+const { slug, locale } = Astro.props;
+const p = w7Pages[slug][locale];
+const url = `https://tools.oiyo.net/${locale}/${slug}/`;
+const schema = utilityJsonLd({ name: p.title, description: p.description, url, locale, steps: p.c.steps, faqs: p.c.faqs });
+// Blog shipped dutch-pay and word-counter UI in Korean and English only.
+const koEn = locale === 'ko' ? 'ko' : 'en';
+const group = (w7TimeSlugs as readonly string[]).includes(slug) ? 'time' : slug === 'word-counter' ? 'dev' : 'calc';
+---
+<Layout title={p.title} description={p.description} locale={locale} availableLocales={[...locales]} canonicalURL={url}>
+  <div class="mx-auto max-w-3xl px-4 py-6">
+    <h1 class="text-2xl font-bold tracking-tight">{p.title}</h1>
+    <p class="mb-5 mt-2 text-sm text-muted-foreground">{p.description}</p>
+    {slug === 'date-calculator' ? <DateCalculator client:load locale={locale} />
+      : slug === 'dday-counter' ? <DdayCounter client:load locale={locale} />
+      : slug === 'hours-calculator' ? <HoursCalculator client:load locale={locale} />
+      : slug === 'world-clock' ? <WorldClock client:load locale={locale} />
+      : slug === 'timer' ? <CountdownTimer client:load locale={locale} />
+      : slug === 'pomodoro' ? <PomodoroTimer client:load locale={locale} />
+      : slug === 'metronome' ? <Metronome client:load locale={locale} />
+      : slug === 'percentage-calculator' ? <PercentageCalculator client:load locale={locale} />
+      : slug === 'ratio-calculator' ? <RatioCalculator client:load locale={locale} />
+      : slug === 'discount-calculator' ? <DiscountCalculator client:load locale={locale} />
+      : slug === 'tip-calculator' ? <TipCalculator client:load locale={locale} />
+      : slug === 'dutch-pay-calculator' ? <DutchPayCalculator client:load locale={koEn} />
+      : slug === 'unit-price-calculator' ? <UnitPriceCalculator client:load locale={locale} />
+      : slug === 'travel-budget-calculator' ? <TravelBudgetCalculator client:load locale={locale} />
+      : slug === 'fuel-cost-calculator' ? <FuelCostCalculator client:load locale={locale} />
+      : slug === 'fuel-efficiency-calculator' ? <FuelEfficiencyCalculator client:load locale={locale} />
+      : slug === 'calculator' ? <BasicCalculator client:load locale={locale} />
+      : <WordCounterTool client:load locale={koEn} />}
+    <UtilityArticle c={p.c} />
+    <RelatedUtilities locale={locale} current={slug} group={group} />
+  </div>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+</Layout>
