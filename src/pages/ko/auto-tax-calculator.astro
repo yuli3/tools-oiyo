@@ -1,0 +1,43 @@
+---
+// Moved from blog.oiyo.net/ko/auto-tax-calculator/ on 2026-10-27 (W9). Rewritten: Blog counted 차령 one year short
+// and used a flat 4.5% 연납 할인; see src/lib/kr-auto-tax.ts for the checked rules.
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import AutoTaxCalculator from "../../components/tools/AutoTaxCalculator";
+import { AUTO_TAX_AS_OF, annualPaymentCredit, autoTax } from "../../lib/kr-auto-tax";
+
+const won = (n: number) => `${n.toLocaleString("ko-KR")}원`;
+const sample = autoTax({ fuel: "engine", cc: 1998, taxYear: 2026, regYear: 2026, regHalf: "first" });
+const sampleCredit = annualPaymentCredit(sample.carTax, 2026, 1);
+
+const title = "자동차세 계산기 2026 — 배기량·차령 경감·1월 연납 할인";
+const description = "비영업용 승용차 자동차세를 배기량(cc당 80·140·200원), 차령 경감(3년차부터 5%씩 최대 50%), 지방교육세 30%로 계산하고 1월·3월·6월·9월 연납 할인액을 보여 줘요. 전기차는 연 10만 원이에요.";
+
+const ko = {
+  introTitle: "자동차세는 배기량과 차령으로 정해져요",
+  intro: `비영업용 승용차 자동차세는 배기량에 cc당 세액(1,000cc 이하 80원, 1,600cc 이하 140원, 초과 200원)을 곱하고, 차령이 3년 이상이면 해마다 5%씩 최대 50%까지 깎아요. 여기에 자동차세의 30%가 지방교육세로 붙고, 6월과 12월에 반씩 나눠 내요. 예를 들어 2026년 상반기에 산 1,998cc 신차는 자동차세 ${won(sample.carTax)}, 지방교육세 ${won(sample.educationTax)}이고, 1월에 연납하면 자동차세에서 ${won(sampleCredit)}을 덜 내요. 전기·수소차는 배기량과 관계없이 연 10만 원이에요.`,
+  howToTitle: "사용 방법",
+  steps: [
+    "차종을 고르고 배기량을 넣어요. 자동차등록증의 배기량(cc)을 그대로 쓰면 돼요.",
+    "최초 등록 연도와 등록한 때(1~6월, 7~12월)를 골라요. 차령은 이 기준으로 기분마다 따로 세요.",
+    "6월·12월분 세액, 지방교육세, 연납 달별 할인액을 확인해요.",
+  ],
+  highlightsTitle: "계산 기준",
+  highlights: [
+    { title: "차령 경감", body: "차령 3년차부터 (차령 − 2) × 5%, 12년차 이후 50%로 고정돼요(지방세법 제127조 제3항). 7~12월에 등록한 차는 1기분 차령이 한 해 적어요(시행령 제122조 제2항)." },
+    { title: "연납 할인 5%", body: "1월에 내면 2월 1일~12월 31일분 세액의 5%를 빼 줘서 실제로는 약 4.57%예요. 3월·6월·9월에 내면 남은 기간이 짧아 할인도 줄어요." },
+    { title: "지방교육세 30%", body: "비영업용 승용차 자동차세의 30%가 지방교육세로 함께 고지돼요. 연납 할인으로 자동차세가 줄면 교육세도 같이 줄어요." },
+  ],
+  disclaimer: `비영업용 승용차 기준의 추정 계산기예요. 영업용·승합·화물차, 경차·장애인·국가유공자 감면, 등록·이전·폐차에 따른 일할 계산, 지자체 고지 단수 처리는 반영하지 않았어요. 정확한 금액은 위택스나 관할 시·군·구청 고지서로 확인해 주세요. 기준일 ${AUTO_TAX_AS_OF}.`,
+};
+
+const faqs = [
+  { q: "차령은 어떻게 세나요?", a: "최초 등록일이 1~6월이면 '과세연도 − 등록연도 + 1'이에요. 7~12월에 등록했다면 6월분(1기분)은 '과세연도 − 등록연도', 12월분(2기분)은 거기에 1을 더해요. 그래서 같은 해에 산 차라도 하반기 차는 경감이 반년 늦게 시작돼요." },
+  { q: "1월 연납 할인은 정확히 몇 %인가요?", a: "공제율은 5%지만 1월 납부분은 2월 1일부터 12월 31일까지 334일(윤년 335일)치 세액에만 적용돼서 연세액의 약 4.57%예요. 서울시 2025년 안내 예시(3,342cc 신차 668,400원 → 공제 30,580원)와 같은 방식으로 계산해요." },
+  { q: "전기차도 차령 경감을 받나요?", a: "전기·수소차는 배기량이 없어 연 10만 원(지방교육세 포함 13만 원) 정액으로 고지되고, 이 계산기는 차령 경감을 적용하지 않아요." },
+  { q: "연납 후 차를 팔면 어떻게 되나요?", a: "남은 기간만큼 일할 계산해서 돌려받아요. 새 소유자는 취득일부터 자기 몫을 따로 내요." },
+];
+---
+<KrFinancePage slug="auto-tax-calculator" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <AutoTaxCalculator client:load />
+  <p class="mt-4 text-xs text-muted-foreground">근거: 지방세법 제127조(세율·차령 경감), 제128조와 시행령 제125조(연납 공제), 시행령 제122조 제2항(차령), 지방세법 제151조(지방교육세). 기준일 {AUTO_TAX_AS_OF}.</p>
+</KrFinancePage>
