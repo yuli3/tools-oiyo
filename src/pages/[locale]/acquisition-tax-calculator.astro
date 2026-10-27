@@ -1,0 +1,317 @@
+---
+// Replaces blog.oiyo.net/{locale}/acquisition-tax-calculator/ (2026-10-27, W9b). Country pages keep Blog's
+// checked country rules; the Korean calculator is rewritten on src/lib/kr-real-estate-tax.ts (Blog had no
+// multi-home surcharge and rounded the 6~9억 rate wrongly).
+import Layout from '../../components/Layout.astro';
+import UtilityArticle, { type UtilityContent } from '../../components/UtilityArticle.astro';
+import RelatedUtilities from '../../components/RelatedUtilities.astro';
+import KrAcquisitionTaxCalculator from '../../components/tools/KrAcquisitionTaxCalculator';
+import AcquisitionTaxCountryCalculator from '../../components/tools/AcquisitionTaxCountryCalculator';
+import type { AcquisitionCountry } from '../../lib/acquisition-tax-countries';
+import { REAL_ESTATE_TAX_AS_OF } from '../../lib/kr-real-estate-tax';
+import { locales } from '../../lib/i18n';
+import { utilityJsonLd } from '../../lib/utility-jsonld';
+
+type ActiveLocale = (typeof locales)[number];
+export function getStaticPaths() {
+  return locales.map((locale) => ({ params: { locale }, props: { locale } }));
+}
+const { locale } = Astro.props as { locale: ActiveLocale };
+// ja/zh/fr/es use their own country's law (세운 2026-10-19); ko and en use South Korea's.
+const COUNTRY_BY_LOCALE: Partial<Record<ActiveLocale, AcquisitionCountry>> = { ja: 'jp', zh: 'cn', fr: 'fr', es: 'es' };
+const country = COUNTRY_BY_LOCALE[locale];
+
+const meta: Record<ActiveLocale, { title: string; description: string }> = {
+  ko: {
+      "title": "주택 취득세 계산기 2026 — 1~3% 표준세율, 다주택 8·12% 중과",
+      "description": "취득가액·주택 수·조정대상지역·면적으로 2026년 주택 취득세와 지방교육세·농어촌특별세를 계산해요. 6~9억 구간 세율도 법 공식대로 계산해요."
+  },
+  en: {
+      "title": "Korean Home Acquisition Tax Calculator 2026 — 1–3%, 8% and 12% surcharges",
+      "description": "Estimate Korean acquisition tax, local education tax and rural special tax on a home from the price, number of homes, regulated area and floor area."
+  },
+  ja: {
+    title: "不動産取得税・登録免許税 計算機（日本）",
+    description: "家を買うときの不動産取得税（土地・住宅3%、宅地1/2、新築1,200万円控除）と登録免許税（土地1.5%、住宅0.3%）を固定資産税評価額から計算します。"
+  },
+  zh: {
+    title: "契税计算器（首套、二套住房）",
+    description: "按《契税法》和2024年第16号公告计算购房契税：家庭唯一住房140㎡以下1%、以上1.5%，第二套1%或2%，第三套按本省3%–5%税率。"
+  },
+  fr: {
+    title: "Calculateur de droits de mutation (frais de notaire)",
+    description: "Calculez les droits de mutation d'un achat immobilier en France : ancien jusqu'à 6,32 % (taux départemental 5 %, 4,5 % pour les primo-accédants), neuf 0,715 %."
+  },
+  es: {
+    title: "Calculadora de ITP e impuestos de compra de vivienda",
+    description: "Calcula el ITP de una vivienda usada según tu comunidad (Madrid 6 %, Cataluña 10 %, Andalucía 7 %, C. Valenciana 9 %) o el IVA del 10 % + AJD de una obra nueva."
+  },
+};
+const content: Record<ActiveLocale, UtilityContent> = {
+  ko: {
+      "introTitle": "집을 살 때 내는 세금은 세 가지예요",
+      "intro": "주택을 사면 잔금일(또는 등기일 중 빠른 날)부터 60일 안에 취득세를 내요. 1주택이면 6억 원 이하 1%, 9억 원 초과 3%이고, 그 사이는 (취득가액 × 2/3억 원 − 3)%로 0.01%p씩 올라가요. 조정대상지역에서 두 번째 집을 사거나 세 번째 이상 집을 사면 8% 또는 12%로 무거워져요. 여기에 지방교육세(표준세율이면 취득세의 10%, 중과면 0.4%)와 전용 85㎡를 넘는 집의 농어촌특별세가 붙어요.",
+      "formulaTitle": "2026년 계산 기준",
+      "formulas": [
+          {
+              "title": "1주택 표준세율",
+              "body": "6억 원 이하 1%, 6억~9억 원은 (취득가액 × 2/3억 원 − 3) × 1/100을 소수점 이하 다섯째 자리에서 반올림, 9억 원 초과 3%(지방세법 제11조 제1항 제8호). 7억 원이면 1.67%예요."
+          },
+          {
+              "title": "다주택 중과",
+              "body": "조정대상지역 2주택 8%(일시적 2주택 제외), 3주택은 조정 12%·비조정 8%, 4주택 이상 12%(제13조의2). 중과 때 지방교육세 0.4%, 85㎡ 초과 농특세 0.6%(8%)·1.0%(12%)."
+          },
+          {
+              "title": "부가세(附加稅)",
+              "body": "표준세율이면 지방교육세는 취득세의 10%, 85㎡ 초과 농어촌특별세는 0.2%예요. 85㎡ 이하 주택은 농특세가 없어요."
+          }
+      ],
+      "howToTitle": "사용 방법",
+      "steps": [
+          "취득가액(실거래가)을 만 원 단위로 넣어요.",
+          "이 집을 포함한 세대 주택 수를 고르고, 2~3주택이면 조정대상지역 여부를 골라요.",
+          "전용면적이 85㎡를 넘는지 고르면 세목별 금액이 나와요."
+      ],
+      "faqTitle": "자주 묻는 질문",
+      "faqs": [
+          {
+              "question": "일시적 2주택은 어떻게 되나요?",
+              "answer": "종전 집을 정해진 기간 안에 팔 예정이면 새 집은 1주택 세율(1~3%)로 내요. 기간 안에 팔지 못하면 중과세율과의 차액을 추징당해요."
+          },
+          {
+              "question": "생애최초 주택이면 감면되나요?",
+              "answer": "본인과 배우자가 집을 가진 적이 없고 12억 원 이하 주택이면 취득세를 최대 200만 원(소형주택·인구감소지역 300만 원) 깎아 줘요. 생애최초 취득세 감면 계산기에서 따로 계산할 수 있어요."
+          },
+          {
+              "question": "오피스텔이나 상가도 같은 세율인가요?",
+              "answer": "아니요. 주택이 아닌 부동산을 사면 취득세 4%에 지방교육세 0.4%, 농특세 0.2%로 4.6%예요. 이 계산기는 주택만 계산해요."
+          },
+          {
+              "question": "주택 수에 분양권도 들어가나요?",
+              "answer": "2020년 8월 12일 이후 취득한 분양권·입주권과 주거용 오피스텔은 주택 수에 들어가요. 공시가격 1억 원 이하 주택 등은 빠질 수 있어요."
+          }
+      ],
+      "disclaimer": "2026-10-27 기준 지방세법·농어촌특별세법으로 만든 추정 계산기예요. 증여·상속·법인 취득, 공시가격 1억 원 이하 주택 등 중과 제외 주택, 생애최초·출산 감면은 반영하지 않았어요. 신고 전에 위택스나 관할 시·군·구청에서 확인해 주세요."
+  },
+  en: {
+      "introTitle": "Three taxes are due when you buy a home in Korea",
+      "intro": "Acquisition tax is due within 60 days of the balance payment or registration, whichever comes first. With one home the rate is 1% up to 600 million won and 3% above 900 million won; in between it is (price × 2/300 million − 3)%, rising 0.01 point at a time. Buying a second home in a regulated area, or a third or later home, moves the rate to 8% or 12%. Local education tax and, above 85㎡, rural special tax are added.",
+      "formulaTitle": "2026 rules used",
+      "formulas": [
+          {
+              "title": "Standard one-home rate",
+              "body": "1% to 600M won; 600M–900M won: (price × 2/300M − 3) × 1/100 rounded to four decimals; 3% above 900M won (Local Tax Act art. 11). 700M won gives 1.67%."
+          },
+          {
+              "title": "Multi-home surcharge",
+              "body": "Two homes in a regulated area 8% (temporary two homes excluded); three homes 12% regulated, 8% elsewhere; four or more 12% (art. 13-2). With a surcharge, education tax is 0.4% and rural tax above 85㎡ is 0.6% or 1.0%."
+          },
+          {
+              "title": "Add-on taxes",
+              "body": "At standard rates, local education tax is 10% of the acquisition tax and rural special tax above 85㎡ is 0.2%. Homes of 85㎡ or less pay no rural tax."
+          }
+      ],
+      "howToTitle": "How to use",
+      "steps": [
+          "Enter the purchase price in units of 10,000 won.",
+          "Pick how many homes the household will own including this one, and for two or three homes whether it is in a regulated area.",
+          "Pick the floor area band to see each tax."
+      ],
+      "faqTitle": "FAQ",
+      "faqs": [
+          {
+              "question": "What about temporary two homes?",
+              "answer": "If you will sell the old home within the allowed period, the new one pays the one-home rate. If you miss the deadline, the surcharge difference is collected."
+          },
+          {
+              "question": "Is there first-home relief?",
+              "answer": "If neither you nor your spouse has ever owned a home and the price is 1.2 billion won or less, up to 2 million won (3 million for small homes or depopulation areas) is waived."
+          },
+          {
+              "question": "Do officetels or shops use these rates?",
+              "answer": "No. Non-residential property pays 4% plus 0.4% education and 0.2% rural tax, 4.6% in total. This tool covers homes only."
+          }
+      ],
+      "disclaimer": "Estimate under the Local Tax Act and Rural Special Tax Act as checked on 2026-10-27. Gifts, inheritance, company purchases, homes excluded from the surcharge and first-home relief are not modelled. Not tax advice."
+  },
+  ja: {
+    introTitle: "日本で家を買うときにかかる税金は、不動産取得税と登録免許税です",
+    intro: "不動産取得税は都道府県の税で、取得から数か月後に納税通知書が届きます。登録免許税は国の税で、所有権の登記のときに司法書士を通じて納めます。どちらも売買価格ではなく固定資産税評価額を基準に計算し、住宅には令和9年3月31日までの軽減特例があります。",
+    formulaTitle: "計算基準",
+    formulas: [
+      {
+        title: "不動産取得税",
+        body: "土地：評価額×1/2（宅地）×3% − 住宅用土地の減額（45,000円か、1㎡当たり価格×床面積の2倍（200㎡まで）×3%の多い方）。家屋：（評価額 − 1,200万円）×3%"
+      },
+      {
+        title: "登録免許税",
+        body: "土地の売買：評価額×1.5%（本則2%）。住宅用家屋の移転0.3%（本則2%）、新築の保存0.15%（本則0.4%）"
+      },
+      {
+        title: "住宅の要件",
+        body: "自己居住、床面積50㎡以上（不動産取得税の新築控除は40〜240㎡）、1982年以降の建築または新耐震基準適合"
+      }
+    ],
+    howToTitle: "使い方",
+    steps: [
+      "固定資産税評価額（土地・家屋）と面積を入力します。",
+      "新築か中古か、宅地かどうか、住宅の軽減要件を満たすかを選びます。",
+      "不動産取得税・登録免許税と合計を確認します。"
+    ],
+    faqTitle: "よくある質問",
+    faqs: [
+      {
+        question: "評価額はどこでわかりますか？",
+        answer: "売主が持っている固定資産税の納税通知書（課税明細書）か、市区町村で取る評価証明書に載っています。新築の家屋は評価額がまだないため、法務局の認定価格や都道府県の基準で計算されます。"
+      },
+      {
+        question: "中古住宅の控除額は？",
+        answer: "その住宅が新築された時期の控除額が使われます。1997年4月1日以降に新築された住宅は1,200万円で、それより前は時期に応じて少なくなります。耐震基準に適合していることが条件です。"
+      },
+      {
+        question: "期限が過ぎたらどうなりますか？",
+        answer: "特例が延長されなければ、不動産取得税は4%、宅地の1/2特例なし、登録免許税は本則税率に戻ります。毎年の税制改正で延長されることが多いので、取得時点の規定を確認してください。"
+      }
+    ],
+    disclaimer: "このツールは一般的な計算用です。税額は都道府県税事務所（不動産取得税）と法務局・司法書士（登録免許税）でご確認ください。"
+  },
+  zh: {
+    introTitle: "个人购房契税按家庭住房套数和面积确定税率",
+    intro: "《契税法》规定契税税率为3%至5%，由各省、自治区、直辖市确定。自2024年12月1日起，个人购买家庭唯一住房或第二套住房可享受减按1%至2%征收的优惠（财政部 税务总局 住房城乡建设部公告2024年第16号）。家庭成员包括购房人、配偶和未成年子女。",
+    formulaTitle: "计算规则",
+    formulas: [
+      {
+        title: "家庭唯一住房",
+        body: "140㎡及以下：1%；140㎡以上：1.5%"
+      },
+      {
+        title: "家庭第二套住房",
+        body: "140㎡及以下：1%；140㎡以上：2%（北京、上海、广州、深圳也适用）"
+      },
+      {
+        title: "第三套及以上",
+        body: "按本省规定的契税税率（3%–5%）× 成交价（不含增值税）"
+      }
+    ],
+    howToTitle: "使用方法",
+    steps: [
+      "输入不含增值税的成交价和住房面积。",
+      "选择家庭住房套数，必要时修改本省税率。",
+      "查看适用税率和契税金额。"
+    ],
+    faqTitle: "常见问题",
+    faqs: [
+      {
+        question: "这个优惠有期限吗？",
+        answer: "2024年第16号公告自2024年12月1日起执行，公告本身没有规定截止日期。如有新政策，以税务机关公布为准。"
+      },
+      {
+        question: "套数怎么认定？",
+        answer: "以家庭（购房人、配偶、未成年子女）名下住房为准，一般由住房城乡建设部门出具家庭住房情况查询结果。"
+      },
+      {
+        question: "非住宅（商铺、车位）怎么算？",
+        answer: "不适用住房优惠，按本省规定的契税税率计算，请选择“第三套及以上”并填写当地税率。"
+      }
+    ],
+    disclaimer: "本工具用于一般估算。具体税率和套数认定请以当地税务机关和不动产登记中心为准。"
+  },
+  fr: {
+    introTitle: "Les droits de mutation sont l'essentiel des « frais de notaire »",
+    intro: "Lors d'un achat immobilier en France, le notaire collecte les droits de mutation à titre onéreux pour le département, la commune et l'État. Dans l'ancien, la loi de finances 2025 permet aux départements de porter leur taux de 4,5 % à 5 % jusqu'en 2028 ; 84 départements l'ont fait. Les primo-accédants qui achètent leur résidence principale ne paient pas cette hausse. Dans le neuf, on paie surtout la TVA, incluse dans le prix, et une taxe de publicité foncière réduite.",
+    formulaTitle: "Règles de calcul",
+    formulas: [
+      {
+        title: "Ancien",
+        body: "Prix × (taux départemental + 1,2 %) + 2,37 % de la taxe départementale, soit 6,32 % à 5 % ou 5,81 % à 4,5 %"
+      },
+      {
+        title: "Primo-accédant",
+        body: "Pas de hausse de 0,5 point : le taux départemental reste à 4,5 % pour la résidence principale"
+      },
+      {
+        title: "Neuf",
+        body: "Taxe de publicité foncière : 0,715 % du prix (bien de moins de 5 ans vendu avec TVA)"
+      }
+    ],
+    howToTitle: "Comment l'utiliser",
+    steps: [
+      "Saisissez le prix de vente, hors mobilier.",
+      "Choisissez ancien ou neuf, le taux de votre département et si vous êtes primo-accédant.",
+      "Lisez le détail des droits et leur pourcentage du prix."
+    ],
+    faqTitle: "Questions fréquentes",
+    faqs: [
+      {
+        question: "Mon département applique-t-il 5 % ?",
+        answer: "84 départements sur 101 l'appliquent depuis avril à juin 2025. Restent à 4,5 % notamment l'Ain, les Hautes-Alpes, les Alpes-Maritimes, l'Ardèche, la Charente, la Drôme, l'Eure, la Lozère, l'Oise, les Hautes-Pyrénées, la Saône-et-Loire, le Tarn-et-Garonne et plusieurs départements d'outre-mer ; l'Indre et Mayotte appliquent 3,8 %."
+      },
+      {
+        question: "Qui est primo-accédant ?",
+        answer: "Une personne qui n'a pas été propriétaire de sa résidence principale au cours des deux années précédant l'achat, et qui achète pour en faire sa résidence principale."
+      },
+      {
+        question: "Pourquoi le notaire demande-t-il plus ?",
+        answer: "Les frais de notaire comprennent aussi ses émoluments réglementés, la contribution de sécurité immobilière et des débours. Ce calculateur ne compte que les droits de mutation."
+      }
+    ],
+    disclaimer: "Cet outil sert au calcul général. Votre notaire vous donnera le montant exact ; le simulateur de service-public.fr peut aussi vous aider."
+  },
+  es: {
+    introTitle: "Comprar vivienda en España: ITP si es usada, IVA y AJD si es nueva",
+    intro: "La compra de una vivienda usada paga el Impuesto sobre Transmisiones Patrimoniales (ITP), cuyo tipo fija cada comunidad autónoma. La compra de una vivienda nueva al promotor paga IVA del 10 % y, por la escritura, Actos Jurídicos Documentados (AJD) al tipo de la comunidad. La base es el precio o el valor de referencia del Catastro si es mayor.",
+    formulaTitle: "Reglas de cálculo",
+    formulas: [
+      {
+        title: "ITP (usada)",
+        body: "Madrid 6 %; Andalucía 7 %; Cataluña 10 % hasta 600.000 € y 11–13 % por encima; C. Valenciana 9 % hasta 1.000.000 € y 11 % por encima"
+      },
+      {
+        title: "Obra nueva",
+        body: "IVA 10 % + AJD: Madrid 0,75 %, Cataluña 1,5 %, Andalucía 1,2 %, C. Valenciana 1,4 %"
+      },
+      {
+        title: "Otra comunidad",
+        body: "Introduce el tipo general de ITP y de AJD de tu comunidad"
+      }
+    ],
+    howToTitle: "Cómo usarla",
+    steps: [
+      "Introduce el precio o el valor de referencia si es mayor.",
+      "Elige vivienda usada u obra nueva y tu comunidad autónoma.",
+      "Revisa ITP, o IVA y AJD, y el total."
+    ],
+    faqTitle: "Preguntas frecuentes",
+    faqs: [
+      {
+        question: "¿Hay tipos reducidos?",
+        answer: "Sí. Muchas comunidades aplican tipos reducidos a jóvenes, familias numerosas, personas con discapacidad o VPO, con límites de precio y renta. Esta calculadora usa el tipo general."
+      },
+      {
+        question: "¿Cambió el ITP en la Comunidad Valenciana?",
+        answer: "Desde el 1 de junio de 2026 el tipo general baja del 10 % al 9 % hasta 1.000.000 € (11 % por encima), y el AJD general del 1,5 % al 1,4 % (Ley 5/2025)."
+      },
+      {
+        question: "¿Y el País Vasco o Navarra?",
+        answer: "Tienen régimen foral propio (por ejemplo, el 4 % general en el País Vasco). Elige «Otra» e introduce el tipo de tu territorio."
+      }
+    ],
+    disclaimer: "Esta herramienta es para cálculo general. Confirma los tipos y bonificaciones en la agencia tributaria de tu comunidad autónoma o con tu notario o gestor."
+  },
+};
+const m = meta[locale];
+const c = content[locale];
+const url = `https://tools.oiyo.net/${locale}/acquisition-tax-calculator/`;
+const schema = utilityJsonLd({ name: m.title, description: m.description, url, locale, steps: c.steps, faqs: c.faqs });
+---
+<Layout title={m.title} description={m.description} locale={locale} availableLocales={[...locales]} canonicalURL={url}>
+  <div class="mx-auto max-w-3xl px-4 py-6">
+    <h1 class="text-2xl font-bold tracking-tight">{m.title}</h1>
+    <p class="mb-5 mt-2 text-sm text-muted-foreground">{m.description}</p>
+    {country ? <AcquisitionTaxCountryCalculator client:load country={country} /> : <KrAcquisitionTaxCalculator client:load locale={locale} />}
+    {!country && <p class="mt-4 text-xs text-muted-foreground">근거: 지방세법 제11조·제13조의2·제151조, 농어촌특별세법 제5조. 기준일 {REAL_ESTATE_TAX_AS_OF}.</p>}
+    <UtilityArticle c={c} />
+    <RelatedUtilities locale={locale} current="acquisition-tax-calculator" group="money" />
+  </div>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+</Layout>

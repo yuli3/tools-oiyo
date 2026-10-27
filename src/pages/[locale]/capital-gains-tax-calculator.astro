@@ -1,0 +1,313 @@
+---
+// Replaces blog.oiyo.net/{locale}/capital-gains-tax-calculator/ (2026-10-27, W9b). Country pages keep Blog's
+// checked country rules; the Korean calculator is rewritten on src/lib/kr-real-estate-tax.ts (Blog used pre-2023
+// brackets, no 12억 exemption and no 표2 deduction).
+import Layout from '../../components/Layout.astro';
+import UtilityArticle, { type UtilityContent } from '../../components/UtilityArticle.astro';
+import RelatedUtilities from '../../components/RelatedUtilities.astro';
+import KrCapitalGainsTaxCalculator from '../../components/tools/KrCapitalGainsTaxCalculator';
+import CapitalGainsTaxCountryCalculator from '../../components/tools/CapitalGainsTaxCountryCalculator';
+import type { CapitalGainsCountry } from '../../lib/capital-gains-tax-countries';
+import { REAL_ESTATE_TAX_AS_OF } from '../../lib/kr-real-estate-tax';
+import { locales } from '../../lib/i18n';
+import { utilityJsonLd } from '../../lib/utility-jsonld';
+
+type ActiveLocale = (typeof locales)[number];
+export function getStaticPaths() {
+  return locales.map((locale) => ({ params: { locale }, props: { locale } }));
+}
+const { locale } = Astro.props as { locale: ActiveLocale };
+// ja/zh/fr/es use their own country's law (세운 2026-10-19); ko and en use South Korea's.
+const COUNTRY_BY_LOCALE: Partial<Record<ActiveLocale, CapitalGainsCountry>> = { ja: 'jp', zh: 'cn', fr: 'fr', es: 'es' };
+const country = COUNTRY_BY_LOCALE[locale];
+
+const meta: Record<ActiveLocale, { title: string; description: string }> = {
+  ko: {
+      "title": "양도소득세 계산기 2026 — 1주택 비과세·장기보유특별공제·다주택 중과",
+      "description": "주택·토지를 팔 때 양도소득세를 계산해요. 1세대 1주택 12억 원 비과세, 장기보유특별공제 최대 80%, 단기 세율, 2026년 5월 10일부터 다시 적용된 조정대상지역 다주택 중과를 반영해요."
+  },
+  en: {
+      "title": "Korean Capital Gains Tax Calculator 2026 — homes and land",
+      "description": "Estimate Korean capital gains tax on selling a home or land: the 1.2 billion won one-home exemption, long-term holding deduction up to 80%, short-term rates and the regulated-area multi-home surcharge back from 10 May 2026."
+  },
+  ja: {
+    title: "不動産の譲渡所得税 計算機（日本）",
+    description: "家や土地を売ったときの譲渡所得税と住民税を計算します。長期20.315%・短期39.63%、居住用の3,000万円特別控除、10年超所有の軽減税率14.21%に対応。",
+  },
+  zh: {
+    title: "个人转让住房个人所得税计算器",
+    description: "按财产转让所得20%或核定征收1%–3%计算个人卖房的个人所得税，并判断“满五唯一”免征。",
+  },
+  fr: {
+    title: "Calculateur d'impôt sur la plus-value immobilière",
+    description: "Calculez l'impôt sur la plus-value d'une vente immobilière en France : 19 % d'impôt sur le revenu et 17,2 % de prélèvements sociaux après abattements pour durée de détention, et surtaxe au-delà de 50 000 €.",
+  },
+  es: {
+    title: "Calculadora del IRPF por la venta de una vivienda",
+    description: "Calcula el IRPF de la ganancia patrimonial al vender una vivienda en España con la escala del ahorro 2026 (19 % a 30 %) y la exención por reinversión en vivienda habitual o por ser mayor de 65 años.",
+  },
+};
+const content: Record<ActiveLocale, UtilityContent> = {
+  ko: {
+      "introTitle": "집을 팔면 차익에서 공제를 빼고 세율을 매겨요",
+      "intro": "양도소득세는 판 값에서 산 값과 필요경비를 뺀 양도차익에 매겨요. 1세대 1주택이 2년 이상 보유(조정대상지역에서 샀다면 2년 거주)하고 12억 원 이하에 팔면 내지 않아요. 12억 원을 넘으면 초과 비율만큼만 과세하고, 2년 이상 살았다면 보유·거주 기간마다 4%씩 최대 80%를 장기보유특별공제로 빼요. 다주택자가 조정대상지역 집을 팔면 2026년 5월 10일 양도분부터 다시 기본세율에 20%p(2주택)·30%p(3주택 이상)가 더해지고 장기보유특별공제를 받지 못해요.",
+      "formulaTitle": "2026년 계산 기준",
+      "formulas": [
+          {
+              "title": "세율",
+              "body": "기본세율 6~45%(소득세법 제55조). 주택은 1년 미만 70%, 2년 미만 60%, 토지·상가는 50%·40%. 중과와 단기 세율이 겹치면 더 큰 세액을 내요(제104조 제7항)."
+          },
+          {
+              "title": "장기보유특별공제",
+              "body": "3년 이상 보유하면 6%부터 해마다 2%p, 15년 30%(표1). 1세대 1주택이 2년 이상 살았다면 보유·거주 각 연 4%, 합계 최대 80%(표2)."
+          },
+          {
+              "title": "공제와 지방소득세",
+              "body": "양도소득 기본공제는 1년에 250만 원이고, 양도소득세의 10%를 지방소득세로 더 내요. 양도한 달 말일부터 2개월 안에 예정신고해요."
+          }
+      ],
+      "howToTitle": "사용 방법",
+      "steps": [
+          "주택인지 토지·상가인지 고르고 양도가액·취득가액·필요경비를 만 원 단위로 넣어요.",
+          "보유 기간과 거주 기간을 넣어요(0.5년 단위).",
+          "주택 수를 고르고, 1주택이면 비과세 요건을, 다주택이면 조정대상지역 여부를 골라요."
+      ],
+      "faqTitle": "자주 묻는 질문",
+      "faqs": [
+          {
+              "question": "일시적 2주택도 비과세되나요?",
+              "answer": "새 집을 산 날부터 3년 안에 종전 집을 팔면 종전 집은 1세대 1주택처럼 비과세돼요. 이 경우 '1주택'을 골라 계산하면 돼요. 정부는 2026년 8월 4일 이후 조정대상지역 간에 새로 산 경우 이 기간을 2년으로 줄이는 시행령 개정안을 냈어요."
+          },
+          {
+              "question": "2027년부터 중과가 완화된다던데요?",
+              "answer": "2026년 8월 세제개편안에 2027~2028년 한시로 중과를 낮추는 내용이 있지만 국회 통과 전이에요. 이 계산기는 지금 적용되는 법으로 계산해요."
+          },
+          {
+              "question": "국내 주식을 팔면 세금이 있나요?",
+              "answer": "대주주가 아닌 개인이 상장주식을 장내에서 팔면 양도소득세가 없어요. 해외 주식은 연 250만 원을 넘는 차익에 22%가 붙어요. 해외주식 양도세 계산기를 써 보세요."
+          },
+          {
+              "question": "비사업용 토지는요?",
+              "answer": "비사업용 토지는 기본세율에 10%p가 더해지는데 이 계산기는 반영하지 않았어요."
+          }
+      ],
+      "disclaimer": "2026-10-27 기준 소득세법으로 만든 추정 계산기예요. 비사업용 토지·미등기, 상생임대·임대주택 특례, 중과 배제 주택, 감면, 양도차손 통산은 반영하지 않았어요. 신고 전에 홈택스나 세무 전문가와 확인해 주세요."
+  },
+  en: {
+      "introTitle": "Korean capital gains tax: gain, deductions, then the rate",
+      "intro": "Capital gains tax is charged on the sale price minus the purchase price and deductible costs. A one-home household that held the home two years (and lived there two years if bought in a regulated area) pays nothing on a sale of 1.2 billion won or less. Above that only the share over 1.2 billion is taxed, and two or more years of residence unlock up to 80% long-term deduction. Selling a regulated-area home while owning several brings back a 20 or 30 point surcharge, with no long-term deduction, for sales from 10 May 2026.",
+      "formulaTitle": "2026 rules used",
+      "formulas": [
+          {
+              "title": "Rates",
+              "body": "Progressive 6–45%. Homes held under 1 year 70%, under 2 years 60%; land and shops 50% and 40%. When a surcharge and a short-term rate overlap, the larger tax applies."
+          },
+          {
+              "title": "Long-term deduction",
+              "body": "From 3 years held: 6% plus 2 points a year, 30% at 15 years. One-home households that lived there 2+ years: 4% a year for holding and 4% for living, up to 80%."
+          },
+          {
+              "title": "Basic deduction and local tax",
+              "body": "2.5 million won a year is deducted, and 10% local income tax is added. File within two months of the end of the month of sale."
+          }
+      ],
+      "howToTitle": "How to use",
+      "steps": [
+          "Pick home or land/shop and enter sale price, purchase price and costs in units of 10,000 won.",
+          "Enter years held and years lived in.",
+          "Pick the number of homes and, for one home, whether the exemption conditions are met; for more, whether it is in a regulated area."
+      ],
+      "faqTitle": "FAQ",
+      "faqs": [
+          {
+              "question": "Does the 2027 surcharge cut apply?",
+              "answer": "The August 2026 tax proposal would ease the surcharge in 2027–2028, but it has not passed. This tool uses the law in force."
+          },
+          {
+              "question": "What about listed Korean shares?",
+              "answer": "Minority shareholders pay no capital gains tax on listed shares sold on the exchange. Foreign shares pay 22% on gains above 2.5 million won a year."
+          }
+      ],
+      "disclaimer": "Estimate under the Income Tax Act as checked on 2026-10-27. Non-business land, unregistered sales, rental housing reliefs, surcharge exclusions, reliefs and loss offsetting are not modelled. Not tax advice."
+  },
+  ja: {
+    introTitle: "日本で家を売ったときの税金は、譲渡所得にかかる所得税と住民税です",
+    intro: "不動産の譲渡所得は給与などと分けて計算する分離課税で、売った翌年の2月16日から3月15日までに確定申告します。税率は売った年の1月1日時点の所有期間で決まり、5年を超えると長期（20.315%）、5年以下は短期（39.63%）です。自分が住んでいた家なら3,000万円の特別控除があり、10年を超えて所有していれば6,000万円以下の部分に軽減税率14.21%が使えます。",
+    formulaTitle: "計算基準",
+    formulas: [
+      {
+        title: "譲渡所得",
+        body: "譲渡価額 −（取得費＋譲渡費用）− 特別控除。取得費は購入代金と購入時の費用で、建物は減価償却後の額。分からなければ譲渡価額の5%"
+      },
+      {
+        title: "税率",
+        body: "長期：所得税15.315%＋住民税5%。短期：所得税30.63%＋住民税9%。10年超の居住用：6,000万円以下は所得税10.21%＋住民税4%"
+      },
+      {
+        title: "居住用の特例",
+        body: "住まなくなってから3年目の年末までに売ること、親子・夫婦間の売買でないこと、前年・前々年に同じ特例を使っていないことなどが条件"
+      }
+    ],
+    howToTitle: "使い方",
+    steps: [
+      "売却価格、取得費、譲渡費用を入力します。",
+      "取得した年と売った年を入力し、長期・短期を判定します。",
+      "居住用財産の特例を使うかを選び、所得税・住民税の合計を確認します。"
+    ],
+    faqTitle: "よくある質問",
+    faqs: [
+      {
+        question: "所有期間はどう数えますか？",
+        answer: "取得した日から、売った年の1月1日までで数えます。たとえば2020年に買った家を2026年に売ると、2026年1月1日時点で5年を超えるので長期です。2021年に買った家は5年以下なので短期になります。"
+      },
+      {
+        question: "3,000万円控除を使うと税金はゼロですか？",
+        answer: "譲渡所得が3,000万円以下ならゼロになりますが、確定申告は必要です。買い換えた新居で住宅ローン控除を受ける場合は、入居した年の前後（前2年・後3年）に3,000万円控除を使っていると住宅ローン控除が受けられないので、どちらが有利か比べて選びます。"
+      },
+      {
+        question: "損が出たときは？",
+        answer: "居住用財産を買い換えたり、住宅ローンが残ったまま売ったりした場合は、一定の要件で譲渡損失を給与所得などと損益通算し、翌年以降3年間繰り越せる特例があります。この計算機は損失の計算を行いません。"
+      }
+    ],
+    disclaimer: "このツールは一般的な計算用です。取得費・特例の要件は国税庁のタックスアンサーや税務署、税理士にご確認ください。"
+  },
+  zh: {
+    introTitle: "个人卖房的个人所得税按财产转让所得20%计算",
+    intro: "个人转让住房取得的所得属于财产转让所得，以转让收入减除房屋原值和合理费用后的余额为应纳税所得额，适用20%的比例税率。纳税人不能提供房屋原值凭证的，税务机关按转让收入的1%–3%核定征收，具体比例由各省确定。个人转让自用5年以上、并且是家庭唯一生活用房取得的所得，免征个人所得税。",
+    formulaTitle: "计算规则",
+    formulas: [
+      {
+        title: "据实征收",
+        body: "（转让收入 − 房屋原值 − 合理费用）× 20%。原值含购房价款和购房时缴纳的契税等；合理费用含装修费（有限额）、住房贷款利息、手续费、公证费"
+      },
+      {
+        title: "核定征收",
+        body: "原值无法核实时，按转让收入 × 1%–3% 计算，由各省规定具体比例（国税发〔2006〕108号）"
+      },
+      {
+        title: "满五唯一",
+        body: "自用满5年且是家庭唯一生活用房，免征个人所得税（财税字〔1999〕278号）"
+      }
+    ],
+    howToTitle: "使用方法",
+    steps: [
+      "输入转让收入、房屋原值和合理费用。",
+      "选择据实征收或核定征收，核定征收时填写本地比例。",
+      "确认是否满五唯一，查看应缴个人所得税。"
+    ],
+    faqTitle: "常见问题",
+    faqs: [
+      {
+        question: "“满五”从什么时候算？",
+        answer: "一般以房产证（不动产权证）登记日期或契税完税凭证日期中较早的一个起算，到出售时满5年。“唯一”指家庭（本人、配偶、未成年子女）在该地只有这一套生活用房。"
+      },
+      {
+        question: "卖房还要交哪些税？",
+        answer: "个人出售住房满2年免征增值税，不满2年按规定缴纳增值税及附加。个人转让住房暂免土地增值税，印花税也暂免。买方另需缴纳契税。本计算器只计算个人所得税。"
+      },
+      {
+        question: "装修费可以全额扣除吗？",
+        answer: "不能。装修费用需有合法凭证，并有限额：已购公有住房、经济适用房最高为原值的15%，商品房及其他住房最高为原值的10%。"
+      }
+    ],
+    disclaimer: "本工具仅供一般估算。核定征收率和扣除凭证要求请向当地税务机关或不动产登记交易中心确认。"
+  },
+  fr: {
+    introTitle: "En France, la plus-value immobilière est taxée à 36,2 % avant abattements",
+    intro: "La plus-value réalisée lors de la vente d'un bien immobilier est soumise à l'impôt sur le revenu au taux de 19 % et aux prélèvements sociaux de 17,2 %. Des abattements pour durée de détention réduisent la base à partir de la 6e année : exonération d'impôt sur le revenu après 22 ans et de prélèvements sociaux après 30 ans. La vente de la résidence principale est exonérée. Le notaire calcule et paie l'impôt au moment de la vente.",
+    formulaTitle: "Règles de calcul",
+    formulas: [
+      {
+        title: "Plus-value brute",
+        body: "Prix de cession − (prix d'acquisition + frais d'acquisition réels ou forfait 7,5 % + travaux réels ou forfait 15 % après 5 ans)"
+      },
+      {
+        title: "Abattements",
+        body: "Impôt sur le revenu : 6 % par an de la 6e à la 21e année, 4 % la 22e. Prélèvements sociaux : 1,65 % par an de la 6e à la 21e, 1,60 % la 22e, 9 % par an de la 23e à la 30e"
+      },
+      {
+        title: "Surtaxe",
+        body: "Plus-value nette imposable à l'IR supérieure à 50 000 € : 2 % à 6 % selon le montant, avec un lissage entre les tranches (hors terrains à bâtir)"
+      }
+    ],
+    howToTitle: "Mode d'emploi",
+    steps: [
+      "Saisissez le prix de vente, le prix d'achat et la durée de détention.",
+      "Choisissez les forfaits ou les montants réels pour les frais et les travaux.",
+      "Indiquez s'il s'agit de votre résidence principale et lisez l'impôt total."
+    ],
+    faqTitle: "Questions fréquentes",
+    faqs: [
+      {
+        question: "Comment compter les années de détention ?",
+        answer: "On compte les années pleines entre la date d'acquisition (acte notarié) et la date de cession. Un bien acheté le 1er mars 2014 et vendu le 15 février 2026 est détenu depuis 11 années pleines."
+      },
+      {
+        question: "Quand la résidence principale est-elle exonérée ?",
+        answer: "Le bien doit être votre résidence principale au jour de la vente. Si vous l'avez quitté, la vente doit intervenir dans un délai normal (en général un an) et le logement ne doit pas avoir été loué ou occupé entre-temps."
+      },
+      {
+        question: "Le forfait travaux de 15 % est-il automatique ?",
+        answer: "Il s'applique sans justificatif si vous détenez le bien depuis plus de 5 ans. Sinon, seuls les travaux réels justifiés par des factures d'entreprises (construction, agrandissement, amélioration) sont retenus."
+      }
+    ],
+    disclaimer: "Cet outil sert au calcul général. Le calcul définitif est établi par le notaire sur la déclaration 2048-IMM ; vérifiez les règles sur impots.gouv.fr ou auprès de votre notaire."
+  },
+  es: {
+    introTitle: "En España, la ganancia por vender una vivienda tributa en la base del ahorro del IRPF",
+    intro: "La diferencia entre el valor de transmisión y el valor de adquisición es una ganancia patrimonial que se declara en la renta del año siguiente y tributa con la escala del ahorro: 19 % hasta 6.000 €, 21 % hasta 50.000 €, 23 % hasta 200.000 €, 27 % hasta 300.000 € y 30 % por encima. Si vendes tu vivienda habitual y reinviertes el importe en otra en dos años, la ganancia queda exenta en proporción a lo reinvertido; los mayores de 65 años están exentos. La plusvalía municipal es un impuesto local distinto.",
+    formulaTitle: "Reglas de cálculo",
+    formulas: [
+      {
+        title: "Ganancia patrimonial",
+        body: "(Precio de venta − gastos de venta) − (precio de compra + gastos y tributos de compra + mejoras). La plusvalía municipal pagada cuenta como gasto de venta"
+      },
+      {
+        title: "Escala del ahorro 2026",
+        body: "19 % hasta 6.000 €, 21 % hasta 50.000 €, 23 % hasta 200.000 €, 27 % hasta 300.000 € y 30 % desde 300.000 €"
+      },
+      {
+        title: "Exenciones",
+        body: "Reinversión en vivienda habitual en dos años (proporcional al importe reinvertido) y venta de la vivienda habitual por mayores de 65 años"
+      }
+    ],
+    howToTitle: "Cómo se usa",
+    steps: [
+      "Introduce el precio y los gastos de venta y de compra.",
+      "Indica si es tu vivienda habitual, tu edad y el importe reinvertido.",
+      "Consulta la ganancia exenta y el IRPF a pagar en la base del ahorro."
+    ],
+    faqTitle: "Preguntas frecuentes",
+    faqs: [
+      {
+        question: "¿Qué es la plusvalía municipal?",
+        answer: "Es el Impuesto sobre el Incremento de Valor de los Terrenos de Naturaleza Urbana (IIVTNU), que cobra el ayuntamiento al vendedor. Se calcula por el método objetivo o el real, a elegir el más bajo, y no existe si no hubo ganancia. No está incluido en este cálculo."
+      },
+      {
+        question: "¿Cuándo es vivienda habitual?",
+        answer: "Cuando has vivido en ella de forma continuada al menos tres años, o se vende antes por circunstancias como separación, traslado laboral o un primer empleo. Debe serlo al venderla o haberlo sido hasta cualquier día de los dos años anteriores."
+      },
+      {
+        question: "¿Se aplican coeficientes por antigüedad?",
+        answer: "Los coeficientes de actualización desaparecieron en 2015. Solo quedan los coeficientes de abatimiento para inmuebles comprados antes de 1995, con un límite de 400.000 € de valor de transmisión, que este cálculo no aplica."
+      }
+    ],
+    disclaimer: "Esta herramienta es para cálculo general. Confirma el resultado con el programa Renta WEB de la Agencia Tributaria o con tu asesor fiscal."
+  },
+};
+const m = meta[locale];
+const c = content[locale];
+const url = `https://tools.oiyo.net/${locale}/capital-gains-tax-calculator/`;
+const schema = utilityJsonLd({ name: m.title, description: m.description, url, locale, steps: c.steps, faqs: c.faqs });
+---
+<Layout title={m.title} description={m.description} locale={locale} availableLocales={[...locales]} canonicalURL={url}>
+  <div class="mx-auto max-w-3xl px-4 py-6">
+    <h1 class="text-2xl font-bold tracking-tight">{m.title}</h1>
+    <p class="mb-5 mt-2 text-sm text-muted-foreground">{m.description}</p>
+    {country ? <CapitalGainsTaxCountryCalculator client:load country={country} /> : <KrCapitalGainsTaxCalculator client:load locale={locale} />}
+    {!country && <p class="mt-4 text-xs text-muted-foreground">근거: 소득세법 제55조·제89조·제95조·제103조·제104조, 시행령 제154조·제160조. 기준일 {REAL_ESTATE_TAX_AS_OF}.</p>}
+    <UtilityArticle c={c} />
+    <RelatedUtilities locale={locale} current="capital-gains-tax-calculator" group="money" />
+  </div>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+</Layout>

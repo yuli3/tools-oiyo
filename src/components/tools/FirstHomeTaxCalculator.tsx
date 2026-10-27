@@ -1,6 +1,7 @@
 import { useState } from "react";
 import ChoiceChips from "./payroll/ChoiceChips";
 import NumberField from "./payroll/NumberField";
+import { standardHomeRate } from "../../lib/kr-real-estate-tax";
 
 const won = (n: number) => `${Math.round(n).toLocaleString("ko-KR")}원`;
 
@@ -11,16 +12,8 @@ export default function FirstHomeTaxCalculator() {
 
   const price = priceManwon * 10000;
 
-  // Base rate calculation (1-homeowner standard)
-  let baseRate = 0.01;
-  if (price <= 600000000) {
-    baseRate = 0.01;
-  } else if (price <= 900000000) {
-    // 지방세법 제11조 제1항 제8호: 세율(%)은 소수점 다섯째 자리에서 반올림해요.
-    baseRate = Math.round((price * (2 / 300000000) - 3) * 10000) / 10000 / 100;
-  } else {
-    baseRate = 0.03;
-  }
+  // 1주택 표준세율(지방세법 제11조 제1항 제8호), 6~9억은 0.0001 단위로 반올림
+  const baseRate = standardHomeRate(price);
 
   const rawAcquisitionTax = price * baseRate;
 

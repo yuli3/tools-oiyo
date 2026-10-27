@@ -1,0 +1,313 @@
+---
+// Replaces blog.oiyo.net/{locale}/property-tax-calculator/ (2026-10-27, W9b). Country pages keep Blog's
+// checked country rules; the Korean calculator is rewritten on src/lib/kr-real-estate-tax.ts (Blog ignored
+// the one-home ratio and special rate).
+import Layout from '../../components/Layout.astro';
+import UtilityArticle, { type UtilityContent } from '../../components/UtilityArticle.astro';
+import RelatedUtilities from '../../components/RelatedUtilities.astro';
+import KrPropertyTaxCalculator from '../../components/tools/KrPropertyTaxCalculator';
+import PropertyTaxCountryCalculator from '../../components/tools/PropertyTaxCountryCalculator';
+import type { PropertyCountry } from '../../lib/property-tax-countries';
+import { REAL_ESTATE_TAX_AS_OF } from '../../lib/kr-real-estate-tax';
+import { locales } from '../../lib/i18n';
+import { utilityJsonLd } from '../../lib/utility-jsonld';
+
+type ActiveLocale = (typeof locales)[number];
+export function getStaticPaths() {
+  return locales.map((locale) => ({ params: { locale }, props: { locale } }));
+}
+const { locale } = Astro.props as { locale: ActiveLocale };
+// ja/zh/fr/es use their own country's law (세운 2026-10-19); ko and en use South Korea's.
+const COUNTRY_BY_LOCALE: Partial<Record<ActiveLocale, PropertyCountry>> = { ja: 'jp', zh: 'cn', fr: 'fr', es: 'es' };
+const country = COUNTRY_BY_LOCALE[locale];
+
+const meta: Record<ActiveLocale, { title: string; description: string }> = {
+  ko: {
+      "title": "주택 재산세 계산기 2026 — 1주택 특례세율·공정시장가액비율 43~45%",
+      "description": "공시가격과 1주택 여부로 2026년 주택 재산세, 도시지역분, 지방교육세를 계산해요. 공시 9억 원 이하 1세대 1주택 특례세율과 7월·9월 분납도 보여 줘요."
+  },
+  en: {
+      "title": "Korean Home Property Tax Calculator 2026 — one-home special rate",
+      "description": "Estimate Korean property tax on a home from its official price: fair market value ratio 43–45% or 60%, the one-home special rate up to 900M won, urban area tax and education tax."
+  },
+  ja: {
+    title: "固定資産税・都市計画税 計算機（日本）",
+    description: "土地と家屋の評価額から固定資産税（1.4%）と都市計画税（最大0.3%）を計算します。住宅用地の特例（1/6・1/3）と新築住宅の減額に対応。"
+  },
+  zh: {
+    title: "个人住房房产税计算器（上海试点）",
+    description: "中国目前没有普遍征收的个人住房房产税。本页说明现行制度，并按上海试点规则（人均60㎡免税、交易价70%计税、0.6%或0.4%）计算。"
+  },
+  fr: {
+    title: "Calculateur de taxe foncière",
+    description: "Estimez votre taxe foncière : valeur locative cadastrale × 50 % × taux voté par la commune et l'intercommunalité, à reprendre sur votre avis."
+  },
+  es: {
+    title: "Calculadora del IBI (impuesto sobre bienes inmuebles)",
+    description: "Calcula el IBI anual de tu vivienda: valor catastral (base liquidable) × tipo municipal, entre el 0,4 % y el 1,10 % en suelo urbano."
+  },
+};
+const content: Record<ActiveLocale, UtilityContent> = {
+  ko: {
+      "introTitle": "재산세는 6월 1일에 집을 가진 사람이 내요",
+      "intro": "주택 재산세는 매년 6월 1일 소유자에게 7월과 9월에 반씩 나눠 고지해요. 공시가격에 공정시장가액비율(1세대 1주택 43~45%, 그 밖 60%)을 곱한 과세표준에 0.1~0.4% 누진세율을 매기고, 1세대 1주택이면서 공시가격 9억 원 이하면 구간마다 0.05%p 낮은 특례세율을 써요. 여기에 도시지역분(과세표준의 0.14%)과 지방교육세(재산세의 20%)가 함께 붙어요.",
+      "formulaTitle": "2026년 계산 기준",
+      "formulas": [
+          {
+              "title": "공정시장가액비율",
+              "body": "1세대 1주택은 공시가격 3억 원 이하 43%, 6억 원 이하 44%, 초과 45%예요(2026년 유지). 다주택·법인은 60%예요."
+          },
+          {
+              "title": "세율",
+              "body": "과세표준 6천만 원 이하 0.1%, 1.5억 원 이하 0.15% − 3만 원, 3억 원 이하 0.25% − 18만 원, 초과 0.4% − 63만 원. 1주택 특례(공시 9억 이하)는 각 구간 0.05%p 낮아요."
+          },
+          {
+              "title": "함께 내는 세금",
+              "body": "도시지역분은 과세표준의 0.14%, 지방교육세는 재산세 본세의 20%예요. 본세가 20만 원 이하면 7월에 한 번에 내요."
+          }
+      ],
+      "howToTitle": "사용 방법",
+      "steps": [
+          "부동산공시가격알리미에서 확인한 올해 공시가격을 만 원 단위로 넣어요.",
+          "1세대 1주택인지, 다주택·법인인지 골라요.",
+          "도시지역(도시계획구역)에 있으면 '예'를 골라요. 대부분의 아파트는 해당돼요."
+      ],
+      "faqTitle": "자주 묻는 질문",
+      "faqs": [
+          {
+              "question": "종합부동산세도 계산되나요?",
+              "answer": "아니요. 종부세는 1세대 1주택 공시가격 12억 원, 그 밖 9억 원을 넘을 때 12월에 따로 내요. 이 계산기는 재산세만 계산해요."
+          },
+          {
+              "question": "세부담상한은 반영되나요?",
+              "answer": "아니요. 작년보다 공시가격이 많이 오르면 상한 때문에 실제 고지액이 이보다 적을 수 있어요. 2024년부터 주택분 세부담상한은 과세표준상한제로 바뀌어 운영돼요."
+          },
+          {
+              "question": "부부 공동명의도 1주택인가요?",
+              "answer": "부부가 한 채를 함께 가지면 1세대 1주택으로 보고 각자 지분만큼 나눠 고지돼요. 합계는 이 계산기 결과와 같아요."
+          },
+          {
+              "question": "지역자원시설세는 왜 없나요?",
+              "answer": "건물 시가표준액을 기준으로 따로 계산해 같은 고지서에 붙어요. 보통 몇 천~몇 만 원이라 이 계산기에서는 빼었어요."
+          }
+      ],
+      "disclaimer": "2026-10-27 기준 지방세법으로 만든 추정 계산기예요. 세부담상한·과세표준상한, 지역자원시설세, 감면, 부속토지 별도 계산은 반영하지 않았어요. 정확한 금액은 7월·9월 고지서나 위택스에서 확인해 주세요."
+  },
+  en: {
+      "introTitle": "Korean property tax is billed to whoever owns the home on 1 June",
+      "intro": "Housing property tax goes to the owner on 1 June each year and is billed in two halves in July and September. The official price times a fair market value ratio (43–45% for a one-home household, 60% otherwise) gives the tax base, taxed at 0.1–0.4%. A one-home household with an official price of 900M won or less pays 0.05 point less in every band. Urban area tax (0.14% of the base) and local education tax (20% of the tax) are added.",
+      "formulaTitle": "2026 rules used",
+      "formulas": [
+          {
+              "title": "Fair market value ratio",
+              "body": "One-home households: 43% up to 300M won, 44% up to 600M won, 45% above (kept for 2026). Others: 60%."
+          },
+          {
+              "title": "Rates",
+              "body": "Base up to 60M won 0.1%; to 150M 0.15% − 30,000; to 300M 0.25% − 180,000; above 0.4% − 630,000. The one-home special rate is 0.05 point lower in each band."
+          },
+          {
+              "title": "Added taxes",
+              "body": "Urban area tax is 0.14% of the base and local education tax is 20% of the property tax. A tax of 200,000 won or less is billed once in July."
+          }
+      ],
+      "howToTitle": "How to use",
+      "steps": [
+          "Enter this year's official price in units of 10,000 won.",
+          "Pick one home per household or multiple homes / company.",
+          "Pick whether the home is inside an urban planning area (most apartments are)."
+      ],
+      "faqTitle": "FAQ",
+      "faqs": [
+          {
+              "question": "Is the comprehensive real estate tax included?",
+              "answer": "No. That tax applies above 1.2 billion won for one-home households (900M won otherwise) and is billed separately in December."
+          },
+          {
+              "question": "Is the annual increase cap applied?",
+              "answer": "No. If the official price jumped, the actual bill can be lower than this estimate."
+          }
+      ],
+      "disclaimer": "Estimate under the Local Tax Act as checked on 2026-10-27. Increase caps, the regional resource facility tax, reliefs and separate land taxation are not modelled. Not tax advice."
+  },
+  ja: {
+    introTitle: "固定資産税と都市計画税は、1月1日時点の所有者にかかります",
+    intro: "固定資産税は市町村（東京23区は都）の税で、土地・家屋の評価額をもとに毎年課税されます。住宅が建っている土地は課税標準が大きく下がる特例があり、新築住宅は一定期間、家屋の税額が半分になります。都市計画税は市街化区域内の土地・家屋にだけかかります。",
+    formulaTitle: "計算基準",
+    formulas: [
+      {
+        title: "固定資産税",
+        body: "課税標準 × 1.4%（標準税率）。住宅用地は200㎡/戸まで評価額×1/6、超える部分×1/3"
+      },
+      {
+        title: "都市計画税",
+        body: "課税標準 × 最大0.3%。住宅用地は200㎡/戸まで×1/3、超える部分×2/3"
+      },
+      {
+        title: "新築住宅の減額",
+        body: "居住部分120㎡までの固定資産税を1/2。一般住宅3年度、長期優良住宅5年度、3階建以上の耐火住宅は5〜7年度"
+      }
+    ],
+    howToTitle: "使い方",
+    steps: [
+      "課税明細書の土地・家屋の評価額と面積を入力します。",
+      "住宅用地かどうか、新築減額の期間中かを選び、税率を確認します。",
+      "固定資産税・都市計画税と合計を確認します。"
+    ],
+    faqTitle: "よくある質問",
+    faqs: [
+      {
+        question: "通知書の金額と違うのはなぜですか？",
+        answer: "土地には負担調整措置があり、実際の課税標準が本則の額より低いことがあります。課税明細書の「課税標準額」を評価額欄に入れ、住宅用地を「住宅用地以外」にすると、固定資産税は近い値になります。"
+      },
+      {
+        question: "空き家にも特例がありますか？",
+        answer: "管理不全空家や特定空家として勧告を受けると、住宅用地の特例が外れます。"
+      },
+      {
+        question: "免税点とは？",
+        answer: "同じ市町村内の課税標準の合計が土地30万円、家屋20万円に満たない場合は課税されません。"
+      }
+    ],
+    disclaimer: "このツールは一般的な計算用です。正確な税額はお住まいの市区町村の資産税課でご確認ください。"
+  },
+  zh: {
+    introTitle: "中国个人住房一般不征收持有环节的房产税",
+    intro: "《房产税暂行条例》第5条规定个人所有非营业用的房产免纳房产税，因此大多数城市的自住房没有每年缴纳的持有税。2011年起上海、重庆开展了对部分个人住房征收房产税的试点，至今仍在执行。本页按上海试点规则计算，其他城市的个人住房目前一般不需要缴纳。",
+    formulaTitle: "上海试点规则",
+    formulas: [
+      {
+        title: "征收对象",
+        body: "本市居民家庭新购的第二套及以上住房，以及非本市居民家庭新购的住房"
+      },
+      {
+        title: "免税面积",
+        body: "家庭全部住房面积人均不超过60㎡的，新购住房免税；超过的部分计税"
+      },
+      {
+        title: "计税依据和税率",
+        body: "成交价 × 70% 按应税面积折算；税率0.6%，单价不超过上年新建商品住房均价2倍的按0.4%"
+      }
+    ],
+    howToTitle: "使用方法",
+    steps: [
+      "输入新购住房的成交价和面积。",
+      "输入家庭已有住房面积和家庭人数，选择户籍和单价档次。",
+      "查看应税面积、计税依据和每年房产税。"
+    ],
+    faqTitle: "常见问题",
+    faqs: [
+      {
+        question: "全国会开征房地产税吗？",
+        answer: "2021年全国人大常委会授权国务院在部分地区开展房地产税改革试点，但目前没有公布新的试点城市。现行仍只有上海、重庆的房产税试点。"
+      },
+      {
+        question: "重庆试点怎么算？",
+        answer: "重庆试点主要针对主城区的独栋商品住宅、高档住房以及特定人群购买的第二套以上普通住房，税率0.5%至1.2%，规则与上海不同，本工具未计算。"
+      },
+      {
+        question: "出租或经营用房要交吗？",
+        answer: "要。个人出租住房等营业用房产按房产税暂行条例和相关优惠政策缴纳，不属于本页的自住房范围。"
+      }
+    ],
+    disclaimer: "本工具用于一般估算。具体是否征税和金额请以上海市税务局的认定为准。"
+  },
+  fr: {
+    introTitle: "La taxe foncière dépend de la valeur locative cadastrale et des taux locaux",
+    intro: "Tout propriétaire d'un logement au 1er janvier paie la taxe foncière sur les propriétés bâties. Sa base est la moitié de la valeur locative cadastrale, revalorisée chaque année par la loi de finances. Le taux est voté par la commune et l'intercommunalité : il varie beaucoup d'une ville à l'autre, d'où la saisie du taux indiqué sur votre avis.",
+    formulaTitle: "Règles de calcul",
+    formulas: [
+      {
+        title: "Base",
+        body: "Valeur locative cadastrale × 50 % (abattement légal pour frais)"
+      },
+      {
+        title: "Taux",
+        body: "Taux communal + intercommunal (+ taxes spéciales et GEMAPI le cas échéant), voté chaque année"
+      },
+      {
+        title: "Montant",
+        body: "Base × taux ; la taxe d'enlèvement des ordures ménagères s'ajoute sur le même avis"
+      }
+    ],
+    howToTitle: "Comment l'utiliser",
+    steps: [
+      "Reprenez la valeur locative de votre avis ou de l'espace particulier sur impots.gouv.fr.",
+      "Saisissez le total des taux de la commune et de l'intercommunalité.",
+      "Lisez la base et la taxe foncière estimée."
+    ],
+    faqTitle: "Questions fréquentes",
+    faqs: [
+      {
+        question: "Pourquoi 37,18 % par défaut ?",
+        answer: "C'est le taux moyen communal de taxe foncière bâtie voté en 2025 selon la DGCL. Votre taux réel, intercommunalité comprise, peut être nettement plus haut ou plus bas."
+      },
+      {
+        question: "Un logement neuf est-il exonéré ?",
+        answer: "Une construction nouvelle peut bénéficier d'une exonération temporaire de deux ans, dont la commune fixe l'étendue ; il faut déclarer l'achèvement des travaux dans les 90 jours."
+      },
+      {
+        question: "Existe-t-il des dégrèvements ?",
+        answer: "Oui, notamment pour les personnes de plus de 75 ans ou bénéficiaires de certaines allocations sous conditions de revenus. Vérifiez sur impots.gouv.fr."
+      }
+    ],
+    disclaimer: "Cet outil sert au calcul général. Le montant exact figure sur votre avis de taxe foncière."
+  },
+  es: {
+    introTitle: "El IBI se calcula con el valor catastral y el tipo que fija tu ayuntamiento",
+    intro: "El Impuesto sobre Bienes Inmuebles es un impuesto municipal que paga cada año quien es propietario a 1 de enero. La base es el valor catastral, a veces reducido tras una revisión catastral (base liquidable), y el ayuntamiento fija el tipo dentro de los límites de la Ley de Haciendas Locales: entre el 0,4 % y el 1,10 % para inmuebles urbanos.",
+    formulaTitle: "Reglas de cálculo",
+    formulas: [
+      {
+        title: "Base",
+        body: "Valor catastral, menos la reducción por revisión catastral si la hay (base liquidable)"
+      },
+      {
+        title: "Tipo",
+        body: "Urbano: 0,4 %–1,10 % según el ayuntamiento (art. 72 TRLRHL); puede ser mayor en algunos casos"
+      },
+      {
+        title: "Cuota",
+        body: "Base liquidable × tipo, menos bonificaciones municipales"
+      }
+    ],
+    howToTitle: "Cómo usarla",
+    steps: [
+      "Copia la base liquidable o el valor catastral de tu recibo o de la Sede del Catastro.",
+      "Introduce el tipo de gravamen de tu ayuntamiento.",
+      "Revisa el IBI anual estimado."
+    ],
+    faqTitle: "Preguntas frecuentes",
+    faqs: [
+      {
+        question: "¿Dónde veo el valor catastral?",
+        answer: "En el recibo del IBI o en la Sede Electrónica del Catastro con certificado digital o Cl@ve."
+      },
+      {
+        question: "¿Quién paga el IBI si vendo a mitad de año?",
+        answer: "El sujeto pasivo es el propietario a 1 de enero, aunque en la compraventa es habitual prorratearlo entre comprador y vendedor."
+      },
+      {
+        question: "¿Hay bonificaciones?",
+        answer: "Muchos ayuntamientos bonifican a familias numerosas, viviendas de protección oficial o instalaciones solares, y pueden aplicar un recargo a viviendas vacías."
+      }
+    ],
+    disclaimer: "Esta herramienta es para cálculo general. El importe exacto figura en el recibo de tu ayuntamiento."
+  },
+};
+const m = meta[locale];
+const c = content[locale];
+const url = `https://tools.oiyo.net/${locale}/property-tax-calculator/`;
+const schema = utilityJsonLd({ name: m.title, description: m.description, url, locale, steps: c.steps, faqs: c.faqs });
+---
+<Layout title={m.title} description={m.description} locale={locale} availableLocales={[...locales]} canonicalURL={url}>
+  <div class="mx-auto max-w-3xl px-4 py-6">
+    <h1 class="text-2xl font-bold tracking-tight">{m.title}</h1>
+    <p class="mb-5 mt-2 text-sm text-muted-foreground">{m.description}</p>
+    {country ? <PropertyTaxCountryCalculator client:load country={country} /> : <KrPropertyTaxCalculator client:load locale={locale} />}
+    {!country && <p class="mt-4 text-xs text-muted-foreground">근거: 지방세법 제111조·제111조의2·제112조·제151조, 시행령 제109조. 기준일 {REAL_ESTATE_TAX_AS_OF}.</p>}
+    <UtilityArticle c={c} />
+    <RelatedUtilities locale={locale} current="property-tax-calculator" group="money" />
+  </div>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+</Layout>
