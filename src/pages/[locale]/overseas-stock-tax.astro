@@ -1,0 +1,83 @@
+---
+// Moved from oiyo.net/{locale}/overseas-stock-tax on 2026-10-27 (W4). Checked on law.go.kr the
+// same day: 소득세법 §103①2 (2.5M deduction) and §104①12 (20%, 10% for 중소기업 stock).
+import Layout from '../../components/Layout.astro';
+import UtilityArticle from '../../components/UtilityArticle.astro';
+import RelatedUtilities from '../../components/RelatedUtilities.astro';
+import ForeignStockTax from '../../components/tools/ForeignStockTax';
+import { locales } from '../../lib/i18n';
+import { utilityJsonLd } from '../../lib/utility-jsonld';
+import { INVESTMENT_TAX_VERIFIED_ON } from '../../lib/kr-investment-tax';
+
+type ActiveLocale = (typeof locales)[number];
+export function getStaticPaths() {
+  return locales.map((locale) => ({ params: { locale }, props: { locale } }));
+}
+const { locale } = Astro.props as { locale: ActiveLocale };
+
+const meta: Record<ActiveLocale, { title: string; description: string }> = {
+  ko: { title: "해외주식 양도소득세·RSU 세금 계산기 — 250만 원 공제, 22%", description: "해외 상장주식과 RSU를 팔았을 때 낼 양도소득세를 계산해요. 같은 해 손익을 합치고 250만 원을 공제한 뒤 20%와 지방소득세 2%를 매겨요." },
+  en: { title: "Korean Tax on Foreign Stock Gains & RSUs — 2.5M deduction, 22%", description: "Estimate Korean capital gains tax on foreign-listed stock and RSU sales: net the year's gains and losses, deduct 2.5M won, then 20% plus 2% local tax." },
+  ja: { title: "韓国居住者の海外株式譲渡所得税・RSU計算 — 控除250万ウォン・22%", description: "韓国居住者が海外上場株式やRSUを売ったときの譲渡所得税を計算します。年間損益を通算し250万ウォン控除後、20%と地方税2%。" },
+  zh: { title: "韩国居民海外股票转让所得税·RSU计算 — 扣除250万韩元、22%", description: "计算韩国居民出售海外上市股票和RSU的转让所得税：当年盈亏合并，扣除250万韩元后按20%加2%地方税。" },
+  fr: { title: "Impôt coréen sur plus-values d'actions étrangères et RSU — 22 %", description: "Estimez l'impôt coréen sur la vente d'actions étrangères et de RSU : compensation annuelle, abattement de 2,5 M de wons, puis 20 % + 2 % local." },
+  es: { title: "Impuesto coreano sobre ganancias de acciones extranjeras y RSU — 22 %", description: "Calcula el impuesto coreano por vender acciones extranjeras y RSU: compensa el año, resta 2,5 M de wones y aplica 20 % + 2 % local." },
+};
+const m = meta[locale];
+
+const content = {
+  ko: {
+    introTitle: "1년 손익을 합쳐서 한 번에 계산해요",
+    intro: "해외주식은 매도할 때 세금을 떼지 않아요. 대신 1년 동안 판 종목의 이익과 손실을 합쳐 다음 해 5월에 직접 신고해요. 미국 회사 RSU도 팔 때 같은 방식이에요. 이 계산기는 대한민국 거주자 기준이에요.",
+    formulaTitle: "계산 방법",
+    formulas: [
+      { title: "손익 합산", body: "매도마다 양도가액 − 취득가액 − 수수료. 같은 해 손실은 이익에서 빼요." },
+      { title: "기본공제", body: "연 250만 원(소득세법 제103조①2호). 국내 비상장주식 등 같은 묶음 양도와 한도를 나눠 써요." },
+      { title: "세율", body: "20%, 중소기업 주식은 10%(제104조①12호). 지방소득세 10%를 더해 22%예요." },
+    ],
+    howToTitle: "사용 방법",
+    steps: ["매도 한 건마다 원화 양도가액·취득가액·수수료를 넣어요.", "같은 해 다른 매도는 '+ 매도 추가'로 넣어요.", "세금 합계를 보고 다음 해 5월 홈택스 신고 때 확인해요."],
+    faqTitle: "자주 묻는 질문",
+    faqs: [
+      { question: "RSU는 세금이 두 번 붙나요?", answer: "네. 베스팅 때 시가가 근로소득으로 과세되고, 팔 때는 그 시가를 취득가액으로 보고 오른 만큼 양도소득세가 붙어요. 이 계산기는 매도 단계를 계산해요." },
+      { question: "신고는 언제 하나요?", answer: "판 해의 다음 해 5월 1일~31일에 확정신고해요. 예: 2026년 매도 → 2027년 5월." },
+      { question: "손실만 났으면요?", answer: "세금은 없어요. 해외주식 손실은 다음 해로 넘어가지 않으니 같은 해 이익과 합쳐 보세요." },
+      { question: "국내 상장 해외 ETF도 같나요?", answer: "아니요. 국내 상장 ETF 분배금·매매차익은 배당소득으로 15.4% 원천징수돼요. 이 계산기는 해외 상장 주식·ETF용이에요." },
+    ],
+    disclaimer: `소득세법 원문(${INVESTMENT_TAX_VERIFIED_ON} law.go.kr 확인) 기준 추정이에요. 환율은 매수일·매도일 기준환율을 쓰세요. 세무 자문이 아니에요.`,
+  },
+  en: {
+    introTitle: "One calculation for the whole year",
+    intro: "Korea does not withhold tax when you sell foreign stock. Gains and losses for the year are netted and filed in May of the next year. RSU sales work the same way. This calculator follows Korean resident rules.",
+    formulaTitle: "How it is calculated",
+    formulas: [
+      { title: "Netting", body: "Each sale: proceeds − cost − fees. Losses in the same year offset gains." },
+      { title: "Deduction", body: "2.5M won a year (Income Tax Act art. 103(1)2), shared with other stock in the same group." },
+      { title: "Rate", body: "20%, or 10% for a small/medium company stock (art. 104(1)12), plus 10% local tax: 22% in total." },
+    ],
+    howToTitle: "How to use",
+    steps: ["Enter proceeds, cost and fees in won for each sale.", "Add the year's other sales.", "Read the total and confirm on Hometax in May."],
+    faqTitle: "FAQ",
+    faqs: [
+      { question: "Are RSUs taxed twice?", answer: "Yes. The vesting value is taxed as salary; on sale, the gain above that value is a capital gain. This tool covers the sale." },
+      { question: "When do I file?", answer: "May 1–31 of the year after the sale." },
+      { question: "What about losses?", answer: "No tax. Foreign stock losses do not carry forward, so net them within the year." },
+      { question: "Korea-listed foreign ETFs?", answer: "Different: their distributions and gains are dividend income with 15.4% withheld." },
+    ],
+    disclaimer: `Estimate under the Income Tax Act as checked on law.go.kr on ${INVESTMENT_TAX_VERIFIED_ON}. Use reference FX rates for each date. Not tax advice.`,
+  },
+};
+const c = content[locale === 'ko' ? 'ko' : 'en'];
+const url = `https://tools.oiyo.net/${locale}/overseas-stock-tax/`;
+const schema = utilityJsonLd({ name: m.title, description: m.description, url, locale, steps: c.steps, faqs: c.faqs });
+---
+<Layout title={m.title} description={m.description} locale={locale} availableLocales={[...locales]} canonicalURL={url}>
+  <div class="mx-auto max-w-3xl px-4 py-6">
+    <h1 class="text-2xl font-bold tracking-tight">{m.title}</h1>
+    <p class="mb-5 mt-2 text-sm text-muted-foreground">{m.description}</p>
+    <ForeignStockTax client:load locale={locale} />
+    <UtilityArticle c={c} />
+    <RelatedUtilities locale={locale} current="overseas-stock-tax" group="money" />
+  </div>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+</Layout>

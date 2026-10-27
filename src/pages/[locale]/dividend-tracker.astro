@@ -1,0 +1,160 @@
+---
+// Moved from blog.oiyo.net/{locale}/dividend-tracker/ on 2026-10-27 (W4). Same calculation;
+// the table became one card per holding for phones, and a CSV import carries Blog records over.
+import Layout from '../../components/Layout.astro';
+import UtilityArticle from '../../components/UtilityArticle.astro';
+import RelatedUtilities from '../../components/RelatedUtilities.astro';
+import DividendTracker from '../../components/tools/DividendTracker';
+import { locales } from '../../lib/i18n';
+import { utilityJsonLd } from '../../lib/utility-jsonld';
+
+type ActiveLocale = (typeof locales)[number];
+export function getStaticPaths() {
+  return locales.map((locale) => ({ params: { locale }, props: { locale } }));
+}
+const { locale } = Astro.props as { locale: ActiveLocale };
+
+const content = {
+  ko: {
+    title: "배당 기록기 — 연 배당·세후 추정 계산 (로컬 저장)",
+    description: "보유 종목의 배당을 기록하고 연 배당·세후 추정을 계산해요. 투자 조언이 아니며 모든 데이터는 브라우저에만 저장돼요.",
+    introTitle: "배당 기록은 추천이 아니라 현금흐름 메모예요",
+    intro: "보유 종목, 수량, 1주당 배당, 배당 주기, 세율을 직접 넣어 연간 세전·세후 배당을 대략 계산해요. 어떤 종목을 사라고 제안하지 않는, 교육용 로컬 기록장이에요.",
+    formulaTitle: "계산 방법",
+    formulas: [
+      { title: "연 배당(세전)", body: "수량 × 1주 배당 × 연간 지급 횟수(월 12·분기 4·반기 2·연 1)" },
+      { title: "연 배당(세후)", body: "세전 × (1 − 세율). 한국 상장 종목의 배당은 보통 15.4%(소득세 14% + 지방세 1.4%)가 원천징수돼요." },
+      { title: "로컬 저장", body: "브라우저를 바꾸거나 저장소를 지우면 기록이 사라져요. 중요한 기록은 CSV로 내려받아 두세요." },
+    ],
+    howToTitle: "사용 방법",
+    steps: ["종목명 또는 티커를 입력해요.", "수량, 1주당 배당, 주기, 배당기준일, 예상 세율을 적어요.", "연 배당 세전·세후 합계를 보고 필요하면 CSV로 내보내요.", "실제 배당일·세금·환율은 공시와 증권사 자료로 다시 확인해요."],
+    faqTitle: "자주 묻는 질문",
+    faqs: [
+      { question: "입력한 데이터가 서버로 가나요?", answer: "아니요. 이 브라우저의 localStorage에만 저장하고 서버로 보내지 않아요." },
+      { question: "Blog에서 쓰던 기록은 어떻게 옮기나요?", answer: "브라우저는 사이트마다 저장소를 따로 둬서 자동으로 넘어오지 않아요. 예전 화면에서 CSV로 내보낸 파일을 여기서 'CSV 불러오기'로 넣으세요." },
+      { question: "이자·배당이 2천만 원을 넘으면요?", answer: "그해 금융소득이 2천만 원을 넘으면 종합과세 대상이에요. 금융소득 종합과세 계산기로 5월에 더 낼 세금을 확인하세요." },
+      { question: "투자 추천 도구인가요?", answer: "아니요. 기록과 교육용 계산을 돕는 도구이며 매수·매도 판단을 대신하지 않아요." },
+    ],
+    disclaimer: "입력한 세율로 단순 추정해요. 나라, 계좌 종류, 원천징수, 환율에 따라 실제 금액은 달라요. 투자 조언이 아니에요.",
+  },
+  en: {
+    title: "Dividend Tracker — annual & after-tax estimate (local-only)",
+    description: "Record holdings and estimate annual and after-tax dividends. Not investment advice; all data stays in your browser.",
+    introTitle: "Dividend tracking is cash-flow note-taking, not a recommendation",
+    intro: "Enter ticker, shares, dividend per share, frequency and an estimated tax rate to approximate annual gross and net dividends. The tool recommends nothing; it is a local, educational ledger.",
+    formulaTitle: "How it is calculated",
+    formulas: [
+      { title: "Annual gross", body: "Shares × dividend per share × payments a year (12, 4, 2 or 1)." },
+      { title: "Annual net", body: "Gross × (1 − tax rate). Enter the withholding that applies to your account and country." },
+      { title: "Local storage", body: "Clearing browser storage or switching devices removes records. Export CSV for anything important." },
+    ],
+    howToTitle: "How to use",
+    steps: ["Enter the ticker or holding name.", "Fill in shares, dividend per share, frequency, ex-date and estimated tax rate.", "Review annual gross and net totals, then export CSV if needed.", "Confirm payment dates, taxes and FX with official filings or your broker."],
+    faqTitle: "FAQ",
+    faqs: [
+      { question: "Is my data uploaded?", answer: "No. Entries stay in this browser's localStorage." },
+      { question: "How do I bring records from the Blog version?", answer: "Browsers keep storage per site, so they do not move automatically. Export CSV on the old page and use Import CSV here." },
+      { question: "Will the tax estimate match my real tax?", answer: "No. It applies the rate you enter. Country, account type, withholding and FX change the real amount." },
+      { question: "Is this investment advice?", answer: "No. It helps with record-keeping only." },
+    ],
+    disclaimer: "A simple estimate from the rate you enter. Not investment or tax advice.",
+  },
+  ja: {
+    title: "配当トラッカー — 年間・税引後の概算（ローカル保存）",
+    description: "保有銘柄の配当を記録し、年間・税引後の概算を計算します。投資助言ではなく、データはブラウザーだけに保存されます。",
+    introTitle: "配当記録は推奨ではなくキャッシュフローのメモです",
+    intro: "銘柄、株数、1株配当、頻度、税率を入力して年間の税前・税後配当を概算します。銘柄を勧めるものではなく、教育用のローカル記録帳です。",
+    formulaTitle: "計算方法",
+    formulas: [
+      { title: "年間配当（税前）", body: "株数 × 1株配当 × 年間支払回数（12・4・2・1）" },
+      { title: "年間配当（税後）", body: "税前 × (1 − 税率)。口座と国に合う源泉税率を入れてください。" },
+      { title: "ローカル保存", body: "保存領域を消去したり端末を変えたりすると記録は消えます。重要な記録はCSVで保存してください。" },
+    ],
+    howToTitle: "使い方",
+    steps: ["銘柄名またはティッカーを入力します。", "株数、1株配当、頻度、権利落ち日、想定税率を入力します。", "年間の税前・税後合計を確認し、必要ならCSVを書き出します。", "実際の日程、税金、為替は公式情報や証券会社で確認します。"],
+    faqTitle: "よくある質問",
+    faqs: [
+      { question: "入力データは送信されますか？", answer: "いいえ。このブラウザーのlocalStorageにだけ保存されます。" },
+      { question: "Blog版の記録を移すには？", answer: "ブラウザーはサイトごとに保存領域が分かれるため自動では移りません。旧ページでCSVを書き出し、ここで読み込んでください。" },
+      { question: "税額は実際と一致しますか？", answer: "いいえ。入力した税率による単純な概算です。" },
+    ],
+    disclaimer: "入力した税率による概算です。投資・税務の助言ではありません。",
+  },
+  zh: {
+    title: "股息记录器 — 年度与税后估算（本地保存）",
+    description: "记录持仓股息并估算年度与税后金额。非投资建议，所有数据仅保存在浏览器中。",
+    introTitle: "股息记录是现金流备忘，不是投资推荐",
+    intro: "输入代码、股数、每股股息、派息频率和估计税率，即可粗略估算年度税前与税后股息。本工具不推荐任何证券，只是教育用途的本地记录表。",
+    formulaTitle: "计算方法",
+    formulas: [
+      { title: "年度税前", body: "股数 × 每股股息 × 每年派息次数（12、4、2 或 1）" },
+      { title: "年度税后", body: "税前 × (1 − 税率)。请填写适用于你的账户和国家的预扣税率。" },
+      { title: "本地保存", body: "清除浏览器数据或更换设备时记录会消失。重要记录请导出 CSV。" },
+    ],
+    howToTitle: "使用方法",
+    steps: ["输入股票代码或持仓名称。", "填写股数、每股股息、频率、除息日和估计税率。", "查看年度税前与税后合计，需要时导出 CSV。", "实际派息日期、税务和汇率请以官方公告或券商数据为准。"],
+    faqTitle: "常见问题",
+    faqs: [
+      { question: "数据会上传吗？", answer: "不会。记录只保存在此浏览器的 localStorage 中。" },
+      { question: "如何迁移 Blog 版的记录？", answer: "浏览器按网站分开保存数据，不会自动迁移。请在旧页面导出 CSV，再在此导入。" },
+      { question: "税后估算等于实际税额吗？", answer: "不等于。它只按你输入的税率简单估算。" },
+    ],
+    disclaimer: "按输入税率的简单估算，不构成投资或税务建议。",
+  },
+  fr: {
+    title: "Suivi de dividendes — estimation annuelle et après impôt (local)",
+    description: "Enregistrez vos positions et estimez les dividendes annuels et après impôt. Pas un conseil en investissement ; données locales uniquement.",
+    introTitle: "Suivre ses dividendes, c'est noter un flux de trésorerie",
+    intro: "Saisissez ticker, parts, dividende par part, fréquence et taux d'impôt estimé pour approximer les dividendes annuels bruts et nets. L'outil ne recommande aucun titre.",
+    formulaTitle: "Méthode de calcul",
+    formulas: [
+      { title: "Annuel brut", body: "Parts × dividende par part × versements par an (12, 4, 2 ou 1)." },
+      { title: "Annuel net", body: "Brut × (1 − taux). Indiquez la retenue qui s'applique à votre compte et à votre pays." },
+      { title: "Stockage local", body: "Effacer le stockage du navigateur ou changer d'appareil supprime les lignes. Exportez en CSV." },
+    ],
+    howToTitle: "Comment l'utiliser",
+    steps: ["Saisissez le ticker ou le nom de la position.", "Renseignez parts, dividende par part, fréquence, date ex-dividende et taux estimé.", "Consultez les totaux bruts et nets, puis exportez en CSV si besoin.", "Vérifiez dates, fiscalité et change auprès des sources officielles ou du courtier."],
+    faqTitle: "Questions fréquentes",
+    faqs: [
+      { question: "Mes données sont-elles envoyées ?", answer: "Non. Elles restent dans le localStorage de ce navigateur." },
+      { question: "Comment reprendre les lignes de la version Blog ?", answer: "Chaque site a son propre stockage. Exportez le CSV sur l'ancienne page puis importez-le ici." },
+      { question: "L'estimation fiscale sera-t-elle exacte ?", answer: "Non. Elle applique simplement le taux saisi." },
+    ],
+    disclaimer: "Estimation simple selon le taux saisi. Ni conseil en investissement ni conseil fiscal.",
+  },
+  es: {
+    title: "Registro de dividendos — estimación anual y después de impuestos (local)",
+    description: "Registra tus posiciones y estima dividendos anuales y netos. No es asesoramiento; los datos quedan en tu navegador.",
+    introTitle: "Registrar dividendos es anotar flujo de caja, no una recomendación",
+    intro: "Introduce ticker, acciones, dividendo por acción, frecuencia y tasa fiscal estimada para aproximar dividendos anuales brutos y netos. La herramienta no recomienda valores.",
+    formulaTitle: "Cómo se calcula",
+    formulas: [
+      { title: "Anual bruto", body: "Acciones × dividendo por acción × pagos al año (12, 4, 2 o 1)." },
+      { title: "Anual neto", body: "Bruto × (1 − tasa). Usa la retención que corresponda a tu cuenta y país." },
+      { title: "Almacenamiento local", body: "Borrar el almacenamiento o cambiar de dispositivo elimina los registros. Exporta CSV." },
+    ],
+    howToTitle: "Cómo usarlo",
+    steps: ["Introduce el ticker o nombre de la posición.", "Completa acciones, dividendo por acción, frecuencia, fecha ex-dividendo y tasa estimada.", "Revisa los totales brutos y netos y exporta CSV si hace falta.", "Confirma fechas, impuestos y divisas con fuentes oficiales o tu bróker."],
+    faqTitle: "Preguntas frecuentes",
+    faqs: [
+      { question: "¿Se suben mis datos?", answer: "No. Quedan en el localStorage de este navegador." },
+      { question: "¿Cómo paso los registros de la versión del Blog?", answer: "Cada sitio tiene su propio almacenamiento. Exporta el CSV en la página anterior e impórtalo aquí." },
+      { question: "¿La estimación coincidirá con mi impuesto real?", answer: "No. Solo aplica la tasa que introduces." },
+    ],
+    disclaimer: "Estimación simple según la tasa introducida. No es asesoramiento de inversión ni fiscal.",
+  },
+};
+const c = content[locale];
+const url = `https://tools.oiyo.net/${locale}/dividend-tracker/`;
+const schema = utilityJsonLd({ name: c.title, description: c.description, url, locale, steps: c.steps, faqs: c.faqs });
+---
+<Layout title={c.title} description={c.description} locale={locale} availableLocales={[...locales]} canonicalURL={url}>
+  <div class="mx-auto max-w-3xl px-4 py-6">
+    <h1 class="text-2xl font-bold tracking-tight">{c.title}</h1>
+    <p class="mb-5 mt-2 text-sm text-muted-foreground">{c.description}</p>
+    <DividendTracker client:load locale={locale} />
+    <UtilityArticle c={c} />
+    <RelatedUtilities locale={locale} current="dividend-tracker" group="money" />
+  </div>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+</Layout>

@@ -1,0 +1,85 @@
+---
+// Replaces blog.oiyo.net/{locale}/separate-vs-comprehensive-tax-calculator/ (2026-10-27, W4).
+// The Blog version compared all financial income at progressive rates with 15.4% and let the
+// reader "pick" one, and capped the earned income deduction early. Above 20M won the law picks
+// (소득세법 §62 비교과세), so the page now shows both §62 amounts. Checked on law.go.kr 2026-10-27.
+import Layout from '../../components/Layout.astro';
+import UtilityArticle from '../../components/UtilityArticle.astro';
+import RelatedUtilities from '../../components/RelatedUtilities.astro';
+import FinancialIncomeTax from '../../components/tools/FinancialIncomeTax';
+import { locales } from '../../lib/i18n';
+import { utilityJsonLd } from '../../lib/utility-jsonld';
+import { INVESTMENT_TAX_VERIFIED_ON } from '../../lib/kr-investment-tax';
+
+type ActiveLocale = (typeof locales)[number];
+export function getStaticPaths() {
+  return locales.map((locale) => ({ params: { locale }, props: { locale } }));
+}
+const { locale } = Astro.props as { locale: ActiveLocale };
+
+const meta: Record<ActiveLocale, { title: string; description: string }> = {
+  ko: { title: "금융소득 종합과세 계산기 — 이자·배당 2천만 원 넘으면 얼마 더 낼까", description: "이자·배당이 연 2천만 원을 넘을 때 소득세법 제62조 비교과세로 5월에 더 낼 세금을 계산해요. 2천만 원 이하는 15.4% 분리과세로 끝나요." },
+  en: { title: "Korean Financial Income Tax — separate 15.4% or comprehensive", description: "When Korean interest and dividends exceed 20M won a year, see the two Income Tax Act art. 62 amounts and the extra tax due in May." },
+  ja: { title: "韓国の金融所得総合課税計算 — 利子・配当2千万ウォン超", description: "韓国で利子・配当が年2千万ウォンを超えたとき、所得税法第62条の比較課税で5月に追加で払う税金を計算します。" },
+  zh: { title: "韩国金融所得综合课税计算 — 利息·股息超过2000万韩元", description: "韩国利息与股息年超2000万韩元时，按所得税法第62条比较课税计算5月需补缴的税额。" },
+  fr: { title: "Revenus financiers en Corée — 15,4 % libératoire ou barème", description: "Au-delà de 20 M de wons d'intérêts et dividendes par an, calculez les deux montants de l'article 62 de la loi coréenne et l'impôt dû en mai." },
+  es: { title: "Rentas financieras en Corea — 15,4 % separado o tributación conjunta", description: "Si los intereses y dividendos superan 20 M de wones al año en Corea, calcula los dos importes del artículo 62 y el impuesto adicional de mayo." },
+};
+const m = meta[locale];
+
+const content = {
+  ko: {
+    introTitle: "2천만 원이 기준이에요",
+    intro: "이자와 배당은 받을 때 15.4%(소득세 14% + 지방소득세 1.4%)를 떼요. 1년 합계가 2천만 원 이하면 그걸로 끝나요(분리과세). 2천만 원을 넘으면 다음 해 5월에 다른 소득과 합쳐 신고해요(종합과세). 이때도 '고르는' 게 아니라 법이 정한 두 방식 중 큰 금액이 세금이에요. 이 계산기는 대한민국 소득세 기준이에요.",
+    formulaTitle: "계산 방법",
+    formulas: [
+      { title: "기준 금액", body: "이자·배당 합계 2천만 원(소득세법 제14조③6호). 이하면 원천징수 14%로 끝나요(제129조①1호)." },
+      { title: "① 종합과세 방식", body: "(금융소득 − 2천만 원 + 다른 소득 과세표준)에 기본세율 + 2천만 원 × 14%" },
+      { title: "② 분리과세 방식", body: "금융소득 전체 × 14% + 다른 소득 과세표준에 기본세율. ①과 ② 중 큰 금액이 산출세액이에요(제62조)." },
+    ],
+    howToTitle: "사용 방법",
+    steps: ["1년 동안 받은 이자·배당 세전 합계를 넣어요.", "다른 소득은 총급여로 추정하거나, 알고 있으면 과세표준을 직접 넣어요.", "두 방식의 금액과 5월에 더 낼 세금을 확인해요."],
+    faqTitle: "자주 묻는 질문",
+    faqs: [
+      { question: "종합과세가 유리하면 고를 수 있나요?", answer: "아니요. 2천만 원을 넘으면 종합과세 대상이고, 세금은 제62조의 두 방식 중 큰 금액이에요. 그래서 원천징수 14%보다 덜 내는 일은 없어요." },
+      { question: "다른 소득이 없으면 더 낼 세금이 있나요?", answer: "보통 없어요. 금융소득만 있으면 ② 방식(전체 × 14%)이 더 크기 쉬워서 원천징수로 충분한 경우가 많아요. 예: 3천만 원이면 ① 340만 원, ② 420만 원으로 추가 납부 0원이에요." },
+      { question: "연봉이 있으면 얼마나 더 내나요?", answer: "다른 소득 과세표준 5천만 원에 금융소득 3천만 원이면 ① 1,144만 원, ② 1,044만 원이라 100만 원(지방세 포함 110만 원)을 5월에 더 내요." },
+      { question: "배당 Gross-up은 반영되나요?", answer: "아니요. 배당가산(Gross-up)과 배당세액공제, 조세특례 배당은 빼고 계산했어요. 배당 비중이 크면 실제 금액이 달라질 수 있어요." },
+    ],
+    disclaimer: `소득세법 원문(${INVESTMENT_TAX_VERIFIED_ON} law.go.kr 확인) 기준의 산출세액 추정이에요. 세액공제·기납부세액·건강보험료 변화는 넣지 않았어요. 실제 신고는 홈택스와 세무 전문가로 확인하세요.`,
+  },
+  en: {
+    introTitle: "20 million won is the line",
+    intro: "Korean interest and dividends are paid net of 15.4% (14% income tax + 1.4% local tax). Up to 20M won a year, that is final. Above it, the income joins the May return, and the tax is the larger of two statutory methods, not a choice. This calculator follows Korean rules.",
+    formulaTitle: "How it is calculated",
+    formulas: [
+      { title: "Threshold", body: "20M won of interest and dividends (Income Tax Act art. 14(3)6). Below it, 14% withholding is final." },
+      { title: "Method 1", body: "Progressive rates on (financial income − 20M + other tax base) + 20M × 14%." },
+      { title: "Method 2", body: "All financial income × 14% + progressive tax on the other tax base. The larger one applies (art. 62)." },
+    ],
+    howToTitle: "How to use",
+    steps: ["Enter a year of interest and dividends before tax.", "Estimate other income from salary, or enter its tax base.", "Read both methods and the extra tax due in May."],
+    faqTitle: "FAQ",
+    faqs: [
+      { question: "Can I pick the cheaper method?", answer: "No. Above 20M won the larger of the two applies, so you never pay less than the 14% withheld." },
+      { question: "With no other income, do I owe more?", answer: "Usually not. With 30M won only, method 1 is 3.4M and method 2 is 4.2M, so nothing extra." },
+      { question: "With a salary?", answer: "With a 50M won other tax base and 30M won of financial income: 11.44M vs 10.44M, so 1M won more (1.1M with local tax)." },
+      { question: "Is dividend gross-up included?", answer: "No. Gross-up, the dividend tax credit and special regimes are left out." },
+    ],
+    disclaimer: `Estimate of calculated tax under the Income Tax Act as checked on law.go.kr on ${INVESTMENT_TAX_VERIFIED_ON}. Credits and prepaid tax are not included. Not tax advice.`,
+  },
+};
+const c = content[locale === 'ko' ? 'ko' : 'en'];
+const url = `https://tools.oiyo.net/${locale}/separate-vs-comprehensive-tax-calculator/`;
+const schema = utilityJsonLd({ name: m.title, description: m.description, url, locale, steps: c.steps, faqs: c.faqs });
+---
+<Layout title={m.title} description={m.description} locale={locale} availableLocales={[...locales]} canonicalURL={url}>
+  <div class="mx-auto max-w-3xl px-4 py-6">
+    <h1 class="text-2xl font-bold tracking-tight">{m.title}</h1>
+    <p class="mb-5 mt-2 text-sm text-muted-foreground">{m.description}</p>
+    <FinancialIncomeTax client:load locale={locale} />
+    <UtilityArticle c={c} />
+    <RelatedUtilities locale={locale} current="separate-vs-comprehensive-tax-calculator" group="money" />
+  </div>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+</Layout>
