@@ -1,0 +1,108 @@
+---
+// Moved from oiyo.net/{locale}/tax-calendar (and blog.oiyo.net/{locale}/tax-calendar/) on 2026-10-27 (W3).
+// The oiyo.net calendar was the base because it moves deadlines past weekends and holidays.
+import Layout from '../../components/Layout.astro';
+import UtilityArticle from '../../components/UtilityArticle.astro';
+import RelatedUtilities from '../../components/RelatedUtilities.astro';
+import TaxCalendar from '../../components/tools/TaxCalendar';
+import { locales } from '../../lib/i18n';
+import { utilityJsonLd } from '../../lib/utility-jsonld';
+
+type ActiveLocale = (typeof locales)[number];
+export function getStaticPaths() {
+  return locales.map((locale) => ({ params: { locale }, props: { locale } }));
+}
+const { locale } = Astro.props as { locale: ActiveLocale };
+
+const meta: Record<ActiveLocale, { title: string; description: string }> = {
+  ko: {
+    title: "세금 신고 캘린더 — 부가세·종소세·법인세·재산세·종부세 일정",
+    description: "국세(부가가치세 1·7월, 종합소득세 5월, 법인세 3월, 종부세 12월)와 지방세(자동차세·재산세)의 연간 신고·납부 일정을 대상자별로 보고, 휴일 순연을 반영한 다음 마감 D-day를 확인하세요.",
+  },
+  en: {
+    title: "Korean Tax Calendar — VAT, Income & Property Tax Deadlines",
+    description: "A free calendar of Korea's national and local tax deadlines — VAT (Jan/Jul), income tax (May), corporate tax (Mar), real estate tax (Dec), vehicle & property tax — filterable by taxpayer with a live D-day.",
+  },
+  ja: {
+    title: "韓国税務カレンダー — 付加価値税・所得税・法人税の日程",
+    description: "韓国の国税(付加価値税1・7月、総合所得税5月、法人税3月)と地方税(自動車税・財産税)の年間申告・納付日程を対象者別に確認できる無料ツール。",
+  },
+  zh: {
+    title: "韩国报税日历 — 增值税·所得税·法人税·财产税日程",
+    description: "一览韩国国税(增值税1·7月、综合所得税5月、法人税3月)与地方税(汽车税·财产税)的年度申报缴纳日程，可按纳税人筛选并显示下次截止的倒计时。",
+  },
+  fr: {
+    title: "Calendrier fiscal coréen — TVA, impôt sur le revenu et taxes",
+    description: "Un calendrier gratuit des échéances fiscales coréennes (TVA jan./juil., impôt sur le revenu mai, impôt sur les sociétés mars, taxes véhicule et foncière), filtrable par contribuable.",
+  },
+  es: {
+    title: "Calendario fiscal coreano — IVA, IRPF y otros impuestos",
+    description: "Un calendario gratuito de los plazos fiscales de Corea (IVA ene./jul., IRPF mayo, impuesto de sociedades marzo, impuestos de vehículo y bienes), filtrable por contribuyente.",
+  },
+};
+const m = meta[locale] ?? meta.en;
+
+const content = {
+  ko: {
+    introTitle: "언제 내는지만 알아도 절반은 해결돼요",
+    intro: "국세와 지방세의 신고·납부 시기를 한 해 흐름으로 펼쳤어요. 대상자(개인·개인사업자·법인)를 고르면 나에게 해당하는 일정만 남아요. 이 달력은 대한민국 일정이에요. 다른 나라 세금 일정과는 달라요.",
+    formulaTitle: "날짜를 정하는 규칙",
+    formulas: [
+      { title: "국세", body: "부가가치세·종합소득세·법인세·종합부동산세. 홈택스에서 신고하고 납부해요." },
+      { title: "지방세", body: "자동차세·재산세·주민세. 위택스나 지자체에서 고지서로 내요." },
+      { title: "휴일 순연", body: "말일이 토·일·공휴일이면 다음 영업일이 마감이에요(국세기본법 제5조, 지방세기본법 제24조)." },
+    ],
+    howToTitle: "사용 방법",
+    steps: [
+      "개인, 개인사업자, 법인 중 나에게 맞는 대상을 골라요.",
+      "맨 위 '다음 마감'에서 가장 가까운 기한과 D-day를 봐요.",
+      "카드를 누르면 홈택스나 위택스로 가서 실제 금액과 일정을 확인해요.",
+    ],
+    faqTitle: "자주 묻는 질문",
+    faqs: [
+      { question: "부가가치세는 언제 신고하나요?", answer: "확정신고는 1월(2기, 7~12월분)과 7월(1기, 1~6월분)이에요. 법인은 4월·10월에 예정신고가 있고, 간이과세자는 다음 해 1월에 한 번 신고해요." },
+      { question: "종합소득세와 법인세 신고 시기는?", answer: "종합소득세는 5월 1일~31일(성실신고 대상은 6월 30일)이에요. 법인세는 사업연도 종료 후 3개월 이내로, 12월 결산 법인은 3월 31일까지예요." },
+      { question: "종합부동산세와 중간예납은 언제인가요?", answer: "종합부동산세는 12월 1일~15일에 내요(종합부동산세법 제16조). 사업소득이 있는 개인의 종합소득세 중간예납은 11월 30일까지예요(소득세법 제65조)." },
+      { question: "마감일이 주말이면 어떻게 되나요?", answer: "그다음 영업일로 미뤄져요. 이 달력의 카드와 D-day는 미뤄진 날짜로 보여 줘요. 공휴일 목록은 2026·2027년까지 들어 있어요." },
+    ],
+    disclaimer: "일반적인 법정 기한이에요. 결산월, 성실신고, 고지 여부에 따라 달라질 수 있으니 홈택스와 위택스에서 확인하세요. 개인 세무 자문이 아니에요.",
+  },
+  en: {
+    introTitle: "Half the work is knowing when tax is due",
+    intro: "Korea's national and local filing dates laid out across one year. Pick your taxpayer type to keep only the deadlines that apply. This is a Korean schedule; other countries have their own.",
+    formulaTitle: "How the dates are set",
+    formulas: [
+      { title: "National tax", body: "VAT, income tax, corporate tax and comprehensive real estate tax, filed and paid on Hometax." },
+      { title: "Local tax", body: "Vehicle, property and resident tax, billed by local governments and paid on Wetax." },
+      { title: "Holiday rule", body: "A deadline on a weekend or public holiday moves to the next business day." },
+    ],
+    howToTitle: "How to use",
+    steps: [
+      "Pick individual, sole proprietor or corporation.",
+      "Read the nearest deadline and D-day at the top.",
+      "Tap a card to confirm the date and amount on Hometax or Wetax.",
+    ],
+    faqTitle: "FAQ",
+    faqs: [
+      { question: "When is VAT filed in Korea?", answer: "Final returns are in January (Jul–Dec) and July (Jan–Jun). Corporations also file preliminary returns in April and October." },
+      { question: "When are income tax and corporate tax due?", answer: "Comprehensive income tax is May 1–31. Corporate tax is due within three months of year-end, March 31 for December-closing companies." },
+      { question: "When are the real estate tax and the interim prepayment?", answer: "Comprehensive real estate tax is paid December 1–15. Individuals with business income pay an interim income tax prepayment by November 30." },
+      { question: "What if a deadline falls on a weekend?", answer: "It moves to the next business day, and the cards already show the moved date. Holidays are listed for 2026 and 2027." },
+    ],
+    disclaimer: "Standard statutory dates. Fiscal year-end and notices can change them, so confirm on Hometax and Wetax. Not personal tax advice.",
+  },
+};
+const c = content[locale === 'ko' ? 'ko' : 'en'];
+const url = `https://tools.oiyo.net/${locale}/tax-calendar/`;
+const schema = utilityJsonLd({ name: m.title, description: m.description, url, locale, steps: c.steps, faqs: c.faqs });
+---
+<Layout title={m.title} description={m.description} locale={locale} availableLocales={[...locales]} canonicalURL={url}>
+  <div class="mx-auto max-w-3xl px-4 py-6">
+    <h1 class="text-2xl font-bold tracking-tight">{m.title}</h1>
+    <p class="mb-5 mt-2 text-sm text-muted-foreground">{m.description}</p>
+    <TaxCalendar client:load locale={locale} />
+    <UtilityArticle c={c} />
+    <RelatedUtilities locale={locale} current="tax-calendar" group="everyday" />
+  </div>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+</Layout>

@@ -1,0 +1,108 @@
+---
+// New on 2026-10-27 (W3): Korean lotto after-tax calculator plus the spend simulator moved from
+// oiyo.net/{locale}/lotto/simulator. Number picking stays on game.oiyo.net (lotto-generator).
+import Layout from '../../components/Layout.astro';
+import UtilityArticle from '../../components/UtilityArticle.astro';
+import RelatedUtilities from '../../components/RelatedUtilities.astro';
+import LottoAfterTax from '../../components/tools/LottoAfterTax';
+import { locales } from '../../lib/i18n';
+import { utilityJsonLd } from '../../lib/utility-jsonld';
+
+type ActiveLocale = (typeof locales)[number];
+export function getStaticPaths() {
+  return locales.map((locale) => ({ params: { locale }, props: { locale } }));
+}
+const { locale } = Astro.props as { locale: ActiveLocale };
+
+const meta: Record<ActiveLocale, { title: string; description: string }> = {
+  ko: {
+    title: "로또 당첨금 실수령액 계산기 — 세금 22%·33%와 써 보기",
+    description: "로또·복권 당첨금에서 소득세와 지방소득세를 빼고 실수령액을 계산해요. 200만 원 이하 비과세, 3억 원까지 22%, 초과분 33%. 받은 돈으로 집·차·여행을 골라 써 보는 시뮬레이터 포함.",
+  },
+  en: {
+    title: "Korean Lotto Prize After Tax — 22% and 33% Calculator",
+    description: "Work out what you keep from a Korean lottery prize: tax-free up to 2,000,000 won, 22% up to 300M won, 33% above. Then spend the net amount in a for-fun simulator.",
+  },
+  ja: {
+    title: "韓国ロト当選金の手取り計算 — 税率22%・33%",
+    description: "韓国の宝くじ当選金から所得税と地方所得税を引いた手取りを計算します。200万ウォン以下は非課税、3億ウォンまで22%、超過分33%。",
+  },
+  zh: {
+    title: "韩国乐透奖金税后计算 — 22%与33%",
+    description: "计算韩国彩票奖金扣除所得税和地方所得税后的实得金额。200万韩元以下免税，3亿韩元以内22%，超出部分33%。",
+  },
+  fr: {
+    title: "Gain du loto coréen après impôt — 22 % et 33 %",
+    description: "Calculez le montant net d'un gain de loterie en Corée : exonéré jusqu'à 2 000 000 wons, 22 % jusqu'à 300 M de wons, 33 % au-delà.",
+  },
+  es: {
+    title: "Premio de lotería coreana después de impuestos — 22 % y 33 %",
+    description: "Calcula lo que recibes de un premio de lotería en Corea: exento hasta 2.000.000 wones, 22 % hasta 300 M de wones y 33 % por encima.",
+  },
+};
+const m = meta[locale] ?? meta.en;
+
+const content = {
+  ko: {
+    introTitle: "당첨금은 전부 내 돈이 아니에요",
+    intro: "복권 당첨금은 기타소득이라 지급할 때 세금을 떼고 줘요(분리과세). 그래서 따로 신고할 일은 없지만, 받는 돈은 발표 금액보다 적어요. 이 계산기는 대한민국 복권 기준이에요.",
+    formulaTitle: "계산 방법",
+    formulas: [
+      { title: "비과세", body: "한 장 당첨금이 200만 원 이하이면 세금이 없어요(소득세법 제84조)." },
+      { title: "세율", body: "당첨금 − 구입비에 3억 원까지 20%, 넘는 부분 30%를 매겨요(소득세법 제129조). 지방소득세 10%를 더하면 22%·33%예요." },
+      { title: "끝수", body: "세액의 10원 미만은 버려요. 실제 지급액은 지급처 명세서로 확인하세요." },
+    ],
+    howToTitle: "사용 방법",
+    steps: [
+      "세전 당첨금을 넣거나 예시 금액을 눌러요.",
+      "실수령액과 세금 내역을 확인해요.",
+      "실수령액으로 집·차·여행을 골라 써 보며 우선순위를 살펴봐요.",
+    ],
+    faqTitle: "자주 묻는 질문",
+    faqs: [
+      { question: "로또 1등 20억 원이면 얼마 받나요?", answer: "구입비 1,000원을 빼면 소득세 569,999,700원, 지방소득세 56,999,970원으로 세금 626,999,670원이에요. 받는 돈은 1,373,000,330원이에요." },
+      { question: "5등 5,000원이나 4등 5만 원도 세금이 있나요?", answer: "없어요. 200만 원 이하 당첨금은 비과세예요." },
+      { question: "종합소득세 신고를 따로 해야 하나요?", answer: "아니요. 복권 당첨금은 원천징수로 끝나는 분리과세예요." },
+      { question: "이 도구로 당첨 확률이 올라가나요?", answer: "아니요. 세금 계산과 상상용 도구예요. 번호 생성기도 확률을 바꾸지 않아요." },
+    ],
+    disclaimer: "법령 기준(2026-10-27 확인)의 일반 계산이에요. 연금복권처럼 나눠 받는 상품은 회차마다 따로 계산돼요. 과도한 복권 구매는 권하지 않아요.",
+  },
+  en: {
+    introTitle: "Not all of the prize is yours",
+    intro: "In Korea a lottery prize is taxed when it is paid, so there is nothing to file later, but you receive less than the announced amount. This calculator follows Korean rules.",
+    formulaTitle: "How it is calculated",
+    formulas: [
+      { title: "Tax-free", body: "A prize of 2,000,000 won or less per ticket is not taxed." },
+      { title: "Rates", body: "Prize minus ticket price: 20% up to 300M won and 30% above, plus 10% local tax, so 22% and 33%." },
+      { title: "Rounding", body: "Tax under 10 won is dropped. Check the payer's statement for the exact amount." },
+    ],
+    howToTitle: "How to use",
+    steps: [
+      "Enter the prize before tax, or tap an example.",
+      "Read the net amount and the tax breakdown.",
+      "Spend the net amount on a home, car or trip to see what matters most.",
+    ],
+    faqTitle: "FAQ",
+    faqs: [
+      { question: "How much do I keep from 2 billion won?", answer: "After a 1,000 won ticket, total tax is 626,999,670 won and you receive 1,373,000,330 won." },
+      { question: "Are small prizes taxed?", answer: "No. Prizes of 2,000,000 won or less are tax-free." },
+      { question: "Do I file a tax return for it?", answer: "No. Korean lottery prizes are taxed in full when paid." },
+      { question: "Does this raise my chances?", answer: "No. It only calculates tax and lets you daydream." },
+    ],
+    disclaimer: "General calculation under Korean law as checked on 2026-10-27. Annuity-style prizes are taxed per payment. We do not encourage heavy lottery spending.",
+  },
+};
+const c = content[locale === 'ko' ? 'ko' : 'en'];
+const url = `https://tools.oiyo.net/${locale}/lotto/`;
+const schema = utilityJsonLd({ name: m.title, description: m.description, url, locale, steps: c.steps, faqs: c.faqs });
+---
+<Layout title={m.title} description={m.description} locale={locale} availableLocales={[...locales]} canonicalURL={url}>
+  <div class="mx-auto max-w-3xl px-4 py-6">
+    <h1 class="text-2xl font-bold tracking-tight">{m.title}</h1>
+    <p class="mb-5 mt-2 text-sm text-muted-foreground">{m.description}</p>
+    <LottoAfterTax client:load locale={locale} />
+    <UtilityArticle c={c} />
+    <RelatedUtilities locale={locale} current="lotto" group="everyday" />
+  </div>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+</Layout>

@@ -203,7 +203,8 @@ const tools = [
         else if (["unemployment-benefits", "parental-leave", "overtime-pay", "health-insurance"].includes(tool.id)) group = "labor";
         else if (tool.id === "military-service") group = "military";
         else if (tool.id === "wind-chill") group = "environment";
-        else if (tool.id === "business-day") group = "calendar";
+        else if (tool.id === "business-day" || tool.id === "tax-calendar") group = "calendar";
+        else if (tool.id === "lotto" || tool.id === "menu-roulette") group = "living";
         else if (["image-converter", "pdf-merge-split", "qr-code-generator", "monitor-ppi-calculator", ...utilityCatalog.map((t) => t.slug)].includes(tool.id)) group = "utility";
 
         return (
