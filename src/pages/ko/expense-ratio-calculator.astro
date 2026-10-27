@@ -1,0 +1,47 @@
+---
+// Moved from blog.oiyo.net/expense-ratio-calculator/ on 2026-10-27 (W11b).
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import ExpenseRatioCalculator from "../../components/tools/ExpenseRatioCalculator";
+
+const title = "경비율 vs 장부 소득 비교 계산기 — 추계신고와 장부신고";
+const description = "수입금액에 경비율을 적용한 추계 소득과 실제 경비를 뺀 장부 소득을 비교해 어느 쪽이 유리한지 보여 줍니다.";
+const ko = {
+  "introTitle": "장부를 쓸까, 경비율로 신고할까?",
+  "intro": "장부를 쓰지 않는 사업자나 프리랜서는 국세청이 정한 단순경비율·기준경비율로 소득을 추정해 신고할 수 있습니다. 실제 경비가 경비율보다 많으면 장부를 쓰는 편이 세금이 적고, 적으면 추계신고가 유리할 수 있습니다.",
+  "howToTitle": "사용 방법",
+  "steps": [
+    "연 수입금액을 넣습니다.",
+    "업종의 경비율(홈택스 업종코드 조회)을 넣습니다.",
+    "실제 쓴 경비를 넣고 두 방식의 소득을 비교합니다."
+  ],
+  "highlightsTitle": "주요 특징",
+  "highlights": [
+    {
+      "title": "두 방식 나란히",
+      "body": "경비율 소득과 장부 소득을 한 화면에서 비교합니다."
+    },
+    {
+      "title": "차이 금액 표시",
+      "body": "어느 쪽이 소득이 얼마나 낮은지 보여 줍니다."
+    },
+    {
+      "title": "경비율 직접 입력",
+      "body": "업종마다 다른 경비율을 그대로 넣을 수 있습니다."
+    }
+  ],
+  "disclaimer": "참고용 비교입니다. 복식부기의무자가 추계신고하면 무기장가산세가 붙고, 기준경비율 대상자는 주요경비를 따로 인정받는 등 실제 계산은 더 복잡합니다."
+};
+const faqs = [
+  {
+    "q": "단순경비율은 누가 쓰나요?",
+    "a": "직전 연도 수입금액이 업종별 기준(예: 서비스업 3,600만 원) 미만인 사업자와 신규 사업자 일부입니다."
+  },
+  {
+    "q": "경비율은 어디서 보나요?",
+    "a": "국세청 홈택스의 기준·단순경비율 조회에서 업종코드로 확인합니다."
+  }
+];
+---
+<KrFinancePage slug="expense-ratio-calculator" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <ExpenseRatioCalculator client:load locale="ko" />
+</KrFinancePage>

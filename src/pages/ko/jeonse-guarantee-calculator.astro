@@ -1,0 +1,42 @@
+---
+// Moved from blog.oiyo.net/jeonse-guarantee-calculator/ on 2026-10-27 (W12); ko-only on Tools because it applies Korean rules.
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import JeonseGuaranteeCalculator from "../../components/tools/JeonseGuaranteeCalculator";
+
+const title = ({
+    title: "전세보증금 안전성 계산기 — 내 전세금은 안전할까?",
+    description: "전세보증금 + 선순위 채권이 주택 시세의 몇 %인지 계산해 회수 가능성을 확인하세요. 경매 시 보증금 회수율 자동 계산.",
+  }).title;
+const description = ({
+    title: "전세보증금 안전성 계산기 — 내 전세금은 안전할까?",
+    description: "전세보증금 + 선순위 채권이 주택 시세의 몇 %인지 계산해 회수 가능성을 확인하세요. 경매 시 보증금 회수율 자동 계산.",
+  }).description;
+const c = {
+    introTitle: "전세보증금 안전성은 집값보다 선순위 채권을 함께 봐야 합니다",
+    intro: "전세 계약의 핵심 위험은 집이 경매로 넘어갔을 때 내 보증금보다 먼저 회수되는 채권이 얼마나 있는지예요. 이 계산기는 주택 시세, 전세보증금, 선순위 대출과 기타 선순위 권리를 합쳐 보증금 비율과 회수 가능성을 단순 점검해요.",
+    formulaTitle: "계산 기준",
+    formulas: [
+      { title: "선순위 채권 합계", body: "선순위 대출·담보와 기타 선순위 권리를 합산합니다." },
+      { title: "보증금 비율", body: "(전세보증금 + 선순위 채권) ÷ 주택 시세 × 100으로 계산합니다." },
+      { title: "회수율", body: "주택 시세에서 선순위 채권을 뺀 잔여 담보 여력으로 보증금 회수 가능액을 추정합니다." },
+    ],
+    howToTitle: "사용 방법",
+    steps: [
+      "최근 실거래가와 감정가를 참고해 주택 시세를 입력합니다.",
+      "전세보증금, 선순위 대출, 기타 선순위 권리 금액을 입력합니다.",
+      "보증금 비율과 예상 회수율을 보고 등기부, 보증보험, 계약 조건을 추가 확인합니다.",
+    ],
+    faqTitle: "자주 묻는 질문",
+    faqs: [
+      { question: "70~80% 기준이면 항상 안전한가요?", answer: "아닙니다. 일반적인 참고선일 뿐입니다. 경매 낙찰가율, 임차인 대항력, 확정일자, 전입신고, 보증보험 가능 여부가 함께 중요합니다." },
+      { question: "선순위 채권은 어디서 확인하나요?", answer: "등기부등본의 근저당권, 압류, 가압류 등 권리관계를 확인하고, 기존 임차권이나 보증금도 중개사와 임대인 서류로 대조해야 합니다." },
+      { question: "전세보증보험에 가입하면 위험이 없어지나요?", answer: "보증보험도 가입 요건, 한도, 보증 제외 사유가 있습니다. 가입 가능 여부와 보증금 전액 보장 여부를 기관에서 직접 확인해야 합니다." },
+    ],
+    disclaimer: "이 도구는 일반적인 추정용이에요. 실제 권리관계, 보증보험, 계약 판단은 관련 기관이나 전문가에게 확인하세요.",
+  };
+const ko = { introTitle: c.introTitle, intro: c.intro, howToTitle: c.howToTitle, steps: c.steps, highlightsTitle: c.formulaTitle, highlights: c.formulas, disclaimer: c.disclaimer };
+const faqs = c.faqs.map((f) => ({ q: f.question, a: f.answer }));
+---
+<KrFinancePage slug="jeonse-guarantee-calculator" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <JeonseGuaranteeCalculator client:load locale="ko" />
+</KrFinancePage>

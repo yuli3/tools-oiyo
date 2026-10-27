@@ -1,0 +1,42 @@
+---
+// Moved from blog.oiyo.net/reconstruction-profit/ on 2026-10-27 (W12); ko-only on Tools because it applies Korean rules.
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import ReconstructionProfitCalculator from "../../components/tools/ReconstructionProfitCalculator";
+
+const title = ({
+    title: "재건축 수익성 계산기 — ROI·연평균 수익률 무료 계산",
+    description: "재건축 아파트의 총 투자금, 순이익, ROI, 연평균 수익률을 한눈에 계산해보세요. 추가 분담금·보유 기간도 반영합니다.",
+  }).title;
+const description = ({
+    title: "재건축 수익성 계산기 — ROI·연평균 수익률 무료 계산",
+    description: "재건축 아파트의 총 투자금, 순이익, ROI, 연평균 수익률을 한눈에 계산해보세요. 추가 분담금·보유 기간도 반영합니다.",
+  }).description;
+const c = {
+    introTitle: "재건축 수익성은 추가 분담금과 시간까지 포함해 봐야 합니다",
+    intro: "재건축 아파트는 미래 가격만 보면 수익성이 과대평가되기 쉬워요. 현재 매입가에 추가 분담금을 더한 총 투자금, 준공까지 걸리는 기간, 보유 기간 동안의 기회비용을 함께 봐야 해요. 이 계산기는 순이익, ROI, 연평균 수익률을 단순 모델로 비교해요.",
+    formulaTitle: "계산 기준",
+    formulas: [
+      { title: "총 투자금", body: "현재 아파트 가격 + 추가 분담금으로 계산합니다." },
+      { title: "순이익과 ROI", body: "재건축 후 예상 가격 - 총 투자금, 그리고 순이익 ÷ 총 투자금 × 100입니다." },
+      { title: "연평균 수익률", body: "예상 가격 ÷ 총 투자금을 보유 기간과 완료 기간 중 긴 기간으로 연환산합니다." },
+    ],
+    howToTitle: "사용 방법",
+    steps: [
+      "현재 가격, 재건축 후 예상 가격, 추가 분담금을 입력합니다.",
+      "보유 기간과 준공까지 예상 기간을 입력합니다.",
+      "ROI와 연평균 수익률을 본 뒤 세금, 이주비, 사업 지연 위험을 따로 보정합니다.",
+    ],
+    faqTitle: "자주 묻는 질문",
+    faqs: [
+      { question: "세금과 거래비용이 포함되나요?", answer: "아닙니다. 취득세, 양도소득세, 종합부동산세, 중개보수, 이주비, 금융비용은 별도로 계산해야 합니다." },
+      { question: "재건축 후 가격은 어떻게 정해야 하나요?", answer: "인근 신축 실거래가, 동일 생활권 공급, 조합 사업성 자료를 함께 참고하되, 미래 가격은 불확실하다는 점을 반드시 반영해야 합니다." },
+      { question: "연평균 수익률은 왜 기간에 민감한가요?", answer: "재건축은 인허가, 조합, 이주, 착공, 준공까지 지연될 수 있습니다. 같은 순이익이라도 기간이 길어지면 연환산 수익률은 낮아집니다." },
+    ],
+    disclaimer: "이 도구는 일반적인 추정용이에요. 실제 재건축 사업성, 세금, 투자 판단은 관련 기관이나 전문가에게 확인하세요.",
+  };
+const ko = { introTitle: c.introTitle, intro: c.intro, howToTitle: c.howToTitle, steps: c.steps, highlightsTitle: c.formulaTitle, highlights: c.formulas, disclaimer: c.disclaimer };
+const faqs = c.faqs.map((f) => ({ q: f.question, a: f.answer }));
+---
+<KrFinancePage slug="reconstruction-profit" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <ReconstructionProfitCalculator client:load locale="ko" />
+</KrFinancePage>

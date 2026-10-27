@@ -1,0 +1,38 @@
+---
+// Moved from blog.oiyo.net/vat-calculator/ on 2026-10-27 (W12); ko-only on Tools because it applies Korean rules.
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import VatCalculator from "../../components/tools/VatCalculator";
+
+const title = ({
+    title: "부가가치세 계산기 — VAT 포함·제외 금액 즉시 계산",
+    description: "VAT 포함/제외 금액을 즉시 계산하고, 사업자의 분기별 부가가치세 납부 예상액도 추정합니다. 프리랜서·소상공인 필수 도구.",
+  }).title;
+const description = ({
+    title: "부가가치세 계산기 — VAT 포함·제외 금액 즉시 계산",
+    description: "VAT 포함/제외 금액을 즉시 계산하고, 사업자의 분기별 부가가치세 납부 예상액도 추정합니다. 프리랜서·소상공인 필수 도구.",
+  }).description;
+const c = {
+    introTitle: "VAT는 공급가액에 붙는 소비 단계의 세금입니다",
+    intro: "이 계산기는 VAT 포함 금액과 제외 금액을 서로 변환하고, 분기 매출액과 매입세액을 바탕으로 납부 또는 환급 예상액을 추정해요. 한국 표준세율 10%를 기본으로 하되, 영세율·면세·간이과세처럼 별도 규칙이 있는 거래는 별도 확인이 필요해요.",
+    formulaTitle: "VAT 계산식",
+    formulas: [
+      { title: "세액", body: "VAT = 공급가액 × 세율" },
+      { title: "포함가", body: "VAT 포함 금액 = 공급가액 + VAT" },
+      { title: "납부세액", body: "납부세액 = 매출세액 - 매입세액" },
+    ],
+    howToTitle: "사용 방법",
+    steps: ["VAT 포함 또는 제외 계산 모드를 선택합니다.", "금액과 세율 또는 분기 매출·매입세액을 입력합니다.", "공급가액, VAT 금액, 납부 또는 환급 예상액을 확인합니다."],
+    faqTitle: "자주 묻는 질문",
+    faqs: [
+      { question: "한국의 일반 VAT 세율은 얼마인가요?", answer: "일반적인 표준세율은 10%입니다. 다만 영세율, 면세, 간이과세 등은 별도 규칙이 적용됩니다." },
+      { question: "VAT 포함 금액에서 공급가액은 어떻게 구하나요?", answer: "세율이 10%라면 VAT 포함 금액을 1.1로 나누면 공급가액을 구할 수 있습니다." },
+      { question: "분기 VAT 예상액이 신고세액과 같나요?", answer: "아닙니다. 실제 신고에는 공제 가능 여부, 세금계산서, 업종별 규정이 반영됩니다." },
+    ],
+    disclaimer: "이 도구는 일반적인 계산용이에요. 공식 VAT 신고와 납부세액은 국세청 또는 세무전문가 기준을 확인하세요.",
+  };
+const ko = { introTitle: c.introTitle, intro: c.intro, howToTitle: c.howToTitle, steps: c.steps, highlightsTitle: c.formulaTitle, highlights: c.formulas, disclaimer: c.disclaimer };
+const faqs = c.faqs.map((f) => ({ q: f.question, a: f.answer }));
+---
+<KrFinancePage slug="vat-calculator" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <VatCalculator client:load locale="ko" />
+</KrFinancePage>

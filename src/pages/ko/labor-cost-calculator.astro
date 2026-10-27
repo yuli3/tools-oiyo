@@ -1,0 +1,37 @@
+---
+// Moved from blog.oiyo.net/labor-cost-calculator/ on 2026-10-27 (W10a). Same kr-payroll-2026 rates as Blog,
+// now with all four employer job-security tiers and an editable industrial accident rate.
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import LaborCostCalculator from "../../components/tools/LaborCostCalculator";
+import { PAYROLL_TAX_AS_OF } from "../../lib/kr-payroll-2026";
+import { computeEmployerInsurance } from "../../lib/finance/salary-calculator";
+
+const title = "인건비 계산기 2026 — 직원 1명 사업주 4대보험·퇴직금 포함 비용";
+const description = "월 급여를 넣으면 사업주가 내는 국민연금·건강·장기요양·고용·산재보험료와 퇴직금 적립액을 더해 직원 1명의 실제 인건비를 계산합니다. 2026년 요율 기준.";
+const won = (n: number) => `${n.toLocaleString("ko-KR")}원`;
+const ins = computeEmployerInsurance(2_800_000, { workCompRate: 0.015 });
+
+const ko = {
+  introTitle: "직원 한 명 뽑으면 실제로 얼마가 드나요?",
+  intro: `사업주는 급여 말고도 4대보험 사업주 몫과 퇴직금을 부담합니다. 월급 300만 원(비과세 식대 20만 원)인 150인 미만 사업장 직원이라면 산재보험 1.5%를 가정할 때 사업주 4대보험이 ${won(ins.total)}, 퇴직금 적립이 250,000원이라 매달 약 ${won(3_000_000 + ins.total + 250_000)}이 듭니다.`,
+  howToTitle: "사용 방법",
+  steps: ["월 급여와 비과세 식대를 넣습니다.", "상시근로자 수와 업종 산재보험료율을 고릅니다.", "보험별 사업주 부담과 퇴직금 적립을 포함한 총 인건비를 확인합니다."],
+  highlightsTitle: "주요 특징",
+  highlights: [
+    { title: "2026년 요율", body: "국민연금 4.75%, 건강보험 3.595%, 장기요양 13.14%, 고용보험 0.9%에 규모별 고용안정 요율을 더합니다." },
+    { title: "연금 상·하한", body: "국민연금은 기준소득월액 상·하한을 적용합니다." },
+    { title: "퇴직금 포함", body: "1년 이상 근무하면 생기는 퇴직금을 월 급여의 1/12로 적립합니다." },
+  ],
+  disclaimer: `참고용 추정입니다. 두루누리 지원, 건강보험 정산, 연차수당·상여, 산재보험 업종별 요율 차이는 반영하지 않았습니다. 기준일 ${PAYROLL_TAX_AS_OF}.`,
+};
+
+const faqs = [
+  { q: "사업주 4대보험은 급여의 몇 %인가요?", a: "산재보험을 빼면 2026년 기준 국민연금 4.75%, 건강보험 3.595%, 장기요양(건강보험료의 13.14%), 고용보험 1.15%(150인 미만) 등 약 10% 안팎입니다. 산재보험은 업종에 따라 0.5%~18%대로 크게 다릅니다." },
+  { q: "식대도 보험료 기준에 들어가나요?", a: "월 20만 원까지의 식대는 비과세라 보험료 기준에서 빠집니다. 20만 원을 넘는 부분은 들어갑니다." },
+  { q: "퇴직금은 매달 내야 하나요?", a: "퇴직금 제도는 퇴직할 때 한 번에 지급합니다. 퇴직연금(DC형)은 매년 연봉의 1/12 이상을 적립해야 합니다. 이 계산기는 비용을 비교하려고 매달 1/12씩 쌓는다고 보았습니다." },
+];
+---
+<KrFinancePage slug="labor-cost-calculator" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <LaborCostCalculator client:load />
+  <p class="mt-4 text-xs text-muted-foreground">근거: 국민연금법 제88조, 국민건강보험법 제73조, 노인장기요양보험법 제9조, 고용보험 및 산업재해보상보험의 보험료징수 등에 관한 법률 시행령 제12조, 2026년 보험료율 고시. 기준일 {PAYROLL_TAX_AS_OF}.</p>
+</KrFinancePage>
