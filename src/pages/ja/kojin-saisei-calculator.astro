@@ -1,0 +1,35 @@
+---
+// W5 (2026-10-27) new tool. 民事再生法 §221・§229・§231・§241 checked on e-Gov the same day.
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import JpSaiseiCalculator from '../../components/tools/JpSaiseiCalculator';
+import { DEBT_RELIEF_VERIFIED_ON } from '../../lib/debt-relief';
+
+const c = {
+  introTitle: '債務整理は3つ、個人再生は「最低弁済額」が目安',
+  intro: '借金の整理には、債権者と直接交渉する任意整理、裁判所で借金を圧縮して原則3年で返す個人再生、財産を清算して免責を受ける自己破産があります。このツールは日本の法律に基づき、どれが候補かの整理と、個人再生で最低限返す額の目安を示します。判定ではなく目安です。',
+  formulaTitle: '最低弁済額（小規模個人再生）',
+  formulas: [
+    { title: '100万円〜500万円', body: '100万円（100万円未満はその全額）。民事再生法 第231条第2項第4号。' },
+    { title: '500万円〜3,000万円', body: '総額の5分の1。ただし上限300万円。' },
+    { title: '3,000万円〜5,000万円', body: '総額の10分の1（同項第3号）。5,000万円を超えると個人再生は使えません（第221条第1項）。' },
+  ],
+  howToTitle: '使い方',
+  steps: ['3つの質問に答えて、候補となる手続きを確認します。', '住宅ローンと担保で回収される分を除いた借金の総額を入れます。', '財産があれば清算価値を、会社員なら年間の可処分所得も入れて、返済総額と月々の額を確認します。'],
+  faqTitle: 'よくある質問',
+  faqs: [
+    { question: '清算価値とは？', answer: '今自己破産した場合に債権者へ配当される財産の額です。再生計画の返済総額はこれを下回れません（清算価値保障）。' },
+    { question: '給与所得者等再生の可処分所得は？', answer: '収入から税・社会保険料と政令で定める最低生活費を引いた額で、その2年分以上を返します。計算は裁判所の書式に従います。' },
+    { question: '返済期間は？', answer: '原則3年、特別な事情があれば5年まで延ばせます（第229条第2項）。' },
+    { question: '相談先は？', answer: '法テラス（日本司法支援センター）で収入が一定以下なら無料法律相談や費用の立替えを利用できます。' },
+  ],
+  disclaimer: `民事再生法（${DEBT_RELIEF_VERIFIED_ON} e-Gov法令検索で確認）に基づく目安です。実際の手続き・金額は裁判所と専門家の判断によります。入力はブラウザ内で計算し、保存・送信しません。法律相談ではありません。`,
+};
+const sources: [string, string][] = [
+  ['e-Gov法令検索：民事再生法（第221条・第229条・第231条・第241条）', 'https://laws.e-gov.go.jp/law/411AC0000000225'],
+  ['裁判所：個人再生手続について', 'https://www.courts.go.jp/saiban/syurui/syurui_minzi/minzi_25_18/index.html'],
+  ['法テラス（日本司法支援センター）', 'https://www.houterasu.or.jp/'],
+];
+---
+<DebtReliefPage slug="kojin-saisei-calculator" c={c} sources={sources} sourcesTitle="公式資料" checked={`根拠確認：${DEBT_RELIEF_VERIFIED_ON}`}>
+  <JpSaiseiCalculator client:load />
+</DebtReliefPage>

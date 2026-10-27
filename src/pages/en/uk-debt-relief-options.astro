@@ -1,0 +1,37 @@
+---
+// W5 (2026-10-27) new tool. DRO limits, IVA approval and bankruptcy fee/length checked on gov.uk the same day.
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import GbDebtOptions from '../../components/tools/GbDebtOptions';
+import { DEBT_RELIEF_VERIFIED_ON } from '../../lib/debt-relief';
+
+const c = {
+  introTitle: 'Three formal routes in England and Wales',
+  intro: 'If you cannot pay your debts, England and Wales have three formal options: a Debt Relief Order (DRO) for small debts, an Individual Voluntary Arrangement (IVA) set up by an insolvency practitioner, and bankruptcy. This page checks the DRO limits and sets the three side by side. It is a guide, not a decision. Scotland and Northern Ireland have different processes.',
+  formulaTitle: 'DRO limits (gov.uk)',
+  formulas: [
+    { title: 'Debts', body: 'You owe less than £50,000.' },
+    { title: 'Spare income', body: 'Less than £75 a month after normal household costs.' },
+    { title: 'Assets', body: 'Less than £2,000 of assets, and no vehicle worth £4,000 or more.' },
+  ],
+  howToTitle: 'How to use',
+  steps: ['Enter your total debts and your monthly spare income.', 'Enter your assets and the value of any vehicle.', 'Read which limits you meet, then compare the DRO, IVA and bankruptcy.'],
+  faqTitle: 'FAQ',
+  faqs: [
+    { question: 'How much does a DRO cost?', answer: 'Nothing. You apply through an approved debt adviser, who can also tell you which debts a DRO covers.' },
+    { question: 'Who decides an IVA?', answer: 'An insolvency practitioner proposes it, and it starts if creditors owed 75% of your debt agree. It then binds all of them.' },
+    { question: 'How long does bankruptcy last?', answer: 'It usually ends 12 months after the order. Payments from your income can continue for up to 3 years. Applying online costs £680.' },
+    { question: 'Where can I get free advice?', answer: 'MoneyHelper lists free, regulated debt advice services.' },
+  ],
+  disclaimer: `Based on gov.uk guidance checked on ${DEBT_RELIEF_VERIFIED_ON}. England and Wales only. Not legal or financial advice. Nothing you enter is stored or sent.`,
+};
+const sources: [string, string][] = [
+  ['GOV.UK: Debt Relief Orders', 'https://www.gov.uk/options-for-paying-off-your-debts/debt-relief-orders'],
+  ['GOV.UK: Individual Voluntary Arrangements', 'https://www.gov.uk/options-for-paying-off-your-debts/individual-voluntary-arrangements'],
+  ['GOV.UK: Applying to become bankrupt', 'https://www.gov.uk/bankruptcy'],
+  ['GOV.UK: Your money and income in bankruptcy', 'https://www.gov.uk/becoming-bankrupt/your-money-and-income'],
+  ['MoneyHelper: free debt advice', 'https://www.moneyhelper.org.uk/en/money-troubles/dealing-with-debt/debt-advice-locator'],
+];
+---
+<DebtReliefPage slug="uk-debt-relief-options" c={c} sources={sources} sourcesTitle="Official sources" checked={`Checked: ${DEBT_RELIEF_VERIFIED_ON}`}>
+  <GbDebtOptions client:load />
+</DebtReliefPage>

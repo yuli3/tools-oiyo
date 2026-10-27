@@ -1,0 +1,37 @@
+---
+// W5 (2026-10-27) 새 도구. 채무자회생법 §579·§611⑤·§614는 law.go.kr, 기준 중위소득은 보건복지부 표로 확인.
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import KrRehabEstimate from '../../components/tools/KrRehabEstimate';
+import { DEBT_RELIEF_VERIFIED_ON } from '../../lib/debt-relief';
+
+const c = {
+  introTitle: '월 변제금은 "소득 − 생계비"예요',
+  intro: '개인회생은 3년 동안 생계비를 뺀 소득(가용소득)을 모두 갚고 남은 빚을 면책받는 절차예요. 생계비는 법원이 정하는데, 실무에서는 보건복지부 기준 중위소득의 60%를 기본으로 써요. 이 계산기는 신청 전에 대략의 월 변제금과 기간을 보는 용도예요. 판정이 아니라 안내예요.',
+  formulaTitle: '계산 방법',
+  formulas: [
+    { title: '가용소득', body: '월 실수령 소득 − 인정 생계비(기준 중위소득 × 60%). 채무자회생법 제579조 4호.' },
+    { title: '변제기간', body: '원칙 36개월, 청산가치를 채우는 데 필요하면 최장 60개월(제611조⑤).' },
+    { title: '최저 기준', body: '총 변제액 ≥ 청산가치(제614조①4). 채권자가 이의하면 무담보 채무 5천만 원 미만 5%, 이상 3% + 100만 원(최대 3천만 원)도 넘어야 해요(제614조②3).' },
+  ],
+  howToTitle: '사용 방법',
+  steps: ['기준 연도와 본인을 포함한 가구원 수를 골라요.', '세금·4대보험을 뺀 월 실수령 소득과 무담보 채무 합계를 넣어요.', '재산이 있으면 청산가치를 넣고 월 변제금·기간·변제율을 확인해요.'],
+  faqTitle: '자주 묻는 질문',
+  faqs: [
+    { question: '생계비가 60%보다 더 인정될 수 있나요?', answer: '네. 주거비·의료비·교육비가 많으면 법원이 추가 생계비를 인정하기도 해요. 반대로 맞벌이면 배우자 소득을 고려해 부양가족 수를 조정하기도 해요.' },
+    { question: '청산가치는 어떻게 계산하나요?', answer: '지금 파산한다면 채권자에게 나눠줄 수 있는 재산 가치예요. 예금·보험 해지환급금·전세보증금·차량 등에서 담보 채무와 압류할 수 없는 금액을 뺀 값이에요. 정확한 계산은 법원 양식을 따라요.' },
+    { question: '36개월 안에 다 갚을 수 있다고 나오면요?', answer: '소득이 충분해 회생으로 줄어들 빚이 없다는 뜻이에요. 신용회복위원회 채무조정(이자 감면·분할 상환)이 더 맞을 수 있어요.' },
+    { question: '2027년 기준으로도 볼 수 있나요?', answer: '네. 보건복지부가 고시한 2027년 기준 중위소득을 넣어 두었어요. 2027년 1월 1일 이후 신청이면 2027년을 고르세요.' },
+  ],
+  disclaimer: `법령 원문(${DEBT_RELIEF_VERIFIED_ON} law.go.kr)과 보건복지부 기준 중위소득 표 기준의 개략 계산이에요. 실제 생계비·기간·변제액은 법원이 정해요. 입력값은 저장하거나 보내지 않아요. 법률 자문이 아니에요.`,
+};
+const sources: [string, string][] = [
+  ['국가법령정보센터: 채무자 회생 및 파산에 관한 법률 제579조', 'https://www.law.go.kr/법령/채무자회생및파산에관한법률/제579조'],
+  ['국가법령정보센터: 같은 법 제611조(변제기간)', 'https://www.law.go.kr/법령/채무자회생및파산에관한법률/제611조'],
+  ['국가법령정보센터: 같은 법 제614조(인가 요건)', 'https://www.law.go.kr/법령/채무자회생및파산에관한법률/제614조'],
+  ['보건복지부: 기준 중위소득', 'https://www.mohw.go.kr/menu.es?mid=a10708010900'],
+  ['대한법률구조공단(무료 법률상담)', 'https://www.klac.or.kr'],
+];
+---
+<DebtReliefPage slug="personal-rehabilitation-calculator" c={c} sources={sources} sourcesTitle="공식 출처" checked={`근거 확인: ${DEBT_RELIEF_VERIFIED_ON}`}>
+  <KrRehabEstimate client:load />
+</DebtReliefPage>
