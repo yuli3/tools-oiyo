@@ -1,4 +1,160 @@
 export const laborNavigators = [
+{
+  "id": "de-leave",
+  "locale": "de",
+  "tag": "de-DE",
+  "slug": "germany-annual-leave-minimum",
+  "title": "Gesetzlicher Mindesturlaub bei fester Arbeitswoche",
+  "description": "Vier Wochen Mindesturlaub in Arbeitstage umrechnen: für ein volles Jahr mit unveränderter Arbeitswoche.",
+  "intro": "Entscheidend ist die Zahl Ihrer Arbeitstage, nicht die Stundenzahl pro Arbeitstag. Bei fünf Arbeitstagen pro Woche sind es mindestens 20 Arbeitstage im Jahr.",
+  "scope": "Nur für erwachsene Beschäftigte im allgemeinen Anwendungsbereich, nach erfüllter Wartezeit und für ein vollständiges Jahr mit unveränderten Arbeitstagen. Ausgeschlossen: Ein- und Austritt im Jahr, wechselnde Arbeitswoche, unregelmäßige Schichten, Jugendliche, Zusatzurlaub, Übertrag und Abgeltung. Höherer Vertrags- oder Tarifurlaub bleibt maßgeblich.",
+  "steps": [
+    [
+      "Geltungsbereich bestätigen",
+      "Prüfen Sie die Wartezeit, das volle Jahr und mögliche Sonderregeln.",
+      ""
+    ],
+    [
+      "Arbeitstage eingeben",
+      "Die Stunden je Arbeitstag sind für dieses Tagesminimum nicht ausschlaggebend.",
+      ""
+    ],
+    [
+      "Jahresminimum ansehen",
+      "Vier Wochen × feste Arbeitstage pro Woche. Vertraglicher Mehrurlaub ist nicht enthalten.",
+      ""
+    ]
+  ],
+  "facts": [
+    [
+      "Berechnung",
+      "1 Tag/Woche → 4 Tage/Jahr; 3 → 12; 5 → 20; 6 → 24."
+    ],
+    [
+      "Tage und Stunden",
+      "Fünf kurze Arbeitstage ergeben dasselbe Tagesminimum wie fünf lange Arbeitstage."
+    ],
+    [
+      "Anderer Arbeitsrhythmus",
+      "Bei Änderungen oder Teiljahren ist eine gesonderte Beurteilung erforderlich."
+    ]
+  ],
+  "sources": [
+    [
+      "Bundesurlaubsgesetz §3",
+      "https://www.gesetze-im-internet.de/burlg/__3.html"
+    ],
+    [
+      "Wartezeit: BUrlG §4",
+      "https://www.gesetze-im-internet.de/burlg/__4.html"
+    ],
+    [
+      "BMAS: Teilzeit und Urlaubsanspruch",
+      "https://www.bmas.de/DE/Arbeit/Arbeitsrecht/Teilzeit-flexible-Arbeitszeit/Teilzeit/Fragen-und-Antworten-Brueckenteilzeit/faq-brueckenteilzeit.html"
+    ]
+  ],
+  "fixed": "de-leave"
+},
+{
+  "id": "nl-leave",
+  "locale": "nl",
+  "tag": "nl-NL",
+  "slug": "netherlands-annual-leave-minimum",
+  "title": "Wettelijke vakantie-uren bij vaste contracturen",
+  "description": "Bereken viermaal uw wekelijkse contracturen als wettelijk minimum voor een volledig jaar.",
+  "intro": "Bij een vast aantal contracturen is het wettelijke jaarminimum viermaal uw arbeidsduur per week. Met 40 uur per week is dat 160 vakantie-uren.",
+  "scope": "Alleen een volledig jaar met ongewijzigde contracturen. Geen berekening voor gedeeltelijke jaren, gewijzigde uren, nulurencontracten, onbetaald verlof of individuele ziektegevallen. Bovenwettelijk verlof, oud saldo, verval en uitbetaling zijn niet inbegrepen.",
+  "steps": [
+    [
+      "Controleer uw vaste werkweek",
+      "Gebruik een volledig jaar met hetzelfde aantal contracturen.",
+      ""
+    ],
+    [
+      "Vul contracturen in",
+      "Gebruik de overeengekomen arbeidsduur, niet een willekeurige gewerkte week.",
+      ""
+    ],
+    [
+      "Bekijk het jaarminimum",
+      "Viermaal uw wekelijkse contracturen. Geen automatisch aantal dagen.",
+      ""
+    ]
+  ],
+  "facts": [
+    [
+      "Voorbeelden",
+      "40 uur → 160 vakantie-uren; 24 → 96; 37,5 → 150."
+    ],
+    [
+      "Meer verlof",
+      "Bovenwettelijke afspraken in cao of contract kunnen gunstiger zijn."
+    ],
+    [
+      "Veranderde uren",
+      "Gebruik bij wijzigingen de afzonderlijke urenstaat en beoordeel perioden apart."
+    ]
+  ],
+  "sources": [
+    [
+      "Overheid: vakantierecht",
+      "https://ondernemersplein.overheid.nl/wetten-en-regels/vakantierecht/"
+    ]
+  ],
+  "fixed": "nl-leave"
+},
+{
+  "id": "de-offer",
+  "locale": "de",
+  "tag": "de-DE",
+  "slug": "germany-gross-offer-comparison",
+  "title": "Bestätigte Brutto-Gehaltsangebote vergleichen",
+  "description": "Festes Monatsbrutto, garantierte zusätzliche Jahreszahlungen und bestätigte Wochenstunden getrennt vergleichen.",
+  "intro": "Vergleichen Sie dieselben Bestandteile für ein volles Jahr in Euro. Die Rechnung bewertet Ihre bestätigten Angaben; sie entscheidet nicht, welche Zahlungen Ihnen rechtlich zustehen.",
+  "scope": "Nur bestätigte feste Barvergütung für dasselbe volle Jahr. Keine Steuern, Sozialabgaben, Arbeitgeberkosten, Aktien, Sachleistungen, Betriebsrente, ungewisse Boni oder Überstunden. Bereits im Grundbetrag enthaltene Zahlungen nicht erneut addieren. Eine 13. Zahlung wird nicht automatisch unterstellt.",
+  "steps": [
+    [
+      "Zeitraum vereinheitlichen",
+      "Beide Angebote müssen dasselbe volle Jahr und Eurobeträge betreffen.",
+      ""
+    ],
+    [
+      "Bestandteile trennen",
+      "Monatsbrutto und garantierte zusätzliche Jahresbeträge getrennt erfassen.",
+      ""
+    ],
+    [
+      "Vergleichen",
+      "Wochenstunden separat betrachten. Die Differenz ist keine Netto- oder Stundenlohnrechnung.",
+      ""
+    ]
+  ],
+  "facts": [
+    [
+      "Formel",
+      "Festes Jahresbrutto = Monatsbrutto × 12 + garantierte zusätzliche Jahreszahlungen. Dies ist eine arithmetische Vergleichskonvention, keine gesetzlich vorgeschriebene Bewertungsformel."
+    ],
+    [
+      "Beispiel",
+      "A: 4.000 × 12 + 2.000 = 50.000 €. B: 4.200 × 12 + 0 = 50.400 €. Differenz: 400 € pro Jahr."
+    ],
+    [
+      "Belege",
+      "NachwG §2 verlangt die getrennte Angabe von Vergütungsbestandteilen; GewO §108 betrifft die Abrechnung. Beide ersetzen keine individuelle Anspruchsprüfung."
+    ]
+  ],
+  "sources": [
+    [
+      "NachwG §2: Vergütungsbestandteile",
+      "https://www.gesetze-im-internet.de/nachwg/__2.html"
+    ],
+    [
+      "GewO §108: Abrechnung",
+      "https://www.gesetze-im-internet.de/gewo/__108.html"
+    ]
+  ],
+  "fixed": "de-offer"
+},
   {
     "id": "de-rest",
     "locale": "de",

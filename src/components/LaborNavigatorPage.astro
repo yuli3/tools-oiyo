@@ -1,6 +1,7 @@
 ---
 import Layout from './Layout.astro';
 import LaborChecklist from './tools/LaborChecklist';
+import FixedWorkweek from './tools/FixedWorkweek';
 import {laborNavigators} from '../data/labor-navigators';
 const {id,hubLocale}=Astro.props as {id?:string;hubLocale?:string};
 const t=id?laborNavigators.find(x=>x.id===id):undefined;
@@ -29,7 +30,7 @@ const schema={'@context':'https://schema.org','@type':t?'WebApplication':'Collec
  <header class="space-y-2"><h1 class="text-2xl font-bold tracking-tight">{title}</h1><p class="text-sm leading-relaxed text-muted-foreground">{description}</p></header>
  {t&&<><p class="text-sm leading-relaxed">{t.intro}</p><section class="space-y-2 rounded-lg border border-border p-3"><h2 class="font-semibold">{l.scope}</h2><p class="text-sm leading-relaxed">{t.scope}</p></section>
  <ol class="grid gap-3 sm:grid-cols-3">{t.steps.map((step,i)=><li class="space-y-2 rounded-lg border border-border p-3"><h2 class="text-sm font-semibold">{i+1}. {step[0]}</h2><p class="text-sm leading-relaxed">{step[1]}</p></li>)}</ol>
- <LaborChecklist client:load locale={language} steps={t.steps} kind={'calc' in t?t.calc:undefined}/>
+ {'fixed' in t ? <FixedWorkweek client:load kind={t.fixed}/> : <LaborChecklist client:load locale={language} steps={t.steps} kind={'calc' in t?t.calc:undefined}/>}
  <section class="space-y-3"><h2 class="text-lg font-semibold">{l.method}</h2><dl class="space-y-3">{t.facts.map(([label,text])=><div class="border-t border-border pt-2"><dt class="font-semibold">{label}</dt><dd class="text-sm leading-relaxed">{text}</dd></div>)}</dl></section>
  <section class="space-y-2"><h2 class="text-lg font-semibold">{l.sources}</h2><ul class="space-y-2">{t.sources.map(([text,href])=><li><a class="inline-flex min-h-11 items-center break-words text-sm text-primary underline underline-offset-4" href={href}>{text}</a></li>)}</ul><p class="text-xs text-muted-foreground">{l.date}</p></section></>}
  {siblings.length>0&&<nav class="space-y-2" aria-label={copy.related}><h2 class="text-lg font-semibold">{copy.related}</h2>{siblings.map(x=><a href={`/${x.locale}/${x.slug}/`} class="block rounded-lg border border-border p-3 text-sm text-primary underline">{x.title}</a>)}</nav>}
