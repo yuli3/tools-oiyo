@@ -12,4 +12,11 @@ export const krFinanceTools = [
   { slug: 'deemed-rent-vat-calculator', title: '간주임대료 계산기', description: '상가 보증금의 간주임대료와 부가세를 과세기간 일수로 계산해요.' },
   { slug: 'first-home-tax-calculator', title: '생애최초 취득세 감면 계산기', description: '12억 원 이하 생애최초 주택의 취득세 감면(최대 200만·300만 원)을 계산해요.' },
   { slug: 'auto-tax-calculator', title: '자동차세 계산기', description: '배기량·차령 경감·지방교육세와 1월 연납 할인을 계산해요.' },
+  { slug: 'weekly-holiday-pay-calculator', title: '주휴수당 계산기', description: '시급·주 근무일·하루 시간으로 주휴수당과 주급·월 환산액을 계산해요.' },
+  { slug: 'daily-worker-insurance-checker', title: '일용직·알바 4대보험 판정기', description: '한 달 근무일·시간·일당으로 4대보험 가입 대상과 원천세를 확인해요.' },
+  { slug: 'labor-cost-calculator', title: '인건비 계산기', description: '사업주 4대보험과 퇴직금 적립을 더해 직원 1명의 실제 비용을 계산해요.' },
+  { slug: 'incorporation-calculator', title: '개인사업자 vs 법인 세금 비교', description: '2026년 법인세율로 개인·법인(유보·배당) 세금을 비교해요.' },
+  { slug: 'legal-interest-calculator', title: '법정이자·지연손해금 계산기', description: '민사 5%·상사 6%와 소송 후 12%를 날짜로 나눠 계산해요.' },
+  { slug: 'statute-limitations-calculator', title: '소멸시효 계산기', description: '채권 종류와 기산일로 시효 만료일과 남은 날을 계산해요.' },
+  { slug: 'labor-law-quick-check', title: '사회초년생 노동법 체크리스트', description: '최저임금·주휴·휴게·근로계약·부당해고 기준을 한 장에 정리했어요.' },
 ] as const;

@@ -1,0 +1,35 @@
+---
+// Moved from blog.oiyo.net/statute-limitations-calculator/ on 2026-10-27 (W10a). Rewritten on kr-legal-2026:
+// adds 민법 제161조 (last day on a weekend or holiday moves to the next day) and month-end handling.
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import StatuteLimitationsCalculator from "../../components/tools/StatuteLimitationsCalculator";
+import { LEGAL_AS_OF } from "../../lib/kr-legal-2026";
+
+const title = "소멸시효 계산기 — 민사 10년·상사 5년·임금 3년 만료일";
+const description = "채권 종류와 기산일을 고르면 소멸시효가 끝나는 날과 남은 날을 계산합니다. 초일 불산입, 말일이 주말·공휴일이면 다음 날로 미루는 규칙까지 반영합니다.";
+
+const ko = {
+  introTitle: "받을 돈, 언제까지 청구할 수 있나요?",
+  intro: "채권은 일정 기간 권리를 행사하지 않으면 소멸시효로 사라집니다. 일반 민사채권은 10년, 상사채권은 5년, 임금·퇴직금과 공사대금·물품대금은 3년, 음식·숙박비는 1년입니다. 기간은 기산일 다음 날부터 세고(민법 제157조), 마지막 날이 토요일·일요일·공휴일이면 다음 평일까지 늘어납니다(제161조). 예를 들어 2021년 10월 3일이 기산일인 5년 상사채권은 2026년 10월 3일(토·개천절) 다음 평일인 10월 6일에 끝납니다.",
+  howToTitle: "사용 방법",
+  steps: ["채권 종류를 고릅니다.", "권리를 행사할 수 있게 된 날(변제기, 임금 지급일, 손해와 가해자를 안 날 등)을 넣습니다.", "끝나는 날과 오늘 기준 남은 날을 확인합니다."],
+  highlightsTitle: "주요 특징",
+  highlights: [
+    { title: "주말·공휴일 연장", body: "2026·2027년 공휴일 목록으로 마지막 날을 다음 평일로 미룹니다." },
+    { title: "말일 처리", body: "2월 29일처럼 해당 날짜가 없는 해에는 그 달 말일로 끝냅니다." },
+    { title: "근거 조문 표시", body: "채권마다 민법·상법·근로기준법 조문과 주의점을 함께 보여 줍니다." },
+  ],
+  disclaimer: `참고용 계산이며 법률 자문이 아닙니다. 시효 중단·정지, 기산일 판단, 판결로 확정된 채권(10년, 민법 제165조) 등은 사실관계에 따라 달라지니 변호사나 법률구조공단(132)에 확인하세요. 기준일 ${LEGAL_AS_OF}.`,
+};
+
+const faqs = [
+  { q: "시효를 멈추려면 어떻게 하나요?", a: "소송 제기, 지급명령 신청, 압류·가압류·가처분, 채무자의 승인(일부 변제, 각서 등)이 있으면 시효가 중단되고 그때부터 다시 셉니다(민법 제168조). 내용증명 같은 최고는 6개월 안에 소송 등을 해야 중단 효력이 있습니다(제174조)." },
+  { q: "판결을 받은 채권은 몇 년인가요?", a: "판결이나 그와 같은 효력이 있는 것으로 확정된 채권은 원래 단기시효였더라도 10년입니다(민법 제165조)." },
+  { q: "임금 3년은 언제부터 세나요?", a: "각 달 임금은 정기 지급일부터, 퇴직금은 퇴직일로부터 14일이 지난 날부터 셉니다(근로기준법 제49조, 제36조)." },
+  { q: "불법행위는 3년과 10년 중 무엇인가요?", a: "손해와 가해자를 안 날부터 3년, 불법행위를 한 날부터 10년 중 먼저 끝나는 날에 소멸합니다(민법 제766조). 두 기산일을 각각 넣어 비교해 보세요." },
+];
+---
+<KrFinancePage slug="statute-limitations-calculator" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <StatuteLimitationsCalculator client:load />
+  <p class="mt-4 text-xs text-muted-foreground">근거: 민법 제157조·제160조·제161조·제162조~제165조·제168조·제174조·제766조, 상법 제64조, 근로기준법 제49조. 기준일 {LEGAL_AS_OF}.</p>
+</KrFinancePage>
