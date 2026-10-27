@@ -1,0 +1,38 @@
+---
+import Layout from './Layout.astro';
+import LaborChecklist from './tools/LaborChecklist';
+import {laborNavigators} from '../data/labor-navigators';
+const {id,hubLocale}=Astro.props as {id?:string;hubLocale?:string};
+const t=id?laborNavigators.find(x=>x.id===id):undefined;
+const language=t?.locale??hubLocale??'de';
+const shells={
+de:{all:'Werkzeuge auf Deutsch',related:'Weitere Werkzeuge',language:'Sprache',license:'Lizenz (Englisch)',note:'Eingaben bleiben im Browser. Die Website verwendet Besuchsstatistiken und Werbung.'},
+nl:{all:'Hulpmiddelen in het Nederlands',related:'Meer hulpmiddelen',language:'Taal',license:'Licentie (Engels)',note:'Invoer blijft in de browser. De website gebruikt bezoekstatistieken en advertenties.'},
+fr:{all:'Outils en français',related:'Autres outils',language:'Langue',license:'Licence',note:'Les saisies restent dans le navigateur. Le site utilise des statistiques de visite et de la publicité.'},
+es:{all:'Herramientas en español',related:'Más herramientas',language:'Idioma',license:'Licencia',note:'Los datos introducidos permanecen en el navegador. El sitio utiliza estadísticas de visitas y publicidad.'}
+};
+const labels={
+de:{scope:'Geltungsbereich',method:'Begriffe getrennt halten',sources:'Offizielle Quellen',date:'Quellen geprüft: 27. Oktober 2026. Keine individuelle Rechtsberatung.',family:'OIYO-Websites'},
+nl:{scope:'Toepassingsgebied',method:'Begrippen uit elkaar houden',sources:'Officiële bronnen',date:'Bronnen gecontroleerd: 27 oktober 2026. Geen individueel juridisch advies.',family:'OIYO-websites'},
+fr:{scope:'Champ et limites',method:'Distinguer les notions',sources:'Sources officielles',date:'Sources vérifiées le 27 octobre 2026. Pas de conseil juridique individuel.',family:'Sites OIYO'},
+es:{scope:'Ámbito y límites',method:'Conceptos separados',sources:'Fuentes oficiales',date:'Fuentes revisadas el 27 de octubre de 2026. No es asesoramiento jurídico individual.',family:'Sitios OIYO'}
+};
+const k=language as keyof typeof shells,copy=shells[k],l=labels[k];
+const nativeLocale=language==='de'||language==='nl'?'en':language as 'fr'|'es';
+const title=t?.title??copy.all,description=t?.description??copy.related;
+const url=`https://tools.oiyo.net/${language}/${t?t.slug+'/':''}`;
+const siblings=laborNavigators.filter(x=>x.locale===language&&x.id!==id);
+const schema={'@context':'https://schema.org','@type':t?'WebApplication':'CollectionPage',name:title,url,inLanguage:t?.tag??language,description,...(t?{applicationCategory:'BusinessApplication',operatingSystem:'All',isAccessibleForFree:true}: {})};
+---
+<Layout title={title} description={description} locale={nativeLocale} languageTag={t?.tag??language} ogLocale={language==='de'?'de_DE':language==='nl'?'nl_NL':undefined} canonicalURL={url} shellOverride={copy} homeURL={`/${language}/`} licenseURL={`https://blog.oiyo.net/${nativeLocale}/license/`} familyTitle={l.family}>
+ <article class="mx-auto max-w-3xl space-y-4 px-4 py-5" data-labor-navigator={id??'hub'}>
+ <header class="space-y-2"><h1 class="text-2xl font-bold tracking-tight">{title}</h1><p class="text-sm leading-relaxed text-muted-foreground">{description}</p></header>
+ {t&&<><p class="text-sm leading-relaxed">{t.intro}</p><section class="space-y-2 rounded-lg border border-border p-3"><h2 class="font-semibold">{l.scope}</h2><p class="text-sm leading-relaxed">{t.scope}</p></section>
+ <ol class="grid gap-3 sm:grid-cols-3">{t.steps.map((step,i)=><li class="space-y-2 rounded-lg border border-border p-3"><h2 class="text-sm font-semibold">{i+1}. {step[0]}</h2><p class="text-sm leading-relaxed">{step[1]}</p></li>)}</ol>
+ <LaborChecklist client:load locale={language} steps={t.steps} kind={'calc' in t?t.calc:undefined}/>
+ <section class="space-y-3"><h2 class="text-lg font-semibold">{l.method}</h2><dl class="space-y-3">{t.facts.map(([label,text])=><div class="border-t border-border pt-2"><dt class="font-semibold">{label}</dt><dd class="text-sm leading-relaxed">{text}</dd></div>)}</dl></section>
+ <section class="space-y-2"><h2 class="text-lg font-semibold">{l.sources}</h2><ul class="space-y-2">{t.sources.map(([text,href])=><li><a class="inline-flex min-h-11 items-center break-words text-sm text-primary underline underline-offset-4" href={href}>{text}</a></li>)}</ul><p class="text-xs text-muted-foreground">{l.date}</p></section></>}
+ {siblings.length>0&&<nav class="space-y-2" aria-label={copy.related}><h2 class="text-lg font-semibold">{copy.related}</h2>{siblings.map(x=><a href={`/${x.locale}/${x.slug}/`} class="block rounded-lg border border-border p-3 text-sm text-primary underline">{x.title}</a>)}</nav>}
+ {!t&&<nav class="flex flex-wrap gap-3 text-sm" aria-label={copy.language}>{['de','nl','fr','es'].map(x=><a href={`/${x}/`} class="inline-flex min-h-11 items-center text-primary underline" lang={x}>{x.toUpperCase()}</a>)}</nav>}
+ </article><script type="application/ld+json" set:html={JSON.stringify(schema)}/>
+</Layout>
