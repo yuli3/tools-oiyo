@@ -25,4 +25,9 @@ export const krFinanceTools = [
   { slug: 'overseas-stock-saver-calculator', title: '해외주식 양도세 절세 계산기', description: '250만 원 공제와 손실 실현으로 줄일 수 있는 세금을 계산해요.' },
   { slug: 'tax-savings-roadmap', title: '절세 로드맵', description: '상황에 맞는 연말정산·종소세 절세 항목과 예상 절세액을 정리해요.' },
   { slug: 'tax-formula-explorer', title: '세금 계산 구조 탐색기', description: '소득세·법인세·부가세·양도세·상속세 계산 단계를 직접 바꿔 봐요.' },
+  { slug: 'vat-calculator', title: '부가세 계산기', description: '공급가액·부가세·합계 금액을 서로 환산해요.' },
+  { slug: 'jeonse-guarantee-calculator', title: '전세보증금 안전도 계산기', description: '시세와 선순위 채권으로 보증금 회수 가능성을 점검해요.' },
+  { slug: 'jeonse-monthly-converter', title: '전월세 전환 계산기', description: '전환율로 전세↔월세 환산 금액을 계산해요.' },
+  { slug: 'subscription-points-calculator', title: '청약 가점 계산기', description: '무주택기간·부양가족·통장 가입기간으로 84점 만점 가점을 계산해요.' },
+  { slug: 'reconstruction-profit', title: '재건축 수익률 계산기', description: '현재가·분담금·예상 시세로 재건축 투자 수익률을 계산해요.' },
 ] as const;

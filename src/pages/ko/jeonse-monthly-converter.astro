@@ -1,0 +1,42 @@
+---
+// Moved from blog.oiyo.net/jeonse-monthly-converter/ on 2026-10-27 (W12); ko-only on Tools because it applies Korean rules. Default rate 5.5% -> 4.5% (legal cap is min(10%, base rate + 2%p)).
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import JeonseMonthlyConverter from "../../components/tools/JeonseMonthlyConverter";
+
+const title = ({
+    title: "전월세 전환 계산기 — 전세↔월세 전환율 계산",
+    description: "전세금을 월세로, 또는 월세를 전세금으로 전환하는 계산기. 전환율 조정 및 시세 유불리 판단 기능 제공.",
+  }).title;
+const description = ({
+    title: "전월세 전환 계산기 — 전세↔월세 전환율 계산",
+    description: "전세금을 월세로, 또는 월세를 전세금으로 전환하는 계산기. 전환율 조정 및 시세 유불리 판단 기능 제공.",
+  }).description;
+const c = {
+    introTitle: "전세와 월세는 보증금 차이를 연 이율로 환산해 비교합니다",
+    intro: "전세에서 보증금을 낮추고 월세를 더 내거나, 월세를 전세금으로 환산하려면 전월세 전환율을 사용해요. 이 계산기는 전세금, 보증금, 월세, 전환율을 넣어 월세 환산액 또는 등가 전세금을 빠르게 계산해요.",
+    formulaTitle: "계산 기준",
+    formulas: [
+      { title: "전세에서 월세", body: "월세 = (전세금 - 보증금) × 전환율 ÷ 12 입니다." },
+      { title: "월세에서 전세", body: "환산 전세금 = 보증금 + 월세 × 12 ÷ 전환율 입니다." },
+      { title: "유불리 비교", body: "입력 월세가 전환율 기준 월세보다 낮으면 세입자에게 상대적으로 유리합니다." },
+    ],
+    howToTitle: "사용 방법",
+    steps: [
+      "전세를 월세로 볼지, 월세를 전세로 볼지 모드를 선택합니다.",
+      "전세금, 보증금, 월세, 전환율을 만원 단위로 입력합니다.",
+      "환산 월세나 환산 전세금을 확인하고 지역 시세와 법정 전환율을 함께 비교합니다.",
+    ],
+    faqTitle: "자주 묻는 질문",
+    faqs: [
+      { question: "법정 전월세 전환율은 고정인가요?", answer: "아닙니다. 법정 상한은 기준금리와 관련되어 바뀔 수 있고, 실제 시장 전환율은 지역, 물건, 금리 환경에 따라 다릅니다." },
+      { question: "전환율이 높으면 누구에게 유리한가요?", answer: "같은 보증금 차이라면 전환율이 높을수록 환산 월세가 커져 임대인에게 유리하고 세입자 부담은 커집니다." },
+      { question: "관리비도 포함해야 하나요?", answer: "이 계산기는 순수 보증금과 월세만 봅니다. 실질 주거비 비교에는 관리비, 대출이자, 보증보험료, 이사비도 별도로 봐야 합니다." },
+    ],
+    disclaimer: "이 도구는 일반적인 추정용이에요. 실제 전환율, 임대차 법령, 계약 조건은 관련 기관이나 전문가에게 확인하세요.",
+  };
+const ko = { introTitle: c.introTitle, intro: c.intro, howToTitle: c.howToTitle, steps: c.steps, highlightsTitle: c.formulaTitle, highlights: c.formulas, disclaimer: c.disclaimer };
+const faqs = c.faqs.map((f) => ({ q: f.question, a: f.answer }));
+---
+<KrFinancePage slug="jeonse-monthly-converter" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <JeonseMonthlyConverter client:load locale="ko" />
+</KrFinancePage>

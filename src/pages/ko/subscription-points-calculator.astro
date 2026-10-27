@@ -1,0 +1,42 @@
+---
+// Moved from blog.oiyo.net/subscription-points-calculator/ on 2026-10-27 (W12); ko-only on Tools because it applies Korean rules. Fixed off-by-one in account-period and homeless-period points.
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import SubscriptionPointsCalculator from "../../components/tools/SubscriptionPointsCalculator";
+
+const title = ({
+    title: "청약가점 계산기 — 부양가족·통장기간·무주택 가점 자동 계산",
+    description: "부양가족 수(최대 35점), 청약통장 가입 기간(최대 17점), 무주택 기간(최대 32점)을 입력하면 청약가점 만점 84점 중 내 점수를 자동으로 계산합니다.",
+  }).title;
+const description = ({
+    title: "청약가점 계산기 — 부양가족·통장기간·무주택 가점 자동 계산",
+    description: "부양가족 수(최대 35점), 청약통장 가입 기간(최대 17점), 무주택 기간(최대 32점)을 입력하면 청약가점 만점 84점 중 내 점수를 자동으로 계산합니다.",
+  }).description;
+const c = {
+    introTitle: "청약가점은 부양가족, 통장기간, 무주택 기간을 합산합니다",
+    intro: "이 계산기는 한국 아파트 청약 가점제의 세 핵심 항목을 빠르게 입력해 총점 84점 중 현재 점수를 보여 줘요. 현재 주택 보유 여부를 체크하면 무주택 기간 점수가 0점으로 처리되어, 가점 구조를 더 보수적으로 확인할 수 있어요.",
+    formulaTitle: "점수 기준",
+    formulas: [
+      { title: "부양가족", body: "본인을 제외한 부양가족 수에 따라 5점 단위로 올라가며 최대 35점입니다." },
+      { title: "청약통장", body: "가입 기간이 길수록 점수가 오르며 15년 이상이면 최대 17점입니다." },
+      { title: "무주택 기간", body: "만 30세 이후 또는 혼인 후 무주택 기간을 기준으로 최대 32점입니다." },
+    ],
+    howToTitle: "사용 방법",
+    steps: [
+      "부양가족 수를 입력합니다.",
+      "청약통장 가입 기간과 무주택 기간을 조정합니다.",
+      "현재 주택 보유 여부를 반영한 총점과 항목별 점수를 확인합니다.",
+    ],
+    faqTitle: "자주 묻는 질문",
+    faqs: [
+      { question: "현재 집을 보유하면 무주택 점수는 어떻게 되나요?", answer: "이 계산기에서는 현재 주택 보유 중을 체크하면 무주택 기간 점수를 0점으로 처리합니다. 실제 판정은 세대원 보유 이력과 모집공고 기준을 따라야 합니다." },
+      { question: "부양가족 0명도 점수가 있나요?", answer: "이 계산 로직은 0명일 때 5점부터 시작하는 청약가점 표를 사용합니다. 다만 실제 인정 여부는 가족관계와 주민등록 요건을 확인해야 합니다." },
+      { question: "당첨 커트라인도 알려주나요?", answer: "아닙니다. 커트라인은 지역, 주택형, 공급 물량, 경쟁률에 따라 매번 달라지므로 청약홈과 모집공고를 확인해야 합니다." },
+    ],
+    disclaimer: "이 도구는 일반적인 추정용이에요. 실제 청약 자격, 가점, 당첨 가능성은 모집공고와 관련 기관 또는 전문가에게 확인하세요.",
+  };
+const ko = { introTitle: c.introTitle, intro: c.intro, howToTitle: c.howToTitle, steps: c.steps, highlightsTitle: c.formulaTitle, highlights: c.formulas, disclaimer: c.disclaimer };
+const faqs = c.faqs.map((f) => ({ q: f.question, a: f.answer }));
+---
+<KrFinancePage slug="subscription-points-calculator" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <SubscriptionPointsCalculator client:load locale="ko" />
+</KrFinancePage>
