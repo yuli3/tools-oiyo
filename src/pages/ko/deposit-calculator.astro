@@ -1,0 +1,51 @@
+---
+// Moved from blog.oiyo.net/deposit-calculator/ on 2026-10-27 (W11b). Blog offered a 9.9% "preferential" option (code used 9.5%) for a product abolished in 2019.
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import DepositCalculator from "../../components/tools/DepositCalculator";
+
+const title = "예금·적금 이자 계산기 — 세후 이자·만기 수령액";
+const description = "정기예금과 적금의 단리·월복리 이자, 이자소득세 15.4%를 뺀 세후 이자와 만기 수령액을 계산합니다.";
+const ko = {
+  "introTitle": "예금과 적금, 이자는 어떻게 다르게 붙나요?",
+  "intro": "정기예금은 목돈 전체에 기간 내내 이자가 붙습니다. 적금은 매달 넣은 돈마다 남은 기간만큼만 이자가 붙어서, 같은 연 이율이라도 실제 이자는 예금의 절반 정도입니다. 이자에는 소득세 14%와 지방소득세 1.4%를 합친 15.4%가 원천징수됩니다.",
+  "howToTitle": "사용 방법",
+  "steps": [
+    "정기예금(목돈)인지 적금(매달 납입)인지 고릅니다.",
+    "금액, 연 이율, 기간(개월)을 넣습니다.",
+    "단리·월복리와 과세 방식을 고르면 세후 수령액이 바로 나옵니다."
+  ],
+  "highlightsTitle": "주요 특징",
+  "highlights": [
+    {
+      "title": "적금 이자 계산법",
+      "body": "첫 달 납입금은 전 기간, 마지막 달 납입금은 1개월치 이자만 붙는 은행 방식 그대로 계산합니다."
+    },
+    {
+      "title": "세금 10원 단위 절사",
+      "body": "소득세와 지방소득세를 따로 10원 미만 버림해 은행 영수증과 맞춥니다."
+    },
+    {
+      "title": "직접 입력 세율",
+      "body": "조합 예탁금(1.4%)처럼 세율이 다른 경우 직접 넣을 수 있습니다."
+    }
+  ],
+  "disclaimer": "참고용 계산입니다. 실제 이자는 은행의 일할 계산 방식, 중도해지·우대금리 조건에 따라 달라질 수 있습니다. 세금우대종합저축(9.5%)은 2019년 말 폐지됐습니다."
+};
+const faqs = [
+  {
+    "q": "적금 연 4%면 이자가 4%인가요?",
+    "a": "아닙니다. 매달 넣는 돈마다 이자가 붙는 기간이 달라 12개월 적금의 실제 이자는 연 4% 기준으로 약 2.17% 수준입니다(13/24 × 4%)."
+  },
+  {
+    "q": "세금우대는 왜 없나요?",
+    "a": "9.5% 세금우대종합저축은 2019년 12월 31일로 신규 가입이 끝났습니다. 대신 ISA 계좌나 조합 예탁금 비과세·저율과세를 확인해 보세요."
+  },
+  {
+    "q": "월복리 상품은 얼마나 더 받나요?",
+    "a": "1천만 원, 연 3.5%, 12개월이면 단리 35만 원, 월복리 약 35.6만 원으로 차이는 크지 않습니다."
+  }
+];
+---
+<KrFinancePage slug="deposit-calculator" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <DepositCalculator client:load locale="ko" />
+</KrFinancePage>

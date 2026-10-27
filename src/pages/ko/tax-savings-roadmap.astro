@@ -1,0 +1,47 @@
+---
+// Moved from blog.oiyo.net/tax-savings-roadmap/ on 2026-10-27 (W11b). Fixed Blog figures: rent credit cap, child credit (2025+), donation and medical rates.
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import TaxSavingsRoadmap from "../../components/tools/TaxSavingsRoadmap";
+
+const title = "절세 로드맵 — 내 상황에 맞는 연말정산·종소세 절세 방법";
+const description = "소득, 고용 형태, 가족, 주거 상황을 고르면 IRP·연금저축·월세·카드·자녀 공제 등 받을 수 있는 절세 항목과 예상 절세액을 정리합니다.";
+const ko = {
+  "introTitle": "나에게 맞는 절세 방법은 무엇인가요?",
+  "intro": "같은 연봉이라도 무주택 여부, 부양가족, 연금 계좌 보유 여부에 따라 받을 수 있는 공제가 달라집니다. 이 로드맵은 상황에 맞는 항목만 골라 예상 절세 범위와 실행 방법을 보여 줍니다.",
+  "howToTitle": "사용 방법",
+  "steps": [
+    "연 소득과 고용 형태를 고릅니다.",
+    "결혼·부양가족·주거 상황을 고릅니다.",
+    "이미 가진 ISA·연금저축·IRP를 체크하고 남은 항목을 확인합니다."
+  ],
+  "highlightsTitle": "주요 특징",
+  "highlights": [
+    {
+      "title": "2025~2026년 기준 반영",
+      "body": "자녀 세액공제 25만·55만 원, 월세 공제 한도 1,000만 원 등 최신 기준입니다."
+    },
+    {
+      "title": "예상 절세 범위",
+      "body": "항목마다 최소~최대 절세액을 보여 줍니다."
+    },
+    {
+      "title": "바로 할 일",
+      "body": "계좌 개설, 서류 준비 등 실행 방법을 함께 적었습니다."
+    }
+  ],
+  "disclaimer": "예상 절세액은 대략적인 범위입니다. 실제 공제액은 소득 구간, 한도, 다른 공제와의 관계에 따라 달라집니다."
+};
+const faqs = [
+  {
+    "q": "IRP와 연금저축을 둘 다 해야 하나요?",
+    "a": "세액공제 한도는 연금저축 600만 원, 합산 900만 원입니다. 연금저축만으로 600만 원, 나머지 300만 원은 IRP로 채우는 방식이 흔합니다."
+  },
+  {
+    "q": "월세 공제는 누가 받나요?",
+    "a": "총급여 8,000만 원(종합소득 7,000만 원) 이하 무주택 세대주 등이 국민주택규모 이하 또는 기준시가 4억 원 이하 주택에 살 때 받습니다."
+  }
+];
+---
+<KrFinancePage slug="tax-savings-roadmap" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <TaxSavingsRoadmap client:load locale="ko" />
+</KrFinancePage>

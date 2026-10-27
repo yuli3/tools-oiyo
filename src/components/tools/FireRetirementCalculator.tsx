@@ -1,0 +1,294 @@
+'use client';
+
+import React, { useState } from 'react';
+import AnimatedNumber from './AnimatedNumber';
+
+interface FireResult {
+  fireNumber: number;
+  yearsToFire: number;
+  fireAge: number;
+  alreadyFire: boolean;
+  shortfall: number;
+}
+
+const FireRetirementCalculator: React.FC<{ locale?: 'ko' | 'en' }> = ({ locale = 'ko' }) => {
+  const [currentAge, setCurrentAge] = useState<string>('30');
+  const [targetRetireAge, setTargetRetireAge] = useState<string>('50');
+  const [currentAssets, setCurrentAssets] = useState<string>('100000000');
+  const [monthlySavings, setMonthlySavings] = useState<string>('2000000');
+  const [annualReturnRate, setAnnualReturnRate] = useState<string>('7');
+  const [annualSpending, setAnnualSpending] = useState<string>('36000000');
+  const [result, setResult] = useState<FireResult | null>(null);
+  const [error, setError] = useState<string>('');
+
+  const fmt = (n: number) => n.toLocaleString('ko-KR');
+
+  const calculate = () => {
+    setError('');
+    const age = Number(currentAge);
+    const retireAge = Number(targetRetireAge);
+    const assets = Number(currentAssets);
+    const annualSavings = Number(monthlySavings) * 12;
+    const roi = Number(annualReturnRate) / 100;
+    const spending = Number(annualSpending);
+
+    if (age <= 0 || retireAge <= age || assets < 0 || annualSavings < 0 || spending <= 0 || roi < 0) {
+      setError(locale === 'ko' ? '입력값을 올바르게 확인해 주세요.' : 'Please check your inputs.');
+      return;
+    }
+
+    // 4% Rule: FIRE 필요 자산 = 연간지출 × 25
+    const fireNumber = spending * 25;
+
+    if (assets >= fireNumber) {
+      setResult({ fireNumber, yearsToFire: 0, fireAge: age, alreadyFire: true, shortfall: 0 });
+      return;
+    }
+
+    let current = assets;
+    let years = 0;
+    const r = roi;
+
+    while (current < fireNumber && years < 100) {
+      current = current * (1 + r) + annualSavings;
+      years++;
+    }
+
+    const fireAge = age + years;
+    const shortfall = fireAge > retireAge ? fireNumber - (assets * Math.pow(1 + r, retireAge - age) + annualSavings * (Math.pow(1 + r, retireAge - age) - 1) / r) : 0;
+
+    setResult({ fireNumber, yearsToFire: years, fireAge, alreadyFire: false, shortfall: Math.max(0, shortfall) });
+  };
+
+  const reset = () => {
+    setCurrentAge('30');
+    setTargetRetireAge('50');
+    setCurrentAssets('100000000');
+    setMonthlySavings('2000000');
+    setAnnualReturnRate('7');
+    setAnnualSpending('36000000');
+    setResult(null);
+    setError('');
+  };
+
+  return (
+    <div className="my-7 sm:my-12 p-6 md:p-8 bg-muted   border border-border rounded-3xl shadow-xl">
+      <h3 className="text-xl font-bold text-foreground mb-6">
+        {locale === 'ko' ? 'FIRE 조기 은퇴 계산기' : 'FIRE Retirement Calculator'}
+      </h3>
+
+      <div className="grid md:grid-cols-2 gap-5 sm:gap-8">
+        {/* Inputs */}
+        <div className="space-y-4">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-1">
+              <label className="text-sm font-bold text-foreground">
+                {locale === 'ko' ? '현재 나이' : 'Current Age'}
+              </label>
+              <input
+                type="number"
+                value={currentAge}
+                onChange={(e) => setCurrentAge(e.target.value)}
+                min="1"
+                max="80"
+                className="w-full p-3 bg-card border border-border rounded-xl focus:ring-2 focus:ring-ring outline-none"
+                aria-label={locale === 'ko' ? '현재 나이' : 'Current Age'}
+              />
+            </div>
+            <div className="space-y-1">
+              <label className="text-sm font-bold text-foreground">
+                {locale === 'ko' ? '목표 은퇴 나이' : 'Target Retire Age'}
+              </label>
+              <input
+                type="number"
+                value={targetRetireAge}
+                onChange={(e) => setTargetRetireAge(e.target.value)}
+                min="1"
+                max="80"
+                className="w-full p-3 bg-card border border-border rounded-xl focus:ring-2 focus:ring-ring outline-none"
+                aria-label={locale === 'ko' ? '목표 은퇴 나이' : 'Target Retire Age'}
+              />
+            </div>
+          </div>
+
+          <div className="space-y-1">
+            <label className="text-sm font-bold text-foreground">
+              {locale === 'ko' ? '현재 자산 (원)' : 'Current Assets (KRW)'}
+            </label>
+            <input
+              type="number"
+              value={currentAssets}
+              onChange={(e) => setCurrentAssets(e.target.value)}
+              min="0"
+              className="w-full p-3 bg-card border border-border rounded-xl focus:ring-2 focus:ring-ring outline-none"
+              aria-label={locale === 'ko' ? '현재 자산' : 'Current Assets'}
+            />
+          </div>
+
+          <div className="space-y-1">
+            <label className="text-sm font-bold text-foreground">
+              {locale === 'ko' ? '월 저축액 (원)' : 'Monthly Savings (KRW)'}
+            </label>
+            <input
+              type="number"
+              value={monthlySavings}
+              onChange={(e) => setMonthlySavings(e.target.value)}
+              min="0"
+              className="w-full p-3 bg-card border border-border rounded-xl focus:ring-2 focus:ring-ring outline-none"
+              aria-label={locale === 'ko' ? '월 저축액' : 'Monthly Savings'}
+            />
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-1">
+              <label className="text-sm font-bold text-foreground">
+                {locale === 'ko' ? '연 수익률 (%)' : 'Annual Return (%)'}
+              </label>
+              <input
+                type="number"
+                value={annualReturnRate}
+                onChange={(e) => setAnnualReturnRate(e.target.value)}
+                step="0.1"
+                min="0"
+                max="30"
+                className="w-full p-3 bg-card border border-border rounded-xl focus:ring-2 focus:ring-ring outline-none"
+                aria-label={locale === 'ko' ? '연 수익률' : 'Annual Return Rate'}
+              />
+            </div>
+            <div className="space-y-1">
+              <label className="text-sm font-bold text-foreground">
+                {locale === 'ko' ? '연 지출액 (원)' : 'Annual Spending (KRW)'}
+              </label>
+              <input
+                type="number"
+                value={annualSpending}
+                onChange={(e) => setAnnualSpending(e.target.value)}
+                min="0"
+                className="w-full p-3 bg-card border border-border rounded-xl focus:ring-2 focus:ring-ring outline-none"
+                aria-label={locale === 'ko' ? '연 지출액' : 'Annual Spending'}
+              />
+            </div>
+          </div>
+
+          {error && (
+            <p className="text-sm text-destructive bg-muted border border-border rounded-xl p-3" role="alert">
+              {error}
+            </p>
+          )}
+
+          <div className="flex gap-3 pt-2">
+            <button
+              onClick={calculate}
+              className="flex-1 py-3 bg-primary hover:bg-primary text-white font-bold rounded-xl transition-colors"
+              aria-label={locale === 'ko' ? '계산하기' : 'Calculate'}
+            >
+              {locale === 'ko' ? '계산하기' : 'Calculate'}
+            </button>
+            <button
+              onClick={reset}
+              className="px-5 py-3 bg-card border border-border hover:bg-muted text-foreground font-bold rounded-xl transition-colors"
+              aria-label={locale === 'ko' ? '다시 계산하기' : 'Reset'}
+            >
+              {locale === 'ko' ? '초기화' : 'Reset'}
+            </button>
+          </div>
+        </div>
+
+        {/* Results */}
+        <div className="flex flex-col justify-center">
+          {result ? (
+            <div className="space-y-4">
+              {result.alreadyFire ? (
+                <div className="p-4 sm:p-6 bg-primary text-white rounded-2xl text-center">
+                  <div className="text-2xl font-bold mb-2">
+                    {locale === 'ko' ? '이미 FIRE 달성!' : 'Already FIRE!'}
+                  </div>
+                  <p className="text-primary-foreground text-sm">
+                    {locale === 'ko' ? '현재 자산으로 조기 은퇴가 가능합니다.' : 'Your assets are sufficient for retirement.'}
+                  </p>
+                </div>
+              ) : (
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="p-4 bg-card rounded-2xl border border-border text-center">
+                    <span className="text-xs text-primary font-bold uppercase tracking-wide block mb-1">
+                      {locale === 'ko' ? 'FIRE까지 기간' : 'Years to FIRE'}
+                    </span>
+                    <AnimatedNumber
+                      value={result.yearsToFire}
+                      locales={locale}
+                      className="text-4xl font-bold text-foreground"
+                    />
+                    <span className="text-sm text-primary ml-1">{locale === 'ko' ? '년' : 'yrs'}</span>
+                  </div>
+                  <div className="p-4 bg-card rounded-2xl border border-border text-center">
+                    <span className="text-xs text-primary font-bold uppercase tracking-wide block mb-1">
+                      {locale === 'ko' ? '은퇴 예상 나이' : 'FIRE Age'}
+                    </span>
+                    <AnimatedNumber
+                      value={result.fireAge}
+                      locales={locale}
+                      className="text-4xl font-bold text-foreground"
+                    />
+                    <span className="text-sm text-primary ml-1">{locale === 'ko' ? '세' : 'yrs old'}</span>
+                  </div>
+                </div>
+              )}
+
+              <div className="p-5 bg-card rounded-2xl border border-border">
+                <div className="flex justify-between items-center mb-1">
+                  <span className="text-sm text-muted-foreground">{locale === 'ko' ? 'FIRE 필요 자산 (4% 룰)' : 'FIRE Number (4% Rule)'}</span>
+                </div>
+                <AnimatedNumber
+                  value={result.fireNumber}
+                  locales="ko-KR"
+                  suffix="원"
+                  className="text-2xl font-bold text-foreground"
+                />
+                <p className="text-xs text-muted-foreground mt-1">
+                  {locale === 'ko' ? `연 지출 × 25배 = ${fmt(Number(annualSpending))}원 × 25` : `Annual spending × 25`}
+                </p>
+              </div>
+
+              {!result.alreadyFire && result.shortfall > 0 && (
+                <div className="p-4 bg-muted border border-border rounded-2xl">
+                  <span className="text-xs text-foreground font-bold uppercase tracking-wide block mb-1">
+                    {locale === 'ko' ? '목표 나이 기준 부족액' : 'Shortfall at Target Age'}
+                  </span>
+                  <AnimatedNumber
+                    value={Math.round(result.shortfall)}
+                    locales="ko-KR"
+                    suffix="원"
+                    className="text-lg font-bold text-foreground"
+                  />
+                </div>
+              )}
+
+              {!result.alreadyFire && result.fireAge <= Number(targetRetireAge) && (
+                <div className="p-4 bg-muted border border-border rounded-2xl text-foreground text-sm font-bold">
+                  {locale === 'ko'
+                    ? `목표 은퇴 나이(${targetRetireAge}세) 이전에 FIRE 달성 가능합니다.`
+                    : `You can achieve FIRE before your target age of ${targetRetireAge}.`}
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="flex flex-col items-center justify-center h-48 text-primary text-center">
+              <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mb-3">
+                <span className="text-3xl" aria-hidden="true">🔥</span>
+              </div>
+              <p className="text-sm text-primary font-bold">
+                {locale === 'ko' ? '정보를 입력하고 계산하세요' : 'Enter info and calculate'}
+              </p>
+            </div>
+          )}
+        </div>
+      </div>
+
+      <p className="mt-6 text-xs text-muted-foreground text-center">
+        * FIRE = Financial Independence, Retire Early. 4% 룰 기준 계산이며 실제 시장 수익률과 다를 수 있습니다.
+      </p>
+    </div>
+  );
+};
+
+export default FireRetirementCalculator;

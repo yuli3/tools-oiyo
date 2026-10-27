@@ -1,0 +1,51 @@
+---
+// Moved from blog.oiyo.net/brokerage-calculator/ on 2026-10-27 (W11b). Rewritten on kr-brokerage-fee (Blog had a stock-fee title and the 12~15억 bracket wrong).
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import BrokerageCalculator from "../../components/tools/BrokerageCalculator";
+
+const title = "부동산 중개수수료(중개보수) 계산기 2026 — 매매·전세·월세";
+const description = "주택 매매·전세·월세 거래금액에 따른 중개보수 상한 요율과 최대 금액을 계산합니다. 월세 환산 거래금액과 부가세도 보여 줍니다.";
+const ko = {
+  "introTitle": "중개보수는 얼마까지 낼 수 있나요?",
+  "intro": "주택 중개보수는 거래금액 구간별 상한 요율 안에서 정합니다. 2021년 10월 개정 이후 매매는 9억 원 이상부터, 임대차는 6억 원 이상부터 요율이 낮아졌습니다. 월세는 보증금에 월세의 100배를 더한 금액(5천만 원 미만이면 70배)을 거래금액으로 봅니다.",
+  "howToTitle": "사용 방법",
+  "steps": [
+    "매매인지 전세·월세인지 고릅니다.",
+    "매매가 또는 보증금과 월세를 넣습니다.",
+    "거래금액, 상한 요율, 한도와 최대 중개보수를 확인합니다."
+  ],
+  "highlightsTitle": "주요 특징",
+  "highlights": [
+    {
+      "title": "월세 환산 자동",
+      "body": "보증금 + 월세 × 100, 5천만 원 미만이면 × 70 규칙을 그대로 씁니다."
+    },
+    {
+      "title": "구간 한도 반영",
+      "body": "저가 구간의 정액 한도(25만·80만·20만·30만 원)를 적용합니다."
+    },
+    {
+      "title": "부가세 별도 표시",
+      "body": "일반과세 중개사무소가 받는 부가세 10%를 따로 보여 줍니다."
+    }
+  ],
+  "disclaimer": "주택 기준 상한이며 실제 보수는 협의로 정합니다. 오피스텔·상가·토지는 요율이 다르고 시·도 조례에 따라 차이가 있을 수 있습니다. 기준: 공인중개사법 시행규칙 별표1(2021-10-19 개정)."
+};
+const faqs = [
+  {
+    "q": "12억~15억 매매는 몇 %인가요?",
+    "a": "0.6%가 상한입니다. 15억 원 이상은 0.7%입니다."
+  },
+  {
+    "q": "전세 5억이면요?",
+    "a": "1억~6억 구간이라 0.3%, 최대 150만 원(부가세 별도)입니다."
+  },
+  {
+    "q": "부가세도 내야 하나요?",
+    "a": "중개사무소가 일반과세자면 중개보수의 10%가 추가됩니다. 간이과세자는 다를 수 있으니 영수증을 확인하세요."
+  }
+];
+---
+<KrFinancePage slug="brokerage-calculator" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <BrokerageCalculator client:load locale="ko" />
+</KrFinancePage>
