@@ -1,0 +1,53 @@
+---
+// Moved from blog.oiyo.net/{locale}/t-account-visualizer/ on 2026-10-27 (W13).
+import Layout from '../../components/Layout.astro';
+import RelatedUtilities from '../../components/RelatedUtilities.astro';
+import { TAccountVisualizer } from '../../components/tools/TAccountVisualizer';
+import { locales } from '../../lib/i18n';
+import { utilityJsonLd } from '../../lib/utility-jsonld';
+
+type ActiveLocale = (typeof locales)[number];
+export function getStaticPaths() {
+  return locales.map((locale) => ({ params: { locale }, props: { locale } }));
+}
+const { locale } = Astro.props as { locale: ActiveLocale };
+
+const meta: Record<ActiveLocale, { title: string; description: string }> = {
+  ko: {
+    title: "T계정 시각화기 — 분개 입력으로 T계정·잔액시산표 자동 생성",
+    description: "분개를 입력하면 T계정 그리드와 잔액시산표가 자동 생성됩니다. 복식부기 원리를 시각적으로 학습하세요.",
+  },
+  en: {
+    title: "T-Account Visualizer — Auto-Generate T-Accounts & Trial Balance",
+    description: "Enter journal entries to auto-generate a T-account grid and trial balance. Learn double-entry bookkeeping visually.",
+  },
+  ja: {
+    title: "T勘定可視化ツール — 仕訳からT勘定・試算表を自動生成",
+    description: "仕訳を入力するとT勘定グリッドと試算表が自動生成されます。",
+  },
+  zh: {
+    title: "T帐户可视化器 — 自动生成T帐户和试算表",
+    description: "输入分录即可自动生成T帐户网格和试算表，视觉化学习复式记帐。",
+  },
+  fr: {
+    title: "Visualiseur de Comptes T — Génération automatique du bilan",
+    description: "Saisissez des écritures pour générer automatiquement les comptes T et la balance.",
+  },
+  es: {
+    title: "Visualizador de Cuentas T — Balance de Comprobación Automático",
+    description: "Ingrese asientos contables para generar automáticamente las cuentas T y el balance.",
+  },
+};
+const m = meta[locale];
+const url = `https://tools.oiyo.net/${locale}/t-account-visualizer/`;
+const schema = utilityJsonLd({ name: m.title, description: m.description, url, locale, steps: [], faqs: [] }).slice(0, 1);
+---
+<Layout title={m.title} description={m.description} locale={locale} availableLocales={[...locales]} canonicalURL={url}>
+  <div class="mx-auto max-w-3xl px-4 py-6">
+    <h1 class="text-2xl font-bold tracking-tight">{m.title}</h1>
+    <p class="mb-5 mt-2 text-sm text-muted-foreground">{m.description}</p>
+    <TAccountVisualizer client:load locale={locale === 'ko' ? 'ko' : 'en'} />
+    <RelatedUtilities locale={locale} current="t-account-visualizer" group="money" />
+  </div>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+</Layout>

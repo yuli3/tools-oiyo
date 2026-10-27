@@ -1,0 +1,53 @@
+---
+// Moved from blog.oiyo.net/{locale}/macro-economics-calculator/ on 2026-10-27 (W13).
+import Layout from '../../components/Layout.astro';
+import RelatedUtilities from '../../components/RelatedUtilities.astro';
+import { MacroCalculators } from '../../components/tools/MacroCalculators';
+import { locales } from '../../lib/i18n';
+import { utilityJsonLd } from '../../lib/utility-jsonld';
+
+type ActiveLocale = (typeof locales)[number];
+export function getStaticPaths() {
+  return locales.map((locale) => ({ params: { locale }, props: { locale } }));
+}
+const { locale } = Astro.props as { locale: ActiveLocale };
+
+const meta: Record<ActiveLocale, { title: string; description: string }> = {
+  ko: {
+    title: "거시경제 계산기 — GDP·케인즈 승수·인플레이션 대화형 학습",
+    description: "GDP 3대 접근법, 케인즈 승수·균형재정승수, CPI 기반 실질구매력·피셔 방정식을 슬라이더로 직접 탐구하세요.",
+  },
+  en: {
+    title: "Macroeconomics Calculator — GDP, Keynesian Multiplier, Inflation",
+    description: "Explore GDP approaches, Keynesian multiplier, balanced budget multiplier, CPI purchasing power, and the Fisher equation interactively.",
+  },
+  ja: {
+    title: "マクロ経済計算機 — GDP・ケインズ乗数・インフレ対話型学習",
+    description: "GDPの3つのアプローチ、ケインズ乗数、フィッシャー方程式をスライダーで探索。",
+  },
+  zh: {
+    title: "宏观经济计算器 — GDP、凯恩斯乘数、通膨互动学习",
+    description: "用滑块探索GDP三种方法、凯恩斯乘数、费雪方程式。",
+  },
+  fr: {
+    title: "Calculateur Macroéconomique — PIB, Multiplicateur, Inflation",
+    description: "Explorez les approches du PIB, le multiplicateur keynésien et l'équation de Fisher.",
+  },
+  es: {
+    title: "Calculadora Macroeconómica — PIB, Multiplicador Keynesiano, Inflación",
+    description: "Explore los enfoques del PIB, el multiplicador keynesiano y la ecuación de Fisher.",
+  },
+};
+const m = meta[locale];
+const url = `https://tools.oiyo.net/${locale}/macro-economics-calculator/`;
+const schema = utilityJsonLd({ name: m.title, description: m.description, url, locale, steps: [], faqs: [] }).slice(0, 1);
+---
+<Layout title={m.title} description={m.description} locale={locale} availableLocales={[...locales]} canonicalURL={url}>
+  <div class="mx-auto max-w-3xl px-4 py-6">
+    <h1 class="text-2xl font-bold tracking-tight">{m.title}</h1>
+    <p class="mb-5 mt-2 text-sm text-muted-foreground">{m.description}</p>
+    <MacroCalculators client:load locale={locale === 'ko' ? 'ko' : 'en'} />
+    <RelatedUtilities locale={locale} current="macro-economics-calculator" group="money" />
+  </div>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+</Layout>
