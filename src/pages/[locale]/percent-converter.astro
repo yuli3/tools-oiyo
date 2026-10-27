@@ -1,0 +1,10 @@
+---
+// Moved from blog.oiyo.net/{locale}/percent-converter/ on 2026-10-27 (W6). Copy lives in src/data/unit-pages.ts.
+import UnitToolPage from '../../components/UnitToolPage.astro';
+import { locales, type Locale } from '../../lib/i18n';
+export function getStaticPaths() {
+  return locales.map((locale) => ({ params: { locale }, props: { locale } }));
+}
+const { locale } = Astro.props as { locale: Locale };
+---
+<UnitToolPage slug="percent-converter" locale={locale} />

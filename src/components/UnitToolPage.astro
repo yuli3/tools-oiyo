@@ -1,0 +1,37 @@
+---
+// Shared shell for the W6 unit converters moved from Blog on 2026-10-27.
+import Layout from './Layout.astro';
+import UtilityArticle from './UtilityArticle.astro';
+import RelatedUtilities from './RelatedUtilities.astro';
+import UnitConverter from './tools/UnitConverter';
+import PercentConverter from './tools/PercentConverter';
+import FractionConverter from './tools/FractionConverter';
+import ScientificNotationConverter from './tools/ScientificNotationConverter';
+import AngleConverter from './tools/AngleConverter';
+import UniversalConverter from './tools/UniversalConverter';
+import { locales, type Locale } from '../lib/i18n';
+import { utilityJsonLd } from '../lib/utility-jsonld';
+import { unitPages, type UnitPageSlug } from '../data/unit-pages';
+interface Props { slug: UnitPageSlug; locale: Locale }
+const { slug, locale } = Astro.props;
+const p = unitPages[slug][locale];
+const url = `https://tools.oiyo.net/${locale}/${slug}/`;
+const schema = utilityJsonLd({ name: p.title, description: p.description, url, locale, steps: p.c.steps, faqs: p.c.faqs });
+// Blog's UnitConverter keys: data-storage-converter reads the `data` category.
+const category = slug === 'data-storage-converter' ? 'data' : slug.replace('-converter', '');
+---
+<Layout title={p.title} description={p.description} locale={locale} availableLocales={[...locales]} canonicalURL={url}>
+  <div class="mx-auto max-w-3xl px-4 py-6">
+    <h1 class="text-2xl font-bold tracking-tight">{p.title}</h1>
+    <p class="mb-5 mt-2 text-sm text-muted-foreground">{p.description}</p>
+    {slug === 'percent-converter' ? <PercentConverter client:load locale={locale} />
+      : slug === 'fraction-converter' ? <FractionConverter client:load locale={locale} />
+      : slug === 'scientific-notation-converter' ? <ScientificNotationConverter client:load locale={locale} />
+      : slug === 'angle-converter' ? <AngleConverter client:load locale={locale} />
+      : slug === 'universal-converter' ? <UniversalConverter client:load locale={locale} />
+      : <UnitConverter client:load locale={locale} category={category} />}
+    <UtilityArticle c={p.c} />
+    <RelatedUtilities locale={locale} current={slug} group={slug === 'universal-converter' ? 'dev' : 'units'} />
+  </div>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+</Layout>
