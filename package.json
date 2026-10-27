@@ -29,7 +29,7 @@
     "sync:kr-rates": "node scripts/sync-kr-rates.mjs",
     "test:fx": "node --test src/lib/fx-feed.test.mjs && node --experimental-strip-types --test src/lib/foreign-exchange-comparison.test.ts",
     "sync:fx-rates": "node scripts/sync-fx-rates.mjs",
-    "test:regional-labor": "node --experimental-strip-types --test src/lib/california-overtime.test.ts src/lib/gb-holiday-entitlement.test.ts src/lib/hong-kong-work-hours.test.ts src/lib/spain-payments.test.ts src/lib/japan-fixed-overtime.test.ts src/lib/australia-offer.test.ts src/lib/taiwan-overtime.test.ts src/lib/singapore-work-pay.test.ts src/lib/hong-kong-minimum-wage.test.ts src/lib/labor-leave-wave5.test.ts src/lib/labor-confirmed-arithmetic.test.ts",
+    "test:regional-labor": "node --experimental-strip-types --test src/lib/california-overtime.test.ts src/lib/gb-holiday-entitlement.test.ts src/lib/hong-kong-work-hours.test.ts src/lib/spain-payments.test.ts src/lib/japan-fixed-overtime.test.ts src/lib/australia-offer.test.ts src/lib/taiwan-overtime.test.ts src/lib/singapore-work-pay.test.ts src/lib/hong-kong-minimum-wage.test.ts src/lib/labor-leave-wave5.test.ts src/lib/labor-confirmed-arithmetic.test.ts src/lib/fixed-workweek.test.ts",
     "test:regional-labor-html": "node --test scripts/regional-labor-html.test.mjs scripts/spain-payments-html.test.mjs scripts/offer-comparison-html.test.mjs scripts/labor-wave4-html.test.mjs scripts/labor-wave5-html.test.mjs scripts/labor-guides-html.test.mjs scripts/labor-navigators-html.test.mjs"
   },
   "dependencies": {
