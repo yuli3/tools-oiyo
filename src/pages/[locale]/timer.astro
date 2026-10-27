@@ -1,0 +1,10 @@
+---
+// Moved from blog.oiyo.net/{locale}/timer/ on 2026-10-27 (W7). Copy lives in src/data/w7-pages.ts.
+import W7ToolPage from '../../components/W7ToolPage.astro';
+import { locales, type Locale } from '../../lib/i18n';
+export function getStaticPaths() {
+  return locales.map((locale) => ({ params: { locale }, props: { locale } }));
+}
+const { locale } = Astro.props as { locale: Locale };
+---
+<W7ToolPage slug="timer" locale={locale} />
