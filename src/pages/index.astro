@@ -23,7 +23,7 @@ const tools = [
   { id: 'foreign-exchange-fee-calculator', title: EXCHANGE_COPY.ko[0], desc: '현지 통화 결제와 DCC(원화 결제) 제시 금액을 같은 환율·수수료 가정으로 비교해요.', href: '/ko/foreign-exchange-fee-calculator/', category: '환율·해외 결제', badge: '6개 언어' },
   { id: 'loan-comparison-calculator', title: loanCopy.ko.title, desc: loanCopy.ko.description, href: '/ko/loan-comparison-calculator/', category: '대출·상환 비교', badge: '6개 언어' },
   { id: 'monitor-ppi-calculator', title: monitorPpiCopy.ko.title, desc: monitorPpiCopy.ko.description, href: '/ko/monitor-ppi-calculator/', category: '화면·디스플레이', badge: '6개 언어' },
-  // 2026-10-27 W1: screen and developer utilities migrated from Blog.
+  // 2026-10-27 W1/W2: screen, image, color and developer utilities migrated from Blog.
   ...utilityCatalog.map((t) => ({ id: t.slug, title: t.title.ko, desc: t.description.ko, href: `/ko/${t.slug}/`, category: utilityGroups[t.group].ko, badge: '6개 언어' })),
   { id: 'image-converter', title: '이미지 변환·압축', desc: 'HEIC·WebP·PNG·JPG를 바꾸고 목표 용량에 맞춰요. 파일은 브라우저에서 처리해요.', href: '/ko/image-converter/', category: '파일 유틸리티', badge: '6개 언어' },
   { id: 'pdf-merge-split', title: 'PDF 합치기·나누기', desc: '파일 순서를 정해 합치거나 페이지 범위로 나눠요. 원본은 그대로 보관하세요.', href: '/ko/pdf-merge-split/', category: '파일 유틸리티', badge: '6개 언어' },
@@ -191,7 +191,7 @@ const tools = [
         class="filter-btn rounded-lg border border-border bg-card px-3.5 py-1.5 text-xs font-medium text-muted-foreground transition hover:border-primary/40 hover:text-foreground"
         data-filter="utility"
       >
-        파일 · 화면 · 개발
+        파일 · 이미지 · 색 · 개발
       </button>
     </div>
 

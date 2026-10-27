@@ -14,7 +14,7 @@
     "lint:shadcn": "eslint --pass-on-unpruned-suppressions src",
     "lint:shadcn:prune": "eslint --prune-suppressions src",
     "test": "node --test scripts/kr-rates.test.mjs scripts/car-bond.test.mjs && npm run test:file-utilities && npm run test:monitor-ppi && npm run test:loan-comparison && npm run test:country-labor && npm run test:usage-cost && npm run test:fx && npm run test:regional-labor && npm run test:telemetry && npm run test:utility",
-    "test:utility": "node --experimental-strip-types --test src/lib/utility-math.test.ts",
+    "test:utility": "node --experimental-strip-types --test src/lib/utility-math.test.ts src/lib/color-math.test.ts",
     "test:telemetry": "node --experimental-strip-types --test src/lib/tool-telemetry.test.ts",
     "test:usage-cost": "node --experimental-strip-types --test src/lib/usage-cost.test.ts",
     "test:usage-cost-html": "node --test scripts/usage-cost-html.test.mjs",
@@ -34,27 +34,28 @@
   },
   "dependencies": {
     "@astrojs/react": "^4.4.2",
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0",
+    "@astrojs/sitemap": "^3.7.0",
+    "@tailwindcss/vite": "^4.1.18",
+    "astro": "^5.16.15",
+    "dompurify": "^3.4.17",
     "fflate": "^0.8.3",
     "heic2any": "^0.0.4",
     "pdf-lib": "^1.17.1",
     "qrcode": "^1.5.4",
-    "@astrojs/sitemap": "^3.7.0",
-    "@tailwindcss/vite": "^4.1.18",
-    "astro": "^5.16.15",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
     "tailwindcss": "^4.1.18"
   },
   "devDependencies": {
-    "vite": "6.4.2",
-    "@types/react": "^19.2.9",
-    "@types/react-dom": "^19.2.3",
-    "@types/qrcode": "^1.5.5",
     "@astrojs/check": "^0.9.10",
     "@shadcn/lint": "^0.2.1",
+    "@types/qrcode": "^1.5.5",
+    "@types/react": "^19.2.9",
+    "@types/react-dom": "^19.2.3",
     "@typescript-eslint/parser": "^8.71.2",
     "astro-eslint-parser": "^3.2.0",
     "eslint": "^10.13.0",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vite": "6.4.2"
   }
 }
