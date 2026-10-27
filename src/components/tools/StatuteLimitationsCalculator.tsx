@@ -51,7 +51,7 @@ export default function StatuteLimitationsCalculator() {
               ]}
               next={[
                 { href: "/ko/legal-interest-calculator/", label: "지연이자 계산" },
-                { href: "https://blog.oiyo.net/ko/litigation-cost-calculator/", label: "소송비용 계산" },
+                { href: "/ko/litigation-cost-calculator/", label: "소송비용 계산" },
               ]}
             />
           </div>

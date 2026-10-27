@@ -1,0 +1,291 @@
+---
+// Replaces blog.oiyo.net/{locale}/litigation-cost-calculator/ (2026-10-27, W10c). Korean civil procedure in every
+// locale. Rewritten on src/lib/kr-litigation-cost.ts: Blog used 5,200 won per service round and a wrong
+// attorney-fee table above 100 million won.
+import Layout from '../../components/Layout.astro';
+import UtilityArticle, { type UtilityContent } from '../../components/UtilityArticle.astro';
+import RelatedUtilities from '../../components/RelatedUtilities.astro';
+import LitigationCostCalculator from '../../components/tools/LitigationCostCalculator';
+import { locales } from '../../lib/i18n';
+import { utilityJsonLd } from '../../lib/utility-jsonld';
+
+type ActiveLocale = (typeof locales)[number];
+export function getStaticPaths() {
+  return locales.map((locale) => ({ params: { locale }, props: { locale } }));
+}
+const { locale } = Astro.props as { locale: ActiveLocale };
+
+const meta: Record<ActiveLocale, { title: string; description: string }> = {
+  ko: {
+    "title": "소송비용 계산기 — 인지대·송달료·변호사보수",
+    "description": "대한민국 민사소송 소가를 기준으로 인지대, 송달료, 소송비용 산입 변호사보수 한도를 추정합니다."
+  },
+  en: {
+    "title": "Korean Litigation Cost Calculator — Court Stamp, Service and Attorney Fee Cap",
+    "description": "Estimate Korean civil litigation filing stamp, service fee, and recoverable attorney-fee cap from the claim amount."
+  },
+  ja: {
+    "title": "韓国訴訟費用計算機 — 印紙代・送達料・弁護士費用上限",
+    "description": "韓国民事訴訟の請求額から印紙代、送達料、回収可能な弁護士費用上限を概算します。"
+  },
+  zh: {
+    "title": "韩国诉讼费用计算器 — 印花费、送达费、律师费上限",
+    "description": "根据韩国民事诉讼标的金额估算法院印花费、送达费和可请求律师费上限。"
+  },
+  fr: {
+    "title": "Calculateur de Frais de Procès Coréens — Timbre, Signification, Honoraires",
+    "description": "Estimez les frais de procédure civile coréenne: timbre, signification et plafond d’honoraires récupérables."
+  },
+  es: {
+    "title": "Calculadora de Costas Judiciales de Corea — Tasas, Notificación y Honorarios",
+    "description": "Estima tasa judicial, notificaciones y límite de honorarios recuperables en litigios civiles coreanos."
+  },
+};
+const content: Record<ActiveLocale, UtilityContent> = {
+  ko: {
+      "introTitle": "민사소송을 내면 처음에 얼마가 드나요?",
+      "intro": "소장을 낼 때 인지대와 송달료를 법원에 미리 냅니다. 인지대는 청구 금액(소가)에 따라 0.35~0.5%이고 전자소송이면 10% 깎입니다. 송달료는 1회 5,640원(2026년 7월 1일부터)에 당사자 수와 사건 종류별 회수를 곱합니다. 이기면 상대방에게 소송비용으로 청구할 수 있는 변호사보수에는 대법원 규칙상 상한이 있어서, 실제로 쓴 변호사비보다 적을 수 있습니다.",
+      "formulaTitle": "계산 기준",
+      "formulas": [
+          {
+              "title": "인지대",
+              "body": "1천만 원 미만 0.5%, 1억 원 미만 0.45%+5천 원, 10억 원 미만 0.4%+5만5천 원, 그 이상 0.35%+55만5천 원. 전자소송 9/10, 100원 미만 버림, 최소 1천 원(민사소송 등 인지법 제2조)."
+          },
+          {
+              "title": "송달료",
+              "body": "1회 5,640원 × 당사자 수 × 소액(3천만 원 이하) 10회, 단독·합의 15회. 남은 송달료는 사건이 끝나면 돌려받습니다."
+          },
+          {
+              "title": "변호사보수 상한",
+              "body": "300만 원까지 30만 원, 2천만 원까지 +10%, 5천만 원까지 +8%, 1억까지 +6%, 1.5억까지 +4%, 2억까지 +2%, 5억까지 +1%, 그 이상 +0.5%(2020년 개정 별표). 심급마다 따로 계산합니다."
+          }
+      ],
+      "howToTitle": "사용 방법",
+      "steps": [
+          "청구하려는 금액(소가)을 넣습니다.",
+          "원고와 피고 수를 넣습니다.",
+          "전자소송 여부를 고르면 인지대·송달료·변호사보수 상한이 나옵니다."
+      ],
+      "faqTitle": "자주 묻는 질문",
+      "faqs": [
+          {
+              "question": "이기면 소송비용을 다 돌려받나요?",
+              "answer": "인지대와 송달료는 대체로 돌려받지만, 변호사보수는 규칙의 상한까지만 상대방에게 청구할 수 있습니다. 판결 뒤 소송비용액 확정 신청을 따로 해야 합니다."
+          },
+          {
+              "question": "소액사건은 무엇인가요?",
+              "answer": "소가 3천만 원 이하의 금전 청구 사건입니다. 송달료가 당사자당 10회분이고 절차가 간단합니다."
+          },
+          {
+              "question": "항소하면 비용이 더 드나요?",
+              "answer": "항소심 인지대는 1심의 1.5배, 상고심은 2배이고 송달료 회수도 다릅니다. 변호사보수 상한도 심급마다 따로 셉니다."
+          }
+      ],
+      "disclaimer": "참고용 추정입니다. 가압류·조정·지급명령(인지 1/10), 감정료·증인 여비, 사건별 송달료 추가 납부는 넣지 않았습니다. 기준일 2026-10-27."
+  },
+  en: {
+      "introTitle": "What does a civil lawsuit in Korea cost up front?",
+      "intro": "When filing, you prepay court stamp duty and service fees. Stamp duty is 0.35–0.5% of the claim, cut by 10% for electronic filing. Service fees are 5,640 won per round (from 1 July 2026) times the number of parties and a set number of rounds. If you win, the attorney fee you can recover from the other side is capped by Supreme Court rules, often below what you actually paid.",
+      "formulaTitle": "Rules used",
+      "formulas": [
+          {
+              "title": "Stamp duty",
+              "body": "Under 10M won 0.5%; under 100M 0.45% + 5,000; under 1B 0.4% + 55,000; above 0.35% + 555,000. Electronic filing 9/10, rounded down to 100 won, minimum 1,000 won."
+          },
+          {
+              "title": "Service fee",
+              "body": "5,640 won × parties × 10 rounds for small claims (30M won or less) or 15 rounds otherwise. Unused fees are refunded."
+          },
+          {
+              "title": "Attorney-fee cap",
+              "body": "300,000 won up to 3M, then +10% to 20M, +8% to 50M, +6% to 100M, +4% to 150M, +2% to 200M, +1% to 500M, +0.5% above (2020 table). Each instance counts separately."
+          }
+      ],
+      "howToTitle": "How to use",
+      "steps": [
+          "Enter the claim amount.",
+          "Enter the number of plaintiffs and defendants.",
+          "Choose electronic filing to see stamp duty, service fees and the recoverable fee cap."
+      ],
+      "faqTitle": "FAQ",
+      "faqs": [
+          {
+              "question": "Do I get all costs back if I win?",
+              "answer": "Stamp duty and service fees usually yes, but attorney fees only up to the cap. You file a separate motion to fix the cost amount after judgment."
+          },
+          {
+              "question": "What is a small claim?",
+              "answer": "A money claim of 30 million won or less, with 10 service rounds per party and a simpler procedure."
+          },
+          {
+              "question": "Does an appeal cost more?",
+              "answer": "Appeal stamp duty is 1.5× the first instance and 2× at the Supreme Court; the fee cap is counted per instance."
+          }
+      ],
+      "disclaimer": "Estimate only. Provisional attachment, mediation, payment orders, expert fees and extra service deposits are not included. As of 2026-10-27."
+  },
+  ja: {
+      "introTitle": "韓国で民事訴訟を起こすと最初にいくらかかる？",
+      "intro": "訴状提出時に印紙代と送達料を裁判所に納めます。印紙代は請求額の0.35〜0.5%で、電子訴訟なら10%減額。送達料は1回5,640ウォン（2026年7月1日から）×当事者数×事件別の回数です。勝訴時に相手へ請求できる弁護士費用には大法院規則の上限があります。",
+      "formulaTitle": "計算基準",
+      "formulas": [
+          {
+              "title": "印紙代",
+              "body": "1千万ウォン未満0.5%、1億未満0.45%+5千、10億未満0.4%+5万5千、それ以上0.35%+55万5千。電子訴訟9/10。"
+          },
+          {
+              "title": "送達料",
+              "body": "5,640ウォン×当事者数×少額（3千万ウォン以下）10回、その他15回。"
+          },
+          {
+              "title": "弁護士費用上限",
+              "body": "300万まで30万ウォン、以降2千万まで+10%、5千万まで+8%、1億まで+6%、1.5億まで+4%、2億まで+2%、5億まで+1%、超過+0.5%。"
+          }
+      ],
+      "howToTitle": "使い方",
+      "steps": [
+          "請求額を入力します。",
+          "原告・被告の人数を入力します。",
+          "電子訴訟かどうかを選ぶと各費用が表示されます。"
+      ],
+      "faqTitle": "よくある質問",
+      "faqs": [
+          {
+              "question": "勝てば費用は全額戻りますか？",
+              "answer": "印紙代・送達料は概ね回収できますが、弁護士費用は上限までです。判決後に訴訟費用額確定の申立てが必要です。"
+          },
+          {
+              "question": "日本の訴訟費用と同じですか？",
+              "answer": "いいえ。この計算機は韓国の民事訴訟の基準です。"
+          }
+      ],
+      "disclaimer": "参考用の概算です。仮差押え・調停・支払命令・鑑定費用は含みません。基準日 2026-10-27。"
+  },
+  zh: {
+      "introTitle": "在韩国提起民事诉讼要先付多少钱？",
+      "intro": "起诉时需预缴印花费和送达费。印花费为诉讼标的的0.35%～0.5%，电子诉讼减免10%。送达费为每次5,640韩元（2026年7月1日起）×当事人数×按案件类型的次数。胜诉后可向对方请求的律师费有大法院规则规定的上限。",
+      "formulaTitle": "计算标准",
+      "formulas": [
+          {
+              "title": "印花费",
+              "body": "不满1千万韩元0.5%，不满1亿0.45%+5千，不满10亿0.4%+5万5千，以上0.35%+55万5千；电子诉讼按9/10。"
+          },
+          {
+              "title": "送达费",
+              "body": "5,640韩元×当事人数×小额案件（3千万韩元以下）10次，其他15次。"
+          },
+          {
+              "title": "律师费上限",
+              "body": "300万以内30万韩元，之后至2千万+10%，至5千万+8%，至1亿+6%，至1.5亿+4%，至2亿+2%，至5亿+1%，超过部分+0.5%。"
+          }
+      ],
+      "howToTitle": "使用方法",
+      "steps": [
+          "输入诉讼标的金额。",
+          "输入原告和被告人数。",
+          "选择是否电子诉讼，查看各项费用。"
+      ],
+      "faqTitle": "常见问题",
+      "faqs": [
+          {
+              "question": "胜诉后费用能全部拿回吗？",
+              "answer": "印花费和送达费一般可以，律师费只能在上限内请求，判决后需另行申请确定诉讼费用。"
+          },
+          {
+              "question": "和中国的诉讼费一样吗？",
+              "answer": "不一样。本计算器按韩国民事诉讼标准计算。"
+          }
+      ],
+      "disclaimer": "仅供参考。不含财产保全、调解、支付令和鉴定费用。基准日 2026-10-27。"
+  },
+  fr: {
+      "introTitle": "Combien coûte au départ un procès civil en Corée ?",
+      "intro": "En déposant la requête, on avance le droit de timbre et les frais de signification. Le timbre représente 0,35 à 0,5 % de la demande, réduit de 10 % en dépôt électronique. Les frais de signification valent 5 640 wons par envoi (depuis le 1er juillet 2026) × nombre de parties × nombre d'envois. Les honoraires d'avocat récupérables sur l'adversaire sont plafonnés par la Cour suprême.",
+      "formulaTitle": "Règles utilisées",
+      "formulas": [
+          {
+              "title": "Droit de timbre",
+              "body": "Moins de 10 M de wons 0,5 % ; moins de 100 M 0,45 % + 5 000 ; moins de 1 Md 0,4 % + 55 000 ; au-delà 0,35 % + 555 000. Dépôt électronique 9/10."
+          },
+          {
+              "title": "Signification",
+              "body": "5 640 wons × parties × 10 envois (petits litiges ≤ 30 M) ou 15."
+          },
+          {
+              "title": "Plafond d'honoraires",
+              "body": "300 000 wons jusqu'à 3 M, puis +10 % jusqu'à 20 M, +8 % jusqu'à 50 M, +6 % jusqu'à 100 M, +4 % jusqu'à 150 M, +2 % jusqu'à 200 M, +1 % jusqu'à 500 M, +0,5 % au-delà."
+          }
+      ],
+      "howToTitle": "Mode d'emploi",
+      "steps": [
+          "Saisissez le montant demandé.",
+          "Indiquez le nombre de demandeurs et de défendeurs.",
+          "Choisissez le dépôt électronique pour voir chaque frais."
+      ],
+      "faqTitle": "Questions fréquentes",
+      "faqs": [
+          {
+              "question": "Récupère-t-on tout en cas de victoire ?",
+              "answer": "Le timbre et la signification en général oui, les honoraires seulement jusqu'au plafond, via une demande de liquidation des dépens."
+          },
+          {
+              "question": "Est-ce le coût d'un procès en France ?",
+              "answer": "Non, ce calculateur suit la procédure civile coréenne."
+          }
+      ],
+      "disclaimer": "Estimation indicative. Saisies conservatoires, médiation, injonctions de payer et expertises non incluses. Au 2026-10-27."
+  },
+  es: {
+      "introTitle": "¿Cuánto cuesta al principio un pleito civil en Corea?",
+      "intro": "Al presentar la demanda se adelantan la tasa judicial (timbre) y los gastos de notificación. El timbre es del 0,35 al 0,5 % de la cuantía, con un 10 % menos si se presenta por vía electrónica. Las notificaciones cuestan 5.640 wones por envío (desde el 1 de julio de 2026) × partes × número de envíos. Los honorarios de abogado que se pueden reclamar a la otra parte tienen un tope fijado por el Tribunal Supremo.",
+      "formulaTitle": "Reglas usadas",
+      "formulas": [
+          {
+              "title": "Tasa judicial",
+              "body": "Menos de 10 M de wones 0,5 %; menos de 100 M 0,45 % + 5.000; menos de 1.000 M 0,4 % + 55.000; más 0,35 % + 555.000. Electrónica 9/10."
+          },
+          {
+              "title": "Notificaciones",
+              "body": "5.640 wones × partes × 10 envíos (asuntos de menor cuantía ≤ 30 M) o 15."
+          },
+          {
+              "title": "Tope de honorarios",
+              "body": "300.000 wones hasta 3 M, luego +10 % hasta 20 M, +8 % hasta 50 M, +6 % hasta 100 M, +4 % hasta 150 M, +2 % hasta 200 M, +1 % hasta 500 M y +0,5 % por encima."
+          }
+      ],
+      "howToTitle": "Cómo usarla",
+      "steps": [
+          "Introduce la cuantía reclamada.",
+          "Indica cuántos demandantes y demandados hay.",
+          "Elige si es presentación electrónica para ver cada gasto."
+      ],
+      "faqTitle": "Preguntas frecuentes",
+      "faqs": [
+          {
+              "question": "¿Si gano recupero todo?",
+              "answer": "La tasa y las notificaciones normalmente sí; los honorarios solo hasta el tope, mediante la tasación de costas."
+          },
+          {
+              "question": "¿Sirve para un pleito en España?",
+              "answer": "No, sigue las reglas del proceso civil coreano."
+          }
+      ],
+      "disclaimer": "Estimación orientativa. No incluye embargos preventivos, mediación, monitorios ni peritajes. A 2026-10-27."
+  },
+};
+const m = meta[locale];
+const c = content[locale];
+const url = `https://tools.oiyo.net/${locale}/litigation-cost-calculator/`;
+const schema = utilityJsonLd({ name: m.title, description: m.description, url, locale, steps: c.steps, faqs: c.faqs });
+---
+<Layout title={m.title} description={m.description} locale={locale} availableLocales={[...locales]} canonicalURL={url}>
+  <div class="mx-auto max-w-3xl px-4 py-6">
+    <h1 class="text-2xl font-bold tracking-tight">{m.title}</h1>
+    <p class="mb-5 mt-2 text-sm text-muted-foreground">{m.description}</p>
+    <LitigationCostCalculator client:load locale={locale} />
+    <p class="mt-4 text-xs text-muted-foreground">근거 · Sources: 민사소송 등 인지법 제2조, 송달료규칙(1회 5,640원, 2026-07-01), 변호사보수의 소송비용 산입에 관한 규칙 별표(2020-12-28).</p>
+    <UtilityArticle c={c} />
+    <RelatedUtilities locale={locale} current="litigation-cost-calculator" group="money" />
+  </div>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+</Layout>
