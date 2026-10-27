@@ -1,0 +1,313 @@
+---
+// Replaces blog.oiyo.net/{locale}/comprehensive-income-tax-calculator/ (2026-10-27, W9c). Country pages keep
+// Blog's checked country rules; the Korean calculator is rewritten on src/lib/kr-income-tax-2026.ts (Blog used a
+// flat 30% expense ratio and taxed all financial income progressively).
+import Layout from '../../components/Layout.astro';
+import UtilityArticle, { type UtilityContent } from '../../components/UtilityArticle.astro';
+import RelatedUtilities from '../../components/RelatedUtilities.astro';
+import KrIncomeTaxCalculator from '../../components/tools/KrIncomeTaxCalculator';
+import ComprehensiveIncomeTaxCountryCalculator from '../../components/tools/ComprehensiveIncomeTaxCountryCalculator';
+import type { IncomeTaxCountry } from '../../lib/comprehensive-income-tax-countries';
+import { INCOME_TAX_AS_OF } from '../../lib/kr-income-tax-2026';
+import { locales } from '../../lib/i18n';
+import { utilityJsonLd } from '../../lib/utility-jsonld';
+
+type ActiveLocale = (typeof locales)[number];
+export function getStaticPaths() {
+  return locales.map((locale) => ({ params: { locale }, props: { locale } }));
+}
+const { locale } = Astro.props as { locale: ActiveLocale };
+// ja/zh/fr/es use their own country's law (세운 2026-10-19); ko and en use South Korea's.
+const COUNTRY_BY_LOCALE: Partial<Record<ActiveLocale, IncomeTaxCountry>> = { ja: 'jp', zh: 'cn', fr: 'fr', es: 'es' };
+const country = COUNTRY_BY_LOCALE[locale];
+
+const meta: Record<ActiveLocale, { title: string; description: string }> = {
+  ko: {
+      "title": "종합소득세 계산기 2026 — 사업·근로·기타소득 합산, 5월 추가 납부·환급",
+      "description": "사업소득(단순경비율·경비율·실제 경비), 근로 총급여, 기타소득을 합쳐 종합소득세와 지방소득세를 계산하고, 이미 낸 세금과 비교해 5월에 더 낼지 돌려받을지 보여 줘요."
+  },
+  en: {
+      "title": "Korean Comprehensive Income Tax Calculator — May filing",
+      "description": "Combine Korean business income (simple expense rate, own rate or actual costs), salary and other income to estimate income tax and local tax, then compare with tax already paid."
+  },
+  ja: {
+    title: "確定申告 所得税・住民税シミュレーター（令和8年分）— 給与＋事業所得",
+    description: "給与と事業所得・副業の所得を合算して、令和8年分の所得税・復興特別所得税と翌年度の住民税を計算します。青色申告特別控除（65万・55万・10万円）、基礎控除104万円の特例、源泉徴収税額との差額に対応。",
+  },
+  zh: {
+    title: "个人所得税综合所得计算器 — 工资、劳务报酬、稿酬、特许权使用费",
+    description: "把工资薪金、劳务报酬、稿酬和特许权使用费合并为综合所得，按年度税率表3%–45%计算全年个人所得税，并与已预缴税额比较得出年度汇算应补或应退税额。",
+  },
+  fr: {
+    title: "Simulateur d'impôt sur le revenu 2026 — salaires, micro-entreprise et autres revenus",
+    description: "Calculez l'impôt sur le revenu du foyer au barème 2026 en additionnant salaires (abattement 10 %), revenus de micro-entreprise (abattement 34 %, 50 % ou 71 %) et autres revenus, avec quotient familial, plafonnement et décote.",
+  },
+  es: {
+    title: "Calculadora del IRPF 2026 — trabajo, actividades económicas y alquileres",
+    description: "Calcula la cuota del IRPF de la base general sumando rendimientos del trabajo, de actividades económicas y de alquileres con la escala 2026, el mínimo personal y familiar y la reducción por rendimientos del trabajo.",
+  },
+};
+const content: Record<ActiveLocale, UtilityContent> = {
+  ko: {
+      "introTitle": "5월 종합소득세는 1년 소득을 모두 합쳐 다시 계산해요",
+      "intro": "사업소득·근로소득·기타소득이 있으면 다음 해 5월에 모두 합쳐 신고해요. 사업소득은 수입에서 필요경비를 뺀 금액이고, 장부가 없으면 국세청이 정한 경비율로 경비를 인정받아요. 근로소득은 총급여에서 근로소득공제를 뺀 금액이에요. 합친 소득에서 인적공제와 연금보험료를 빼면 과세표준이 되고, 6~45% 기본세율을 매긴 뒤 세액공제를 빼요. 이미 원천징수된 세금보다 많으면 더 내고, 적으면 돌려받아요.",
+      "formulaTitle": "2026년 계산 기준",
+      "formulas": [
+          {
+              "title": "기본세율",
+              "body": "과세표준 1,400만 원 이하 6%, 5,000만 원 15%, 8,800만 원 24%, 1.5억 원 35%, 3억 원 38%, 5억 원 40%, 10억 원 42%, 초과 45%(소득세법 제55조)."
+          },
+          {
+              "title": "경비",
+              "body": "단순경비율은 940909(기타 자영업 인적용역) 2025년 귀속 기준 64.1%, 수입 4천만 원 초과분은 49.7%예요. 업종마다 다르니 홈택스 안내문의 경비율로 바꿔 넣을 수 있어요."
+          },
+          {
+              "title": "세액공제",
+              "body": "근로소득이 있으면 근로소득세액공제와 표준세액공제 13만 원, 없으면 표준세액공제 7만 원을 빼요. 지방소득세는 결정세액의 10%예요."
+          }
+      ],
+      "howToTitle": "사용 방법",
+      "steps": [
+          "사업 수입금액과 경비 방식을 고르고, 근로 총급여와 기타소득금액이 있으면 넣어요.",
+          "본인 포함 기본공제 인원과 국민연금 본인 납부액을 넣어요.",
+          "이미 낸 소득세(3% 원천징수·근로소득세·중간예납)를 넣으면 5월에 낼 금액이 나와요."
+      ],
+      "faqTitle": "자주 묻는 질문",
+      "faqs": [
+          {
+              "question": "이자·배당도 넣어야 하나요?",
+              "answer": "연 2천만 원 이하면 15.4%로 분리과세되어 넣지 않아요. 넘으면 금융소득 종합과세 계산기에서 비교과세를 따로 계산해 보세요."
+          },
+          {
+              "question": "단순경비율 대상인지 어떻게 아나요?",
+              "answer": "직전 연도 수입금액이 업종별 기준보다 적으면 단순경비율, 많으면 기준경비율이나 장부로 신고해요. 5월 홈택스 신고 안내문에 내 유형이 나와요."
+          },
+          {
+              "question": "의료비·교육비 공제는요?",
+              "answer": "사업소득만 있으면 의료비·교육비 세액공제를 받을 수 없어요. 근로소득자는 연말정산 계산기에서 자세히 계산해 보세요."
+          },
+          {
+              "question": "지방소득세는 따로 내나요?",
+              "answer": "종합소득세의 10%를 같은 기간에 위택스로 신고·납부해요. 홈택스에서 함께 신고하면 바로 연결돼요."
+          }
+      ],
+      "disclaimer": "2026-10-27 기준 소득세법으로 만든 추정 계산기예요. 금융소득 종합과세, 연금·분리과세 기타소득, 장부 기장 세액공제·감면, 노란우산·중소기업 감면 등은 반영하지 않았어요. 신고 전 홈택스나 세무 전문가와 확인해 주세요."
+  },
+  en: {
+      "introTitle": "Korea's May income tax return adds up the whole year",
+      "intro": "If you have business, salary or other income, you file it together the following May. Business income is revenue minus expenses; without books, the National Tax Service expense rate is used. Salary income is gross pay minus the earned income deduction. Personal deductions and pension premiums come off the total, the 6–45% progressive rates apply, and tax credits are subtracted. Compare with tax already withheld to see whether you pay or get a refund.",
+      "formulaTitle": "2026 rules used",
+      "formulas": [
+          {
+              "title": "Progressive rates",
+              "body": "6% to 14M won, 15% to 50M, 24% to 88M, 35% to 150M, 38% to 300M, 40% to 500M, 42% to 1B, 45% above."
+          },
+          {
+              "title": "Expenses",
+              "body": "Simple expense rate for code 940909 (freelance personal services), tax year 2025: 64.1%, and 49.7% on revenue above 40M won. You can enter your own rate."
+          },
+          {
+              "title": "Credits",
+              "body": "With salary: earned income tax credit and the 130,000 won standard credit; without: a 70,000 won standard credit. Local income tax is 10% of the tax."
+          }
+      ],
+      "howToTitle": "How to use",
+      "steps": [
+          "Enter business revenue and pick the expense method; add salary and other income if any.",
+          "Enter basic-deduction people including you and the national pension you paid.",
+          "Enter tax already paid to see what is due in May."
+      ],
+      "faqTitle": "FAQ",
+      "faqs": [
+          {
+              "question": "Should I add interest and dividends?",
+              "answer": "Not if they are 20M won or less a year; those are taxed separately at 15.4%."
+          },
+          {
+              "question": "How do I know my expense type?",
+              "answer": "It depends on last year's revenue by industry. Your Hometax filing notice in May shows it."
+          }
+      ],
+      "disclaimer": "Estimate under the Income Tax Act as checked on 2026-10-27. Financial income above 20M won, separately taxed income, bookkeeping credits and SME reliefs are not modelled. Not tax advice."
+  },
+  ja: {
+    introTitle: "給与以外の所得があれば、確定申告ですべての所得を合算して税額を計算します",
+    intro: "日本の所得税は、給与所得・事業所得・不動産所得・雑所得などを合計した「合計所得金額」から所得控除を引き、超過累進税率5%〜45%をかける総合課税です。会社員でも副業の所得が20万円を超えれば確定申告が必要で、個人事業主は青色申告で最大65万円の特別控除を受けられます。所得税には2.1%の復興特別所得税が加わり、同じ所得をもとに翌年度の住民税（所得割10%＋均等割）も決まります。",
+    formulaTitle: "計算基準",
+    formulas: [
+      {
+        title: "合計所得金額",
+        body: "給与所得（収入 − 給与所得控除、最低74万円）＋ 事業所得（売上 − 経費 − 青色申告特別控除）＋ その他の所得。事業の赤字は給与所得と損益通算"
+      },
+      {
+        title: "所得税",
+        body: "（合計所得 − 社会保険料 − 基礎控除 − 配偶者・扶養控除 − その他の所得控除）× 5%〜45% − 控除額。これに102.1%をかけ、源泉徴収税額・予定納税額を引いて納付・還付"
+      },
+      {
+        title: "住民税",
+        body: "所得割 10%（基礎控除43万円など住民税の控除で計算、調整控除あり）＋ 均等割5,000円。翌年6月から納付"
+      }
+    ],
+    howToTitle: "使い方",
+    steps: [
+      "源泉徴収票の給与の支払金額と源泉徴収税額を入力します。",
+      "事業の売上・経費と青色申告特別控除の区分、その他の所得を入力します。",
+      "社会保険料・所得控除・扶養を入れ、所得税・住民税と申告での納付・還付額を確認します。"
+    ],
+    faqTitle: "よくある質問",
+    faqs: [
+      {
+        question: "会社員の副業はいくらから確定申告が必要ですか？",
+        answer: "給与を1か所から受け、年末調整を受けている人は、給与以外の所得（収入から経費を引いた額）が20万円を超えると確定申告が必要です。20万円以下でも住民税の申告は必要で、医療費控除などで還付を受けるときは副業分も含めて申告します。"
+      },
+      {
+        question: "青色申告特別控除の65万円・55万円・10万円の違いは？",
+        answer: "複式簿記で記帳して貸借対照表を添付し期限内に申告すると55万円、さらにe-Taxで申告するか優良な電子帳簿保存を行うと65万円です。簡易な記帳だけなら10万円です。控除は事業所得（不動産所得を含む）の金額が上限です。"
+      },
+      {
+        question: "令和8年分は何が変わりましたか？",
+        answer: "基礎控除が本則62万円になり、合計所得489万円以下は104万円、655万円以下は67万円に上乗せされます。給与所得控除の最低保障額も74万円に上がりました。住民税の基礎控除は43万円のままです。"
+      }
+    ],
+    disclaimer: "このツールは一般的な見積もり用です。正確な税額は国税庁の確定申告書等作成コーナーやお住まいの市区町村、税理士にご確認ください。"
+  },
+  zh: {
+    introTitle: "综合所得：四项劳动性所得合并按年计税",
+    intro: "居民个人取得的工资薪金、劳务报酬、稿酬和特许权使用费合并为综合所得，按纳税年度计算个人所得税。劳务报酬和特许权使用费以收入减除20%后的余额为收入额，稿酬在此基础上再减按70%计算。全年收入额减除60,000元基本减除费用、三险一金等专项扣除、专项附加扣除和其他扣除后，适用3%至45%的七级超额累进税率。平时由支付方预扣预缴，次年3月1日至6月30日办理年度汇算，多退少补。",
+    formulaTitle: "计算规则",
+    formulas: [
+      {
+        title: "收入额",
+        body: "工资薪金 + 劳务报酬×80% + 特许权使用费×80% + 稿酬×80%×70%"
+      },
+      {
+        title: "应纳税所得额",
+        body: "收入额 − 60,000元 − 专项扣除（三险一金）− 专项附加扣除 − 依法确定的其他扣除"
+      },
+      {
+        title: "年度税率表",
+        body: "不超过36,000元 3%，144,000元 10%，300,000元 20%，420,000元 25%，660,000元 30%，960,000元 35%，超过 45%。应补（退）税额 = 应纳税额 − 已预缴税额"
+      }
+    ],
+    howToTitle: "使用方法",
+    steps: [
+      "分别输入全年工资薪金、劳务报酬、特许权使用费和稿酬收入。",
+      "填写个人缴纳的三险一金、专项附加扣除合计和其他扣除。",
+      "输入已预扣预缴的税额，查看全年应纳税额和年度汇算应补或应退税额。"
+    ],
+    faqTitle: "常见问题",
+    faqs: [
+      {
+        question: "劳务报酬预扣的税和年度汇算有什么不同？",
+        answer: "支付方每次按收入减除费用后适用20%–40%的预扣率预扣税款，比较高；年度汇算时劳务报酬按收入的80%并入综合所得，与工资一起适用3%–45%的税率表，所以很多人可以退税。"
+      },
+      {
+        question: "个体工商户的经营所得也算综合所得吗？",
+        answer: "不算。经营所得单独适用5%–35%的税率表，次年3月31日前办理经营所得汇算。可以使用本站的自由职业者税务计算器估算。"
+      },
+      {
+        question: "哪些情况可以不办年度汇算？",
+        answer: "综合所得年收入不超过12万元但需要补税的、补税金额不超过400元的，以及已预缴税额与应纳税额一致或不申请退税的，可以不办理年度汇算。"
+      }
+    ],
+    disclaimer: "本工具仅供一般估算。以个人所得税App年度汇算的计算结果为准。"
+  },
+  fr: {
+    introTitle: "L'impôt sur le revenu additionne tous les revenus du foyer avant d'appliquer le barème",
+    intro: "En France, l'impôt sur le revenu est calculé par foyer fiscal. Chaque catégorie de revenus est d'abord déterminée selon ses propres règles : salaires après abattement de 10 % pour frais professionnels, bénéfices d'une micro-entreprise après abattement forfaitaire (34 % en BNC, 50 % pour les prestations BIC, 71 % pour la vente), revenus fonciers, pensions. Le revenu net global est ensuite divisé par le nombre de parts, soumis au barème progressif, puis multiplié par le nombre de parts, avec plafonnement du quotient familial et décote pour les impôts modestes.",
+    formulaTitle: "Règles de calcul",
+    formulas: [
+      {
+        title: "Revenu net imposable",
+        body: "Salaires − 10 % (min. 509 €, max. 14 555 €) + chiffre d'affaires micro − abattement forfaitaire (min. 305 €) + autres revenus nets catégoriels"
+      },
+      {
+        title: "Barème 2026",
+        body: "Par part : 0 % jusqu'à 11 600 €, 11 % jusqu'à 29 579 €, 30 % jusqu'à 84 577 €, 41 % jusqu'à 181 917 €, 45 % au-delà. Avantage plafonné à 1 807 € par demi-part"
+      },
+      {
+        title: "Décote et solde",
+        body: "Décote : 897 € (seul) ou 1 483 € (couple) − 45,25 % de l'impôt brut. Solde = impôt − prélèvement à la source et acomptes déjà payés"
+      }
+    ],
+    howToTitle: "Mode d'emploi",
+    steps: [
+      "Saisissez les salaires nets imposables et le chiffre d'affaires de la micro-entreprise, en choisissant son activité.",
+      "Ajoutez les autres revenus nets imposables, la situation familiale et le prélèvement déjà payé.",
+      "Lisez le revenu imposable, l'impôt et le solde à payer ou à rembourser."
+    ],
+    faqTitle: "Questions fréquentes",
+    faqs: [
+      {
+        question: "Mon chiffre d'affaires de micro-entrepreneur est-il imposé en entier ?",
+        answer: "Non. Au régime micro-fiscal, l'administration applique un abattement forfaitaire pour frais : 71 % pour la vente de marchandises, 50 % pour les prestations de services BIC et 34 % pour les BNC, avec un minimum de 305 €. Si vous avez opté pour le versement libératoire, ce revenu n'entre pas dans ce calcul."
+      },
+      {
+        question: "Les dividendes et intérêts sont-ils inclus ?",
+        answer: "Par défaut, ils sont soumis au prélèvement forfaitaire unique : 12,8 % d'impôt sur le revenu, plus les prélèvements sociaux. L'option globale pour le barème est possible mais n'est pas modélisée ici."
+      },
+      {
+        question: "Quand l'impôt sur ces revenus est-il payé ?",
+        answer: "Les revenus non salariaux donnent lieu à des acomptes mensuels ou trimestriels prélevés par l'administration. La déclaration du printemps régularise ensuite l'ensemble : remboursement l'été ou solde prélevé de septembre à décembre."
+      }
+    ],
+    disclaimer: "Cet outil sert au calcul général. Le montant exact figure sur votre avis d'impôt ; vous pouvez aussi utiliser le simulateur officiel sur impots.gouv.fr."
+  },
+  es: {
+    introTitle: "En el IRPF, el trabajo, las actividades y los alquileres tributan juntos en la base general",
+    intro: "El IRPF separa dos bases. La base general suma los rendimientos del trabajo, de actividades económicas (autónomos) y del capital inmobiliario, y tributa con la escala progresiva estatal más la autonómica, del 19 % al 47 %. La base del ahorro, con intereses, dividendos y ganancias por ventas, tributa aparte del 19 % al 30 %. Sobre la cuota de la base general se descuenta el mínimo personal y familiar, que tributa al 0 %, y el resultado se compara con las retenciones y pagos fraccionados en la declaración de la renta.",
+    formulaTitle: "Reglas de cálculo",
+    formulas: [
+      {
+        title: "Base liquidable general",
+        body: "Trabajo (íntegro − Seguridad Social − 2.000 € − reducción si las demás rentas no superan 6.500 €) + rendimiento neto de actividades + alquileres y otras rentas generales"
+      },
+      {
+        title: "Escala 2026",
+        body: "19 % hasta 12.450 €, 24 % hasta 20.200 €, 30 % hasta 35.200 €, 37 % hasta 60.000 €, 45 % hasta 300.000 €, 47 % por encima, menos la misma escala aplicada al mínimo personal y familiar"
+      },
+      {
+        title: "Resultado",
+        body: "Cuota − retenciones del trabajo y de facturas − pagos fraccionados (modelo 130). Positivo: a ingresar. Negativo: a devolver"
+      }
+    ],
+    howToTitle: "Cómo se usa",
+    steps: [
+      "Introduce los rendimientos del trabajo y la Seguridad Social del certificado de tu empresa.",
+      "Añade el rendimiento neto de tu actividad económica y de alquileres.",
+      "Indica retenciones, pagos fraccionados e hijos, y consulta la cuota y el resultado."
+    ],
+    faqTitle: "Preguntas frecuentes",
+    faqs: [
+      {
+        question: "¿Por qué pierdo la reducción por rendimientos del trabajo?",
+        answer: "La reducción de hasta 7.302 € para sueldos bajos solo se aplica si las rentas distintas del trabajo, excluidas las exentas, no superan 6.500 €. Con una actividad o alquileres por encima de ese importe desaparece."
+      },
+      {
+        question: "¿Qué rentas no entran en esta base?",
+        answer: "Intereses, dividendos, seguros de ahorro y ganancias patrimoniales por transmisión van a la base del ahorro (19 % a 30 %). Las ganancias que no proceden de transmisiones, como premios, van a la base general."
+      },
+      {
+        question: "¿Por qué el resultado real puede ser distinto?",
+        answer: "Cada comunidad autónoma aplica su propia escala y sus deducciones, y existen deducciones estatales (maternidad, donativos, vivienda habitual anterior a 2013) no incluidas. Renta WEB las aplica con tus datos fiscales."
+      }
+    ],
+    disclaimer: "Esta herramienta es para cálculo general. El resultado oficial es el del borrador en Renta WEB de la Agencia Tributaria."
+  },
+};
+const m = meta[locale];
+const c = content[locale];
+const url = `https://tools.oiyo.net/${locale}/comprehensive-income-tax-calculator/`;
+const schema = utilityJsonLd({ name: m.title, description: m.description, url, locale, steps: c.steps, faqs: c.faqs });
+---
+<Layout title={m.title} description={m.description} locale={locale} availableLocales={[...locales]} canonicalURL={url}>
+  <div class="mx-auto max-w-3xl px-4 py-6">
+    <h1 class="text-2xl font-bold tracking-tight">{m.title}</h1>
+    <p class="mb-5 mt-2 text-sm text-muted-foreground">{m.description}</p>
+    {country ? <ComprehensiveIncomeTaxCountryCalculator client:load country={country} /> : <KrIncomeTaxCalculator client:load locale={locale === 'ko' ? 'ko' : 'en'} />}
+    {!country && <p class="mt-4 text-xs text-muted-foreground">근거: 소득세법 제47조·제55조·제59조·제59조의4, 국세청 경비율 고시. 기준일 {INCOME_TAX_AS_OF}.</p>}
+    <UtilityArticle c={c} />
+    <RelatedUtilities locale={locale} current="comprehensive-income-tax-calculator" group="money" />
+  </div>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+</Layout>
