@@ -14,7 +14,7 @@
   },
   "src/pages/index.astro": {
     "shadcn/no-unknown-classes": {
-      "count": 9
+      "count": 10
     }
   },
   "src/pages/ko/acquisition-tax-calculator.astro": {

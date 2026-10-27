@@ -1,0 +1,17 @@
+---
+// Moved from blog.oiyo.net/life-expectancy-calculator/ on 2026-10-27 (W14); ko-only on Tools because it uses the KOSTAT 2023 life table.
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import LifeExpectancyCalculator from "../../components/tools/LifeExpectancyCalculator";
+
+const title = ({
+    title: "기대수명 계산기 — 나의 예상 수명과 노후 준비 기간 확인",
+    description: "성별, 흡연·음주·운동·BMI·만성질환 여부를 입력해 통계청 2023 생명표 기준 예상 기대수명과 건강수명을 계산합니다.",
+  }).title;
+const description = ({
+    title: "기대수명 계산기 — 나의 예상 수명과 노후 준비 기간 확인",
+    description: "성별, 흡연·음주·운동·BMI·만성질환 여부를 입력해 통계청 2023 생명표 기준 예상 기대수명과 건강수명을 계산합니다.",
+  }).description;
+---
+<KrFinancePage slug="life-expectancy-calculator" locale="ko" title={title} description={description} koOnly group="health">
+  <LifeExpectancyCalculator client:load locale="ko" />
+</KrFinancePage>

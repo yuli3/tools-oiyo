@@ -5,6 +5,7 @@ import Layout from './Layout.astro';
 import UtilityArticle, { type UtilityContent } from './UtilityArticle.astro';
 import RelatedUtilities from './RelatedUtilities.astro';
 import { locales, type Locale } from '../lib/i18n';
+import type { UtilityGroup } from '../data/utility-catalog';
 import { utilityJsonLd } from '../lib/utility-jsonld';
 export interface BlogShellCopy {
   introTitle: string; intro: string; howToTitle: string; steps: string[];
@@ -12,9 +13,9 @@ export interface BlogShellCopy {
 }
 interface Props {
   slug: string; locale: Locale; title: string; description: string;
-  shell?: BlogShellCopy; faqs?: { q: string; a: string }[]; faqTitle?: string; note?: string; koOnly?: boolean;
+  shell?: BlogShellCopy; faqs?: { q: string; a: string }[]; faqTitle?: string; note?: string; koOnly?: boolean; group?: UtilityGroup;
 }
-const { slug, locale, title, description, shell, faqs = [], faqTitle = '자주 묻는 질문', note, koOnly = false } = Astro.props;
+const { slug, locale, title, description, shell, faqs = [], faqTitle = '자주 묻는 질문', note, koOnly = false, group = 'money' } = Astro.props;
 const url = `https://tools.oiyo.net/${locale}/${slug}/`;
 const c: UtilityContent | null = shell ? {
   introTitle: shell.introTitle, intro: shell.intro, formulaTitle: shell.highlightsTitle, formulas: shell.highlights,
@@ -31,7 +32,7 @@ const schema = c ? ld : ld.slice(0, 1);
     <slot />
     {note && <p class="mt-4 text-xs text-muted-foreground">{note}</p>}
     {c && <UtilityArticle c={c} />}
-    <RelatedUtilities locale={locale} current={slug} group="money" />
+    <RelatedUtilities locale={locale} current={slug} group={group} />
   </div>
   <script type="application/ld+json" set:html={JSON.stringify(schema)} />
 </Layout>
