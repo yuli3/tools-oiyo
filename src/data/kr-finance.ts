@@ -19,4 +19,10 @@ export const krFinanceTools = [
   { slug: 'legal-interest-calculator', title: '법정이자·지연손해금 계산기', description: '민사 5%·상사 6%와 소송 후 12%를 날짜로 나눠 계산해요.' },
   { slug: 'statute-limitations-calculator', title: '소멸시효 계산기', description: '채권 종류와 기산일로 시효 만료일과 남은 날을 계산해요.' },
   { slug: 'labor-law-quick-check', title: '사회초년생 노동법 체크리스트', description: '최저임금·주휴·휴게·근로계약·부당해고 기준을 한 장에 정리했어요.' },
+  { slug: 'deposit-calculator', title: '예금·적금 이자 계산기', description: '단리·월복리 이자와 15.4% 세금을 뺀 만기 수령액을 계산해요.' },
+  { slug: 'brokerage-calculator', title: '부동산 중개수수료 계산기', description: '매매·전세·월세 거래금액별 중개보수 상한을 계산해요.' },
+  { slug: 'expense-ratio-calculator', title: '경비율 vs 장부 소득 비교', description: '추계신고와 장부신고 중 어느 쪽 소득이 낮은지 비교해요.' },
+  { slug: 'overseas-stock-saver-calculator', title: '해외주식 양도세 절세 계산기', description: '250만 원 공제와 손실 실현으로 줄일 수 있는 세금을 계산해요.' },
+  { slug: 'tax-savings-roadmap', title: '절세 로드맵', description: '상황에 맞는 연말정산·종소세 절세 항목과 예상 절세액을 정리해요.' },
+  { slug: 'tax-formula-explorer', title: '세금 계산 구조 탐색기', description: '소득세·법인세·부가세·양도세·상속세 계산 단계를 직접 바꿔 봐요.' },
 ] as const;
