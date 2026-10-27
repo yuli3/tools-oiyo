@@ -1,0 +1,83 @@
+---
+// Moved from oiyo.net/{locale}/foreign-account on 2026-10-27 (W4). Checked on law.go.kr the same
+// day: 국제조세조정법 §53① (any month-end over the threshold, report in June) and 시행령 §92③ (500M won).
+import Layout from '../../components/Layout.astro';
+import UtilityArticle from '../../components/UtilityArticle.astro';
+import RelatedUtilities from '../../components/RelatedUtilities.astro';
+import ForeignAccountCheck from '../../components/tools/ForeignAccountCheck';
+import { locales } from '../../lib/i18n';
+import { utilityJsonLd } from '../../lib/utility-jsonld';
+import { INVESTMENT_TAX_VERIFIED_ON } from '../../lib/kr-investment-tax';
+
+type ActiveLocale = (typeof locales)[number];
+export function getStaticPaths() {
+  return locales.map((locale) => ({ params: { locale }, props: { locale } }));
+}
+const { locale } = Astro.props as { locale: ActiveLocale };
+
+const meta: Record<ActiveLocale, { title: string; description: string }> = {
+  ko: { title: "해외금융계좌 신고 대상 자가진단 — 월말 5억 원 기준", description: "해외 예금·주식·펀드·가상자산 등 모든 해외금융계좌 합계가 어느 월말이라도 5억 원을 넘었는지 확인해요. 넘으면 다음 해 6월에 신고해요." },
+  en: { title: "Korean Overseas Financial Account Report Check — 500M won", description: "Check whether all your overseas financial accounts topped 500M won on any month-end. If so, Korean residents report in June of the next year." },
+  ja: { title: "韓国の海外金融口座申告チェック — 月末5億ウォン基準", description: "韓国居住者の海外金融口座の合計が、いずれかの月末に5億ウォンを超えたかを確認します。超えたら翌年6月に申告します。" },
+  zh: { title: "韩国海外金融账户申报自查 — 月末5亿韩元", description: "检查韩国居民所有海外金融账户合计是否在任一月末超过5亿韩元。超过则须在次年6月申报。" },
+  fr: { title: "Déclaration coréenne des comptes à l'étranger — seuil 500 M de wons", description: "Vérifiez si vos comptes financiers à l'étranger ont dépassé 500 M de wons à une fin de mois. Les résidents coréens déclarent alors en juin." },
+  es: { title: "Declaración coreana de cuentas en el extranjero — 500 M de wones", description: "Comprueba si tus cuentas financieras en el extranjero superaron 500 M de wones algún fin de mes. Los residentes coreanos declaran en junio." },
+};
+const m = meta[locale];
+
+const content = {
+  ko: {
+    introTitle: "하루라도 넘었는지가 기준이에요",
+    intro: "거주자와 내국법인은 해외 예금·주식·펀드·채권·보험·가상자산 계좌의 잔액을 모두 더해, 1년 중 어느 월말이라도 5억 원을 넘으면 다음 해 6월에 신고해요. 연말 잔액이 아니라 매월 말일 합계를 봐요. 이 도구는 대한민국 거주자 기준이에요.",
+    formulaTitle: "판단 기준",
+    formulas: [
+      { title: "월말 합계", body: "매월 말일 모든 해외금융계좌 잔액을 그날 기준환율로 원화 환산해 더해요." },
+      { title: "기준 금액", body: "5억 원 초과(국제조세조정법 시행령 제92조③). 딱 5억 원이면 대상이 아니에요." },
+      { title: "신고 기간", body: "다음 해 6월 1일~30일(법 제53조①). 가장 큰 월말에 보유한 계좌를 신고해요." },
+    ],
+    howToTitle: "사용 방법",
+    steps: ["월말별 해외계좌 합계를 원화로 넣어요.", "합계를 모르면 아래 '특정 월말 합계 계산'에서 계좌별로 더한 뒤 해당 달에 넣어요.", "가장 큰 월말과 신고 여부를 확인해요."],
+    faqTitle: "자주 묻는 질문",
+    faqs: [
+      { question: "해외 증권사에 있는 미국 주식도 포함되나요?", answer: "네. 해외 금융회사 계좌의 주식, 예금, 펀드, 보험 등 모든 자산을 더해요. 해외 가상자산 거래소 계좌도 포함돼요." },
+      { question: "국내 증권사로 산 해외주식은요?", answer: "국내 금융회사 계좌라서 해외금융계좌가 아니에요." },
+      { question: "연말에 5억 원 아래로 내려왔어요.", answer: "그래도 그해 어느 월말이라도 5억 원을 넘었다면 신고 대상이에요." },
+      { question: "신고하지 않으면요?", answer: "미신고 금액에 따라 과태료가 있고 금액이 크면 형사처벌 대상이 될 수 있어요. 국세청 안내를 확인하세요." },
+    ],
+    disclaimer: `법령 원문(${INVESTMENT_TAX_VERIFIED_ON} law.go.kr 확인) 기준 자가진단이에요. 공동명의·차명·법인 계좌는 세부 규정이 있어요. 입력값은 저장하거나 보내지 않아요. 세무 자문이 아니에요.`,
+  },
+  en: {
+    introTitle: "One month-end over the line is enough",
+    intro: "Korean residents and domestic companies add up every overseas financial account (deposits, stock, funds, bonds, insurance, virtual assets). If the total exceeds 500M won on any month-end in the year, they report in June of the next year. This follows Korean rules.",
+    formulaTitle: "The test",
+    formulas: [
+      { title: "Month-end total", body: "All overseas account balances on each month-end, converted at that day's reference rate." },
+      { title: "Threshold", body: "Above 500M won (Enforcement Decree art. 92(3)). Exactly 500M is not over." },
+      { title: "Filing", body: "June 1–30 of the next year (Act art. 53(1)), listing accounts held on the largest month-end." },
+    ],
+    howToTitle: "How to use",
+    steps: ["Enter each month-end total in won.", "Use the sheet below to add up accounts for one month-end if needed.", "Read the largest month-end and the result."],
+    faqTitle: "FAQ",
+    faqs: [
+      { question: "Is stock at a foreign broker included?", answer: "Yes. Every asset at an overseas financial company counts, including foreign crypto exchanges." },
+      { question: "Foreign stock bought through a Korean broker?", answer: "No. That is a domestic account." },
+      { question: "The year-end balance fell below 500M won.", answer: "You still report if any month-end was above it." },
+      { question: "What if I do not report?", answer: "Penalties depend on the unreported amount; large amounts can lead to prosecution." },
+    ],
+    disclaimer: `Self-check under the law as checked on law.go.kr on ${INVESTMENT_TAX_VERIFIED_ON}. Joint, nominee and corporate accounts have extra rules. Nothing you enter is stored or sent. Not tax advice.`,
+  },
+};
+const c = content[locale === 'ko' ? 'ko' : 'en'];
+const url = `https://tools.oiyo.net/${locale}/foreign-account/`;
+const schema = utilityJsonLd({ name: m.title, description: m.description, url, locale, steps: c.steps, faqs: c.faqs });
+---
+<Layout title={m.title} description={m.description} locale={locale} availableLocales={[...locales]} canonicalURL={url}>
+  <div class="mx-auto max-w-3xl px-4 py-6">
+    <h1 class="text-2xl font-bold tracking-tight">{m.title}</h1>
+    <p class="mb-5 mt-2 text-sm text-muted-foreground">{m.description}</p>
+    <ForeignAccountCheck client:load locale={locale} />
+    <UtilityArticle c={c} />
+    <RelatedUtilities locale={locale} current="foreign-account" group="money" />
+  </div>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+</Layout>

@@ -1,0 +1,155 @@
+---
+// Moved from blog.oiyo.net/{locale}/latte-factor-calculator/ on 2026-10-27 (W4). Blog's second
+// copy, caffelatte-calculator/, redirects here too. Same month-end annuity formula as before;
+// each locale now shows its own currency instead of KRW everywhere.
+import Layout from '../../components/Layout.astro';
+import UtilityArticle from '../../components/UtilityArticle.astro';
+import RelatedUtilities from '../../components/RelatedUtilities.astro';
+import LatteFactor from '../../components/tools/LatteFactor';
+import { locales } from '../../lib/i18n';
+import { utilityJsonLd } from '../../lib/utility-jsonld';
+
+type ActiveLocale = (typeof locales)[number];
+export function getStaticPaths() {
+  return locales.map((locale) => ({ params: { locale }, props: { locale } }));
+}
+const { locale } = Astro.props as { locale: ActiveLocale };
+
+const content = {
+  ko: {
+    title: "라떼 팩터 계산기 — 매일 커피값을 모으면 얼마가 될까?",
+    description: "커피 한 잔처럼 반복되는 작은 소비를 아껴 매달 모으면 10·20·30년 뒤 얼마가 되는지 복리로 계산해요.",
+    introTitle: "작은 돈은 횟수가 만들어요",
+    intro: "한 번에 5천 원이라도 매일이면 한 달 15만 원이에요. 이 돈을 매달 모아 굴리면 시간이 지날수록 넣은 돈보다 불어난 돈의 비중이 커져요. 절약을 강요하는 도구가 아니라, 습관 하나의 크기를 숫자로 보는 도구예요.",
+    formulaTitle: "계산 방법",
+    formulas: [
+      { title: "한 달 금액", body: "1회 금액 × 월 횟수(매일 30, 평일 21.6, 주 1회 4.3)" },
+      { title: "미래 가치", body: "월 금액 × ((1 + r)ⁿ − 1) ÷ r, r = 연 수익률 ÷ 12, n = 개월 수. 수익률 0%면 단순 합계예요." },
+      { title: "빠진 것", body: "세금·수수료·물가 상승은 넣지 않았어요. 실제 투자 결과는 달라질 수 있어요." },
+    ],
+    howToTitle: "사용 방법",
+    steps: ["한 번에 쓰는 금액을 넣어요.", "얼마나 자주 쓰는지 골라요.", "기대 연 수익률을 넣고 10·20·30년 뒤 금액을 비교해요."],
+    faqTitle: "자주 묻는 질문",
+    faqs: [
+      { question: "카페라떼 계산기와 무엇이 다른가요?", answer: "같은 계산이라 하나로 합쳤어요. 예전 카페라떼 계산기 주소로 들어와도 이 페이지로 와요." },
+      { question: "수익률은 몇 %로 넣어야 하나요?", answer: "정답은 없어요. 예금 금리, 장기 주식 평균 등 몇 가지 값을 넣어 범위로 보세요. 수익은 보장되지 않아요." },
+      { question: "왜 매달 말에 넣는다고 가정하나요?", answer: "적립식 저축의 일반적인 가정이에요. 매달 초에 넣으면 조금 더 커져요." },
+    ],
+    disclaimer: "교육용 근사 계산이에요. 투자 조언이 아니에요.",
+  },
+  en: {
+    title: "Latte Factor Calculator — what if you saved that coffee money?",
+    description: "See how a small daily habit adds up over 10, 20 and 30 years when the money is saved monthly with compound growth.",
+    introTitle: "Small amounts add up through frequency",
+    intro: "Five dollars a day is about 150 a month. Saved and invested monthly, the growth share rises over time. The point is not to stop buying coffee but to see the size of one habit.",
+    formulaTitle: "How it is calculated",
+    formulas: [
+      { title: "Monthly amount", body: "Spend per purchase × purchases a month (30 daily, 21.6 weekdays, 4.3 weekly)." },
+      { title: "Future value", body: "Monthly × ((1 + r)ⁿ − 1) ÷ r, with r = annual rate ÷ 12 and n = months. At 0% it is the plain sum." },
+      { title: "Left out", body: "Taxes, fees and inflation are not included." },
+    ],
+    howToTitle: "How to use",
+    steps: ["Enter what you spend each time.", "Pick how often.", "Enter an annual return and compare 10, 20 and 30 years."],
+    faqTitle: "FAQ",
+    faqs: [
+      { question: "What happened to the caffè latte calculator?", answer: "It did the same maths, so both now live on this page." },
+      { question: "What return should I use?", answer: "Try a few: a savings rate and a long-run stock average. Returns are never guaranteed." },
+      { question: "Why month-end deposits?", answer: "It is the usual assumption for regular saving. Start-of-month deposits end slightly higher." },
+    ],
+    disclaimer: "Educational approximation. Not investment advice.",
+  },
+  ja: {
+    title: "ラテマネー計算機 — 毎日のコーヒー代を積み立てたら？",
+    description: "コーヒーなど毎日の小さな出費を毎月積み立てて運用すると、10・20・30年後にいくらになるかを複利で計算します。",
+    introTitle: "小さなお金は回数で大きくなります",
+    intro: "1回500円でも毎日なら月1万5千円です。毎月積み立てて運用すると、時間とともに増えた分の割合が大きくなります。節約を強いるのではなく、習慣ひとつの大きさを数字で見るためのツールです。",
+    formulaTitle: "計算方法",
+    formulas: [
+      { title: "月の金額", body: "1回の金額 × 月の回数（毎日30、平日21.6、週1回4.3）" },
+      { title: "将来価値", body: "月額 × ((1 + r)ⁿ − 1) ÷ r、r = 年利 ÷ 12、n = 月数。0%なら単純合計です。" },
+      { title: "含まないもの", body: "税金・手数料・物価上昇は含みません。" },
+    ],
+    howToTitle: "使い方",
+    steps: ["1回に使う金額を入力します。", "頻度を選びます。", "年利回りを入れて10・20・30年後を比べます。"],
+    faqTitle: "よくある質問",
+    faqs: [
+      { question: "カフェラテ計算機はどこへ？", answer: "同じ計算なので、このページにまとめました。" },
+      { question: "利回りは何%を入れればいい？", answer: "預金金利や株式の長期平均など、いくつか試して幅で見てください。収益は保証されません。" },
+    ],
+    disclaimer: "教育用の概算です。投資助言ではありません。",
+  },
+  zh: {
+    title: "拿铁因子计算器 — 每天的咖啡钱存下来会有多少？",
+    description: "把咖啡等每日小额消费按月存下并投资，按复利计算 10、20、30 年后的金额。",
+    introTitle: "小钱靠次数变大",
+    intro: "每次 30 元，每天一次就是每月 900 元。按月存下并投资，时间越长，增长部分占比越大。本工具不是要你戒掉咖啡，而是让你看清一个习惯的规模。",
+    formulaTitle: "计算方法",
+    formulas: [
+      { title: "每月金额", body: "每次金额 × 每月次数（每天 30、工作日 21.6、每周 4.3）" },
+      { title: "未来价值", body: "每月金额 × ((1 + r)ⁿ − 1) ÷ r，r = 年回报率 ÷ 12，n = 月数。0% 时为简单合计。" },
+      { title: "未包含", body: "不含税费、手续费和通胀。" },
+    ],
+    howToTitle: "使用方法",
+    steps: ["输入每次花费。", "选择频率。", "输入年回报率，比较 10、20、30 年后的金额。"],
+    faqTitle: "常见问题",
+    faqs: [
+      { question: "咖啡拿铁计算器去哪了？", answer: "两者计算相同，已合并到本页。" },
+      { question: "回报率填多少？", answer: "可以试几个值，如存款利率和股票长期平均。收益不受保证。" },
+    ],
+    disclaimer: "教育用途的近似计算，不构成投资建议。",
+  },
+  fr: {
+    title: "Calculateur Latte Factor — et si vous épargniez ce café ?",
+    description: "Voyez ce que deviennent de petites dépenses quotidiennes épargnées chaque mois sur 10, 20 et 30 ans avec intérêts composés.",
+    introTitle: "Les petites sommes grandissent par la répétition",
+    intro: "Quatre euros par jour font environ 120 € par mois. Épargnés et placés chaque mois, la part des gains augmente avec le temps. L'outil montre la taille d'une habitude, sans vous demander d'y renoncer.",
+    formulaTitle: "Méthode de calcul",
+    formulas: [
+      { title: "Montant mensuel", body: "Dépense par achat × achats par mois (30 par jour, 21,6 jours ouvrés, 4,3 par semaine)." },
+      { title: "Valeur future", body: "Mensuel × ((1 + r)ⁿ − 1) ÷ r, avec r = taux annuel ÷ 12 et n = mois. À 0 %, c'est la simple somme." },
+      { title: "Non inclus", body: "Impôts, frais et inflation." },
+    ],
+    howToTitle: "Comment l'utiliser",
+    steps: ["Saisissez la dépense par achat.", "Choisissez la fréquence.", "Saisissez un rendement annuel et comparez 10, 20 et 30 ans."],
+    faqTitle: "Questions fréquentes",
+    faqs: [
+      { question: "Où est passé le calculateur café latte ?", answer: "Il faisait le même calcul ; les deux sont réunis ici." },
+      { question: "Quel rendement saisir ?", answer: "Essayez plusieurs valeurs. Aucun rendement n'est garanti." },
+    ],
+    disclaimer: "Approximation éducative. Pas un conseil en investissement.",
+  },
+  es: {
+    title: "Calculadora Latte Factor — ¿y si ahorras ese café?",
+    description: "Mira cuánto suman pequeños gastos diarios ahorrados cada mes durante 10, 20 y 30 años con interés compuesto.",
+    introTitle: "Las cantidades pequeñas crecen por repetición",
+    intro: "Cuatro euros al día son unos 120 € al mes. Ahorrados e invertidos cada mes, la parte de crecimiento aumenta con el tiempo. La herramienta muestra el tamaño de un hábito, sin pedirte que lo dejes.",
+    formulaTitle: "Cómo se calcula",
+    formulas: [
+      { title: "Importe mensual", body: "Gasto por compra × compras al mes (30 cada día, 21,6 laborables, 4,3 semanal)." },
+      { title: "Valor futuro", body: "Mensual × ((1 + r)ⁿ − 1) ÷ r, con r = tasa anual ÷ 12 y n = meses. Al 0 % es la suma simple." },
+      { title: "No incluido", body: "Impuestos, comisiones e inflación." },
+    ],
+    howToTitle: "Cómo usarlo",
+    steps: ["Introduce el gasto por compra.", "Elige la frecuencia.", "Introduce una rentabilidad anual y compara 10, 20 y 30 años."],
+    faqTitle: "Preguntas frecuentes",
+    faqs: [
+      { question: "¿Dónde está la calculadora del café con leche?", answer: "Hacía el mismo cálculo; ambas están ahora en esta página." },
+      { question: "¿Qué rentabilidad uso?", answer: "Prueba varios valores. Ninguna rentabilidad está garantizada." },
+    ],
+    disclaimer: "Aproximación educativa. No es asesoramiento de inversión.",
+  },
+};
+const c = content[locale];
+const url = `https://tools.oiyo.net/${locale}/latte-factor-calculator/`;
+const schema = utilityJsonLd({ name: c.title, description: c.description, url, locale, steps: c.steps, faqs: c.faqs });
+---
+<Layout title={c.title} description={c.description} locale={locale} availableLocales={[...locales]} canonicalURL={url}>
+  <div class="mx-auto max-w-3xl px-4 py-6">
+    <h1 class="text-2xl font-bold tracking-tight">{c.title}</h1>
+    <p class="mb-5 mt-2 text-sm text-muted-foreground">{c.description}</p>
+    <LatteFactor client:load locale={locale} />
+    <UtilityArticle c={c} />
+    <RelatedUtilities locale={locale} current="latte-factor-calculator" group="money" />
+  </div>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+</Layout>
