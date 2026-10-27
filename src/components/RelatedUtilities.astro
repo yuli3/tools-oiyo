@@ -1,6 +1,7 @@
 ---
 import { utilityCatalog, utilityGroups, type UtilityGroup } from '../data/utility-catalog';
 import { monitorPpiCopy } from '../data/monitor-ppi-copy';
+import { krFinanceTools } from '../data/kr-finance';
 import { utilityLabels, type Locale } from '../lib/i18n';
 interface Props { locale: Locale; current: string; group: UtilityGroup }
 const { locale, current, group } = Astro.props;
@@ -9,6 +10,8 @@ const links = utilityCatalog.filter((t) => t.group === group && t.slug !== curre
 if (group === 'screen') links.push({ href: `/${locale}/monitor-ppi-calculator/`, label: monitorPpiCopy[locale].title });
 // WHY: the image converter moved first (2026-10-21) and belongs with the W2 image tools.
 if (group === 'image') links.push({ href: `/${locale}/image-converter/`, label: utilityLabels[locale][0] });
+// WHY: the W8 Korean finance tools exist only on ko pages.
+if (group === 'money' && locale === 'ko') links.push(...krFinanceTools.filter((t) => t.slug !== current).map((t) => ({ href: `/ko/${t.slug}/`, label: t.title })));
 ---
 <nav data-related-tools class="mt-8 rounded-xl border border-border bg-card p-4" aria-label={utilityGroups[group][locale]}>
   <p class="font-semibold">{utilityGroups[group][locale]}</p>
