@@ -1,12 +1,14 @@
 ---
 import { utilityCatalog, utilityGroups, type UtilityGroup } from '../data/utility-catalog';
 import { monitorPpiCopy } from '../data/monitor-ppi-copy';
-import type { Locale } from '../lib/i18n';
+import { utilityLabels, type Locale } from '../lib/i18n';
 interface Props { locale: Locale; current: string; group: UtilityGroup }
 const { locale, current, group } = Astro.props;
 const links = utilityCatalog.filter((t) => t.group === group && t.slug !== current).map((t) => ({ href: `/${locale}/${t.slug}/`, label: t.title[locale] }));
 // WHY: PPI moved earlier (2026-10-21) and sits in the same screen group.
 if (group === 'screen') links.push({ href: `/${locale}/monitor-ppi-calculator/`, label: monitorPpiCopy[locale].title });
+// WHY: the image converter moved first (2026-10-21) and belongs with the W2 image tools.
+if (group === 'image') links.push({ href: `/${locale}/image-converter/`, label: utilityLabels[locale][0] });
 ---
 <nav data-related-tools class="mt-8 rounded-xl border border-border bg-card p-4" aria-label={utilityGroups[group][locale]}>
   <p class="font-semibold">{utilityGroups[group][locale]}</p>
