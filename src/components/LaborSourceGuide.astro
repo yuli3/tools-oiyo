@@ -1,0 +1,11 @@
+---
+import {laborSourceGuides,type LaborGuideId} from '../data/labor-source-guides';
+const {guide}=Astro.props as {guide:LaborGuideId};
+const t=laborSourceGuides[guide];
+---
+<section class="space-y-3 border-t border-border pt-4" data-labor-guide={guide}>
+ <h2 class="text-lg font-semibold">{t.title}</h2><p class="text-sm leading-relaxed">{t.description}</p>
+ <ol class="grid gap-2 sm:grid-cols-3">{t.steps.map(([title,body],i)=><li class="space-y-1 rounded-lg border border-border p-3 text-sm leading-relaxed"><h3 class="font-semibold">{i+1}. {title}</h3><p>{body}</p></li>)}</ol>
+ <p class="text-sm leading-relaxed text-muted-foreground">{t.limits}</p>
+ <ul class="list-disc space-y-2 pl-5 text-sm">{t.sources.map(([label,href])=><li><a class="text-primary underline underline-offset-4" href={href}>{label}</a></li>)}</ul><p class="text-xs text-muted-foreground">{t.checked}</p>
+</section>

@@ -1,5 +1,6 @@
 ---
 import Layout from './Layout.astro';
+import LaborSourceGuide from './LaborSourceGuide.astro';
 import {regionalLabor,type RegionalLaborTool} from '../data/regional-labor';
 import CaliforniaOvertimeCalculator from './tools/CaliforniaOvertimeCalculator';
 import GbHolidayCalculator from './tools/GbHolidayCalculator';
@@ -17,6 +18,7 @@ const schema={'@context':'https://schema.org','@type':'WebApplication',name:t.ti
   {tool==='gb'&&<GbHolidayCalculator client:load/>}
   {tool==='hk'&&<HongKongWorkHoursTracker client:load/>}
   <section class="space-y-3 border-t border-border pt-4"><h2 class="text-lg font-semibold">{tool==='hk'?'計算方法與官方資料':'Method and official sources'}</h2><p class="text-sm leading-relaxed">{t.method}</p><ul class="list-disc space-y-2 pl-5 text-sm">{t.sources.map(([name,href])=><li><a href={href} class="text-primary underline underline-offset-4">{name}</a></li>)}</ul><p class="text-xs text-muted-foreground">{tool==='hk'?'官方資料確認：2026-10-26。未作個案法律裁定。':'Official guidance checked: 26 October 2026. No individual legal determination.'}</p></section>
+ {tool==='ca'&&<LaborSourceGuide guide="ca"/>}{tool==='gb'&&<LaborSourceGuide guide="gb"/>}
  </article>
  <script type="application/ld+json" set:html={JSON.stringify(schema)}/>
 </Layout>
