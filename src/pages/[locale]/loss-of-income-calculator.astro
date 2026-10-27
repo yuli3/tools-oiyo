@@ -1,0 +1,273 @@
+---
+// Replaces blog.oiyo.net/{locale}/loss-of-income-calculator/ (2026-10-27, W10c). Korean damages practice in every
+// locale; Blog's copy repeated the same sentence in every FAQ, so the copy is rewritten.
+import Layout from '../../components/Layout.astro';
+import UtilityArticle, { type UtilityContent } from '../../components/UtilityArticle.astro';
+import RelatedUtilities from '../../components/RelatedUtilities.astro';
+import LossOfIncomeCalculator from '../../components/tools/LossOfIncomeCalculator';
+import { locales } from '../../lib/i18n';
+import { utilityJsonLd } from '../../lib/utility-jsonld';
+
+type ActiveLocale = (typeof locales)[number];
+export function getStaticPaths() {
+  return locales.map((locale) => ({ params: { locale }, props: { locale } }));
+}
+const { locale } = Astro.props as { locale: ActiveLocale };
+
+const meta: Record<ActiveLocale, { title: string; description: string }> = {
+  ko: {
+    "title": "일실수입 계산기 — 라이프니츠식·호프만식",
+    "description": "월 소득, 나이, 가동연한, 노동능력상실률을 입력해 라이프니츠식 또는 호프만식 일실수입을 추정합니다."
+  },
+  en: {
+    "title": "Lost Income Calculator — Leibniz and Hoffman Methods",
+    "description": "Estimate lost future income from monthly income, age, working end age, disability rate, and present-value coefficient method."
+  },
+  ja: {
+    "title": "逸失収入計算機 — ライプニッツ式・ホフマン式",
+    "description": "月収、年齢、就労終了年齢、労働能力喪失率から逸失収入を概算します。"
+  },
+  zh: {
+    "title": "收入损失计算器 — 莱布尼茨与霍夫曼方法",
+    "description": "根据月收入、年龄、工作结束年龄和劳动能力丧失率估算未来收入损失现值。"
+  },
+  fr: {
+    "title": "Calculateur de Perte de Revenus — Méthodes Leibniz et Hoffman",
+    "description": "Estimez la perte de revenus futurs avec revenu mensuel, âge, fin d’activité, taux de perte et méthode de coefficient."
+  },
+  es: {
+    "title": "Calculadora de Pérdida de Ingresos — Métodos Leibniz y Hoffman",
+    "description": "Estima pérdida futura de ingresos con ingreso mensual, edad, fin laboral, tasa de incapacidad y método de coeficiente."
+  },
+};
+const content: Record<ActiveLocale, UtilityContent> = {
+  ko: {
+      "introTitle": "다쳐서 일을 못 하게 되면 손해는 어떻게 계산하나요?",
+      "intro": "사고로 노동능력을 잃으면 앞으로 벌 수 있었던 소득(일실수입)을 손해로 청구합니다. 월 소득 × 노동능력상실률이 매달의 손실이고, 이를 사고 시점의 현재가치로 바꾸기 위해 법정이율 연 5%로 중간이자를 뺍니다. 법원은 보통 월 단위 호프만식(합계 240 한도)을 쓰고, 자동차보험 약관은 라이프니츠식을 씁니다. 가동연한은 2019년 대법원 전원합의체 이후 65세가 기준입니다.",
+      "formulaTitle": "계산식",
+      "formulas": [
+          {
+              "title": "월 손실",
+              "body": "월 소득 × 노동능력상실률"
+          },
+          {
+              "title": "호프만 계수",
+              "body": "Σ 1 ÷ (1 + k × 5%/12), 합계 240 한도"
+          },
+          {
+              "title": "라이프니츠 계수",
+              "body": "Σ 1 ÷ (1 + 5%/12)^k"
+          }
+      ],
+      "howToTitle": "사용 방법",
+      "steps": [
+          "계산 방식(호프만·라이프니츠)을 고릅니다.",
+          "사고 전 월 소득과 현재 나이, 가동 종료 나이(보통 65세)를 넣습니다.",
+          "노동능력상실률(맥브라이드표 등 감정 결과)을 넣으면 일실수입이 나옵니다."
+      ],
+      "faqTitle": "자주 묻는 질문",
+      "faqs": [
+          {
+              "question": "호프만과 라이프니츠는 무엇이 다른가요?",
+              "answer": "호프만은 단리, 라이프니츠는 복리로 중간이자를 빼서 라이프니츠 금액이 더 적습니다. 소송에서는 대체로 호프만식, 보험사 합의는 라이프니츠식을 씁니다."
+          },
+          {
+              "question": "소득을 증명하기 어려우면요?",
+              "answer": "소득 자료가 없으면 도시 일용노임(대한건설협회 공표)을 기준으로 월 22일 가동을 가정해 계산하는 것이 일반적입니다."
+          },
+          {
+              "question": "과실이 있으면요?",
+              "answer": "계산된 손해에서 피해자 과실 비율만큼 깎고, 위자료·치료비 등은 따로 더합니다."
+          }
+      ],
+      "disclaimer": "참고용 추정입니다. 사고일부터 현재까지 이미 지난 기간, 한시장해, 과실상계, 위자료는 반영하지 않았습니다. 기준일 2026-10-27."
+  },
+  en: {
+      "introTitle": "How is lost income calculated after an injury in Korea?",
+      "intro": "If an accident reduces your ability to work, you can claim the income you would have earned. Monthly loss is monthly income × the loss-of-capacity rate, discounted to present value at the 5% statutory rate. Courts usually use the monthly Hoffman method (sum capped at 240) and auto-insurance terms use Leibniz. Since a 2019 Supreme Court ruling, working age generally ends at 65.",
+      "formulaTitle": "Formulas",
+      "formulas": [
+          {
+              "title": "Monthly loss",
+              "body": "Monthly income × loss-of-capacity rate"
+          },
+          {
+              "title": "Hoffman",
+              "body": "Σ 1 ÷ (1 + k × 5%/12), sum capped at 240"
+          },
+          {
+              "title": "Leibniz",
+              "body": "Σ 1 ÷ (1 + 5%/12)^k"
+          }
+      ],
+      "howToTitle": "How to use",
+      "steps": [
+          "Choose Hoffman or Leibniz.",
+          "Enter monthly income before the accident, current age and working end age (usually 65).",
+          "Enter the loss-of-capacity rate from the medical assessment to see the estimate."
+      ],
+      "faqTitle": "FAQ",
+      "faqs": [
+          {
+              "question": "Hoffman vs Leibniz?",
+              "answer": "Hoffman discounts with simple interest, Leibniz with compound interest, so Leibniz gives less. Courts tend to use Hoffman; insurers use Leibniz."
+          },
+          {
+              "question": "No proof of income?",
+              "answer": "Courts commonly use the urban daily construction wage and 22 working days a month."
+          },
+          {
+              "question": "What if I was partly at fault?",
+              "answer": "The award is reduced by your share of fault; pain and suffering and medical costs are added separately."
+          }
+      ],
+      "disclaimer": "Estimate only. Elapsed time since the accident, temporary disability, comparative fault and solatium are not included. As of 2026-10-27."
+  },
+  ja: {
+      "introTitle": "韓国でけがをして働けなくなったときの逸失収入",
+      "intro": "事故で労働能力を失うと、将来得られたはずの収入（逸失収入）を損害として請求できます。月収×労働能力喪失率を毎月の損失とし、法定利率年5%で中間利息を控除して現在価値にします。韓国の裁判所は月単位ホフマン式（合計240上限）、自動車保険約款はライプニッツ式が一般的で、稼働年限は65歳が基準です。",
+      "formulaTitle": "計算式",
+      "formulas": [
+          {
+              "title": "月損失",
+              "body": "月収 × 労働能力喪失率"
+          },
+          {
+              "title": "ホフマン係数",
+              "body": "Σ 1 ÷ (1 + k × 5%/12)、合計240上限"
+          },
+          {
+              "title": "ライプニッツ係数",
+              "body": "Σ 1 ÷ (1 + 5%/12)^k"
+          }
+      ],
+      "howToTitle": "使い方",
+      "steps": [
+          "計算方式を選びます。",
+          "事故前の月収、現在年齢、稼働終了年齢を入力します。",
+          "労働能力喪失率を入力すると推定額が出ます。"
+      ],
+      "faqTitle": "よくある質問",
+      "faqs": [
+          {
+              "question": "日本の逸失利益と同じですか？",
+              "answer": "考え方は似ていますが、この計算機は韓国の実務（法定利率5%、月単位係数、65歳）に合わせています。"
+          }
+      ],
+      "disclaimer": "参考用の概算です。過失相殺・慰謝料などは含みません。基準日 2026-10-27。"
+  },
+  zh: {
+      "introTitle": "在韩国受伤无法工作时如何计算收入损失？",
+      "intro": "事故导致劳动能力丧失时，可以请求将来本可获得的收入（逸失收入）。每月损失＝月收入×劳动能力丧失率，再按法定年利率5%扣除中间利息折算为现值。韩国法院通常用按月霍夫曼法（合计上限240），汽车保险条款用莱布尼茨法，劳动年限一般到65岁。",
+      "formulaTitle": "计算公式",
+      "formulas": [
+          {
+              "title": "每月损失",
+              "body": "月收入 × 劳动能力丧失率"
+          },
+          {
+              "title": "霍夫曼系数",
+              "body": "Σ 1 ÷ (1 + k × 5%/12)，合计上限240"
+          },
+          {
+              "title": "莱布尼茨系数",
+              "body": "Σ 1 ÷ (1 + 5%/12)^k"
+          }
+      ],
+      "howToTitle": "使用方法",
+      "steps": [
+          "选择计算方式。",
+          "输入事故前月收入、当前年龄和劳动终止年龄。",
+          "输入劳动能力丧失率查看估算额。"
+      ],
+      "faqTitle": "常见问题",
+      "faqs": [
+          {
+              "question": "和中国的误工费一样吗？",
+              "answer": "不一样。本计算器按韩国损害赔偿实务（5%法定利率、按月系数、65岁）计算。"
+          }
+      ],
+      "disclaimer": "仅供参考，不含过失相抵和精神损害赔偿。基准日 2026-10-27。"
+  },
+  fr: {
+      "introTitle": "Comment calculer la perte de revenus après un accident en Corée ?",
+      "intro": "Si un accident réduit votre capacité de travail, vous pouvez réclamer les revenus futurs perdus. La perte mensuelle = revenu mensuel × taux de perte de capacité, actualisée au taux légal de 5 %. Les tribunaux coréens utilisent en général la méthode Hoffman mensuelle (somme plafonnée à 240), les assureurs la méthode Leibniz ; l'âge de fin d'activité retenu est 65 ans.",
+      "formulaTitle": "Formules",
+      "formulas": [
+          {
+              "title": "Perte mensuelle",
+              "body": "Revenu mensuel × taux de perte"
+          },
+          {
+              "title": "Hoffman",
+              "body": "Σ 1 ÷ (1 + k × 5 %/12), plafond 240"
+          },
+          {
+              "title": "Leibniz",
+              "body": "Σ 1 ÷ (1 + 5 %/12)^k"
+          }
+      ],
+      "howToTitle": "Mode d'emploi",
+      "steps": [
+          "Choisissez la méthode.",
+          "Saisissez le revenu mensuel, l'âge actuel et l'âge de fin d'activité.",
+          "Indiquez le taux de perte de capacité pour obtenir l'estimation."
+      ],
+      "faqTitle": "Questions fréquentes",
+      "faqs": [
+          {
+              "question": "Est-ce la méthode française ?",
+              "answer": "Non, ce calculateur suit la pratique coréenne (taux légal 5 %, coefficients mensuels, 65 ans)."
+          }
+      ],
+      "disclaimer": "Estimation indicative, sans partage de responsabilité ni préjudice moral. Au 2026-10-27."
+  },
+  es: {
+      "introTitle": "¿Cómo se calcula la pérdida de ingresos tras un accidente en Corea?",
+      "intro": "Si un accidente reduce tu capacidad laboral, puedes reclamar los ingresos futuros perdidos. La pérdida mensual = ingreso mensual × porcentaje de pérdida de capacidad, actualizada al interés legal del 5 %. Los tribunales coreanos suelen usar el método Hoffman mensual (suma con tope de 240) y las aseguradoras el de Leibniz; la edad laboral final de referencia es 65 años.",
+      "formulaTitle": "Fórmulas",
+      "formulas": [
+          {
+              "title": "Pérdida mensual",
+              "body": "Ingreso mensual × pérdida de capacidad"
+          },
+          {
+              "title": "Hoffman",
+              "body": "Σ 1 ÷ (1 + k × 5 %/12), tope 240"
+          },
+          {
+              "title": "Leibniz",
+              "body": "Σ 1 ÷ (1 + 5 %/12)^k"
+          }
+      ],
+      "howToTitle": "Cómo usarla",
+      "steps": [
+          "Elige el método.",
+          "Introduce el ingreso mensual, la edad actual y la edad final laboral.",
+          "Introduce el porcentaje de pérdida de capacidad para ver la estimación."
+      ],
+      "faqTitle": "Preguntas frecuentes",
+      "faqs": [
+          {
+              "question": "¿Es el baremo español?",
+              "answer": "No, sigue la práctica coreana (interés legal 5 %, coeficientes mensuales, 65 años)."
+          }
+      ],
+      "disclaimer": "Estimación orientativa, sin concurrencia de culpas ni daño moral. A 2026-10-27."
+  },
+};
+const m = meta[locale];
+const c = content[locale];
+const url = `https://tools.oiyo.net/${locale}/loss-of-income-calculator/`;
+const schema = utilityJsonLd({ name: m.title, description: m.description, url, locale, steps: c.steps, faqs: c.faqs });
+---
+<Layout title={m.title} description={m.description} locale={locale} availableLocales={[...locales]} canonicalURL={url}>
+  <div class="mx-auto max-w-3xl px-4 py-6">
+    <h1 class="text-2xl font-bold tracking-tight">{m.title}</h1>
+    <p class="mb-5 mt-2 text-sm text-muted-foreground">{m.description}</p>
+    <LossOfIncomeCalculator client:load locale={locale} />
+    <UtilityArticle c={c} />
+    <RelatedUtilities locale={locale} current="loss-of-income-calculator" group="money" />
+  </div>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+</Layout>

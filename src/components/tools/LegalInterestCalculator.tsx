@@ -78,7 +78,7 @@ export default function LegalInterestCalculator() {
               ]}
               next={[
                 { href: "/ko/statute-limitations-calculator/", label: "소멸시효는 언제 끝나나요?" },
-                { href: "https://blog.oiyo.net/ko/litigation-cost-calculator/", label: "소송비용 계산" },
+                { href: "/ko/litigation-cost-calculator/", label: "소송비용 계산" },
               ]}
             />
           </div>
