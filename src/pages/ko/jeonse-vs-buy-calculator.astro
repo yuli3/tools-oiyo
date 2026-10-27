@@ -1,0 +1,43 @@
+---
+// Moved from blog.oiyo.net/jeonse-vs-buy-calculator/ on 2026-10-27 (W15); ko-only on Tools: Korean jeonse and acquisition tax (지방세법 제11조 1주택 세율 applied; Blog stepped 6~9억 at 2%).
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import JeonsevsBuyCalculator from "../../components/tools/JeonsevsBuyCalculator";
+
+const title = ({
+    title: "전세 vs 매매 비교 계산기 — 어느 쪽이 유리할까?",
+    description: "매매가, 전세가, 대출 금리, 거주 기간을 입력해 전세와 매매 중 어느 쪽이 경제적으로 유리한지 비교합니다.",
+  }).title;
+const description = ({
+    title: "전세 vs 매매 비교 계산기 — 어느 쪽이 유리할까?",
+    description: "매매가, 전세가, 대출 금리, 거주 기간을 입력해 전세와 매매 중 어느 쪽이 경제적으로 유리한지 비교합니다.",
+  }).description;
+const c = {
+    eyebrow: "부동산 계산 도구",
+    introTitle: "전세 vs 매매 비교 계산기란?",
+    intro: "매매가·전세가·대출 금리·예상 거주 기간을 입력해, 같은 집에 살 때 전세와 매매 중 어느 쪽의 총비용이 더 적은지 비교하는 도구예요.",
+    howToTitle: "사용 방법",
+    steps: ["매매가와 전세가를 입력합니다.", "대출 금리와 자기자본을 입력합니다.", "예상 거주 기간과 집값 상승률을 설정합니다.", "전세·매매 총비용과 손익 차이를 확인합니다."],
+    highlightsTitle: "주요 특징",
+    highlights: [
+      { title: "총비용 비교", body: "전세 기회비용과 매매의 이자·세금·집값 변동을 함께 반영합니다." },
+      { title: "기간 가정", body: "거주 기간과 집값 상승률 가정에 따른 손익을 보여줍니다." },
+      { title: "의사결정 보조", body: "전세 유지와 매매 전환의 손익분기를 가늠합니다." },
+    ],
+    relatedTitle: "관련 계산기",
+    related: [
+      { href: "/ko/mortgage-calculator/", label: "주택담보대출 계산기", desc: "매매 시 월 상환금을 계산합니다." },
+      { href: "https://tools.oiyo.net/ko/dsr-calculator/", label: "DSR 계산기", desc: "대출 가능 한도를 확인합니다." },
+      { href: "/ko/home-buying-calculator/", label: "내 집 마련 계산기", desc: "주택 구입 자금 계획을 세웁니다." },
+    ],
+    disclaimer: "본 계산기는 참고용이며, 실제 결과는 세금·거래비용·금리 변동·집값 변동에 따라 크게 달라질 수 있어요. 중요한 결정은 전문가 상담을 권장해요.",
+  };
+const ko = c;
+const faqs = [
+    { q: "전세와 매매, 무엇이 유리한가요?", a: "거주 기간이 길고 집값이 오를 것으로 보면 매매가, 짧거나 집값 정체가 예상되면 전세가 유리한 경향이 있습니다. 가정에 따라 달라집니다." },
+    { q: "전세의 기회비용이란?", a: "전세보증금을 다른 곳에 투자했을 때 얻을 수 있는 수익입니다. 이를 비용으로 반영해 비교합니다." },
+    { q: "집값 상승률은 어떻게 정하나요?", a: "지역·시장 전망에 따라 다릅니다. 보수적·낙관적 시나리오를 각각 넣어 보는 것이 좋습니다." },
+  ];
+---
+<KrFinancePage slug="jeonse-vs-buy-calculator" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <JeonsevsBuyCalculator client:load locale="ko" />
+</KrFinancePage>

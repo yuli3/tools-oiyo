@@ -1,0 +1,172 @@
+---
+// Moved from blog.oiyo.net/{locale}/loan-calculator/ on 2026-10-27 (W15).
+import Layout from '../../components/Layout.astro';
+import UtilityArticle, { type UtilityContent } from '../../components/UtilityArticle.astro';
+import RelatedUtilities from '../../components/RelatedUtilities.astro';
+import LoanCalculator from '../../components/tools/LoanCalculator';
+import { locales } from '../../lib/i18n';
+import { utilityJsonLd } from '../../lib/utility-jsonld';
+
+type ActiveLocale = (typeof locales)[number];
+export function getStaticPaths() {
+  return locales.map((locale) => ({ params: { locale }, props: { locale } }));
+}
+const { locale } = Astro.props as { locale: ActiveLocale };
+
+const meta: Record<ActiveLocale, { title: string; description: string }> = {
+  ko: {
+    title: "대출 계산기 — 월 상환액·총 이자 간편 계산 (원리금균등)",
+    description: "대출금액, 금리, 기간을 입력해 월 상환액과 총 이자를 계산합니다. 원리금균등상환 방식 기준으로 첫 12개월 상환 스케줄을 제공합니다.",
+  },
+  en: {
+    title: "Loan Repayment Calculator — Monthly Payment & Total Interest",
+    description: "Calculate monthly payments and total interest for equal principal-and-interest (annuity) loans.",
+  },
+  ja: {
+    title: "ローン返済計算機 — 月額返済額・総利息計算",
+    description: "元利均等返済方式で月額返済額と総利息を計算します。",
+  },
+  zh: {
+    title: "贷款计算机 — 月还款额与总利息计算",
+    description: "输入贷款金额、利率和期限，计算等额本息还款的月还款额和总利息。",
+  },
+  fr: {
+    title: "Calculateur de Prêt — Mensualité et Intérêts Totaux",
+    description: "Calculez les mensualités et les intérêts totaux pour votre prêt à annuités constantes.",
+  },
+  es: {
+    title: "Calculadora de Préstamo — Cuota Mensual e Intereses",
+    description: "Calcula la cuota mensual y los intereses totales de tu préstamo con amortización francesa.",
+  },
+};
+const m = meta[locale];
+const content: Record<ActiveLocale, UtilityContent> = {
+  ko: {
+    introTitle: "대출 계산기란?",
+    intro: "대출금액·연금리·상환기간을 입력하면 원리금균등상환 기준으로 월 상환액과 총 이자를 계산하고 초기 상환 스케줄을 보여주는 도구예요.",
+    howToTitle: "사용 방법",
+    steps: ["대출 원금을 입력합니다.", "연이자율(%)을 입력합니다.", "상환 기간(개월 또는 년)을 설정합니다.", "월 상환액·총 이자·상환 스케줄을 확인합니다."],
+    formulaTitle: "주요 특징",
+    formulas: [
+      { title: "원리금균등상환", body: "매월 동일액 상환 기준으로 계산합니다." },
+      { title: "상환 스케줄", body: "초기 개월별 원금·이자 분해를 제공합니다." },
+      { title: "즉시 계산", body: "값을 입력하면 즉시 결과가 갱신됩니다." },
+    ],
+    faqTitle: "자주 묻는 질문",
+    faqs: [
+    { question: "원리금균등상환이란?", answer: "매월 원금과 이자를 합쳐 동일한 금액을 상환하는 방식입니다." },
+    { question: "총 이자를 줄이려면?", answer: "기간을 줄이거나 금리를 낮추고, 가능하면 중도상환을 활용하세요." },
+    { question: "주택담보대출과 다른가요?", answer: "계산 원리는 같습니다. 주택담보대출은 담보가 있어 금리·한도 조건이 다를 수 있습니다." },
+    ],
+    disclaimer: "본 계산기는 참고용이며, 실제 대출 조건·수수료·변동금리에 따라 결과가 달라질 수 있어요. 정확한 조건은 금융기관에 확인하세요.",
+  },
+  en: {
+    introTitle: "What is the loan calculator?",
+    intro: "Enter the loan amount, annual rate, and term to compute the monthly payment and total interest with the annuity method, plus an early repayment schedule.",
+    howToTitle: "How to use",
+    steps: ["Enter the loan principal.", "Enter the annual interest rate (%).", "Set the term (months or years).", "Review the monthly payment, total interest, and schedule."],
+    formulaTitle: "Highlights",
+    formulas: [
+      { title: "Annuity repayment", body: "Computes the equal-monthly-payment schedule." },
+      { title: "Repayment schedule", body: "Shows the early monthly principal/interest split." },
+      { title: "Instant result", body: "Results update as soon as you enter values." },
+    ],
+    faqTitle: "FAQ",
+    faqs: [
+    { question: "What is annuity repayment?", answer: "You pay the same total amount each month, combining principal and interest." },
+    { question: "How do I reduce total interest?", answer: "Shorten the term, lower the rate, or make prepayments where possible." },
+    { question: "Is this different from a mortgage?", answer: "The math is the same; a mortgage is secured by collateral, which can change rate and limit terms." },
+    ],
+    disclaimer: "This calculator is for reference only. Actual results vary with loan terms, fees, and variable rates. Confirm exact terms with your lender.",
+  },
+  ja: {
+    introTitle: "ローン計算機とは？",
+    intro: "ローン金額・年利・返済期間を入力すると、元利均等返済方式で月額返済額と総利息を計算し、初期の返済スケジュールを表示するツールです。",
+    howToTitle: "使い方",
+    steps: ["ローン元金を入力します。", "年利（％）を入力します。", "返済期間（月または年）を設定します。", "月額返済額・総利息・返済スケジュールを確認します。"],
+    formulaTitle: "主な特徴",
+    formulas: [
+      { title: "元利均等返済", body: "毎月同額返済を基準に計算します。" },
+      { title: "返済スケジュール", body: "初期の月別の元金・利息内訳を表示します。" },
+      { title: "即時計算", body: "値を入力するとすぐに結果が更新されます。" },
+    ],
+    faqTitle: "よくある質問",
+    faqs: [
+    { question: "元利均等返済とは？", answer: "毎月、元金と利息を合わせて同額を返済する方式です。" },
+    { question: "総利息を減らすには？", answer: "期間を短くするか金利を下げ、可能なら繰上返済を活用します。" },
+    { question: "住宅ローンと違いますか？", answer: "計算原理は同じです。住宅ローンは担保があるため金利・限度条件が異なる場合があります。" },
+    ],
+    disclaimer: "本計算機は参考用です。実際の結果はローン条件・手数料・変動金利により異なります。正確な条件は金融機関にご確認ください。",
+  },
+  zh: {
+    introTitle: "What is the loan calculator?",
+    intro: "Enter the loan amount, annual rate, and term to compute the monthly payment and total interest with the annuity method, plus an early repayment schedule.",
+    howToTitle: "How to use",
+    steps: ["Enter the loan principal.", "Enter the annual interest rate (%).", "Set the term (months or years).", "Review the monthly payment, total interest, and schedule."],
+    formulaTitle: "Highlights",
+    formulas: [
+      { title: "Annuity repayment", body: "Computes the equal-monthly-payment schedule." },
+      { title: "Repayment schedule", body: "Shows the early monthly principal/interest split." },
+      { title: "Instant result", body: "Results update as soon as you enter values." },
+    ],
+    faqTitle: "常见问题",
+    faqs: [
+    { question: "What is annuity repayment?", answer: "You pay the same total amount each month, combining principal and interest." },
+    { question: "How do I reduce total interest?", answer: "Shorten the term, lower the rate, or make prepayments where possible." },
+    { question: "Is this different from a mortgage?", answer: "The math is the same; a mortgage is secured by collateral, which can change rate and limit terms." },
+    ],
+    disclaimer: "This calculator is for reference only. Actual results vary with loan terms, fees, and variable rates. Confirm exact terms with your lender.",
+  },
+  fr: {
+    introTitle: "What is the loan calculator?",
+    intro: "Enter the loan amount, annual rate, and term to compute the monthly payment and total interest with the annuity method, plus an early repayment schedule.",
+    howToTitle: "How to use",
+    steps: ["Enter the loan principal.", "Enter the annual interest rate (%).", "Set the term (months or years).", "Review the monthly payment, total interest, and schedule."],
+    formulaTitle: "Highlights",
+    formulas: [
+      { title: "Annuity repayment", body: "Computes the equal-monthly-payment schedule." },
+      { title: "Repayment schedule", body: "Shows the early monthly principal/interest split." },
+      { title: "Instant result", body: "Results update as soon as you enter values." },
+    ],
+    faqTitle: "Questions fréquentes",
+    faqs: [
+    { question: "What is annuity repayment?", answer: "You pay the same total amount each month, combining principal and interest." },
+    { question: "How do I reduce total interest?", answer: "Shorten the term, lower the rate, or make prepayments where possible." },
+    { question: "Is this different from a mortgage?", answer: "The math is the same; a mortgage is secured by collateral, which can change rate and limit terms." },
+    ],
+    disclaimer: "This calculator is for reference only. Actual results vary with loan terms, fees, and variable rates. Confirm exact terms with your lender.",
+  },
+  es: {
+    introTitle: "What is the loan calculator?",
+    intro: "Enter the loan amount, annual rate, and term to compute the monthly payment and total interest with the annuity method, plus an early repayment schedule.",
+    howToTitle: "How to use",
+    steps: ["Enter the loan principal.", "Enter the annual interest rate (%).", "Set the term (months or years).", "Review the monthly payment, total interest, and schedule."],
+    formulaTitle: "Highlights",
+    formulas: [
+      { title: "Annuity repayment", body: "Computes the equal-monthly-payment schedule." },
+      { title: "Repayment schedule", body: "Shows the early monthly principal/interest split." },
+      { title: "Instant result", body: "Results update as soon as you enter values." },
+    ],
+    faqTitle: "Preguntas frecuentes",
+    faqs: [
+    { question: "What is annuity repayment?", answer: "You pay the same total amount each month, combining principal and interest." },
+    { question: "How do I reduce total interest?", answer: "Shorten the term, lower the rate, or make prepayments where possible." },
+    { question: "Is this different from a mortgage?", answer: "The math is the same; a mortgage is secured by collateral, which can change rate and limit terms." },
+    ],
+    disclaimer: "This calculator is for reference only. Actual results vary with loan terms, fees, and variable rates. Confirm exact terms with your lender.",
+  },
+};
+const c = content[locale];
+const url = `https://tools.oiyo.net/${locale}/loan-calculator/`;
+const schema = utilityJsonLd({ name: m.title, description: m.description, url, locale, steps: c.steps, faqs: c.faqs });
+---
+<Layout title={m.title} description={m.description} locale={locale} availableLocales={[...locales]} canonicalURL={url}>
+  <div class="mx-auto max-w-3xl px-4 py-6">
+    <h1 class="text-2xl font-bold tracking-tight">{m.title}</h1>
+    <p class="mb-5 mt-2 text-sm text-muted-foreground">{m.description}</p>
+    <LoanCalculator client:load locale={locale === 'ko' ? 'ko' : 'en'} />
+    <UtilityArticle c={c} />
+    <RelatedUtilities locale={locale} current="loan-calculator" group="money" />
+  </div>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+</Layout>

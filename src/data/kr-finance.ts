@@ -30,4 +30,10 @@ export const krFinanceTools = [
   { slug: 'jeonse-monthly-converter', title: '전월세 전환 계산기', description: '전환율로 전세↔월세 환산 금액을 계산해요.' },
   { slug: 'subscription-points-calculator', title: '청약 가점 계산기', description: '무주택기간·부양가족·통장 가입기간으로 84점 만점 가점을 계산해요.' },
   { slug: 'reconstruction-profit', title: '재건축 수익률 계산기', description: '현재가·분담금·예상 시세로 재건축 투자 수익률을 계산해요.' },
+  { slug: 'jeonse-vs-buy-calculator', title: '전세 vs 매매 비교 계산기', description: '전세 보증금 기회비용과 매매 시 대출이자·취득세·집값 상승을 같은 기간으로 비교해요.' },
+  { slug: 'savings-comparison-calculator', title: '예적금 상품 비교 계산기', description: '같은 월 저축액으로 적금·예금 상품의 만기 세후 수령액(이자소득세 15.4%)을 비교해요.' },
+  { slug: 'isa-vs-pension-calculator', title: 'ISA vs 연금저축 비교 계산기', description: 'ISA 비과세·9.9% 분리과세와 연금저축 세액공제·연금소득세를 같은 납입액으로 비교해요.' },
+  { slug: 'present-value-calculator', title: '호프만·라이프니츠 현재가치 계산기', description: '매월 받을 돈의 현재가치를 법원 손해배상 산정에 쓰는 호프만(단리)·라이프니츠(복리) 방식으로 계산해요.' },
+  { slug: 'electricity-bill-calculator', title: '전기요금 계산기', description: '주택용 누진 구간별 전기요금과 부가세·전력기금, 기기 하나 더 쓸 때 늘어나는 요금을 계산해요.' },
+  { slug: 'health-insurance-leaver-settlement', title: '퇴사자 건강보험료 정산 계산기', description: '퇴사할 때 그해 보수로 다시 계산하는 건강보험료 정산액(환급·추가 납부)을 계산해요.' },
 ] as const;
