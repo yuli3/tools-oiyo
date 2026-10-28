@@ -1,0 +1,24 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import FrDebtBudget from '../../components/tools/FrDebtBudget';
+import { DEBT_PLANNING_VERIFIED_ON } from '../../lib/debt-planning';
+const c = {
+  introTitle: 'Comprendre votre budget avant de constituer un dossier',
+  intro: 'Ce tableau vous aide à mettre en regard vos ressources, vos dépenses essentielles et vos échéances. Le solde obtenu décrit uniquement les montants que vous saisissez. La Banque de France et la commission examinent votre dossier selon des règles qui ne se résument pas à ce solde.',
+  formulaTitle: 'Un solde de trésorerie, pas une décision',
+  formulas: [{ title: 'Solde mensuel', body: 'Ressources reçues − dépenses essentielles hors dettes − échéances des dettes.' }, { title: 'Solde négatif', body: 'Un manque mensuel apparaît dans le budget saisi. Le montant reste affiché, sans être ramené artificiellement à zéro.' }, { title: 'Recevabilité', body: 'Aucun seuil de ce tableau ne permet de déclarer un dossier recevable ou irrecevable.' }],
+  howToTitle: 'Préparer votre démarche',
+  steps: ['Rassemblez les justificatifs de revenus, charges, dettes et patrimoine de votre foyer.', 'Calculez votre solde sans compter deux fois les mêmes paiements.', 'Consultez la Banque de France ou un Point conseil budget pour votre situation personnelle.', 'Distinguez le dépôt, l’examen de recevabilité et les mesures éventuellement décidées.'],
+  faqTitle: 'Questions avant le dépôt',
+  faqs: [{ question: 'La Banque de France paie-t-elle mes dettes ?', answer: 'Non. La commission examine votre situation et peut proposer ou imposer des solutions prévues par la procédure. Elle ne vous prête pas la somme à rembourser.' }, { question: 'Le dépôt efface-t-il immédiatement les dettes ?', answer: 'Non. Le dépôt entraîne une inscription au FICP, puis le dossier est examiné. Les effets de la recevabilité sont distincts de ceux du dépôt.' }, { question: 'Et si je suis indépendant ?', answer: 'Le parcours dépend notamment de votre statut et de la nature de vos dettes. Vérifiez les indications officielles ou demandez conseil ; ce tableau ne tranche pas cette question.' }, { question: 'Mes montants sont-ils enregistrés ?', answer: 'Ils restent dans la mémoire de la page, sans envoi de dossier ni enregistrement dans un compte. Le site utilise des outils de mesure d’audience et de publicité.' }],
+  disclaimer: 'France uniquement. Outil de préparation budgétaire, sans conseil juridique personnalisé ni décision de recevabilité. Le résultat n’est pas la capacité de remboursement retenue par la commission.',
+};
+const sources: [string,string][] = [
+  ['Banque de France : détail de la procédure', 'https://www.banque-france.fr/fr/detail-de-la-procedure-de-surendettement'],
+  ['Banque de France : faire face aux difficultés financières', 'https://www.banque-france.fr/fr/a-votre-service/particuliers/faire-face-difficultes-financieres-ou-dettes'],
+  ['Service-Public : dossier de surendettement', 'https://www.service-public.gouv.fr/particuliers/vosdroits/F34642'],
+];
+---
+<DebtReliefPage slug="france-surendettement-budget" c={c} sources={sources} sourcesTitle="Sources officielles" checked={`Vérifié le ${DEBT_PLANNING_VERIFIED_ON}`}>
+  <FrDebtBudget client:load />
+</DebtReliefPage>
