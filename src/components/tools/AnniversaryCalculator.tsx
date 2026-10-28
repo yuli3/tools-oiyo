@@ -207,7 +207,7 @@ const AnniversaryCalculator: React.FC<{ locale?: Locale }> = ({ locale = 'en' })
                         <p className={`text-xs font-black uppercase tracking-widest ${m.diff === 0 ? 'text-primary' : 'text-muted-foreground'}`}>{m.label}</p>
                         <p className="text-xs font-medium text-muted-foreground">{formatDate(m.date, locale)}</p>
                         <p className={`text-xs font-black mt-1 ${m.diff === 0 ? 'text-primary' : m.diff < 0 ? 'text-muted-foreground' : 'text-foreground'}`}>
-                          {m.diff === 0 ? t.dayOf : m.diff < 0 ? `${Math.abs(m.diff)}${t.daysLabel} ${t.past}` : `${m.diff}${t.daysLabel} ${t.future}`}
+                          {m.diff === 0 ? t.dayOf : m.diff < 0 ? `${Math.abs(m.diff)} ${t.past}` : `${m.diff} ${t.future}`}
                         </p>
                       </div>
                     ))}
