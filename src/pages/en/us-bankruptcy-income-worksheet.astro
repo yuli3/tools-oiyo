@@ -1,0 +1,24 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import UsBankruptcyIncomeWorksheet from '../../components/tools/UsBankruptcyIncomeWorksheet';
+import { DEBT_PLANNING_VERIFIED_ON } from '../../lib/debt-planning';
+const c = {
+  introTitle: 'Start with income arithmetic, not an eligibility label',
+  intro: 'Form 122A-1 starts from income received during six full calendar months before filing. This worksheet helps you organize those monthly totals. It does not identify all included income, apply spouse adjustments, determine exemptions, or replace the complete means test.',
+  formulaTitle: 'The calculation',
+  formulas: [{ title: 'Monthly average', body: 'Total included income for the six complete months ÷ 6.' }, { title: 'Annualized amount', body: 'Unrounded monthly average × 12, equivalent to the six-month total × 2.' }, { title: 'Optional reference', body: 'Use the U.S. Trustee Program table for your filing period, state and household size. No legal median is prefilled here.' }],
+  howToTitle: 'Prepare the official forms',
+  steps: ['Select the expected filing date to identify the six complete calendar months.', 'Read Form 122A-1 income categories, exclusions and spouse-income instructions before entering totals.', 'If comparing a median, verify the applicable official table and confirm its state, household size and filing period.', 'Review the official forms and obtain qualified advice before making a filing decision.'],
+  faqTitle: 'What the numbers mean',
+  faqs: [{ question: 'Is a figure above the median an automatic rejection?', answer: 'No. The official forms include additional calculations and exceptions. An arithmetic comparison alone does not decide Chapter 7 eligibility.' }, { question: 'Does a figure below the reference guarantee relief?', answer: 'No. Income comparison is only part of the legal process. Other requirements and your circumstances still matter.' }, { question: 'Are my entered amounts saved?', answer: 'The worksheet keeps these inputs only in the current page memory. It does not submit them to a court or save them to an account. The site uses analytics and advertising.' }],
+  disclaimer: 'U.S. preparatory worksheet, not legal advice, a court form, or a complete means test. Confirm the current official instructions and the table applicable to your filing date.',
+};
+const sources: [string,string][] = [
+  ['U.S. Courts: Form 122A-1 and instructions', 'https://www.uscourts.gov/forms-rules/forms/chapter-7-statement-your-current-monthly-income-0'],
+  ['Official Form 122A-1 (PDF)', 'https://www.uscourts.gov/sites/default/files/b_122a-1.pdf'],
+  ['U.S. Trustee Program: means-testing data by filing period', 'https://www.justice.gov/ust/means-testing'],
+];
+---
+<DebtReliefPage slug="us-bankruptcy-income-worksheet" c={c} sources={sources} sourcesTitle="Official sources" checked={`Instructions checked: ${DEBT_PLANNING_VERIFIED_ON}`}>
+  <UsBankruptcyIncomeWorksheet client:load />
+</DebtReliefPage>
