@@ -1,0 +1,9 @@
+import {test} from 'node:test';import assert from 'node:assert/strict';
+import {paceSeconds,recipeFactor,recipeAmount,requiredFinal,weightedGpa,localCalendarDate,calendarDate,calendarDays,calendarAddDays} from './small-utilities.ts';
+test('pace rejects invalid minute/second fields and preserves 5 min/km = 12 km/h',()=>{assert.equal(3600/paceSeconds('5','0')!,12);for(const pair of [['','0'],['5','60'],['-1','0'],['0','0'],['5x','0']])assert.equal(paceSeconds(...pair as [string,string]),null);});
+test('recipe scales quantities without inventing a unit conversion',()=>{assert.equal(recipeAmount('125',recipeFactor('2','6')),375);assert.equal(recipeAmount('0',2),0);assert.equal(recipeFactor('0','2'),null);assert.equal(recipeFactor('','2'),null);assert.equal(recipeAmount('12g',2),null);});
+test('final score preserves impossible scores instead of silently capping at 100',()=>{assert.equal(requiredFinal('70','50','80'),90);assert.equal(requiredFinal('50','20','80'),200);for(const x of [['','20','80'],['50','0','80'],['101','20','80']])assert.equal(requiredFinal(...x as [string,string,string]),null);});
+test('GPA weights confirmed numeric points and rejects incompatible scale',()=>{assert.equal(weightedGpa('4.5',[{points:'4',credits:'3'},{points:'2',credits:'1'}]),3.5);assert.equal(weightedGpa('4',[{points:'4.5',credits:'3'}]),null);assert.equal(weightedGpa('4',[{points:'4',credits:''}]),null);});
+test('calendar uses exact calendar days across leap days and DST',()=>{assert.equal(calendarDate('2025-02-29'),null);const a=calendarDate('2024-02-28')!,b=calendarDate('2024-03-01')!;assert.equal(calendarDays(a,b),2);assert.equal(calendarAddDays(a,1).toISOString().slice(0,10),'2024-02-29');assert.equal(calendarDays(calendarDate('2026-03-07')!,calendarDate('2026-03-09')!),2);});
+
+test("today uses local calendar fields, not UTC truncation",()=>{assert.equal(localCalendarDate(new Date(2026,9,28,1,0)),"2026-10-28");});

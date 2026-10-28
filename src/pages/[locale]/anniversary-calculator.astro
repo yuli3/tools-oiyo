@@ -1,0 +1,8 @@
+---
+import SmallUtilityPage from '../../components/SmallUtilityPage.astro';
+import Calculator from '../../components/tools/AnniversaryCalculator';
+import {locales,type Locale} from '../../lib/i18n';
+export function getStaticPaths(){return locales.map(locale=>({params:{locale},props:{locale}}));}
+const {locale}=Astro.props as {locale:Locale};
+---
+<SmallUtilityPage slug="anniversary-calculator" locale={locale}><Calculator locale={locale} client:only="react"/></SmallUtilityPage>
