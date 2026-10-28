@@ -510,15 +510,15 @@ export const smallUtilities:Record<string,Record<Locale,{meta:{title:string;desc
         "formulas": [
           {
             "title": "D+N",
-            "body": "시작일을 1일째로 세어 100일·365일째 날짜를 계산해요. D-Day는 오늘을 0일로 세며, 오늘은 방문자 기기의 날짜를 사용해요. 달력상 1주년은 계산하지 않아요."
+            "body": "시작일을 1일째로 포함해 D+N을 표시해요."
           },
           {
             "title": "D-Day",
-            "body": "시작일을 1일째로 세어 100일·365일째 날짜를 계산해요. D-Day는 오늘을 0일로 세며, 오늘은 방문자 기기의 날짜를 사용해요. 달력상 1주년은 계산하지 않아요."
+            "body": "목표일 − 방문자 기기의 오늘 날짜예요. 오늘이면0이에요."
           },
           {
             "title": "기념일",
-            "body": "시작일을 1일째로 세어 100일·365일째 날짜를 계산해요. D-Day는 오늘을 0일로 세며, 오늘은 방문자 기기의 날짜를 사용해요. 달력상 1주년은 계산하지 않아요."
+            "body": "N일째 날짜 = 시작일 + (N − 1)일이에요. 달력상1주년 계산과 달라요."
           }
         ],
         "howToTitle": "사용 방법",
@@ -557,15 +557,15 @@ export const smallUtilities:Record<string,Record<Locale,{meta:{title:string;desc
         "formulas": [
           {
             "title": "D+ count",
-            "body": "Milestones count the start date as day 1. D-Day counts today as day 0, using your device’s local calendar date. A 365th-day milestone is not a calendar-year anniversary."
+            "body": "D+N counts the start date as day 1."
           },
           {
             "title": "D-Day",
-            "body": "Milestones count the start date as day 1. D-Day counts today as day 0, using your device’s local calendar date. A 365th-day milestone is not a calendar-year anniversary."
+            "body": "Target date minus the device’s local today; today is 0."
           },
           {
             "title": "Milestones",
-            "body": "Milestones count the start date as day 1. D-Day counts today as day 0, using your device’s local calendar date. A 365th-day milestone is not a calendar-year anniversary."
+            "body": "The Nth day is start date plus N − 1 days, not a calendar-year anniversary."
           }
         ],
         "howToTitle": "How to use",
@@ -604,15 +604,15 @@ export const smallUtilities:Record<string,Record<Locale,{meta:{title:string;desc
         "formulas": [
           {
             "title": "D+カウント",
-            "body": "節目は開始日を1日目として数えます。Dデイは端末の今日を0日とします。365日目は暦の1周年ではありません。"
+            "body": "D+Nは開始日を1日目に含めます。"
           },
           {
             "title": "Dデイ",
-            "body": "節目は開始日を1日目として数えます。Dデイは端末の今日を0日とします。365日目は暦の1周年ではありません。"
+            "body": "目標日から端末の今日を引きます。当日は0です。"
           },
           {
             "title": "節目の日",
-            "body": "節目は開始日を1日目として数えます。Dデイは端末の今日を0日とします。365日目は暦の1周年ではありません。"
+            "body": "N日目は開始日にN−1日を加えます。暦の1周年とは異なります。"
           }
         ],
         "howToTitle": "使い方",
@@ -651,15 +651,15 @@ export const smallUtilities:Record<string,Record<Locale,{meta:{title:string;desc
         "formulas": [
           {
             "title": "D+天数",
-            "body": "里程碑把开始日期算作第1天。倒数把设备当地的今天算作第0天。第365天并不等于日历上的一周年。"
+            "body": "D+N把开始日期计为第1天。"
           },
           {
             "title": "倒数日",
-            "body": "里程碑把开始日期算作第1天。倒数把设备当地的今天算作第0天。第365天并不等于日历上的一周年。"
+            "body": "目标日期减去设备当地的今天；当天为0。"
           },
           {
             "title": "里程碑",
-            "body": "里程碑把开始日期算作第1天。倒数把设备当地的今天算作第0天。第365天并不等于日历上的一周年。"
+            "body": "第N天是开始日期加N−1天，并非日历上的一周年。"
           }
         ],
         "howToTitle": "使用方法",
@@ -698,15 +698,15 @@ export const smallUtilities:Record<string,Record<Locale,{meta:{title:string;desc
         "formulas": [
           {
             "title": "D+N",
-            "body": "Les jalons comptent la date de début comme jour 1. Le compte à rebours prend aujourd’hui comme jour 0, selon la date locale de votre appareil. Le 365e jour n’est pas un anniversaire calendaire."
+            "body": "D+N inclut la date de début comme jour 1."
           },
           {
             "title": "Compte à rebours",
-            "body": "Les jalons comptent la date de début comme jour 1. Le compte à rebours prend aujourd’hui comme jour 0, selon la date locale de votre appareil. Le 365e jour n’est pas un anniversaire calendaire."
+            "body": "Date cible moins la date locale de l’appareil ; aujourd’hui vaut 0."
           },
           {
             "title": "Jalons",
-            "body": "Les jalons comptent la date de début comme jour 1. Le compte à rebours prend aujourd’hui comme jour 0, selon la date locale de votre appareil. Le 365e jour n’est pas un anniversaire calendaire."
+            "body": "Le Ne jour est le début plus N − 1 jours, sans calcul d’anniversaire calendaire."
           }
         ],
         "howToTitle": "Comment l'utiliser",
@@ -745,15 +745,15 @@ export const smallUtilities:Record<string,Record<Locale,{meta:{title:string;desc
         "formulas": [
           {
             "title": "D+N",
-            "body": "Los hitos cuentan la fecha inicial como día 1. La cuenta atrás usa hoy como día 0, según la fecha local del dispositivo. El día 365 no equivale al aniversario del año siguiente."
+            "body": "D+N incluye la fecha inicial como día 1."
           },
           {
             "title": "D-Day",
-            "body": "Los hitos cuentan la fecha inicial como día 1. La cuenta atrás usa hoy como día 0, según la fecha local del dispositivo. El día 365 no equivale al aniversario del año siguiente."
+            "body": "Fecha objetivo menos la fecha local del dispositivo; hoy es 0."
           },
           {
             "title": "Hitos",
-            "body": "Los hitos cuentan la fecha inicial como día 1. La cuenta atrás usa hoy como día 0, según la fecha local del dispositivo. El día 365 no equivale al aniversario del año siguiente."
+            "body": "El día N es la fecha inicial más N − 1 días, no un aniversario anual."
           }
         ],
         "howToTitle": "Cómo usarlo",
