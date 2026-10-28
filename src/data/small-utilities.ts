@@ -500,32 +500,32 @@ export const smallUtilities:Record<string,Record<Locale,{meta:{title:string;desc
   "anniversary-calculator": {
     "ko": {
       "meta": {
-        "title": "기념일·디데이 계산기 — 100일·1주년·D-Day 카운트",
+        "title": "기념일·디데이 계산기 — 100일·365일째·D-Day",
         "description": "연인·결혼·입사 등 중요한 날부터 지난 일수(D+N)를 계산하고, 100일·200일·1000일 등 주요 기념일 날짜를 한눈에 확인합니다."
       },
       "content": {
         "introTitle": "기념일 계산은 기준일과 포함 방식이 핵심입니다",
-        "intro": "100일, 1주년, D-Day처럼 같은 날짜 계산도 기준일을 포함하는지에 따라 결과가 달라질 수 있어요. 이 계산기는 시작일 또는 목표일을 기준으로 지난 일수와 남은 일수, 자주 찾는 기념일 날짜를 한 번에 확인하도록 도와요.",
+        "intro": "시작일을 1일째로 세어 100일·365일째 날짜를 계산해요. D-Day는 오늘을 0일로 세며, 오늘은 방문자 기기의 날짜를 사용해요. 달력상 1주년은 계산하지 않아요.",
         "formulaTitle": "계산 기준",
         "formulas": [
           {
             "title": "D+N",
-            "body": "기준일 이후 얼마나 많은 날이 지났는지 계산합니다."
+            "body": "시작일을 1일째로 세어 100일·365일째 날짜를 계산해요. D-Day는 오늘을 0일로 세며, 오늘은 방문자 기기의 날짜를 사용해요. 달력상 1주년은 계산하지 않아요."
           },
           {
             "title": "D-Day",
-            "body": "오늘부터 목표일까지 남은 일수를 계산합니다."
+            "body": "시작일을 1일째로 세어 100일·365일째 날짜를 계산해요. D-Day는 오늘을 0일로 세며, 오늘은 방문자 기기의 날짜를 사용해요. 달력상 1주년은 계산하지 않아요."
           },
           {
             "title": "기념일",
-            "body": "100일, 200일, 1주년처럼 기준일에 일정 일수를 더합니다."
+            "body": "시작일을 1일째로 세어 100일·365일째 날짜를 계산해요. D-Day는 오늘을 0일로 세며, 오늘은 방문자 기기의 날짜를 사용해요. 달력상 1주년은 계산하지 않아요."
           }
         ],
         "howToTitle": "사용 방법",
         "steps": [
           "연애, 결혼, 입사 등 기준이 되는 날짜를 입력합니다.",
           "지난 일수 또는 목표일까지 남은 일수를 확인합니다.",
-          "100일, 365일, 1000일 같은 주요 기념일 날짜를 일정에 옮겨 둡니다."
+          "100일째·365일째·1000일째 날짜를 확인해요."
         ],
         "faqTitle": "자주 묻는 질문",
         "faqs": [
@@ -547,32 +547,32 @@ export const smallUtilities:Record<string,Record<Locale,{meta:{title:string;desc
     },
     "en": {
       "meta": {
-        "title": "Anniversary & D-Day Calculator — Count Days & Milestones",
+        "title": "Anniversary & D-Day Calculator — Day Counts & Milestones",
         "description": "Calculate days since any special event (D+ mode) or days until a future target (D-Day mode). See key milestones like 100, 365, 1000 days at a glance."
       },
       "content": {
         "introTitle": "Anniversary counting depends on the start date and counting rule",
-        "intro": "A 100-day celebration, first anniversary, and D-Day countdown can use different counting conventions. This calculator helps you check elapsed days, remaining days, and common milestone dates from one chosen event date.",
+        "intro": "Milestones count the start date as day 1. D-Day counts today as day 0, using your device’s local calendar date. A 365th-day milestone is not a calendar-year anniversary.",
         "formulaTitle": "Counting concepts",
         "formulas": [
           {
             "title": "D+ count",
-            "body": "Shows how many days have passed since the base date."
+            "body": "Milestones count the start date as day 1. D-Day counts today as day 0, using your device’s local calendar date. A 365th-day milestone is not a calendar-year anniversary."
           },
           {
             "title": "D-Day",
-            "body": "Shows how many days remain until a target date."
+            "body": "Milestones count the start date as day 1. D-Day counts today as day 0, using your device’s local calendar date. A 365th-day milestone is not a calendar-year anniversary."
           },
           {
             "title": "Milestones",
-            "body": "Adds fixed day counts such as 100, 200, 365, or 1000 days to the base date."
+            "body": "Milestones count the start date as day 1. D-Day counts today as day 0, using your device’s local calendar date. A 365th-day milestone is not a calendar-year anniversary."
           }
         ],
         "howToTitle": "How to use",
         "steps": [
           "Enter the date that marks the event or relationship start.",
           "Check the elapsed-day count or countdown to a future target.",
-          "Save key milestone dates such as 100 days, one year, or 1000 days to your calendar."
+          "Check the 100th, 365th and 1000th days."
         ],
         "faqTitle": "Frequently asked questions",
         "faqs": [
@@ -594,32 +594,32 @@ export const smallUtilities:Record<string,Record<Locale,{meta:{title:string;desc
     },
     "ja": {
       "meta": {
-        "title": "記念日・Dデイ計算機 — 経過日数と節目を確認",
+        "title": "記念日・Dデイ計算機 — 経過日数と節目",
         "description": "大切な日からの経過日数(D+N)を計算し、100日・365日・1000日などの節目の日付を一覧表示します。"
       },
       "content": {
         "introTitle": "記念日の計算は基準日と数え方で変わります",
-        "intro": "100日記念、1周年、Dデイのカウントは、基準日を含めるかどうかで結果が変わることがあります。この計算機では、指定した日からの経過日数、目標日までの日数、よく使う節目の日付をまとめて確認できます。",
+        "intro": "節目は開始日を1日目として数えます。Dデイは端末の今日を0日とします。365日目は暦の1周年ではありません。",
         "formulaTitle": "計算の考え方",
         "formulas": [
           {
             "title": "D+カウント",
-            "body": "基準日から何日経過したかを表示します。"
+            "body": "節目は開始日を1日目として数えます。Dデイは端末の今日を0日とします。365日目は暦の1周年ではありません。"
           },
           {
             "title": "Dデイ",
-            "body": "今日から目標日まで残り何日かを表示します。"
+            "body": "節目は開始日を1日目として数えます。Dデイは端末の今日を0日とします。365日目は暦の1周年ではありません。"
           },
           {
             "title": "節目の日",
-            "body": "100日、200日、365日、1000日などを基準日に加算します。"
+            "body": "節目は開始日を1日目として数えます。Dデイは端末の今日を0日とします。365日目は暦の1周年ではありません。"
           }
         ],
         "howToTitle": "使い方",
         "steps": [
           "記念日や開始日となる日付を入力します。",
           "経過日数または目標日までの残り日数を確認します。",
-          "100日、1周年、1000日などの節目をカレンダーに控えます。"
+          "100日目・365日目・1000日目を確認します。"
         ],
         "faqTitle": "よくある質問",
         "faqs": [
@@ -641,32 +641,32 @@ export const smallUtilities:Record<string,Record<Locale,{meta:{title:string;desc
     },
     "zh": {
       "meta": {
-        "title": "纪念日・倒数计算机 — 天数与重要里程碑",
+        "title": "纪念日与倒数计算器 — 天数与里程碑",
         "description": "计算特别日期起的经过天数（D+N），或距离目标日期的倒数天数，并自动显示100天、周年、1000天等重要里程碑。"
       },
       "content": {
         "introTitle": "纪念日计算取决于起始日期和计数规则",
-        "intro": "100天纪念日、一周年和倒数日可能采用不同的计数方式，尤其是起始日是否算作第一天。这个计算器可以根据一个基准日期查看已过去天数、剩余天数和常见里程碑日期。",
+        "intro": "里程碑把开始日期算作第1天。倒数把设备当地的今天算作第0天。第365天并不等于日历上的一周年。",
         "formulaTitle": "计算概念",
         "formulas": [
           {
             "title": "D+天数",
-            "body": "显示从基准日期开始已经过去多少天。"
+            "body": "里程碑把开始日期算作第1天。倒数把设备当地的今天算作第0天。第365天并不等于日历上的一周年。"
           },
           {
             "title": "倒数日",
-            "body": "显示从今天到目标日期还剩多少天。"
+            "body": "里程碑把开始日期算作第1天。倒数把设备当地的今天算作第0天。第365天并不等于日历上的一周年。"
           },
           {
             "title": "里程碑",
-            "body": "把100天、200天、365天或1000天加到基准日期上。"
+            "body": "里程碑把开始日期算作第1天。倒数把设备当地的今天算作第0天。第365天并不等于日历上的一周年。"
           }
         ],
         "howToTitle": "使用方法",
         "steps": [
           "输入事件、恋爱、结婚或入职的基准日期。",
           "查看已过去天数，或查看到目标日期的剩余天数。",
-          "把100天、一周年、1000天等重要日期记录到日历中。"
+          "查看第100天、第365天和第1000天。"
         ],
         "faqTitle": "常见问题",
         "faqs": [
@@ -688,32 +688,32 @@ export const smallUtilities:Record<string,Record<Locale,{meta:{title:string;desc
     },
     "fr": {
       "meta": {
-        "title": "Calculateur d'anniversaire & Compte à rebours",
+        "title": "Dates repères et compte à rebours",
         "description": "Calculez le nombre de jours depuis un événement spécial ou le nombre de jours avant une date cible. Visualisez les jalons clés : 100, 365, 1000 jours."
       },
       "content": {
         "introTitle": "Le calcul d'un anniversaire dépend de la date de départ et de la convention",
-        "intro": "Une célébration des 100 jours, un premier anniversaire et un compte à rebours ne suivent pas toujours la même convention. Cet outil aide à vérifier les jours écoulés, les jours restants et les jalons courants depuis une date choisie.",
+        "intro": "Les jalons comptent la date de début comme jour 1. Le compte à rebours prend aujourd’hui comme jour 0, selon la date locale de votre appareil. Le 365e jour n’est pas un anniversaire calendaire.",
         "formulaTitle": "Repères de calcul",
         "formulas": [
           {
             "title": "D+N",
-            "body": "Indique le nombre de jours écoulés depuis la date de départ."
+            "body": "Les jalons comptent la date de début comme jour 1. Le compte à rebours prend aujourd’hui comme jour 0, selon la date locale de votre appareil. Le 365e jour n’est pas un anniversaire calendaire."
           },
           {
             "title": "Compte à rebours",
-            "body": "Indique le nombre de jours restants avant une date cible."
+            "body": "Les jalons comptent la date de début comme jour 1. Le compte à rebours prend aujourd’hui comme jour 0, selon la date locale de votre appareil. Le 365e jour n’est pas un anniversaire calendaire."
           },
           {
             "title": "Jalons",
-            "body": "Ajoute 100, 200, 365 ou 1000 jours à la date de départ."
+            "body": "Les jalons comptent la date de début comme jour 1. Le compte à rebours prend aujourd’hui comme jour 0, selon la date locale de votre appareil. Le 365e jour n’est pas un anniversaire calendaire."
           }
         ],
         "howToTitle": "Comment l'utiliser",
         "steps": [
           "Saisissez la date de l'événement ou du début de la relation.",
           "Consultez le nombre de jours écoulés ou le compte à rebours vers une date cible.",
-          "Notez les jalons importants comme 100 jours, un an ou 1000 jours."
+          "Consultez les 100e, 365e et 1000e jours."
         ],
         "faqTitle": "Questions fréquentes",
         "faqs": [
@@ -735,32 +735,32 @@ export const smallUtilities:Record<string,Record<Locale,{meta:{title:string;desc
     },
     "es": {
       "meta": {
-        "title": "Calculadora de aniversario y cuenta atrás",
+        "title": "Fechas señaladas y cuenta atrás",
         "description": "Calcula los días transcurridos desde una fecha especial o los días restantes hasta un objetivo. Muestra hitos clave como 100, 365 y 1000 días."
       },
       "content": {
         "introTitle": "El cálculo de aniversarios depende de la fecha base y la convención",
-        "intro": "Una celebración de 100 días, un primer aniversario y una cuenta atrás pueden usar reglas distintas. Esta calculadora permite revisar días transcurridos, días restantes e hitos habituales desde una fecha elegida.",
+        "intro": "Los hitos cuentan la fecha inicial como día 1. La cuenta atrás usa hoy como día 0, según la fecha local del dispositivo. El día 365 no equivale al aniversario del año siguiente.",
         "formulaTitle": "Conceptos de cálculo",
         "formulas": [
           {
             "title": "D+N",
-            "body": "Muestra cuántos días han pasado desde la fecha base."
+            "body": "Los hitos cuentan la fecha inicial como día 1. La cuenta atrás usa hoy como día 0, según la fecha local del dispositivo. El día 365 no equivale al aniversario del año siguiente."
           },
           {
             "title": "D-Day",
-            "body": "Muestra cuántos días faltan para una fecha objetivo."
+            "body": "Los hitos cuentan la fecha inicial como día 1. La cuenta atrás usa hoy como día 0, según la fecha local del dispositivo. El día 365 no equivale al aniversario del año siguiente."
           },
           {
             "title": "Hitos",
-            "body": "Suma 100, 200, 365 o 1000 días a la fecha base."
+            "body": "Los hitos cuentan la fecha inicial como día 1. La cuenta atrás usa hoy como día 0, según la fecha local del dispositivo. El día 365 no equivale al aniversario del año siguiente."
           }
         ],
         "howToTitle": "Cómo usarlo",
         "steps": [
           "Introduce la fecha del evento o del inicio de la relación.",
           "Consulta los días transcurridos o los días restantes hasta un objetivo.",
-          "Guarda en tu calendario hitos como 100 días, un año o 1000 días."
+          "Consulta los días 100, 365 y 1000."
         ],
         "faqTitle": "Preguntas frecuentes",
         "faqs": [
