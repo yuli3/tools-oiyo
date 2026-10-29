@@ -1,5 +1,6 @@
 ---
 // Moved from blog.oiyo.net/ko/weekly-holiday-pay-calculator/ on 2026-10-27 (W10a). Copy kept from Blog.
+import Korea2027Comparison from "../../components/tools/Korea2027Comparison";
 import KrFinancePage from "../../components/KrFinancePage.astro";
 import WeeklyHolidayPayCalculator from "../../components/tools/WeeklyHolidayPayCalculator";
 import { RATES, RATES_AS_OF, weeklyHolidayPay } from "../../lib/kr-payroll-2026";
@@ -49,4 +50,5 @@ const faqs = [
   <ol class="mt-4 grid gap-2 sm:grid-cols-3" aria-label="주휴 조건 확인 순서"><li class="rounded-lg border border-border p-3 text-sm">① 4주 평균 소정근로시간</li><li class="rounded-lg border border-border p-3 text-sm">② 1주 근로관계·소정근로일 개근</li><li class="rounded-lg border border-border p-3 text-sm">③ 확인된 조건의 금액 비교</li></ol>
   <p class="mt-3 text-sm"><a class="text-primary underline" href="https://1350.moel.go.kr/rtmview.do?id=1000278823&amp;page=1&amp;type=ALL">고용노동부: 소정근로시간과 근무형태별 주휴시간</a></p>
   <p class="mt-4 text-xs text-muted-foreground">근거: 근로기준법 제55조(휴일), 같은 법 시행령 제30조, 제18조 제3항(단시간 근로자). 2026년 최저임금 시간급 10,320원(2027년 10,700원). 기준일 {RATES_AS_OF}.</p>
+  <Korea2027Comparison client:load mode="wage" />
 </KrFinancePage>

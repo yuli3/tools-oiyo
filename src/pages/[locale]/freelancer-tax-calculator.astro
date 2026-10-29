@@ -2,6 +2,7 @@
 // Replaces blog.oiyo.net/{locale}/freelancer-tax-calculator/ (2026-10-27, W9c). Country pages keep Blog's checked
 // country rules; the Korean calculator now settles 3.3% against a real 종합소득세 estimate (Blog assumed 60%
 // expenses, no personal deduction and compared tax without local tax with 3.3% withheld).
+import Korea2027Comparison from '../../components/tools/Korea2027Comparison';
 import Layout from '../../components/Layout.astro';
 import UtilityArticle, { type UtilityContent } from '../../components/UtilityArticle.astro';
 import RelatedUtilities from '../../components/RelatedUtilities.astro';
@@ -218,6 +219,7 @@ const schema = utilityJsonLd({ name: m.title, description: m.description, url, l
     <p class="mb-5 mt-2 text-sm text-muted-foreground">{m.description}</p>
     {country ? <FreelancerTaxCountryCalculator client:load country={country} /> : <KrIncomeTaxCalculator client:load locale={locale === 'ko' ? 'ko' : 'en'} variant="freelancer" />}
     {!country && <p class="mt-4 text-xs text-muted-foreground">근거: 소득세법 제55조·제59조의4·제129조, 국세청 경비율 고시. 기준일 {INCOME_TAX_AS_OF}.</p>}
+    {locale === "ko" && <Korea2027Comparison client:load mode="withholding" />}
     <UtilityArticle c={c} />
     <RelatedUtilities locale={locale} current="freelancer-tax-calculator" group="money" />
   </div>

@@ -22,6 +22,8 @@ jobs:
         run: npm run lint:shadcn
       - name: kr-rates parity + vectors
         run: npm test
+      - name: Korean 2027 comparison regression
+        run: node --experimental-strip-types --test src/lib/kr-2027-comparison.test.ts
       - run: npm run build
       - name: Authored output regression
         run: node --test scripts/manual-ads-html.test.mjs
