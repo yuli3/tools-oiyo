@@ -27,6 +27,8 @@ test("year registry preserves unknown rates and rejects unsupported years", () =
   assert.equal(next.hourly, 10700);
   assert.equal(next.payrollSupported, false);
   assert.equal(next.insurance.value, null);
+  assert.equal(next.insuranceEvidence.complete, false);
+  assert.equal(next.insuranceEvidence.nationalPension.employee, 0.05);
   assert.throws(() => minimumWageForYear(2028));
 });
 
