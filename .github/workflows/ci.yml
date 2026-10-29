@@ -23,6 +23,8 @@ jobs:
       - name: kr-rates parity + vectors
         run: npm test
       - run: npm run build
+      - name: Authored output regression
+        run: node --test scripts/manual-ads-html.test.mjs
       - name: Loan comparison six-locale HTML
         run: npm run test:loan-comparison-html
       - name: Native-language labor tools and discovery

@@ -54,7 +54,8 @@ const active = !noindex;
       if(ins.getAttribute("data-ad-status")==="unfilled")wrap.hidden=true;
     }).observe(ins,{attributes:true,attributeFilter:["data-ad-status"]});
   }
-  var related=main.querySelector("[data-related-tools], section:last-of-type");
+  // 2026-10-29: an arbitrary last section can contain inputs/results; only explicit related navigation is a safe insertion anchor.
+  var related=main.querySelector("[data-related-tools]");
   if(related&&related.parentNode){
     related.parentNode.insertBefore(wrap,related);
   }else{
