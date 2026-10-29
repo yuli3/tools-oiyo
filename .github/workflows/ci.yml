@@ -24,9 +24,13 @@ jobs:
         run: npm test
       - name: Korean 2027 comparison regression
         run: node --experimental-strip-types --test src/lib/kr-2027-comparison.test.ts
+      - name: Quartile convention and parser regression
+        run: node --experimental-strip-types --test src/lib/quartile.test.ts
       - run: npm run build
       - name: Authored output regression
         run: node --test scripts/manual-ads-html.test.mjs
+      - name: Quartile six-locale HTML
+        run: node --test scripts/quartile-html.test.mjs
       - name: Loan comparison six-locale HTML
         run: npm run test:loan-comparison-html
       - name: Native-language labor tools and discovery
