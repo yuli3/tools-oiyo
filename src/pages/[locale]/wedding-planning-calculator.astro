@@ -1,0 +1,53 @@
+---
+// Moved from blog.oiyo.net/{locale}/wedding-planning-calculator/ on 2026-10-27 (W15).
+import Layout from '../../components/Layout.astro';
+import RelatedUtilities from '../../components/RelatedUtilities.astro';
+import WeddingPlanningCalculator from '../../components/tools/WeddingPlanningCalculator';
+import { locales } from '../../lib/i18n';
+import { utilityJsonLd } from '../../lib/utility-jsonld';
+
+type ActiveLocale = (typeof locales)[number];
+export function getStaticPaths() {
+  return locales.map((locale) => ({ params: { locale }, props: { locale } }));
+}
+const { locale } = Astro.props as { locale: ActiveLocale };
+
+const meta: Record<ActiveLocale, { title: string; description: string }> = {
+  ko: {
+    title: "결혼 비용 플래너 — 예식·스드메·신혼여행 총비용 계산",
+    description: "하객 수, 식사비, 예식장, 스드메, 신혼여행 비용을 입력해 총 결혼 비용과 축의금 수지, 결혼 후 순자산을 계산합니다.",
+  },
+  en: {
+    title: "Wedding Budget Planner — Total Cost & Net Worth After Wedding",
+    description: "Enter guest count, meal cost, venue, photo/dress/makeup, and honeymoon to calculate total wedding cost, gift revenue, and net worth.",
+  },
+  ja: {
+    title: "結婚費用プランナー — 式場・スタジオ・ハネムーン費用計算",
+    description: "ゲスト数、食事代、式場、スタジオ撮影、ハネムーンを入力して総費用とご祝儀収支を計算します。",
+  },
+  zh: {
+    title: "婚礼费用规划师 — 总费用与婚后净资产计算",
+    description: "输入宾客数、餐费、宴会厅、婚纱摄影及蜜月费用，计算婚礼总费用、礼金收入及婚后净资产。",
+  },
+  fr: {
+    title: "Planificateur de Budget Mariage — Coût Total et Bilan Net",
+    description: "Entrez les invités, le repas, le lieu, la photo/robe et la lune de miel pour calculer le coût total et le bilan après mariage.",
+  },
+  es: {
+    title: "Planificador de Presupuesto de Boda — Coste Total y Patrimonio Neto",
+    description: "Ingresa invitados, comida, local, foto/vestido y luna de miel para calcular el coste total, ingresos de regalos y patrimonio neto.",
+  },
+};
+const m = meta[locale];
+const url = `https://tools.oiyo.net/${locale}/wedding-planning-calculator/`;
+const schema = utilityJsonLd({ name: m.title, description: m.description, url, locale, steps: [], faqs: [] }).slice(0, 1);
+---
+<Layout title={m.title} description={m.description} locale={locale} availableLocales={[...locales]} canonicalURL={url}>
+  <div class="mx-auto max-w-3xl px-4 py-6">
+    <h1 class="text-2xl font-bold tracking-tight">{m.title}</h1>
+    <p class="mb-5 mt-2 text-sm text-muted-foreground">{m.description}</p>
+    <WeddingPlanningCalculator client:load locale={locale === 'ko' ? 'ko' : 'en'} />
+    <RelatedUtilities locale={locale} current="wedding-planning-calculator" group="calc" />
+  </div>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+</Layout>

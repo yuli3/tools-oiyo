@@ -1,0 +1,42 @@
+---
+// Moved from blog.oiyo.net/vaccination-schedule/ on 2026-10-27 (W14); ko-only on Tools because it follows the KDCA national immunization schedule.
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import VaccinationSchedule from "../../components/tools/VaccinationSchedule";
+
+const title = ({
+    title: "예방접종 스케줄러 — 아이 생년월일로 접종 일정 확인",
+    description: "아이 생년월일을 입력하면 BCG·B형간염·DTaP 등 16종 예방접종 일정을 자동으로 계산해 드립니다.",
+  }).title;
+const description = ({
+    title: "예방접종 스케줄러 — 아이 생년월일로 접종 일정 확인",
+    description: "아이 생년월일을 입력하면 BCG·B형간염·DTaP 등 16종 예방접종 일정을 자동으로 계산해 드립니다.",
+  }).description;
+const c = {
+    introTitle: "예방접종 일정은 생년월일을 기준으로 하지만 아이의 상태와 국가 지침도 함께 봐야 합니다",
+    intro: "영유아 예방접종은 접종 가능한 월령과 최소 간격이 정해져 있어 생년월일을 기준으로 일정을 잡아요. 다만 조산, 기저질환, 이전 접종 기록, 거주 국가의 국가예방접종 기준에 따라 실제 일정은 달라질 수 있어요.",
+    formulaTitle: "일정 개념",
+    formulas: [
+      { title: "출생일 기준", body: "권장 접종 월령을 아이의 생년월일에 더해 예상 날짜를 계산합니다." },
+      { title: "접종 간격", body: "다회 접종 백신은 차수 사이 최소 간격을 지키는 것이 중요합니다." },
+      { title: "개별 조정", body: "조산, 질환, 지연 접종은 의료진이 따라잡기 일정을 조정할 수 있습니다." },
+    ],
+    howToTitle: "사용 방법",
+    steps: [
+      "아이의 생년월일을 입력해 예상 접종 일정을 확인합니다.",
+      "이미 맞은 백신과 예정된 백신을 예방접종 기록과 대조합니다.",
+      "일정이 늦었거나 건강 상태가 특수하면 소아청소년과 또는 보건소에 문의합니다.",
+    ],
+    faqTitle: "자주 묻는 질문",
+    faqs: [
+      { question: "국가마다 일정이 다른가요?", answer: "네. 백신 종류, 권장 월령, 지원 여부가 국가와 지역별로 다를 수 있습니다." },
+      { question: "접종이 늦어졌다면 처음부터 다시 맞아야 하나요?", answer: "대부분은 처음부터 다시 시작하지 않고 따라잡기 일정으로 조정합니다. 정확한 계획은 의료진에게 확인하세요." },
+      { question: "아이가 감기일 때 접종해도 되나요?", answer: "가벼운 증상은 가능할 때도 있지만 발열, 컨디션 저하, 특정 질환이 있으면 접종 전 의사 확인이 필요합니다." },
+    ],
+    disclaimer: "이 페이지는 일반 정보이며 의학적 조언이 아니에요. 예방접종 여부, 지연 접종, 이상반응, 기저질환은 반드시 소아청소년과 의사나 보건당국과 상담하세요.",
+  };
+const ko = { introTitle: c.introTitle, intro: c.intro, howToTitle: c.howToTitle, steps: c.steps, highlightsTitle: c.formulaTitle, highlights: c.formulas, disclaimer: c.disclaimer };
+const faqs = c.faqs.map((f) => ({ q: f.question, a: f.answer }));
+---
+<KrFinancePage slug="vaccination-schedule" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly group="health">
+  <VaccinationSchedule client:load locale="ko" />
+</KrFinancePage>

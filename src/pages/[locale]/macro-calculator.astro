@@ -1,0 +1,154 @@
+---
+// Moved from blog.oiyo.net/{locale}/macro-calculator/ on 2026-10-27 (W14).
+import Layout from '../../components/Layout.astro';
+import UtilityArticle, { type UtilityContent } from '../../components/UtilityArticle.astro';
+import RelatedUtilities from '../../components/RelatedUtilities.astro';
+import MacroCalculator from '../../components/tools/MacroCalculator';
+import { locales } from '../../lib/i18n';
+import { utilityJsonLd } from '../../lib/utility-jsonld';
+
+type ActiveLocale = (typeof locales)[number];
+export function getStaticPaths() {
+  return locales.map((locale) => ({ params: { locale }, props: { locale } }));
+}
+const { locale } = Astro.props as { locale: ActiveLocale };
+
+const meta: Record<ActiveLocale, { title: string; description: string }> = {
+  ko: { title: "매크로 계산기 — 단백질·탄수화물·지방 그램", description: "하루 칼로리와 매크로 비율을 선택하면 단백질·탄수화물·지방의 하루 섭취 그램과 칼로리를 계산합니다. 균형·고단백·저탄수·키토 프리셋 제공." },
+  en: { title: "Macro Calculator — Protein, Carbs & Fat Grams", description: "Enter daily calories and pick a macro split to get grams and calories of protein, carbs, and fat per day. Balanced, high-protein, low-carb, and keto presets." },
+  ja: { title: "マクロ計算機 — タンパク質・炭水化物・脂質のグラム", description: "1日のカロリーとマクロ比率を選ぶと、タンパク質・炭水化物・脂質の1日のグラムとカロリーを計算します。バランス・高タンパク・低炭水化物・ケトのプリセット。" },
+  zh: { title: "宏量营养素计算器 — 蛋白质·碳水·脂肪克数", description: "输入每日热量并选择宏量比例，计算每天蛋白质、碳水和脂肪的克数与热量。提供均衡、高蛋白、低碳水、生酮预设。" },
+  fr: { title: "Calculateur de macros — Protéines, glucides & lipides", description: "Saisissez vos calories quotidiennes et choisissez une répartition pour obtenir les grammes et calories de protéines, glucides et lipides par jour." },
+  es: { title: "Calculadora de macros — Proteína, carbohidratos y grasa", description: "Introduce las calorías diarias y elige una distribución para obtener los gramos y calorías de proteína, carbohidratos y grasa al día." },
+};
+const m = meta[locale];
+const content: Record<ActiveLocale, UtilityContent> = {
+  ko: {
+    introTitle: "매크로 계산기란?",
+    intro: "하루에 섭취할 칼로리를 단백질·탄수화물·지방(3대 영양소)으로 나눠 그램 단위로 알려줘요. 단백질과 탄수화물은 1g당 4kcal, 지방은 9kcal로 환산해요. TDEE 계산기로 하루 칼로리를 먼저 구한 뒤 목표에 맞는 비율을 고르면 식단 계획이 쉬워져요.",
+    howToTitle: "사용 방법",
+    steps: ["하루 칼로리를 입력합니다(TDEE 계산기 결과 사용 권장).", "목표에 맞는 매크로 비율을 선택합니다.", "단백질·탄수화물·지방의 그램과 칼로리를 확인합니다."],
+    formulaTitle: "주요 특징",
+    formulas: [
+      { title: "4가지 프리셋", body: "균형·고단백·저탄수·키토 비율을 제공합니다." },
+      { title: "그램+칼로리", body: "각 영양소의 그램과 칼로리를 함께 보여줍니다." },
+      { title: "정확한 환산", body: "단백질·탄수 4kcal/g, 지방 9kcal/g을 적용합니다." },
+    ],
+    faqTitle: "자주 묻는 질문",
+    faqs: [
+    { question: "하루 칼로리는 어떻게 정하나요?", answer: "TDEE 계산기로 유지 칼로리를 구한 뒤, 감량은 약 −500, 증량은 +500을 적용하세요." },
+    { question: "단백질은 얼마가 적당한가요?", answer: "목표에 따라 다르지만 근육 유지·증가에는 고단백 비율이 흔히 권장됩니다. 개인차가 있으니 전문가 상담을 권합니다." },
+    { question: "왜 지방은 1g당 9kcal인가요?", answer: "지방은 단백질·탄수화물(4kcal/g)보다 에너지 밀도가 높아 1g당 약 9kcal입니다." },
+    ],
+    disclaimer: "매크로 비율은 일반 가이드이며 개인의 건강 상태·활동·목표에 따라 달라져요. 식단·체중 관리는 전문가와 상담하세요.",
+  },
+  en: {
+    introTitle: "What is the macro calculator?",
+    intro: "It splits your daily calories into the three macronutrients — protein, carbs, and fat — in grams. Protein and carbs are 4 kcal per gram and fat is 9 kcal per gram. Get your daily calories from the TDEE calculator first, then pick a split that fits your goal to make meal planning easy.",
+    howToTitle: "How to use",
+    steps: ["Enter your daily calories (use the TDEE calculator's result).", "Choose a macro split for your goal.", "Read the grams and calories of protein, carbs, and fat."],
+    formulaTitle: "Highlights",
+    formulas: [
+      { title: "Four presets", body: "Balanced, high-protein, low-carb, and keto ratios." },
+      { title: "Grams + calories", body: "Shows both grams and calories per macro." },
+      { title: "Accurate conversion", body: "Uses 4 kcal/g for protein and carbs, 9 kcal/g for fat." },
+    ],
+    faqTitle: "FAQ",
+    faqs: [
+    { question: "How do I set daily calories?", answer: "Find maintenance with the TDEE calculator, then apply about −500 to cut or +500 to bulk." },
+    { question: "How much protein is right?", answer: "It depends on your goal, but higher protein is commonly advised for maintaining or building muscle. Individual needs vary — consult a professional." },
+    { question: "Why is fat 9 kcal per gram?", answer: "Fat is more energy-dense than protein and carbs (4 kcal/g), at about 9 kcal per gram." },
+    ],
+    disclaimer: "Macro splits are general guidance and depend on your health, activity, and goals. Consult a professional for diet and weight decisions.",
+  },
+  ja: {
+    introTitle: "マクロ計算機とは？",
+    intro: "1日に摂取するカロリーを三大栄養素(タンパク質・炭水化物・脂質)にグラム単位で振り分けます。タンパク質と炭水化物は1gあたり4kcal、脂質は9kcalで換算します。まずTDEE計算機で1日のカロリーを求め、目標に合う比率を選ぶと食事計画が容易になります。",
+    howToTitle: "使い方",
+    steps: ["1日のカロリーを入力します(TDEE計算機の結果を推奨)。", "目標に合うマクロ比率を選びます。", "タンパク質・炭水化物・脂質のグラムとカロリーを確認します。"],
+    formulaTitle: "主な特徴",
+    formulas: [
+      { title: "4つのプリセット", body: "バランス・高タンパク・低炭水化物・ケトの比率。" },
+      { title: "グラム＋カロリー", body: "各栄養素のグラムとカロリーを表示します。" },
+      { title: "正確な換算", body: "タンパク質・炭水4kcal/g、脂質9kcal/gを適用。" },
+    ],
+    faqTitle: "よくある質問",
+    faqs: [
+    { question: "1日のカロリーはどう決めますか？", answer: "TDEE計算機で維持カロリーを求め、減量は約−500、増量は+500を適用します。" },
+    { question: "タンパク質はどれくらい？", answer: "目標によりますが、筋肉の維持・増加には高タンパクがよく推奨されます。個人差があるため専門家にご相談を。" },
+    { question: "なぜ脂質は1gあたり9kcal？", answer: "脂質はタンパク質・炭水化物(4kcal/g)よりエネルギー密度が高く、1gあたり約9kcalです。" },
+    ],
+    disclaimer: "マクロ比率は一般的な目安で、健康状態・活動・目標により異なります。食事・体重管理は専門家にご相談ください。",
+  },
+  zh: {
+    introTitle: "What is the macro calculator?",
+    intro: "It splits your daily calories into the three macronutrients — protein, carbs, and fat — in grams. Protein and carbs are 4 kcal per gram and fat is 9 kcal per gram. Get your daily calories from the TDEE calculator first, then pick a split that fits your goal to make meal planning easy.",
+    howToTitle: "How to use",
+    steps: ["Enter your daily calories (use the TDEE calculator's result).", "Choose a macro split for your goal.", "Read the grams and calories of protein, carbs, and fat."],
+    formulaTitle: "Highlights",
+    formulas: [
+      { title: "Four presets", body: "Balanced, high-protein, low-carb, and keto ratios." },
+      { title: "Grams + calories", body: "Shows both grams and calories per macro." },
+      { title: "Accurate conversion", body: "Uses 4 kcal/g for protein and carbs, 9 kcal/g for fat." },
+    ],
+    faqTitle: "常见问题",
+    faqs: [
+    { question: "How do I set daily calories?", answer: "Find maintenance with the TDEE calculator, then apply about −500 to cut or +500 to bulk." },
+    { question: "How much protein is right?", answer: "It depends on your goal, but higher protein is commonly advised for maintaining or building muscle. Individual needs vary — consult a professional." },
+    { question: "Why is fat 9 kcal per gram?", answer: "Fat is more energy-dense than protein and carbs (4 kcal/g), at about 9 kcal per gram." },
+    ],
+    disclaimer: "Macro splits are general guidance and depend on your health, activity, and goals. Consult a professional for diet and weight decisions.",
+  },
+  fr: {
+    introTitle: "What is the macro calculator?",
+    intro: "It splits your daily calories into the three macronutrients — protein, carbs, and fat — in grams. Protein and carbs are 4 kcal per gram and fat is 9 kcal per gram. Get your daily calories from the TDEE calculator first, then pick a split that fits your goal to make meal planning easy.",
+    howToTitle: "How to use",
+    steps: ["Enter your daily calories (use the TDEE calculator's result).", "Choose a macro split for your goal.", "Read the grams and calories of protein, carbs, and fat."],
+    formulaTitle: "Highlights",
+    formulas: [
+      { title: "Four presets", body: "Balanced, high-protein, low-carb, and keto ratios." },
+      { title: "Grams + calories", body: "Shows both grams and calories per macro." },
+      { title: "Accurate conversion", body: "Uses 4 kcal/g for protein and carbs, 9 kcal/g for fat." },
+    ],
+    faqTitle: "Questions fréquentes",
+    faqs: [
+    { question: "How do I set daily calories?", answer: "Find maintenance with the TDEE calculator, then apply about −500 to cut or +500 to bulk." },
+    { question: "How much protein is right?", answer: "It depends on your goal, but higher protein is commonly advised for maintaining or building muscle. Individual needs vary — consult a professional." },
+    { question: "Why is fat 9 kcal per gram?", answer: "Fat is more energy-dense than protein and carbs (4 kcal/g), at about 9 kcal per gram." },
+    ],
+    disclaimer: "Macro splits are general guidance and depend on your health, activity, and goals. Consult a professional for diet and weight decisions.",
+  },
+  es: {
+    introTitle: "What is the macro calculator?",
+    intro: "It splits your daily calories into the three macronutrients — protein, carbs, and fat — in grams. Protein and carbs are 4 kcal per gram and fat is 9 kcal per gram. Get your daily calories from the TDEE calculator first, then pick a split that fits your goal to make meal planning easy.",
+    howToTitle: "How to use",
+    steps: ["Enter your daily calories (use the TDEE calculator's result).", "Choose a macro split for your goal.", "Read the grams and calories of protein, carbs, and fat."],
+    formulaTitle: "Highlights",
+    formulas: [
+      { title: "Four presets", body: "Balanced, high-protein, low-carb, and keto ratios." },
+      { title: "Grams + calories", body: "Shows both grams and calories per macro." },
+      { title: "Accurate conversion", body: "Uses 4 kcal/g for protein and carbs, 9 kcal/g for fat." },
+    ],
+    faqTitle: "Preguntas frecuentes",
+    faqs: [
+    { question: "How do I set daily calories?", answer: "Find maintenance with the TDEE calculator, then apply about −500 to cut or +500 to bulk." },
+    { question: "How much protein is right?", answer: "It depends on your goal, but higher protein is commonly advised for maintaining or building muscle. Individual needs vary — consult a professional." },
+    { question: "Why is fat 9 kcal per gram?", answer: "Fat is more energy-dense than protein and carbs (4 kcal/g), at about 9 kcal per gram." },
+    ],
+    disclaimer: "Macro splits are general guidance and depend on your health, activity, and goals. Consult a professional for diet and weight decisions.",
+  },
+};
+const c = content[locale];
+const url = `https://tools.oiyo.net/${locale}/macro-calculator/`;
+const schema = utilityJsonLd({ name: m.title, description: m.description, url, locale, steps: c.steps, faqs: c.faqs });
+---
+<Layout title={m.title} description={m.description} locale={locale} availableLocales={[...locales]} canonicalURL={url}>
+  <div class="mx-auto max-w-3xl px-4 py-6">
+    <h1 class="text-2xl font-bold tracking-tight">{m.title}</h1>
+    <p class="mb-5 mt-2 text-sm text-muted-foreground">{m.description}</p>
+    <MacroCalculator client:load locale={locale} />
+    <UtilityArticle c={c} />
+    <RelatedUtilities locale={locale} current="macro-calculator" group="health" />
+  </div>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+</Layout>

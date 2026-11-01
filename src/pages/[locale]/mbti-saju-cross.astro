@@ -1,0 +1,35 @@
+---
+// Moved from blog.oiyo.net/{locale}/mbti-saju-cross/ on 2026-10-27 (W15).
+import Layout from '../../components/Layout.astro';
+import RelatedUtilities from '../../components/RelatedUtilities.astro';
+import MbtiSajuCross from '../../components/tools/MbtiSajuCross';
+import { locales } from '../../lib/i18n';
+import { utilityJsonLd } from '../../lib/utility-jsonld';
+
+type ActiveLocale = (typeof locales)[number];
+export function getStaticPaths() {
+  return locales.map((locale) => ({ params: { locale }, props: { locale } }));
+}
+const { locale } = Astro.props as { locale: ActiveLocale };
+
+const meta: Record<ActiveLocale, { title: string; description: string }> = {
+  ko: { title: "MBTI × 오행 교차 분석 — 심리 유형과 한국 전통 오행의 결합", description: "MBTI 16가지 유형과 한국 전통 오행(목·화·토·금·수)을 교차 분석합니다. 심리학과 동양 철학의 흥미로운 융합." },
+  en: { title: "MBTI × Five Elements Cross Analysis — Psychology Meets Korean Tradition", description: "Cross-analyze 16 MBTI types with Korean traditional Five Elements (Wood·Fire·Earth·Metal·Water). An interesting fusion of psychology and Eastern philosophy." },
+  ja: { title: "MBTI×五行クロス分析 — 心理タイプと韓国伝統五行の融合", description: "MBTI16タイプと韓国伝統五行(木・火・土・金・水)をクロス分析。心理学と東洋哲学の興味深い融合。" },
+  zh: { title: "MBTI×五行交叉分析", description: "交叉分析MBTI16种类型与韩国传统五行（木·火·土·金·水）。" },
+  fr: { title: "Analyse Croisée MBTI × Cinq Éléments", description: "Analyse croisée des 16 types MBTI avec les Cinq Éléments coréens traditionnels." },
+  es: { title: "Análisis Cruzado MBTI × Cinco Elementos", description: "Análisis cruzado de los 16 tipos MBTI con los Cinco Elementos coreanos tradicionales." },
+};
+const m = meta[locale];
+const url = `https://tools.oiyo.net/${locale}/mbti-saju-cross/`;
+const schema = utilityJsonLd({ name: m.title, description: m.description, url, locale, steps: [], faqs: [] }).slice(0, 1);
+---
+<Layout title={m.title} description={m.description} locale={locale} availableLocales={[...locales]} canonicalURL={url}>
+  <div class="mx-auto max-w-3xl px-4 py-6">
+    <h1 class="text-2xl font-bold tracking-tight">{m.title}</h1>
+    <p class="mb-5 mt-2 text-sm text-muted-foreground">{m.description}</p>
+    <MbtiSajuCross client:load locale={locale} />
+    <RelatedUtilities locale={locale} current="mbti-saju-cross" group="calc" />
+  </div>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+</Layout>
