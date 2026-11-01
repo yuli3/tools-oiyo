@@ -1,0 +1,53 @@
+---
+// Moved from blog.oiyo.net/{locale}/mbti-stress-relief/ on 2026-10-27 (W15).
+import Layout from '../../components/Layout.astro';
+import RelatedUtilities from '../../components/RelatedUtilities.astro';
+import MbtiStressTest from '../../components/tools/MbtiStressTest';
+import { locales } from '../../lib/i18n';
+import { utilityJsonLd } from '../../lib/utility-jsonld';
+
+type ActiveLocale = (typeof locales)[number];
+export function getStaticPaths() {
+  return locales.map((locale) => ({ params: { locale }, props: { locale } }));
+}
+const { locale } = Astro.props as { locale: ActiveLocale };
+
+const meta: Record<ActiveLocale, { title: string; description: string }> = {
+  ko: {
+    title: "MBTI 스트레스 해소법 — 내 성격 유형에 맞는 방법",
+    description: "16가지 MBTI 유형별 스트레스 유발 요인, 스트레스 신호, 가장 효과적인 해소법을 알아보세요.",
+  },
+  en: {
+    title: "MBTI Stress Relief Guide — Find Your Best Coping Method",
+    description: "Discover stress triggers, warning signs, and the most effective relief methods for all 16 MBTI personality types.",
+  },
+  ja: {
+    title: "MBTIストレス解消ガイド — 自分のタイプに合った方法",
+    description: "16種類のMBTIタイプ別ストレス誘発要因、サイン、最も効果的な解消法をご覧ください。",
+  },
+  zh: {
+    title: "MBTI压力解除指南 — 找到你的最佳方法",
+    description: "了解16种MBTI类型的压力诱因、警示信号及最有效的压力解除方法。",
+  },
+  fr: {
+    title: "Guide Anti-Stress MBTI — Trouvez votre méthode",
+    description: "Découvrez les déclencheurs, les signes et les méthodes de soulagement les plus efficaces pour les 16 types MBTI.",
+  },
+  es: {
+    title: "Guía Anti-Estrés MBTI — Encuentra tu método",
+    description: "Descubre los desencadenantes, señales y métodos de alivio más efectivos para los 16 tipos de personalidad MBTI.",
+  },
+};
+const m = meta[locale];
+const url = `https://tools.oiyo.net/${locale}/mbti-stress-relief/`;
+const schema = utilityJsonLd({ name: m.title, description: m.description, url, locale, steps: [], faqs: [] }).slice(0, 1);
+---
+<Layout title={m.title} description={m.description} locale={locale} availableLocales={[...locales]} canonicalURL={url}>
+  <div class="mx-auto max-w-3xl px-4 py-6">
+    <h1 class="text-2xl font-bold tracking-tight">{m.title}</h1>
+    <p class="mb-5 mt-2 text-sm text-muted-foreground">{m.description}</p>
+    <MbtiStressTest client:load locale={locale} />
+    <RelatedUtilities locale={locale} current="mbti-stress-relief" group="calc" />
+  </div>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+</Layout>
