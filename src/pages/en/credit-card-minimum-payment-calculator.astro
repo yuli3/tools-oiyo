@@ -1,0 +1,35 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import CreditCardMinimumPayment from '../../components/tools/CreditCardMinimumPayment';
+const c = {
+  introTitle: 'Why the minimum payment takes so long',
+  intro: 'The minimum payment is set to keep your account current, not to clear the debt. Because it is mostly the month\'s interest plus a small slice of the balance, the payment shrinks as the balance falls and the payoff stretches out for years. Federal law (15 U.S.C. 1637(b)(11)) makes issuers print a "Minimum Payment Warning" box on every statement with the payoff time at the minimum and the monthly payment that clears the balance in 36 months. This calculator rebuilds those numbers from your own inputs and lets you test a fixed payment.',
+  formulaTitle: 'The calculation',
+  formulas: [
+    { title: 'Monthly interest', body: 'Balance × APR ÷ 12, rounded to the cent. Issuers use the average daily balance, so real interest can differ slightly.' },
+    { title: 'Minimum payment', body: 'The larger of your dollar floor and (balance × percent, plus the month\'s interest if your card adds it), capped at the full payoff amount.' },
+    { title: '3-year payment', body: 'Level payment = balance × r ÷ (1 − (1 + r)^−36), where r = APR ÷ 12, rounded up to the cent.' },
+  ],
+  howToTitle: 'Check it against your statement',
+  steps: [
+    'Enter the balance and purchase APR from your latest statement.',
+    'Find the minimum payment formula in your cardholder agreement and enter its percent, dollar floor and whether interest is added.',
+    'Compare the result with the Minimum Payment Warning box on your statement. Small differences come from daily interest and fees.',
+    'Try a fixed payment you can keep up every month and see how many months and how much interest it saves.',
+  ],
+  faqTitle: 'Common questions',
+  faqs: [
+    { question: 'Why does my result differ from my statement?', answer: 'Statements use the issuer\'s exact formula, daily balances, fees and any promotional rates. This page uses a monthly approximation and only the inputs you give it.' },
+    { question: 'What if the payment never pays off the balance?', answer: 'If a payment does not cover the month\'s interest, the balance cannot go down. The calculator says so instead of showing a number.' },
+    { question: 'Are my inputs saved?', answer: 'The numbers stay in the current page memory only. They are not sent to an issuer or saved to an account. The site uses analytics and advertising.' },
+  ],
+  disclaimer: 'U.S. estimate for planning, not financial advice or your issuer\'s official disclosure. Rates, fees and minimum payment formulas vary by card.',
+};
+const sources: [string,string][] = [
+  ['15 U.S.C. 1637(b)(11): minimum payment warning on periodic statements (Cornell LII)', 'https://www.law.cornell.edu/uscode/text/15/1637'],
+  ['Congressional Research Service: Credit Card Minimum Payments (RS22352)', 'https://www.everycrsreport.com/reports/RS22352.html'],
+];
+---
+<DebtReliefPage slug="credit-card-minimum-payment-calculator" c={c} sources={sources} sourcesTitle="Sources" checked="Law text checked: 2026-11-02">
+  <CreditCardMinimumPayment client:load />
+</DebtReliefPage>
