@@ -40,3 +40,55 @@ export function monthlyDebtBudget(income: string, essentials: string, payments: 
   if (!Number.isSafeInteger(balanceCents) || !Number.isSafeInteger(essentialsCents + paymentsCents)) return null;
   return { incomeCents, essentialsCents, paymentsCents, balanceCents };
 }
+
+// 2026-11-02: US credit card payoff, matching the disclosures 15 U.S.C. 1637(b)(11)
+// requires on statements (months and total cost at the minimum, and the 36-month payment).
+// Monthly interest is balance × APR/12, a simplification of issuers' daily-balance method,
+// so results are estimates. Issuers set their own minimum formula; the user enters it.
+export const CARD_MAX_MONTHS = 1200;
+
+export interface CardMinimumRule { percent: number; floorCents: number; addInterest: boolean }
+
+export function cardMinimumPaymentCents(balanceCents: number, interestCents: number, rule: CardMinimumRule): number {
+  const base = Math.round(balanceCents * rule.percent / 100) + (rule.addInterest ? interestCents : 0);
+  return Math.min(balanceCents + interestCents, Math.max(rule.floorCents, base));
+}
+
+export type CardPayoff = { months: number; totalPaidCents: number; interestCents: number } | { months: null; reason: 'never' | 'too-long' };
+
+export function simulateCardPayoff(balanceCents: number, aprPercent: number, pay: (balance: number, interest: number) => number): CardPayoff {
+  if (!Number.isSafeInteger(balanceCents) || balanceCents <= 0 || !(aprPercent >= 0 && aprPercent <= 100)) return { months: null, reason: 'never' };
+  const rate = aprPercent / 100 / 12;
+  let balance = balanceCents, total = 0, interestSum = 0;
+  for (let month = 1; month <= CARD_MAX_MONTHS; month++) {
+    const interest = Math.round(balance * rate);
+    const payment = Math.min(balance + interest, pay(balance, interest));
+    if (payment <= interest) return { months: null, reason: 'never' };
+    balance = balance + interest - payment;
+    total += payment; interestSum += interest;
+    if (balance <= 0) return { months: month, totalPaidCents: total, interestCents: interestSum };
+  }
+  return { months: null, reason: 'too-long' };
+}
+
+/** Level monthly payment that clears the balance in `months` months (standard amortization), rounded up to the cent. */
+export function levelPaymentCents(balanceCents: number, aprPercent: number, months: number): number {
+  const rate = aprPercent / 100 / 12;
+  if (rate === 0) return Math.ceil(balanceCents / months);
+  return Math.ceil(balanceCents * rate / (1 - Math.pow(1 + rate, -months)));
+}
+
+export function cardPayoffComparison(balance: string, apr: string, percent: string, floor: string, addInterest: boolean, fixed: string) {
+  const balanceCents = debtAmountCents(balance), floorCents = debtAmountCents(floor), fixedCents = fixed.trim() === '' ? null : debtAmountCents(fixed);
+  const aprValue = Number(apr.trim().replace(',', '.')), percentValue = Number(percent.trim().replace(',', '.'));
+  if (balanceCents === null || balanceCents <= 0 || floorCents === null || apr.trim() === '' || percent.trim() === '') return null;
+  if (!(aprValue >= 0 && aprValue <= 100) || !(percentValue > 0 && percentValue <= 100)) return null;
+  if (fixed.trim() !== '' && (fixedCents === null || fixedCents <= 0)) return null;
+  const rule = { percent: percentValue, floorCents, addInterest };
+  const minimum = simulateCardPayoff(balanceCents, aprValue, (b, i) => cardMinimumPaymentCents(b, i, rule));
+  const firstMinimumCents = cardMinimumPaymentCents(balanceCents, Math.round(balanceCents * aprValue / 1200), rule);
+  const in36Cents = levelPaymentCents(balanceCents, aprValue, 36);
+  const in36 = simulateCardPayoff(balanceCents, aprValue, () => in36Cents);
+  const fixedPlan = fixedCents === null ? null : simulateCardPayoff(balanceCents, aprValue, () => fixedCents);
+  return { balanceCents, firstMinimumCents, minimum, in36Cents, in36, fixedCents, fixedPlan };
+}

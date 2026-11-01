@@ -27,3 +27,34 @@ test('French budget preserves a shortfall and refuses missing input instead of a
   assert.equal(monthlyDebtBudget('1500','','400'), null);
   assert.equal(monthlyDebtBudget('0','0','0')?.balanceCents, 0);
 });
+
+import { cardMinimumPaymentCents, simulateCardPayoff, levelPaymentCents, cardPayoffComparison } from './debt-planning.ts';
+test('card minimum uses percent of balance plus interest with a floor, never above the payoff amount', () => {
+  const rule = { percent: 1, floorCents: 3500, addInterest: true };
+  assert.equal(cardMinimumPaymentCents(500000, 9167, rule), 14167);
+  assert.equal(cardMinimumPaymentCents(100000, 1833, rule), 3500);
+  assert.equal(cardMinimumPaymentCents(2000, 37, rule), 2037);
+  assert.equal(cardMinimumPaymentCents(500000, 9167, { percent: 2, floorCents: 2500, addInterest: false }), 10000);
+});
+test('36-month level payment clears the balance in exactly 36 months', () => {
+  const pay = levelPaymentCents(500000, 22, 36);
+  assert.equal(pay, 19096);
+  const plan = simulateCardPayoff(500000, 22, () => pay);
+  assert.equal(plan.months, 36);
+  assert.equal(levelPaymentCents(36000, 0, 36), 1000);
+});
+test('payments at or below interest never pay off; zero APR is plain division', () => {
+  assert.deepEqual(simulateCardPayoff(500000, 24, () => 10000), { months: null, reason: 'never' });
+  assert.deepEqual(simulateCardPayoff(120000, 0, () => 10000), { months: 12, totalPaidCents: 120000, interestCents: 0 });
+});
+test('comparison rejects blank or invalid inputs and shows minimum-only takes longer than 36 months', () => {
+  assert.equal(cardPayoffComparison('', '22', '1', '35', true, ''), null);
+  assert.equal(cardPayoffComparison('5000', '', '1', '35', true, ''), null);
+  assert.equal(cardPayoffComparison('5000', '22', '0', '35', true, ''), null);
+  assert.equal(cardPayoffComparison('5000', '22', '1', '35', true, '-5'), null);
+  const r = cardPayoffComparison('5000', '22', '1', '35', true, '250')!;
+  assert.equal(r.firstMinimumCents, 14167);
+  assert.ok(r.minimum.months !== null && r.minimum.months > 36);
+  assert.ok(r.fixedPlan && r.fixedPlan.months !== null && r.fixedPlan.months < 36);
+  assert.ok(r.minimum.months !== null && r.in36.months === 36 && r.minimum.interestCents > r.in36.interestCents);
+});
