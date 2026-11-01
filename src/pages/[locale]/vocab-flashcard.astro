@@ -16,27 +16,27 @@ const { locale } = Astro.props as { locale: ActiveLocale };
 const meta: Record<ActiveLocale, { title: string; description: string }> = {
   ko: {
     title: "영단어 플래시카드 — TOEIC·비즈니스·수능 단어 무료 학습",
-    description: "플래시카드로 TOEIC 필수 100단어, 비즈니스 80단어, 일상회화 60단어, 수능 80단어를 학습하세요. 모르는 단어만 반복 학습 지원.",
+    description: "플래시카드로 TOEIC 필수 95단어, 비즈니스 79단어, 일상회화 60단어, 수능 80단어를 학습하세요. 모르는 단어만 반복 학습 지원.",
   },
   en: {
     title: "Vocabulary Flashcards — Free TOEIC, Business & Daily Word Study",
-    description: "Study TOEIC essential (100), business (80), daily conversation (60), and CSAT (80) vocabulary with interactive flashcards. Review unknown words with spaced repetition.",
+    description: "Study TOEIC essential (95), business (79), daily conversation (60), and CSAT (80) vocabulary with interactive flashcards. Review unknown words with spaced repetition.",
   },
   ja: {
     title: "英単語フラッシュカード — TOEIC・ビジネス・日常会話 無料学習",
-    description: "フラッシュカードでTOEIC必須100語・ビジネス80語・日常会話60語・センター80語を学習。わからない単語だけ繰り返し学習できます。",
+    description: "フラッシュカードでTOEIC必須95語・ビジネス79語・日常会話60語・センター80語を学習。わからない単語だけ繰り返し学習できます。",
   },
   zh: {
     title: "词汇闪卡 — TOEIC必备·商务·日常对话免费学习",
-    description: "用闪卡学习TOEIC必备100词、商务80词、日常对话60词、高考80词。支持仅复习未知单词。",
+    description: "用闪卡学习TOEIC必备95词、商务79词、日常对话60词、高考80词。支持仅复习未知单词。",
   },
   fr: {
     title: "Cartes Mémoire de Vocabulaire — TOEIC, Affaires et Quotidien Gratuit",
-    description: "Étudiez le vocabulaire TOEIC essentiel (100), affaires (80), quotidien (60) et scolaire (80) avec des cartes mémoire interactives.",
+    description: "Étudiez le vocabulaire TOEIC essentiel (95), affaires (79), quotidien (60) et scolaire (80) avec des cartes mémoire interactives.",
   },
   es: {
     title: "Tarjetas de Vocabulario — TOEIC, Negocios y Conversación Gratis",
-    description: "Estudia vocabulario TOEIC esencial (100), negocios (80), conversación diaria (60) y examen (80) con tarjetas interactivas. Repasa las desconocidas.",
+    description: "Estudia vocabulario TOEIC esencial (95), negocios (79), conversación diaria (60) y examen (80) con tarjetas interactivas. Repasa las desconocidas.",
   },
 };
 const m = meta[locale];
@@ -58,7 +58,7 @@ const content: Record<ActiveLocale, UtilityContent> = {
     ],
     faqTitle: "자주 묻는 질문",
     faqs: [
-      { question: "단어 수는 덱마다 어떻게 다른가요?", answer: "메타 기준으로 TOEIC 100개, 비즈니스 80개, 일상회화 60개, 수능 80개 덱을 제공합니다." },
+      { question: "단어 수는 덱마다 어떻게 다른가요?", answer: "TOEIC 95개, 비즈니스 79개, 일상회화 60개, 수능 80개 덱을 제공합니다." },
       { question: "간격 반복 알고리즘이 있나요?", answer: "이 도구는 완전한 장기 스케줄러라기보다, 현재 세션에서 모르는 단어를 분리해 다시 보는 방식에 가깝습니다." },
       { question: "예문도 함께 봐야 하나요?", answer: "네. 시험이나 회화에서는 뜻만 아는 것보다 문장 속 쓰임을 아는 편이 더 안정적입니다." },
     ],
@@ -81,7 +81,7 @@ const content: Record<ActiveLocale, UtilityContent> = {
     ],
     faqTitle: "Frequently asked questions",
     faqs: [
-      { question: "How many words are included?", answer: "The page metadata describes TOEIC 100, business 80, daily conversation 60, and CSAT 80 vocabulary items." },
+      { question: "How many words are included?", answer: "The decks hold TOEIC 95, business 79, daily conversation 60, and CSAT 80 vocabulary items." },
       { question: "Is this a full spaced-repetition system?", answer: "No. It is closer to a session-based flashcard tool that separates unknown cards for immediate review." },
       { question: "Should I read the examples?", answer: "Yes. Examples help you understand how the word behaves in real sentences, which is useful for tests and communication." },
     ],
@@ -104,7 +104,7 @@ const content: Record<ActiveLocale, UtilityContent> = {
     ],
     faqTitle: "よくある質問",
     faqs: [
-      { question: "単語数はどのくらいですか？", answer: "メタ情報ではTOEIC 100語、ビジネス80語、日常会話60語、受験向け80語のデッキを案内しています。" },
+      { question: "単語数はどのくらいですか？", answer: "TOEIC 95語、ビジネス79語、日常会話60語、受験向け80語のデッキを案内しています。" },
       { question: "本格的な間隔反復ですか？", answer: "いいえ。長期スケジュール型ではなく、現在のセッションで苦手語を分けてすぐ復習する道具です。" },
       { question: "例文も読むべきですか？", answer: "はい。試験や会話では意味だけでなく、文中での使い方を知ることが重要です。" },
     ],
@@ -127,7 +127,7 @@ const content: Record<ActiveLocale, UtilityContent> = {
     ],
     faqTitle: "常见问题",
     faqs: [
-      { question: "包含多少词？", answer: "页面元信息说明包含 TOEIC 100 词、商务 80 词、日常对话 60 词和高考 80 词。" },
+      { question: "包含多少词？", answer: "包含 TOEIC 95 词、商务 79 词、日常对话 60 词和高考 80 词。" },
       { question: "这是完整的间隔重复系统吗？", answer: "不是。它更像是单次学习会话工具，会把未知单词分离出来方便立即复习。" },
       { question: "例句需要看吗？", answer: "建议看。考试和沟通中，知道词在句子里的用法往往比只记释义更稳定。" },
     ],
@@ -150,7 +150,7 @@ const content: Record<ActiveLocale, UtilityContent> = {
     ],
     faqTitle: "Questions fréquentes",
     faqs: [
-      { question: "Combien de mots sont inclus ?", answer: "Les métadonnées indiquent 100 mots TOEIC, 80 affaires, 60 conversation quotidienne et 80 mots scolaires." },
+      { question: "Combien de mots sont inclus ?", answer: "Les paquets contiennent 95 mots TOEIC, 79 affaires, 60 conversation quotidienne et 80 mots scolaires." },
       { question: "Est-ce une vraie répétition espacée ?", answer: "Non. C'est plutôt un outil de session qui isole les mots inconnus pour une révision immédiate." },
       { question: "Faut-il lire les exemples ?", answer: "Oui. Les exemples montrent comment le mot fonctionne dans une phrase, utile pour examens et communication." },
     ],
@@ -173,7 +173,7 @@ const content: Record<ActiveLocale, UtilityContent> = {
     ],
     faqTitle: "Preguntas frecuentes",
     faqs: [
-      { question: "¿Cuántas palabras incluye?", answer: "La página describe TOEIC 100, negocios 80, conversación diaria 60 y examen 80." },
+      { question: "¿Cuántas palabras incluye?", answer: "Los mazos incluyen TOEIC 95, negocios 79, conversación diaria 60 y examen 80." },
       { question: "¿Es un sistema completo de repetición espaciada?", answer: "No. Es más bien una herramienta de sesión que separa palabras desconocidas para repasarlas de inmediato." },
       { question: "¿Conviene leer los ejemplos?", answer: "Sí. Los ejemplos muestran cómo se usa la palabra en frases reales, útil para pruebas y comunicación." },
     ],

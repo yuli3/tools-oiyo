@@ -1,5 +1,5 @@
 import type React from 'react';
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import type { Locale } from "../../lib/i18n";
 
 interface Props {
@@ -343,7 +343,7 @@ const DECKS: Record<DeckKey, Card[]> = {
   ],
 };
 
-const DECK_SIZES: Record<DeckKey, number> = { toeic: 100, business: 80, daily: 60, csat: 80 };
+const DECK_SIZES: Record<DeckKey, number> = { toeic: 95, business: 79, daily: 60, csat: 80 };
 
 type UIData = {
   title: string;
@@ -374,7 +374,7 @@ const UI: Record<Locale, UIData> = {
     subtitle: "카드를 뒤집어 단어를 학습하세요",
     decks: { toeic: "TOEIC 필수", business: "비즈니스", daily: "일상회화", csat: "수능" },
     deckSize: "단어 수",
-    cardCount: "번째 카드",
+    cardCount: "카드",
     tapToFlip: "카드를 클릭해 뒤집기",
     knowBtn: "알아요",
     unknownBtn: "모르겠어요",
@@ -539,12 +539,18 @@ export default function VocabFlashcard({ locale }: Props) {
   const t = UI[locale] ?? UI.en;
 
   const [selectedDeck, setSelectedDeck] = useState<DeckKey>("toeic");
-  const [queue, setQueue] = useState<Card[]>(() => shuffle(DECKS.toeic.slice(0, DECK_SIZES.toeic)));
+  const [queue, setQueue] = useState<Card[]>(() => DECKS.toeic.slice(0, DECK_SIZES.toeic));
   const [idx, setIdx] = useState(0);
   const [flipped, setFlipped] = useState(false);
   const [known, setKnown] = useState<Set<number>>(new Set());
   const [unknown, setUnknown] = useState<Set<number>>(new Set());
-  const [todayCount, setTodayCount] = useState(() => getTodayCount());
+  const [todayCount, setTodayCount] = useState(0);
+
+  // Shuffle and read the saved count after hydration so server and client HTML match.
+  useEffect(() => {
+    setQueue(shuffle(DECKS.toeic.slice(0, DECK_SIZES.toeic)));
+    setTodayCount(getTodayCount());
+  }, []);
 
   const current = queue[idx] ?? null;
   const total = queue.length;
