@@ -1,0 +1,1218 @@
+{
+  "source": "NCD-RisC (2016), processed by Our World in Data",
+  "url": "https://elifesciences.org/articles/13410",
+  "dataUrls": [
+    "https://ourworldindata.org/grapher/average-height-of-men",
+    "https://ourworldindata.org/grapher/average-height-of-women"
+  ],
+  "birthYear": 1996,
+  "referenceAge": 18,
+  "referenceYear": 2014,
+  "retrieved": "2026-11-02",
+  "sourceSha256": {
+    "men": "0fe7d4ff5be390c881d093fed70a5b18b61bfcba754d1d3fa5537e0c24fb09d8",
+    "women": "0ec27974f398e2684dea971d97ac8c0c754932e352a9673719c1565571be262b"
+  },
+  "rows": [
+    {
+      "country": "AD",
+      "name": "Andorra",
+      "male": 176.06017,
+      "female": 162.90488
+    },
+    {
+      "country": "AE",
+      "name": "United Arab Emirates",
+      "male": 170.45543,
+      "female": 158.68059
+    },
+    {
+      "country": "AF",
+      "name": "Afghanistan",
+      "male": 165.25586,
+      "female": 155.07532
+    },
+    {
+      "country": "AG",
+      "name": "Antigua and Barbuda",
+      "male": 172.70699,
+      "female": 160.65265
+    },
+    {
+      "country": "AL",
+      "name": "Albania",
+      "male": 173.38885,
+      "female": 161.76985
+    },
+    {
+      "country": "AM",
+      "name": "Armenia",
+      "male": 171.99664,
+      "female": 158.0892
+    },
+    {
+      "country": "AO",
+      "name": "Angola",
+      "male": 167.31073,
+      "female": 157.3052
+    },
+    {
+      "country": "AR",
+      "name": "Argentina",
+      "male": 174.61572,
+      "female": 159.1792
+    },
+    {
+      "country": "AS",
+      "name": "American Samoa",
+      "male": 176.04512,
+      "female": 164.52136
+    },
+    {
+      "country": "AT",
+      "name": "Austria",
+      "male": 177.4077,
+      "female": 164.62094
+    },
+    {
+      "country": "AU",
+      "name": "Australia",
+      "male": 179.20465,
+      "female": 165.85818
+    },
+    {
+      "country": "AZ",
+      "name": "Azerbaijan",
+      "male": 169.74944,
+      "female": 158.25241
+    },
+    {
+      "country": "BA",
+      "name": "Bosnia and Herzegovina",
+      "male": 180.86917,
+      "female": 165.84831
+    },
+    {
+      "country": "BB",
+      "name": "Barbados",
+      "male": 175.91612,
+      "female": 165.27701
+    },
+    {
+      "country": "BD",
+      "name": "Bangladesh",
+      "male": 163.80823,
+      "female": 150.78885
+    },
+    {
+      "country": "BE",
+      "name": "Belgium",
+      "male": 181.6988,
+      "female": 165.49113
+    },
+    {
+      "country": "BG",
+      "name": "Bulgaria",
+      "male": 178.24025,
+      "female": 164.79536
+    },
+    {
+      "country": "BH",
+      "name": "Bahrain",
+      "male": 167.74341,
+      "female": 156.6917
+    },
+    {
+      "country": "BI",
+      "name": "Burundi",
+      "male": 166.63525,
+      "female": 154.02333
+    },
+    {
+      "country": "BM",
+      "name": "Bermuda",
+      "male": 172.68787,
+      "female": 160.6877
+    },
+    {
+      "country": "BN",
+      "name": "Brunei",
+      "male": 165.00906,
+      "female": 153.98248
+    },
+    {
+      "country": "BO",
+      "name": "Bolivia",
+      "male": 166.8463,
+      "female": 153.88838
+    },
+    {
+      "country": "BR",
+      "name": "Brazil",
+      "male": 173.55121,
+      "female": 160.86354
+    },
+    {
+      "country": "BS",
+      "name": "Bahamas",
+      "male": 172.74663,
+      "female": 160.68036
+    },
+    {
+      "country": "BT",
+      "name": "Bhutan",
+      "male": 165.30588,
+      "female": 153.62946
+    },
+    {
+      "country": "BW",
+      "name": "Botswana",
+      "male": 171.62766,
+      "female": 161.38127
+    },
+    {
+      "country": "BY",
+      "name": "Belarus",
+      "male": 178.4384,
+      "female": 166.34656
+    },
+    {
+      "country": "BZ",
+      "name": "Belize",
+      "male": 168.73178,
+      "female": 156.87587
+    },
+    {
+      "country": "CA",
+      "name": "Canada",
+      "male": 178.09038,
+      "female": 163.91228
+    },
+    {
+      "country": "CD",
+      "name": "Democratic Republic of Congo",
+      "male": 166.79527,
+      "female": 155.2494
+    },
+    {
+      "country": "CF",
+      "name": "Central African Republic",
+      "male": 166.67383,
+      "female": 158.0376
+    },
+    {
+      "country": "CG",
+      "name": "Congo",
+      "male": 167.44763,
+      "female": 157.5742
+    },
+    {
+      "country": "CH",
+      "name": "Switzerland",
+      "male": 178.42409,
+      "female": 163.45264
+    },
+    {
+      "country": "CI",
+      "name": "Cote d'Ivoire",
+      "male": 166.53288,
+      "female": 158.06541
+    },
+    {
+      "country": "CK",
+      "name": "Cook Islands",
+      "male": 174.76782,
+      "female": 163.18524
+    },
+    {
+      "country": "CL",
+      "name": "Chile",
+      "male": 171.81128,
+      "female": 159.36366
+    },
+    {
+      "country": "CM",
+      "name": "Cameroon",
+      "male": 167.8232,
+      "female": 158.81583
+    },
+    {
+      "country": "CN",
+      "name": "China",
+      "male": 171.82768,
+      "female": 159.7089
+    },
+    {
+      "country": "CO",
+      "name": "Colombia",
+      "male": 169.49507,
+      "female": 156.85222
+    },
+    {
+      "country": "CR",
+      "name": "Costa Rica",
+      "male": 168.93188,
+      "female": 156.36624
+    },
+    {
+      "country": "CU",
+      "name": "Cuba",
+      "male": 171.99612,
+      "female": 157.98296
+    },
+    {
+      "country": "CV",
+      "name": "Cape Verde",
+      "male": 173.22394,
+      "female": 161.64954
+    },
+    {
+      "country": "CY",
+      "name": "Cyprus",
+      "male": 174.99484,
+      "female": 162.27437
+    },
+    {
+      "country": "CZ",
+      "name": "Czechia",
+      "male": 180.10374,
+      "female": 168.45778
+    },
+    {
+      "country": "DE",
+      "name": "Germany",
+      "male": 179.88118,
+      "female": 165.8636
+    },
+    {
+      "country": "DJ",
+      "name": "Djibouti",
+      "male": 166.57326,
+      "female": 156.11378
+    },
+    {
+      "country": "DK",
+      "name": "Denmark",
+      "male": 181.38509,
+      "female": 167.21376
+    },
+    {
+      "country": "DM",
+      "name": "Dominica",
+      "male": 176.31319,
+      "female": 164.34338
+    },
+    {
+      "country": "DO",
+      "name": "Dominican Republic",
+      "male": 172.74695,
+      "female": 159.0276
+    },
+    {
+      "country": "DY",
+      "name": "Benin",
+      "male": 167.05727,
+      "female": 156.15598
+    },
+    {
+      "country": "DZ",
+      "name": "Algeria",
+      "male": 170.0718,
+      "female": 159.08961
+    },
+    {
+      "country": "EC",
+      "name": "Ecuador",
+      "male": 167.07661,
+      "female": 154.23355
+    },
+    {
+      "country": "EE",
+      "name": "Estonia",
+      "male": 181.59348,
+      "female": 168.67271
+    },
+    {
+      "country": "EG",
+      "name": "Egypt",
+      "male": 166.68405,
+      "female": 157.32681
+    },
+    {
+      "country": "ER",
+      "name": "Eritrea",
+      "male": 168.35645,
+      "female": 156.38664
+    },
+    {
+      "country": "ES",
+      "name": "Spain",
+      "male": 176.59387,
+      "female": 163.3978
+    },
+    {
+      "country": "ET",
+      "name": "Ethiopia",
+      "male": 166.2315,
+      "female": 155.71024
+    },
+    {
+      "country": "FI",
+      "name": "Finland",
+      "male": 179.5909,
+      "female": 165.8977
+    },
+    {
+      "country": "FJ",
+      "name": "Fiji",
+      "male": 173.90164,
+      "female": 161.69293
+    },
+    {
+      "country": "FM",
+      "name": "Micronesia (country)",
+      "male": 168.5107,
+      "female": 156.08566
+    },
+    {
+      "country": "FR",
+      "name": "France",
+      "male": 179.73792,
+      "female": 164.88159
+    },
+    {
+      "country": "GA",
+      "name": "Gabon",
+      "male": 167.93599,
+      "female": 158.83649
+    },
+    {
+      "country": "GB",
+      "name": "United Kingdom",
+      "male": 177.49019,
+      "female": 164.40205
+    },
+    {
+      "country": "GD",
+      "name": "Grenada",
+      "male": 176.96667,
+      "female": 164.51315
+    },
+    {
+      "country": "GE",
+      "name": "Georgia",
+      "male": 174.341,
+      "female": 162.98462
+    },
+    {
+      "country": "GH",
+      "name": "Ghana",
+      "male": 168.84935,
+      "female": 157.9096
+    },
+    {
+      "country": "GL",
+      "name": "Greenland",
+      "male": 174.86612,
+      "female": 161.54662
+    },
+    {
+      "country": "GM",
+      "name": "Gambia",
+      "male": 165.40173,
+      "female": 160.93495
+    },
+    {
+      "country": "GN",
+      "name": "Guinea",
+      "male": 167.54462,
+      "female": 157.80162
+    },
+    {
+      "country": "GQ",
+      "name": "Equatorial Guinea",
+      "male": 167.36215,
+      "female": 157.32634
+    },
+    {
+      "country": "GR",
+      "name": "Greece",
+      "male": 177.31604,
+      "female": 164.8744
+    },
+    {
+      "country": "GT",
+      "name": "Guatemala",
+      "male": 163.40839,
+      "female": 149.38867
+    },
+    {
+      "country": "GW",
+      "name": "Guinea-Bissau",
+      "male": 167.89838,
+      "female": 158.23627
+    },
+    {
+      "country": "GY",
+      "name": "Guyana",
+      "male": 170.21025,
+      "female": 157.91777
+    },
+    {
+      "country": "HK",
+      "name": "Hong Kong",
+      "male": 173.61385,
+      "female": 159.0254
+    },
+    {
+      "country": "HN",
+      "name": "Honduras",
+      "male": 166.39337,
+      "female": 153.84157
+    },
+    {
+      "country": "HR",
+      "name": "Croatia",
+      "male": 180.78186,
+      "female": 165.63142
+    },
+    {
+      "country": "HT",
+      "name": "Haiti",
+      "male": 172.63776,
+      "female": 158.71538
+    },
+    {
+      "country": "HU",
+      "name": "Hungary",
+      "male": 177.26488,
+      "female": 163.66055
+    },
+    {
+      "country": "HV",
+      "name": "Burkina Faso",
+      "male": 169.32883,
+      "female": 160.18575
+    },
+    {
+      "country": "ID",
+      "name": "Indonesia",
+      "male": 163.55165,
+      "female": 152.79904
+    },
+    {
+      "country": "IE",
+      "name": "Ireland",
+      "male": 178.92517,
+      "female": 165.11375
+    },
+    {
+      "country": "IL",
+      "name": "Israel",
+      "male": 176.85922,
+      "female": 161.80408
+    },
+    {
+      "country": "IN",
+      "name": "India",
+      "male": 164.94589,
+      "female": 152.58963
+    },
+    {
+      "country": "IQ",
+      "name": "Iraq",
+      "male": 170.4301,
+      "female": 158.67357
+    },
+    {
+      "country": "IR",
+      "name": "Iran",
+      "male": 173.5713,
+      "female": 159.66687
+    },
+    {
+      "country": "IS",
+      "name": "Iceland",
+      "male": 180.49156,
+      "female": 165.94635
+    },
+    {
+      "country": "IT",
+      "name": "Italy",
+      "male": 177.76762,
+      "female": 164.60919
+    },
+    {
+      "country": "JM",
+      "name": "Jamaica",
+      "male": 174.52829,
+      "female": 163.12123
+    },
+    {
+      "country": "JO",
+      "name": "Jordan",
+      "male": 171.03221,
+      "female": 158.82805
+    },
+    {
+      "country": "JP",
+      "name": "Japan",
+      "male": 170.81764,
+      "female": 158.3148
+    },
+    {
+      "country": "KE",
+      "name": "Kenya",
+      "male": 169.64009,
+      "female": 158.16405
+    },
+    {
+      "country": "KG",
+      "name": "Kyrgyzstan",
+      "male": 171.2392,
+      "female": 159.35419
+    },
+    {
+      "country": "KH",
+      "name": "Cambodia",
+      "male": 163.3296,
+      "female": 152.90553
+    },
+    {
+      "country": "KI",
+      "name": "Kiribati",
+      "male": 169.20428,
+      "female": 157.00082
+    },
+    {
+      "country": "KM",
+      "name": "Comoros",
+      "male": 166.19432,
+      "female": 155.58208
+    },
+    {
+      "country": "KN",
+      "name": "Saint Kitts and Nevis",
+      "male": 169.62335,
+      "female": 159.19788
+    },
+    {
+      "country": "KP",
+      "name": "North Korea",
+      "male": 171.99278,
+      "female": 158.967
+    },
+    {
+      "country": "KR",
+      "name": "South Korea",
+      "male": 174.91963,
+      "female": 162.33528
+    },
+    {
+      "country": "KW",
+      "name": "Kuwait",
+      "male": 172.06766,
+      "female": 159.42957
+    },
+    {
+      "country": "KZ",
+      "name": "Kazakhstan",
+      "male": 171.14404,
+      "female": 159.57834
+    },
+    {
+      "country": "LA",
+      "name": "Laos",
+      "male": 160.519,
+      "female": 151.26761
+    },
+    {
+      "country": "LB",
+      "name": "Lebanon",
+      "male": 174.38857,
+      "female": 162.42938
+    },
+    {
+      "country": "LC",
+      "name": "Saint Lucia",
+      "male": 171.94531,
+      "female": 162.31439
+    },
+    {
+      "country": "LK",
+      "name": "Sri Lanka",
+      "male": 165.68947,
+      "female": 154.56491
+    },
+    {
+      "country": "LR",
+      "name": "Liberia",
+      "male": 163.66026,
+      "female": 155.6604
+    },
+    {
+      "country": "LS",
+      "name": "Lesotho",
+      "male": 165.58977,
+      "female": 155.70828
+    },
+    {
+      "country": "LT",
+      "name": "Lithuania",
+      "male": 179.02835,
+      "female": 166.61609
+    },
+    {
+      "country": "LU",
+      "name": "Luxembourg",
+      "male": 177.86264,
+      "female": 164.42867
+    },
+    {
+      "country": "LV",
+      "name": "Latvia",
+      "male": 181.42238,
+      "female": 169.79793
+    },
+    {
+      "country": "LY",
+      "name": "Libya",
+      "male": 173.5284,
+      "female": 162.08426
+    },
+    {
+      "country": "MA",
+      "name": "Morocco",
+      "male": 170.40016,
+      "female": 157.82164
+    },
+    {
+      "country": "MD",
+      "name": "Moldova",
+      "male": 175.4892,
+      "female": 163.24289
+    },
+    {
+      "country": "ME",
+      "name": "Montenegro",
+      "male": 178.27553,
+      "female": 164.85591
+    },
+    {
+      "country": "MG",
+      "name": "Madagascar",
+      "male": 161.5475,
+      "female": 151.18015
+    },
+    {
+      "country": "MH",
+      "name": "Marshall Islands",
+      "male": 162.80899,
+      "female": 151.30647
+    },
+    {
+      "country": "MK",
+      "name": "North Macedonia",
+      "male": 178.33081,
+      "female": 159.78209
+    },
+    {
+      "country": "ML",
+      "name": "Mali",
+      "male": 171.11946,
+      "female": 160.4651
+    },
+    {
+      "country": "MM",
+      "name": "Myanmar",
+      "male": 164.67267,
+      "female": 154.37192
+    },
+    {
+      "country": "MN",
+      "name": "Mongolia",
+      "male": 169.06567,
+      "female": 158.21706
+    },
+    {
+      "country": "MR",
+      "name": "Mauritania",
+      "male": 163.28107,
+      "female": 157.72191
+    },
+    {
+      "country": "MT",
+      "name": "Malta",
+      "male": 173.31973,
+      "female": 160.85464
+    },
+    {
+      "country": "MU",
+      "name": "Mauritius",
+      "male": 170.49927,
+      "female": 157.24443
+    },
+    {
+      "country": "MV",
+      "name": "Maldives",
+      "male": 167.68362,
+      "female": 155.01936
+    },
+    {
+      "country": "MW",
+      "name": "Malawi",
+      "male": 162.22774,
+      "female": 154.40466
+    },
+    {
+      "country": "MX",
+      "name": "Mexico",
+      "male": 169.01147,
+      "female": 156.84882
+    },
+    {
+      "country": "MY",
+      "name": "Malaysia",
+      "male": 167.88492,
+      "female": 156.29668
+    },
+    {
+      "country": "MZ",
+      "name": "Mozambique",
+      "male": 164.79756,
+      "female": 153.96013
+    },
+    {
+      "country": "NA",
+      "name": "Namibia",
+      "male": 166.96437,
+      "female": 158.77855
+    },
+    {
+      "country": "NE",
+      "name": "Niger",
+      "male": 167.67601,
+      "female": 158.25308
+    },
+    {
+      "country": "NG",
+      "name": "Nigeria",
+      "male": 165.90678,
+      "female": 156.32149
+    },
+    {
+      "country": "NI",
+      "name": "Nicaragua",
+      "male": 166.70624,
+      "female": 154.39354
+    },
+    {
+      "country": "NL",
+      "name": "Netherlands",
+      "male": 182.53539,
+      "female": 168.71858
+    },
+    {
+      "country": "NO",
+      "name": "Norway",
+      "male": 179.7451,
+      "female": 165.5649
+    },
+    {
+      "country": "NP",
+      "name": "Nepal",
+      "male": 162.31833,
+      "female": 150.861
+    },
+    {
+      "country": "NR",
+      "name": "Nauru",
+      "male": 167.83249,
+      "female": 153.98238
+    },
+    {
+      "country": "NU",
+      "name": "Niue",
+      "male": 175.83112,
+      "female": 164.79654
+    },
+    {
+      "country": "NZ",
+      "name": "New Zealand",
+      "male": 177.73639,
+      "female": 164.94055
+    },
+    {
+      "country": "OM",
+      "name": "Oman",
+      "male": 169.15752,
+      "female": 157.18773
+    },
+    {
+      "country": "PA",
+      "name": "Panama",
+      "male": 168.48958,
+      "female": 155.47108
+    },
+    {
+      "country": "PE",
+      "name": "Peru",
+      "male": 165.23247,
+      "female": 152.93253
+    },
+    {
+      "country": "PF",
+      "name": "French Polynesia",
+      "male": 177.40941,
+      "female": 164.51604
+    },
+    {
+      "country": "PG",
+      "name": "Papua New Guinea",
+      "male": 163.56784,
+      "female": 154.87157
+    },
+    {
+      "country": "PH",
+      "name": "Philippines",
+      "male": 163.22916,
+      "female": 149.60783
+    },
+    {
+      "country": "PK",
+      "name": "Pakistan",
+      "male": 166.94818,
+      "female": 153.84444
+    },
+    {
+      "country": "PL",
+      "name": "Poland",
+      "male": 177.32698,
+      "female": 164.58574
+    },
+    {
+      "country": "PR",
+      "name": "Puerto Rico",
+      "male": 172.08473,
+      "female": 159.20346
+    },
+    {
+      "country": "PS",
+      "name": "Palestine",
+      "male": 172.08723,
+      "female": 158.75404
+    },
+    {
+      "country": "PT",
+      "name": "Portugal",
+      "male": 172.93288,
+      "female": 163.04459
+    },
+    {
+      "country": "PW",
+      "name": "Palau",
+      "male": 167.69208,
+      "female": 156.2202
+    },
+    {
+      "country": "PY",
+      "name": "Paraguay",
+      "male": 172.83429,
+      "female": 159.85577
+    },
+    {
+      "country": "QA",
+      "name": "Qatar",
+      "male": 170.47649,
+      "female": 159.3819
+    },
+    {
+      "country": "RO",
+      "name": "Romania",
+      "male": 174.74089,
+      "female": 162.72511
+    },
+    {
+      "country": "RW",
+      "name": "Rwanda",
+      "male": 162.67892,
+      "female": 154.78688
+    },
+    {
+      "country": "SA",
+      "name": "Saudi Arabia",
+      "male": 167.6703,
+      "female": 155.88075
+    },
+    {
+      "country": "SB",
+      "name": "Solomon Islands",
+      "male": 164.14343,
+      "female": 154.41623
+    },
+    {
+      "country": "SC",
+      "name": "Seychelles",
+      "male": 174.21553,
+      "female": 162.07584
+    },
+    {
+      "country": "SD",
+      "name": "Sudan",
+      "male": 166.63148,
+      "female": 156.03802
+    },
+    {
+      "country": "SE",
+      "name": "Sweden",
+      "male": 179.73705,
+      "female": 165.69746
+    },
+    {
+      "country": "SG",
+      "name": "Singapore",
+      "male": 172.56604,
+      "female": 160.31993
+    },
+    {
+      "country": "SI",
+      "name": "Slovenia",
+      "male": 179.80269,
+      "female": 166.05122
+    },
+    {
+      "country": "SK",
+      "name": "Slovakia",
+      "male": 179.50124,
+      "female": 167.46613
+    },
+    {
+      "country": "SL",
+      "name": "Sierra Leone",
+      "male": 164.40567,
+      "female": 156.59818
+    },
+    {
+      "country": "SN",
+      "name": "Senegal",
+      "male": 173.13875,
+      "female": 162.51677
+    },
+    {
+      "country": "SO",
+      "name": "Somalia",
+      "male": 166.6032,
+      "female": 156.06139
+    },
+    {
+      "country": "SR",
+      "name": "Suriname",
+      "male": 172.72168,
+      "female": 160.663
+    },
+    {
+      "country": "ST",
+      "name": "Sao Tome and Principe",
+      "male": 167.38452,
+      "female": 158.9062
+    },
+    {
+      "country": "SU",
+      "name": "Russia",
+      "male": 176.46053,
+      "female": 165.2705
+    },
+    {
+      "country": "SV",
+      "name": "El Salvador",
+      "male": 169.7711,
+      "female": 154.54884
+    },
+    {
+      "country": "SY",
+      "name": "Syria",
+      "male": 170.42831,
+      "female": 158.64705
+    },
+    {
+      "country": "SZ",
+      "name": "Eswatini",
+      "male": 168.13159,
+      "female": 158.63557
+    },
+    {
+      "country": "TD",
+      "name": "Chad",
+      "male": 170.43858,
+      "female": 160.17012
+    },
+    {
+      "country": "TG",
+      "name": "Togo",
+      "male": 168.33034,
+      "female": 158.30354
+    },
+    {
+      "country": "TH",
+      "name": "Thailand",
+      "male": 169.16245,
+      "female": 157.86896
+    },
+    {
+      "country": "TJ",
+      "name": "Tajikistan",
+      "male": 171.26448,
+      "female": 157.32744
+    },
+    {
+      "country": "TK",
+      "name": "Tokelau",
+      "male": 175.25554,
+      "female": 162.46404
+    },
+    {
+      "country": "TL",
+      "name": "East Timor",
+      "male": 159.79056,
+      "female": 151.15083
+    },
+    {
+      "country": "TM",
+      "name": "Turkmenistan",
+      "male": 171.96968,
+      "female": 161.72556
+    },
+    {
+      "country": "TN",
+      "name": "Tunisia",
+      "male": 173.95146,
+      "female": 160.35452
+    },
+    {
+      "country": "TO",
+      "name": "Tonga",
+      "male": 176.75734,
+      "female": 165.52034
+    },
+    {
+      "country": "TR",
+      "name": "Turkey",
+      "male": 174.20956,
+      "female": 160.49516
+    },
+    {
+      "country": "TT",
+      "name": "Trinidad and Tobago",
+      "male": 173.73509,
+      "female": 160.6409
+    },
+    {
+      "country": "TV",
+      "name": "Tuvalu",
+      "male": 169.64018,
+      "female": 158.10033
+    },
+    {
+      "country": "TW",
+      "name": "Taiwan",
+      "male": 174.52141,
+      "female": 161.45348
+    },
+    {
+      "country": "TZ",
+      "name": "Tanzania",
+      "male": 164.80038,
+      "female": 155.86145
+    },
+    {
+      "country": "UA",
+      "name": "Ukraine",
+      "male": 178.45705,
+      "female": 166.33923
+    },
+    {
+      "country": "UG",
+      "name": "Uganda",
+      "male": 165.62494,
+      "female": 156.7188
+    },
+    {
+      "country": "US",
+      "name": "United States",
+      "male": 177.1304,
+      "female": 163.53813
+    },
+    {
+      "country": "UY",
+      "name": "Uruguay",
+      "male": 173.43246,
+      "female": 162.1282
+    },
+    {
+      "country": "UZ",
+      "name": "Uzbekistan",
+      "male": 169.3845,
+      "female": 157.81598
+    },
+    {
+      "country": "VC",
+      "name": "Saint Vincent and the Grenadines",
+      "male": 172.779,
+      "female": 160.69633
+    },
+    {
+      "country": "VE",
+      "name": "Venezuela",
+      "male": 171.59427,
+      "female": 157.4353
+    },
+    {
+      "country": "VN",
+      "name": "Vietnam",
+      "male": 164.44556,
+      "female": 153.5935
+    },
+    {
+      "country": "VU",
+      "name": "Vanuatu",
+      "male": 168.09319,
+      "female": 158.17175
+    },
+    {
+      "country": "WS",
+      "name": "Samoa",
+      "male": 174.37706,
+      "female": 161.96587
+    },
+    {
+      "country": "YE",
+      "name": "Yemen",
+      "male": 159.88695,
+      "female": 153.97038
+    },
+    {
+      "country": "YU",
+      "name": "Serbia",
+      "male": 180.56741,
+      "female": 167.6902
+    },
+    {
+      "country": "ZA",
+      "name": "South Africa",
+      "male": 166.6781,
+      "female": 158.02606
+    },
+    {
+      "country": "ZM",
+      "name": "Zambia",
+      "male": 166.51715,
+      "female": 155.82137
+    },
+    {
+      "country": "ZW",
+      "name": "Zimbabwe",
+      "male": 168.586,
+      "female": 158.21518
+    }
+  ]
+}
