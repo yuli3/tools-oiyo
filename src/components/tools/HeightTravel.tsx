@@ -1,3 +1,4 @@
+import HeightWorldMeans from './HeightWorldMeans';
 import {useEffect,useId,useState} from 'react';
 import data from '../../data/height-reference.json';
 import {heightTravelCopy} from '../../data/height-travel-copy';
@@ -51,6 +52,7 @@ export default function HeightTravel({locale}:{locale:Locale}) {
       <p role="status" aria-live="polite" className="mt-1 text-sm">{message}</p>
     </div>}
     <p className="text-sm leading-relaxed text-muted-foreground">{t.tails}</p>
+    <HeightWorldMeans ready={ready} locale={locale} cm={cm} sex={sex==='male'?'male':'female'}/>
     <details className="rounded-xl border border-border bg-card p-4"><summary className="cursor-pointer font-semibold">{t.sources}</summary><ul className="mt-3 space-y-3 text-sm">{rows.map(r=>{
       const source=data.sources[r.country as 'KR'|'US'];return <li key={r.country}><a href={source.url} className="text-primary underline">{label(r.country)} · {source.name}</a><p>{t.period}: {source.period} · {t.sample}: {f(r.n,0)}</p></li>;
     })}</ul></details>

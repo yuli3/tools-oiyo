@@ -2,7 +2,7 @@ import type {Locale} from '../lib/i18n';
 export const heightTravelCopy = {
   "ko": {
     "title": "내 키 세계여행",
-    "description": "내 키는 한국과 미국에서 어느 위치일까요? 같은 성별·연령대의 공식 통계로 비교해요.",
+    "description": "200개 국가·지역의 역사적 평균 키와 비교해요. 한국·미국은 같은 성별·연령대의 공식 백분위도 확인할 수 있어요.",
     "height": "키 (cm)",
     "sex": "통계의 성별 집단",
     "male": "남성",
@@ -35,7 +35,7 @@ export const heightTravelCopy = {
   },
   "en": {
     "title": "My height world tour",
-    "description": "Where does your height sit in Korea and the US? Compare official data for the same sex and age group.",
+    "description": "Compare your height with historical means for 200 countries and territories, plus official sex- and age-specific percentiles for Korea and the US.",
     "height": "Height (cm)",
     "sex": "Sex group in the data",
     "male": "Male",
@@ -68,7 +68,7 @@ export const heightTravelCopy = {
   },
   "ja": {
     "title": "身長で世界旅行",
-    "description": "韓国と米国では、あなたの身長はどの位置でしょう。同じ性別・年齢層の公式統計で比べます。",
+    "description": "200の国・地域の過去の平均身長と比べます。韓国と米国では、同じ性別・年齢層の公式百分位も確認できます。",
     "height": "身長 (cm)",
     "sex": "統計上の性別区分",
     "male": "男性",
@@ -101,7 +101,7 @@ export const heightTravelCopy = {
   },
   "zh": {
     "title": "身高世界之旅",
-    "description": "你的身高在韩国和美国处于什么位置？用同性别、同年龄组的官方统计来比较。",
+    "description": "与200个国家和地区的历史平均身高比较。韩国和美国还提供同性别、同年龄组的官方百分位参考。",
     "height": "身高 (cm)",
     "sex": "统计中的性别分组",
     "male": "男性",
@@ -134,7 +134,7 @@ export const heightTravelCopy = {
   },
   "fr": {
     "title": "Voyage autour de ma taille",
-    "description": "Où se situe votre taille en Corée et aux États-Unis ? Comparez les données officielles du même sexe et groupe d’âge.",
+    "description": "Comparez votre taille aux moyennes historiques de 200 pays et territoires, ainsi qu’aux percentiles officiels par sexe et âge en Corée et aux États-Unis.",
     "height": "Taille (cm)",
     "sex": "Sexe dans les données",
     "male": "Hommes",
@@ -167,7 +167,7 @@ export const heightTravelCopy = {
   },
   "es": {
     "title": "Mi vuelta al mundo en altura",
-    "description": "¿Dónde se sitúa tu altura en Corea y Estados Unidos? Compara datos oficiales del mismo sexo y grupo de edad.",
+    "description": "Compara tu estatura con las medias históricas de 200 países y territorios y con los percentiles oficiales por sexo y edad de Corea y Estados Unidos.",
     "height": "Altura (cm)",
     "sex": "Sexo en los datos",
     "male": "Hombres",
