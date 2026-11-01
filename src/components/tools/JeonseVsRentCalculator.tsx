@@ -1,3 +1,4 @@
+import { housingCost } from "../../lib/jeonse-cost";
 'use client';
 
 import React, { useState } from 'react';
@@ -78,24 +79,21 @@ const JeonseVsRentCalculator: React.FC<{ locale?: 'ko' | 'en' }> = ({ locale = '
   const [depositInterestRate, setDepositInterestRate] = useState<string>('3.0');
   const [result, setResult] = useState<JeonseVsRentResult | null>(null);
 
+  const [inputError, setInputError] = useState(false);
+
   const fmt = (n: number) => Math.floor(Math.abs(n)).toLocaleString(locale === 'ko' ? 'ko-KR' : 'en-US');
 
   const calculate = () => {
-    const jd = Number(jeonseDeposit) || 0;
-    const la = Number(loanAmount) || 0;
-    const lr = Number(loanRate) || 0;
-    const mr = Number(monthlyRent) || 0;
-    const mrd = Number(monthlyRentDeposit) || 0;
-    const dir = Number(depositInterestRate) || 0;
-
-    const loanInterest = (la * (lr / 100)) / 12;
-    const personalCashJeonse = jd - la;
-    const oppCostJeonse = (personalCashJeonse * (dir / 100)) / 12;
-    const totalJeonseCost = loanInterest + oppCostJeonse;
-
-    const oppCostRent = (mrd * (dir / 100)) / 12;
-    const totalRentCost = mr + oppCostRent;
-
+    let costs: ReturnType<typeof housingCost>;
+    try {
+      const values = [jeonseDeposit, loanAmount, loanRate, monthlyRent, monthlyRentDeposit, depositInterestRate];
+      if (values.some(v => v.trim() === "" || !Number.isFinite(Number(v)))) throw new RangeError();
+      const [jd, la, lr, mr, mrd, dir] = values.map(Number);
+      if (la < 0 || la > jd) throw new RangeError();
+      costs = housingCost({jeonse: jd, rentDeposit: mrd, monthlyRent: mr, loanRatio: la / jd, loanRate: lr, savingsRate: dir, creditRate: 0, confirmed: false});
+    } catch { setInputError(true); setResult(null); return; }
+    setInputError(false);
+    const {loanInterest, equityCost: oppCostJeonse, rentEquityCost: oppCostRent, jeonseCost: totalJeonseCost, rentCost: totalRentCost} = costs;
     const diff = Math.abs(totalJeonseCost - totalRentCost);
     const cheaper: 'jeonse' | 'rent' = totalJeonseCost < totalRentCost ? 'jeonse' : 'rent';
 
@@ -118,6 +116,7 @@ const JeonseVsRentCalculator: React.FC<{ locale?: 'ko' | 'en' }> = ({ locale = '
     setMonthlyRentDeposit('20000000');
     setDepositInterestRate('3.0');
     setResult(null);
+    setInputError(false);
   };
 
   const fieldClass =
@@ -127,6 +126,7 @@ const JeonseVsRentCalculator: React.FC<{ locale?: 'ko' | 'en' }> = ({ locale = '
     <div className=" my-7 sm:my-12 p-6 md:p-8 bg-gradient-to-br from-primary/10 to-primary/10 border border-primary/30 rounded-3xl shadow-xl">
       <h3 className="text-xl font-bold text-primary mb-6">{t.title}</h3>
 
+      {inputError && <p role="alert" className="mb-3 text-sm text-destructive">{locale === "ko" ? "금액·금리를 확인해 주세요. 대출금은 보증금을 넘을 수 없어요." : "Check amounts and rates. The loan cannot exceed the deposit."}</p>}
       <div className="grid md:grid-cols-2 gap-6">
         {/* Inputs */}
         <div className="space-y-5">
