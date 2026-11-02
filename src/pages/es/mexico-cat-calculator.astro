@@ -1,0 +1,35 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import MxCat from '../../components/tools/MxCat';
+const c = {
+  introTitle: 'Qué es el CAT y por qué no es igual a la tasa',
+  intro: 'En México los créditos deben mostrar el Costo Anual Total (CAT), un indicador que calcula el Banco de México para comparar créditos. A diferencia de la tasa de interés, el CAT suma la comisión por apertura, los seguros obligatorios y otras cuotas fijas que pagas. Esta página estima el CAT de un crédito de pagos mensuales fijos: busca la tasa anual con la que el valor presente de todos tus pagos es igual al dinero que realmente recibes después de la comisión.',
+  formulaTitle: 'Cómo se calcula',
+  formulas: [
+    { title: 'Pago mensual', body: 'pago = monto × r ÷ (1 − (1 + r)^−n), con r = tasa anual ÷ 12 y n = número de meses.' },
+    { title: 'Dinero recibido', body: 'Monto del crédito menos la comisión por apertura cobrada al inicio.' },
+    { title: 'CAT', body: 'La tasa anual i que cumple: dinero recibido = Σ (pago + seguro o cuota mensual) ÷ (1 + i)^(j/12) para j = 1…n. Banxico publica el CAT sin IVA y solo con fines informativos.' },
+  ],
+  howToTitle: 'Cómo usarla',
+  steps: [
+    'Escribe el monto, la tasa de interés anual y el plazo en meses de la oferta.',
+    'Agrega la comisión por apertura en porcentaje y los seguros o cuotas mensuales obligatorias.',
+    'Compara el CAT estimado con el CAT que aparece en la carátula del contrato; si difiere mucho, pregunta qué cargos incluye.',
+    'Para comparar dos créditos, usa el mismo monto y plazo; el CAT menor suele ser el más barato.',
+  ],
+  faqTitle: 'Preguntas frecuentes',
+  faqs: [
+    { question: '¿Por qué mi CAT es mayor que la tasa?', answer: 'Porque la comisión reduce el dinero que recibes y los seguros aumentan lo que pagas, mientras la tasa solo mide los intereses.' },
+    { question: '¿Incluye IVA?', answer: 'No. Igual que el CAT oficial, este cálculo no incluye el IVA sobre intereses y comisiones.' },
+    { question: '¿Se guardan mis datos?', answer: 'Los números solo se quedan en la memoria de esta página. El sitio usa analítica y publicidad.' },
+  ],
+  disclaimer: 'Estimación para México con fines informativos; no sustituye la carátula ni el CAT oficial de la institución.',
+};
+const sources: [string,string][] = [
+  ['Banco de México: Costo Anual Total (CAT)', 'https://www.banxico.org.mx/CAT/'],
+  ['Condusef: ¿Qué es el CAT?', 'https://www.condusef.gob.mx/?p=contenido&idc=1059&idcat=1'],
+];
+---
+<DebtReliefPage slug="mexico-cat-calculator" c={c} sources={sources} sourcesTitle="Fuentes" checked="Páginas oficiales revisadas: 2026-11-03">
+  <MxCat client:load />
+</DebtReliefPage>

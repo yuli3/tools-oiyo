@@ -1,0 +1,36 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import CaStressTest from '../../components/tools/CaStressTest';
+const c = {
+  introTitle: 'What the mortgage stress test checks',
+  intro: 'Federally regulated lenders in Canada must check that you could still afford your mortgage at a higher rate than the one you sign. Under OSFI Guideline B-20 that minimum qualifying rate is the greater of 5.25% or your contract rate plus 2 percentage points. At that rate your housing costs must fit within the gross debt service (GDS) limit and your housing costs plus other debts within the total debt service (TDS) limit. This page uses the CMHC limits of 39% GDS and 44% TDS to estimate the largest mortgage you could qualify for and what you would actually pay at your contract rate.',
+  formulaTitle: 'How it is calculated',
+  formulas: [
+    { title: 'Qualifying rate', body: 'max(5.25%, contract rate + 2%).' },
+    { title: 'GDS and TDS', body: 'GDS = (mortgage payment + property tax + heating + 50% of condo fees) ÷ gross monthly income ≤ 39%. TDS adds other monthly debt payments and must be ≤ 44%.' },
+    { title: 'Maximum mortgage', body: 'The largest payment both limits allow, turned into a loan amount at the qualifying rate. Canadian fixed-rate mortgages compound semi-annually, so the monthly rate is (1 + r/2)^(1/6) − 1.' },
+  ],
+  howToTitle: 'How to use it',
+  steps: [
+    'Enter your gross annual household income and the rate you were offered.',
+    'Enter the amortization period (25 years is common; 30 years is allowed in some cases).',
+    'Add monthly property tax, heating, condo fees and other debt payments such as car loans and the minimum on credit cards.',
+    'Compare the maximum mortgage with the price you are looking at, and remember the down payment rules are separate.',
+  ],
+  faqTitle: 'Common questions',
+  faqs: [
+    { question: 'Does the stress test apply at renewal?', answer: 'Since November 2024 OSFI no longer expects it for a straight switch of an uninsured mortgage to another federally regulated lender at renewal. A new mortgage or a larger amount is still tested.' },
+    { question: 'Do all lenders use 39% and 44%?', answer: 'Those are the CMHC limits for insured mortgages. Lenders set their own limits for uninsured mortgages, which are often similar; credit unions regulated by a province may use different rules.' },
+    { question: 'Are my inputs saved?', answer: 'The numbers stay in the current page memory only. The site uses analytics and advertising.' },
+  ],
+  disclaimer: 'Canadian estimate for planning, not a mortgage approval or financial advice.',
+};
+const sources: [string,string][] = [
+  ['OSFI: Minimum qualifying rate for uninsured mortgages', 'https://www.osfi-bsif.gc.ca/en/supervision/financial-institutions/banks/minimum-qualifying-rate-uninsured-mortgages'],
+  ['FCAC: Mortgage stress test', 'https://www.canada.ca/en/financial-consumer-agency/services/mortgages/stress-test.html'],
+  ['CMHC: Debt service ratios (GDS/TDS)', 'https://www.cmhc-schl.gc.ca/consumers/home-buying/calculators/mortgage-affordability-calculator'],
+];
+---
+<DebtReliefPage slug="canada-mortgage-stress-test-calculator" c={c} sources={sources} sourcesTitle="Sources" checked="Official pages checked: 2026-11-03">
+  <CaStressTest client:load />
+</DebtReliefPage>
