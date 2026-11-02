@@ -1,0 +1,35 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import CnComboLoan from '../../components/tools/CnComboLoan';
+const c = {
+  introTitle: '公积金组合贷怎么算',
+  intro: '在中国买房时，公积金贷款额度往往不够，常见做法是把住房公积金贷款和商业贷款组合使用，也就是"组合贷"。两笔贷款期限相同，但利率不同，分别计算月供后相加。本页按等额本息或等额本金计算两笔贷款的月供和总利息，并和全部使用商业贷款相比，看组合贷能少付多少利息。默认利率仅为示例（2025年5月起：5年以上首套公积金2.6%，5年期以上LPR 3.5%），实际以银行和当地公积金中心为准。',
+  formulaTitle: '计算方法',
+  formulas: [
+    { title: '等额本息', body: '月供 = 本金 × 月利率 ÷ (1 − (1 + 月利率)^−月数)，每月相同。' },
+    { title: '等额本金', body: '每月本金 = 本金 ÷ 月数；当月月供 = 每月本金 + 剩余本金 × 月利率，逐月递减。总利息 = 月利率 × 本金 × (月数 + 1) ÷ 2。' },
+    { title: '组合贷', body: '公积金部分和商业部分分别计算后相加；节省利息 = 全部商贷的总利息 − 组合贷总利息。' },
+  ],
+  howToTitle: '使用方法',
+  steps: [
+    '输入公积金贷款金额和利率（以当地公积金中心核定的额度为准）。',
+    '输入商业贷款金额和利率（LPR加减点，以合同为准）。',
+    '选择贷款年限和还款方式（等额本息或等额本金）。',
+    '查看首月和末月月供、总利息，以及与全部商贷相比节省的利息。',
+  ],
+  faqTitle: '常见问题',
+  faqs: [
+    { question: '公积金能贷多少？', answer: '额度取决于当地公积金中心的规定，通常与缴存余额、缴存年限和还款能力有关，各城市不同。' },
+    { question: 'LPR调整后月供会变吗？', answer: '商业贷款如果选择浮动利率，会在约定的重定价日按新的LPR调整；公积金利率也会随央行调整。' },
+    { question: '会保存我的输入吗？', answer: '数字只保存在当前页面内存中。本站使用统计和广告。' },
+  ],
+  disclaimer: '中国大陆估算，仅供参考，不构成贷款审批或财务建议。',
+};
+const sources: [string,string][] = [
+  ['中国人民银行：贷款市场报价利率（LPR）', 'https://www.pbc.gov.cn/zhengcehuobisi/125207/125213/125440/3876551/index.html'],
+  ['中国人民银行：下调个人住房公积金贷款利率（2025年5月）', 'https://www.pbc.gov.cn/goutongjiaoliu/113456/113469/index.html'],
+];
+---
+<DebtReliefPage slug="housing-provident-fund-combo-loan-calculator" c={c} sources={sources} sourcesTitle="资料来源" checked="官方页面核对日期：2026-11-03">
+  <CnComboLoan client:load />
+</DebtReliefPage>

@@ -1,0 +1,35 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import JpHousingLoanCredit from '../../components/tools/JpHousingLoanCredit';
+const c = {
+  introTitle: '住宅ローン控除で戻る税金の目安',
+  intro: '住宅ローン控除（住宅借入金等特別控除）は、年末のローン残高の0.7%を所得税から差し引く制度です。令和4年以降に入居した場合、残高には住宅の種類と入居年で決まる借入限度額があり、控除期間は原則13年（一部の中古・その他の住宅は10年）です。所得税から引ききれない分は、住民税から一定額まで差し引かれます。このページは返済計画から毎年の年末残高を出し、所得税と住民税からいくら控除されるかを年ごとに示します。',
+  formulaTitle: '計算方法',
+  formulas: [
+    { title: '控除額', body: '控除額 = min(年末残高, 借入限度額) × 0.7%（100円未満切捨て）。' },
+    { title: '所得税と住民税', body: 'まず所得税から差し引き、残りは住民税から min(所得税の課税総所得金額等 × 5%, 97,500円) まで差し引きます。それでも残る分は使われません。' },
+    { title: '年末残高', body: '元利均等返済として毎月の返済額 = 借入額 × r ÷ (1 − (1 + r)^−n)（r = 年利 ÷ 12）から年末残高を出しています。' },
+  ],
+  howToTitle: '使い方',
+  steps: [
+    '借入額、金利、返済期間を入力します。',
+    '国税庁の表で、住宅の種類と入居年に合う借入限度額と控除期間（13年または10年）を選びます。',
+    '源泉徴収票の源泉徴収税額（年税額）と、住民税の控除上限を入力します。',
+    '年ごとの控除額と、所得税・住民税でそれぞれ使われる額を確認します。',
+  ],
+  faqTitle: 'よくある質問',
+  faqs: [
+    { question: '1年目はどうすればいいですか？', answer: '入居した年の分は確定申告が必要です。2年目以降は会社員なら年末調整で受けられます。' },
+    { question: '借入限度額はいくらですか？', answer: '認定住宅・ZEH水準・省エネ基準適合・その他の住宅と、入居年、子育て世帯かどうかで変わります。国税庁 No.1211-1 の表で確認してください。' },
+    { question: '入力は保存されますか？', answer: '数字は今のページのメモリにだけ残ります。このサイトはアクセス解析と広告を使っています。' },
+  ],
+  disclaimer: '日本の制度にもとづく概算です。実際の控除額は確定申告書・年末調整の計算によります。',
+};
+const sources: [string,string][] = [
+  ['国税庁 No.1211-1 住宅の新築等をし、令和4年以降に居住の用に供した場合（住宅借入金等特別控除）', 'https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/1211-1.htm'],
+  ['総務省：個人住民税の住宅ローン控除', 'https://www.soumu.go.jp/main_sosiki/jichi_zeisei/czaisei/czaisei_seido/150790_06.html'],
+];
+---
+<DebtReliefPage slug="housing-loan-deduction-calculator" c={c} sources={sources} sourcesTitle="出典" checked="公式ページ確認日：2026-11-03">
+  <JpHousingLoanCredit client:load />
+</DebtReliefPage>
