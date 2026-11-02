@@ -1,0 +1,36 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import HkTvcTax from '../../components/tools/HkTvcTax';
+const c = {
+  introTitle: '供6萬，慳幾多稅？',
+  intro: '強積金可扣稅自願性供款（TVC）與合資格延期年金保費合共，每個課稅年度最多可扣除6萬港元。慳稅多少取決於你的邊際稅率：累進稅率最高17%，但如果按標準稅率（首500萬15%、其後16%）計稅，扣除只按標準稅率減稅。TVC供款要保留至65歲。本計算機用稅務局的累進稅階及標準稅率，比較扣除前後的薪俸稅。',
+  formulaTitle: '計算依據',
+  formulas: [
+    { title: '扣除上限', body: 'TVC與合資格延期年金保費合共每年最多6萬港元（2019/20課稅年度起）。' },
+    { title: '累進稅率', body: '應課稅入息實額首5萬2%、次5萬6%、次5萬10%、次5萬14%，餘額17%。' },
+    { title: '標準稅率與免稅額', body: '入息淨額首500萬15%、其後16%；兩者取較低者。基本免稅額2025/26為132,000港元，2026/27起為145,000港元。' },
+  ],
+  howToTitle: '使用方法',
+  steps: [
+    '選擇課稅年度。',
+    '輸入扣除TVC前的入息淨額（已扣其他可扣除項目）。',
+    '輸入你可申索的免稅額合計（預設為基本免稅額）。',
+    '輸入TVC及合資格延期年金保費，查看慳稅額。',
+  ],
+  faqTitle: '常見問題',
+  faqs: [
+    { question: '甚麼時候可以提取TVC？', answer: 'TVC累算權益須保留至65歲，除非符合提早提取的法定理由。' },
+    { question: '為甚麼高收入慳稅比例較低？', answer: '若你按標準稅率計稅，每1港元扣除只減15%或16%稅款。' },
+    { question: '輸入會被儲存嗎？', answer: '數字只在本頁面計算。本站使用訪問統計和廣告。' },
+  ],
+  disclaimer: '按積金局及稅務局公布資料的估算，不構成稅務意見。以稅務局評稅為準。',
+};
+const sources: [string,string][] = [
+  ['積金局：可扣稅自願性供款', 'https://www.mpfa.org.hk/en/mpf-system/voluntary-contributions-or-tax-deductible-voluntary-contributions/tax-deductible-voluntary-contributions'],
+  ['稅務局：免稅額、扣除及稅率表', 'https://www.ird.gov.hk/eng/pdf/pam61e.pdf'],
+  ['稅務局：2026-27年度財政預算案（免稅額調整）', 'https://www.ird.gov.hk/eng/tax/budget.htm'],
+];
+---
+<DebtReliefPage slug="hong-kong-tvc-tax-deduction-calculator" c={c} sources={sources} sourcesTitle="資料來源" checked="資料核對日期：2026-11-02">
+  <HkTvcTax client:load />
+</DebtReliefPage>

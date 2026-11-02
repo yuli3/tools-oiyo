@@ -9,6 +9,10 @@ for (const [locale, lang, slug, marker, source] of [
   ['en','en-US','pmi-removal-date-calculator','us-pmi','https://www.law.cornell.edu/uscode/text/12/4902'],
   ['en','en-GB','uk-student-loan-plan-2-plan-5-calculator','uk-sl','https://www.gov.uk/repaying-your-student-loan/what-you-pay'],
   ['ja','ja-JP','nisa-limit-planner','jp-nisa','https://www.fsa.go.jp/policy/nisa2/about/nisa2024/index.html'],
+  ['en','en-GB','lifetime-isa-bonus-calculator','uk-lisa','https://www.gov.uk/lifetime-isa/withdrawing-money-from-your-lifetime-isa'],
+  ['zh','zh-CN','personal-pension-tax-calculator','cn-pension','https://jiangsu.chinatax.gov.cn/art/2024/12/16/art_8349_485802.html'],
+  ['zh','zh-Hant-HK','hong-kong-tvc-tax-deduction-calculator','hk-tvc','https://www.mpfa.org.hk/en/mpf-system/voluntary-contributions-or-tax-deductible-voluntary-contributions/tax-deductible-voluntary-contributions'],
+  ['en','en-SG','cpf-housing-refund-calculator','sg-cpf','https://www.cpf.gov.sg/member/home-ownership/using-your-cpf-to-buy-a-home/cpf-refund-when-selling-or-transferring-property'],
   ['fr','fr-FR','france-surendettement-budget','fr','https://www.banque-france.fr/fr/detail-de-la-procedure-de-surendettement'],
 ]) test(`${slug}: native jurisdiction, static safety explanations, discovery and no generic translations`, () => {
   const html = readFileSync(new URL(`${locale}/${slug}/index.html`, root), 'utf8');
@@ -17,7 +21,7 @@ for (const [locale, lang, slug, marker, source] of [
   assert.ok(html.includes(source));
   assert.ok(html.includes(`data-debt-worksheet="${marker}"`));
   assert.match(html, /aria-live="polite"/);
-  const safety = { us: 'not a bankruptcy eligibility result', 'us-card': 'This is an estimate, not your statement', 'us-ss': 'not your SSA statement', 'us-pmi': 'original amortization schedule', 'uk-sl': 'Student Loans Company account is the figure to trust', 'jp-nisa': '年間投資枠（合計360万円）は増えません', fr: 'n’est pas la capacité de remboursement' }[marker];
+  const safety = { us: 'not a bankruptcy eligibility result', 'us-card': 'This is an estimate, not your statement', 'us-ss': 'not your SSA statement', 'us-pmi': 'original amortization schedule', 'uk-sl': 'Student Loans Company account is the figure to trust', 'jp-nisa': '年間投資枠（合計360万円）は増えません', 'uk-lisa': 'Growth is an assumption, not a forecast', 'cn-pension': '不是你的个税APP结果', 'hk-tvc': '不是稅務局評稅結果', 'sg-cpf': 'your CPF statement shows the exact amount', fr: 'n’est pas la capacité de remboursement' }[marker];
   assert.ok(html.includes(safety), `${slug} safety note`);
   const home = readFileSync(new URL(`${locale}/index.html`, root), 'utf8');
   assert.ok(home.includes(`/${locale}/${slug}/`));
