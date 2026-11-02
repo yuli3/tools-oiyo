@@ -1,0 +1,37 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import UsRetirementLimits from '../../components/tools/UsRetirementLimits';
+const c = {
+  introTitle: 'How much can you put away in 2026?',
+  intro: 'For 2026 the IRS lets employees defer up to $24,500 into a 401(k), 403(b) or the Thrift Savings Plan, plus $8,000 more from age 50. Savers aged 60 to 63 get a larger catch-up of $11,250 under SECURE 2.0. IRAs take $7,500, plus $1,100 from age 50. A Roth IRA shrinks and then closes as income rises, and whether traditional or Roth comes out ahead depends mostly on one comparison: your tax rate now against your tax rate when you withdraw.',
+  formulaTitle: 'The 2026 IRS rules used',
+  formulas: [
+    { title: '401(k) deferral', body: '$24,500. Catch-up $8,000 at 50+, or $11,250 if you are 60, 61, 62 or 63 at the end of the year.' },
+    { title: 'IRA', body: '$7,500 across all your traditional and Roth IRAs, plus $1,100 at 50+. You need taxable compensation at least equal to the contribution.' },
+    { title: 'Roth IRA phase-out', body: 'Single $153,000–$168,000 and married filing jointly $242,000–$252,000 of modified AGI. Inside the range the limit shrinks in proportion, rounded up to $10, with a $200 floor.' },
+    { title: 'Traditional vs Roth', body: 'With the same pre-tax budget, traditional wins when your bracket in retirement is lower than today, Roth wins when it is higher, and they tie when the rates match.' },
+  ],
+  howToTitle: 'How to use it',
+  steps: [
+    'Enter your age at the end of 2026, filing status and modified AGI.',
+    'Read your 401(k) and IRA limits and whether a direct Roth IRA contribution is allowed.',
+    'In the second box, enter a yearly contribution and pick today’s federal bracket and the one you expect in retirement.',
+  ],
+  faqTitle: 'Common questions',
+  faqs: [
+    { question: 'Does the employer match count toward $24,500?', answer: 'No. The $24,500 is your own deferral. Employer contributions count toward the separate total limit of $72,000 for 2026.' },
+    { question: 'Can I put $24,500 in a 401(k) and $7,500 in an IRA?', answer: 'Yes, the limits are separate. Having a workplace plan can reduce how much of a traditional IRA contribution you can deduct, but not whether you can contribute.' },
+    { question: 'My income is above the Roth limit. What now?', answer: 'Many people make a nondeductible traditional IRA contribution and convert it to Roth (the “backdoor Roth”). If you hold other pre-tax IRA money, the pro-rata rule makes part of the conversion taxable, so check Form 8606 first.' },
+    { question: 'Are my inputs saved?', answer: 'No. The numbers stay in this page only. The site uses analytics and advertising.' },
+  ],
+  disclaimer: 'Estimate from IRS 2026 limits; federal tax only. Not tax or investment advice. Your plan documents and IRS.gov are authoritative.',
+};
+const sources: [string,string][] = [
+  ['IRS: 401(k) limit increases to $24,500 for 2026, IRA limit increases to $7,500 (Notice 2025-67)', 'https://www.irs.gov/newsroom/401k-limit-increases-to-24500-for-2026-ira-limit-increases-to-7500'],
+  ['IRS: Retirement topics — IRA contribution limits', 'https://www.irs.gov/retirement-plans/plan-participant-employee/retirement-topics-ira-contribution-limits'],
+  ['IRS: IRA deduction limits', 'https://www.irs.gov/retirement-plans/ira-deduction-limits'],
+];
+---
+<DebtReliefPage slug="us-401k-ira-limits-calculator" c={c} sources={sources} sourcesTitle="Sources" checked="IRS figures checked: 2026-11-02">
+  <UsRetirementLimits client:load />
+</DebtReliefPage>

@@ -1,0 +1,35 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import CnPersonalPension from '../../components/tools/CnPersonalPension';
+const c = {
+  introTitle: '缴12000元，能省多少税？',
+  intro: '个人养老金每年最多缴12000元，可以在综合所得或经营所得中据实扣除；账户里的投资收益暂不征税；领取时单独按3%缴个税，不并入综合所得。所以真正省下的是"现在的边际税率减去将来的3%"。边际税率越高越划算，适用3%税率的人基本省不到钱。这个计算器按年度汇算的税率表算出今年少缴的个税和净节税额。',
+  formulaTitle: '计算依据',
+  formulas: [
+    { title: '税前扣除', body: '每年缴费上限12000元，从全年应纳税所得额中扣除。' },
+    { title: '综合所得税率表', body: '3%（≤3.6万）、10%、20%、25%、30%、35%、45%（>96万），按速算扣除数计算。' },
+    { title: '领取', body: '领取时单独按3%缴税，不并入综合所得。' },
+  ],
+  howToTitle: '怎么用',
+  steps: [
+    '输入缴费前的全年综合所得应纳税所得额（已减6万元基本减除费用、专项扣除和专项附加扣除）。',
+    '输入今年的个人养老金缴费额，最多12000元。',
+    '看今年少缴的个税和扣除将来3%后的净节税额。',
+  ],
+  faqTitle: '常见问题',
+  faqs: [
+    { question: '钱什么时候能取出来？', answer: '一般要到达到领取基本养老金年龄等条件才能领取，资金长期锁定。具体条件以人社部门和开户银行说明为准。' },
+    { question: '投资亏了怎么办？', answer: '个人养老金产品不保本的部分可能亏损。节税额和投资结果是两回事。' },
+    { question: '输入会被保存吗？', answer: '数字只在当前页面内计算。本站使用访问统计和广告。' },
+  ],
+  disclaimer: '按现行政策和税率表的估算，不构成税务建议。以个人所得税APP和税务机关为准。',
+};
+const sources: [string,string][] = [
+  ['财政部 税务总局：关于在全国范围实施个人养老金个人所得税优惠政策的公告（2024年第21号）', 'https://jiangsu.chinatax.gov.cn/art/2024/12/16/art_8349_485802.html'],
+  ['国家税务总局：个人所得税税率表（综合所得适用）', 'https://shanghai.chinatax.gov.cn/zcfw/zcfgk/grsds/202402/P020240202362406243753.pdf'],
+  ['国家税务总局：中华人民共和国个人所得税法（第六条 减除费用六万元）', 'https://www.chinatax.gov.cn/n810219/n810744/n3752930/n3752974/c3970366/content.html'],
+];
+---
+<DebtReliefPage slug="personal-pension-tax-calculator" c={c} sources={sources} sourcesTitle="资料来源" checked="政策与税率表核对日期：2026-11-02">
+  <CnPersonalPension client:load />
+</DebtReliefPage>

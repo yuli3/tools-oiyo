@@ -1,0 +1,37 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import UkLifetimeIsa from '../../components/tools/UkLifetimeIsa';
+const c = {
+  introTitle: 'A 25% bonus with a catch',
+  intro: 'A Lifetime ISA lets you pay in up to £4,000 each tax year and the government adds 25%, up to £1,000 a year. You can use it without a charge for a first home costing £450,000 or less, after 60, or if you are terminally ill. Any other withdrawal costs 25%, which takes back the bonus and a slice of your own money. From 29 October 2026 the charge for a first home above £450,000 is 20%, which takes back only the bonus. This calculator shows the bonus you collect and what each route leaves you.',
+  formulaTitle: 'The gov.uk rules used',
+  formulas: [
+    { title: 'Bonus', body: '25% of what you pay in, up to £4,000 a year (so at most £1,000). Payments and bonus stop at 50. You must open the account at 18 to 39.' },
+    { title: 'Withdrawal charge', body: '25% of the amount withdrawn for any reason other than a qualifying first home, age 60 or terminal illness. 20% for a first home above £450,000 from 29 October 2026.' },
+    { title: 'Why 25% hurts', body: '£1,000 paid in becomes £1,250 with the bonus; a 25% charge leaves £937.50, so you lose £62.50 of your own money.' },
+  ],
+  howToTitle: 'How to use it',
+  steps: [
+    'Enter your age and the current Lifetime ISA balance (0 if you have not opened one).',
+    'Enter what you plan to pay in each tax year, up to £4,000.',
+    'Pick a growth rate after charges and the age you expect to buy or reach 60.',
+    'Compare the no-charge, over-cap and other-withdrawal outcomes.',
+  ],
+  faqTitle: 'Common questions',
+  faqs: [
+    { question: 'Do I need to hold the account for a year before buying?', answer: 'Yes. gov.uk requires the first payment at least 12 months before you use it for a first home, and the purchase must go through a conveyancer.' },
+    { question: 'Is the bonus paid on growth?', answer: 'No. The bonus is 25% of the money you pay in, not of investment growth.' },
+    { question: 'Are my inputs saved?', answer: 'The numbers stay in the current page memory only. The site uses analytics and advertising.' },
+  ],
+  disclaimer: 'Estimate using gov.uk Lifetime ISA rules. Not financial advice; your provider and gov.uk are authoritative.',
+};
+const sources: [string,string][] = [
+  ['gov.uk: Lifetime ISA overview (limit, bonus, age)', 'https://www.gov.uk/lifetime-isa'],
+  ['gov.uk: Who can open a Lifetime ISA', 'https://www.gov.uk/lifetime-isa/who-can-open-a-lifetime-isa'],
+  ['gov.uk: Withdrawing money from your Lifetime ISA', 'https://www.gov.uk/lifetime-isa/withdrawing-money-from-your-lifetime-isa'],
+  ['gov.uk: Reduce Lifetime ISA withdrawal charge for properties over the cap (from 29 October 2026)', 'https://www.gov.uk/government/publications/lifetime-isa-withdrawal-charge/reduce-lifetime-isa-withdrawal-charge-for-properties-over-the-property-price-cap'],
+];
+---
+<DebtReliefPage slug="lifetime-isa-bonus-calculator" c={c} sources={sources} sourcesTitle="Sources" checked="gov.uk rules checked: 2026-11-02">
+  <UkLifetimeIsa client:load />
+</DebtReliefPage>
