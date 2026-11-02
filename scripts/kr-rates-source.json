@@ -1,0 +1,9 @@
+{
+  "repository": "yuli3/api-oiyo",
+  "commit": "485b84dd820826f85404a342d31d0d75d9dc8002",
+  "files": {
+    "kr-rates-2026.mjs": "2e1777ded1e18c0d2a67fe39f0af5549320b97ae9934525518e0cc457993cb47",
+    "kr-rates-2027.mjs": "3a4ab5ae7795b70599c5b98fbbc642cb00a35046926526cc33e961c387de5275",
+    "kr-rates-registry.mjs": "0cd015d0d1802bc47eb3d31583390f692863bce62139e29d47ce1cb5aa100cbc"
+  }
+}

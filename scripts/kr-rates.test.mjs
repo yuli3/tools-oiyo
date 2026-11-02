@@ -1,5 +1,5 @@
 // Parity + vectors for src/lib/kr-rates-2026.mjs (2026-10-17, FAANG audit A-1, S-1~S-4).
-// - byte-identical to api-oiyo src/modules/kr-rates-2026.mjs (skipped when no api checkout, e.g. CI)
+// - pinned API commit hashes always checked, including CI without an API checkout
 // - flat values equal blog src/lib/kr-payroll-2026.ts RATES (pinned snapshot always; live file when found)
 // - one official-value vector per calculator page that uses the module
 import test from "node:test";
@@ -7,7 +7,7 @@ import assert from "node:assert/strict";
 import { existsSync, readFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { findApiRates, LOCAL_RATES, RATE_FILES } from "./sync-kr-rates.mjs";
+import { verifyRateSet, RATE_FILES } from "./sync-kr-rates.mjs";
 import { minimumWageForYear } from "../src/lib/kr-rates-registry.mjs";
 import {
   KR_RATES_2026,
@@ -34,21 +34,10 @@ test("year registry preserves unknown rates and rejects unsupported years", () =
   assert.throws(() => minimumWageForYear(2028));
 });
 
-test("complete year registry is byte-identical to API", (t) => {
-  const api = findApiRates();
-  if (!api) return t.skip("api checkout not found; set OIYO_API_DIR to run");
-  for (const name of RATE_FILES) {
-    assert.equal(readFileSync(resolve(root, "src/lib", name), "utf8"), readFileSync(resolve(dirname(api), name), "utf8"), name);
-  }
-});
-
-test("tools copy is byte-identical to the api SSOT", (t) => {
-  const api = findApiRates();
-  if (!api) {
-    t.skip("api checkout not found; set OIYO_API_DIR to run");
-    return;
-  }
-  assert.equal(readFileSync(LOCAL_RATES, "utf8"), readFileSync(api, "utf8"), "run `npm run sync:kr-rates`");
+test("complete year registry matches pinned API hashes without a checkout", () => {
+  const source = JSON.parse(readFileSync(resolve(root, "scripts/kr-rates-source.json"), "utf8"));
+  const buffers = Object.fromEntries(RATE_FILES.map(name => [name, readFileSync(resolve(root, "src/lib", name))]));
+  assert.doesNotThrow(() => verifyRateSet(source, buffers));
 });
 
 const flat = {
