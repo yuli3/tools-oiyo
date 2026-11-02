@@ -2,7 +2,7 @@ import HeightWorldMeans from './HeightWorldMeans';
 import {useEffect,useId,useState} from 'react';
 import data from '../../data/height-reference.json';
 import {heightTravelCopy} from '../../data/height-travel-copy';
-import {heightPosition,equivalentHeight} from '../../lib/height-travel';
+import {heightPosition,equivalentHeight,referenceFor,type HeightReference} from '../../lib/height-travel';
 import type {Locale} from '../../lib/i18n';
 
 export default function HeightTravel({locale}:{locale:Locale}) {
@@ -10,14 +10,17 @@ export default function HeightTravel({locale}:{locale:Locale}) {
   const [height,setHeight]=useState('175'),[sex,setSex]=useState('male'),[age,setAge]=useState(20),[country,setCountry]=useState('KR');
   const [ready,setReady]=useState(false),[message,setMessage]=useState('');
   useEffect(()=>{setReady(true);},[]);
-  const rows=data.rows.filter(r=>r.sex===sex&&r.ageMin===age);
-  const row=rows.find(r=>r.country===country)!;
+  const COUNTRIES=['KR','US','JP','CA'] as const;
+  const FLAGS:Record<string,string>={KR:'🇰🇷',US:'🇺🇸',JP:'🇯🇵',CA:'🇨🇦'};
+  const rows=COUNTRIES.map(c=>referenceFor(data.rows as HeightReference[],c,sex,age)).filter((r):r is HeightReference=>r!==null);
+  const row=rows.find(r=>r.country===country)??rows[0];
   const cm=height.trim()===''?NaN:Number(height),result=heightPosition(cm,row);
   const f=(n:number,digits=1)=>new Intl.NumberFormat(locale,{maximumFractionDigits:digits}).format(n);
-  const label=(code:string)=>code==='KR'?t.kr:t.us;
+  const label=(code:string)=>({KR:t.kr,US:t.us,JP:t.jp,CA:t.ca} as Record<string,string>)[code]??code;
+  const band=(r:HeightReference)=>`${r.ageMin}–${r.ageMax}`;
   const position=(r:typeof row)=>{
     const p=heightPosition(cm,r);
-    return !p?t.invalid:p.kind==='below'?t.below:p.kind==='above'?t.above:`${t.top} ${f(100-p.percentile)}%`;
+    return !p?t.invalid:p.kind==='below'?t.below.replace('{p}',String(p.bound)):p.kind==='above'?t.above.replace('{p}',String(p.bound)):`${t.top} ${f(100-p.percentile)}%`;
   };
   async function copy(){
     if(!result)return;
@@ -32,9 +35,9 @@ export default function HeightTravel({locale}:{locale:Locale}) {
       <div><label htmlFor={id+'a'} className="mb-1 block text-sm font-medium">{t.age}</label><select id={id+'a'} value={age} onChange={e=>{setAge(Number(e.target.value));setMessage('');}} className="min-h-11 w-full rounded-lg border border-input bg-background px-3 py-2">{[20,30,40,50,60].map(a=><option key={a} value={a}>{a}–{a+9}</option>)}</select></div>
       {!ready&&<p className="text-sm text-muted-foreground">{t.loading}</p>}
     </fieldset>
-    <div className="grid grid-cols-2 gap-2">{rows.map(r=><button key={r.country} type="button" disabled={!ready} aria-pressed={country===r.country} onClick={()=>setCountry(r.country)} className={'min-h-11 rounded-xl border p-3 text-left '+(country===r.country?'border-primary bg-primary text-primary-foreground':'border-border bg-card text-foreground')}><span className="block font-semibold">{r.country==='KR'?'🇰🇷':'🇺🇸'} {label(r.country)}</span><span className="mt-1 block text-sm">{position(r)}</span></button>)}</div>
+    <div className="grid grid-cols-2 gap-2">{rows.map(r=><button key={r.country} type="button" disabled={!ready} aria-pressed={country===r.country} onClick={()=>setCountry(r.country)} className={'min-h-11 rounded-xl border p-3 text-left '+(country===r.country?'border-primary bg-primary text-primary-foreground':'border-border bg-card text-foreground')}><span className="block font-semibold">{FLAGS[r.country]} {label(r.country)}</span>{(r.ageMin!==age||r.ageMax!==age+9)&&<span className="block text-xs opacity-80">{t.band} {band(r)}</span>}<span className="mt-1 block text-sm">{position(r)}</span></button>)}</div>
     {!result?<p role="alert" id={id+'error'} className="text-destructive">{t.invalid}</p>:<div className="rounded-xl border border-border bg-card p-4">
-      <p className="text-sm text-muted-foreground">{label(country)} · {sex==='male'?t.male:t.female} · {age}–{age+9}</p>
+      <p className="text-sm text-muted-foreground">{label(row.country)} · {sex==='male'?t.male:t.female} · {band(row)}</p>
       <h2 className="mt-2 text-2xl font-bold tabular-nums">{position(row)}</h2>
       {result.kind==='within'&&<>
         <p className="mt-1 text-sm">{t.percentile}: <strong>{f(result.percentile)}%</strong> · {t.rank}: <strong>{f(result.rank100)}</strong></p>
@@ -54,7 +57,7 @@ export default function HeightTravel({locale}:{locale:Locale}) {
     <p className="text-sm leading-relaxed text-muted-foreground">{t.tails}</p>
     <HeightWorldMeans ready={ready} locale={locale} cm={cm} sex={sex==='male'?'male':'female'}/>
     <details className="rounded-xl border border-border bg-card p-4"><summary className="cursor-pointer font-semibold">{t.sources}</summary><ul className="mt-3 space-y-3 text-sm">{rows.map(r=>{
-      const source=data.sources[r.country as 'KR'|'US'];return <li key={r.country}><a href={source.url} className="text-primary underline">{label(r.country)} · {source.name}</a><p>{t.period}: {source.period} · {t.sample}: {f(r.n,0)}</p></li>;
+      const source=data.sources[r.country as keyof typeof data.sources];return <li key={r.country}><a href={source.url} className="text-primary underline">{label(r.country)} · {source.name}</a><p>{t.period}: {source.period} · {t.band}: {band(r)} · {t.sample}: {r.n===null?'—':f(r.n,0)}</p><p className="text-xs text-muted-foreground">{source.credit}{'terms' in source&&source.terms?<> · <a href={source.terms} className="underline">{source.license}</a></>:null}</p></li>;
     })}</ul></details>
   </section>;
 }

@@ -7,14 +7,34 @@
       "name": "KATS · Size Korea 8",
       "weighted": null,
       "license": "Commercial/noncommercial use permitted with attribution; sale of data prohibited.",
-      "terms": "https://sizekorea.kr/"
+      "terms": "https://sizekorea.kr/",
+      "credit": "KATS · Size Korea 8"
     },
     "US": {
       "url": "https://www.cdc.gov/nchs/data/series/sr_03/sr03-050.pdf",
       "period": "2021–2023",
       "name": "CDC/NCHS · NHANES · Table 7",
       "weighted": true,
-      "license": "Public domain (report p. ii)."
+      "license": "Public domain (report p. ii).",
+      "credit": "CDC/NCHS · NHANES 2021–2023 · Table 7"
+    },
+    "JP": {
+      "url": "https://www.mhlw.go.jp/bunya/kenkou/dl/kenkou_eiyou_chousa_tokubetsushuukei_h28.pdf",
+      "period": "2016 (平成28年)",
+      "name": "厚生労働省 · 平成28年国民健康・栄養調査",
+      "weighted": null,
+      "license": "公共データ利用規約（第1.0版）PDL1.0",
+      "terms": "https://www.mhlw.go.jp/chosakuken/index.html",
+      "credit": "出典：「平成28年国民健康・栄養調査」（厚生労働省）（2026-11-02 利用）"
+    },
+    "CA": {
+      "url": "https://www150.statcan.gc.ca/n1/pub/82-626-x/2013001/t023-eng.htm",
+      "period": "2009–2011 (CHMS Cycle 2)",
+      "name": "Statistics Canada · CHMS Cycle 2 · Table 22",
+      "weighted": null,
+      "license": "Statistics Canada Open Licence",
+      "terms": "https://www.statcan.gc.ca/en/reference/licence",
+      "credit": "Adapted from Statistics Canada, Canadian Health Measures Survey: Cycle 2 Data Tables, Table 22, 2009 to 2011. This does not constitute an endorsement by Statistics Canada of this product."
     }
   },
   "rows": [
@@ -787,6 +807,522 @@
           171.2
         ]
       ]
+    },
+    {
+      "sex": "male",
+      "ageMin": 18,
+      "ageMax": 29,
+      "n": 706,
+      "mean": 171.4,
+      "quantiles": [
+        [
+          1,
+          158.6
+        ],
+        [
+          5,
+          162.1
+        ],
+        [
+          10,
+          163.5
+        ],
+        [
+          25,
+          167.9
+        ],
+        [
+          50,
+          171.0
+        ],
+        [
+          75,
+          175.0
+        ],
+        [
+          90,
+          178.8
+        ],
+        [
+          95,
+          181.0
+        ],
+        [
+          99,
+          184.9
+        ]
+      ],
+      "sourceHash": "f18bdac2fd1ad0c379989e979066d8f27cfc93f8fd6c95802072300412a99cd0",
+      "country": "JP"
+    },
+    {
+      "sex": "male",
+      "ageMin": 30,
+      "ageMax": 49,
+      "n": 2286,
+      "mean": 171.5,
+      "quantiles": [
+        [
+          1,
+          157.0
+        ],
+        [
+          5,
+          162.7
+        ],
+        [
+          10,
+          164.8
+        ],
+        [
+          25,
+          168.0
+        ],
+        [
+          50,
+          171.0
+        ],
+        [
+          75,
+          175.0
+        ],
+        [
+          90,
+          178.9
+        ],
+        [
+          95,
+          181.0
+        ],
+        [
+          99,
+          186.0
+        ]
+      ],
+      "sourceHash": "f18bdac2fd1ad0c379989e979066d8f27cfc93f8fd6c95802072300412a99cd0",
+      "country": "JP"
+    },
+    {
+      "sex": "male",
+      "ageMin": 50,
+      "ageMax": 69,
+      "n": 3257,
+      "mean": 168.0,
+      "quantiles": [
+        [
+          1,
+          154.2
+        ],
+        [
+          5,
+          158.4
+        ],
+        [
+          10,
+          160.2
+        ],
+        [
+          25,
+          164.0
+        ],
+        [
+          50,
+          168.0
+        ],
+        [
+          75,
+          172.0
+        ],
+        [
+          90,
+          176.0
+        ],
+        [
+          95,
+          178.2
+        ],
+        [
+          99,
+          183.0
+        ]
+      ],
+      "sourceHash": "f18bdac2fd1ad0c379989e979066d8f27cfc93f8fd6c95802072300412a99cd0",
+      "country": "JP"
+    },
+    {
+      "sex": "female",
+      "ageMin": 18,
+      "ageMax": 29,
+      "n": 727,
+      "mean": 157.9,
+      "quantiles": [
+        [
+          1,
+          144.0
+        ],
+        [
+          5,
+          148.0
+        ],
+        [
+          10,
+          150.0
+        ],
+        [
+          25,
+          154.0
+        ],
+        [
+          50,
+          158.0
+        ],
+        [
+          75,
+          162.0
+        ],
+        [
+          90,
+          165.0
+        ],
+        [
+          95,
+          167.3
+        ],
+        [
+          99,
+          173.2
+        ]
+      ],
+      "sourceHash": "f18bdac2fd1ad0c379989e979066d8f27cfc93f8fd6c95802072300412a99cd0",
+      "country": "JP"
+    },
+    {
+      "sex": "female",
+      "ageMin": 30,
+      "ageMax": 49,
+      "n": 2664,
+      "mean": 158.0,
+      "quantiles": [
+        [
+          1,
+          145.5
+        ],
+        [
+          5,
+          149.2
+        ],
+        [
+          10,
+          151.0
+        ],
+        [
+          25,
+          154.3
+        ],
+        [
+          50,
+          158.0
+        ],
+        [
+          75,
+          161.6
+        ],
+        [
+          90,
+          165.0
+        ],
+        [
+          95,
+          167.0
+        ],
+        [
+          99,
+          171.1
+        ]
+      ],
+      "sourceHash": "f18bdac2fd1ad0c379989e979066d8f27cfc93f8fd6c95802072300412a99cd0",
+      "country": "JP"
+    },
+    {
+      "sex": "female",
+      "ageMin": 50,
+      "ageMax": 69,
+      "n": 4019,
+      "mean": 154.7,
+      "quantiles": [
+        [
+          1,
+          141.3
+        ],
+        [
+          5,
+          145.7
+        ],
+        [
+          10,
+          147.7
+        ],
+        [
+          25,
+          151.0
+        ],
+        [
+          50,
+          154.8
+        ],
+        [
+          75,
+          158.4
+        ],
+        [
+          90,
+          162.0
+        ],
+        [
+          95,
+          164.0
+        ],
+        [
+          99,
+          168.0
+        ]
+      ],
+      "sourceHash": "f18bdac2fd1ad0c379989e979066d8f27cfc93f8fd6c95802072300412a99cd0",
+      "country": "JP"
+    },
+    {
+      "sex": "male",
+      "ageMin": 20,
+      "ageMax": 39,
+      "n": null,
+      "mean": 177.7,
+      "quantiles": [
+        [
+          5,
+          165.76
+        ],
+        [
+          10,
+          168.0
+        ],
+        [
+          25,
+          173.67
+        ],
+        [
+          50,
+          178.74
+        ],
+        [
+          75,
+          181.89
+        ],
+        [
+          90,
+          185.49
+        ],
+        [
+          95,
+          187.69
+        ]
+      ],
+      "sourceHash": "b743bec77d73300236803adcd375a08de3b8073ba9b8cb3e874b677bd2d08585",
+      "country": "CA"
+    },
+    {
+      "sex": "male",
+      "ageMin": 40,
+      "ageMax": 59,
+      "n": null,
+      "mean": 174.66,
+      "quantiles": [
+        [
+          5,
+          163.83
+        ],
+        [
+          10,
+          166.15
+        ],
+        [
+          25,
+          169.59
+        ],
+        [
+          50,
+          174.29
+        ],
+        [
+          75,
+          179.53
+        ],
+        [
+          90,
+          183.5
+        ],
+        [
+          95,
+          185.11
+        ]
+      ],
+      "sourceHash": "b743bec77d73300236803adcd375a08de3b8073ba9b8cb3e874b677bd2d08585",
+      "country": "CA"
+    },
+    {
+      "sex": "male",
+      "ageMin": 60,
+      "ageMax": 79,
+      "n": null,
+      "mean": 172.62,
+      "quantiles": [
+        [
+          5,
+          162.02
+        ],
+        [
+          10,
+          163.38
+        ],
+        [
+          25,
+          167.72
+        ],
+        [
+          50,
+          172.88
+        ],
+        [
+          75,
+          177.12
+        ],
+        [
+          90,
+          180.96
+        ],
+        [
+          95,
+          183.11
+        ]
+      ],
+      "sourceHash": "b743bec77d73300236803adcd375a08de3b8073ba9b8cb3e874b677bd2d08585",
+      "country": "CA"
+    },
+    {
+      "sex": "female",
+      "ageMin": 20,
+      "ageMax": 39,
+      "n": null,
+      "mean": 162.98,
+      "quantiles": [
+        [
+          5,
+          153.26
+        ],
+        [
+          10,
+          155.13
+        ],
+        [
+          25,
+          158.7
+        ],
+        [
+          50,
+          162.86
+        ],
+        [
+          75,
+          167.94
+        ],
+        [
+          90,
+          171.2
+        ],
+        [
+          95,
+          173.23
+        ]
+      ],
+      "sourceHash": "b743bec77d73300236803adcd375a08de3b8073ba9b8cb3e874b677bd2d08585",
+      "country": "CA"
+    },
+    {
+      "sex": "female",
+      "ageMin": 40,
+      "ageMax": 59,
+      "n": null,
+      "mean": 161.85,
+      "quantiles": [
+        [
+          5,
+          150.95
+        ],
+        [
+          10,
+          154.04
+        ],
+        [
+          25,
+          157.37
+        ],
+        [
+          50,
+          161.79
+        ],
+        [
+          75,
+          166.36
+        ],
+        [
+          90,
+          170.25
+        ],
+        [
+          95,
+          173.53
+        ]
+      ],
+      "sourceHash": "b743bec77d73300236803adcd375a08de3b8073ba9b8cb3e874b677bd2d08585",
+      "country": "CA"
+    },
+    {
+      "sex": "female",
+      "ageMin": 60,
+      "ageMax": 79,
+      "n": null,
+      "mean": 158.67,
+      "quantiles": [
+        [
+          5,
+          147.82
+        ],
+        [
+          10,
+          150.59
+        ],
+        [
+          25,
+          154.02
+        ],
+        [
+          50,
+          159.06
+        ],
+        [
+          75,
+          162.57
+        ],
+        [
+          90,
+          166.91
+        ],
+        [
+          95,
+          168.98
+        ]
+      ],
+      "sourceHash": "b743bec77d73300236803adcd375a08de3b8073ba9b8cb3e874b677bd2d08585",
+      "country": "CA"
     }
   ]
 }
