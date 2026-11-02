@@ -38,6 +38,7 @@ export const krFinanceTools = [
   { slug: 'health-insurance-leaver-settlement', title: '퇴사자 건강보험료 정산 계산기', description: '퇴사할 때 그해 보수로 다시 계산하는 건강보험료 정산액(환급·추가 납부)을 계산해요.' },
   { slug: 'copay-cap-refund-calculator', title: '본인부담상한제 환급 계산기', description: '올해 낸 건강보험 본인부담금이 2026년 소득분위별 상한액을 넘어 돌려받을 병원비를 계산해요.' },
   { slug: 'medical-expense-tax-credit-calculator', title: '의료비 세액공제 계산기', description: '총급여 3% 문턱, 700만 원 한도, 난임 30%·미숙아 20%로 연말정산 의료비 세액공제를 계산해요.' },
+  { slug: 'silson-insurance-generation-calculator', title: '실손보험 세대별 보험금 계산기', description: '같은 병원 영수증으로 3·4·5세대 실손보험 표준약관 공제 규칙에 따른 보험금을 비교해요.' },
   { slug: 'presale-payment-calculator', title: '아파트 분양 대금 일정 계산기', description: '계약금·중도금·잔금 일정과 중도금 대출 이자(무이자·후불제·유이자), 입주 때 필요한 돈을 계산해요.' },
   { slug: 'building-coverage-floor-area-ratio-calculator', title: '건폐율·용적률 계산기', description: '용도지역별 법정 상한과 대지면적으로 건폐율·용적률, 지을 수 있는 최대 면적을 계산해요.' },
 ] as const;
