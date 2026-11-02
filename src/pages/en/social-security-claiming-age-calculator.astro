@@ -1,0 +1,35 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import UsSocialSecurityAge from '../../components/tools/UsSocialSecurityAge';
+const c = {
+  introTitle: 'What changes when you start at 62, 67 or 70',
+  intro: 'Your Social Security retirement benefit is fixed by the age you start it. Starting before your full retirement age cuts the monthly amount for life: 5/9 of 1% for each of the first 36 early months and 5/12 of 1% for each month beyond that. Waiting past full retirement age adds delayed retirement credits of 2/3 of 1% a month (8% a year) until 70. This page applies those SSA rules to the benefit shown on your my Social Security statement and compares the totals up to an age you choose.',
+  formulaTitle: 'The SSA rules used',
+  formulas: [
+    { title: 'Full retirement age', body: '66 for people born 1943–1954, rising by 2 months a year to 67 for 1960 and later. Born on January 1? SSA uses the previous year.' },
+    { title: 'Early reduction', body: '5/9 of 1% per month for up to 36 months, then 5/12 of 1% per month. With a full retirement age of 67, starting at 62 pays 70%.' },
+    { title: 'Delayed credit', body: '2/3 of 1% per month after full retirement age, up to age 70. With a full retirement age of 67, starting at 70 pays 124%.' },
+  ],
+  howToTitle: 'How to use it',
+  steps: [
+    'Sign in to my Social Security and note your estimated monthly benefit at full retirement age.',
+    'Enter your date of birth and that amount.',
+    'Pick the age you want to plan to and compare the monthly amount and the total for each start age.',
+    'Use the break-even ages to see how long you would need to live for waiting to pay off.',
+  ],
+  faqTitle: 'Common questions',
+  faqs: [
+    { question: 'Why is my statement amount different?', answer: 'Statements project future earnings and include rules this page leaves out, such as cost-of-living adjustments, the retirement earnings test and family benefits. Use the statement for the amount and this page for the comparison.' },
+    { question: 'Does waiting after 70 help?', answer: 'No. Delayed retirement credits stop at 70, so the calculator treats any later age the same as 70.' },
+    { question: 'Are my inputs saved?', answer: 'The numbers stay in the current page memory only and are not sent to SSA. The site uses analytics and advertising.' },
+  ],
+  disclaimer: 'U.S. estimate for planning, not financial advice or an SSA determination.',
+};
+const sources: [string,string][] = [
+  ['SSA: Retirement age and benefit reduction (full retirement age by year of birth)', 'https://www.ssa.gov/benefits/retirement/planner/agereduction.html'],
+  ['SSA Office of the Chief Actuary: Early or late retirement (reduction and delayed credit rates)', 'https://www.ssa.gov/oact/quickcalc/early_late.html'],
+];
+---
+<DebtReliefPage slug="social-security-claiming-age-calculator" c={c} sources={sources} sourcesTitle="Sources" checked="Official pages checked: 2026-11-02">
+  <UsSocialSecurityAge client:load />
+</DebtReliefPage>

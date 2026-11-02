@@ -1,0 +1,35 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import UsPmiRemoval from '../../components/tools/UsPmiRemoval';
+const c = {
+  introTitle: 'When private mortgage insurance has to stop',
+  intro: 'If you put less than 20% down on a conventional mortgage, you usually pay private mortgage insurance (PMI). The Homeowners Protection Act sets three dates for loans on a single-family principal residence closed on or after July 29, 1999: you can ask in writing to cancel PMI when the balance reaches 80% of the original value, the servicer must end it automatically when the balance is scheduled to reach 78%, and it must end the month after the loan reaches the midpoint of its amortization schedule. This page finds those dates from your loan terms and shows how extra principal payments bring the 80% date forward.',
+  formulaTitle: 'How the dates are found',
+  formulas: [
+    { title: 'Original value', body: 'The lower of the contract sales price or the appraised value at purchase (the refinance appraisal for a refinance).' },
+    { title: 'Scheduled balance', body: 'Standard amortization: payment = loan × r ÷ (1 − (1 + r)^−n), r = annual rate ÷ 12. The 80% and 78% dates use the original schedule.' },
+    { title: 'Midpoint', body: 'Half of the term in months. For a 30-year loan that is after payment 180, so PMI ends the month after.' },
+  ],
+  howToTitle: 'How to use it',
+  steps: [
+    'Enter the original value, loan amount, rate and term from your closing documents.',
+    'Enter the month of your first payment to see calendar dates.',
+    'Add an extra principal amount to see when you could request cancellation sooner.',
+    'Request cancellation in writing to your servicer; it can require a good payment history, no junior liens and proof the value has not fallen.',
+  ],
+  faqTitle: 'Common questions',
+  faqs: [
+    { question: 'Does a higher home value let me cancel sooner?', answer: 'Not under the federal 80% rule, which uses the original value. Some investors such as Fannie Mae and Freddie Mac allow cancellation based on a new appraisal; ask your servicer.' },
+    { question: 'Does this apply to FHA or VA loans?', answer: 'No. FHA mortgage insurance premiums and the VA funding fee follow their own rules.' },
+    { question: 'Are my inputs saved?', answer: 'The numbers stay in the current page memory only. The site uses analytics and advertising.' },
+  ],
+  disclaimer: 'U.S. estimate for planning, not legal advice or your servicer\'s PMI disclosure.',
+};
+const sources: [string,string][] = [
+  ['CFPB: When can I remove private mortgage insurance (PMI) from my loan?', 'https://www.consumerfinance.gov/ask-cfpb/when-can-i-remove-private-mortgage-insurance-pmi-from-my-loan-en-202/'],
+  ['12 U.S.C. 4902: Termination of private mortgage insurance (Cornell LII)', 'https://www.law.cornell.edu/uscode/text/12/4902'],
+];
+---
+<DebtReliefPage slug="pmi-removal-date-calculator" c={c} sources={sources} sourcesTitle="Sources" checked="Official pages checked: 2026-11-02">
+  <UsPmiRemoval client:load />
+</DebtReliefPage>

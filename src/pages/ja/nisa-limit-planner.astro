@@ -1,0 +1,34 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import JpNisaPlanner from '../../components/tools/JpNisaPlanner';
+const c = {
+  introTitle: '新しいNISAの枠を何年で使い切るか',
+  intro: '2024年からのNISAは、つみたて投資枠が年120万円、成長投資枠が年240万円で、合計年360万円まで投資できます。生涯の非課税保有限度額は1,800万円（うち成長投資枠は1,200万円）で、枠は取得価額（簿価）で管理されます。売却した場合は、その簿価の分だけ翌年以降に枠が復活します。このツールは、毎月のつみたて額と毎年の成長投資枠の額から、生涯枠を何年で使い切るかを年ごとに示します。',
+  formulaTitle: '計算に使うルール（金融庁）',
+  formulas: [
+    { title: '年間投資枠', body: 'つみたて投資枠 120万円、成長投資枠 240万円、合計 360万円。' },
+    { title: '生涯枠', body: '非課税保有限度額 1,800万円。成長投資枠はその内数で 1,200万円まで。' },
+    { title: '売却時', body: '売却した商品の簿価分が翌年以降に再利用できます。年間投資枠は増えません。' },
+  ],
+  howToTitle: '使い方',
+  steps: [
+    '証券会社の画面で、これまでのNISA利用額（簿価）と成長投資枠の利用額を確認して入力します。',
+    '毎月のつみたて額と、毎年成長投資枠に入れる予定額を入力します。',
+    '生涯枠を使い切る年と、年ごとの累計を確認します。',
+    '売却予定がある場合は、その簿価分を利用額から差し引いて入力し直すと翌年以降の見通しになります。',
+  ],
+  faqTitle: 'よくある質問',
+  faqs: [
+    { question: '値上がりした分は枠を使いますか？', answer: '使いません。枠は取得価額（簿価）で数えるため、運用益は1,800万円に含まれません。' },
+    { question: '未成年でも使えますか？', answer: '2027年1月からは0〜17歳もつみたて投資枠を使えるようになると金融庁が案内しています。このツールは成人の枠で計算します。' },
+    { question: '入力内容は保存されますか？', answer: '入力値は表示中のページのメモリ内だけで使います。サイトはアクセス解析と広告を利用しています。' },
+  ],
+  disclaimer: '日本のNISA制度に基づく概算です。投資助言ではありません。実際の枠は金融機関の表示を確認してください。',
+};
+const sources: [string,string][] = [
+  ['金融庁：新しいNISA（制度の概要）', 'https://www.fsa.go.jp/policy/nisa2/about/nisa2024/index.html'],
+];
+---
+<DebtReliefPage slug="nisa-limit-planner" c={c} sources={sources} sourcesTitle="出典" checked="金融庁ページ確認日：2026-11-02">
+  <JpNisaPlanner client:load />
+</DebtReliefPage>
