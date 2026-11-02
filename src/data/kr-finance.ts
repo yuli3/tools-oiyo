@@ -36,4 +36,6 @@ export const krFinanceTools = [
   { slug: 'present-value-calculator', title: '호프만·라이프니츠 현재가치 계산기', description: '매월 받을 돈의 현재가치를 법원 손해배상 산정에 쓰는 호프만(단리)·라이프니츠(복리) 방식으로 계산해요.' },
   { slug: 'electricity-bill-calculator', title: '전기요금 계산기', description: '주택용 누진 구간별 전기요금과 부가세·전력기금, 기기 하나 더 쓸 때 늘어나는 요금을 계산해요.' },
   { slug: 'health-insurance-leaver-settlement', title: '퇴사자 건강보험료 정산 계산기', description: '퇴사할 때 그해 보수로 다시 계산하는 건강보험료 정산액(환급·추가 납부)을 계산해요.' },
+  { slug: 'copay-cap-refund-calculator', title: '본인부담상한제 환급 계산기', description: '올해 낸 건강보험 본인부담금이 2026년 소득분위별 상한액을 넘어 돌려받을 병원비를 계산해요.' },
+  { slug: 'medical-expense-tax-credit-calculator', title: '의료비 세액공제 계산기', description: '총급여 3% 문턱, 700만 원 한도, 난임 30%·미숙아 20%로 연말정산 의료비 세액공제를 계산해요.' },
 ] as const;
