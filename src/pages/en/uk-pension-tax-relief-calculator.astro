@@ -1,0 +1,36 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import UkPensionRelief from '../../components/tools/UkPensionRelief';
+const c = {
+  introTitle: 'Every £80 becomes £100, and higher earners get more',
+  intro: 'When you pay into a SIPP or personal pension from your own bank account, the provider claims basic-rate tax relief from HMRC and adds it to your pot: £80 from you becomes £100. If you pay higher or additional rate tax, the rest of your relief does not arrive by itself. You claim it through Self Assessment, which widens your basic and higher rate bands by the gross contribution. Above £100,000 the same contribution can also win back personal allowance, so the relief there can reach 60%. This calculator uses the 2026/27 bands for England, Wales and Northern Ireland.',
+  formulaTitle: 'The 2026/27 rules used',
+  formulas: [
+    { title: 'Relief at source', body: 'Gross contribution = what you pay ÷ 0.8. The provider adds 20%.' },
+    { title: 'Extra relief', body: 'Your basic and higher rate bands are extended by the gross contribution, and adjusted net income for the £100,000 allowance taper falls by the same amount. The tax difference is what you claim back.' },
+    { title: 'Limits', body: 'Relief up to 100% of your earnings, or £3,600 gross without earnings. Annual allowance £60,000 (money purchase annual allowance £10,000 once you have flexibly drawn a pension; tapered to as little as £10,000 above £260,000 adjusted income).' },
+  ],
+  howToTitle: 'How to use it',
+  steps: [
+    'Enter your earnings for the tax year before tax.',
+    'Enter what you pay in from your bank account (not the grossed-up figure).',
+    'Read the pot top-up, the Self Assessment claim and your real cost.',
+  ],
+  faqTitle: 'Common questions',
+  faqs: [
+    { question: 'Does this apply to my workplace pension?', answer: 'Most workplace schemes use net pay or salary sacrifice, which take the contribution before tax, so you get full relief automatically and have nothing to claim. This calculator is for relief-at-source pensions such as SIPPs and many personal pensions.' },
+    { question: 'How far back can I claim higher-rate relief?', answer: 'You can claim for the previous four tax years by writing to HMRC or amending a Self Assessment return.' },
+    { question: 'I live in Scotland. Is it different?', answer: 'Yes. Scottish taxpayers have different bands and rates (including 21% and 42%), so the extra relief differs. The 20% top-up from the provider is the same.' },
+    { question: 'Are my inputs saved?', answer: 'No. The numbers stay in this page only. The site uses analytics and advertising.' },
+  ],
+  disclaimer: 'Estimate using 2026/27 rUK income tax bands and gov.uk pension rates. Not financial advice; HMRC decides your relief.',
+};
+const sources: [string,string][] = [
+  ['gov.uk: Tax on your private pension contributions — tax relief', 'https://www.gov.uk/tax-on-your-private-pension/pension-tax-relief'],
+  ['gov.uk: Pension schemes rates and allowances', 'https://www.gov.uk/government/publications/rates-and-allowances-pension-schemes/pension-schemes-rates'],
+  ['gov.uk: Income Tax rates and Personal Allowances', 'https://www.gov.uk/income-tax-rates'],
+];
+---
+<DebtReliefPage slug="uk-pension-tax-relief-calculator" c={c} sources={sources} sourcesTitle="Sources" checked="gov.uk rates checked: 2026-11-02">
+  <UkPensionRelief client:load />
+</DebtReliefPage>
