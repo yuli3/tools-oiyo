@@ -27,6 +27,8 @@ jobs:
       - name: Quartile convention and parser regression
         run: node --experimental-strip-types --test src/lib/quartile.test.ts
       - run: npm run build
+      - name: Eligibility scope HTML
+        run: node --test scripts/eligibility-scope-html.test.mjs
       - name: Height travel six-locale HTML
         run: node --test scripts/height-travel-html.test.mjs
       - name: Authored output regression

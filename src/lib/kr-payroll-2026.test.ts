@@ -195,7 +195,7 @@ test("inheritance/gift constants match the api SSOT when an api checkout exists"
 });
 
 import {severanceBoundary} from './kr-severance-boundary.ts';
-const severanceFixture={start:'2023-01-01',exit:'2024-01-01',threeMonthWages:9000000,annualBonus:0,annualLeavePay:0,ordinaryDaily:80000,confirmed:true};
+const severanceFixture={start:'2023-01-01',exit:'2024-01-01',threeMonthWages:9000000,annualBonus:0,annualLeavePay:0,ordinaryDaily:80000,confirmed:true,weeklyHoursCondition:'all_at_least_15'};
 test('severance civil boundaries and ordinary-wage floor',()=>{
  const r=severanceBoundary(severanceFixture);assert.ok(r.ok);assert.equal(r.periodDays,92);assert.equal(r.serviceDays,365);assert.equal(r.periodStart,'2023-10-01');
  const f=severanceBoundary({...severanceFixture,ordinaryDaily:110000});assert.ok(f.ok);assert.equal(f.daily,110000);
@@ -209,4 +209,9 @@ test('month-end clamps the three-month start instead of overflowing',()=>{
 });
 test('severance malformed, reversed, missing and unknown inputs never return a figure',()=>{
  for(const patch of [{start:'2023-02-30'},{exit:''},{exit:'2022-01-01'},{threeMonthWages:NaN},{annualBonus:-1},{ordinaryDaily:0},{confirmed:false},{start:'2024-02-29',exit:'2026-03-01'}])assert.equal(severanceBoundary({...severanceFixture,...patch}).ok,false);
+});
+
+test('severance requires whole-period hours confirmation and does not reuse old amounts',()=>{
+ for(const weeklyHoursCondition of [undefined,'unknown','mixed','all_below_15','true'])assert.equal(severanceBoundary({...severanceFixture,weeklyHoursCondition}).ok,false);
+ assert.equal(severanceBoundary({...severanceFixture,weeklyHoursCondition:'all_at_least_15'}).ok,true);
 });
