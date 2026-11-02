@@ -1,7 +1,9 @@
 // WHY 2026-10-27: civil UTC dates avoid DST drift and month-end rollover.
 // This narrow model requires confirmed eligibility and actual three-month totals.
 const date=(s:string)=>{if(!/^\d{4}-\d{2}-\d{2}$/.test(s))return null;const d=new Date(s+'T00:00:00Z');return Number.isFinite(d.getTime())&&d.toISOString().slice(0,10)===s?d:null;};
-export function severanceBoundary(input:{start:string;exit:string;threeMonthWages:number;annualBonus:number;annualLeavePay:number;ordinaryDaily:number;confirmed:boolean}){
+export function severanceBoundary(input:{start:string;exit:string;threeMonthWages:number;annualBonus:number;annualLeavePay:number;ordinaryDaily:number;confirmed:boolean;weeklyHoursCondition?:string}){
+ // WHY 2026-11-02: mixed schedules require reverse four-week period review (MOEL1350 id1000319752).
+ if(input.weeklyHoursCondition!=='all_at_least_15')return {ok:false as const,reason:'hours'};
  if(!input.confirmed)return {ok:false as const,reason:'scope'};
  const start=date(input.start),end=date(input.exit);
  if(!start||!end||end<=start||![input.threeMonthWages,input.annualBonus,input.annualLeavePay,input.ordinaryDaily].every(v=>Number.isFinite(v)&&v>=0&&v<=1e12)||input.ordinaryDaily===0)return {ok:false as const,reason:'invalid'};

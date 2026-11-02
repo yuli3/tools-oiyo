@@ -179,18 +179,25 @@ import RatesAsOf from "../../components/RatesAsOf.astro";
         <div id="verdict-card" class="bg-card border rounded-2xl p-6 shadow-sm border-border">
           <div class="flex items-center gap-2 mb-2">
             <span id="verdict-badge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-primary/10 text-primary">
-              피부양자 자격 유지 가능
+              일반 기준 확인 · 추가 검토 필요
             </span>
           </div>
           <h3 id="verdict-title" class="text-base font-bold text-foreground mb-1">
-            현재 건강보험 피부양자 자격을 유지할 수 있어요.
+            현재 입력만으로 피부양자 자격을 확정하지 않아요.
           </h3>
           <p id="verdict-desc" class="text-xs text-muted-foreground leading-relaxed">
-            연간 소득 합계가 2,000만 원 이하이고 사업소득·재산 요건도 충족해요.
+            입력한 일반 소득·재산 기준의 계산 결과예요. 부양관계와 법정 예외는 별도로 확인해 주세요.
           </p>
         </div>
       </div>
     </div>
+
+    <section class="mt-6 space-y-3 rounded-xl border border-border bg-card p-4" aria-label="피부양자 판정 범위">
+      <h2 class="text-lg font-semibold">여기서 확인하지 않은 자격 요건이 있어요</h2>
+      <ol class="grid gap-2 text-sm sm:grid-cols-3"><li class="rounded-lg border border-border p-3">① 입력한 일반 소득·재산 기준 비교</li><li class="rounded-lg border border-border p-3">② 부양관계·가족·특례 요건 확인</li><li class="rounded-lg border border-border p-3">③ 국민건강보험공단의 최종 확인</li></ol>
+      <ul class="list-disc space-y-1 pl-5 text-sm text-muted-foreground"><li>기혼자는 배우자의 소득요건도 확인해요.</li><li>형제자매는 나이·혼인·부양조건과 재산과표 1.8억 원 기준을 따로 확인해요.</li><li>주택임대소득과 장애인·국가유공자 등의 사업소득 예외는 이 입력만으로 구분하지 않아요.</li><li>동거 여부·소득자료 반영시점·공단 인정 예외도 최종 판단에 영향을 줄 수 있어요.</li></ul>
+      <a class="inline-flex min-h-11 items-center text-sm text-primary underline" href="https://www.nhis.or.kr/nhis/policy/wbhada07400m01.do">국민건강보험공단: 소득·재산·부양 요건 원문</a>
+    </section>
 
     <!-- Legal Criteria Guide -->
     <div class="mt-12 space-y-6">
@@ -303,15 +310,15 @@ import RatesAsOf from "../../components/RatesAsOf.astro";
       if (disqualifyReason) {
         verdictCard.className = "bg-destructive/5 border border-destructive/30 rounded-2xl p-6 shadow-sm";
         verdictBadge.className = "px-2.5 py-0.5 rounded-full text-xs font-bold bg-destructive/15 text-destructive";
-        verdictBadge.textContent = "피부양자 자격 상실 대상";
-        verdictTitle.textContent = "지역가입자로 바뀌어 보험료가 고지돼요.";
+        verdictBadge.textContent = "일반 기준 초과 항목 확인";
+        verdictTitle.textContent = "예외 적용과 최종 자격은 공단에 확인해 주세요.";
         verdictDesc.textContent = disqualifyReason;
       } else {
         verdictCard.className = "bg-primary/5 border border-primary/30 rounded-2xl p-6 shadow-sm";
         verdictBadge.className = "px-2.5 py-0.5 rounded-full text-xs font-bold bg-primary/15 text-primary";
-        verdictBadge.textContent = "피부양자 자격 유지 가능";
-        verdictTitle.textContent = "현재 건강보험 피부양자 자격을 유지할 수 있어요.";
-        verdictDesc.textContent = "연간 소득 합계가 2,000만 원 이하이고 사업소득·재산 과표 요건도 모두 충족해요.";
+        verdictBadge.textContent = "일반 기준 확인 · 추가 검토 필요";
+        verdictTitle.textContent = "현재 입력만으로 피부양자 자격을 확정하지 않아요.";
+        verdictDesc.textContent = "입력한 일반 기준에서 초과 항목이 없어요. 부양관계·배우자·형제자매·임대소득·법정 예외는 별도 확인이 필요해요.";
       }
     }
 
