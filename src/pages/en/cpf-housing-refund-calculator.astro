@@ -1,0 +1,37 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import SgCpfRefund from '../../components/tools/SgCpfRefund';
+const c = {
+  introTitle: 'How much CPF goes back when you sell?',
+  intro: 'When you sell a property bought with CPF, you refund the CPF principal you used plus the interest it would have earned had it stayed in your account. The refund goes back into your own CPF account, so it is not lost, but it reduces the cash you receive from the sale. Interest is computed monthly at the Ordinary Account rate (at least 2.5%) and compounded annually, and it keeps running after the loan is repaid. For a sale at market value you never refund more than the selling price less the outstanding loan.',
+  formulaTitle: 'The CPF rules used',
+  formulas: [
+    { title: 'Refund', body: 'CPF principal used for the property plus accrued interest.' },
+    { title: 'Accrued interest', body: 'Computed monthly at the prevailing CPF interest rate and compounded annually, from the first use until the refund (OA rate 2.5% on the CPF table).' },
+    { title: 'Cap', body: 'For a sale at market value, if proceeds fall short you refund only the selling price less the outstanding housing loan; no cash top-up is needed.' },
+  ],
+  howToTitle: 'How to use it',
+  steps: [
+    'Enter the CPF used at purchase (down payment, stamp duty, fees).',
+    'Enter the CPF used each month for the loan and the years since you started.',
+    'Optionally add the selling price and outstanding loan to see the cap.',
+    'Read the principal, accrued interest and estimated refund.',
+  ],
+  faqTitle: 'Common questions',
+  faqs: [
+    { question: 'Do I lose the accrued interest?', answer: 'No. It is credited back to your CPF account, so you would have earned it had you not used the savings.' },
+    { question: 'What changes after 55?', answer: 'If you pledged the property to set aside your retirement sum, the pledged amount must also be refunded, and refunds top up your Retirement Account first. This calculator does not include that.' },
+    { question: 'Are my inputs saved?', answer: 'The numbers stay in the current page memory only. The site uses analytics and advertising.' },
+  ],
+  disclaimer: 'Estimate using CPF Board rules. Not financial advice; your CPF statement and the CPF Board are authoritative.',
+};
+const sources: [string,string][] = [
+  ['CPF Board: CPF refund when selling or transferring property', 'https://www.cpf.gov.sg/member/home-ownership/using-your-cpf-to-buy-a-home/cpf-refund-when-selling-or-transferring-property'],
+  ['CPF Board: Why refund the accrued interest (computed at prevailing rates, compounded annually)', 'https://www.cpf.gov.sg/service/article/why-do-i-need-to-refund-the-accrued-interest-on-the-amount-of-cpf-savings-used-for-my-property'],
+  ['CPF Board: How CPF interest is computed', 'https://www.cpf.gov.sg/service/article/how-is-my-cpf-interest-computed-and-credited-into-my-accounts'],
+  ['CPF Board: CPF interest rates', 'https://www.cpf.gov.sg/content/dam/web/member/faq/documents/InterestRate.pdf'],
+];
+---
+<DebtReliefPage slug="cpf-housing-refund-calculator" c={c} sources={sources} sourcesTitle="Sources" checked="CPF rules checked: 2026-11-02">
+  <SgCpfRefund client:load />
+</DebtReliefPage>
