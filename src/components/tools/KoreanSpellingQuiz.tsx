@@ -114,7 +114,7 @@ export default function KoreanSpellingQuiz({ locale }: Props) {
     return (
       <div className="text-center space-y-6 py-5 sm:py-8">
         <div className="text-5xl">✏️</div>
-        <h1 className="text-2xl font-bold">{l.title}</h1>
+        <h2 className="sr-only">{l.title}</h2>
         <p className="text-muted-foreground">{l.subtitle}</p>
         <p className="text-sm text-muted-foreground">10문제 · 올바른 표기 선택하기</p>
         <button onClick={start} className="px-4 sm:px-8 py-3 bg-primary text-primary-foreground rounded-full font-semibold hover:bg-primary/90 transition-colors">{l.start}</button>

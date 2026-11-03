@@ -279,7 +279,7 @@ const DdayCounter: React.FC<{ locale?: Locale }> = ({ locale = "en" }) => {
   return (
     <div className="flex flex-col gap-6">
       <div className="text-center">
-        <h1 className="text-2xl font-black">{t.title}</h1>
+        <h2 className="sr-only">{t.title}</h2>
       </div>
 
       {/* Add form */}

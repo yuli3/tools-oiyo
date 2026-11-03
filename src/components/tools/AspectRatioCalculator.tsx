@@ -219,7 +219,7 @@ export default function AspectRatioCalculator({ locale: lp = 'ko' }: Props) {
   return (
     <div className="space-y-6">
       <div className="text-center space-y-1">
-        <h1 className="text-2xl font-bold">{lb.title}</h1>
+        <h2 className="sr-only">{lb.title}</h2>
         <p className="text-muted-foreground text-sm">{lb.subtitle}</p>
       </div>
 

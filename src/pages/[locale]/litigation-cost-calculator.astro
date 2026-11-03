@@ -1,4 +1,5 @@
 ---
+import ToolShell from '../../components/ToolShell.astro';
 // Replaces blog.oiyo.net/{locale}/litigation-cost-calculator/ (2026-10-27, W10c). Korean civil procedure in every
 // locale. Rewritten on src/lib/kr-litigation-cost.ts: Blog used 5,200 won per service round and a wrong
 // attorney-fee table above 100 million won.
@@ -279,13 +280,11 @@ const url = `https://tools.oiyo.net/${locale}/litigation-cost-calculator/`;
 const schema = utilityJsonLd({ name: m.title, description: m.description, url, locale, steps: c.steps, faqs: c.faqs });
 ---
 <Layout title={m.title} description={m.description} locale={locale} availableLocales={[...locales]} canonicalURL={url}>
-  <div class="mx-auto max-w-3xl px-4 py-6">
-    <h1 class="text-2xl font-bold tracking-tight">{m.title}</h1>
-    <p class="mb-5 mt-2 text-sm text-muted-foreground">{m.description}</p>
+  <ToolShell title={m.title} description={m.description}>
     <LitigationCostCalculator client:load locale={locale} />
     <p class="mt-4 text-xs text-muted-foreground">근거 · Sources: 민사소송 등 인지법 제2조, 송달료규칙(1회 5,640원, 2026-07-01), 변호사보수의 소송비용 산입에 관한 규칙 별표(2020-12-28).</p>
     <UtilityArticle c={c} />
     <RelatedUtilities locale={locale} current="litigation-cost-calculator" group="money" />
-  </div>
+  </ToolShell>
   <script type="application/ld+json" set:html={JSON.stringify(schema)} />
 </Layout>

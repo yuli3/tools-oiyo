@@ -1,4 +1,5 @@
 ---
+import ToolShell from '../../components/ToolShell.astro';
 // Moved from blog.oiyo.net/{locale}/latte-factor-calculator/ on 2026-10-27 (W4). Blog's second
 // copy, caffelatte-calculator/, redirects here too. Same month-end annuity formula as before;
 // each locale now shows its own currency instead of KRW everywhere.
@@ -144,12 +145,10 @@ const url = `https://tools.oiyo.net/${locale}/latte-factor-calculator/`;
 const schema = utilityJsonLd({ name: c.title, description: c.description, url, locale, steps: c.steps, faqs: c.faqs });
 ---
 <Layout title={c.title} description={c.description} locale={locale} availableLocales={[...locales]} canonicalURL={url}>
-  <div class="mx-auto max-w-3xl px-4 py-6">
-    <h1 class="text-2xl font-bold tracking-tight">{c.title}</h1>
-    <p class="mb-5 mt-2 text-sm text-muted-foreground">{c.description}</p>
+  <ToolShell title={c.title} description={c.description}>
     <LatteFactor client:load locale={locale} />
     <UtilityArticle c={c} />
     <RelatedUtilities locale={locale} current="latte-factor-calculator" group="money" />
-  </div>
+  </ToolShell>
   <script type="application/ld+json" set:html={JSON.stringify(schema)} />
 </Layout>

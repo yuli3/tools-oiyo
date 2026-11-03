@@ -313,9 +313,9 @@ export default function LoveCalculator({ locale }: Props) {
   return (
     <div className="space-y-6">
       <div className="text-center">
-        <h1 className="text-2xl font-bold text-foreground">
+        <h2 className="sr-only">
           {t.title}
-        </h1>
+        </h2>
         <p className="mt-1 text-muted-foreground">{t.subtitle}</p>
       </div>
 

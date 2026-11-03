@@ -121,7 +121,7 @@ const WordCounterTool: React.FC<{ locale?: 'ko' | 'en' }> = ({ locale = 'ko' }) 
 
   return (
     <div className="w-full max-w-3xl mx-auto space-y-6 font-sans">
-      <h1 className="text-2xl font-bold text-center text-success">{t.title}</h1>
+      <h2 className="sr-only">{t.title}</h2>
 
       <div className="relative">
         <textarea

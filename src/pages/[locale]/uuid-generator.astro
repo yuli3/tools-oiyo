@@ -1,4 +1,5 @@
 ---
+import ToolShell from '../../components/ToolShell.astro';
 // Migrated from blog.oiyo.net/{locale}/uuid-generator/ on 2026-10-27 (W1). Copy is unchanged.
 import Layout from '../../components/Layout.astro';
 import LocalOnlyNote from '../../components/tools/LocalOnlyNote.astro';
@@ -40,13 +41,11 @@ const url = `https://tools.oiyo.net/${locale}/uuid-generator/`;
 const schema = utilityJsonLd({ name: m.title, description: m.description, url, locale, steps: c.steps, faqs: c.faqs });
 ---
 <Layout title={m.title} description={m.description} locale={locale} availableLocales={[...locales]} canonicalURL={url}>
-  <div class="mx-auto max-w-3xl px-4 py-6">
-    <h1 class="text-2xl font-bold tracking-tight">{m.title}</h1>
-    <p class="mb-5 mt-2 text-sm text-muted-foreground">{m.description}</p>
+  <ToolShell title={m.title} description={m.description}>
     <UuidGeneratorComp client:load locale={locale === 'ko' ? 'ko' : 'en'} />
     <LocalOnlyNote locale={locale} />
     <UtilityArticle c={c} />
     <RelatedUtilities locale={locale} current="uuid-generator" group="dev" />
-  </div>
+  </ToolShell>
   <script type="application/ld+json" set:html={JSON.stringify(schema)} />
 </Layout>

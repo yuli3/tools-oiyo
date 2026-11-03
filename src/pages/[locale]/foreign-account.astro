@@ -1,4 +1,5 @@
 ---
+import ToolShell from '../../components/ToolShell.astro';
 // Moved from oiyo.net/{locale}/foreign-account on 2026-10-27 (W4). Checked on law.go.kr the same
 // day: 국제조세조정법 §53① (any month-end over the threshold, report in June) and 시행령 §92③ (500M won).
 import Layout from '../../components/Layout.astro';
@@ -72,12 +73,10 @@ const url = `https://tools.oiyo.net/${locale}/foreign-account/`;
 const schema = utilityJsonLd({ name: m.title, description: m.description, url, locale, steps: c.steps, faqs: c.faqs });
 ---
 <Layout title={m.title} description={m.description} locale={locale} availableLocales={[...locales]} canonicalURL={url}>
-  <div class="mx-auto max-w-3xl px-4 py-6">
-    <h1 class="text-2xl font-bold tracking-tight">{m.title}</h1>
-    <p class="mb-5 mt-2 text-sm text-muted-foreground">{m.description}</p>
+  <ToolShell title={m.title} description={m.description}>
     <ForeignAccountCheck client:load locale={locale} />
     <UtilityArticle c={c} />
     <RelatedUtilities locale={locale} current="foreign-account" group="money" />
-  </div>
+  </ToolShell>
   <script type="application/ld+json" set:html={JSON.stringify(schema)} />
 </Layout>

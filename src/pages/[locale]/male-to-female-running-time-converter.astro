@@ -1,4 +1,5 @@
 ---
+import ToolShell from '../../components/ToolShell.astro';
 // Moved from blog.oiyo.net/{locale}/male-to-female-running-time-converter/ on 2026-10-27 (W14). Blog had en and ko only.
 import Layout from '../../components/Layout.astro';
 import UtilityArticle, { type UtilityContent } from '../../components/UtilityArticle.astro';
@@ -79,9 +80,7 @@ const sources = {
 }[locale];
 ---
 <Layout title={m.title} description={m.description} locale={locale} availableLocales={['en', 'ko']} canonicalURL={url}>
-  <div class="mx-auto max-w-3xl px-4 py-6">
-    <h1 class="text-2xl font-bold tracking-tight">{m.title}</h1>
-    <p class="mb-5 mt-2 text-sm text-muted-foreground">{m.description}</p>
+  <ToolShell title={m.title} description={m.description}>
     <RunningTimeEquivalent client:load locale={locale} />
       <div class="mt-6 overflow-x-auto">
         <table class="w-full text-sm">
@@ -111,6 +110,6 @@ const sources = {
       </div>
     <UtilityArticle c={c} />
     <RelatedUtilities locale={locale} current="male-to-female-running-time-converter" group="health" />
-  </div>
+  </ToolShell>
   <script type="application/ld+json" set:html={JSON.stringify(schema)} />
 </Layout>

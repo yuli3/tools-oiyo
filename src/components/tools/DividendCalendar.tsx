@@ -312,7 +312,7 @@ export default function DividendCalendar({ locale = "ko" }: { locale?: Locale })
     <div className="flex flex-col gap-6">
       {/* Title */}
       <div className="text-center">
-        <h1 className="text-2xl font-black text-foreground">{t.title}</h1>
+        <h2 className="sr-only">{t.title}</h2>
         <p className="text-xs font-semibold text-muted-foreground mt-1">{t.subtitle}</p>
       </div>
 
