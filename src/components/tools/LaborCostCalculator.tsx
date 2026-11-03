@@ -42,7 +42,7 @@ export default function LaborCostCalculator() {
   ];
 
   return (
-    <div className="rounded-lg border border-border bg-card p-5">
+    <div>
       <div className="grid gap-3 sm:grid-cols-2">
         <NumberField label="월 급여(세전)" value={salary} onChange={setSalary} suffix="원" step={100_000} />
         <NumberField label="비과세 식대(월 20만 원까지)" value={meal} onChange={setMeal} suffix="원" step={10_000} />

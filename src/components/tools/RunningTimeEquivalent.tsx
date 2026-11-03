@@ -50,7 +50,7 @@ export default function RunningTimeEquivalent({ locale }: { locale: Locale }) {
   const [from, to] = direction === "toWomen" ? [side.men, side.women] : [side.women, side.men];
 
   return (
-    <div className="rounded-lg border border-border bg-card p-5">
+    <div>
       <fieldset>
         <legend className="text-sm font-medium text-muted-foreground">{t.distance}</legend>
         <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-4">

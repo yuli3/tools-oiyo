@@ -32,7 +32,7 @@ export default function DailyWorkerInsuranceChecker() {
   };
 
   return (
-    <div className="rounded-lg border border-border bg-card p-5">
+    <div>
       <OneLineInput
         label="이번 달 근무를 한 줄로 적어 보세요"
         placeholder="예: 이번 달 7일 56시간 일당 12만원"

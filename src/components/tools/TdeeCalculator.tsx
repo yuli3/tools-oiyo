@@ -195,7 +195,7 @@ export default function TdeeCalculator({ locale = 'ko' }: Props) {
   const fatGrams = Math.round((targetCal * 0.25) / 9);
 
   return (
-    <div className="rounded-2xl border border-border bg-card p-6 shadow-sm space-y-6">
+    <div className="space-y-6">
       {/* Gender toggle */}
       <div>
         <label className="text-xs font-bold text-foreground block mb-2">{t.gender}</label>

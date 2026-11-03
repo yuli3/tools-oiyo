@@ -42,7 +42,7 @@ export default function DeemedRentVatCalculator() {
     : [];
 
   return (
-    <div className="rounded-lg border border-border bg-card p-5">
+    <div>
       <OneLineInput
         label="보증금과 기간을 한 줄로 적어 보세요"
         placeholder="예: 보증금 1억 2기"

@@ -36,7 +36,7 @@ export default function LegalInterestCalculator() {
   const r = valid ? legalInterest({ principal, start, end, rate, servedOn: served === "yes" ? servedOn : undefined }) : null;
 
   return (
-    <div className="rounded-lg border border-border bg-card p-5">
+    <div>
       <div className="grid gap-3 sm:grid-cols-2">
         <NumberField label="원금" value={principal} onChange={setPrincipal} suffix="원" step={1_000_000} />
         {kind === "custom" && <NumberField label="약정 이율(연)" value={customPct} onChange={setCustomPct} suffix="%" step={0.5} />}

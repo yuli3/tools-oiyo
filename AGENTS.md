@@ -14,6 +14,7 @@
 3. **디자인 및 성능**:
    - Tailwind 4 시맨틱 테마 토큰 및 shadcn 디자인 시스템을 준수합니다.
    - 모바일 320px 완벽 반응형 및 클라이언트 사이드 즉각 반응 UI.
+   - 화면 기준은 `PRODUCT.md`(impeccable product-schema, SOUL 우선)예요. 새 도구 페이지는 `ToolShell` 프레임과 `RelatedLinkList`를 쓰고, 카드는 한 겹만 둬요(2026-11-03).
 
 ## 2026 법정 요율 단일 정본 (2026-10-17)
 

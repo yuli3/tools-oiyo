@@ -64,7 +64,7 @@ export default function IdealWeightCalculator({ locale }: Props) {
   ];
 
   return (
-    <div className="rounded-lg border border-border bg-card p-5">
+    <div>
       <div className="grid gap-4 sm:grid-cols-2">
         <label className="block">
           <span className="text-sm font-medium text-muted-foreground">{t.sex}</span>

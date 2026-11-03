@@ -29,7 +29,7 @@ export default function HealthInsuranceLeaverSettlement() {
   const owe = r !== null && r.total > 0;
 
   return (
-    <div className="rounded-lg border border-border bg-card p-5">
+    <div>
       <OneLineInput
         label="올해 급여와 근무 기간을 한 줄로 적어 보세요"
         placeholder="예: 올해 총급여 3000만원 6개월 근무 기준 보수월액 450만원"

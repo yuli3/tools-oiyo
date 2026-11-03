@@ -11,7 +11,7 @@ export default function RetirementTaxCalculator() {
   const formatWon = (val: number) => Math.round(val).toLocaleString('ko-KR') + '원';
 
   return (
-    <div className="mx-auto w-full max-w-2xl rounded-2xl border border-border bg-card p-6 shadow-sm">
+    <div className="mx-auto w-full max-w-2xl">
       <div className="mb-6">
         <span className="inline-block rounded-full bg-primary/10 px-3 py-1 text-xs font-bold text-primary">
           2026 최신 퇴직소득세법 반영

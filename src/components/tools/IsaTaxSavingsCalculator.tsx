@@ -9,7 +9,7 @@ export default function IsaTaxSavingsCalculator() {
   const calculation = compareIsaTax({ type: isaType === 'normal' ? 'normal' : 'eligible', taxableProfit: grossProfits, deductibleLoss: grossLosses });
 
   return (
-    <div className="rounded-2xl border border-border bg-card p-6 shadow-sm space-y-6">
+    <div className="space-y-6">
       {/* Account Type Selection */}
       <div className="space-y-3">
         <label className="block text-xs font-bold text-foreground">ISA 가입 유형 선택</label>

@@ -199,7 +199,7 @@ export default function ImageConverter({ locale = "ko" }: { locale?: Locale }) {
   const btn = "min-h-11 rounded-lg border border-border bg-card px-4 text-sm font-bold text-foreground disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary";
 
   return (
-    <div className="rounded-2xl border border-border bg-card p-4 sm:p-6">
+    <div>
       <h1 className="text-2xl font-black tracking-tight text-foreground">{t.title}</h1>
 
       <div

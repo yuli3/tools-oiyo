@@ -49,7 +49,7 @@ export default function BrokerageCalculator({ locale = "ko" }: { locale?: Lang }
   const money = (n: number) => `${Math.round(n).toLocaleString(locale === "ko" ? "ko-KR" : "en-US")}${locale === "ko" ? "원" : " KRW"}`;
 
   return (
-    <div className="rounded-lg border border-border bg-card p-5">
+    <div>
       <ChoiceChips legend={t.kind} value={kind} options={[{ value: "sale", label: t.sale }, { value: "lease", label: t.lease }]} onChange={setKind} />
       <div className="mt-4 grid gap-3 sm:grid-cols-2">
         {kind === "sale" ? (

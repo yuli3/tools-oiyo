@@ -59,7 +59,7 @@ export default function PaceCalculator({ locale }: Props) {
   const paceSecPerMile = paceSecPerKm * MILE_KM;
 
   return (
-    <div className="rounded-lg border border-border bg-card p-5">
+    <div>
       <label className="block">
         <span className="text-sm font-medium text-muted-foreground">{t.pace}</span>
         <div className="mt-1 flex items-center gap-2">

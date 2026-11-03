@@ -64,7 +64,7 @@ export default function UnitPriceCalculator({ locale }: Props) {
     "min-h-11 w-full min-w-0 rounded-md border border-border bg-background px-3 py-2 text-base text-foreground focus:outline-2 focus:outline-offset-2 focus:outline-primary";
 
   return (
-    <div className="rounded-lg border border-border bg-card p-5">
+    <div>
       <div className="space-y-2">
         <div style={UNIT_COLS} className="hidden gap-2 text-xs sm:grid sm:grid-cols-(--cols) font-bold uppercase tracking-wider text-muted-foreground">
           <span>{t.item}</span>

@@ -24,7 +24,7 @@ export default function IncorporationCalculator() {
   const diffPayout = r.sole.total - r.corpPayout;
 
   return (
-    <div className="rounded-lg border border-border bg-card p-5">
+    <div>
       <div className="grid gap-3 sm:grid-cols-2">
         <NumberField label="연 매출" value={revenue} onChange={setRevenue} suffix="원" step={10_000_000} />
         <NumberField label="연 필요경비(대표 급여 제외)" value={expenses} onChange={setExpenses} suffix="원" step={10_000_000} />
