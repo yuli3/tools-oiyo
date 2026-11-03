@@ -1,4 +1,5 @@
 ---
+import ToolShell from '../../components/ToolShell.astro';
 // Replaces blog.oiyo.net/{locale}/comprehensive-income-tax-calculator/ (2026-10-27, W9c). Country pages keep
 // Blog's checked country rules; the Korean calculator is rewritten on src/lib/kr-income-tax-2026.ts (Blog used a
 // flat 30% expense ratio and taxed all financial income progressively).
@@ -301,13 +302,11 @@ const url = `https://tools.oiyo.net/${locale}/comprehensive-income-tax-calculato
 const schema = utilityJsonLd({ name: m.title, description: m.description, url, locale, steps: c.steps, faqs: c.faqs });
 ---
 <Layout title={m.title} description={m.description} locale={locale} availableLocales={[...locales]} canonicalURL={url}>
-  <div class="mx-auto max-w-3xl px-4 py-6">
-    <h1 class="text-2xl font-bold tracking-tight">{m.title}</h1>
-    <p class="mb-5 mt-2 text-sm text-muted-foreground">{m.description}</p>
+  <ToolShell title={m.title} description={m.description}>
     {country ? <ComprehensiveIncomeTaxCountryCalculator client:load country={country} /> : <KrIncomeTaxCalculator client:load locale={locale === 'ko' ? 'ko' : 'en'} />}
     {!country && <p class="mt-4 text-xs text-muted-foreground">근거: 소득세법 제47조·제55조·제59조·제59조의4, 국세청 경비율 고시. 기준일 {INCOME_TAX_AS_OF}.</p>}
     <UtilityArticle c={c} />
     <RelatedUtilities locale={locale} current="comprehensive-income-tax-calculator" group="money" />
-  </div>
+  </ToolShell>
   <script type="application/ld+json" set:html={JSON.stringify(schema)} />
 </Layout>

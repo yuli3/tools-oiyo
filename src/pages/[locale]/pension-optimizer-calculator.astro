@@ -1,4 +1,5 @@
 ---
+import ToolShell from '../../components/ToolShell.astro';
 // Replaces blog.oiyo.net/{locale}/pension-optimizer-calculator/ (2026-10-27, W15). Same split as pension-tax-calculator:
 // ko/en is the Korean 연금저축·IRP plan, ja/zh/fr/es open each country's private-pension scheme on the long-term plan.
 import Layout from '../../components/Layout.astro';
@@ -293,9 +294,7 @@ const url = `https://tools.oiyo.net/${locale}/pension-optimizer-calculator/`;
 const schema = utilityJsonLd({ name: m.title, description: m.description, url, locale, steps: c.steps, faqs: c.faqs });
 ---
 <Layout title={m.title} description={m.description} locale={locale} availableLocales={[...locales]} canonicalURL={url}>
-  <div class="mx-auto max-w-3xl px-4 py-6">
-    <h1 class="text-2xl font-bold tracking-tight">{m.title}</h1>
-    <p class="mb-5 mt-2 text-sm text-muted-foreground">{m.description}</p>
+  <ToolShell title={m.title} description={m.description}>
     {country ? <PensionCountryCalculator client:load country={country} initialTab="plan" /> : <PensionOptimizerCalculator client:load locale={locale === 'ko' ? 'ko' : 'en'} />}
     <section class="mt-6 rounded-xl border border-border bg-card p-5 text-sm leading-6 text-foreground">
       <h2 class="mb-2 text-base font-bold text-foreground">{sourcesHeading}</h2>
@@ -306,6 +305,6 @@ const schema = utilityJsonLd({ name: m.title, description: m.description, url, l
     </section>
     <UtilityArticle c={c} />
     <RelatedUtilities locale={locale} current="pension-optimizer-calculator" group="money" />
-  </div>
+  </ToolShell>
   <script type="application/ld+json" set:html={JSON.stringify(schema)} />
 </Layout>

@@ -279,7 +279,7 @@ export default function MenstrualCycleCalculator({ locale = 'ko' }: { locale?: L
     <div className="space-y-6">
       {/* Header */}
       <div className="text-center">
-        <h1 className="text-2xl font-bold text-foreground">{t.title}</h1>
+        <h2 className="sr-only">{t.title}</h2>
         <p className="text-muted-foreground mt-1">{t.subtitle}</p>
       </div>
 

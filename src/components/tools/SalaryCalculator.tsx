@@ -91,7 +91,7 @@ export default function SalaryCalculator({ locale }: Props) {
     <div className="space-y-5 py-4">
       <div className="text-center space-y-1">
         <div className="text-3xl">💼</div>
-        <h1 className="text-xl font-bold">{l.title}</h1>
+        <h2 className="sr-only">{l.title}</h2>
         <p className="text-sm text-muted-foreground">{l.subtitle}</p>
       </div>
 

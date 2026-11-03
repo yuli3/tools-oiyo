@@ -489,7 +489,7 @@ export default function MarriageAgeCalculator({ locale }: Props) {
     <div className="space-y-6">
       {/* Header */}
       <div className="text-center">
-        <h1 className="text-2xl font-bold text-foreground">{t.title}</h1>
+        <h2 className="sr-only">{t.title}</h2>
         <p className="mt-1 text-muted-foreground">{t.subtitle}</p>
       </div>
 

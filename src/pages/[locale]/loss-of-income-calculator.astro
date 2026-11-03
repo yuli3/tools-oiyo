@@ -1,4 +1,5 @@
 ---
+import ToolShell from '../../components/ToolShell.astro';
 // Replaces blog.oiyo.net/{locale}/loss-of-income-calculator/ (2026-10-27, W10c). Korean damages practice in every
 // locale; Blog's copy repeated the same sentence in every FAQ, so the copy is rewritten.
 import Layout from '../../components/Layout.astro';
@@ -262,12 +263,10 @@ const url = `https://tools.oiyo.net/${locale}/loss-of-income-calculator/`;
 const schema = utilityJsonLd({ name: m.title, description: m.description, url, locale, steps: c.steps, faqs: c.faqs });
 ---
 <Layout title={m.title} description={m.description} locale={locale} availableLocales={[...locales]} canonicalURL={url}>
-  <div class="mx-auto max-w-3xl px-4 py-6">
-    <h1 class="text-2xl font-bold tracking-tight">{m.title}</h1>
-    <p class="mb-5 mt-2 text-sm text-muted-foreground">{m.description}</p>
+  <ToolShell title={m.title} description={m.description}>
     <LossOfIncomeCalculator client:load locale={locale} />
     <UtilityArticle c={c} />
     <RelatedUtilities locale={locale} current="loss-of-income-calculator" group="money" />
-  </div>
+  </ToolShell>
   <script type="application/ld+json" set:html={JSON.stringify(schema)} />
 </Layout>

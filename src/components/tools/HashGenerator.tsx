@@ -69,7 +69,7 @@ const HashGenerator: React.FC<{ locale?: 'ko' | 'en' }> = ({ locale = 'ko' }) =>
 
   return (
     <div className="w-full max-w-2xl mx-auto space-y-6 font-sans">
-      <h1 className="text-2xl font-bold text-center text-success">{t.title}</h1>
+      <h2 className="sr-only">{t.title}</h2>
 
       <div className="rounded-2xl border border-success/20 bg-white/80 p-5 space-y-4 shadow-sm">
         <div className="relative">

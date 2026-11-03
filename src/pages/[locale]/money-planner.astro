@@ -1,4 +1,5 @@
 ---
+import ToolShell from '../../components/ToolShell.astro';
 // Replaces blog.oiyo.net/{locale}/money-planner/ (2026-10-27, W11a). Copy kept from Blog; each country uses its own figures (money-plan-countries).
 import Layout from '../../components/Layout.astro';
 import UtilityArticle, { type UtilityContent } from '../../components/UtilityArticle.astro';
@@ -170,13 +171,11 @@ const url = `https://tools.oiyo.net/${locale}/money-planner/`;
 const schema = utilityJsonLd({ name: m.title, description: m.description, url, locale, steps: c.steps, faqs: c.faqs });
 ---
 <Layout title={m.title} description={m.description} locale={locale} availableLocales={[...locales]} canonicalURL={url}>
-  <div class="mx-auto max-w-3xl px-4 py-6">
-    <h1 class="text-2xl font-bold tracking-tight">{m.title}</h1>
-    <p class="mb-5 mt-2 text-sm text-muted-foreground">{m.description}</p>
+  <ToolShell title={m.title} description={m.description}>
     <LocalOnlyNote locale={locale} />
     <MoneyPlanner client:load locale={locale} defaultCountry={COUNTRY_BY_LOCALE[locale]} />
     <UtilityArticle c={c} />
     <RelatedUtilities locale={locale} current="money-planner" group="money" />
-  </div>
+  </ToolShell>
   <script type="application/ld+json" set:html={JSON.stringify(schema)} />
 </Layout>

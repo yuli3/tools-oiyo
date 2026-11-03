@@ -1,4 +1,5 @@
 ---
+import ToolShell from '../../components/ToolShell.astro';
 // Replaces blog.oiyo.net/{locale}/year-end-settlement-calculator/ (2026-10-27, W9c). Calculators and rules come
 // over unchanged from Blog (kr-year-end-2026 checked 2026-10-19 with tests); ko/en copy rewritten to describe them.
 import Layout from '../../components/Layout.astro';
@@ -300,13 +301,11 @@ const url = `https://tools.oiyo.net/${locale}/year-end-settlement-calculator/`;
 const schema = utilityJsonLd({ name: m.title, description: m.description, url, locale, steps: c.steps, faqs: c.faqs });
 ---
 <Layout title={m.title} description={m.description} locale={locale} availableLocales={[...locales]} canonicalURL={url}>
-  <div class="mx-auto max-w-3xl px-4 py-6">
-    <h1 class="text-2xl font-bold tracking-tight">{m.title}</h1>
-    <p class="mb-5 mt-2 text-sm text-muted-foreground">{m.description}</p>
+  <ToolShell title={m.title} description={m.description}>
     {country ? <YearEndSettlementCountryCalculator client:load country={country} /> : <YearEndSettlementCalculator client:load locale={locale === 'ko' ? 'ko' : 'en'} />}
     {!country && <p class="mt-4 text-xs text-muted-foreground">근거: 소득세법·조세특례제한법 2026년 귀속 조문. 기준일 {YEAR_END_AS_OF}.</p>}
     <UtilityArticle c={c} />
     <RelatedUtilities locale={locale} current="year-end-settlement-calculator" group="money" />
-  </div>
+  </ToolShell>
   <script type="application/ld+json" set:html={JSON.stringify(schema)} />
 </Layout>

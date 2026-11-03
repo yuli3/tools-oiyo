@@ -235,7 +235,7 @@ export default function Metronome({ locale }: Props) {
 
   return (
     <div className="flex flex-col items-center gap-6">
-      <h1 className="text-3xl font-bold text-center">{t.title}</h1>
+      <h2 className="sr-only">{t.title}</h2>
 
       {/* Beat indicator */}
       <div className="flex gap-3 justify-center">
