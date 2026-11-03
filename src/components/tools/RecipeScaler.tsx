@@ -61,7 +61,7 @@ export default function RecipeScaler({ locale }: Props) {
 
   const invalid = ({ko:"원래 인분과 목표 인분에 0보다 큰 수를 입력해 주세요.",en:"Enter original and target servings greater than zero.",ja:"元と目標の人数に0より大きい数を入力してください。",zh:"请为原份数和目标份数输入大于0的数。",fr:"Saisissez des portions d’origine et cibles supérieures à zéro.",es:"Introduce porciones originales y objetivo mayores que cero."})[locale];
   return (
-    <div className="rounded-lg border border-border bg-card p-5">
+    <div>
       <div className="grid gap-4 sm:grid-cols-3">
         <label className="block">
           <span className="text-sm font-medium text-muted-foreground">{t.original}</span>

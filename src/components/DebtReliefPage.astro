@@ -1,4 +1,5 @@
 ---
+import ToolShell from './ToolShell.astro';
 // Shared shell for the W5 country debt relief tools (2026-10-27).
 import Layout from './Layout.astro';
 import UtilityArticle, { type UtilityContent } from './UtilityArticle.astro';
@@ -11,17 +12,15 @@ const url = `https://tools.oiyo.net/${t.locale}/${t.slug}/`;
 const schema = utilityJsonLd({ name: t.title, description: t.description, url, locale: t.locale, steps: c.steps, faqs: c.faqs });
 ---
 <Layout title={t.title} description={t.description} locale={t.locale} languageTag={t.languageTag} ogLocale={t.ogLocale} canonicalURL={url}>
-  <div class="mx-auto max-w-3xl px-4 py-6">
-    <h1 class="text-2xl font-bold tracking-tight">{t.title}</h1>
-    <p class="mb-2 mt-2 text-sm text-muted-foreground">{t.description}</p>
-    <p class="mb-5 text-sm font-semibold">{t.jurisdiction}</p>
+  <ToolShell title={t.title} description={t.description}>
+    <p slot="meta" class="text-sm font-semibold">{t.jurisdiction}</p>
     <slot />
     <UtilityArticle c={c} />
-    <section class="mt-8 space-y-2 border-t border-border pt-6">
+    <section class="space-y-2 border-t border-border pt-6">
       <h2 class="text-lg font-bold">{sourcesTitle}</h2>
       <ul class="list-disc space-y-2 pl-5 text-sm">{sources.map(([name, href]) => <li><a href={href} class="text-primary underline underline-offset-4" rel="noopener">{name}</a></li>)}</ul>
       <p class="text-xs text-muted-foreground">{checked}</p>
     </section>
-  </div>
+  </ToolShell>
   <script type="application/ld+json" set:html={JSON.stringify(schema)} />
 </Layout>

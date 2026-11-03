@@ -75,7 +75,7 @@ export default function VatPenaltyCalculator() {
   if (r && invoiceLine) steps.push(`${invoiceLine.label} = 공급가액 ${won(supply)} × ${pct(invoiceLine.rate)} = ${won(invoiceLine.amount)} (감면 없음)`);
 
   return (
-    <div className="rounded-lg border border-border bg-card p-5">
+    <div>
       <OneLineInput
         label="무슨 일이 있었는지 한 줄로 적어 보세요"
         placeholder="예: 1기 확정 기한후신고 세액 300만원 8월 10일 신고"

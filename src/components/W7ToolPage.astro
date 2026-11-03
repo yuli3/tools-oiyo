@@ -1,4 +1,5 @@
 ---
+import ToolShell from './ToolShell.astro';
 // Shared shell for the W7 date, time and everyday tools moved from Blog on 2026-10-27.
 import Layout from './Layout.astro';
 import UtilityArticle from './UtilityArticle.astro';
@@ -34,9 +35,7 @@ const koEn = locale === 'ko' ? 'ko' : 'en';
 const group = (w7TimeSlugs as readonly string[]).includes(slug) ? 'time' : slug === 'word-counter' ? 'dev' : 'calc';
 ---
 <Layout title={p.title} description={p.description} locale={locale} availableLocales={[...locales]} canonicalURL={url}>
-  <div class="mx-auto max-w-3xl px-4 py-6">
-    <h1 class="text-2xl font-bold tracking-tight">{p.title}</h1>
-    <p class="mb-5 mt-2 text-sm text-muted-foreground">{p.description}</p>
+  <ToolShell title={p.title} description={p.description}>
     {slug === 'date-calculator' ? <DateCalculator client:load locale={locale} />
       : slug === 'dday-counter' ? <DdayCounter client:load locale={locale} />
       : slug === 'hours-calculator' ? <HoursCalculator client:load locale={locale} />
@@ -57,6 +56,6 @@ const group = (w7TimeSlugs as readonly string[]).includes(slug) ? 'time' : slug 
       : <WordCounterTool client:load locale={koEn} />}
     <UtilityArticle c={p.c} />
     <RelatedUtilities locale={locale} current={slug} group={group} />
-  </div>
+  </ToolShell>
   <script type="application/ld+json" set:html={JSON.stringify(schema)} />
 </Layout>

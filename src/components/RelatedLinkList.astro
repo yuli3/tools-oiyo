@@ -1,0 +1,30 @@
+---
+// WHY 2026-11-03 (impeccable ToolShell): related links were bordered chips inside a
+// bordered card (the biggest nested-cards source, ~9k hits). One divider, one h2 and
+// a plain column list read faster; the first 12 links stay open, the rest fold but
+// remain in the HTML for crawlers.
+import type { Locale } from '../lib/i18n';
+interface Props { title: string; links: { href: string; label: string }[]; locale: Locale; label?: string }
+const { title, links, locale, label } = Astro.props;
+const more: Record<Locale, string> = { ko: '더 보기', en: 'Show more', ja: 'もっと見る', zh: '查看更多', fr: 'Voir plus', es: 'Ver más' };
+const VISIBLE = 12;
+const head = links.slice(0, VISIBLE);
+const rest = links.slice(VISIBLE);
+const item = 'flex min-h-11 items-center text-sm text-primary underline underline-offset-4';
+---
+{links.length > 0 && (
+  <nav data-related-tools class="mt-10 border-t border-border pt-6" aria-label={label ?? title}>
+    <h2 class="text-base font-semibold text-foreground">{title}</h2>
+    <ul class="mt-2 grid gap-x-6 sm:grid-cols-2">
+      {head.map((l) => <li><a class={item} href={l.href}>{l.label}</a></li>)}
+    </ul>
+    {rest.length > 0 && (
+      <details class="mt-1">
+        <summary class="flex min-h-11 cursor-pointer items-center text-sm font-semibold text-foreground">{more[locale] ?? more.en} ({rest.length})</summary>
+        <ul class="grid gap-x-6 sm:grid-cols-2">
+          {rest.map((l) => <li><a class={item} href={l.href}>{l.label}</a></li>)}
+        </ul>
+      </details>
+    )}
+  </nav>
+)}

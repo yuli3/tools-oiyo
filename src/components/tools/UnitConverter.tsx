@@ -43,7 +43,7 @@ export default function UnitConverter({ locale, category }: Props) {
   const statusId = `${id}-status`;
 
   return (
-    <div className="rounded-lg border border-border bg-card p-5">
+    <div>
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="block">
           <label htmlFor={valueId} className="text-sm font-medium text-muted-foreground">

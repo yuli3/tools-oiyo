@@ -64,7 +64,7 @@ export default function DepositCalculator({ locale = "ko" }: { locale?: Lang }) 
   const money = (n: number) => `${Math.round(n).toLocaleString(locale === "ko" ? "ko-KR" : "en-US")}${locale === "ko" ? "원" : " KRW"}`;
 
   return (
-    <div className="rounded-lg border border-border bg-card p-5">
+    <div>
       <ChoiceChips legend={t.kind} value={kind} options={[{ value: "deposit", label: t.deposit }, { value: "savings", label: t.savings }]} onChange={setKind} />
       <div className="mt-4 grid gap-3 sm:grid-cols-3">
         <NumberField label={kind === "deposit" ? t.amountDeposit : t.amountSavings} value={amount} onChange={setAmount} suffix={t.won} step={kind === "deposit" ? 1_000_000 : 100_000} />

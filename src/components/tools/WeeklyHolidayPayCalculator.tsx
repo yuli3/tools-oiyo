@@ -31,7 +31,7 @@ export default function WeeklyHolidayPayCalculator() {
   };
 
   return (
-    <div className="rounded-lg border border-border bg-card p-5">
+    <div>
       <OneLineInput
         label="근무 조건을 한 줄로 적어 보세요"
         placeholder="예: 주 5일 하루 4시간 시급 10320원"

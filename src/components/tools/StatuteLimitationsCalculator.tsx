@@ -22,7 +22,7 @@ export default function StatuteLimitationsCalculator() {
   const left = r ? daysUntil(today, r.expiry) : 0;
 
   return (
-    <div className="rounded-lg border border-border bg-card p-5">
+    <div>
       <ChoiceChips legend="어떤 채권인가요?" value={claim} options={CLAIM_OPTIONS} onChange={setClaim} />
       <div className="mt-4 max-w-xs">
         <DateField label="기산일(권리를 행사할 수 있게 된 날)" value={base} onChange={setBase} />

@@ -37,7 +37,7 @@ export default function DsrMortgageCalculator() {
   );
 
   return (
-    <div className="mx-auto w-full max-w-2xl rounded-2xl border border-border bg-card p-6 shadow-sm">
+    <div className="mx-auto w-full max-w-2xl">
       <div className="mb-6">
         <span className="inline-block rounded-full bg-primary/10 px-3 py-1 text-xs font-bold text-primary">
           기준일 {STRESS_DSR_AS_OF} · 3단계 스트레스 DSR

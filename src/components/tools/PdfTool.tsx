@@ -210,7 +210,7 @@ export default function PdfTool({ locale = "ko" }: { locale?: Locale }) {
   const primary = `${btn} border-primary bg-primary text-primary-foreground`;
 
   return (
-    <div className="rounded-2xl border border-border bg-card p-4 sm:p-6">
+    <div>
       <h1 className="text-2xl font-black tracking-tight text-foreground">{t.title}</h1>
 
       <div className="mt-4 flex gap-2" role="tablist" aria-label={t.title}>

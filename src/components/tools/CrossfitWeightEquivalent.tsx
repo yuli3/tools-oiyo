@@ -20,7 +20,7 @@ export default function CrossfitWeightEquivalent() {
   const pct = Math.round(RATIO * 1000) / 10;
 
   return (
-    <div className="rounded-lg border border-border bg-card p-5">
+    <div>
       <fieldset>
         <legend className="text-sm font-medium text-muted-foreground">Convert</legend>
         <div className="mt-2 grid grid-cols-2 gap-2">

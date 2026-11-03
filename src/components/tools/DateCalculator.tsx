@@ -92,7 +92,7 @@ export default function DateCalculator({ locale }: Props) {
     `flex-1 rounded-md px-3 py-2 text-sm font-medium transition-colors ${active ? "bg-primary text-primary-foreground" : "bg-background text-muted-foreground hover:text-foreground"}`;
 
   return (
-    <div className="rounded-lg border border-border bg-card p-5">
+    <div>
       <div className="mb-5 flex gap-2 rounded-lg border border-border bg-background p-1">
         <button type="button" onClick={() => setMode("diff")} className={tabCls(mode === "diff")}>{t.modeDiff}</button>
         <button type="button" onClick={() => setMode("add")} className={tabCls(mode === "add")}>{t.modeAdd}</button>

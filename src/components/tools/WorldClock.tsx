@@ -35,7 +35,7 @@ export default function WorldClock({ locale }: { locale: Locale }) {
   const lang = INTL[locale];
   const time = (tz?: string) => now ? new Intl.DateTimeFormat(lang, { timeZone: tz, hour: '2-digit', minute: '2-digit', second: tz ? undefined : '2-digit', hour12: false }).format(now) : '--:--';
   return (
-    <section className="rounded-2xl border border-border bg-card p-4 sm:p-6">
+    <section>
       <div className="mb-4 flex items-end justify-between gap-3">
         <p className="text-sm font-semibold text-muted-foreground">{LOCAL[locale]}</p>
         <p className="text-2xl font-black tabular-nums">{time()}</p>

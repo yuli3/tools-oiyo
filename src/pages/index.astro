@@ -147,75 +147,98 @@ const tools = [
       </nav>
     </div>
 
+    {/* WHY 2026-11-03 (impeccable pilot): 250여 개 카드를 모바일에서 끝없이 내리지 않도록 이름·설명 검색을 먼저 둬요. */}
+    <div class="mb-4">
+      <label for="tool-search" class="sr-only">도구 검색</label>
+      <input
+        id="tool-search"
+        type="search"
+        inputmode="search"
+        autocomplete="off"
+        placeholder="도구 이름이나 할 일로 찾기 (예: 실업급여, 환율, PDF)"
+        class="min-h-12 w-full rounded-xl border border-border bg-card px-4 text-base text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring"
+      />
+      <p id="tool-search-status" class="mt-2 text-sm text-muted-foreground" aria-live="polite"></p>
+    </div>
+
     <!-- Category Filters -->
     <div class="mb-8 flex flex-wrap items-center gap-2" id="filter-bar">
       <button
         type="button"
-        class="filter-btn rounded-lg border border-primary bg-primary px-3.5 py-1.5 text-xs font-bold text-primary-foreground transition shadow-xs"
+        class="filter-btn rounded-lg border border-primary bg-primary min-h-11 px-3.5 py-1.5 text-xs font-bold text-primary-foreground transition shadow-xs"
         data-filter="all"
+        aria-pressed="true"
       >
         전체 보기
       </button>
       <button
         type="button"
-        class="filter-btn rounded-lg border border-border bg-card px-3.5 py-1.5 text-xs font-medium text-muted-foreground transition hover:border-primary/40 hover:text-foreground"
+        class="filter-btn rounded-lg border border-border bg-card min-h-11 px-3.5 py-1.5 text-xs font-medium text-muted-foreground transition hover:border-primary/40 hover:text-foreground"
         data-filter="money"
+        aria-pressed="false"
       >
         투자 · 세금 · 빚 정리
       </button>
       <button
         type="button"
-        class="filter-btn rounded-lg border border-border bg-card px-3.5 py-1.5 text-xs font-medium text-muted-foreground transition hover:border-primary/40 hover:text-foreground"
+        class="filter-btn rounded-lg border border-border bg-card min-h-11 px-3.5 py-1.5 text-xs font-medium text-muted-foreground transition hover:border-primary/40 hover:text-foreground"
         data-filter="health"
+        aria-pressed="false"
       >
         건강 · 운동
       </button>
       <button
         type="button"
-        class="filter-btn rounded-lg border border-border bg-card px-3.5 py-1.5 text-xs font-medium text-muted-foreground transition hover:border-primary/40 hover:text-foreground"
+        class="filter-btn rounded-lg border border-border bg-card min-h-11 px-3.5 py-1.5 text-xs font-medium text-muted-foreground transition hover:border-primary/40 hover:text-foreground"
         data-filter="labor"
+        aria-pressed="false"
       >
         노동 · 복지 · 건보
       </button>
       <button
         type="button"
-        class="filter-btn rounded-lg border border-border bg-card px-3.5 py-1.5 text-xs font-medium text-muted-foreground transition hover:border-primary/40 hover:text-foreground"
+        class="filter-btn rounded-lg border border-border bg-card min-h-11 px-3.5 py-1.5 text-xs font-medium text-muted-foreground transition hover:border-primary/40 hover:text-foreground"
         data-filter="living"
+        aria-pressed="false"
       >
         생활 계산 · 부동산 · 자동차
       </button>
       <button
         type="button"
-        class="filter-btn rounded-lg border border-border bg-card px-3.5 py-1.5 text-xs font-medium text-muted-foreground transition hover:border-primary/40 hover:text-foreground"
+        class="filter-btn rounded-lg border border-border bg-card min-h-11 px-3.5 py-1.5 text-xs font-medium text-muted-foreground transition hover:border-primary/40 hover:text-foreground"
         data-filter="military"
+        aria-pressed="false"
       >
         병무 · 전역
       </button>
       <button
         type="button"
-        class="filter-btn rounded-lg border border-border bg-card px-3.5 py-1.5 text-xs font-medium text-muted-foreground transition hover:border-primary/40 hover:text-foreground"
+        class="filter-btn rounded-lg border border-border bg-card min-h-11 px-3.5 py-1.5 text-xs font-medium text-muted-foreground transition hover:border-primary/40 hover:text-foreground"
         data-filter="environment"
+        aria-pressed="false"
       >
         기상 · 환경
       </button>
       <button
         type="button"
-        class="filter-btn rounded-lg border border-border bg-card px-3.5 py-1.5 text-xs font-medium text-muted-foreground transition hover:border-primary/40 hover:text-foreground"
+        class="filter-btn rounded-lg border border-border bg-card min-h-11 px-3.5 py-1.5 text-xs font-medium text-muted-foreground transition hover:border-primary/40 hover:text-foreground"
       data-filter="calendar"
+      aria-pressed="false"
       >
         캘린더 · 날짜 · 시간
       </button>
       <button
         type="button"
-        class="filter-btn rounded-lg border border-border bg-card px-3.5 py-1.5 text-xs font-medium text-muted-foreground transition hover:border-primary/40 hover:text-foreground"
+        class="filter-btn rounded-lg border border-border bg-card min-h-11 px-3.5 py-1.5 text-xs font-medium text-muted-foreground transition hover:border-primary/40 hover:text-foreground"
         data-filter="utility"
+        aria-pressed="false"
       >
         파일 · 이미지 · 단위 · 개발
       </button>
     </div>
 
     <!-- Tools Grid -->
-    <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3" id="tools-grid">
+    <div class="grid gap-3 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3" id="tools-grid">
       {tools.map((tool) => {
         let group = "labor";
         if (["gas-bill", "waste-sorter", "temporary-two-house", "car-bond-refund"].includes(tool.id)) group = "living";
@@ -232,7 +255,7 @@ const tools = [
           <a
             href={tool.href}
             data-group={group}
-            class="tool-card group flex flex-col justify-between rounded-xl border border-border bg-card p-5 transition hover:border-primary/60 hover:shadow-sm"
+            class="tool-card group flex flex-col justify-between rounded-xl border border-border bg-card p-4 transition sm:p-5 hover:border-primary/60 hover:shadow-sm"
           >
             <div>
               <div class="flex items-center justify-between gap-2">
@@ -243,14 +266,14 @@ const tools = [
                   {tool.badge}
                 </span>
               </div>
-              <h2 class="mt-3 text-base font-bold text-foreground group-hover:text-primary transition-colors">
+              <h2 class="mt-2 text-base font-bold sm:mt-3 text-foreground group-hover:text-primary transition-colors">
                 {tool.title}
               </h2>
-              <p class="mt-2 text-xs leading-relaxed text-muted-foreground">
+              <p class="mt-1.5 line-clamp-2 text-sm leading-relaxed text-muted-foreground sm:mt-2 sm:line-clamp-none sm:text-xs">
                 {tool.desc}
               </p>
             </div>
-            <div class="mt-4 flex items-center gap-1 text-xs font-bold text-primary">
+            <div class="mt-4 hidden items-center gap-1 text-xs font-bold text-primary sm:flex">
               <span>도구 바로가기</span>
               <span aria-hidden="true" class="transition-transform group-hover:translate-x-1">→</span>
             </div>
@@ -266,13 +289,16 @@ const tools = [
       <h2 id="file-tool-languages" class="text-base font-semibold text-foreground">파일·화면·개발 도구 · 언어별 바로가기</h2>
       <div class="mt-2 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {locales.map((lang) => (
-          <nav lang={lang} aria-label={`${lang.toUpperCase()} file tools`} class="rounded-lg border border-border p-3">
-            <p class="text-xs font-semibold text-muted-foreground">{({ ko: '한국어', en: 'English', ja: '日本語', zh: '简体中文', fr: 'Français', es: 'Español' })[lang]}</p>
-            <ul>
+          <nav lang={lang} aria-label={`${lang.toUpperCase()} file tools`} class="rounded-lg border border-border">
+            {/* WHY 2026-11-03 (impeccable pilot): 링크는 HTML에 그대로 두고 접어서, 모바일 허브 길이의 절반을 차지하던 목록을 줄여요. */}
+            <details>
+              <summary class="flex min-h-11 cursor-pointer items-center px-3 text-sm font-semibold text-foreground">{({ ko: '한국어', en: 'English', ja: '日本語', zh: '简体中文', fr: 'Français', es: 'Español' })[lang]} <span class="ml-1 font-normal text-muted-foreground">({utilitySlugs.length + 1 + utilityCatalog.length})</span></summary>
+            <ul class="px-3 pb-2">
               {utilitySlugs.map((slug, i) => <li><a class="inline-flex min-h-11 items-center text-sm text-primary underline" href={`/${lang}/${slug}/`}>{utilityLabels[lang][i]}</a></li>)}
               <li><a class="inline-flex min-h-11 items-center text-sm text-primary underline" href={`/${lang}/monitor-ppi-calculator/`}>{monitorPpiCopy[lang].title}</a></li>
               {utilityCatalog.map((t) => <li><a class="inline-flex min-h-11 items-center text-sm text-primary underline" href={`/${lang}/${t.slug}/`}>{t.title[lang]}</a></li>)}
             </ul>
+            </details>
           </nav>
         ))}
       </div>
@@ -281,25 +307,46 @@ const tools = [
     <script>
       const buttons = document.querySelectorAll<HTMLButtonElement>(".filter-btn");
       const cards = document.querySelectorAll<HTMLElement>(".tool-card");
+      const search = document.querySelector<HTMLInputElement>("#tool-search");
+      const status = document.querySelector<HTMLElement>("#tool-search-status");
+      let filter = "all";
+      // 카드 텍스트(제목·분류·설명)를 한 번만 읽어 둬요.
+      const haystack = new Map<HTMLElement, string>();
+      cards.forEach((card) => haystack.set(card, (card.textContent || "").toLowerCase().replace(/\s+/g, " ")));
+
+      function apply() {
+        const q = (search?.value || "").trim().toLowerCase();
+        const terms = q.split(/\s+/).filter(Boolean);
+        let shown = 0;
+        cards.forEach((card) => {
+          const groupOk = filter === "all" || card.getAttribute("data-group") === filter;
+          const text = haystack.get(card) || "";
+          const textOk = terms.every((term) => text.includes(term));
+          const visible = groupOk && textOk;
+          card.style.display = visible ? "flex" : "none";
+          if (visible) shown += 1;
+        });
+        if (status) status.textContent = q ? (shown ? `${shown}개 도구가 맞아요.` : "맞는 도구가 없어요. 다른 낱말로 찾아 보세요.") : "";
+      }
+
+      let timer: number | undefined;
+      search?.addEventListener("input", () => {
+        window.clearTimeout(timer);
+        timer = window.setTimeout(apply, 120);
+      });
 
       buttons.forEach((btn) => {
         btn.addEventListener("click", () => {
           buttons.forEach((b) => {
             b.classList.remove("border-primary", "bg-primary", "text-primary-foreground", "font-bold");
             b.classList.add("border-border", "bg-card", "text-muted-foreground", "font-medium");
+            b.setAttribute("aria-pressed", "false");
           });
           btn.classList.add("border-primary", "bg-primary", "text-primary-foreground", "font-bold");
           btn.classList.remove("border-border", "bg-card", "text-muted-foreground", "font-medium");
-
-          const filter = btn.getAttribute("data-filter") || "all";
-          cards.forEach((card) => {
-            const group = card.getAttribute("data-group");
-            if (filter === "all" || group === filter) {
-              card.style.display = "flex";
-            } else {
-              card.style.display = "none";
-            }
-          });
+          btn.setAttribute("aria-pressed", "true");
+          filter = btn.getAttribute("data-filter") || "all";
+          apply();
         });
       });
     </script>

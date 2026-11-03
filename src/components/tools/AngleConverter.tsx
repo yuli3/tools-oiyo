@@ -126,7 +126,8 @@ export default function AngleConverter({ locale }: { locale: Locale }) {
         <div className={card}>
           <h3 className="font-semibold text-foreground">{t.outputTitle}</h3>
           {deg === null ? (
-            <p className="mt-4 rounded-lg bg-muted px-3 py-2 text-sm font-semibold text-primary">{t.invalid}</p>
+            // 2026-11-03: empty input is a neutral hint, not an error; only bad input reads as invalid.
+            <p className={value.trim() === "" ? "mt-4 text-sm text-muted-foreground" : "mt-4 rounded-lg bg-muted px-3 py-2 text-sm font-semibold text-destructive"}>{value.trim() === "" ? t.placeholder : t.invalid}</p>
           ) : (
             <div className="mt-4 space-y-3">
               {rows.map((u) => (
