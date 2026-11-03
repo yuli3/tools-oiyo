@@ -233,7 +233,7 @@ const FranceSalaryCalculator: React.FC<Props> = ({ locale = 'fr' }) => {
                 </div>
 
                 <div className="rounded-2xl border border-border bg-muted/30 p-4 sm:p-6 flex flex-col gap-3">
-                    <h4 className="text-sm font-bold text-foreground">{t.cotisations}</h4>
+                    <h3 className="text-sm font-bold text-foreground">{t.cotisations}</h3>
                     <div className="flex flex-col gap-2">
                         {monthlyDeductionRows.map(({ label, value }) => (
                             <div key={label} className="flex justify-between items-center text-sm">

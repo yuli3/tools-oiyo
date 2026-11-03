@@ -247,9 +247,9 @@ export const TAccountVisualizer: React.FC<TAccountVisualizerProps> = ({ locale =
 
   return (
     <div className="my-6">
-      <h3 className="text-xl font-bold text-foreground mb-2">
+      <h2 className="sr-only">
         {locale === 'ko' ? 'T계정 시각화기' : 'T-Account Visualizer'}
-      </h3>
+      </h2>
       <p className="text-sm text-primary mb-6">
         {locale === 'ko'
           ? '분개를 입력하면 T계정과 잔액시산표를 자동 생성합니다.'

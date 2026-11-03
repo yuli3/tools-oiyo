@@ -108,7 +108,7 @@ const WeddingPlanningCalculator: React.FC<{ locale?: 'ko' | 'en' }> = ({ locale 
 
   return (
     <div className="my-6">
-      <h3 className="text-xl font-bold text-foreground mb-6">{t.title}</h3>
+      <h2 className="sr-only">{t.title}</h2>
 
       <div className="space-y-5">
         {/* Assets */}

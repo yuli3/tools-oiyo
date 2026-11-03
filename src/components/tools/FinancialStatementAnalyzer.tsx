@@ -143,7 +143,7 @@ const RatioGauge: React.FC<RatioGaugeProps> = ({ label, value, unit, level, desc
 const SectionHeader: React.FC<{ title: string }> = ({ title }) => (
   <div className="flex items-center gap-2 mb-3 mt-5 first:mt-0">
     <div className="w-1 h-4 bg-primary rounded-full" />
-    <h4 className="text-xs font-bold text-primary uppercase tracking-wider">{title}</h4>
+    <h3 className="text-xs font-bold text-primary uppercase tracking-wider">{title}</h3>
   </div>
 );
 
@@ -175,7 +175,7 @@ const FormulaFlowCard: React.FC<FormulaFlowCardProps> = ({ title, formula, takea
   <div className="rounded-2xl border border-border bg-card p-4 shadow-sm">
     <div className="flex items-start justify-between gap-3">
       <div>
-        <h5 className="text-sm font-bold text-foreground">{title}</h5>
+        <h4 className="text-sm font-bold text-foreground">{title}</h4>
         <p className="mt-1 text-xs text-muted-foreground">{formula}</p>
       </div>
       <div className="text-right">
@@ -340,7 +340,7 @@ export const FinancialStatementAnalyzer: React.FC = () => {
     <Card className="bg-card border border-primary/30 shadow-xl rounded-2xl overflow-hidden mt-5 sm:mt-8">
       {/* Header */}
       <div className="bg-primary px-4 sm:px-6 py-5">
-        <h3 className="text-lg font-bold text-white">재무제표 분석기</h3>
+        <h2 className="text-lg font-bold text-white">재무제표 분석기</h2>
         <p className="text-xs text-primary mt-1">재무상태표 · 손익계산서 · 현금흐름표 · 비율 벤치마크</p>
       </div>
 
@@ -793,9 +793,9 @@ export const FinancialRatioTrendAnalyzer: React.FC<{ locale?: 'ko' | 'en' }> = (
 
   return (
     <div className="my-6">
-      <h3 className="text-xl font-bold text-primary mb-2">
+      <h2 className="sr-only">
         {locale === 'ko' ? '재무비율 추세 분석기' : 'Financial Ratio Trend Analyzer'}
-      </h3>
+      </h2>
       <p className="text-sm text-primary mb-6">
         {locale === 'ko'
           ? '3개년 재무 데이터를 입력하면 8대 재무비율의 추세와 벤치마크 비교를 자동으로 표시합니다.'

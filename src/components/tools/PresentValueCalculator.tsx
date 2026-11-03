@@ -66,9 +66,9 @@ const PresentValueCalculator: React.FC<{ locale?: 'ko' | 'en' }> = ({ locale = '
 
   return (
     <div className="my-6">
-      <h3 className="text-xl font-bold text-foreground mb-2">
+      <h2 className="sr-only">
         {ko ? '연금 현재가치 계산기' : 'Present Value (Annuity) Calculator'}
-      </h3>
+      </h2>
       <p className="text-sm text-foreground mb-6">
         {ko
           ? '미래에 받을 연금·손해배상액의 현재 가치를 라이프니츠(복리) 또는 호프만(단리) 방식으로 계산합니다.'

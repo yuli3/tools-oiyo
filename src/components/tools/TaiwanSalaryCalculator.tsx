@@ -163,7 +163,7 @@ const TaiwanSalaryCalculator: React.FC<Props> = ({ locale = 'zh' }) => {
                 </div>
 
                 <div className="rounded-2xl border border-border bg-muted/30 p-4 sm:p-6 flex flex-col gap-3">
-                    <h4 className="text-sm font-bold text-foreground">{t.deductions}</h4>
+                    <h3 className="text-sm font-bold text-foreground">{t.deductions}</h3>
                     <div className="flex flex-col gap-2">
                         {[
                             { label: t.laborIns, value: laborIns },

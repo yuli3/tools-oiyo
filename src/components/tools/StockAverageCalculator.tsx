@@ -26,7 +26,7 @@ const StockAverageCalculator: React.FC<{ locale?: 'ko' | 'en' }> = ({ locale = '
                     <div className="p-4 sm:p-6 bg-muted/40 rounded-3xl border border-border space-y-4">
                         <div className="flex items-center gap-2 mb-2">
                             <span className="w-2 h-2 rounded-full bg-destructive/40" />
-                            <h5 className="text-xs font-black text-muted-foreground uppercase">{t.current}</h5>
+                            <h3 className="text-xs font-black text-muted-foreground uppercase">{t.current}</h3>
                         </div>
                         <div className="space-y-3">
                             <div>
@@ -44,7 +44,7 @@ const StockAverageCalculator: React.FC<{ locale?: 'ko' | 'en' }> = ({ locale = '
                     <div className="p-4 sm:p-6 bg-primary/5 rounded-3xl border border-primary/20 space-y-4">
                         <div className="flex items-center gap-2 mb-2">
                             <span className="w-2 h-2 rounded-full bg-primary" />
-                            <h5 className="text-xs font-black text-primary uppercase">{t.add}</h5>
+                            <h3 className="text-xs font-black text-primary uppercase">{t.add}</h3>
                         </div>
                         <div className="space-y-3">
                             <div>
@@ -64,7 +64,7 @@ const StockAverageCalculator: React.FC<{ locale?: 'ko' | 'en' }> = ({ locale = '
                     <p className="text-xs font-black text-background/60 uppercase tracking-widest text-center mb-2">{t.result}</p>
                     <div className="text-center mb-5 sm:mb-8">
                         <p className="text-xs text-background/50 uppercase mb-1">{t.avg}</p>
-                        <h4 className="text-4xl font-black text-primary">₩{Math.round(newAverage).toLocaleString()}</h4>
+                        <h3 className="text-4xl font-black text-primary">₩{Math.round(newAverage).toLocaleString()}</h3>
                     </div>
                     
                     <div className="grid grid-cols-2 gap-4 border-t border-background/15 pt-6">

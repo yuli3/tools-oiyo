@@ -273,9 +273,9 @@ interface TAccountDisplayProps {
 const TAccountDisplay: React.FC<TAccountDisplayProps> = ({ scenario, locale }) => {
   return (
     <div className="mt-6">
-      <h4 className="text-sm font-bold text-muted-foreground mb-3">
+      <h3 className="text-sm font-bold text-muted-foreground mb-3">
         {locale === 'ko' ? 'T계정 시각화' : 'T-Account Visualization'}
-      </h4>
+      </h3>
       <div className="grid grid-cols-2 gap-4">
         {/* Debit T-account */}
         <div className="border-2 border-border rounded-xl overflow-hidden">
@@ -353,9 +353,9 @@ export const JournalEntryTrainer: React.FC<JournalEntryTrainerProps> = ({ locale
     const pct = Math.round((state.score / SCENARIOS.length) * 100);
     return (
       <div className="my-6">
-        <h3 className="text-xl font-bold text-foreground mb-2">
+        <h2 className="text-xl font-bold text-foreground mb-2">
           {locale === 'ko' ? '결과 보기' : 'Quiz Results'}
-        </h3>
+        </h2>
         <div className="flex flex-col items-center py-5 sm:py-8">
           <div className="w-28 h-28 rounded-full bg-muted border-4 border-border flex flex-col items-center justify-center mb-4">
             <span className="text-3xl font-bold text-foreground">{state.score}</span>
@@ -387,9 +387,9 @@ export const JournalEntryTrainer: React.FC<JournalEntryTrainerProps> = ({ locale
     <div className="my-6">
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
-        <h3 className="text-xl font-bold text-foreground">
+        <h2 className="sr-only">
           {locale === 'ko' ? '회계 분개 연습기' : 'Journal Entry Trainer'}
-        </h3>
+        </h2>
         <div className="flex items-center gap-2">
           <span className="text-sm font-bold text-foreground" aria-live="polite">
             {locale === 'ko' ? `점수: ${state.score}/${SCENARIOS.length}` : `Score: ${state.score}/${SCENARIOS.length}`}

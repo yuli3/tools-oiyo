@@ -668,7 +668,7 @@ export const TaxFormulaExplorer: React.FC = () => {
   return (
     <div className="bg-card border border-border shadow-xl rounded-2xl overflow-hidden mt-5 sm:mt-8">
       <div className="bg-primary px-4 sm:px-6 py-5">
-        <h3 className="text-lg font-bold text-white">세법 계산 산식 인터랙티브</h3>
+        <h2 className="text-lg font-bold text-white">세법 계산 산식 인터랙티브</h2>
         <p className="text-xs text-primary-foreground mt-1">6대 세목 공식을 직접 입력하며 계산 구조를 확인하세요</p>
       </div>
 
@@ -681,7 +681,7 @@ export const TaxFormulaExplorer: React.FC = () => {
       </div>
 
       <div className="px-4 sm:px-6 pb-6 pt-4">
-        <h4 className="text-sm font-bold text-muted-foreground mb-1">{TAB_LABELS[activeTab].full} 계산 구조</h4>
+        <h3 className="text-sm font-bold text-muted-foreground mb-1">{TAB_LABELS[activeTab].full} 계산 구조</h3>
         <p className="text-xs text-muted-foreground mb-4">금액 단위: 만원 / 값을 수정하면 결과가 즉시 업데이트됩니다</p>
 
         {activeTab === 0 && <IncomeTaxTab />}

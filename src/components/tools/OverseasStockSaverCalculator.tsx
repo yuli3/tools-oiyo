@@ -74,9 +74,9 @@ const OverseasStockSaverCalculator: React.FC<{ locale?: 'ko' | 'en' }> = ({ loca
 
   return (
     <div className="my-6">
-      <h3 className="text-xl font-bold text-foreground mb-2">
+      <h2 className="sr-only">
         {ko ? '해외주식 절세 전략 계산기' : 'Overseas Stock Tax Saver'}
-      </h3>
+      </h2>
       <p className="text-sm text-muted-foreground mb-6">
         {ko
           ? '연간 실현 수익이 250만원 기준을 넘는지 확인하고 최적 절세 전략을 알아보세요.'

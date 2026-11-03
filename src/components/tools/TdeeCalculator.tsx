@@ -296,7 +296,7 @@ export default function TdeeCalculator({ locale = 'ko' }: Props) {
 
       {/* Target Goals Grid */}
       <div>
-        <h3 className="text-xs font-bold text-foreground mb-3">{t.goalsTitle}</h3>
+        <h2 className="text-xs font-bold text-foreground mb-3">{t.goalsTitle}</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {goals.map((g, idx) => (
             <div key={idx} className="flex items-center justify-between p-3.5 rounded-xl border border-border bg-background">
@@ -311,7 +311,7 @@ export default function TdeeCalculator({ locale = 'ko' }: Props) {
 
       {/* Macronutrient breakdown */}
       <div className="rounded-xl border border-border bg-muted/50 p-4">
-        <h4 className="text-xs font-bold text-foreground mb-2">{t.macrosTitle}</h4>
+        <h3 className="text-xs font-bold text-foreground mb-2">{t.macrosTitle}</h3>
         <div className="grid grid-cols-3 gap-2 text-center text-xs">
           <div className="rounded-lg bg-card p-2 border border-border">
             <span className="text-muted-foreground block">{t.carbs} (45%)</span>

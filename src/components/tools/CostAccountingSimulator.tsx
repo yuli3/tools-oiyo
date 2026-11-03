@@ -340,9 +340,9 @@ export const CostAccountingSimulator: React.FC<{ locale?: 'ko' | 'en' }> = ({ lo
 
   return (
     <div className="my-6">
-      <h3 className="text-xl font-bold text-foreground mb-2">
+      <h2 className="sr-only">
         {locale === 'ko' ? '원가계산 시스템' : 'Cost Accounting Simulator'}
-      </h3>
+      </h2>
       <p className="text-sm text-primary mb-6">
         {locale === 'ko'
           ? '전통적 원가계산, 활동기준원가계산(ABC), 손익분기점 분석을 직접 실습하세요.'

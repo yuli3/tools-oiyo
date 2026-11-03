@@ -528,7 +528,7 @@ export default function RingSizeConverter({ locale = "en" }: { locale?: Locale }
 
         {rows && (
           <div className="mt-5 sm:mt-8">
-            <h3 className="text-base font-semibold">{t.resultTitle}</h3>
+            <h2 className="text-base font-semibold">{t.resultTitle}</h2>
             <p className="text-muted-foreground mt-1 text-sm">{t.resultDesc}</p>
             <Table className="mt-4">
               <TableHeader>
@@ -568,7 +568,7 @@ export default function RingSizeConverter({ locale = "en" }: { locale?: Locale }
             </Table>
 
             <div className="bg-muted/40 mt-6 rounded-lg p-4">
-              <h4 className="text-sm font-semibold">{t.gapTitle}</h4>
+              <h3 className="text-sm font-semibold">{t.gapTitle}</h3>
               {gaps.length > 0 ? (
                 <>
                   <p className="text-muted-foreground mt-1 text-sm">{t.gapDesc}</p>
@@ -587,7 +587,7 @@ export default function RingSizeConverter({ locale = "en" }: { locale?: Locale }
             </div>
 
             <div className="mt-6">
-              <h4 className="text-sm font-semibold">{t.measureTitle}</h4>
+              <h3 className="text-sm font-semibold">{t.measureTitle}</h3>
               <ol className="text-muted-foreground mt-2 list-decimal space-y-1 pl-5 text-sm">
                 {t.measureSteps.map((s) => (
                   <li key={s}>{s}</li>

@@ -642,7 +642,7 @@ const YearEndSettlementCalculator: React.FC<{ locale?: Locale }> = ({ locale = '
                 </div>
 
                 <div className="flex flex-col gap-3 rounded-2xl border border-border bg-muted/30 p-4 sm:p-6 print:break-inside-avoid">
-                    <h4 className="text-sm font-bold text-foreground">{t.breakdown}</h4>
+                    <h3 className="text-sm font-bold text-foreground">{t.breakdown}</h3>
                     {rows.map(({ label, value, sign }) => (
                         <div key={label} className="flex items-center justify-between gap-4 text-sm">
                             <span className="font-medium text-muted-foreground">{label}</span>
@@ -664,7 +664,7 @@ const YearEndSettlementCalculator: React.FC<{ locale?: Locale }> = ({ locale = '
                 </div>
 
                 <div className="flex flex-col gap-3 rounded-2xl border border-border p-4 sm:p-6 print:break-inside-avoid">
-                    <h4 className="text-sm font-bold text-foreground">{t.plan.title}</h4>
+                    <h3 className="text-sm font-bold text-foreground">{t.plan.title}</h3>
                     {plan.levers.length === 0 ? (
                         <p className="text-sm text-muted-foreground">{t.plan.empty}</p>
                     ) : (

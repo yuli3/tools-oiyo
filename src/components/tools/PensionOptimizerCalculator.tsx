@@ -110,9 +110,9 @@ const PensionOptimizerCalculator: React.FC<{ locale?: 'ko' | 'en' }> = ({ locale
 
   return (
     <div className="my-6">
-      <h3 className="text-xl font-bold text-foreground mb-6">
+      <h2 className="sr-only">
         {locale === 'ko' ? '연금 최적화 계산기' : 'Pension Optimizer'}
-      </h3>
+      </h2>
 
       <div className="grid md:grid-cols-2 gap-5 sm:gap-8">
         {/* Inputs */}

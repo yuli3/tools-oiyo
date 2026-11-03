@@ -485,7 +485,7 @@ const MoneyPlanner: React.FC<{ locale?: Locale; defaultCountry?: PlanCountry }> 
                         {plans.map((p) => (
                             <article key={p.id} className="flex flex-col gap-3 rounded-xl border border-border bg-card p-4 print:break-inside-avoid">
                                 <header>
-                                    <h4 className="text-base font-bold text-foreground">{t.plans[p.id]}</h4>
+                                    <h3 className="text-base font-bold text-foreground">{t.plans[p.id]}</h3>
                                     <p className="text-xs text-muted-foreground">{t.planDesc[p.id]}</p>
                                 </header>
                                 <div className="flex flex-col gap-1">
@@ -536,11 +536,11 @@ const MoneyPlanner: React.FC<{ locale?: Locale; defaultCountry?: PlanCountry }> 
                 {section(t.sections.tips, (
                     <div className="flex flex-col gap-4 text-sm leading-6 text-foreground">
                         <div>
-                            <h4 className="font-bold">{t.tips.emergency}</h4>
+                            <h3 className="font-bold">{t.tips.emergency}</h3>
                             <p className="text-muted-foreground">{pickNote(notes.emergency, lang)}</p>
                         </div>
                         <div>
-                            <h4 className="font-bold">{t.tips.accounts}</h4>
+                            <h3 className="font-bold">{t.tips.accounts}</h3>
                             <ul className="mt-1 flex list-disc flex-col gap-1 pl-5 text-muted-foreground">
                                 {country.accounts.map((a) => (
                                     <li key={a.id}>
@@ -555,11 +555,11 @@ const MoneyPlanner: React.FC<{ locale?: Locale; defaultCountry?: PlanCountry }> 
                             </ul>
                         </div>
                         <div>
-                            <h4 className="font-bold">{t.tips.youth}</h4>
+                            <h3 className="font-bold">{t.tips.youth}</h3>
                             <p className="text-muted-foreground">{pickNote(notes.youth, lang)}</p>
                         </div>
                         <div>
-                            <h4 className="font-bold">{t.tips.gift}</h4>
+                            <h3 className="font-bold">{t.tips.gift}</h3>
                             <ul className="mt-1 flex list-disc flex-col gap-1 pl-5 text-muted-foreground">
                                 {notes.gift.map((g, i) => <li key={i}>{pickNote(g, lang)}</li>)}
                             </ul>

@@ -282,7 +282,7 @@ const catalogCopy: Record<ActiveLocale, { title: string; intro: string; groups: 
 };
 
 const catalog = catalogCopy[locale] ?? catalogCopy.en;
-const menuGroups = catalogGroups();
+const menuGroups = catalogGroups(locale);
 
 const structuredData = [
   {
