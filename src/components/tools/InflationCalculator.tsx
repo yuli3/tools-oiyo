@@ -46,12 +46,12 @@ const InflationCalculator: React.FC<{ locale?: 'ko' | 'en' }> = ({ locale = 'ko'
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="p-4 sm:p-6 bg-destructive/10 border border-destructive/20 rounded-3xl space-y-2">
                         <p className="text-xs font-black text-destructive uppercase">{years}{t.result1}</p>
-                        <h4 className="text-2xl font-black text-destructive">{Math.round(futureValue).toLocaleString()}{t.unit}</h4>
+                        <p className="text-2xl font-black text-destructive">{Math.round(futureValue).toLocaleString()}{t.unit}</p>
                         <p className="text-xs text-destructive">{t.drop(Math.round((1 - futureValue/amount)*100))}</p>
                     </div>
                     <div className="p-4 sm:p-6 bg-success/10 border border-success/20 rounded-3xl space-y-2">
                         <p className="text-xs font-black text-success uppercase">{t.result2}</p>
-                        <h4 className="text-2xl font-black text-success">{Math.round(neededAmount).toLocaleString()}{t.unit}</h4>
+                        <p className="text-2xl font-black text-success">{Math.round(neededAmount).toLocaleString()}{t.unit}</p>
                         <p className="text-xs text-success">{t.need}</p>
                     </div>
                 </div>

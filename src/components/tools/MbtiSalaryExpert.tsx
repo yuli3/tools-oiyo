@@ -71,7 +71,7 @@ const MbtiSalaryExpert: React.FC<{ locale?: 'ko' | 'en' }> = ({ locale = 'ko' })
 
     return (
         <div className="my-6 max-w-3xl mx-auto">
-            <h3 className="text-2xl font-black text-center text-foreground mb-5 sm:mb-8">{t.title}</h3>
+            <h2 className="text-2xl font-black text-center text-foreground mb-5 sm:mb-8">{t.title}</h2>
             
             <div className="flex flex-wrap justify-center gap-2 mb-6 sm:mb-10">
                 {Object.keys(t.types).map(type => (
@@ -92,17 +92,17 @@ const MbtiSalaryExpert: React.FC<{ locale?: 'ko' | 'en' }> = ({ locale = 'ko' })
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-6">
                     <div className="p-5 rounded-2xl bg-muted border border-border">
-                        <h4 className="text-xs font-bold text-primary uppercase tracking-widest mb-2">💰 {t.salaryInsight}</h4>
+                        <h3 className="text-xs font-bold text-primary uppercase tracking-widest mb-2">💰 {t.salaryInsight}</h3>
                         <p className="text-foreground text-base leading-relaxed">{data.insight}</p>
                     </div>
                     <div className="p-5 rounded-2xl bg-muted border border-border">
-                        <h4 className="text-xs font-bold text-primary uppercase tracking-widest mb-2">🎯 {t.negotiationStrategy}</h4>
+                        <h3 className="text-xs font-bold text-primary uppercase tracking-widest mb-2">🎯 {t.negotiationStrategy}</h3>
                         <p className="text-foreground text-base leading-relaxed">{data.strategy}</p>
                     </div>
                 </div>
 
                 <div className="p-4 sm:p-6 rounded-2xl bg-foreground text-white flex flex-col">
-                    <h4 className="text-xs font-bold text-primary uppercase tracking-widest mb-4">💬 {t.script}</h4>
+                    <h3 className="text-xs font-bold text-primary uppercase tracking-widest mb-4">💬 {t.script}</h3>
                     <div className="flex-1 italic text-lg leading-relaxed mb-4">
                         <span className="text-4xl text-primary font-serif">"</span>
                         {data.script}

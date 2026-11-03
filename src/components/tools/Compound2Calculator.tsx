@@ -76,9 +76,9 @@ const Compound2Calculator: React.FC<{ locale?: 'ko' | 'en' }> = ({ locale = 'ko'
 
   return (
     <div className="my-6">
-      <h3 className="text-xl font-bold text-foreground mb-6">
+      <h2 className="sr-only">
         {ko ? '복리 수익 시뮬레이터' : 'Compound Interest Simulator'}
-      </h3>
+      </h2>
 
       <div className="space-y-5">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

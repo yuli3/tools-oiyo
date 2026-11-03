@@ -147,9 +147,9 @@ const IsaVsPensionCalculator: React.FC<{ locale?: 'ko' | 'en' }> = ({ locale = '
 
   return (
     <div className="my-6">
-      <h3 className="text-xl font-bold text-foreground mb-2">
+      <h2 className="sr-only">
         {ko ? 'ISA vs 연금저축 비교 계산기' : 'ISA vs Pension Savings Comparison'}
-      </h3>
+      </h2>
       <p className="text-sm text-foreground mb-6">
         {ko ? 'ISA와 연금저축·IRP 중 세제 혜택이 더 큰 상품을 비교합니다.' : 'Compare tax benefits between ISA and pension savings (IRP) accounts.'}
       </p>
@@ -265,7 +265,7 @@ const IsaVsPensionCalculator: React.FC<{ locale?: 'ko' | 'en' }> = ({ locale = '
           <div className="mt-4 space-y-4" aria-live="polite">
             {/* ISA Card */}
             <div className="bg-card rounded-2xl border-2 border-border p-5 space-y-3">
-              <h4 className="text-base font-black text-foreground text-center">ISA</h4>
+              <h3 className="text-base font-black text-foreground text-center">ISA</h3>
               <div className="text-center">
                 <p className="text-xs text-primary font-semibold">{ko ? '최종 수령액' : 'Final Amount'}</p>
                 <p className="text-2xl font-black text-foreground">{fmt(result.isa.finalAmount)}</p>
@@ -287,9 +287,9 @@ const IsaVsPensionCalculator: React.FC<{ locale?: 'ko' | 'en' }> = ({ locale = '
 
             {/* Pension Card */}
             <div className="bg-card rounded-2xl border-2 border-border p-5 space-y-3">
-              <h4 className="text-base font-black text-foreground text-center">
+              <h3 className="text-base font-black text-foreground text-center">
                 {ko ? '연금저축+IRP' : 'Pension Savings + IRP'}
-              </h4>
+              </h3>
               <div className="text-center">
                 <p className="text-xs text-primary font-semibold">{ko ? '최종 수령액' : 'Final Amount'}</p>
                 <p className="text-2xl font-black text-foreground">{fmt(result.pension.finalAmount)}</p>

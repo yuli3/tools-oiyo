@@ -96,9 +96,9 @@ const DutchPayCalculator: React.FC<{ locale?: 'ko' | 'en' }> = ({ locale = 'ko' 
 
   return (
     <div className="my-6">
-      <h3 className="text-xl font-bold text-primary mb-6">
+      <h2 className="sr-only">
         {locale === 'ko' ? '더치페이 계산기' : 'Dutch Pay Calculator'}
-      </h3>
+      </h2>
 
       <div className="space-y-5">
         <div className="space-y-1">

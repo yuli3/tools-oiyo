@@ -128,9 +128,9 @@ export const GDPCalculator: React.FC<{ locale?: 'ko' | 'en' }> = ({ locale = 'ko
 
   return (
     <div className="bg-card border border-border rounded-2xl p-5">
-      <h4 className="text-base font-bold text-foreground mb-4">
+      <h3 className="text-base font-bold text-foreground mb-4">
         {locale === 'ko' ? 'GDP 계산기' : 'GDP Calculator'}
-      </h4>
+      </h3>
 
       {/* Approach selector */}
       <div className="flex gap-2 mb-5" role="group" aria-label={locale === 'ko' ? '접근법 선택' : 'Approach selection'}>
@@ -275,9 +275,9 @@ export const MultiplierCalculator: React.FC<{ locale?: 'ko' | 'en' }> = ({ local
 
   return (
     <div className="bg-card border border-border rounded-2xl p-5">
-      <h4 className="text-base font-bold text-foreground mb-4">
+      <h3 className="text-base font-bold text-foreground mb-4">
         {locale === 'ko' ? '케인즈 승수 계산기' : 'Keynesian Multiplier Calculator'}
-      </h4>
+      </h3>
 
       <div className="space-y-4 mb-5">
         <SliderRow
@@ -385,9 +385,9 @@ export const InflationCalculator: React.FC<{ locale?: 'ko' | 'en' }> = ({ locale
 
   return (
     <div className="bg-card border border-border rounded-2xl p-5">
-      <h4 className="text-base font-bold text-foreground mb-4">
+      <h3 className="text-base font-bold text-foreground mb-4">
         {locale === 'ko' ? '인플레이션 계산기' : 'Inflation Calculator'}
-      </h4>
+      </h3>
 
       <FieldGroup className="mb-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
         {[
@@ -511,9 +511,9 @@ export const MacroCalculators: React.FC<{ locale?: 'ko' | 'en' }> = ({ locale = 
 
   return (
     <div className="my-6">
-      <h3 className="text-xl font-bold text-foreground mb-2">
+      <h2 className="sr-only">
         {locale === 'ko' ? '거시경제 계산기' : 'Macroeconomics Calculator'}
-      </h3>
+      </h2>
       <p className="text-sm text-primary mb-6">
         {locale === 'ko'
           ? 'GDP 접근법별 계산, 케인즈 승수, 인플레이션·피셔 방정식을 대화형으로 탐구하세요.'

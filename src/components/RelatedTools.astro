@@ -125,7 +125,7 @@ const items = targetIds.map((id) => ALL_TOOLS[id]).filter(Boolean);
 
 <div class="mt-8 border-t border-border pt-6">
   <div class="flex items-center justify-between mb-4">
-    <h3 class="text-sm font-bold text-foreground">함께 많이 찾는 도구</h3>
+    <h2 class="text-sm font-bold text-foreground">함께 많이 찾는 도구</h2>
     <a href="/" class="text-xs font-semibold text-primary hover:underline">전체 보기 →</a>
   </div>
   <div class="grid gap-3 sm:grid-cols-3">
@@ -143,9 +143,9 @@ const items = targetIds.map((id) => ALL_TOOLS[id]).filter(Boolean);
               {item.badge}
             </span>
           </div>
-          <h4 class="text-xs font-bold text-foreground group-hover:text-primary transition-colors">
+          <h3 class="text-xs font-bold text-foreground group-hover:text-primary transition-colors">
             {item.title}
-          </h4>
+          </h3>
           <p class="mt-1 text-[11px] text-muted-foreground leading-relaxed line-clamp-2">
             {item.desc}
           </p>

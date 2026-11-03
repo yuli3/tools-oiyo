@@ -60,9 +60,9 @@ const ExpenseRatioCalculator: React.FC<{ locale?: 'ko' | 'en' }> = ({ locale = '
 
   return (
     <div className="my-6">
-      <h3 className="text-xl font-bold text-foreground mb-2">
+      <h2 className="sr-only">
         {ko ? '추계 vs 기장 비용 비율 계산기' : 'Estimated vs Bookkeeping Expense Comparison'}
-      </h3>
+      </h2>
       <p className="text-sm text-primary mb-6">
         {ko
           ? '사업자가 추계신고와 기장신고 중 어느 쪽이 세금 부담이 적은지 비교합니다.'

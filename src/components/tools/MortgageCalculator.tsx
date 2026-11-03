@@ -68,9 +68,9 @@ const MortgageCalculator: React.FC<{ locale?: 'ko' | 'en' }> = ({ locale = 'ko' 
 
   return (
     <div className="my-6">
-      <h3 className="text-xl font-bold text-foreground mb-6">
+      <h2 className="sr-only">
         {ko ? '주택담보대출 계산기' : 'Mortgage Calculator'}
-      </h3>
+      </h2>
 
       <div className="space-y-5">
         <div className="space-y-1">

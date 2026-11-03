@@ -51,7 +51,7 @@ function Japan() {
         <Result label="課税退職所得" value={yen(tax.taxable)} note={tax.shortTerm ? "勤続5年以下：300万円を超える部分は1/2にしません" : "（退職金 − 控除）× 1/2"} />
         <Result label="手取り" value={yen(tax.net)} note={`所得税・復興税 ${yen(tax.incomeTax)}、住民税 ${yen(tax.residentTax)}（「退職所得の受給に関する申告書」提出時）`} />
       </div>
-      <h3 className="mt-6 text-base font-bold text-foreground">解雇予告手当（労基法20条・法律上の義務）</h3>
+      <h2 className="mt-6 text-base font-bold text-foreground">解雇予告手当（労基法20条・法律上の義務）</h2>
       <div className="mt-3 grid gap-4 sm:grid-cols-2">
         <NumberField label="直前3か月の賃金総額" value={wages3} onChange={setWages3} suffix="円" step={10_000} />
         <NumberField label="解雇予告から解雇日までの日数" value={notice} onChange={setNotice} suffix="日" step={1} />

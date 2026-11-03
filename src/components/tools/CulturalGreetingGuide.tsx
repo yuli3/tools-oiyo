@@ -74,7 +74,7 @@ const CulturalGreetingGuide: React.FC<{ locale?: 'ko' | 'en' }> = ({ locale = 'k
 
     return (
         <div className="my-6">
-            <h3 className="text-2xl font-black text-center text-foreground mb-5 sm:mb-8">{t.ui.selectCountry}</h3>
+            <h2 className="text-2xl font-black text-center text-foreground mb-5 sm:mb-8">{t.ui.selectCountry}</h2>
             
             <div className="flex justify-center gap-4 mb-6 sm:mb-10">
                 {Object.keys(t.countries).map(cid => (
@@ -97,7 +97,7 @@ const CulturalGreetingGuide: React.FC<{ locale?: 'ko' | 'en' }> = ({ locale = 'k
                 <div className="p-4 sm:p-6 bg-white/80 backdrop-blur-sm rounded-2xl border border-border">
                     <div className="flex items-center gap-2 mb-3">
                         <span className="p-1.5 bg-muted rounded-lg text-foreground">🏮</span>
-                        <h4 className="font-bold text-foreground">{t.ui.customs}</h4>
+                        <h3 className="font-bold text-foreground">{t.ui.customs}</h3>
                     </div>
                     <p className="text-muted-foreground text-sm leading-relaxed">{data.customs}</p>
                 </div>
@@ -106,14 +106,14 @@ const CulturalGreetingGuide: React.FC<{ locale?: 'ko' | 'en' }> = ({ locale = 'k
                     <div className="p-4 sm:p-6 bg-white/80 backdrop-blur-sm rounded-2xl border border-border">
                         <div className="flex items-center gap-2 mb-3">
                             <span className="p-1.5 bg-muted rounded-lg text-primary">✅</span>
-                            <h4 className="font-bold text-foreground">{t.ui.etiquette}</h4>
+                            <h3 className="font-bold text-foreground">{t.ui.etiquette}</h3>
                         </div>
                         <p className="text-muted-foreground text-sm leading-relaxed">{data.etiquette}</p>
                     </div>
                     <div className="p-4 sm:p-6 bg-white/80 backdrop-blur-sm rounded-2xl border border-border">
                         <div className="flex items-center gap-2 mb-3">
                             <span className="p-1.5 bg-muted rounded-lg text-destructive">❌</span>
-                            <h4 className="font-bold text-foreground">{t.ui.avoid}</h4>
+                            <h3 className="font-bold text-foreground">{t.ui.avoid}</h3>
                         </div>
                         <p className="text-muted-foreground text-sm leading-relaxed font-bold">{data.avoid}</p>
                     </div>

@@ -331,7 +331,7 @@ const FuelEfficiencyCalculator: React.FC<{ locale?: Locale }> = ({ locale = "ko"
         {/* Section 1: Real fuel economy */}
         <section className="space-y-5">
           <div>
-            <h4 className="text-base font-black text-foreground">{t.sec1Title}</h4>
+            <h3 className="text-base font-black text-foreground">{t.sec1Title}</h3>
             <p className="text-xs text-muted-foreground mt-1">{t.sec1Desc}</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -372,7 +372,7 @@ const FuelEfficiencyCalculator: React.FC<{ locale?: Locale }> = ({ locale = "ko"
         {/* Section 2: Unit converter */}
         <section className="space-y-5">
           <div>
-            <h4 className="text-base font-black text-foreground">{t.sec2Title}</h4>
+            <h3 className="text-base font-black text-foreground">{t.sec2Title}</h3>
             <p className="text-xs text-muted-foreground mt-1">{t.sec2Desc}</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -403,7 +403,7 @@ const FuelEfficiencyCalculator: React.FC<{ locale?: Locale }> = ({ locale = "ko"
         {/* Section 3: Annual fuel cost */}
         <section className="space-y-5">
           <div>
-            <h4 className="text-base font-black text-foreground">{t.sec3Title}</h4>
+            <h3 className="text-base font-black text-foreground">{t.sec3Title}</h3>
             <p className="text-xs text-muted-foreground mt-1">{t.sec3Desc}</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -463,7 +463,7 @@ const FuelEfficiencyCalculator: React.FC<{ locale?: Locale }> = ({ locale = "ko"
 
         {/* Section 4: Reference table */}
         <section className="space-y-4">
-          <h4 className="text-base font-black text-foreground">{t.sec4Title}</h4>
+          <h3 className="text-base font-black text-foreground">{t.sec4Title}</h3>
           <div className="overflow-x-auto rounded-2xl border border-border">
             <table className="w-full text-sm">
               <thead>

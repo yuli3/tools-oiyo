@@ -80,9 +80,9 @@ const LoanCalculator: React.FC<{ locale?: 'ko' | 'en' }> = ({ locale = 'ko' }) =
 
   return (
     <div className="my-6">
-      <h3 className="text-xl font-bold text-foreground mb-6">
+      <h2 className="sr-only">
         {locale === 'ko' ? '대출 계산기 (원리금균등상환)' : 'Loan Repayment Calculator'}
-      </h3>
+      </h2>
 
       <div className="grid md:grid-cols-2 gap-5 sm:gap-8">
         {/* Inputs */}
@@ -205,9 +205,9 @@ const LoanCalculator: React.FC<{ locale?: 'ko' | 'en' }> = ({ locale = 'ko' }) =
       {/* Schedule table */}
       {result && result.schedule.length > 0 && (
         <div className="mt-5 sm:mt-8 overflow-x-auto">
-          <h4 className="text-sm font-bold text-foreground mb-3">
+          <h3 className="text-sm font-bold text-foreground mb-3">
             {locale === 'ko' ? '상환 스케줄 (첫 12개월)' : 'Repayment Schedule (First 12 months)'}
-          </h4>
+          </h3>
           <table className="w-full text-sm border-collapse" aria-label={locale === 'ko' ? '상환 스케줄 표' : 'Repayment schedule table'}>
             <thead>
               <tr className="bg-muted">

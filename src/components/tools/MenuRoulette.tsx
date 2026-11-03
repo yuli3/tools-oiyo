@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { Button, Card, CardContent, CardHeader, CardTitle, CardDescription, Shuffle, Heart, Share2, History, Trash2, Search, CheckCircle, Swords } from './MenuUi';
 import { MENU_UI } from '../../lib/menu-roulette-ui';
+import { menuParts } from '../../lib/menu-names-en';
 import menuData, { countryLabels, type CountryType, type MenuItem } from '../../lib/menu-data';
 import { mapSearchLinks, mealFromQuery, pickFresh, poolFor, suggestedMeal, type MealMode } from '../../lib/menu-pick';
 
@@ -276,7 +277,7 @@ export default function MenuGenerator({ locale = 'ko' }: { locale?: string }) {
 
     spinTimer.current = setInterval(() => {
       const r = pool[Math.floor(Math.random() * pool.length)];
-      setSpinText(r.menu.split(' ')[0]);
+      setSpinText(menuParts(r.menu, locale).name);
       i++;
       if (i >= count) {
         if (spinTimer.current) clearInterval(spinTimer.current);
@@ -284,7 +285,7 @@ export default function MenuGenerator({ locale = 'ko' }: { locale?: string }) {
         const final = pickFresh(pool, getHistory().slice(0, 3)) ?? pool[0];
         setSelectedMenu(final.menu);
         setSelectedImage(final.image);
-        setSearchQuery(final.menu.split(' ')[0]);
+        setSearchQuery(menuParts(final.menu, locale).name);
         setSpinText('');
         setIsGenerating(false);
         const h = addToHistory(final.menu);
@@ -326,7 +327,7 @@ export default function MenuGenerator({ locale = 'ko' }: { locale?: string }) {
     const item = menuData.all.find((m) => m.menu === winner);
     if (item) {
       setSelectedImage(item.image);
-      setSearchQuery(winner.split(' ')[0]);
+      setSearchQuery(menuParts(winner, locale).name);
       setImgError(false);
     }
     const h = addToHistory(winner);
@@ -344,7 +345,7 @@ export default function MenuGenerator({ locale = 'ko' }: { locale?: string }) {
 
   const handleShare = useCallback(async () => {
     if (!selectedMenu) return;
-    const name = selectedMenu.split(' ')[0];
+    const name = menuParts(selectedMenu, locale).name;
     const template = meal === 'lunch' ? copy.shareLunch : meal === 'dinner' ? copy.shareDinner : copy.shareAny;
     const data = { title: copy.shareTitle, text: fillName(template, name), url: window.location.href };
     try {
@@ -500,9 +501,9 @@ export default function MenuGenerator({ locale = 'ko' }: { locale?: string }) {
                   className="group min-h-40 rounded-xl border-2 border-border p-4 sm:p-6 text-center hover:border-primary hover:bg-muted transition-colors"
                 >
                   <div className="text-4xl mb-3">{idx === 0 ? '👈' : '👉'}</div>
-                  <div className="text-xl font-bold">{opt.split(' ')[0]}</div>
-                  {opt.includes(' ') && (
-                    <div className="text-xs text-muted-foreground mt-1">{opt.split(' ').slice(1).join(' ')}</div>
+                  <div className="text-xl font-bold">{menuParts(opt, locale).name}</div>
+                  {menuParts(opt, locale).rest && (
+                    <div className="text-xs text-muted-foreground mt-1">{menuParts(opt, locale).rest}</div>
                   )}
                 </button>
               ))}
@@ -535,16 +536,16 @@ export default function MenuGenerator({ locale = 'ko' }: { locale?: string }) {
               <div className="aspect-video overflow-hidden bg-muted">
                 <img
                   src={selectedImage}
-                  alt={selectedMenu.split(' ')[0]}
+                  alt={menuParts(selectedMenu, locale).name}
                   className="h-full w-full object-cover"
                   onError={() => setImgError(true)}
                 />
               </div>
             )}
             <div className="p-4 sm:p-6 text-center space-y-4">
-              <p className="text-3xl font-bold">{selectedMenu.split(' ')[0]}</p>
-              {selectedMenu.includes(' ') && (
-                <p className="text-sm text-muted-foreground">{selectedMenu.split(' ').slice(1).join(' ')}</p>
+              <p className="text-3xl font-bold">{menuParts(selectedMenu, locale).name}</p>
+              {menuParts(selectedMenu, locale).rest && (
+                <p className="text-sm text-muted-foreground">{menuParts(selectedMenu, locale).rest}</p>
               )}
               <div className="flex gap-2">
                 <Button
@@ -564,7 +565,7 @@ export default function MenuGenerator({ locale = 'ko' }: { locale?: string }) {
               <div className="space-y-2 text-left">
                 <p className="text-sm font-semibold">{copy.mapsTitle}</p>
                 <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
-                  {mapSearchLinks(selectedMenu.split(' ')[0], copy.placeWord, locale).map((link) => (
+                  {mapSearchLinks(menuParts(selectedMenu, locale).name, copy.placeWord, locale).map((link) => (
                     <Button key={link.id} variant="outline" size="sm" asChild>
                       <a href={link.href} target="_blank" rel="noopener noreferrer">
                         {link.id === 'kakao' ? copy.kakao : link.id === 'naver' ? copy.naver : copy.google}
@@ -616,16 +617,16 @@ export default function MenuGenerator({ locale = 'ko' }: { locale?: string }) {
       {/* Favorites */}
       {favorites.length > 0 && (
         <div>
-          <h3 className="mb-3 flex items-center gap-2 text-lg font-semibold">
+          <h2 className="mb-3 flex items-center gap-2 text-lg font-semibold">
             <Heart className="size-5 text-destructive" />
             {ui.favorites}
-          </h3>
+          </h2>
           <Card>
             <CardContent className="p-4">
               <ul className="max-h-52 space-y-1 overflow-y-auto">
                 {favorites.map((item, i) => (
                   <li key={i} className="flex items-center justify-between gap-2 rounded-lg px-2 py-1.5 hover:bg-muted">
-                    <span className="text-sm">{item.split(' ')[0]}</span>
+                    <span className="text-sm">{menuParts(item, locale).name}</span>
                     <button
                       onClick={() => setFavorites(removeFavorite(item))}
                       className="rounded p-1 text-muted-foreground hover:text-destructive"
@@ -644,10 +645,10 @@ export default function MenuGenerator({ locale = 'ko' }: { locale?: string }) {
       {/* History */}
       <div>
         <div className="mb-3 flex items-center justify-between">
-          <h3 className="flex items-center gap-2 text-lg font-semibold">
+          <h2 className="flex items-center gap-2 text-lg font-semibold">
             <History className="size-5 text-primary" />
             {ui.history}
-          </h3>
+          </h2>
           {history.length > 0 && (
             <Button
               variant="outline"
@@ -664,7 +665,7 @@ export default function MenuGenerator({ locale = 'ko' }: { locale?: string }) {
             <CardContent className="p-4">
               <ol className="max-h-52 list-decimal list-inside space-y-1 overflow-y-auto text-sm text-muted-foreground">
                 {history.map((item, i) => (
-                  <li key={i} className="truncate">{item.split(' ')[0]}</li>
+                  <li key={i} className="truncate">{menuParts(item, locale).name}</li>
                 ))}
               </ol>
             </CardContent>

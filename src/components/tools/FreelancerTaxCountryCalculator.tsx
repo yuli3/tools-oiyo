@@ -141,7 +141,7 @@ function China() {
   return (
     <>
       <p className="text-sm text-muted-foreground">个体工商户、个人独资企业和独立从事经营活动的个人，按经营所得5%–35%计税；为单位提供劳务取得的报酬属于劳务报酬，并入综合所得。</p>
-      <h3 className="mt-4 font-semibold text-foreground">经营所得（年度汇算）</h3>
+      <h2 className="mt-4 font-semibold text-foreground">经营所得（年度汇算）</h2>
       <div className="mt-3 grid gap-4 sm:grid-cols-2">
         <NumberField label="全年经营收入" value={revenue} onChange={setRevenue} suffix="元" step={1_000} />
         <NumberField label="成本、费用及损失" value={costs} onChange={setCosts} suffix="元" step={1_000} />
@@ -164,7 +164,7 @@ function China() {
       <div aria-live="polite" className="mt-3 grid gap-3 sm:grid-cols-2">
         <Result label={r.balance > 0 ? "汇算应补税额" : "汇算应退税额"} value={cny(Math.abs(r.balance))} note="次年3月31日前办理经营所得年度汇算" />
       </div>
-      <h3 className="mt-6 font-semibold text-foreground">劳务报酬（每次预扣预缴）</h3>
+      <h2 className="mt-6 font-semibold text-foreground">劳务报酬（每次预扣预缴）</h2>
       <div className="mt-3 grid gap-4 sm:grid-cols-2">
         <NumberField label="单次劳务报酬收入" value={payment} onChange={setPayment} suffix="元" step={500} />
       </div>

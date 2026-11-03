@@ -1,4 +1,5 @@
 import menuData, { type CountryType, type MenuItem } from './menu-data.ts';
+import { menuParts } from './menu-names-en.ts';
 
 export type MealMode = 'any' | 'lunch' | 'dinner';
 
@@ -82,13 +83,17 @@ const CATALOG_ORDER: CatalogGroupId[] = [
   'unspecified',
 ];
 
-function rowLabel(item: MenuItem): string {
+function rowLabel(item: MenuItem, locale: string): string {
+  if (locale !== 'ko') {
+    const { name, rest } = menuParts(item.menu, locale);
+    return rest ? `${name} · ${rest}` : name;
+  }
   return item.menu.split(/\s+/).filter(Boolean).join(' · ');
 }
 
 // 2026-09-30: most rows carry both 점심 and 저녁. Writing both full lists
 // would repeat the same names, so exclusive meals stay separate from the shared set.
-export function catalogGroups(): { id: CatalogGroupId; labels: string[] }[] {
+export function catalogGroups(locale = 'ko'): { id: CatalogGroupId; labels: string[] }[] {
   const buckets: Record<CatalogGroupId, string[]> = {
     lunchOnly: [],
     dinnerOnly: [],
@@ -100,7 +105,7 @@ export function catalogGroups(): { id: CatalogGroupId; labels: string[] }[] {
   };
 
   for (const item of menuData.all) {
-    const label = rowLabel(item);
+    const label = rowLabel(item, locale);
     const lunch = hasTag(item, '점심');
     const dinner = hasTag(item, '저녁');
     if (lunch && dinner) buckets.both.push(label);
@@ -114,7 +119,7 @@ export function catalogGroups(): { id: CatalogGroupId; labels: string[] }[] {
 
   return CATALOG_ORDER.map((id) => ({
     id,
-    labels: [...new Set(buckets[id])].sort((a, b) => a.localeCompare(b, 'ko')),
+    labels: [...new Set(buckets[id])].sort((a, b) => a.localeCompare(b, locale === 'ko' ? 'ko' : 'en')),
   })).filter((group) => group.labels.length > 0);
 }
 

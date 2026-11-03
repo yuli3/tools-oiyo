@@ -116,9 +116,9 @@ const SavingsComparisonCalculator: React.FC<{ locale?: 'ko' | 'en' }> = ({ local
 
   return (
     <div className="my-6">
-      <h3 className="text-xl font-bold text-foreground mb-6">
+      <h2 className="sr-only">
         {locale === 'ko' ? '저축 상품 비교 계산기' : 'Savings Product Comparison'}
-      </h3>
+      </h2>
 
       <div className="grid md:grid-cols-2 gap-5 sm:gap-8">
         {/* Inputs */}
