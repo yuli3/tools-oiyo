@@ -1,5 +1,6 @@
 'use client';
 
+import { accountLabel } from '../../lib/account-names';
 import React, { useReducer, useCallback } from 'react';
 
 // ── Types ────────────────────────────────────────────────────────────────────
@@ -351,7 +352,7 @@ export const JournalEntryTrainer: React.FC<JournalEntryTrainerProps> = ({ locale
   if (state.showResults) {
     const pct = Math.round((state.score / SCENARIOS.length) * 100);
     return (
-      <div className="my-7 sm:my-12 p-6 md:p-8 bg-muted   border border-border rounded-3xl shadow-xl">
+      <div className="my-6">
         <h3 className="text-xl font-bold text-foreground mb-2">
           {locale === 'ko' ? '결과 보기' : 'Quiz Results'}
         </h3>
@@ -383,7 +384,7 @@ export const JournalEntryTrainer: React.FC<JournalEntryTrainerProps> = ({ locale
   }
 
   return (
-    <div className="my-7 sm:my-12 p-6 md:p-8 bg-muted   border border-border rounded-3xl shadow-xl">
+    <div className="my-6">
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <h3 className="text-xl font-bold text-foreground">
@@ -415,9 +416,9 @@ export const JournalEntryTrainer: React.FC<JournalEntryTrainerProps> = ({ locale
         <p className="text-base font-bold text-foreground mb-0.5">
           {locale === 'ko' ? currentScenario.descKo : currentScenario.descEn}
         </p>
-        <p className="text-sm text-muted-foreground">
-          {locale === 'ko' ? currentScenario.descEn : currentScenario.descKo}
-        </p>
+        {locale === 'ko' && (
+          <p className="text-sm text-muted-foreground">{currentScenario.descEn}</p>
+        )}
         <p className="text-sm font-bold text-muted-foreground mt-2">
           {locale === 'ko' ? `금액: ${currentScenario.amount.toLocaleString()}원` : `Amount: ₩${currentScenario.amount.toLocaleString()}`}
         </p>
@@ -440,7 +441,7 @@ export const JournalEntryTrainer: React.FC<JournalEntryTrainerProps> = ({ locale
           >
             <option value="">{locale === 'ko' ? '-- 계정 선택 --' : '-- Select Account --'}</option>
             {ACCOUNTS.map((acc) => (
-              <option key={acc} value={acc}>{acc}</option>
+              <option key={acc} value={acc}>{accountLabel(acc, locale)}</option>
             ))}
           </select>
         </div>
@@ -460,7 +461,7 @@ export const JournalEntryTrainer: React.FC<JournalEntryTrainerProps> = ({ locale
           >
             <option value="">{locale === 'ko' ? '-- 계정 선택 --' : '-- Select Account --'}</option>
             {ACCOUNTS.map((acc) => (
-              <option key={acc} value={acc}>{acc}</option>
+              <option key={acc} value={acc}>{accountLabel(acc, locale)}</option>
             ))}
           </select>
         </div>

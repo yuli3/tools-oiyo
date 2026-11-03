@@ -3,8 +3,8 @@ import { ToolPanel } from './ToolPanel';
 
 const InflationCalculator: React.FC<{ locale?: 'ko' | 'en' }> = ({ locale = 'ko' }) => {
     const t = {
-        ko: { title: "화폐 가치 계산기 (인플레이션)", desc: "시간이 흐름에 따라 변하는 화폐의 실질 가치를 계산합니다.", amount: "현재 금액 (원)", rate: "예상 물가 상승률 (%)", years: "기간 (년)", result1: "년 뒤의 실질 가치는", result2: "현재 가치를 유지하려면 필요한 금액", calc: "계산하기" },
-        en: { title: "Inflation Calculator", desc: "Calculate the real value of money over time.", amount: "Amount", rate: "Inflation Rate (%)", years: "Period (Years)", result1: "Real value after years", result2: "Amount needed to maintain value", calc: "Calculate" }
+        ko: { title: "화폐 가치 계산기 (인플레이션)", desc: "시간이 흐름에 따라 변하는 화폐의 실질 가치를 계산합니다.", amount: "현재 금액 (원)", rate: "예상 물가 상승률 (%)", years: "기간 (년)", result1: "년 뒤의 실질 가치는", result2: "현재 가치를 유지하려면 필요한 금액", calc: "계산하기", unit: "원", drop: (p: number) => `물가 상승으로 인해 구매력이 ${p}% 하락해요.`, need: "현재와 같은 생활 수준을 위해 필요한 미래 자산이에요." },
+        en: { title: "Inflation Calculator", desc: "Calculate the real value of money over time.", amount: "Amount", rate: "Inflation Rate (%)", years: "Period (Years)", result1: "Real value after years", result2: "Amount needed to maintain value", calc: "Calculate", unit: "", drop: (p: number) => `Purchasing power falls by ${p}% because of inflation.`, need: "Future amount needed to keep the same standard of living." }
     }[locale === 'ko' ? 'ko' : 'en'];
 
     const [amount, setAmount] = useState(1000000);
@@ -46,13 +46,13 @@ const InflationCalculator: React.FC<{ locale?: 'ko' | 'en' }> = ({ locale = 'ko'
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="p-4 sm:p-6 bg-destructive/10 border border-destructive/20 rounded-3xl space-y-2">
                         <p className="text-xs font-black text-destructive uppercase">{years}{t.result1}</p>
-                        <h4 className="text-2xl font-black text-destructive">{Math.round(futureValue).toLocaleString()}원</h4>
-                        <p className="text-xs text-destructive">물가 상승으로 인해 구매력이 {Math.round((1 - futureValue/amount)*100)}% 하락합니다.</p>
+                        <h4 className="text-2xl font-black text-destructive">{Math.round(futureValue).toLocaleString()}{t.unit}</h4>
+                        <p className="text-xs text-destructive">{t.drop(Math.round((1 - futureValue/amount)*100))}</p>
                     </div>
                     <div className="p-4 sm:p-6 bg-success/10 border border-success/20 rounded-3xl space-y-2">
                         <p className="text-xs font-black text-success uppercase">{t.result2}</p>
-                        <h4 className="text-2xl font-black text-success">{Math.round(neededAmount).toLocaleString()}원</h4>
-                        <p className="text-xs text-success">현재와 같은 생활 수준을 위해 필요한 미래 자산입니다.</p>
+                        <h4 className="text-2xl font-black text-success">{Math.round(neededAmount).toLocaleString()}{t.unit}</h4>
+                        <p className="text-xs text-success">{t.need}</p>
                     </div>
                 </div>
             </div>

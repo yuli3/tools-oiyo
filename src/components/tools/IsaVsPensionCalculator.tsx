@@ -146,7 +146,7 @@ const IsaVsPensionCalculator: React.FC<{ locale?: 'ko' | 'en' }> = ({ locale = '
   const yearOptions = ['3', '5', '10', '20', '30'];
 
   return (
-    <div className="my-7 sm:my-12 p-6 md:p-8 bg-muted   border border-border rounded-3xl shadow-xl">
+    <div className="my-6">
       <h3 className="text-xl font-bold text-foreground mb-2">
         {ko ? 'ISA vs 연금저축 비교 계산기' : 'ISA vs Pension Savings Comparison'}
       </h3>

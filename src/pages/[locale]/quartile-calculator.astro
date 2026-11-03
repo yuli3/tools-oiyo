@@ -1,4 +1,5 @@
 ---
+import ToolShell from '../../components/ToolShell.astro';
 import Layout from '../../components/Layout.astro';
 import RelatedUtilities from '../../components/RelatedUtilities.astro';
 import QuartileCalculator from '../../components/tools/QuartileCalculator';
@@ -21,11 +22,11 @@ const url=`https://tools.oiyo.net/${locale}/quartile-calculator/`;
 const schema=utilityJsonLd({name:m.title,description:m.description,url,locale,steps:c.slice(6),faqs:[{question:c[2],answer:c[3]}]});
 ---
 <Layout title={m.title} description={m.description} locale={locale} availableLocales={[...locales]} canonicalURL={url}>
-  <div class="mx-auto max-w-3xl px-4 py-6">
-    <h1 class="text-2xl font-bold">{m.h1}</h1><p class="mt-2 text-sm text-muted-foreground">{m.description}</p>
+  <ToolShell title={m.h1} description={m.description}>
+    
     <QuartileCalculator client:load locale={locale} />
     <section class="space-y-3"><h2 class="text-lg font-semibold">{c[0]}</h2><p>{c[1]}</p><p>{c[4]}</p><p class="rounded-lg border border-border bg-muted p-3">{c[5]}</p><h2 class="text-lg font-semibold">{c[2]}</h2><p>{c[3]}</p><a class="inline-flex min-h-11 items-center text-primary underline" href="https://stat.ethz.ch/R-manual/R-devel/library/stats/html/quantile.html">R stats: Sample Quantiles</a></section>
     <RelatedUtilities locale={locale} current="quartile-calculator" group="calc" />
-  </div>
+  </ToolShell>
   <script type="application/ld+json" set:html={JSON.stringify(schema)} />
 </Layout>

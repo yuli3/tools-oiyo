@@ -1,5 +1,6 @@
 'use client';
 
+import { accountLabel } from '../../lib/account-names';
 import React, { useReducer, useMemo } from 'react';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
@@ -176,7 +177,7 @@ const EntryRow: React.FC<EntryRowProps> = ({ entry, onUpdate, onRemove, canRemov
       aria-label={locale === 'ko' ? '차변 계정' : 'Debit account'}
     >
       <option value="">{locale === 'ko' ? '차변 계정' : 'Debit Acct'}</option>
-      {ACCOUNTS.map((a) => <option key={a} value={a}>{a}</option>)}
+      {ACCOUNTS.map((a) => <option key={a} value={a}>{accountLabel(a, locale)}</option>)}
     </select>
     <input
       type="number"
@@ -193,7 +194,7 @@ const EntryRow: React.FC<EntryRowProps> = ({ entry, onUpdate, onRemove, canRemov
       aria-label={locale === 'ko' ? '대변 계정' : 'Credit account'}
     >
       <option value="">{locale === 'ko' ? '대변 계정' : 'Credit Acct'}</option>
-      {ACCOUNTS.map((a) => <option key={a} value={a}>{a}</option>)}
+      {ACCOUNTS.map((a) => <option key={a} value={a}>{accountLabel(a, locale)}</option>)}
     </select>
     <input
       type="number"
@@ -245,7 +246,7 @@ export const TAccountVisualizer: React.FC<TAccountVisualizerProps> = ({ locale =
   ];
 
   return (
-    <div className="my-7 sm:my-12 p-6 md:p-8 bg-muted   border border-border rounded-3xl shadow-xl">
+    <div className="my-6">
       <h3 className="text-xl font-bold text-foreground mb-2">
         {locale === 'ko' ? 'T계정 시각화기' : 'T-Account Visualizer'}
       </h3>
@@ -340,11 +341,11 @@ export const TAccountVisualizer: React.FC<TAccountVisualizerProps> = ({ locale =
                   <div
                     key={acc.account}
                     className={`rounded-2xl border-2 overflow-hidden ${colors.border}`}
-                    aria-label={`${acc.account} T-account`}
+                    aria-label={`${accountLabel(acc.account, locale)} T-account`}
                   >
                     {/* Account name header */}
                     <div className={`px-3 py-2 flex items-center justify-between ${colors.bg}`}>
-                      <span className={`text-sm font-bold ${colors.text}`}>{acc.account}</span>
+                      <span className={`text-sm font-bold ${colors.text}`}>{accountLabel(acc.account, locale)}</span>
                       <span className={`text-xs ${colors.text} opacity-70`}>{colors.label}</span>
                     </div>
 
@@ -423,7 +424,7 @@ export const TAccountVisualizer: React.FC<TAccountVisualizerProps> = ({ locale =
                 <tbody>
                   {tAccounts.map((acc, idx) => (
                     <tr key={acc.account} className={idx % 2 === 0 ? 'bg-card' : 'bg-card'}>
-                      <td className="px-4 py-2 text-muted-foreground">{acc.account}</td>
+                      <td className="px-4 py-2 text-muted-foreground">{accountLabel(acc.account, locale)}</td>
                       <td className="px-4 py-2 text-right font-bold text-foreground">
                         {acc.debitTotal > 0 ? acc.debitTotal.toLocaleString() : '—'}
                       </td>

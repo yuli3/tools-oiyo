@@ -1,4 +1,5 @@
 ---
+import ToolShell from '../../components/ToolShell.astro';
 import Layout from "../../components/Layout.astro";
 import RelatedTools from "../../components/RelatedTools.astro";
 import RatesAsOf from "../../components/RatesAsOf.astro";
@@ -8,20 +9,11 @@ import RatesAsOf from "../../components/RatesAsOf.astro";
   title="국민건강보험료 지역가입자 계산기 & 피부양자 자격 판정 — 2026년 개편 부과체계"
   description="2026년 건강보험료율 7.19%, 재산 점수당 211.5원, 재산 기본공제 1억 원, 장기요양 13.14%로 지역가입자 보험료를 계산하고 피부양자 자격 요건을 함께 확인해요."
 >
-  <div class="mx-auto max-w-4xl px-4 py-8 sm:px-6 sm:py-12">
+  <ToolShell title="국민건강보험료 지역가입자 계산기 & 피부양자 판정" description="퇴사하거나 부업·사업소득이 생겼을 때 내게 될 지역건강보험료를 계산하고, 피부양자 자격을 유지할 수 있는지 함께 확인해요." wide>
+    <p slot="meta" class="text-sm font-semibold text-primary">2026년 건강보험료율 7.19% · 재산 기본공제 1억 원 반영</p>
+    <div slot="meta"><RatesAsOf note="월 보험료는 하한 20,160원~상한 4,591,740원 사이로 맞춰요. 실제 고지액은 공단이 전년도 소득·재산 자료로 정해요." sources="국민건강보험법 시행령 제44조·별표4, 같은 법 시행규칙 제44조, 보건복지부고시 제2025-222호" /></div>
     <!-- Header -->
-    <div class="mb-8 text-center">
-      <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold mb-3">
-        2026년 건강보험료율 7.19% · 재산 기본공제 1억 원 반영
-      </div>
-      <h1 class="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight mb-2">
-        국민건강보험료 지역가입자 계산기 & 피부양자 판정
-      </h1>
-      <p class="text-sm text-muted-foreground max-w-xl mx-auto">
-        퇴사하거나 부업·사업소득이 생겼을 때 내게 될 지역건강보험료를 계산하고, 피부양자 자격을 유지할 수 있는지 함께 확인해요.
-      </p>
-      <RatesAsOf note="월 보험료는 하한 20,160원~상한 4,591,740원 사이로 맞춰요. 실제 고지액은 공단이 전년도 소득·재산 자료로 정해요." sources="국민건강보험법 시행령 제44조·별표4, 같은 법 시행규칙 제44조, 보건복지부고시 제2025-222호" />
-    </div>
+    
 
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
       <!-- Input Form -->
@@ -223,7 +215,7 @@ import RatesAsOf from "../../components/RatesAsOf.astro";
     </div>
 
     <RelatedTools currentId="health-insurance" />
-  </div>
+  </ToolShell>
 
   <script>
     // 2026-10-17 (FAANG audit S-2): 요율·점수표·하한/상한은 SSOT(src/lib/kr-rates-2026.mjs)에서만 가져와요.

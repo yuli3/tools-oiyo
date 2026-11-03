@@ -109,7 +109,7 @@ const PensionOptimizerCalculator: React.FC<{ locale?: 'ko' | 'en' }> = ({ locale
   };
 
   return (
-    <div className="my-7 sm:my-12 p-6 md:p-8 bg-muted   border border-border rounded-3xl shadow-xl">
+    <div className="my-6">
       <h3 className="text-xl font-bold text-foreground mb-6">
         {locale === 'ko' ? '연금 최적화 계산기' : 'Pension Optimizer'}
       </h3>
@@ -300,7 +300,9 @@ const PensionOptimizerCalculator: React.FC<{ locale?: 'ko' | 'en' }> = ({ locale
       </div>
 
       <p className="mt-6 text-xs text-muted-foreground text-center">
-        * 65세 은퇴, 연 6% 수익률 가정. 실제 연금 수령액은 운용 성과에 따라 달라집니다. 세무 전문가 상담 권장.
+        {locale === 'ko'
+          ? '* 65세 은퇴, 연 6% 수익률 가정. 실제 연금 수령액은 운용 성과에 따라 달라져요. 세무 전문가 상담을 권해요.'
+          : '* Assumes retirement at 65 and a 6% annual return. Actual pension payouts depend on investment performance; consult a tax professional.'}
       </p>
     </div>
   );

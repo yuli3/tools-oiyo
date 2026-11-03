@@ -1,4 +1,5 @@
 ---
+import ToolShell from '../../components/ToolShell.astro';
 // Moved from blog.oiyo.net/{locale}/shoe-size-converter/ on 2026-10-27 (W6b). Copy and size tables unchanged.
 import Layout from "../../components/Layout.astro";
 import RelatedUtilities from "../../components/RelatedUtilities.astro";
@@ -361,12 +362,9 @@ const structuredData = {
 
 <Layout title={m.title} description={m.description} locale={locale} availableLocales={[...locales]} canonicalURL={pageUrl}>
   <script type="application/ld+json" is:inline set:html={JSON.stringify(structuredData)} />
-  <div class="mx-auto max-w-3xl px-4 py-5 sm:py-8">
-    <section class="mb-5 sm:mb-8 rounded-2xl border border-border bg-card p-4 sm:p-6 shadow-sm">
-      <p class="text-sm font-semibold uppercase tracking-wide text-success">{m.eyebrow}</p>
-      <h1 class="mt-2 text-3xl font-black tracking-tight text-foreground">{m.title}</h1>
-      <p class="mt-4 leading-8 text-muted-foreground">{c.lead}</p>
-    </section>
+  <ToolShell title={m.title} description={c.lead}>
+    <div slot="meta"><p class="text-sm font-semibold uppercase tracking-wide text-success">{m.eyebrow}</p></div>
+    
 
     <ShoeSizeConverter client:load locale={locale as Locale} />
 
@@ -502,5 +500,5 @@ const structuredData = {
       <p class="mt-3 text-sm leading-6 text-muted-foreground">{c.disclaimer}</p>
     </section>
     <RelatedUtilities locale={locale} current="shoe-size-converter" group="everyday" />
-  </div>
+  </ToolShell>
 </Layout>

@@ -37,7 +37,7 @@ const DsrCalculator: React.FC = () => {
     }, [income, existingDebt, newLoan, interestRate, loanTerm]);
 
     return (
-        <div className=" my-7 sm:my-12 p-4 sm:p-8 bg-gradient-to-br from-muted/40 to-muted border border-border rounded-3xl shadow-xl">
+        <div className="my-6">
             <div className="flex flex-col md:flex-row gap-5 sm:gap-8">
                 {/* Inputs */}
                 <div className="flex-1 space-y-6">

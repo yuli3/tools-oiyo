@@ -67,7 +67,7 @@ const MortgageCalculator: React.FC<{ locale?: 'ko' | 'en' }> = ({ locale = 'ko' 
   const interestPct = result ? 100 - principalPct : 0;
 
   return (
-    <div className="my-7 sm:my-12 p-6 md:p-8 bg-muted   border border-border rounded-3xl shadow-xl">
+    <div className="my-6">
       <h3 className="text-xl font-bold text-foreground mb-6">
         {ko ? '주택담보대출 계산기' : 'Mortgage Calculator'}
       </h3>

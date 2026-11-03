@@ -792,7 +792,7 @@ export const FinancialRatioTrendAnalyzer: React.FC<{ locale?: 'ko' | 'en' }> = (
   const ratios = React.useMemo(() => calcRatios(years), [years]);
 
   return (
-    <div className=" my-7 sm:my-12 p-6 md:p-8 bg-gradient-to-br from-primary/10 to-primary/10 border border-primary/30 rounded-3xl shadow-xl">
+    <div className="my-6">
       <h3 className="text-xl font-bold text-primary mb-2">
         {locale === 'ko' ? '재무비율 추세 분석기' : 'Financial Ratio Trend Analyzer'}
       </h3>
@@ -859,7 +859,7 @@ export const FinancialRatioTrendAnalyzer: React.FC<{ locale?: 'ko' | 'en' }> = (
                     {lastIdx > 0 ? (trendPositive ? '▲' : '▼') : ''}
                   </span>
                   <span className="text-xs text-muted-foreground ml-auto">
-                    {locale === 'ko' ? '벤치마크' : 'Benchmark'}: {ratio.benchmark}{ratio.unit}
+                    {locale === 'ko' ? '벤치마크' : 'Benchmark'}: {ratio.benchmark}{locale === 'ko' || ratio.unit !== '회' ? ratio.unit : '×'}
                   </span>
                 </div>
 
@@ -872,14 +872,14 @@ export const FinancialRatioTrendAnalyzer: React.FC<{ locale?: 'ko' | 'en' }> = (
 
                     return (
                       <div key={i} className="flex flex-col gap-1">
-                        <div className="w-full bg-muted rounded-full h-3 overflow-hidden" role="meter" aria-valuenow={val} aria-label={`${years[i].label} ${ratio.name}`}>
+                        <div className="w-full bg-muted rounded-full h-3 overflow-hidden" role="meter" aria-valuenow={val} aria-label={`${years[i].label} ${locale === 'ko' ? ratio.name : ratio.nameEn}`}>
                           <div
                             className={`w-(--w) h-3 rounded-full transition-all ${color}`}
                             style={{ '--w': `${barWidth}%` } as CSSProperties}
                           />
                         </div>
                         <span className={`text-xs font-bold text-center ${textColor}`}>
-                          {val.toFixed(1)}{ratio.unit}
+                          {val.toFixed(1)}{locale === 'ko' || ratio.unit !== '회' ? ratio.unit : '×'}
                         </span>
                       </div>
                     );

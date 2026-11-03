@@ -1,4 +1,5 @@
 ---
+import ToolShell from '../../components/ToolShell.astro';
 import Layout from '../../components/Layout.astro';
 import HeightTravel from '../../components/tools/HeightTravel';
 import {heightTravelCopy} from '../../data/height-travel-copy';
@@ -8,10 +9,10 @@ const {locale}=Astro.props as {locale:Locale};const t=heightTravelCopy[locale];
 const url=`https://tools.oiyo.net/${locale}/height-world-travel/`;
 ---
 <Layout title={t.title} description={t.description} locale={locale} availableLocales={[...locales]} canonicalURL={url}>
-  <div class="mx-auto max-w-3xl space-y-4 px-4 py-6">
-    <h1 class="text-2xl font-bold tracking-tight">{t.title}</h1><p class="text-sm leading-relaxed text-muted-foreground">{t.description}</p>
+  <ToolShell title={t.title} description={t.description}>
+    
     <HeightTravel client:load locale={locale}/>
     <section class="space-y-3 border-t border-border pt-4 text-sm leading-relaxed"><h2 class="text-lg font-semibold">{t.methodTitle}</h2><p>{t.method}</p><p>{t.limits}</p><p>{t.privacy}</p><p><a class="text-primary underline" href="https://sizekorea.kr/">KATS · Size Korea</a> · <a class="text-primary underline" href="https://www.cdc.gov/nchs/data/series/sr_03/sr03-050.pdf">CDC/NCHS · NHANES · Table 7</a> · <a class="text-primary underline" href="https://www.mhlw.go.jp/bunya/kenkou/dl/kenkou_eiyou_chousa_tokubetsushuukei_h28.pdf">厚生労働省 · 平成28年国民健康・栄養調査</a> · <a class="text-primary underline" href="https://www150.statcan.gc.ca/n1/pub/82-626-x/2013001/t023-eng.htm">Statistics Canada · CHMS Cycle 2</a></p></section>
-  </div>
+  </ToolShell>
   <script type="application/ld+json" set:html={JSON.stringify({'@context':'https://schema.org','@type':'WebApplication',name:t.title,description:t.description,url,inLanguage:locale,applicationCategory:'UtilityApplication',operatingSystem:'All',offers:{'@type':'Offer',price:'0',priceCurrency:'USD'}})} />
 </Layout>

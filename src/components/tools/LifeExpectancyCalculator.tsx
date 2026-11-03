@@ -146,7 +146,7 @@ const LifeExpectancyCalculator: React.FC<{ locale?: 'ko' | 'en' }> = ({ locale =
   );
 
   return (
-    <div className="my-7 sm:my-12 p-6 md:p-8 bg-muted   border border-border rounded-3xl shadow-xl">
+    <div className="my-6">
       <h3 className="text-xl font-bold text-foreground mb-2">
         {locale === 'ko' ? '기대수명 계산기' : 'Life Expectancy Calculator'}
       </h3>

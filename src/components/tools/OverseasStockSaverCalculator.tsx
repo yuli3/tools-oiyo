@@ -73,7 +73,7 @@ const OverseasStockSaverCalculator: React.FC<{ locale?: 'ko' | 'en' }> = ({ loca
       : 'text-foreground';
 
   return (
-    <div className="my-7 sm:my-12 p-6 md:p-8 bg-muted   border border-border rounded-3xl shadow-xl">
+    <div className="my-6">
       <h3 className="text-xl font-bold text-foreground mb-2">
         {ko ? '해외주식 절세 전략 계산기' : 'Overseas Stock Tax Saver'}
       </h3>

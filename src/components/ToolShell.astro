@@ -2,10 +2,10 @@
 // WHY 2026-11-03 (impeccable ToolShell): every Tools page shell now shares one frame,
 // read top to bottom: H1 → description (+ jurisdiction) → tool → sources/article → related.
 // Shells pass their own data-* attributes through (tests and telemetry read them).
-interface Props { title: string; description?: string; [key: `data-${string}`]: string | undefined }
-const { title, description, ...attrs } = Astro.props;
+interface Props { title: string; description?: string; wide?: boolean; [key: `data-${string}`]: string | undefined }
+const { title, description, wide = false, ...attrs } = Astro.props;
 ---
-<article {...attrs} data-tool-shell class="mx-auto max-w-3xl space-y-6 px-4 py-6 sm:py-8">
+<article {...attrs} data-tool-shell class:list={["mx-auto space-y-6 px-4 py-6 sm:py-8", wide ? "max-w-4xl" : "max-w-3xl"]}>
   <header class="space-y-2">
     <h1 class="text-2xl font-bold tracking-tight sm:text-3xl">{title}</h1>
     {description && <p class="text-sm leading-relaxed text-muted-foreground sm:text-base">{description}</p>}

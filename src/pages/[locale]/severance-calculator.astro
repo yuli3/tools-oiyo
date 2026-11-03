@@ -171,7 +171,7 @@ const schema = utilityJsonLd({ name: m.title, description: m.description, url, l
 <Layout title={m.title} description={m.description} locale={locale} availableLocales={[...locales]} canonicalURL={url}>
   <ToolShell title={m.title} description={m.description}>
     {country ? <SeveranceCountryCalculator client:load country={country} /> : <SeveranceCalculator client:load locale={locale === 'ko' ? 'ko' : 'en'} />}
-    {!country && <p class="mt-4 text-xs text-muted-foreground">근거: 근로자퇴직급여 보장법 제8조, 근로기준법 제2조 제1항 제6호(평균임금). 퇴직소득세는 퇴직소득세 계산기에서 따로 계산해요.</p>}
+    {!country && <p class="mt-4 text-xs text-muted-foreground">{locale === 'ko' ? '근거: 근로자퇴직급여 보장법 제8조, 근로기준법 제2조 제1항 제6호(평균임금). 퇴직소득세는 퇴직소득세 계산기에서 따로 계산해요.' : 'Basis: Korea Employee Retirement Benefit Security Act Article 8 and Labor Standards Act Article 2(1)6 (average wage). Retirement income tax is calculated separately.'}</p>}
     <UtilityArticle c={c} />
     <RelatedUtilities locale={locale} current="severance-calculator" group="money" />
   </ToolShell>
