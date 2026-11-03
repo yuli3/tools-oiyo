@@ -123,7 +123,7 @@ const JeonseVsRentCalculator: React.FC<{ locale?: 'ko' | 'en' }> = ({ locale = '
     'w-full p-3 bg-card border border-primary/30 rounded-xl focus:ring-2 focus:ring-ring outline-none text-sm';
 
   return (
-    <div className=" my-7 sm:my-12 p-6 md:p-8 bg-gradient-to-br from-primary/10 to-primary/10 border border-primary/30 rounded-3xl shadow-xl">
+    <div className="my-6">
       <h3 className="text-xl font-bold text-primary mb-6">{t.title}</h3>
 
       {inputError && <p role="alert" className="mb-3 text-sm text-destructive">{locale === "ko" ? "금액·금리를 확인해 주세요. 대출금은 보증금을 넘을 수 없어요." : "Check amounts and rates. The loan cannot exceed the deposit."}</p>}

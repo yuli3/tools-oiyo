@@ -79,7 +79,7 @@ const LoanCalculator: React.FC<{ locale?: 'ko' | 'en' }> = ({ locale = 'ko' }) =
   const invalidTerm = Boolean(error) && Number(termMonths) <= 0;
 
   return (
-    <div className="my-7 sm:my-12 p-6 md:p-8 bg-muted   border border-border rounded-3xl shadow-xl">
+    <div className="my-6">
       <h3 className="text-xl font-bold text-foreground mb-6">
         {locale === 'ko' ? '대출 계산기 (원리금균등상환)' : 'Loan Repayment Calculator'}
       </h3>

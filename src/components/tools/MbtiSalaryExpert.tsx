@@ -70,7 +70,7 @@ const MbtiSalaryExpert: React.FC<{ locale?: 'ko' | 'en' }> = ({ locale = 'ko' })
     const data = t.types[selectedType] || t.types.ENTJ;
 
     return (
-        <div className="my-7 sm:my-12 p-4 sm:p-8 bg-card border border-border rounded-3xl shadow-xl max-w-3xl mx-auto">
+        <div className="my-6 max-w-3xl mx-auto">
             <h3 className="text-2xl font-black text-center text-foreground mb-5 sm:mb-8">{t.title}</h3>
             
             <div className="flex flex-wrap justify-center gap-2 mb-6 sm:mb-10">

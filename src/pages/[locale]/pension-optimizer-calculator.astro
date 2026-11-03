@@ -289,7 +289,15 @@ const LOCAL_SOURCES: Partial<Record<ActiveLocale, typeof KR_SOURCES>> = {
     note: "Comprobado el 2026-10-20 · Límites de 2026 iguales a los del Manual de Renta 2025. Rentabilidad supuesta, no garantizada.",
   },
 };
-const sources = (country && LOCAL_SOURCES[locale]) || KR_SOURCES;
+// 2026-11-03: non-Korean pages that still show the Korean calculator get English source labels.
+const KR_SOURCES_EN: typeof KR_SOURCES = {
+  links: [
+    { href: "https://www.nps.or.kr", label: "National Pension Service (Korea) — expected pension, early and deferred pension" },
+    { href: "https://www.law.go.kr", label: "Korea Law Information Center — National Pension Act" },
+  ],
+  note: "Checked 2026-09 · Reduction/increase rates and starting age can change with reforms. Look up your own estimate from your contribution record.",
+};
+const sources = (country && LOCAL_SOURCES[locale]) || (locale === 'ko' ? KR_SOURCES : KR_SOURCES_EN);
 const url = `https://tools.oiyo.net/${locale}/pension-optimizer-calculator/`;
 const schema = utilityJsonLd({ name: m.title, description: m.description, url, locale, steps: c.steps, faqs: c.faqs });
 ---

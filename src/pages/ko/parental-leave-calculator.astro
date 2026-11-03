@@ -1,4 +1,5 @@
 ---
+import ToolShell from '../../components/ToolShell.astro';
 import Layout from "../../components/Layout.astro";
 import RelatedTools from "../../components/RelatedTools.astro";
 import RatesAsOf from "../../components/RatesAsOf.astro";
@@ -8,20 +9,11 @@ import RatesAsOf from "../../components/RatesAsOf.astro";
   title="육아휴직 급여 계산기 2026 — 6+6 부모육아휴직제·한부모·월별 수령액"
   description="통상임금과 사용 개월 수를 넣으면 2025년 개편 기준 일반 육아휴직 급여(사후지급금 없이 매월 전액), 6+6 부모육아휴직제(첫 6개월 부모 합산 최대 4,000만 원), 한부모 특례의 월별 수령액을 계산해요."
 >
-  <div class="mx-auto max-w-4xl px-4 py-8 sm:px-6 sm:py-12">
+  <ToolShell title="육아휴직 급여 & 6+6 부모육아휴직 계산기" description="통상임금을 기준으로 일반 육아휴직 급여와 6+6 특례(6개월 차 월 최대 450만 원)의 월별 지급액을 비교해 드려요." wide>
+    <p slot="meta" class="text-sm font-semibold text-primary">2025년 개편 육아휴직 급여·6+6 부모육아휴직제 반영</p>
+    <div slot="meta"><RatesAsOf note="2025년 1월 1일 이후 육아휴직분부터 사후지급금(25%) 없이 매월 전액 지급돼요. 하한은 월 70만 원이에요." sources="고용보험법 시행령 제95조·제95조의3, 고용노동부 2025 육아휴직 급여 개편 안내" /></div>
     <!-- Header -->
-    <div class="mb-8 text-center">
-      <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold mb-3">
-        2025년 개편 육아휴직 급여·6+6 부모육아휴직제 반영
-      </div>
-      <h1 class="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight mb-2">
-        육아휴직 급여 & 6+6 부모육아휴직 계산기
-      </h1>
-      <p class="text-sm text-muted-foreground max-w-xl mx-auto">
-        통상임금을 기준으로 일반 육아휴직 급여와 6+6 특례(6개월 차 월 최대 450만 원)의 월별 지급액을 비교해 드려요.
-      </p>
-      <RatesAsOf note="2025년 1월 1일 이후 육아휴직분부터 사후지급금(25%) 없이 매월 전액 지급돼요. 하한은 월 70만 원이에요." sources="고용보험법 시행령 제95조·제95조의3, 고용노동부 2025 육아휴직 급여 개편 안내" />
-    </div>
+    
 
     <!-- Mode Selector Tabs -->
     <div class="flex p-1 bg-muted rounded-xl mb-6 max-w-md mx-auto">
@@ -229,7 +221,7 @@ import RatesAsOf from "../../components/RatesAsOf.astro";
     <div class="mt-8">
       <RelatedTools currentId="parental-leave-calculator" />
     </div>
-  </div>
+  </ToolShell>
 
   <script>
     // 2026-10-17 (FAANG audit S-3): 2025년 개편 반영. 사후지급금 25% 유보 폐지, 6+6 1개월 차 상한 250만 원.

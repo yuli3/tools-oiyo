@@ -1,4 +1,5 @@
 ---
+import ToolShell from '../../components/ToolShell.astro';
 // Migrated from blog.oiyo.net/{locale}/color-pairs/ on 2026-10-27 (W2). Copy is unchanged (Blog had ko/en copy; other locales fall back to en).
 import Layout from '../../components/Layout.astro';
 import RelatedUtilities from '../../components/RelatedUtilities.astro';
@@ -20,13 +21,8 @@ const ko = locale === "ko";
 const url = `https://tools.oiyo.net/${locale}/color-pairs/`;
 ---
 <Layout title={m.title} description={m.description} locale={locale} availableLocales={[...locales]} canonicalURL={url}>
-  <article class="mx-auto max-w-3xl px-4 py-6 sm:py-10">
-    <h1 class="text-2xl font-bold tracking-tight">{m.title}</h1>
-    <p class="mt-3 text-sm leading-6 text-muted-foreground">
-      {ko
-        ? "유행 순위가 아닙니다. 짝의 말입니다. 퍼스널 컬러 테스트도 아닙니다."
-        : "Not a trend list. Words for a pair. Not a personal-color test."}
-    </p>
+  <ToolShell title={m.title} description={ko ? "유행 순위가 아닙니다. 짝의 말입니다. 퍼스널 컬러 테스트도 아닙니다." : "Not a trend list. Words for a pair. Not a personal-color test."}>
+    
     <div class="mt-5 sm:mt-8">
       <ColorPairs client:load locale={locale} />
     </div>
@@ -39,5 +35,5 @@ const url = `https://tools.oiyo.net/${locale}/color-pairs/`;
       <a class="font-bold underline" href="https://oiyo.net/ko/personal-color/test/">{ko ? "퍼스널 컬러 테스트" : "Personal color test"}</a>
     </p>
     <RelatedUtilities locale={locale} current="color-pairs" group="color" />
-  </article>
+  </ToolShell>
 </Layout>

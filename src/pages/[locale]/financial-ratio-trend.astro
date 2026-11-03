@@ -41,7 +41,8 @@ const m = meta[locale];
 <KrFinancePage slug="financial-ratio-trend" locale={locale} title={m.title} description={m.description}>
   <div class="space-y-8">
     <FinancialRatioTrendAnalyzer client:load locale={locale === 'ko' ? 'ko' : 'en'} />
-    <FinancialStatementAnalyzer client:load />
+    {/* WHY 2026-11-03: the single-year statement analyzer is Korean-only (K-IFRS terms, ~130 strings); other locales keep the bilingual trend analyzer + explorer. */}
+    {locale === 'ko' && <FinancialStatementAnalyzer client:load />}
   </div>
   <section class="mt-10 border-t border-border pt-6">
     <h2 class="mb-4 text-xl font-bold">{explorerTitle[locale]}</h2>

@@ -3,8 +3,8 @@ import { ToolPanel } from './ToolPanel';
 
 const PregnancyCalculator: React.FC<{ locale?: 'ko' | 'en' }> = ({ locale = 'ko' }) => {
     const t = {
-        ko: { title: "여성 건강 & 임신 주기 계산기", desc: "마지막 생리 시작일을 기준으로 가임기, 예정일 및 주요 주기를 관리합니다.", lmp: "마지막 생리 시작일", cycle: "평균 생리 주기 (일)", result: "주요 일정", ovulation: "예상 배란일", fertility: "임신 가능 기간", dueDate: "출산 예정일", weeks: "현재 임신 주수" },
-        en: { title: "Women's Health & Pregnancy", desc: "Track ovulation, fertile window, and due date based on your LMP.", lmp: "Last Menstrual Period (LMP)", cycle: "Cycle Length (Days)", result: "Key Dates", ovulation: "Estimated Ovulation", fertility: "Fertile Window", dueDate: "Due Date", weeks: "Pregnancy Weeks" }
+        ko: { title: "여성 건강 & 임신 주기 계산기", desc: "마지막 생리 시작일을 기준으로 가임기, 예정일 및 주요 주기를 관리합니다.", lmp: "마지막 생리 시작일", cycle: "평균 생리 주기 (일)", result: "주요 일정", ovulation: "예상 배란일", fertility: "임신 가능 기간", dueDate: "출산 예정일", weeks: "현재 임신 주수", note: "* 이 계산기는 통계적 평균치를 기반으로 해요. 실제 주기는 개인의 컨디션에 따라 다를 수 있으니 참고용으로만 사용하세요." },
+        en: { title: "Women's Health & Pregnancy", desc: "Track ovulation, fertile window, and due date based on your LMP.", lmp: "Last Menstrual Period (LMP)", cycle: "Cycle Length (Days)", result: "Key Dates", ovulation: "Estimated Ovulation", fertility: "Fertile Window", dueDate: "Due Date", weeks: "Pregnancy Weeks", note: "* Based on statistical averages. Real cycles vary from person to person, so use these dates as a reference only." }
     }[locale === 'ko' ? 'ko' : 'en'];
 
     const [lmp, setLmp] = useState<string>(new Date().toISOString().split('T')[0]);
@@ -60,7 +60,7 @@ const PregnancyCalculator: React.FC<{ locale?: 'ko' | 'en' }> = ({ locale = 'ko'
                 </div>
 
                 <div className="bg-muted/20 p-4 rounded-2xl text-xs text-center text-muted-foreground italic leading-relaxed">
-                    * 이 계산기는 통계적 평균치를 기반으로 하며, 실제 주기는 개인의 컨디션에 따라 다를 수 있으므로 참고용으로만 사용하시기 바랍니다.
+                    {t.note}
                 </div>
             </div>
         </ToolPanel>

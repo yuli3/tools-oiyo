@@ -72,7 +72,7 @@ export default function LottoAfterTax({ locale }: { locale: Locale }) {
 
   return (
     <div className="space-y-6">
-      <section className="rounded-2xl border border-border bg-card p-4 sm:p-6">
+      <section>
         <span className="inline-flex rounded-full border border-border bg-muted px-3 py-1 text-xs font-bold">🇰🇷 {t.korea}</span>
         <div className="mt-4 grid gap-4 sm:grid-cols-2">
           <label className="block text-sm font-semibold">
@@ -115,7 +115,7 @@ export default function LottoAfterTax({ locale }: { locale: Locale }) {
       </section>
 
       {r.net > 0 && (
-        <section className="rounded-2xl border border-border bg-card p-4 sm:p-6">
+        <section className="border-t border-border pt-6">
           <h2 className="text-lg font-bold">{t.spendTitle}</h2>
           <div className="sticky top-2 z-10 mt-3 rounded-xl border border-border bg-muted p-4">
             <div className="flex flex-wrap items-baseline justify-between gap-x-3">

@@ -2,6 +2,7 @@
 // menu roulette: a pick now skips the last three results (pickFresh).
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { Button, Card, CardContent, CardHeader, CardTitle, CardDescription, Shuffle, Heart, Share2, History, Trash2, Search, CheckCircle, Swords } from './MenuUi';
+import { MENU_UI } from '../../lib/menu-roulette-ui';
 import menuData, { countryLabels, type CountryType, type MenuItem } from '../../lib/menu-data';
 import { mapSearchLinks, mealFromQuery, pickFresh, poolFor, suggestedMeal, type MealMode } from '../../lib/menu-pick';
 
@@ -222,6 +223,7 @@ function fillName(template: string, name: string): string {
 
 export default function MenuGenerator({ locale = 'ko' }: { locale?: string }) {
   const copy = COPY[locale] ?? COPY.en;
+  const ui = MENU_UI[locale] ?? MENU_UI.en;
   const [selectedCountry, setSelectedCountry] = useState<CountryType>('all');
   const [selectedTag, setSelectedTag] = useState<string>('all');
   const [meal, setMeal] = useState<MealMode>('any');
@@ -347,7 +349,7 @@ export default function MenuGenerator({ locale = 'ko' }: { locale?: string }) {
     const data = { title: copy.shareTitle, text: fillName(template, name), url: window.location.href };
     try {
       if (navigator.share) await navigator.share(data);
-      else { await navigator.clipboard.writeText(`${data.text} ${data.url}`); alert('클립보드에 복사했어요!'); }
+      else { await navigator.clipboard.writeText(`${data.text} ${data.url}`); alert(ui.copied); }
     } catch (e) {
       if ((e as Error).name !== 'AbortError') console.error(e);
     }
@@ -364,7 +366,7 @@ export default function MenuGenerator({ locale = 'ko' }: { locale?: string }) {
     <div className="space-y-5 sm:space-y-8">
       {/* Cuisine selector */}
       <div>
-        <p className="text-sm font-semibold mb-3 text-muted-foreground uppercase tracking-widest">음식 종류</p>
+        <p className="text-sm font-semibold mb-3 text-muted-foreground uppercase tracking-widest">{ui.cuisine}</p>
         <div className="flex flex-wrap gap-2">
           {(Object.keys(countryLabels) as CountryType[]).map((c) => (
             <button
@@ -376,7 +378,7 @@ export default function MenuGenerator({ locale = 'ko' }: { locale?: string }) {
                   : 'border-border bg-card hover:bg-muted'
               }`}
             >
-              {countryLabels[c]}
+              {ui.countries[c] ?? countryLabels[c]}
             </button>
           ))}
         </div>
@@ -384,7 +386,7 @@ export default function MenuGenerator({ locale = 'ko' }: { locale?: string }) {
 
       {/* Situation / meal-time / season selector */}
       <div>
-        <p className="text-sm font-semibold mb-3 text-muted-foreground uppercase tracking-widest">상황 · 계절</p>
+        <p className="text-sm font-semibold mb-3 text-muted-foreground uppercase tracking-widest">{ui.situation}</p>
         <div className="flex flex-wrap gap-2">
           {FILTER_TAGS.map((tg) => (
             <button
@@ -396,7 +398,7 @@ export default function MenuGenerator({ locale = 'ko' }: { locale?: string }) {
                   : 'border-border bg-card hover:bg-muted'
               }`}
             >
-              {tg.label}
+              {ui.tags[tg.key] ?? tg.label}
             </button>
           ))}
         </div>
@@ -458,7 +460,7 @@ export default function MenuGenerator({ locale = 'ko' }: { locale?: string }) {
           className="flex-1 text-base py-4 sm:py-6"
         >
           <Shuffle className="mr-2 size-5" />
-          깜짝 메뉴 (전체)
+          {ui.surprise}
         </Button>
         <Button
           onClick={startBattle}
@@ -468,7 +470,7 @@ export default function MenuGenerator({ locale = 'ko' }: { locale?: string }) {
           className="flex-1 text-base py-4 sm:py-6"
         >
           <Swords className="mr-2 size-5" />
-          메뉴 배틀 ⚔️
+          {ui.battle}
         </Button>
       </div>
 
@@ -477,7 +479,7 @@ export default function MenuGenerator({ locale = 'ko' }: { locale?: string }) {
         <Card>
           <CardContent className="py-6 sm:py-10 text-center">
             <p className="text-4xl font-bold animate-pulse">{spinText}</p>
-            <p className="text-sm text-muted-foreground mt-2">메뉴를 고르는 중...</p>
+            <p className="text-sm text-muted-foreground mt-2">{ui.picking}</p>
           </CardContent>
         </Card>
       )}
@@ -486,8 +488,8 @@ export default function MenuGenerator({ locale = 'ko' }: { locale?: string }) {
       {battleMode && battleOptions && (
         <Card>
           <CardHeader>
-            <CardTitle className="text-center text-2xl">⚔️ 메뉴 배틀</CardTitle>
-            <CardDescription className="text-center">먹고 싶은 메뉴를 선택하세요!</CardDescription>
+            <CardTitle className="text-center text-2xl">{ui.battleTitle}</CardTitle>
+            <CardDescription className="text-center">{ui.battleBody}</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -511,7 +513,7 @@ export default function MenuGenerator({ locale = 'ko' }: { locale?: string }) {
                 size="sm"
                 onClick={() => { setBattleMode(false); setBattleOptions(null); }}
               >
-                취소
+                {ui.cancel}
               </Button>
             </div>
           </CardContent>
@@ -525,8 +527,8 @@ export default function MenuGenerator({ locale = 'ko' }: { locale?: string }) {
             <div className="mx-auto mb-2 flex size-12 items-center justify-center rounded-full bg-muted">
               <CheckCircle className="size-6 text-primary" />
             </div>
-            <CardTitle className="text-2xl">오늘의 메뉴 결정!</CardTitle>
-            <CardDescription>맛있게 드세요 😊</CardDescription>
+            <CardTitle className="text-2xl">{ui.resultTitle}</CardTitle>
+            <CardDescription>{ui.resultBody}</CardDescription>
           </CardHeader>
           <CardContent className="p-0">
             {selectedImage && !imgError && (
@@ -552,11 +554,11 @@ export default function MenuGenerator({ locale = 'ko' }: { locale?: string }) {
                   className={`flex-1 ${isFav ? 'border-destructive bg-background text-destructive' : ''}`}
                 >
                   <Heart className={`mr-2 size-4 ${isFav ? 'fill-current' : ''}`} />
-                  {isFav ? '즐겨찾기 해제' : '즐겨찾기'}
+                  {isFav ? ui.unfav : ui.fav}
                 </Button>
                 <Button onClick={handleShare} variant="outline" size="lg" className="flex-1">
                   <Share2 className="mr-2 size-4" />
-                  공유
+                  {ui.share}
                 </Button>
               </div>
               <div className="space-y-2 text-left">
@@ -590,9 +592,9 @@ export default function MenuGenerator({ locale = 'ko' }: { locale?: string }) {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Search className="size-5 text-primary" />
-            맛집 검색
+            {ui.search}
           </CardTitle>
-          <CardDescription>메뉴 이름으로 웹 검색을 열어요. 위치는 보내지 않아요.</CardDescription>
+          <CardDescription>{ui.searchBody}</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSearch} className="flex gap-2">
@@ -600,12 +602,12 @@ export default function MenuGenerator({ locale = 'ko' }: { locale?: string }) {
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="메뉴명 입력..."
+              placeholder={ui.searchPh}
               className="min-w-0 flex-1 rounded-lg border border-border bg-background px-3 py-2 text-base outline-none focus:border-primary focus:ring-2 focus:ring-ring"
             />
             <Button type="submit" size="default" className="shrink-0">
               <Search className="size-4" />
-              <span className="ml-1">구글 검색</span>
+              <span className="ml-1">{ui.google}</span>
             </Button>
           </form>
         </CardContent>
@@ -616,7 +618,7 @@ export default function MenuGenerator({ locale = 'ko' }: { locale?: string }) {
         <div>
           <h3 className="mb-3 flex items-center gap-2 text-lg font-semibold">
             <Heart className="size-5 text-destructive" />
-            즐겨찾기
+            {ui.favorites}
           </h3>
           <Card>
             <CardContent className="p-4">
@@ -627,7 +629,7 @@ export default function MenuGenerator({ locale = 'ko' }: { locale?: string }) {
                     <button
                       onClick={() => setFavorites(removeFavorite(item))}
                       className="rounded p-1 text-muted-foreground hover:text-destructive"
-                      aria-label="즐겨찾기 삭제"
+                      aria-label={ui.favDelete}
                     >
                       <Trash2 className="size-3.5" />
                     </button>
@@ -644,7 +646,7 @@ export default function MenuGenerator({ locale = 'ko' }: { locale?: string }) {
         <div className="mb-3 flex items-center justify-between">
           <h3 className="flex items-center gap-2 text-lg font-semibold">
             <History className="size-5 text-primary" />
-            최근 기록
+            {ui.history}
           </h3>
           {history.length > 0 && (
             <Button
@@ -653,7 +655,7 @@ export default function MenuGenerator({ locale = 'ko' }: { locale?: string }) {
               onClick={() => { clearHistory(); setHistory([]); }}
             >
               <Trash2 className="mr-1 size-3.5" />
-              초기화
+              {ui.reset}
             </Button>
           )}
         </div>
@@ -668,7 +670,7 @@ export default function MenuGenerator({ locale = 'ko' }: { locale?: string }) {
             </CardContent>
           </Card>
         ) : (
-          <p className="text-center text-sm text-muted-foreground py-4">아직 기록이 없어요. 메뉴를 골라보세요!</p>
+          <p className="text-center text-sm text-muted-foreground py-4">{ui.noHistory}</p>
         )}
       </div>
     </div>
