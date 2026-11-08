@@ -44,7 +44,7 @@ export default function PensionTaxCalculator({ locale = 'ko' }: { locale?: 'ko' 
   const fmt = (n: number) => (ko ? `${Math.round(n).toLocaleString('ko-KR')}원` : `₩${Math.round(n).toLocaleString('en-US')}`);
   return (
     <div className="space-y-6">
-      <div className="space-y-5 rounded-2xl border border-border bg-card p-6 shadow-sm">
+      <div className="space-y-5">
         <ChoiceChips
           legend={ko ? '소득 유형' : 'Income type'}
           value={incomeType}

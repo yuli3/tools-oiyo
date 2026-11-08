@@ -43,7 +43,7 @@ export default function KrCapitalGainsTaxCalculator({ locale = "ko" }: { locale?
   const isHouse = kind === "house";
   return (
     <div className="space-y-6">
-      <div className="space-y-5 rounded-2xl border border-border bg-card p-6 shadow-sm">
+      <div className="space-y-5">
         <ChoiceChips legend={t.kind} value={kind} options={[{ value: "house", label: t.house }, { value: "other", label: t.other }]} onChange={setKind} />
         <NumberField label={t.sale} value={sale} onChange={setSale} suffix={t.unit} step={1000} />
         <NumberField label={t.purchase} value={purchase} onChange={setPurchase} suffix={t.unit} step={1000} />

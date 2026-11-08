@@ -39,7 +39,7 @@ export default function ForeignExchangeFeeCalculator({ locale }: { locale: Local
       <input type="number" min="0" step="any" value={value} onChange={(e) => change(e.target.value)} className={inputClass} />
     </label>
   );
-  return <section className="space-y-4 rounded-lg border border-border bg-card p-4" aria-label={t[0]} data-fx-fee={locale}>
+  return <section className="space-y-4" aria-label={t[0]} data-fx-fee={locale}>
     <p className="font-semibold">{t[1]}</p>
     <div className="grid gap-3 sm:grid-cols-2">
       <label className="grid gap-1">{t[2]}<select className={inputClass} value={payment} onChange={(e) => setPayment(e.target.value)}>{currencies.map((c) => <option key={c}>{c}</option>)}</select></label>

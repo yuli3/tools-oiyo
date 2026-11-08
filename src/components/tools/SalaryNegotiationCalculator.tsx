@@ -226,10 +226,10 @@ const SalaryNegotiationCalculator = ({ locale }: Props) => {
   };
 
   return (
-    <div className="rounded-lg border border-border bg-card p-5">
+    <div>
       <div className="mb-5 sm:mb-8">
-        <h2 className="text-2xl font-black">{t.title}</h2>
-        <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mt-1">{t.subtitle}</p>
+        <h2 className="sr-only">{t.title}</h2>
+        <p className="sr-only">{t.subtitle}</p>
       </div>
 
       {/* Inputs */}

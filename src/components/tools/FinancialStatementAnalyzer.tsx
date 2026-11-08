@@ -341,7 +341,7 @@ export const FinancialStatementAnalyzer: React.FC = () => {
       {/* Header */}
       <div className="bg-primary px-4 sm:px-6 py-5">
         <h2 className="text-lg font-bold text-white">재무제표 분석기</h2>
-        <p className="text-xs text-primary mt-1">재무상태표 · 손익계산서 · 현금흐름표 · 비율 벤치마크</p>
+        <p className="text-xs text-white/80 mt-1">재무상태표 · 손익계산서 · 현금흐름표 · 비율 벤치마크</p>
       </div>
 
       {/* Tabs */}

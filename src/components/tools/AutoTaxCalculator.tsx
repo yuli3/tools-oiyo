@@ -20,7 +20,7 @@ export default function AutoTaxCalculator() {
 
   return (
     <div className="space-y-6">
-      <div className="space-y-5 rounded-2xl border border-border bg-card p-6 shadow-sm">
+      <div className="space-y-5">
         <ChoiceChips
           legend="차종 (비영업용 승용)"
           value={fuel}

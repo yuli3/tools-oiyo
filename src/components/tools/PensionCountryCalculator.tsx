@@ -499,7 +499,7 @@ function Spain({ initialTab }: { initialTab: PensionTab }) {
 
 export default function PensionCountryCalculator({ country, initialTab }: Props) {
   return (
-    <div className="rounded-lg border border-border bg-card p-5">
+    <div>
       {country === "jp" && <Japan initialTab={initialTab} />}
       {country === "cn" && <China initialTab={initialTab} />}
       {country === "fr" && <France initialTab={initialTab} />}

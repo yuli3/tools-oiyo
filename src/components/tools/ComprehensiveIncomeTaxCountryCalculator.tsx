@@ -232,7 +232,7 @@ function Spain() {
 
 export default function ComprehensiveIncomeTaxCountryCalculator({ country }: Props) {
   return (
-    <div className="rounded-lg border border-border bg-card p-5">
+    <div>
       {country === "jp" && <Japan />}
       {country === "cn" && <China />}
       {country === "fr" && <France />}

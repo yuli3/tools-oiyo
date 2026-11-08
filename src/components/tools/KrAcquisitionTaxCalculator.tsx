@@ -34,7 +34,7 @@ export default function KrAcquisitionTaxCalculator({ locale = "ko" }: { locale?:
 
   return (
     <div className="space-y-6">
-      <div className="space-y-5 rounded-2xl border border-border bg-card p-6 shadow-sm">
+      <div className="space-y-5">
         <NumberField label={t.price} value={manwon} onChange={setManwon} suffix={t.unit} step={1000} />
         <ChoiceChips legend={t.houses} value={houses} options={(["1", "2", "3", "4"] as const).map((v, i) => ({ value: v, label: t.h[i] }))} onChange={setHouses} />
         {n >= 2 && n <= 3 && <ChoiceChips legend={t.regulated} value={regulated} options={yn} onChange={setRegulated} />}
