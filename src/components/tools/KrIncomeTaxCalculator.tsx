@@ -51,7 +51,7 @@ export default function KrIncomeTaxCalculator({ locale = "ko", variant = "compre
   const withheld33 = Math.floor((rev * 0.03) / 10) * 10 + Math.floor((Math.floor((rev * 0.03) / 10) * 10 * 0.1) / 10) * 10;
   return (
     <div className="space-y-6">
-      <div className="space-y-5 rounded-2xl border border-border bg-card p-6 shadow-sm">
+      <div className="space-y-5">
         <NumberField label={free ? t.revenue33 : t.revenue} value={revenue} onChange={setRevenue} suffix={t.unit} step={100} />
         <ChoiceChips legend={t.expMode} value={mode} options={[{ value: "simple", label: t.simple }, { value: "rate", label: t.rate }, { value: "actual", label: t.actual }]} onChange={setMode} />
         {mode === "rate" && <NumberField label={t.expRate} value={expRate} onChange={setExpRate} suffix="%" step={1} />}

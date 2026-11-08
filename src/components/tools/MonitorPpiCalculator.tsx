@@ -38,7 +38,7 @@ export default function MonitorPpiCalculator({ locale = 'ko' }: { locale?: PpiLo
   ];
 
   return (
-    <section aria-label={t.title} className="space-y-6 rounded-2xl border border-border bg-card p-4 sm:p-6">
+    <section aria-label={t.title} className="space-y-6">
       {!interactive && <p className="text-sm text-muted-foreground">{t.loading}</p>}
       <div>
         <p className="mb-2 text-sm font-semibold">{t.presets}</p>

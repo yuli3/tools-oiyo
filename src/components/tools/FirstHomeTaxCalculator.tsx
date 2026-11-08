@@ -39,7 +39,7 @@ export default function FirstHomeTaxCalculator() {
   return (
     <div className="space-y-6">
       {/* Input Form */}
-      <div className="rounded-2xl border border-border bg-card p-6 shadow-sm space-y-5">
+      <div className="space-y-5">
         <div>
           <NumberField
             label="주택 매수가액 (실거래가)"

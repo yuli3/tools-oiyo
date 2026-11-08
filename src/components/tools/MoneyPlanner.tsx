@@ -425,7 +425,7 @@ const MoneyPlanner: React.FC<{ locale?: Locale; defaultCountry?: PlanCountry }> 
         </div>
     );
     const section = (title: string, children: React.ReactNode) => (
-        <fieldset className="flex flex-col gap-4 rounded-2xl border border-border p-4 sm:p-6 print:break-inside-avoid">
+        <fieldset className="flex flex-col gap-4 border-t border-border pt-5 print:break-inside-avoid">
             <legend className="px-2 text-sm font-bold text-foreground">{title}</legend>
             {children}
         </fieldset>

@@ -246,10 +246,10 @@ const JeonseMonthlyConverter = ({ locale }: Props) => {
   };
 
   return (
-    <div className="my-5 sm:my-8 p-6 sm:p-10 bg-card border border-border rounded-4xl shadow-sm max-w-2xl mx-auto">
+    <div className="my-6">
       <div className="mb-5 sm:mb-8">
-        <h2 className="text-2xl font-black">{t.title}</h2>
-        <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mt-1">{t.subtitle}</p>
+        <h2 className="sr-only">{t.title}</h2>
+        <p className="sr-only">{t.subtitle}</p>
       </div>
 
       {/* Mode tabs */}

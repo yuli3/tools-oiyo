@@ -508,7 +508,7 @@ const YearEndSettlementCalculator: React.FC<{ locale?: Locale }> = ({ locale = '
         </label>
     );
     const section = (title: string, children: React.ReactNode) => (
-        <fieldset className="flex flex-col gap-4 rounded-2xl border border-border p-4 sm:p-6 print:break-inside-avoid">
+        <fieldset className="flex flex-col gap-4 border-t border-border pt-5 print:break-inside-avoid">
             <legend className="px-2 text-sm font-bold text-foreground">{title}</legend>
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">{children}</div>
         </fieldset>
@@ -539,7 +539,7 @@ const YearEndSettlementCalculator: React.FC<{ locale?: Locale }> = ({ locale = '
     const rows = allRows.filter((row) => row.value > 0 || row.label === t.rows.taxBase || row.label === t.rows.calculatedTax);
 
     return (
-        <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
+        <div>
             <div className="mb-5 flex items-end justify-between gap-3">
                 <h2 className="text-xl font-black text-foreground">{t.title}</h2>
                 <button type="button" onClick={() => setForm(DEFAULTS)} className="min-h-11 shrink-0 whitespace-nowrap rounded-md border border-border bg-muted px-3 text-xs font-bold hover:bg-muted/70">{locale === "ko" ? "초기화" : "Reset"}</button>

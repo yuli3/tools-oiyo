@@ -236,7 +236,7 @@ export default function PercentageCalculator({ locale = 'ko' }: Props) {
       {/* 2x2 Grid of Calculators */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Card 1: Portion */}
-        <div className="bg-card p-5 sm:p-6 rounded-2xl border border-border shadow-sm space-y-4">
+        <div className="space-y-4 border-t border-border pt-5">
           <div className="flex items-center gap-2">
             <Calculator className="w-5 h-5 text-primary" />
             <h3 className="text-sm font-bold text-foreground">{t.card1Title}</h3>
@@ -274,7 +274,7 @@ export default function PercentageCalculator({ locale = 'ko' }: Props) {
         </div>
 
         {/* Card 2: Proportion */}
-        <div className="bg-card p-5 sm:p-6 rounded-2xl border border-border shadow-sm space-y-4">
+        <div className="space-y-4 border-t border-border pt-5">
           <div className="flex items-center gap-2">
             <Percent className="w-5 h-5 text-primary" />
             <h3 className="text-sm font-bold text-foreground">{t.card2Title}</h3>
@@ -308,7 +308,7 @@ export default function PercentageCalculator({ locale = 'ko' }: Props) {
         </div>
 
         {/* Card 3: Change Rate */}
-        <div className="bg-card p-5 sm:p-6 rounded-2xl border border-border shadow-sm space-y-4">
+        <div className="space-y-4 border-t border-border pt-5">
           <div className="flex items-center gap-2">
             {result3.isUp ? (
               <TrendingUp className="w-5 h-5 text-success" />
@@ -354,7 +354,7 @@ export default function PercentageCalculator({ locale = 'ko' }: Props) {
         </div>
 
         {/* Card 4: Discount Price */}
-        <div className="bg-card p-5 sm:p-6 rounded-2xl border border-border shadow-sm space-y-4">
+        <div className="space-y-4 border-t border-border pt-5">
           <div className="flex items-center gap-2">
             <Tag className="w-5 h-5 text-primary" />
             <h3 className="text-sm font-bold text-foreground">{t.card4Title}</h3>

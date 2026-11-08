@@ -127,7 +127,7 @@ export const GDPCalculator: React.FC<{ locale?: 'ko' | 'en' }> = ({ locale = 'ko
   const currentItems = s.approach === 'expenditure' ? expenditureItems : s.approach === 'income' ? incomeItems : productionItems;
 
   return (
-    <div className="bg-card border border-border rounded-2xl p-5">
+    <div>
       <h3 className="text-base font-bold text-foreground mb-4">
         {locale === 'ko' ? 'GDP 계산기' : 'GDP Calculator'}
       </h3>
@@ -274,7 +274,7 @@ export const MultiplierCalculator: React.FC<{ locale?: 'ko' | 'en' }> = ({ local
   }, [deltaG, mpc]);
 
   return (
-    <div className="bg-card border border-border rounded-2xl p-5">
+    <div>
       <h3 className="text-base font-bold text-foreground mb-4">
         {locale === 'ko' ? '케인즈 승수 계산기' : 'Keynesian Multiplier Calculator'}
       </h3>
@@ -384,7 +384,7 @@ export const InflationCalculator: React.FC<{ locale?: 'ko' | 'en' }> = ({ locale
   );
 
   return (
-    <div className="bg-card border border-border rounded-2xl p-5">
+    <div>
       <h3 className="text-base font-bold text-foreground mb-4">
         {locale === 'ko' ? '인플레이션 계산기' : 'Inflation Calculator'}
       </h3>

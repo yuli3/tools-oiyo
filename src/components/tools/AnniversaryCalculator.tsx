@@ -125,7 +125,7 @@ const AnniversaryCalculator: React.FC<{ locale?: Locale }> = ({ locale = 'en' })
   }, [mode, startDate, targetDate, today, locale]);
 
   return (
-    <section className="space-y-4 rounded-xl border border-border bg-card p-4">
+    <section className="space-y-4">
       <h2 className="text-lg font-semibold">{t.title}</h2><p className="text-sm text-muted-foreground">{t.subtitle}</p>
       <div className="flex flex-col gap-5 sm:gap-8">
         {/* Mode toggle */}

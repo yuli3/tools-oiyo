@@ -29,7 +29,7 @@ export default function KrPropertyTaxCalculator({ locale = "ko" }: { locale?: st
   const half = Math.floor(r.total / 2 / 10) * 10;
   return (
     <div className="space-y-6">
-      <div className="space-y-5 rounded-2xl border border-border bg-card p-6 shadow-sm">
+      <div className="space-y-5">
         <NumberField label={t.official} value={manwon} onChange={setManwon} suffix={t.unit} step={1000} />
         <ChoiceChips legend={t.owner} value={owner} options={[{ value: "one", label: t.one }, { value: "multi", label: t.multi }]} onChange={setOwner} />
         <ChoiceChips legend={t.urban} value={urban} options={[{ value: "y", label: t.yes }, { value: "n", label: t.no }]} onChange={setUrban} />

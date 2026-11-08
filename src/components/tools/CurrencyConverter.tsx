@@ -42,7 +42,7 @@ export default function CurrencyConverter({ locale }: { locale: Locale }) {
     </label>
   );
   return (
-    <section className="space-y-4 rounded-lg border border-border bg-card p-4" data-currency-converter={locale}>
+    <section className="space-y-4" data-currency-converter={locale}>
       <div>
         <p className="text-sm font-semibold text-muted-foreground">{c.presets}</p>
         <div className="mt-2 flex flex-wrap gap-2">

@@ -666,7 +666,7 @@ export const TaxFormulaExplorer: React.FC = () => {
   const [activeTab, setActiveTab] = useState<TaxTab>(0);
 
   return (
-    <div className="bg-card border border-border shadow-xl rounded-2xl overflow-hidden mt-5 sm:mt-8">
+    <div className="mt-5 sm:mt-8">
       <div className="bg-primary px-4 sm:px-6 py-5">
         <h2 className="text-lg font-bold text-white">세법 계산 산식 인터랙티브</h2>
         <p className="text-xs text-primary-foreground mt-1">6대 세목 공식을 직접 입력하며 계산 구조를 확인하세요</p>
