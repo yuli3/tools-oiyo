@@ -12,8 +12,10 @@ function placement(script, relatedAvailable) {
   const related = { parentNode: { insertBefore() { calls.push('before-related'); } } };
   const main = { querySelector(selector) {
     // An unrelated last section deliberately appears first, even on pages with related links.
-    return selector.includes('section') ? { parentNode: { insertBefore() { calls.push('before-input'); } } } : relatedAvailable ? related : null;
-  }, appendChild() { calls.push('main-end'); } };
+    if (selector.includes('section')) return { parentNode: { insertBefore() { calls.push('before-input'); } } };
+    // Only the explicit related-tools anchor exists here; the home-only guide anchor does not.
+    return selector === '[data-related-tools]' && relatedAvailable ? related : null;
+  }, querySelectorAll() { return []; }, appendChild() { calls.push('main-end'); } };
   runInNewContext(script, { location: { hostname: 'tools.oiyo.net' }, localStorage: { getItem() { return null; } }, document: { getElementById() { return main; }, createElement: element }, window: {} });
   return calls;
 }

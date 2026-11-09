@@ -129,8 +129,8 @@ const tools = [
   description="입력값을 브라우저에서 바로 계산하는 생활·복지·행정 계산기 모음이에요. 실업급여·육아휴직·지역 건보료·일시적 2주택 처분기한·자동차 공채·도시가스 요금·전역일 계산기를 제공해요."
   canonicalURL="https://tools.oiyo.net/"
 >
-  <div class="mx-auto w-full max-w-5xl px-4 py-12 sm:px-8">
-    <div class="mb-10 text-center sm:text-left">
+  <div class="mx-auto w-full max-w-5xl px-4 py-6 sm:px-8 sm:py-8">
+    <div class="mb-5 text-center sm:text-left">
       <div class="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-bold text-primary mb-3">
         <span>⚡ 100% 클라이언트 연산</span>
         <span>•</span>
@@ -162,10 +162,10 @@ const tools = [
     </div>
 
     <!-- Category Filters -->
-    <div class="mb-8 flex flex-wrap items-center gap-2" id="filter-bar">
+    <div class="mb-4 flex items-center gap-2 overflow-x-auto pb-2" id="filter-bar">
       <button
         type="button"
-        class="filter-btn rounded-lg border border-primary bg-primary min-h-11 px-3.5 py-1.5 text-xs font-bold text-primary-foreground transition shadow-xs"
+        class="filter-btn shrink-0 rounded-lg border border-primary bg-primary min-h-11 px-3.5 py-1.5 text-xs font-bold text-primary-foreground transition shadow-xs"
         data-filter="all"
         aria-pressed="true"
       >
@@ -173,7 +173,7 @@ const tools = [
       </button>
       <button
         type="button"
-        class="filter-btn rounded-lg border border-border bg-card min-h-11 px-3.5 py-1.5 text-xs font-medium text-muted-foreground transition hover:border-primary/40 hover:text-foreground"
+        class="filter-btn shrink-0 rounded-lg border border-border bg-card min-h-11 px-3.5 py-1.5 text-xs font-medium text-muted-foreground transition hover:border-primary/40 hover:text-foreground"
         data-filter="money"
         aria-pressed="false"
       >
@@ -181,7 +181,7 @@ const tools = [
       </button>
       <button
         type="button"
-        class="filter-btn rounded-lg border border-border bg-card min-h-11 px-3.5 py-1.5 text-xs font-medium text-muted-foreground transition hover:border-primary/40 hover:text-foreground"
+        class="filter-btn shrink-0 rounded-lg border border-border bg-card min-h-11 px-3.5 py-1.5 text-xs font-medium text-muted-foreground transition hover:border-primary/40 hover:text-foreground"
         data-filter="health"
         aria-pressed="false"
       >
@@ -189,7 +189,7 @@ const tools = [
       </button>
       <button
         type="button"
-        class="filter-btn rounded-lg border border-border bg-card min-h-11 px-3.5 py-1.5 text-xs font-medium text-muted-foreground transition hover:border-primary/40 hover:text-foreground"
+        class="filter-btn shrink-0 rounded-lg border border-border bg-card min-h-11 px-3.5 py-1.5 text-xs font-medium text-muted-foreground transition hover:border-primary/40 hover:text-foreground"
         data-filter="labor"
         aria-pressed="false"
       >
@@ -197,7 +197,7 @@ const tools = [
       </button>
       <button
         type="button"
-        class="filter-btn rounded-lg border border-border bg-card min-h-11 px-3.5 py-1.5 text-xs font-medium text-muted-foreground transition hover:border-primary/40 hover:text-foreground"
+        class="filter-btn shrink-0 rounded-lg border border-border bg-card min-h-11 px-3.5 py-1.5 text-xs font-medium text-muted-foreground transition hover:border-primary/40 hover:text-foreground"
         data-filter="living"
         aria-pressed="false"
       >
@@ -205,7 +205,7 @@ const tools = [
       </button>
       <button
         type="button"
-        class="filter-btn rounded-lg border border-border bg-card min-h-11 px-3.5 py-1.5 text-xs font-medium text-muted-foreground transition hover:border-primary/40 hover:text-foreground"
+        class="filter-btn shrink-0 rounded-lg border border-border bg-card min-h-11 px-3.5 py-1.5 text-xs font-medium text-muted-foreground transition hover:border-primary/40 hover:text-foreground"
         data-filter="military"
         aria-pressed="false"
       >
@@ -213,7 +213,7 @@ const tools = [
       </button>
       <button
         type="button"
-        class="filter-btn rounded-lg border border-border bg-card min-h-11 px-3.5 py-1.5 text-xs font-medium text-muted-foreground transition hover:border-primary/40 hover:text-foreground"
+        class="filter-btn shrink-0 rounded-lg border border-border bg-card min-h-11 px-3.5 py-1.5 text-xs font-medium text-muted-foreground transition hover:border-primary/40 hover:text-foreground"
         data-filter="environment"
         aria-pressed="false"
       >
@@ -221,7 +221,7 @@ const tools = [
       </button>
       <button
         type="button"
-        class="filter-btn rounded-lg border border-border bg-card min-h-11 px-3.5 py-1.5 text-xs font-medium text-muted-foreground transition hover:border-primary/40 hover:text-foreground"
+        class="filter-btn shrink-0 rounded-lg border border-border bg-card min-h-11 px-3.5 py-1.5 text-xs font-medium text-muted-foreground transition hover:border-primary/40 hover:text-foreground"
       data-filter="calendar"
       aria-pressed="false"
       >
@@ -229,7 +229,7 @@ const tools = [
       </button>
       <button
         type="button"
-        class="filter-btn rounded-lg border border-border bg-card min-h-11 px-3.5 py-1.5 text-xs font-medium text-muted-foreground transition hover:border-primary/40 hover:text-foreground"
+        class="filter-btn shrink-0 rounded-lg border border-border bg-card min-h-11 px-3.5 py-1.5 text-xs font-medium text-muted-foreground transition hover:border-primary/40 hover:text-foreground"
         data-filter="utility"
         aria-pressed="false"
       >
@@ -282,6 +282,9 @@ const tools = [
       })}
     </div>
 
+    <button id="tools-show-more" type="button" hidden class="mt-4 min-h-11 w-full rounded-lg border border-border bg-card px-4 py-2 text-sm font-semibold text-foreground">도구 더 보기</button>
+    <div data-tools-guide-ad-anchor></div>
+
     <SavingsQuickLinks />
 
     {/* WHY (2026-10-21): expose real locale links without requiring JavaScript or a language select. */}
@@ -310,6 +313,8 @@ const tools = [
       const search = document.querySelector<HTMLInputElement>("#tool-search");
       const status = document.querySelector<HTMLElement>("#tool-search-status");
       let filter = "all";
+      let limit = 24;
+      const more = document.querySelector<HTMLButtonElement>("#tools-show-more");
       // 카드 텍스트(제목·분류·설명)를 한 번만 읽어 둬요.
       const haystack = new Map<HTMLElement, string>();
       cards.forEach((card) => haystack.set(card, (card.textContent || "").toLowerCase().replace(/\s+/g, " ")));
@@ -322,12 +327,18 @@ const tools = [
           const groupOk = filter === "all" || card.getAttribute("data-group") === filter;
           const text = haystack.get(card) || "";
           const textOk = terms.every((term) => text.includes(term));
-          const visible = groupOk && textOk;
+          const match = groupOk && textOk;
+          if (match) shown += 1;
+          // 2026-11-06: search scans every card; pagination limits browsing only.
+          const visible = match && (Boolean(q) || shown <= limit);
           card.style.display = visible ? "flex" : "none";
-          if (visible) shown += 1;
         });
-        if (status) status.textContent = q ? (shown ? `${shown}개 도구가 맞아요.` : "맞는 도구가 없어요. 다른 낱말로 찾아 보세요.") : "";
+        if (more) more.hidden = Boolean(q) || shown <= limit;
+        if (status) status.textContent = q ? (shown ? `${shown}개 도구가 맞아요.` : "맞는 도구가 없어요. 다른 낱말로 찾아 보세요.") : `${Math.min(shown, limit)} / ${shown}개 도구`;
       }
+
+      more?.addEventListener("click", () => { limit += 24; apply(); });
+      apply();
 
       let timer: number | undefined;
       search?.addEventListener("input", () => {
@@ -346,6 +357,7 @@ const tools = [
           btn.classList.remove("border-border", "bg-card", "text-muted-foreground", "font-medium");
           btn.setAttribute("aria-pressed", "true");
           filter = btn.getAttribute("data-filter") || "all";
+          limit = 24;
           apply();
         });
       });
