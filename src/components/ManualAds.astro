@@ -21,6 +21,7 @@ const payload = JSON.stringify({
   client: "ca-pub-9541920090543312",
   // 2026-10-18: separate Tools revenue from Blog's article-end ad unit.
   slot: "1685510894",
+  guideSlot: "1174356495",
   label: adLabels[locale],
 });
 
@@ -61,8 +62,21 @@ const active = !noindex;
   }else{
     main.appendChild(wrap);
   }
+  var units=[wrap];
+  // 2026-11-06: only an explicit catalog anchor may receive a second unit.
+  // Keep a full reading interval before the existing end slot; never infer a calculator boundary.
+  var guideAnchor=main.querySelector("[data-tools-guide-ad-anchor]");
+  if(guideAnchor&&main.querySelectorAll("#tools-grid .tool-card").length>=48&&wrap.getBoundingClientRect().top-guideAnchor.getBoundingClientRect().top>=480){
+    var guide=wrap.cloneNode(true);
+    guide.setAttribute("data-manual-ad","tools-guide-end");
+    var guideIns=guide.querySelector("ins.adsbygoogle");
+    guideIns.setAttribute("data-ad-slot",cfg.guideSlot);
+    guideAnchor.parentNode.replaceChild(guide,guideAnchor);
+    units.push(guide);
+    if("MutationObserver" in window)new MutationObserver(function(){if(guideIns.getAttribute("data-ad-status")==="unfilled")guide.hidden=true}).observe(guideIns,{attributes:true,attributeFilter:["data-ad-status"]});
+  }
   function fill(el){try{(window.adsbygoogle=window.adsbygoogle||[]).push({})}catch(e){}el.setAttribute("data-manual-ad-requested","1")}
-  if(!("IntersectionObserver" in window)){fill(wrap);return}
+  if(!("IntersectionObserver" in window)){units.forEach(fill);return}
   var io=new IntersectionObserver(function(entries){
     entries.forEach(function(e){
       if(!e.isIntersecting)return;
@@ -72,6 +86,6 @@ const active = !noindex;
       io.unobserve(el);
     });
   },{rootMargin:"300px 0px"});
-  io.observe(wrap);
+  units.forEach(function(unit){io.observe(unit)});
 })()`} />
 )}
