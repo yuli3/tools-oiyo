@@ -40,5 +40,6 @@ export const krFinanceTools = [
   { slug: 'medical-expense-tax-credit-calculator', title: '의료비 세액공제 계산기', description: '총급여 3% 문턱, 700만 원 한도, 난임 30%·미숙아 20%로 연말정산 의료비 세액공제를 계산해요.' },
   { slug: 'silson-insurance-generation-calculator', title: '실손보험 세대별 보험금 계산기', description: '같은 병원 영수증으로 3·4·5세대 실손보험 표준약관 공제 규칙에 따른 보험금을 비교해요.' },
   { slug: 'presale-payment-calculator', title: '아파트 분양 대금 일정 계산기', description: '계약금·중도금·잔금 일정과 중도금 대출 이자(무이자·후불제·유이자), 입주 때 필요한 돈을 계산해요.' },
+  { slug: 'benefit-finder', title: '생애주기 혜택 찾기', description: '나이·아이 시기·결혼 여부를 고르면 2026년 받을 수 있는 복지·세금·지원금 목록과 신청처를 보여 줘요.' },
   { slug: 'building-coverage-floor-area-ratio-calculator', title: '건폐율·용적률 계산기', description: '용도지역별 법정 상한과 대지면적으로 건폐율·용적률, 지을 수 있는 최대 면적을 계산해요.' },
 ] as const;
