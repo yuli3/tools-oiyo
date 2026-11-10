@@ -4,10 +4,15 @@
 // Shells pass their own data-* attributes through (tests and telemetry read them).
 interface Props { title: string; description?: string; wide?: boolean; [key: `data-${string}`]: string | undefined }
 const { title, description, wide = false, ...attrs } = Astro.props;
+import { toolIcon, toolSlugFromPath } from '../data/tool-art';
+const icon = toolIcon(toolSlugFromPath(Astro.url.pathname));
 ---
 <article {...attrs} data-tool-shell class:list={["mx-auto space-y-6 px-4 py-6 sm:py-8", wide ? "max-w-4xl" : "max-w-3xl"]}>
   <header class="space-y-2">
-    <h1 class="text-2xl font-bold tracking-tight sm:text-3xl">{title}</h1>
+    <div class="flex items-center gap-3">
+      {icon && <img src={icon} alt="" width="56" height="56" decoding="async" class="h-12 w-12 shrink-0 sm:h-14 sm:w-14" />}
+      <h1 class="text-2xl font-bold tracking-tight sm:text-3xl">{title}</h1>
+    </div>
     {description && <p class="text-sm leading-relaxed text-muted-foreground sm:text-base">{description}</p>}
     <slot name="meta" />
   </header>

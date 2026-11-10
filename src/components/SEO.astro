@@ -1,4 +1,5 @@
 ---
+import { toolOgImage, toolSlugFromPath } from '../data/tool-art';
 interface Props {
   locale?: import('../lib/i18n').Locale;
   availableLocales?: import('../lib/i18n').Locale[];
@@ -17,7 +18,7 @@ const {
   availableLocales = [],
   title = "OIYO tools — 일상을 돕는 정밀 웹 유틸리티",
   description = "입력값을 브라우저에서 바로 계산하는 생활 계산기 모음이에요. 노동 수당, 공과금, 병역, 생활 규정 등 자주 쓰는 계산기를 제공해요.",
-  image = "https://tools.oiyo.net/icon-512.png",
+  image = toolOgImage(toolSlugFromPath(Astro.url.pathname)) ?? "https://tools.oiyo.net/icon-512.png",
   canonicalURL = new URL(Astro.url.pathname, Astro.site ?? "https://tools.oiyo.net"),
   keywords = ["계산기", "실업급여", "주휴수당", "전기요금 누진제", "군 복무일 계산", "도시가스 요금", "분리배출", "체감온도", "영업일 판정", "OIYO", "tools"],
   noindex = false,
