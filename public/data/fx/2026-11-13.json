@@ -2,7 +2,7 @@
   "base": "KRW",
   "unit": "KRW per 1 unit of currency",
   "asOf": "2026-11-13",
-  "fetchedAt": "2026-11-13T22:06:07.513Z",
+  "fetchedAt": "2026-11-13T22:45:14.118Z",
   "source": "Frankfurter v2 (central bank blend, api.frankfurter.dev)",
   "sources": {
     "USD": "frankfurter-v2",
