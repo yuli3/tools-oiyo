@@ -1,0 +1,68 @@
+---
+// 2026-11-14: 세무사·회계사·재무 담당자용 도구 모음. 웹 계산기 + MCP 도구 + Claude 스킬을 한곳에서 안내해요.
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import { ADVISORY_AS_OF } from "../../lib/kr-advisory-2026";
+
+const title = "세무·회계 실무 도구 모음 — 비상장주식 평가·가업상속·법인전환·DCF";
+const description = "세무사·회계사·재무 담당자가 상담 전에 숫자를 빠르게 잡아 보는 계산기와, 같은 공식을 AI 에이전트에서 쓰는 MCP 도구·Claude 스킬을 모았어요.";
+
+const advisory = [
+  { href: "/ko/unlisted-share-valuation-calculator/", title: "비상장주식 평가", body: "상증법 보충적 평가: 순손익 3 : 순자산 2, 부동산과다법인 2 : 3, 80% 하한, 최대주주 할증." },
+  { href: "/ko/family-business-inheritance-calculator/", title: "가업상속공제", body: "경영 기간별 300억·400억·600억 한도, 사업무관자산 차감, 공제 전후 상속세 비교." },
+  { href: "/ko/incorporation-conversion-calculator/", title: "개인사업자 법인전환", body: "최소 자본금(순자산가액), 이월과세로 미루는 양도세, 취득세 50% 감면." },
+  { href: "/ko/dcf-valuation-calculator/", title: "DCF 기업가치", body: "5년 FCFF 재무 추정, CAPM WACC 빌더, 영구성장 잔존가치, 민감도 표." },
+];
+const related = [
+  { href: "/ko/incorporation-calculator/", title: "개인 vs 법인 연간 세금 비교" },
+  { href: "/ko/inheritance-tax-calculator/", title: "상속세 계산기" },
+  { href: "/ko/gift-tax-calculator/", title: "증여세 계산기" },
+  { href: "/ko/capital-gains-tax-calculator/", title: "양도소득세 계산기" },
+  { href: "/ko/retirement-tax-calculator/", title: "퇴직소득세 계산기" },
+  { href: "/ko/labor-cost-calculator/", title: "인건비 계산기" },
+  { href: "/ko/vat-penalty-calculator/", title: "부가세 가산세 계산기" },
+  { href: "/ko/deemed-rent-vat-calculator/", title: "간주임대료 계산기" },
+];
+const mcpTools = [
+  ["value_kr_unlisted_shares", "비상장주식 보충적 평가"],
+  ["calculate_kr_family_business_deduction", "가업상속공제와 상속세 비교"],
+  ["calculate_kr_incorporation_conversion", "법인전환 자본금·이월과세·취득세 감면"],
+  ["calculate_dcf_valuation", "DCF 기업가치·민감도"],
+];
+---
+<KrFinancePage slug="tax-advisor-toolkit" locale="ko" title={title} description={description} koOnly>
+  <section>
+    <h2 class="text-lg font-bold text-foreground">상담 전에 숫자부터 잡아요</h2>
+    <p class="mt-2 text-sm leading-6 text-muted-foreground">모든 계산기는 근거 조문과 기준일({ADVISORY_AS_OF})을 함께 보여 주고, 국회를 통과하지 않은 세법개정안은 반영하지 않아요. 입력값은 브라우저 안에서만 계산해요.</p>
+    <ul class="mt-4 grid gap-3 sm:grid-cols-2">
+      {advisory.map((t) => (
+        <li class="rounded-md border border-border bg-background p-4">
+          <a href={t.href} class="text-base font-semibold text-foreground underline-offset-4 hover:underline">{t.title}</a>
+          <p class="mt-1 text-sm leading-6 text-muted-foreground">{t.body}</p>
+        </li>
+      ))}
+    </ul>
+    <h3 class="mt-6 text-sm font-semibold text-foreground">함께 쓰는 계산기</h3>
+    <ul class="mt-2 flex flex-wrap gap-2">
+      {related.map((t) => <li><a href={t.href} class="inline-flex min-h-11 items-center rounded-full border border-border px-3 text-sm text-foreground hover:bg-muted">{t.title}</a></li>)}
+    </ul>
+  </section>
+
+  <section class="mt-8">
+    <h2 class="text-lg font-bold text-foreground">AI 에이전트에서 같은 공식 쓰기 (MCP)</h2>
+    <p class="mt-2 text-sm leading-6 text-muted-foreground">Claude·Cursor·ChatGPT 같은 MCP 클라이언트에 아래 주소를 원격 서버로 추가하면 같은 계산을 도구로 불러요. 결과에는 근거 조문, 반영하지 않은 항목, 면책 문구가 함께 와요. 공식 MCP Registry 이름은 <code>io.github.yuli3/oiyo-calculations</code>예요.</p>
+    <pre class="mt-3 overflow-x-auto rounded-md border border-border bg-muted px-3 py-2 text-xs"><code>https://api.oiyo.net/mcp</code></pre>
+    <ul class="mt-3 space-y-1 text-sm text-muted-foreground">
+      {mcpTools.map(([name, label]) => <li><code class="text-foreground">{name}</code> · {label}</li>)}
+    </ul>
+    <p class="mt-2 text-sm text-muted-foreground">REST 문서: <a class="underline" href="https://api.oiyo.net/docs">api.oiyo.net/docs</a></p>
+  </section>
+
+  <section class="mt-8">
+    <h2 class="text-lg font-bold text-foreground">Claude 스킬: 한국 세무 자문 보조</h2>
+    <p class="mt-2 text-sm leading-6 text-muted-foreground">Claude에 올리면 비상장주식 평가, 가업상속공제, 법인전환, DCF 상담에서 필요한 입력을 먼저 묻고, 같은 공식으로 계산한 뒤 근거 조문과 확인할 요건을 붙인 상담 메모를 써 줘요. MCP에 연결돼 있지 않아도 스킬 안의 계산 스크립트로 돌아가요.</p>
+    <p class="mt-3"><a href="/downloads/oiyo-kr-tax-advisor-skill.zip" download class="inline-flex min-h-11 items-center rounded-md bg-primary px-4 text-sm font-semibold text-primary-foreground">스킬 내려받기 (.zip)</a></p>
+    <p class="mt-2 text-xs text-muted-foreground">Claude 설정 → 기능 → 스킬에서 zip 파일을 올리거나, Claude Code에서는 압축을 풀어 <code>~/.claude/skills/</code>에 두면 돼요.</p>
+  </section>
+
+  <p class="mt-8 text-xs text-muted-foreground">모든 결과는 실무 검토용 추정이에요. 세무대리나 법률 자문이 아니며, 신고 전에는 원문 법령과 최신 해석을 확인해 주세요.</p>
+</KrFinancePage>
