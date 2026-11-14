@@ -1,0 +1,32 @@
+---
+// 세무·회계 실무자용 도구 4 (2026-11-14). 엔진: lib/kr-advisory-2026.ts
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import DcfValuation from "../../components/tools/advisory/DcfValuation";
+
+const title = "DCF 기업가치 계산기 — WACC·FCFF·영구성장 모형과 민감도 표";
+const description = "매출성장률, 영업이익률, 투자·운전자본 가정으로 5년 FCFF를 만들고 WACC로 할인해 기업가치·주주가치·주당가치와 민감도 표를 보여 줘요.";
+
+const ko = {
+  introTitle: "5년 재무 추정과 DCF를 한 화면에서",
+  intro: "현금흐름할인법(DCF)은 회사가 앞으로 벌어들일 잉여현금흐름(FCFF)을 가중평균자본비용(WACC)으로 할인해 기업가치를 구해요. 이 계산기는 직전 매출에서 출발해 성장률이 5년차에 영구성장률로 줄어드는 단순 재무 모델을 만들고, 잔존가치는 고든 성장 모형으로 계산해요. CAPM으로 WACC를 직접 쌓을 수도 있어요.",
+  howToTitle: "사용 방법",
+  steps: ["직전 매출, 성장률, 영업이익률, 세율, 투자 비율을 넣어요.", "WACC를 직접 넣거나 무위험이자율·베타·프리미엄으로 계산해요.", "순차입금과 주식 수로 주주가치·주당가치를 보고 민감도 표로 범위를 확인해요."],
+  highlightsTitle: "주요 특징",
+  highlights: [
+    { title: "FCFF 5년 추정", body: "NOPAT + 감가상각 − 자본적 지출 − 순운전자본 증가를 연도별 표로 보여 줘요." },
+    { title: "WACC 빌더", body: "무위험이자율 + 베타 × 시장위험프리미엄 + 규모 프리미엄과 세후 타인자본비용을 가중해요." },
+    { title: "민감도 표", body: "WACC ±1%p, 영구성장률 ±0.5%p 조합의 주당가치를 한눈에 비교해요." },
+  ],
+  disclaimer: "의사결정 보조용 모델이에요. 가정이 결과를 좌우하니 근거 자료와 함께 쓰세요. 상속·증여세 신고용 비상장주식 가액은 상증법 보충적 평가가 원칙이에요.",
+};
+
+const faqs = [
+  { q: "기중 할인은 언제 쓰나요?", a: "현금이 한 해 동안 고르게 들어온다고 보고 각 연도 현금흐름을 반년 앞당겨 할인해요. 실무 보고서에서 자주 쓰고, 기말 할인보다 가치가 조금 높게 나와요." },
+  { q: "잔존가치 비중이 너무 커요.", a: "성장 기업은 잔존가치가 EV의 70~80%를 넘기 쉬워요. 영구성장률을 장기 명목 GDP 성장률보다 낮게 두고, 민감도 표로 범위를 같이 제시하는 것이 좋아요." },
+  { q: "비상장 중소기업 베타는 어떻게 정하나요?", a: "비교 상장회사의 베타를 무부채 베타로 바꾼 뒤 대상 회사의 부채비율로 다시 레버리지하는 방법을 많이 써요. 규모·유동성 위험은 별도 프리미엄으로 더해요." },
+];
+---
+<KrFinancePage slug="dcf-valuation-calculator" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <DcfValuation client:load />
+  <p class="mt-4 text-xs text-muted-foreground"><a class="underline" href="/ko/tax-advisor-toolkit/">세무·회계 실무 도구 모음</a></p>
+</KrFinancePage>

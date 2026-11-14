@@ -1,0 +1,34 @@
+---
+// 세무·회계 실무자용 도구 2 (2026-11-14). 엔진: lib/kr-advisory-2026.ts
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import FamilyBusinessInheritance from "../../components/tools/advisory/FamilyBusinessInheritance";
+import { ADVISORY_AS_OF } from "../../lib/kr-advisory-2026";
+
+const title = "가업상속공제 계산기 2026 — 300억·400억·600억 한도와 상속세 절감액";
+const description = "가업 주식 평가액, 사업무관자산 비율, 경영 기간을 넣으면 가업상속공제액과 공제 전후 상속세를 비교해요. 일괄·배우자·금융재산공제와 신고세액공제를 함께 반영해요.";
+
+const ko = {
+  introTitle: "가업상속공제로 상속세가 얼마나 줄어드는지 비교해요",
+  intro: "피상속인이 10년 이상 경영한 중소기업이나 매출 5천억 원 미만 중견기업을 상속인이 이어받으면 가업상속재산가액을 상속세 과세가액에서 빼 줘요. 한도는 경영 기간 10년 이상 300억 원, 20년 이상 400억 원, 30년 이상 600억 원이에요. 법인 주식이면 사업무관자산 비율만큼은 공제 대상에서 빠져요. 일괄공제 5억 원과는 따로 받을 수 있어요.",
+  howToTitle: "사용 방법",
+  steps: ["가업 주식 평가액과 사업무관자산 비율, 경영 기간, 기업 규모를 넣어요.", "가업 외 상속재산, 순금융재산, 채무, 장례비용, 배우자 상속액을 넣어요.", "공제 전후 상속세와 줄어드는 금액을 확인해요."],
+  highlightsTitle: "주요 특징",
+  highlights: [
+    { title: "한도 자동 적용", body: "경영 기간에 따라 300억·400억·600억 원 한도를 적용해요(상증법 제18조의2 제1항)." },
+    { title: "사업무관자산 차감", body: "가업상속재산 = 주식 평가액 × (1 − 사업무관자산 비율)로 계산해요(시행령 제15조 제5항)." },
+    { title: "다른 공제와 함께", body: "일괄공제, 배우자상속공제, 금융재산상속공제, 장례비용, 신고세액공제 3%를 같이 반영해요." },
+  ],
+  disclaimer: `실무 검토용 추정이에요. 피상속인 지분 40%(상장 20%) 10년 보유·대표이사 재직, 상속인 2년 종사·대표이사 취임 등 요건과 5년 사후관리(자산 40% 처분, 지분 감소, 고용 90% 유지 등)는 따로 확인해야 해요. 2026년 8월 세제개편안(2027년 7월 이후 상속분, 심사위원회·사후관리 연장)은 정부안이라 반영하지 않았어요. 기준일 ${ADVISORY_AS_OF}.`,
+};
+
+const faqs = [
+  { q: "가업상속공제 한도는 얼마인가요?", a: "피상속인이 가업을 10년 이상 경영했으면 300억 원, 20년 이상 400억 원, 30년 이상 600억 원이에요(상속세 및 증여세법 제18조의2 제1항)." },
+  { q: "중견기업도 받을 수 있나요?", a: "상속개시일 직전 3개 사업연도 평균 매출이 5천억 원 미만인 중견기업은 받을 수 있어요. 다만 상속인의 가업 외 상속재산이 그 상속인이 낼 상속세의 2배를 넘으면 공제를 못 받아요." },
+  { q: "사후관리 기간은 몇 년인가요?", a: "2023년 이후 상속분은 5년이에요. 이 기간에 가업용 자산 40% 이상 처분, 상속인 가업 미종사, 지분 감소, 정규직 수와 총급여가 기준의 90%에 모두 못 미치면 공제액에 이자상당액을 더해 상속세를 다시 내요." },
+  { q: "2026년 세제개편안이 바뀌면요?", a: "정부안은 한도를 최대 1,000억 원까지 늘리되 심사위원회 승인과 더 긴 사후관리를 붙이는 내용이에요. 국회를 통과하면 2027년 7월 1일 이후 상속분부터 적용될 예정이라, 통과되면 이 계산기도 고칠게요." },
+];
+---
+<KrFinancePage slug="family-business-inheritance-calculator" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <FamilyBusinessInheritance client:load />
+  <p class="mt-4 text-xs text-muted-foreground">근거: 상속세 및 증여세법 제18조의2·제19조·제21조·제22조·제24조·제26조·제69조, 시행령 제15조. 국세청 <a class="underline" href="https://www.nts.go.kr/nts/cm/cntnts/cntntsView.do?mi=40344&cntntsId=238919" rel="noopener">가업승계 지원제도</a>. 기준일 {ADVISORY_AS_OF}. <a class="underline" href="/ko/tax-advisor-toolkit/">세무·회계 실무 도구 모음</a></p>
+</KrFinancePage>
