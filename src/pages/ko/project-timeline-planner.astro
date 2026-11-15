@@ -1,0 +1,22 @@
+---
+// 경영 도구 (2026-11-14). 엔진: lib/biz-strategy.ts · lib/biz-checklist.ts
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import ProjectTimeline from "../../components/tools/biz/ProjectTimeline";
+
+const title = "타임라인·마일스톤 관리 — 간트 차트·핵심 경로·지연 영향·마감 확률";
+const description = "할 일·기간·선후관계를 넣으면 간트 차트와 핵심 경로, 완료 예정일을 계산하고, 한 작업이 늦어질 때 전체가 얼마나 밀리는지 보여 줘요. 전문가 모드는 PERT로 마감 안에 끝낼 확률을 계산해요.";
+const ko = {
+  introTitle: "어떤 일이 늦어지면 전체가 밀리는지 한눈에",
+  intro: "프로젝트에는 늦어져도 괜찮은 일과, 하루만 늦어도 전체가 밀리는 일이 섞여 있어요. 이 도구는 할 일의 선후관계로 가장 긴 줄(핵심 경로)을 찾고, 각 일의 여유를 계산해 간트 차트로 그려요. 법인 설립·서비스 출시·시드 투자·연말 결산 예시로 바로 시작할 수 있고, 입력은 이 브라우저에 저장돼요.",
+  howToTitle: "사용 방법",
+  steps: ["예시를 고르거나 할 일을 직접 적어요.", "할 일마다 걸리는 기간과 먼저 끝나야 하는 일을 골라요.", "간트 차트에서 핵심 경로(진한 막대)와 여유(옅은 꼬리)를 확인해요.", "'이 일이 늦어지면?'에서 지연 영향을, 전문가 모드에서 마감 확률을 봐요."],
+  highlightsTitle: "주요 특징",
+  highlights: [{"title": "핵심 경로", "body": "처음부터 끝까지 가장 긴 줄을 찾아 진하게 표시해요. 이 일들이 하루 늦으면 전체도 하루 늦어요."}, {"title": "지연 시뮬레이션", "body": "작업 하나를 며칠 늦춰 보면 전체 완료일이 얼마나 밀리는지 바로 보여 줘요."}, {"title": "PERT 마감 확률", "body": "가장 빠를 때·보통·가장 늦을 때 세 값으로 기대 기간과 마감 안에 끝낼 확률을 계산해요."}, {"title": "주말 빼고 계산", "body": "작업일 기준으로 토·일을 건너뛰어 날짜를 잡아요."}],
+  disclaimer: "일정 계획을 돕는 참고 도구예요. 공휴일은 반영하지 않으니(주말만 제외) 연휴가 낀 기간은 직접 늘려 주세요.",
+};
+const faqs = [{"q": "핵심 경로가 아닌 일은 신경 안 써도 되나요?", "a": "여유가 있다는 뜻일 뿐이에요. 여유보다 더 늦어지면 그 일도 핵심 경로가 돼요. 여유가 작은 일은 같이 챙겨요."}, {"q": "마감 확률은 얼마나 믿을 수 있나요?", "a": "PERT는 핵심 경로의 일들이 서로 독립이라고 보고 정규분포로 근사해요. 여러 줄이 비슷하게 길면 실제 위험이 더 커요. 외부 약속일은 85~90% 지점으로 잡는 경우가 많아요."}, {"q": "입력한 일정은 어디에 저장되나요?", "a": "이 브라우저에만 저장돼요. 다른 기기에서 보려면 '결과 메모 복사'로 옮겨요."}];
+---
+<KrFinancePage slug="project-timeline-planner" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <ProjectTimeline client:load />
+  <p class="mt-4 text-xs text-muted-foreground"><a class="underline" href="/ko/business-toolkit/">경영 도구 모음</a></p>
+</KrFinancePage>

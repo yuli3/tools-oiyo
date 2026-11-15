@@ -1,0 +1,22 @@
+---
+// 경영 도구 (2026-11-14). 엔진: lib/biz-strategy.ts · lib/biz-checklist.ts
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import SwotAnalysis from "../../components/tools/biz/SwotAnalysis";
+
+const title = "SWOT 분석 도구 — TOWS 전략 조합·전략 위치·IFE·EFE·IE 매트릭스";
+const description = "강점·약점·기회·위협을 적고 영향 크기를 고르면 지금 맞는 전략 방향(SO·ST·WO·WT)과 TOWS 조합을 바로 보여 줘요. 전문가 모드는 IFE·EFE 가중 평가와 IE 매트릭스까지 계산해요.";
+const ko = {
+  introTitle: "적고 끝나는 SWOT이 아니라 전략으로 이어지게",
+  intro: "SWOT은 강점·약점(내부)과 기회·위협(외부)을 정리하는 가장 흔한 틀이지만, 적고 나서 무엇을 할지가 빠지기 쉬워요. 이 도구는 항목마다 영향 크기를 받아 내부·외부 점수를 내고, 지금 회사가 공격·다각화·방향 전환·방어 중 어디에 있는지 사분면에 찍어요. 영향이 큰 항목끼리 짝지은 TOWS 전략 문장도 바로 만들어요.",
+  howToTitle: "사용 방법",
+  steps: ["네 칸에 항목을 적어요(예시를 고쳐 써도 돼요).", "항목마다 영향 크기(작음·보통·큼)를 골라요.", "전략 방향과 사분면 위치, TOWS 조합을 보고 실행 과제로 다듬어요.", "전문가 모드에서 가중치·평점으로 IFE·EFE와 IE 매트릭스를 봐요."],
+  highlightsTitle: "주요 특징",
+  highlights: [{"title": "전략 위치", "body": "(강점 − 약점, 기회 − 위협)을 사분면에 찍어 SO·ST·WO·WT 중 어디인지 보여 줘요."}, {"title": "TOWS 조합", "body": "영향이 큰 항목끼리 짝지어 실행 문장의 출발점을 만들어요."}, {"title": "IFE·EFE·IE", "body": "가중치 × 평점(1~4) 합계로 3×3 IE 매트릭스의 성장·유지·수확 칸을 판정해요."}],
+  disclaimer: "분석 틀을 돕는 도구예요. 점수는 입력한 판단을 합친 것이니, 팀원 여러 명이 따로 매긴 뒤 비교하면 더 정확해요.",
+};
+const faqs = [{"q": "기회와 강점은 어떻게 구분하나요?", "a": "우리가 통제할 수 있으면 강점·약점(내부), 통제할 수 없는 시장·경쟁·규제 변화면 기회·위협(외부)이에요."}, {"q": "몇 개씩 적어야 하나요?", "a": "칸마다 3~5개면 충분해요. 너무 많으면 영향이 큰 것이 묻혀요."}, {"q": "IFE 평점은 어떻게 매기나요?", "a": "강점은 3(작은 강점)~4(큰 강점), 약점은 1(큰 약점)~2(작은 약점)로 매기는 방식이 일반적이에요. 외부(EFE)는 우리가 그 요인에 얼마나 잘 대응하고 있는지로 1~4를 매겨요."}];
+---
+<KrFinancePage slug="swot-analysis" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <SwotAnalysis client:load />
+  <p class="mt-4 text-xs text-muted-foreground"><a class="underline" href="/ko/business-toolkit/">경영 도구 모음</a></p>
+</KrFinancePage>

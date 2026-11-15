@@ -3,19 +3,23 @@ import RelatedLinkList from './RelatedLinkList.astro';
 import { utilityCatalog, utilityGroups, type UtilityGroup } from '../data/utility-catalog';
 import { monitorPpiCopy } from '../data/monitor-ppi-copy';
 import { krFinanceTools } from '../data/kr-finance';
+import { bizTools } from '../data/biz-tools';
 import { krHealthTools, enHealthTools } from '../data/kr-health';
 import { utilityLabels, type Locale } from '../lib/i18n';
 interface Props { locale: Locale; current: string; group: UtilityGroup }
 const { locale, current, group } = Astro.props;
-const links = utilityCatalog.filter((t) => t.group === group && t.slug !== current).map((t) => ({ href: `/${locale}/${t.slug}/`, label: t.title[locale] }));
+const isBiz = locale === 'ko' && bizTools.some((t) => t.slug === current);
+const links = isBiz ? [] : utilityCatalog.filter((t) => t.group === group && t.slug !== current).map((t) => ({ href: `/${locale}/${t.slug}/`, label: t.title[locale] }));
 // WHY: PPI moved earlier (2026-10-21) and sits in the same screen group.
 if (group === 'screen') links.push({ href: `/${locale}/monitor-ppi-calculator/`, label: monitorPpiCopy[locale].title });
 // WHY: the image converter moved first (2026-10-21) and belongs with the W2 image tools.
 if (group === 'image') links.push({ href: `/${locale}/image-converter/`, label: utilityLabels[locale][0] });
+// WHY 2026-11-14: business tools link to each other first, then the tax-advisor toolkit.
+if (isBiz) links.push(...bizTools.filter((t) => t.slug !== current).map((t) => ({ href: `/ko/${t.slug}/`, label: t.title })), { href: '/ko/tax-advisor-toolkit/', label: '세무·회계 실무 도구 모음' });
 // WHY: the W8 Korean finance tools exist only on ko pages.
-if (group === 'money' && locale === 'ko') links.push(...krFinanceTools.filter((t) => t.slug !== current).map((t) => ({ href: `/ko/${t.slug}/`, label: t.title })));
+if (group === 'money' && locale === 'ko' && !isBiz) links.push(...krFinanceTools.filter((t) => t.slug !== current).map((t) => ({ href: `/ko/${t.slug}/`, label: t.title })));
 // WHY: W14 health tools outside the six-locale catalog (ko-only, or en/ko and en only like Blog had them).
 if (group === 'health' && locale === 'ko') links.push(...krHealthTools.filter((t) => t.slug !== current).map((t) => ({ href: `/ko/${t.slug}/`, label: t.title })));
 if (group === 'health' && locale === 'en') links.push(...enHealthTools.filter((t) => t.slug !== current).map((t) => ({ href: `/en/${t.slug}/`, label: t.title })));
 ---
-<RelatedLinkList title={utilityGroups[group][locale]} links={links} locale={locale} />
+<RelatedLinkList title={isBiz ? '경영 도구' : utilityGroups[group][locale]} links={links} locale={locale} />

@@ -1,0 +1,22 @@
+---
+// 경영 도구 (2026-11-14). 엔진: lib/biz-strategy.ts · lib/biz-checklist.ts
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import PriorityMatrix from "../../components/tools/biz/PriorityMatrix";
+
+const title = "가중 의사결정표·RICE 우선순위 계산기 — 기준별 점수와 순위가 뒤집히는 가중치";
+const description = "비용·속도·고객 가치 같은 기준에 중요도를 주고 선택지마다 1~5점을 매기면 가중 점수로 순위를 매겨요. 전문가 모드는 순위가 뒤집히는 가중치를 계산하고, RICE로 할 일 순서도 정해요.";
+const ko = {
+  introTitle: "목소리 큰 사람이 아니라 같은 기준으로",
+  intro: "여러 기준을 따져야 하는 결정(업체 선정, 채용, 외주 vs 직접 개발)은 기준별 중요도를 먼저 합의하고 점수를 매기면 논쟁이 줄어요. 이 도구는 가중 점수로 순위를 매기고, 1·2위 차이가 작으면 결론이 흔들릴 수 있다고 알려 줘요. 할 일이 많을 때는 RICE(도달 × 영향 × 확신 ÷ 노력) 점수로 순서를 정해요.",
+  howToTitle: "사용 방법",
+  steps: ["비교 기준과 중요도를 정해요.", "선택지마다 기준별 1~5점을 매겨요.", "가중 점수와 1·2위 차이를 보고, 전문가 모드에서 뒤집히는 가중치를 확인해요.", "할 일 우선순위는 RICE 탭에서 정해요."],
+  highlightsTitle: "주요 특징",
+  highlights: [{"title": "가중 점수", "body": "중요도를 비율(합 100%)로 바꿔 점수에 곱해 더해요."}, {"title": "뒤집히는 가중치", "body": "기준 하나의 비중이 몇 %가 되면 1·2위가 바뀌는지 보여 줘요."}, {"title": "RICE", "body": "도달·영향·확신·노력으로 할 일 순서를 정해요."}],
+  disclaimer: "판단을 정리하는 도구예요. 점수와 가중치는 입력한 판단을 반영할 뿐이니, 숫자 뒤의 이유를 함께 기록하세요.",
+};
+const faqs = [{"q": "점수는 누가 매기나요?", "a": "결정에 참여하는 사람이 각자 매긴 뒤 평균을 쓰면 한 사람의 편향을 줄일 수 있어요."}, {"q": "RICE의 영향은 어떻게 고르나요?", "a": "한 사람에게 주는 영향을 아주 작음(0.25)~아주 큼(3)으로 골라요. 처음에는 팀이 같은 예시를 기준으로 맞추면 좋아요."}, {"q": "확신이 낮은 일은 미뤄야 하나요?", "a": "작은 실험으로 확신을 먼저 올리는 것이 좋아요. 확신이 50%에서 80%로 오르면 점수도 1.6배가 돼요."}];
+---
+<KrFinancePage slug="priority-decision-matrix" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <PriorityMatrix client:load />
+  <p class="mt-4 text-xs text-muted-foreground"><a class="underline" href="/ko/business-toolkit/">경영 도구 모음</a></p>
+</KrFinancePage>

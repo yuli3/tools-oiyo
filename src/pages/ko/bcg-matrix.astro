@@ -1,0 +1,22 @@
+---
+// 경영 도구 (2026-11-14). 엔진: lib/biz-strategy.ts · lib/biz-checklist.ts
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import BcgMatrix from "../../components/tools/biz/BcgMatrix";
+
+const title = "BCG 매트릭스 도구 — 스타·캐시카우·물음표·개 버블 차트와 포트폴리오 진단";
+const description = "사업·제품별 매출, 시장 성장률, 1등 경쟁사 대비 점유율로 BCG 매트릭스 버블 차트를 그리고, 사분면별 매출 비중과 투자·정리 방향을 진단해요.";
+const ko = {
+  introTitle: "어디서 돈을 벌고 어디에 투자할지",
+  intro: "BCG 매트릭스는 사업을 시장 성장률(세로)과 상대 시장 점유율(가로)로 나눠요. 1등이면서 시장이 빨리 크면 스타, 시장이 느리면 돈을 벌어 주는 캐시카우, 시장은 크는데 뒤처져 있으면 물음표, 둘 다 낮으면 개예요. 캐시카우가 번 현금을 스타와 고른 물음표에 넣는 것이 기본 전략이에요. 쉬운 모드는 숫자 없이 '시장 속도'와 '1등과 비교'만 고르면 돼요.",
+  howToTitle: "사용 방법",
+  steps: ["사업·제품 이름과 연 매출을 넣어요.", "시장이 얼마나 빨리 크는지, 1등과 비교해 우리 규모가 어떤지 골라요(전문가 모드는 % 입력).", "버블 차트와 사업별 다음 행동, 사분면별 매출 구성을 확인해요."],
+  highlightsTitle: "주요 특징",
+  highlights: [{"title": "로그 눈금 버블 차트", "body": "상대 점유율은 BCG 관례대로 로그 눈금에 큰 값이 왼쪽이에요. 버블 크기는 매출이에요."}, {"title": "포트폴리오 경고", "body": "캐시카우 부족, 개·물음표 과다처럼 균형이 깨진 경우를 알려 줘요."}, {"title": "기준선 조정", "body": "전문가 모드에서 고성장 기준(기본 10%)을 업종에 맞게 바꿔요."}],
+  disclaimer: "전략 분석을 돕는 도구예요. 시장 성장률·점유율 추정치에 따라 결과가 크게 달라지니 출처를 함께 기록하세요.",
+};
+const faqs = [{"q": "상대 점유율은 어떻게 구하나요?", "a": "우리 점유율 ÷ 가장 큰 경쟁사 점유율이에요. 우리가 1등이면 2등 회사 점유율로 나눠요. 1 이상이면 시장 1등이에요."}, {"q": "고성장 기준은 왜 10%인가요?", "a": "원래 BCG가 쓴 관례값이에요. 업종 평균 성장률이나 GDP 성장률의 2배 정도로 바꿔 쓰는 경우도 많아요."}, {"q": "개 사업은 바로 정리해야 하나요?", "a": "아니에요. 다른 사업과 묶여 고객을 붙잡거나 현금이 꾸준히 나오면 유지할 이유가 있어요. 투자를 늘리지 않는 것이 기본이에요."}];
+---
+<KrFinancePage slug="bcg-matrix" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <BcgMatrix client:load />
+  <p class="mt-4 text-xs text-muted-foreground"><a class="underline" href="/ko/business-toolkit/">경영 도구 모음</a></p>
+</KrFinancePage>
