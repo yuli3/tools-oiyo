@@ -30,6 +30,9 @@
 | `MoneyField` | `label, value, onChange, allowNegative?, hint?` ("6억 3천만" 입력 가능) |
 | `Term` | `k`(용어 키, `src/data/advisory-glossary.ts`), children. 누르면 아래에 한 줄 풀이 |
 | `ChartFrame`, `BarTrack` | 새 그래프를 만들 때 쓰는 틀(제목·표로 보기)과 가로 막대 |
+| `QuadrantChart` (2026-11-14) | `title, caption?, points[{label,x,y,size?,tone?}], xDomain, yDomain, xSplit, ySplit, logX?, reverseX?, xLabel, yLabel, quadrants[4], ring?, formatX, formatY`. BCG·포지셔닝·SWOT처럼 2×2 판. 이름표가 겹치면 비켜서 선으로 이어요 |
+| `GanttChart` (2026-11-14) | `rows[{id,name,start,end,slack,critical,milestone,progress?}], total, formatDay, deadline?, highlight?`. 일정 막대와 여유(점선), 핵심 경로 강조 |
+| `TreeDiagram` (2026-11-14) | `title, caption?, root`(biz-strategy `EvaluatedNode`), `format`. 의사결정 트리, 고른 가지 강조. 좁은 화면에선 이름을 줄이고 비용을 숨겨요 |
 
 규칙: 차트 라이브러리 없이 SVG·HTML로 그려요. 색은 테마 토큰(`fill-primary` 등)만, 인라인 스타일·임의 값 금지(shadcn lint).
 그래프마다 "표로 보기"를 두고, 375px에서 가로 스크롤이 없어야 해요. GA4에는 `track()`으로 모드·슬라이더 사용 여부만 보내요(값은 보내지 않아요).

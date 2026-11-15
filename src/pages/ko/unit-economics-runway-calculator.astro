@@ -1,0 +1,22 @@
+---
+// 경영 도구 (2026-11-14). 엔진: lib/biz-strategy.ts · lib/biz-checklist.ts
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import GrowthEconomics from "../../components/tools/biz/GrowthEconomics";
+
+const title = "단위경제·런웨이 계산기 — LTV/CAC·CAC 회수 기간·현금 소진 달·흑자 전환";
+const description = "고객당 월 매출, 매출총이익률, 이탈률, 고객 획득 비용으로 LTV/CAC와 회수 기간을 계산하고, 보유 현금과 매출·비용 성장률로 월별 현금 잔고와 현금이 떨어지는 달, 흑자 전환 달을 보여 줘요.";
+const ko = {
+  introTitle: "광고비를 늘려도 될까, 언제 투자를 받아야 할까",
+  intro: "단위경제는 고객 한 명 기준으로 돈을 버는 구조인지 보는 숫자예요. 고객 한 명이 떠날 때까지 남기는 이익(LTV)이 데려오는 비용(CAC)의 3배 이상이면 건강하다고 봐요. 런웨이는 지금 현금으로 몇 달 버틸 수 있는지예요. 이 계산기는 매출·비용 성장률까지 넣어 월별 현금 곡선을 그리고, 돈이 떨어지기 전에 흑자로 돌아서는지(기본 생존)를 판정해요. 무엇이 결과를 가장 크게 흔드는지도 그래프로 보여 줘요.",
+  howToTitle: "사용 방법",
+  steps: ["고객 한 명의 숫자(월 매출, 이익률, 이탈률, 획득 비용)를 넣어요.", "회사 현금과 월 매출·비용, 성장률을 넣어요.", "슬라이더를 움직여 LTV/CAC와 현금 곡선이 어떻게 바뀌는지 봐요."],
+  highlightsTitle: "주요 특징",
+  highlights: [{"title": "LTV/CAC·회수 기간", "body": "3배 이상·12개월 안 회수가 흔한 기준이에요. 이탈률이 3배·1배가 되는 지점을 그래프에 표시해요."}, {"title": "월별 현금 곡선", "body": "매출·비용 성장률을 반영해 36개월 현금 잔고와 흑자 전환 달을 보여 줘요."}, {"title": "민감도(토네이도)", "body": "어떤 가정이 LTV/CAC와 런웨이를 가장 크게 흔드는지 순서대로 보여 줘요."}, {"title": "손익분기", "body": "전문가 모드에서 고정비·단가·변동비로 손익분기 판매량을 계산해요."}],
+  disclaimer: "의사결정을 돕는 단순 모형이에요. 성장률은 매달 같은 비율로 가정하며, 계절성·대규모 일회성 지출은 반영하지 않아요.",
+};
+const faqs = [{"q": "LTV는 매출로 계산하나요, 이익으로 계산하나요?", "a": "매출총이익(매출 − 원가) 기준이에요. 매출 기준 LTV는 실제보다 3~5배 크게 보이기 쉬워요."}, {"q": "이탈률은 어떻게 구하나요?", "a": "한 달 동안 떠난 고객 수 ÷ 그달 초 고객 수예요. 연간 구독이라면 연 이탈률을 12로 나눠 대략 넣어요."}, {"q": "런웨이가 몇 달이면 투자를 시작해야 하나요?", "a": "투자 유치에 보통 3~6개월이 걸리니 런웨이 12개월 전후에 준비를 시작하고, 6개월 아래로 내려가기 전에 마무리하는 것을 많이 권해요."}];
+---
+<KrFinancePage slug="unit-economics-runway-calculator" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <GrowthEconomics client:load />
+  <p class="mt-4 text-xs text-muted-foreground"><a class="underline" href="/ko/business-toolkit/">경영 도구 모음</a></p>
+</KrFinancePage>

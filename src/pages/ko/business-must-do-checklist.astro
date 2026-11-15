@@ -1,0 +1,22 @@
+---
+// 경영 도구 (2026-11-14). 엔진: lib/biz-strategy.ts · lib/biz-checklist.ts
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import BusinessChecklist from "../../components/tools/biz/BusinessChecklist";
+
+const title = "반드시 할 것 · 하지 말 것 — 창업·경영 체크리스트와 사업자 세무 일정";
+const description = "창업 준비부터 첫 매출, 첫 직원 채용, 법인 운영, 투자 유치, 결산까지 대표·경영팀·경리·세무사가 꼭 할 일과 절대 하지 말 일을 근거 조문과 함께 정리했어요. 내 사업 형태에 맞는 신고·납부 일정을 달력으로 내보내요.";
+const ko = {
+  introTitle: "놓치면 가산세·과태료가 되는 일부터",
+  intro: "사업을 하면 법이 정한 기한과 의무가 계속 생겨요. 이 체크리스트는 단계와 역할을 고르면 그때 꼭 해야 할 일과 하지 말아야 할 일을 보여 주고, 법·세무 항목에는 근거 조문과 어겼을 때의 가산세·과태료를 붙였어요. 경영 원칙 항목은 법적 의무가 아닌 경험칙으로 따로 표시해요. 아래에서는 법인·개인, 과세 유형, 직원 유무에 맞춘 한 해 신고 일정을 휴일 이동까지 반영해 보여 줘요.",
+  howToTitle: "사용 방법",
+  steps: ["누가 보는지(대표·경리·세무사 등)와 지금 단계를 골라요.", "해야 할 일은 체크하면서 진행률을 확인해요.", "사업 형태를 골라 올해 신고·납부 일정을 보고, 달력 파일로 내보내요."],
+  highlightsTitle: "주요 특징",
+  highlights: [{"title": "근거 조문", "body": "법·세무 항목마다 조문과 가산세·과태료를 붙였어요. 경영 원칙은 '경험칙'으로 구분해요."}, {"title": "역할별 보기", "body": "대표, 경영팀, 경리, 세무사·회계사가 각자 챙길 항목을 골라 볼 수 있어요."}, {"title": "휴일 반영 일정", "body": "기한이 토·일·공휴일이면 다음 영업일로 옮겨요(국세기본법 제5조)."}, {"title": "달력 내보내기", "body": ".ics 파일로 내 달력에 넣고 1주 전 알림을 받아요."}],
+  disclaimer: "일반적인 안내예요. 실제 신고 의무와 기한은 업종·규모·관할 세무서 안내에 따라 다를 수 있으니 홈택스 공지와 담당 세무사에게 확인하세요.",
+};
+const faqs = [{"q": "이 목록이면 법적 의무가 모두 끝나나요?", "a": "아니에요. 업종별 인허가, 식품·의료·금융 규제, 하도급·전자상거래 의무 등은 업종마다 달라요. 자주 놓치는 공통 항목을 골랐어요."}, {"q": "간이지급명세서가 매월로 바뀌나요?", "a": "사업소득·일용근로는 이미 매월 제출이고, 근로소득은 2027년 1월 지급분부터 매월 제출로 바뀌어요. 2026년 지급분까지는 반기(7월 말·1월 말)예요."}, {"q": "12월 결산이 아니면요?", "a": "법인세 일정은 사업연도 종료일이 속한 달 말일부터 3개월 안이에요. 이 일정은 12월 결산 기준이라 다른 결산월은 직접 옮겨 주세요."}];
+---
+<KrFinancePage slug="business-must-do-checklist" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <BusinessChecklist client:load />
+  <p class="mt-4 text-xs text-muted-foreground"><a class="underline" href="/ko/business-toolkit/">경영 도구 모음</a></p>
+</KrFinancePage>
