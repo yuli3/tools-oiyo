@@ -27,6 +27,8 @@ export function formatUnit(unit: AssumptionUnit, v: number, mode: AdvisoryMode =
       return `${Math.round(v)}시간`;
     case "count":
       return `${Math.round(v)}채`;
+    case "people":
+      return `${Math.round(v)}명`;
   }
 }
 

@@ -2,7 +2,7 @@
 // 계산 엔진은 건드리지 않고, "가정 하나를 바꾸면 결과가 어떻게 되나"만 순수 함수로 계산해요.
 // 도구는 가정 목록(Assumption)과 결과 함수(evaluate)만 넘기면 돼요. 화면 부품은 components/tools/viz/.
 
-export type AssumptionUnit = "won" | "pct" | "shares" | "years" | "rate" | "months" | "days" | "hours" | "count";
+export type AssumptionUnit = "won" | "pct" | "shares" | "years" | "rate" | "months" | "days" | "hours" | "count" | "people";
 
 export interface Assumption<I> {
   key: string;
@@ -193,4 +193,12 @@ export function compactWon(n: number): string {
   if (a >= 1e8) return `${sign}${(a / 1e8).toFixed(a >= 1e10 ? 0 : 1)}억`;
   if (a >= 1e4) return `${sign}${(a / 1e4).toFixed(a >= 1e6 ? 0 : 2)}만`;
   return `${sign}${Math.round(a)}`;
+}
+
+/** 받침에 맞는 조사: josa("상속세", "이", "가") → "상속세가". 괄호·공백·숫자 뒤는 마지막 한글 글자로 판단해요. */
+export function josa(word: string, withFinal: string, withoutFinal: string): string {
+  const m = word.replace(/\([^)]*\)/g, "").match(/[가-힣](?=[^가-힣]*$)/);
+  if (!m) return word + withFinal;
+  const hasFinal = (m[0].charCodeAt(0) - 0xac00) % 28 !== 0;
+  return word + (hasFinal ? withFinal : withoutFinal);
 }

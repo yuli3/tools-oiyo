@@ -168,3 +168,11 @@ test("DCF: 다리 = 주주가치, 계산 불가 구간은 곡선·토네이도�
   assert.match(dcfPlain(r, t[0]).headline, /1주당/);
   assert.equal(dcfPlain(dcfValuation({ ...dcf, wacc: 0.01 })).driver, null);
 });
+
+test("조사: 받침에 따라 이/가", async () => {
+  const { josa } = await import("./scenario.ts");
+  assert.equal(josa("상속세", "이", "가"), "상속세가");
+  assert.equal(josa("남긴 재산", "이에요", "예요"), "남긴 재산이에요");
+  assert.equal(josa("월급(세전)", "이에요", "예요"), "월급(세전)이에요");
+  assert.equal(josa("부양가족 수", "이에요", "예요"), "부양가족 수예요");
+});
