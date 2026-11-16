@@ -1,7 +1,7 @@
 ---
 // Moved from blog.oiyo.net/jeonse-vs-buy-calculator/ on 2026-10-27 (W15); ko-only on Tools: Korean jeonse and acquisition tax (지방세법 제11조 1주택 세율 applied; Blog stepped 6~9억 at 2%).
 import KrFinancePage from "../../components/KrFinancePage.astro";
-import JeonsevsBuyCalculator from "../../components/tools/JeonsevsBuyCalculator";
+import KrJeonseBuyScenario from "../../components/tools/KrJeonseBuyScenario";
 
 const title = ({
     title: "전세 vs 매매 비교 계산기 — 어느 쪽이 유리할까?",
@@ -39,5 +39,5 @@ const faqs = [
   ];
 ---
 <KrFinancePage slug="jeonse-vs-buy-calculator" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
-  <JeonsevsBuyCalculator client:load locale="ko" />
+  <KrJeonseBuyScenario client:load />
 </KrFinancePage>

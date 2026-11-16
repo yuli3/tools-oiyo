@@ -3,6 +3,7 @@ import ToolShell from '../../components/ToolShell.astro';
 import Layout from "../../components/Layout.astro";
 import RelatedTools from "../../components/RelatedTools.astro";
 import RatesAsOf from "../../components/RatesAsOf.astro";
+import KrUnemploymentScenario from "../../components/tools/KrUnemploymentScenario";
 ---
 
 <Layout
@@ -15,110 +16,7 @@ import RatesAsOf from "../../components/RatesAsOf.astro";
     
 
       <div class="space-y-6">
-        <!-- 연령 구분 -->
-        <div>
-          <label class="block text-xs font-bold text-foreground">이직(퇴사) 당시 만 나이</label>
-          <div class="mt-2 grid grid-cols-2 gap-3">
-            <button
-              type="button"
-              data-age="under"
-              class="age-btn rounded-lg border border-primary bg-primary/10 px-4 py-3 text-xs font-bold text-primary text-center transition-colors"
-            >
-              만 50세 미만
-            </button>
-            <button
-              type="button"
-              data-age="over"
-              class="age-btn rounded-lg border border-border bg-background px-4 py-3 text-xs font-medium text-muted-foreground text-center transition-colors hover:bg-muted/50"
-            >
-              만 50세 이상 및 장애인
-            </button>
-          </div>
-        </div>
-
-        <!-- 고용보험 가입기간 -->
-        <div>
-          <label for="period-select" class="block text-xs font-bold text-foreground">고용보험 총 가입기간 (피보험기간)</label>
-          <select
-            id="period-select"
-            class="mt-2 w-full rounded-lg border border-input bg-background px-4 py-3 text-sm text-foreground focus-visible:outline-2 focus-visible:outline-ring"
-          >
-            <option value="p1">1년 미만</option>
-            <option value="p2">1년 이상 ~ 3년 미만</option>
-            <option value="p3" selected>3년 이상 ~ 5년 미만</option>
-            <option value="p4">5년 이상 ~ 10년 미만</option>
-            <option value="p5">10년 이상</option>
-          </select>
-        </div>
-
-        <!-- 1일 소정근로시간 -->
-        <div>
-          <label for="hours-select" class="block text-xs font-bold text-foreground">퇴직 전 1일 소정근로시간</label>
-          <select
-            id="hours-select"
-            class="mt-2 w-full rounded-lg border border-input bg-background px-4 py-3 text-sm text-foreground focus-visible:outline-2 focus-visible:outline-ring"
-          >
-            <option value="8" selected>8시간 (일반 전일제)</option>
-            <option value="7">7시간</option>
-            <option value="6">6시간</option>
-            <option value="5">5시간</option>
-            <option value="4">4시간</option>
-            <option value="3">3시간</option>
-            <option value="2">2시간</option>
-            <option value="1">1시간</option>
-          </select>
-        </div>
-
-        <!-- 퇴직 전 3개월 월 평균 급여 -->
-        <div>
-          <label for="wage-input" class="block text-xs font-bold text-foreground">퇴직 전 3개월간 월 평균 급여 (세전, 원)</label>
-          <div class="mt-2 relative">
-            <input
-              type="number"
-              id="wage-input"
-              value="3000000"
-              step="100000"
-              min="500000"
-              class="w-full rounded-lg border border-input bg-background px-4 py-3 text-sm font-mono text-foreground focus-visible:outline-2 focus-visible:outline-ring"
-            />
-            <span class="absolute right-4 top-3.5 text-xs text-muted-foreground">원</span>
-          </div>
-          <p class="mt-1 text-[11px] text-muted-foreground">기본급, 정기수당, 상여금 등 세전 총액 기준</p>
-        </div>
-
-        <!-- 결과 영역 -->
-        <div class="rounded-lg border border-border bg-muted/20 p-5 space-y-4">
-          <span class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">실업급여 예상 수급액 산출 결과</span>
-          
-          <div class="grid grid-cols-2 gap-3 text-center sm:grid-cols-3">
-            <div class="rounded-md border border-border bg-card p-3">
-              <span class="text-[11px] text-muted-foreground block">1일 지급액</span>
-              <span id="res-daily" class="text-base font-extrabold text-foreground sm:text-lg">66,048원</span>
-              <span id="res-limit-tag" class="text-[10px] text-primary font-medium block">하한액 적용</span>
-            </div>
-            <div class="rounded-md border border-border bg-card p-3">
-              <span class="text-[11px] text-muted-foreground block">소정급여일수</span>
-              <span id="res-days" class="text-base font-extrabold text-foreground sm:text-lg">180일</span>
-              <span class="text-[10px] text-muted-foreground block">약 6개월 수급</span>
-            </div>
-            <div class="col-span-2 sm:col-span-1 rounded-md border border-primary/30 bg-primary/10 p-3">
-              <span class="text-[11px] text-primary font-semibold block">총 예상 수급액</span>
-              <span id="res-total" class="text-base font-black text-primary sm:text-lg">11,888,640원</span>
-              <span class="text-[10px] text-primary/80 block">전액 비과세 수령</span>
-            </div>
-          </div>
-
-          <div class="rounded-md border border-border bg-background p-3 text-xs space-y-1.5">
-            <div class="flex justify-between text-muted-foreground">
-              <span>월 환산 예상액 (30일 기준):</span>
-              <span id="res-monthly" class="font-bold text-foreground">1,981,440원</span>
-            </div>
-            <div class="flex justify-between text-muted-foreground">
-              <span>2026년 법정 일액 기준:</span>
-              <span id="res-range" class="font-mono text-[11px]">하한 66,048원 ~ 상한 68,100원</span>
-            </div>
-          </div>
-        </div>
+        <KrUnemploymentScenario client:load />
 
         <!-- 법적 안내 및 수급 요건 -->
         <div class="border-t border-border pt-4 text-xs space-y-2 text-muted-foreground">
@@ -133,7 +31,7 @@ import RatesAsOf from "../../components/RatesAsOf.astro";
         <!-- API 연동 안내 -->
         <div class="border-t border-border pt-4 text-xs text-muted-foreground">
           <p class="font-medium text-foreground">API 연동 안내:</p>
-          <p class="mt-1 font-mono text-[11px] bg-muted p-2 rounded border border-border">
+          <p class="mt-1 break-all font-mono text-[11px] bg-muted p-2 rounded border border-border">
             GET https://api.oiyo.net/v1/labor/kr/unemployment-benefits?wage=3000000&age=under&period=p3
           </p>
         </div>
@@ -145,59 +43,5 @@ import RatesAsOf from "../../components/RatesAsOf.astro";
 
       <RelatedTools currentId="unemployment-benefits" />
 
-    <script>
-      // 2026-10-17: 상·하한·일수표는 SSOT(src/lib/kr-rates-2026.mjs)에서만 가져와요.
-      // 옛 /ko/unemployment-benefit-calculator/는 이 페이지로 301 이동했어요(public/_redirects).
-      import { unemploymentDailyBenefit2026, unemploymentDays2026 } from "../../lib/kr-rates-2026.mjs";
-
-      let currentAge = "under"; // "under" | "over"
-      const ageButtons = document.querySelectorAll<HTMLButtonElement>(".age-btn");
-      const periodSelect = document.getElementById("period-select") as HTMLSelectElement;
-      const hoursSelect = document.getElementById("hours-select") as HTMLSelectElement;
-      const wageInput = document.getElementById("wage-input") as HTMLInputElement;
-
-      const resDaily = document.getElementById("res-daily")!;
-      const resLimitTag = document.getElementById("res-limit-tag")!;
-      const resDays = document.getElementById("res-days")!;
-      const resTotal = document.getElementById("res-total")!;
-      const resMonthly = document.getElementById("res-monthly")!;
-      const resRange = document.getElementById("res-range")!;
-
-      const TAGS: Record<string, string> = { standard: "평균임금의 60%", cap_applied: "상한액 적용", floor_applied: "하한액 적용" };
-
-      function calculate() {
-        const daily = unemploymentDailyBenefit2026({
-          monthlyWage: parseFloat(wageInput.value) || 0,
-          hoursPerDay: parseInt(hoursSelect.value, 10) || 8,
-        });
-        const days = unemploymentDays2026(currentAge, periodSelect.value);
-
-        resDaily.textContent = daily.dailyBenefit.toLocaleString() + "원";
-        resLimitTag.textContent = TAGS[daily.limitType] ?? "";
-        resDays.textContent = days + "일";
-        resTotal.textContent = (daily.dailyBenefit * days).toLocaleString() + "원";
-        resMonthly.textContent = (daily.dailyBenefit * 30).toLocaleString() + "원";
-        resRange.textContent = `하한 ${daily.minDailyFloor.toLocaleString()}원 ~ 상한 ${daily.maxDailyCap.toLocaleString()}원`;
-      }
-
-      ageButtons.forEach((btn) => {
-        btn.addEventListener("click", () => {
-          ageButtons.forEach((b) => {
-            b.classList.remove("border-primary", "bg-primary/10", "text-primary", "font-bold");
-            b.classList.add("border-border", "bg-background", "text-muted-foreground", "font-medium");
-          });
-          btn.classList.add("border-primary", "bg-primary/10", "text-primary", "font-bold");
-          btn.classList.remove("border-border", "bg-background", "text-muted-foreground", "font-medium");
-          currentAge = btn.getAttribute("data-age") || "under";
-          calculate();
-        });
-      });
-
-      periodSelect.addEventListener("change", calculate);
-      hoursSelect.addEventListener("change", calculate);
-      wageInput.addEventListener("input", calculate);
-
-      calculate();
-    </script>
   </ToolShell>
 </Layout>

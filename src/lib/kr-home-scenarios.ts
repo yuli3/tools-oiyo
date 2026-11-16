@@ -4,6 +4,7 @@ import { compareIsaTax } from "./finance/isa-tax-comparison.ts";
 import { computeStressDsrMortgage, type RateType } from "./finance/stress-dsr.ts";
 import { housingCost, RENT_CREDIT_ANNUAL_CAP } from "./jeonse-cost.ts";
 import { presaleSchedule, type InterestMode } from "./kr-presale-2026.ts";
+import { acquisitionTax } from "./kr-real-estate-tax.ts";
 import { driverLine } from "./kr-money-scenarios.ts";
 import { fixedRange, josa, roughWon, type Assumption, type BridgeStep, type TornadoBar } from "./scenario.ts";
 
@@ -267,6 +268,135 @@ export function presalePlain(i: PresaleLite, top?: TornadoBar) {
       `계약금 ${pct(i.depositRate)}(${roughWon(r.deposit)})는 계약할 때 바로 내요.`,
       `중도금 ${roughWon(r.midTotal)} 가운데 ${josa(roughWon(r.loanTotal), "은", "는")} 집단대출로 내요. ${josa(MODE[i.interestMode], "이라", "라")} ${i.interestMode === "free" ? "이자는 시행사가 내요." : `이자 약 ${josa(roughWon(r.interestTotal), "을", "를")} ${i.interestMode === "deferred" ? "입주 때 한 번에" : "매달"} 내요.`}`,
       `입주 때는 잔금·옵션·취득세 말고도 중도금 대출 ${josa(roughWon(r.loanToRefinance), "을", "를")} 갚거나 잔금대출로 바꿔야 해요.`,
+    ],
+  };
+}
+
+// ───────────────────────── 전세 vs 매매 ─────────────────────────
+// 보유 기간 동안 실제로 사라지는 돈만 비교해요. 집값(원금)이나 보증금은 돌아오는 돈이라 비용이 아니에요.
+// 매매 = 대출 이자 + 내 돈(계약금·취득세)의 기회비용 + 취득세 + 보유세 등 − 집값 상승분
+// 전세 = 보증금의 기회비용(전세대출이 있으면 그 이자)
+
+export interface BuyLite {
+  price: number;
+  jeonse: number;
+  /** 매매 때 대출 비율(LTV) */
+  ltv: number;
+  mortgageRate: number;
+  /** 예금 이자율(기회비용) */
+  savingsRate: number;
+  /** 연 집값 상승률(음수 가능) */
+  growth: number;
+  years: number;
+  /** 연 보유 비용(재산세·종부세·수선비 등)을 집값 대비 비율로 */
+  holding: number;
+  over85: boolean;
+}
+
+export function buyResult(i: BuyLite) {
+  const years = Math.max(1, Math.round(i.years));
+  const price = Math.max(0, i.price);
+  const loan = price * Math.min(1, Math.max(0, i.ltv));
+  const acq = acquisitionTax({ price, houses: 1, regulated: false, temporaryTwo: false, over85: i.over85 }).total;
+  const equity = price - loan + acq;
+  const interest = Math.round(loan * i.mortgageRate * years);
+  const equityCost = Math.round(equity * i.savingsRate * years);
+  const holdingCost = Math.round(price * i.holding * years);
+  const appreciation = Math.round(price * ((1 + i.growth) ** years - 1));
+  const buyCost = interest + equityCost + acq + holdingCost - appreciation;
+  const jeonseCost = Math.round(Math.max(0, i.jeonse) * i.savingsRate * years);
+  return { years, loan, equity, acq, interest, equityCost, holdingCost, appreciation, buyCost, jeonseCost };
+}
+/** 전세가 매매보다 보유 기간 동안 더 드는 돈(양수면 매매가 유리해요) */
+export const buyAdvantage = (i: BuyLite) => {
+  const r = buyResult(i);
+  return r.jeonseCost - r.buyCost;
+};
+
+export const BUY_ASSUMPTIONS: Assumption<BuyLite>[] = [
+  { key: "growth", label: "연 집값 상승률", plain: "집값 상승률", unit: "rate", kind: "assumption", get: (i) => i.growth, set: (i, v) => ({ ...i, growth: v }), range: fixedRange(-0.05, 0.08), marks: [{ at: 0, label: "그대로" }] },
+  money<BuyLite>("price", "집값", "집값", (i) => i.price, (i, v) => ({ ...i, price: Math.max(0, v) }), (a) => [0, Math.max(a * 2, 1_000_000_000)]),
+  money<BuyLite>("jeonse", "전세 보증금", "전세 보증금", (i) => i.jeonse, (i, v) => ({ ...i, jeonse: Math.max(0, v) }), (a) => [0, Math.max(a * 2, 600_000_000)]),
+  rate<BuyLite>("mortgageRate", "주담대 금리", "주담대 금리", (i) => i.mortgageRate, (i, v) => ({ ...i, mortgageRate: v }), 0.02, 0.07),
+  rate<BuyLite>("savingsRate", "예금 이자율(기회비용)", "예금 이자율", (i) => i.savingsRate, (i, v) => ({ ...i, savingsRate: v }), 0, 0.06),
+  { key: "years", label: "살 기간", plain: "살 기간", unit: "years", kind: "assumption", get: (i) => i.years, set: (i, v) => ({ ...i, years: Math.max(1, Math.round(v)) }), range: fixedRange(1, 20) },
+];
+
+/** 두 선택이 같아지는 연 집값 상승률(이분법) */
+export function buyBreakEvenGrowth(i: BuyLite): number | null {
+  let lo = -0.2, hi = 0.3;
+  const f = (g: number) => buyAdvantage({ ...i, growth: g });
+  if (f(lo) > 0 || f(hi) < 0) return null;
+  for (let k = 0; k < 60; k++) {
+    const mid = (lo + hi) / 2;
+    if (f(mid) < 0) lo = mid; else hi = mid;
+  }
+  return (lo + hi) / 2;
+}
+
+export function buyBridge(i: BuyLite): BridgeStep[] {
+  const r = buyResult(i);
+  return [
+    { label: "대출 이자", value: r.interest, kind: "add" },
+    { label: "내 돈 기회비용", value: r.equityCost, kind: "add" },
+    { label: "취득세", value: r.acq, kind: "add" },
+    { label: "보유세·수선비", value: r.holdingCost, kind: "add" },
+    { label: r.appreciation >= 0 ? "집값 상승" : "집값 하락", value: -r.appreciation, kind: "add" },
+    { label: "매매 실제 비용", value: r.buyCost, kind: "total" },
+  ];
+}
+
+export function buyPlain(i: BuyLite, top?: TornadoBar) {
+  const r = buyResult(i);
+  const adv = r.jeonseCost - r.buyCost;
+  const even = buyBreakEvenGrowth(i);
+  return {
+    headline: adv >= 0
+      ? `${r.years}년 산다면 매매가 약 ${roughWon(adv)} 덜 들어요.`
+      : `${r.years}년 산다면 전세가 약 ${roughWon(-adv)} 덜 들어요.`,
+    driver: driverLine(top, "두 선택의 차이"),
+    reasons: [
+      `전세는 보증금 ${roughWon(i.jeonse)}을 예금에 넣었으면 받았을 이자 약 ${josa(roughWon(r.jeonseCost), "이", "가")} 비용이에요.`,
+      `매매는 이자·기회비용·취득세·보유세로 약 ${roughWon(r.interest + r.equityCost + r.acq + r.holdingCost)}이 들고, 집값이 연 ${pct(i.growth)} 움직이면 ${roughWon(Math.abs(r.appreciation))}${r.appreciation >= 0 ? "을 돌려받아요" : "을 더 잃어요"}.`,
+      even !== null ? `집값이 1년에 약 ${pct(even)}보다 더 오르면 매매가, 덜 오르면 전세가 유리해요.` : "집값 상승률을 어떻게 잡아도 결과가 뒤집히지 않아요.",
+    ],
+  };
+}
+
+// ───────────────────────── 전월세 전환 ─────────────────────────
+
+export interface ConvertLite {
+  jeonse: number;
+  deposit: number;
+  /** 적용 전환율(연) */
+  rate: number;
+  /** 한국은행 기준금리(법정 상한 계산용) */
+  baseRate: number;
+}
+
+/** 주택임대차보호법 시행령 제9조: 연 10%와 기준금리 + 2%p 중 낮은 값 */
+export const legalConversionCap = (baseRate: number) => Math.min(0.1, Math.max(0, baseRate) + 0.02);
+export const convertRent = (i: ConvertLite) => Math.max(0, Math.round(((Math.max(0, i.jeonse) - Math.max(0, i.deposit)) * Math.max(0, i.rate)) / 12));
+
+export const CONVERT_ASSUMPTIONS: Assumption<ConvertLite>[] = [
+  money<ConvertLite>("jeonse", "지금 전세금", "전세금", (i) => i.jeonse, (i, v) => ({ ...i, jeonse: Math.max(0, v) }), (a) => [0, Math.max(a * 2, 300_000_000)]),
+  money<ConvertLite>("deposit", "바꾼 뒤 보증금", "남길 보증금", (i) => i.deposit, (i, v) => ({ ...i, deposit: Math.max(0, v) }), (a) => [0, Math.max(a * 2, 100_000_000)]),
+  rate<ConvertLite>("rate", "전환율", "전환율", (i) => i.rate, (i, v) => ({ ...i, rate: v }), 0.02, 0.1),
+];
+
+export function convertPlain(i: ConvertLite, top?: TornadoBar) {
+  const rent = convertRent(i);
+  const cap = legalConversionCap(i.baseRate);
+  const capRent = convertRent({ ...i, rate: cap });
+  return {
+    headline: `보증금을 ${roughWon(i.deposit)}으로 낮추면 월세는 약 ${josa(roughWon(rent), "이에요", "예요")}.`,
+    driver: driverLine(top, "월세"),
+    reasons: [
+      `줄어든 보증금 ${roughWon(Math.max(0, i.jeonse - i.deposit))}에 전환율 ${pct(i.rate)}를 곱해 12로 나눴어요.`,
+      i.rate > cap + 1e-9
+        ? `계약 기간 중 전환이면 법정 상한 ${pct(cap)}(기준금리 + 2%p)를 넘을 수 없어요. 상한으로 계산하면 월 ${roughWon(capRent)}이에요.`
+        : `법정 상한 ${pct(cap)}(기준금리 ${pct(i.baseRate)} + 2%p) 안이에요. 상한으로 계산하면 월 ${roughWon(capRent)}까지 올라갈 수 있어요.`,
+      "새 계약(재계약 아닌 신규)에는 상한이 없어요. 동네 시세 전환율과도 비교해 보세요.",
     ],
   };
 }
