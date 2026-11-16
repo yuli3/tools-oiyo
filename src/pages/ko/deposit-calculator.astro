@@ -1,7 +1,7 @@
 ---
 // Moved from blog.oiyo.net/deposit-calculator/ on 2026-10-27 (W11b). Blog offered a 9.9% "preferential" option (code used 9.5%) for a product abolished in 2019.
 import KrFinancePage from "../../components/KrFinancePage.astro";
-import DepositCalculator from "../../components/tools/DepositCalculator";
+import KrDepositScenario from "../../components/tools/KrDepositScenario";
 
 const title = "예금·적금 이자 계산기 — 세후 이자·만기 수령액";
 const description = "정기예금과 적금의 단리·월복리 이자, 이자소득세 15.4%를 뺀 세후 이자와 만기 수령액을 계산합니다.";
@@ -47,5 +47,5 @@ const faqs = [
 ];
 ---
 <KrFinancePage slug="deposit-calculator" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
-  <DepositCalculator client:load locale="ko" />
+  <KrDepositScenario client:load />
 </KrFinancePage>

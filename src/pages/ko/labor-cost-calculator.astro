@@ -2,7 +2,7 @@
 // Moved from blog.oiyo.net/labor-cost-calculator/ on 2026-10-27 (W10a). Same kr-payroll-2026 rates as Blog,
 // now with all four employer job-security tiers and an editable industrial accident rate.
 import KrFinancePage from "../../components/KrFinancePage.astro";
-import LaborCostCalculator from "../../components/tools/LaborCostCalculator";
+import KrLaborCostScenario from "../../components/tools/KrLaborCostScenario";
 import { PAYROLL_TAX_AS_OF } from "../../lib/kr-payroll-2026";
 import { computeEmployerInsurance } from "../../lib/finance/salary-calculator";
 
@@ -32,6 +32,6 @@ const faqs = [
 ];
 ---
 <KrFinancePage slug="labor-cost-calculator" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
-  <LaborCostCalculator client:load />
+  <KrLaborCostScenario client:load />
   <p class="mt-4 text-xs text-muted-foreground">근거: 국민연금법 제88조, 국민건강보험법 제73조, 노인장기요양보험법 제9조, 고용보험 및 산업재해보상보험의 보험료징수 등에 관한 법률 시행령 제12조, 2026년 보험료율 고시. 기준일 {PAYROLL_TAX_AS_OF}.</p>
 </KrFinancePage>

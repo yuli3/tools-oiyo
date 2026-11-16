@@ -1,7 +1,7 @@
 ---
 // 건강 금융 묶음 1 (2026-11-02, CHOSEUN 선택). ko-only: 소득세법 제59조의4 ② 의료비 세액공제.
 import KrFinancePage from "../../components/KrFinancePage.astro";
-import MedicalTaxCreditCalculator from "../../components/tools/MedicalTaxCreditCalculator";
+import KrMedicalCreditScenario from "../../components/tools/KrMedicalCreditScenario";
 import { MEDICAL_COST_AS_OF, medicalExpenseCredit } from "../../lib/kr-medical-cost-2026";
 
 const title = "의료비 세액공제 계산기 2026 — 총급여 3% 문턱과 돌려받는 세금";
@@ -40,6 +40,6 @@ const faqs = [
 ];
 ---
 <KrFinancePage slug="medical-expense-tax-credit-calculator" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
-  <MedicalTaxCreditCalculator client:load />
+  <KrMedicalCreditScenario client:load />
   <p class="mt-4 text-xs text-muted-foreground">근거: 소득세법 제59조의4 제2항(의료비 세액공제)과 시행령 제118조의5. 2026년 귀속 기준. 기준일 {MEDICAL_COST_AS_OF}.</p>
 </KrFinancePage>

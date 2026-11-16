@@ -56,7 +56,7 @@ test('화면 라벨은 SSOT 요율에서 만든다', () => {
 // (자동차세 연납 공제 ≈4.57%처럼 다른 제도의 숫자는 이 목록에 넣지 않는다.)
 const LEGACY = [/\b0\.045\b(?!\d)/, /0\.03545/, /0\.1295/, /0\.1281/, /\b3\.545%/, /\b12\.95%/, /\b12\.81%/, /0\.4591/, /\b265_500\b/, /\b277_650\b/, /\b6_170_000\b/];
 const PAYROLL_FILES = [
-  'src/components/tools/LaborCostCalculator.tsx',
+  'src/components/tools/KrLaborCostScenario.tsx',
   'src/components/tools/SalaryCalculator.tsx',
 ];
 
