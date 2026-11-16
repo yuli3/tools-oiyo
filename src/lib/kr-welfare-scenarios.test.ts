@@ -60,3 +60,11 @@ test("주택임대·통상임금·포괄임금 가정이 결과를 움직여요"
   assert.equal(marks[0].at, 16.6);
   assert.equal(m.fixedOtShort({ ...ot, overtime: 10 }), 0);
 });
+
+test("연장수당 가정: 시급과 시간이 늘면 수당도 늘어요", async () => {
+  const m = await import("./kr-welfare-scenarios.ts");
+  const i = { hourly: 10_000, overtime: 10, night: 4, holiday: 8 };
+  assert.equal(m.overtimeTotal(i), 150_000 + 20_000 + 120_000);
+  assert.equal(m.overtimeTotal({ ...i, smallFirm: true }), 180_000);
+  assert.deepEqual(m.OVERTIME_ASSUMPTIONS.map((a) => a.key), ["overtime", "night", "holiday", "hourly"]);
+});

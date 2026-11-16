@@ -1,183 +1,36 @@
 ---
-import ToolShell from '../../components/ToolShell.astro';
-import Layout from "../../components/Layout.astro";
-import RelatedTools from "../../components/RelatedTools.astro";
+// 2026-11-16: 쉬운 설명/전문가 모드와 가정 그래프로 다시 만들었어요. 공식은 통상임금·포괄임금 도구와 같은
+// premiumPay(lib/kr-welfare-2026.ts) 하나예요(예전 페이지 안 스크립트의 같은 공식은 지웠어요).
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import OvertimePay from "../../components/tools/welfare/OvertimePay";
 import { KR_RATES_2026 } from "../../lib/kr-rates-2026.mjs";
 
-// 2026-10-17 (FAANG audit S-1): 최저임금은 SSOT에서만 읽어요(고용노동부고시 제2025-47호, 10,320원).
 const MIN_WAGE = KR_RATES_2026.minimumWage;
-const MIN_WAGE_TEXT = MIN_WAGE.toLocaleString("ko-KR");
+const title = "연장·야간·휴일수당 가산수당 계산기";
+const description = "근로기준법 제56조에 따른 연장근로(1.5배), 야간근로(0.5배 가산), 휴일근로(8시간 이내 1.5배 / 8시간 초과 2.0배) 가산수당을 계산하고, 시간과 시급을 바꾸면 수당이 어떻게 바뀌는지 그래프로 보여 줘요.";
+const ko = {
+  introTitle: "시급과 일한 시간만 있으면 돼요",
+  intro: "직원 5명 이상 회사에서 연장근로는 시급의 1.5배, 밤 10시~아침 6시 근로는 0.5배를 더, 휴일근로는 8시간까지 1.5배·넘는 시간은 2배를 받아요. 5명 미만 회사는 가산 없이 일한 시간만큼 받아요.",
+  howToTitle: "사용 방법",
+  steps: ["시급(시간급 통상임금)을 넣어요. 상여금·고정수당이 있으면 통상임금 계산기로 먼저 구해요.", "한 달 연장·야간·휴일근로 시간을 넣어요.", "시간과 시급을 바꿔 보며 수당이 어떻게 바뀌는지 그래프로 봐요."],
+  highlightsTitle: "주요 특징",
+  highlights: [
+    { title: "근로기준법 제56조 가산율", body: "연장 1.5배, 야간 0.5배 가산, 휴일 8시간 이내 1.5배·초과 2배." },
+    { title: "5인 미만 비교", body: "같은 시간을 일했을 때 5인 이상과 5인 미만 회사의 차이를 나란히 보여 줘요." },
+    { title: "통상임금·포괄임금과 같은 공식", body: "통상임금 계산기, 포괄임금 점검과 한 엔진을 써서 결과가 서로 맞아요." },
+    { title: "API·MCP", body: "AI 에이전트나 급여 프로그램에서 api.oiyo.net으로 같은 공식을 불러 쓸 수 있어요(아래 주소)." },
+  ],
+  disclaimer: "추정이에요. 연장근로와 야간근로가 겹치면 두 가산을 모두 받아요(연장 1.5배 + 야간 0.5배). 감시·단속적 근로처럼 근로시간 규정이 적용되지 않는 일은 다를 수 있어요.",
+};
+const faqs = [
+  { q: "연장과 야간이 겹치면 어떻게 되나요?", a: "둘 다 받아요. 밤 10시 이후 연장근로 1시간은 연장 1.5배에 야간 0.5배를 더해 시급의 2배예요. 겹친 시간은 연장과 야간 칸에 모두 넣으세요." },
+  { q: "시급은 기본급 ÷ 209로 하면 되나요?", a: "매달 고정으로 받는 수당과 정기상여금(재직 조건이 있어도)도 통상임금이라 시급이 더 높아요. 통상임금 계산기로 구하는 게 정확해요." },
+  { q: "5인 미만 회사도 연장수당을 주나요?", a: "가산(50%)은 없지만 일한 시간만큼의 임금은 줘야 해요." },
+  { q: "덜 받은 수당은 언제까지 청구하나요?", a: "임금은 3년이 지나면 청구할 수 없어요. 고용노동부 노동포털에 진정을 내거나 1350으로 상담하세요." },
+];
 ---
-
-<Layout
-  title="연장·야간·휴일수당 가산수당 계산기"
-  description="근로기준법 제56조에 따른 연장근로(1.5배), 야간근로(0.5배 가산), 휴일근로(8시간 이내 1.5배 / 8시간 초과 2.0배) 가산수당을 실시간 정확히 모의 계산해요."
->
-  <ToolShell title="연장 · 야간 · 휴일수당 계산기" description="통상시급을 기준으로 연장(1.5배), 야간(0.5배 가산), 휴일근로(8시간 이내 1.5배 / 초과 2.0배)를 정밀 계산해요.">
-    <p slot="meta" class="text-sm font-semibold text-primary">근로기준법 제56조 가산율 공식 반영</p>
-    
-
-      <!-- Card -->
-      <div class="mb-8 space-y-6">
-        <div>
-          <div class="flex justify-between items-center mb-1.5">
-            <label for="hourlyWage" class="text-sm font-bold text-foreground">통상시급 (원)</label>
-            <span class="text-xs text-primary font-semibold">2026 법정최저 {MIN_WAGE_TEXT}원</span>
-          </div>
-          <input
-            type="number"
-            id="hourlyWage"
-            value={MIN_WAGE}
-            min={MIN_WAGE}
-            step="10"
-            class="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm font-semibold text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
-          />
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
-            <label for="overtimeHours" class="text-xs font-bold text-foreground block mb-1">
-              연장근로 시간 (150%)
-            </label>
-            <input
-              type="number"
-              id="overtimeHours"
-              value="10"
-              min="0"
-              step="0.5"
-              class="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm font-semibold text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
-            />
-          </div>
-
-          <div>
-            <label for="nightHours" class="text-xs font-bold text-foreground block mb-1">
-              야간근로 시간 (+50% 가산)
-            </label>
-            <input
-              type="number"
-              id="nightHours"
-              value="5"
-              min="0"
-              step="0.5"
-              class="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm font-semibold text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
-            />
-          </div>
-
-          <div>
-            <label for="holidayUnder8" class="text-xs font-bold text-foreground block mb-1">
-              휴일 8시간 이내 (150%)
-            </label>
-            <input
-              type="number"
-              id="holidayUnder8"
-              value="8"
-              min="0"
-              max="8"
-              step="0.5"
-              class="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm font-semibold text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
-            />
-          </div>
-
-          <div>
-            <label for="holidayOver8" class="text-xs font-bold text-foreground block mb-1">
-              휴일 8시간 초과분 (200%)
-            </label>
-            <input
-              type="number"
-              id="holidayOver8"
-              value="0"
-              min="0"
-              step="0.5"
-              class="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm font-semibold text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
-            />
-          </div>
-        </div>
-
-        <p class="rounded-lg border border-border bg-muted/40 p-3 text-xs text-muted-foreground">
-          가산수당(연장·야간·휴일 50% 더)은 상시 근로자 5명 이상 사업장에만 적용돼요(근로기준법 제11조·제56조). 5명 미만이면 일한 시간만큼만 받아요. 연장·휴일 금액은 기본 시급 100%를 포함한 총액이고, 야간은 더 받는 50%만이에요.
-        </p>
-
-        <!-- Result Summary -->
-        <div class="rounded-xl border border-primary/30 bg-primary/5 p-5 space-y-4">
-          <div class="flex items-baseline justify-between border-b border-primary/20 pb-3">
-            <span class="text-xs font-bold uppercase tracking-wider text-primary">연장·휴일·야간 수당 합계</span>
-            <div class="text-right">
-              <span id="resTotalExtra" class="text-2xl sm:text-3xl font-black text-foreground">0</span>
-              <span class="text-xs font-bold text-muted-foreground ml-1">원</span>
-            </div>
-          </div>
-
-          <div class="space-y-2 text-xs">
-            <div class="flex justify-between">
-              <span class="text-muted-foreground">연장근로수당 (150%)</span>
-              <span id="resOvertimePay" class="font-semibold text-foreground">0 원</span>
-            </div>
-            <div class="flex justify-between">
-              <span class="text-muted-foreground">야간근로 가산수당 (50%)</span>
-              <span id="resNightPay" class="font-semibold text-foreground">0 원</span>
-            </div>
-            <div class="flex justify-between">
-              <span class="text-muted-foreground">휴일근로 (8h 이내, 150%)</span>
-              <span id="resHolUnder8" class="font-semibold text-foreground">0 원</span>
-            </div>
-            <div class="flex justify-between">
-              <span class="text-muted-foreground">휴일연장 (8h 초과, 200%)</span>
-              <span id="resHolOver8" class="font-semibold text-foreground">0 원</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- API Box -->
-      <div class="rounded-xl border border-border bg-muted/40 p-5 text-xs text-muted-foreground leading-relaxed mb-8">
-        <p class="font-bold text-foreground mb-1">api.oiyo.net B2A 무비용 연동 엔드포인트</p>
-        <p class="mb-2">에이전트 및 급여 계산 파이프라인에서 동일 공식을 직접 호출할 수 있어요.</p>
-        <code class="block rounded bg-background p-2.5 font-mono text-[11px] text-foreground border border-border break-all">
-          GET https://api.oiyo.net/v1/labor/kr/overtime-pay?hourlyWage={MIN_WAGE}&overtimeHours=10&nightHours=5
-        </code>
-      </div>
-
-      <div class="mt-8 rounded-lg border border-border bg-muted/30 p-4 text-center text-xs text-muted-foreground">
-        © {new Date().getFullYear()} Oiyo Tech · 근로기준법 제56조 법정 가산율 준수
-      </div>
-
-      <RelatedTools currentId="overtime-pay" />
-
-    <script>
-      import { KR_RATES_2026 } from "../../lib/kr-rates-2026.mjs";
-
-      function updateCalculations() {
-        const wageInput = document.getElementById('hourlyWage') as HTMLInputElement;
-        const otInput = document.getElementById('overtimeHours') as HTMLInputElement;
-        const ntInput = document.getElementById('nightHours') as HTMLInputElement;
-        const hol8Input = document.getElementById('holidayUnder8') as HTMLInputElement;
-        const holOverInput = document.getElementById('holidayOver8') as HTMLInputElement;
-
-        const wage = Math.max(KR_RATES_2026.minimumWage, Number(wageInput.value) || KR_RATES_2026.minimumWage);
-        const otH = Math.max(0, Number(otInput.value) || 0);
-        const ntH = Math.max(0, Number(ntInput.value) || 0);
-        const hol8H = Math.max(0, Number(hol8Input.value) || 0);
-        const holOverH = Math.max(0, Number(holOverInput.value) || 0);
-
-        const overtimePay = Math.floor(otH * wage * 1.5);
-        const nightPay = Math.floor(ntH * wage * 0.5);
-        const holUnderPay = Math.floor(hol8H * wage * 1.5);
-        const holOverPay = Math.floor(holOverH * wage * 2.0);
-
-        const totalExtra = overtimePay + nightPay + holUnderPay + holOverPay;
-
-        document.getElementById('resOvertimePay')!.textContent = overtimePay.toLocaleString('ko-KR') + ' 원';
-        document.getElementById('resNightPay')!.textContent = nightPay.toLocaleString('ko-KR') + ' 원';
-        document.getElementById('resHolUnder8')!.textContent = holUnderPay.toLocaleString('ko-KR') + ' 원';
-        document.getElementById('resHolOver8')!.textContent = holOverPay.toLocaleString('ko-KR') + ' 원';
-        document.getElementById('resTotalExtra')!.textContent = totalExtra.toLocaleString('ko-KR');
-      }
-
-      document.querySelectorAll('input').forEach(input => {
-        input.addEventListener('input', updateCalculations);
-      });
-
-      updateCalculations();
-    </script>
-  </ToolShell>
-</Layout>
+<KrFinancePage slug="overtime-pay-calculator" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <OvertimePay client:load />
+  <code class="mt-4 block break-all rounded-md border border-border bg-muted px-3 py-2 font-mono text-xs text-foreground">GET https://api.oiyo.net/v1/labor/kr/overtime-pay?hourlyWage={MIN_WAGE}&amp;overtimeHours=10&amp;nightHours=5</code>
+  <p class="mt-4 text-xs text-muted-foreground">근거: 근로기준법 제56조·제11조. <a class="underline" href="/ko/ordinary-wage-calculator/">통상임금 계산기</a> · <a class="underline" href="/ko/fixed-overtime-pay-checker/">포괄임금 고정 연장수당 점검</a> · <a class="underline" href="/ko/benefit-rights-toolkit/">생활 지원금·노동권 도구 모음</a></p>
+</KrFinancePage>
