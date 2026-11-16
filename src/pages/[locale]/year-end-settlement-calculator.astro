@@ -6,6 +6,7 @@ import Layout from '../../components/Layout.astro';
 import UtilityArticle, { type UtilityContent } from '../../components/UtilityArticle.astro';
 import RelatedUtilities from '../../components/RelatedUtilities.astro';
 import YearEndSettlementCalculator from '../../components/tools/YearEndSettlementCalculator';
+import KrYearEndScenario from '../../components/tools/KrYearEndScenario';
 import YearEndSettlementCountryCalculator from '../../components/tools/YearEndSettlementCountryCalculator';
 import type { YearEndCountry } from '../../lib/year-end-settlement-countries';
 import { YEAR_END_AS_OF } from '../../lib/kr-year-end-2026';
@@ -302,7 +303,7 @@ const schema = utilityJsonLd({ name: m.title, description: m.description, url, l
 ---
 <Layout title={m.title} description={m.description} locale={locale} availableLocales={[...locales]} canonicalURL={url}>
   <ToolShell title={m.title} description={m.description}>
-    {country ? <YearEndSettlementCountryCalculator client:load country={country} /> : <YearEndSettlementCalculator client:load locale={locale === 'ko' ? 'ko' : 'en'} />}
+    {country ? <YearEndSettlementCountryCalculator client:load country={country} /> : locale === 'ko' ? <KrYearEndScenario client:load /> : <YearEndSettlementCalculator client:load locale="en" />}
     {!country && <p class="mt-4 text-xs text-muted-foreground">근거: 소득세법·조세특례제한법 2026년 귀속 조문. 기준일 {YEAR_END_AS_OF}.</p>}
     <UtilityArticle c={c} />
     <RelatedUtilities locale={locale} current="year-end-settlement-calculator" group="money" />

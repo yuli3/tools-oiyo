@@ -74,3 +74,19 @@ test("증여세: 성년 자녀 5천만 원까지 0, 점선은 관계별 공제�
   assert.equal(S.giftMarks("spouse")[0].at, 600_000_000);
   assert.equal(S.giftPlain({ amount: 150_000_000, relation: "marriage_child" }).headline.includes("원을"), true);
 });
+
+test("연말정산: 연금저축을 넣으면 환급이 늘고 900만 원에서 멈춰요", () => {
+  const i: S.YearEndLite = { salary: 50_000_000, persons: 1, children: 0, withheld: S.estimateWithheld(50_000_000, 1), credit: 10_000_000, debit: 5_000_000, pension: 0, medical: 0, rent: 0 };
+  const r0 = S.yearEndRefund(i);
+  assert.ok(S.yearEndRefund({ ...i, pension: 6_000_000 }) > r0);
+  assert.equal(S.yearEndRefund({ ...i, pension: 9_000_000 }), S.yearEndRefund({ ...i, pension: 12_000_000 }));
+  closes(S.yearEndBridge(i));
+  closes(S.yearEndTaxBridge(i), 1_000);
+});
+
+test("퇴직금: 1년 미만 0, 월 300만 × 5년 ≈ 1,480만 원", () => {
+  assert.equal(S.severanceGross({ monthly: 3_000_000, years: 0.5, bonus: 0, leavePay: 0 }), 0);
+  const g = S.severanceGross({ monthly: 3_000_000, years: 5, bonus: 0, leavePay: 0 });
+  assert.ok(g > 14_500_000 && g < 15_200_000, String(g));
+  closes(S.severanceBridge({ monthly: 3_000_000, years: 5, bonus: 1_000_000, leavePay: 0 }));
+});
