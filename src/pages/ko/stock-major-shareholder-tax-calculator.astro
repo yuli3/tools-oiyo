@@ -1,0 +1,33 @@
+---
+// 생활 지원금·노동권 도구 4차 (2026-11-16). 엔진: lib/kr-household-tax-2026.ts
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import MajorShareholderTax from "../../components/tools/welfare/MajorShareholderTax";
+import { HOUSEHOLD_TAX_AS_OF } from "../../lib/kr-household-tax-2026";
+
+const title = "주식 대주주 양도세 계산기 2026 — 50억 기준, 20·25% 세율";
+const description = "국내 상장주식을 팔 때 대주주(종목당 50억 원 이상 또는 지분율 코스피 1%·코스닥 2%·코넥스 4%)인지 판정하고, 양도소득세와 지방소득세를 계산해요. 연말 보유를 얼마나 줄이면 대주주를 벗어나는지도 보여 줘요.";
+const ko = {
+  introTitle: "작년 말 보유가 50억 원을 넘었는지가 갈림길이에요",
+  intro: "개인이 국내 상장주식을 장내에서 팔면 보통 양도세가 없어요. 하지만 작년 마지막 거래일에 한 종목을 50억 원 넘게 갖고 있었거나 지분율이 기준을 넘으면 대주주라서, 올해 판 이익에 20%(3억 넘는 몫은 25%)와 지방소득세 10%를 내요. 2025년 9월 기준을 10억 원으로 낮추려던 안은 철회돼 2026년에도 50억 원이에요.",
+  howToTitle: "사용 방법",
+  steps: ["어느 시장 종목인지 고르고 작년 말 보유 금액을 넣어요.", "올해 팔아서 번 이익(양도차익)과 보유 기간을 넣어요.", "작년 말 보유와 이익을 바꿔 보며 세금이 생기는 지점을 그래프로 봐요."],
+  highlightsTitle: "주요 특징",
+  highlights: [
+    { title: "대주주 판정", body: "종목당 시가 50억 원, 지분율 코스피 1%·코스닥 2%·코넥스 4% 중 하나라도 넘으면 대주주예요." },
+    { title: "세율 구간", body: "과세표준 3억 원까지 20%, 넘는 몫 25%. 중소기업이 아닌 회사 주식을 1년 안에 팔면 30%예요." },
+    { title: "50억 절벽 그래프", body: "작년 말 보유가 50억 원을 넘는 순간 세금이 0에서 한꺼번에 생기는 모습을 보여 줘요." },
+    { title: "연말 보유 점검", body: "대주주를 벗어나려면 올해 말까지 보유를 얼마나 줄여야 하는지 알려 줘요." },
+  ],
+  disclaimer: "추정이에요. 최대주주는 배우자·직계존비속 등 특수관계인 보유를 합쳐 판정해요. 증권거래세, 해외주식(250만 원 공제 후 22%), 비상장주식, 장외거래는 따로 따져야 해요. 신고 전에는 세무 전문가와 확인하세요.",
+};
+const faqs = [
+  { q: "올해 중간에 50억 원을 넘으면 바로 대주주인가요?", a: "아니요. 대주주인지는 직전 사업연도 말(보통 작년 12월 마지막 거래일) 보유로 정해요. 올해 말에 50억 원 이상이면 내년에 파는 몫부터 대주주예요." },
+  { q: "가족 보유도 합치나요?", a: "최대주주 그룹이면 본인과 배우자, 직계존비속 등 특수관계인 보유를 합쳐요. 최대주주가 아니면 본인 보유만 봐요(2023년 개정)." },
+  { q: "언제 신고하나요?", a: "판 날이 속한 반기 말부터 2개월 안에 예정신고하고(1~6월 매도는 8월 말, 7~12월은 다음 해 2월 말), 다음 해 5월에 확정신고해요." },
+  { q: "손실 난 종목과 합칠 수 있나요?", a: "같은 해 국내 주식 양도에서 난 손익끼리는 합칠 수 있어요. 해외주식 손익과도 2020년 이후 통산돼요. 이 계산기에는 이익을 합친 금액을 넣으세요." },
+];
+---
+<KrFinancePage slug="stock-major-shareholder-tax-calculator" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <MajorShareholderTax client:load />
+  <p class="mt-4 text-xs text-muted-foreground">근거: 소득세법 제94조①3호·제103조·제104조①11호, 같은 법 시행령 제157조. 기준일 {HOUSEHOLD_TAX_AS_OF}. <a class="underline" href="/ko/capital-gains-tax-calculator/">양도소득세 계산기</a> · <a class="underline" href="/ko/overseas-stock-saver-calculator/">해외주식 양도세 계산기</a> · <a class="underline" href="/ko/benefit-rights-toolkit/">생활 지원금·노동권 도구 모음</a></p>
+</KrFinancePage>

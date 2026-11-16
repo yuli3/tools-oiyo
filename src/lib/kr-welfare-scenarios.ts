@@ -6,6 +6,7 @@ import {
   type EitcInput, type FixedOtInput, type WorkHours, type LtcInput, type GuaranteeInput, type InjuryInput, type MaternityInput, type OrdinaryWageInput, type PensionInput, type RentInput,
 } from "./kr-welfare-2026.ts";
 import { RENTAL, comprehensiveRealEstateTax, creThreshold, rentalIncomeTax, type CreInput, type RentalInput } from "./kr-home-tax-2026.ts";
+import { DEPENDENT_2026, MAJOR_2026, RELATION_LABEL, dependentsTax, majorShareholderTax, type DependentsInput, type MajorShareholderInput } from "./kr-household-tax-2026.ts";
 import { roughWon, type Assumption } from "./scenario.ts";
 
 const money = <I>(key: string, label: string, plain: string, get: (i: I) => number, set: (i: I, v: number) => I, range: (a: number) => [number, number], marks?: { at: number; label: string }[], kind: "fact" | "assumption" = "assumption"): Assumption<I> => ({ key, label, plain, unit: "won", kind, get, set, range, marks });
@@ -172,3 +173,25 @@ export const LTC_ASSUMPTIONS = (i: LtcInput): Assumption<LtcInput>[] => {
     { key: "days", label: "월 입소 일수", plain: "한 달 머무는 날", unit: "days", kind: "fact", get: (x) => x.days ?? 30, set: (x, v) => ({ ...x, days: Math.max(0, Math.round(v)) }), range: () => [0, 31] },
   ];
 };
+
+// ───────────────────────── 부양가족 기본공제 판정 ─────────────────────────
+// 본인 총급여와, 첫 번째 가족(보통 배우자)의 총급여를 바꿔 보며 500만 원 절벽을 보여 줘요.
+export const dependentsSaving = (i: DependentsInput) => dependentsTax(i).saving;
+export const DEPENDENTS_ASSUMPTIONS = (i: DependentsInput): Assumption<DependentsInput>[] => {
+  const list: Assumption<DependentsInput>[] = [
+    money("salary", "본인 총급여", "내 1년 월급 합계(세전)", (x) => x.salary, (x, v) => ({ ...x, salary: Math.max(0, v) }), () => [20_000_000, 150_000_000], [{ at: 87_000_000, label: "세율 24→35% 근처" }], "fact"),
+  ];
+  const idx = i.people.length ? Math.max(0, i.people.findIndex((p) => p.relation === "spouse")) : -1;
+  if (idx >= 0) {
+    const who = RELATION_LABEL[i.people[idx].relation].split("(")[0];
+    list.push(money("depWage", `${who} 총급여`, `${who}가 1년에 버는 월급`, (x) => x.people[idx]?.wage ?? 0, (x, v) => ({ ...x, people: x.people.map((p, j) => (j === idx ? { ...p, wage: Math.max(0, v) } : p)) }), () => [0, 10_000_000], [{ at: DEPENDENT_2026.wageOnlyMax, label: "500만: 공제 끝" }]));
+  }
+  return list;
+};
+
+// ───────────────────────── 상장주식 대주주 양도세 ─────────────────────────
+export const majorTotal = (i: MajorShareholderInput) => majorShareholderTax(i).total;
+export const MAJOR_ASSUMPTIONS: Assumption<MajorShareholderInput>[] = [
+  money("gain", "양도차익", "판 값에서 산 값과 수수료를 뺀 이익", (x) => x.gain, (x, v) => ({ ...x, gain: Math.max(0, v) }), () => [0, 1_500_000_000], [{ at: MAJOR_2026.pivot + MAJOR_2026.basicDeduction, label: "3억: 25% 시작" }]),
+  money("heldValue", "작년 말 보유 시가", "작년 마지막 거래일에 가진 이 종목 값", (x) => x.heldValue, (x, v) => ({ ...x, heldValue: Math.max(0, v) }), () => [0, 8_000_000_000], [{ at: MAJOR_2026.valueLine, label: "50억: 대주주" }], "fact"),
+];

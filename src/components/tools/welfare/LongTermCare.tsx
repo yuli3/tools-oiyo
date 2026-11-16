@@ -91,8 +91,8 @@ export default function LongTermCare() {
               title="집에서 vs 요양원, 한 달 본인 부담"
               caption="재가는 한도액을 다 쓴다고 봤고, 요양원은 30일·하루 비급여 1.5만 원 기준이에요."
               items={[
-                { label: home ? "집에서(지금)" : "집에서", value: home ? r.total : other.total, current: home },
-                { label: home ? "요양원" : "요양원(지금)", value: home ? other.total : r.total, current: !home },
+                { label: "집에서", value: home ? r.total : other.total, current: home },
+                { label: "요양원", value: home ? other.total : r.total, current: !home },
               ]}
               format={money}
             />
