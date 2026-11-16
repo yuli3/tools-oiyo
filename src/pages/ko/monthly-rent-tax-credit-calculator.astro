@@ -1,0 +1,15 @@
+---
+// 생활 지원금·노동권 도구 (2026-11-16). 엔진: lib/kr-welfare-2026.ts
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import RentCredit from "../../components/tools/welfare/RentCredit";
+import { WELFARE_AS_OF } from "../../lib/kr-welfare-2026";
+
+const title = "월세 세액공제 계산기 2026 — 총급여 5,500만 원 이하 17%, 연 1,000만 원 한도";
+const description = "총급여(또는 종합소득금액)와 월세로 연말정산 월세 세액공제를 계산해요. 17%·15% 공제율, 연 1,000만 원 한도, 지방소득세 10%까지 반영하고 받을 수 있는 조건을 확인해요.";
+const ko = {"introTitle": "월세의 최대 17%를 세금에서 빼 줘요", "intro": "집이 없는 세대주가 85㎡ 이하이거나 기준시가 4억 원 이하인 집에 월세를 살면, 1년 동안 낸 월세(최대 1,000만 원)의 17%(총급여 5,500만 원 이하) 또는 15%(8,000만 원 이하)를 소득세에서 빼 줘요. 지방소득세도 10% 같이 줄어요.", "howToTitle": "사용 방법", "steps": ["월급인지 사업·프리랜서 소득인지 골라요.", "1년 소득과 한 달 월세, 낸 달 수를 넣어요.", "월세와 소득을 바꿔 보며 줄어드는 세금이 어떻게 바뀌는지 봐요."], "highlightsTitle": "주요 특징", "highlights": [{"title": "2024년 개정 반영", "body": "한도 연 1,000만 원, 공제율 17%·15%(조세특례제한법 제95조의2)."}, {"title": "지방소득세 포함", "body": "소득세가 줄면 지방소득세(10%)도 같이 줄어 실제 돌려받는 돈을 보여 줘요."}, {"title": "공제율 계단 표시", "body": "소득 기준을 넘는 순간 공제율이 떨어지는 지점을 그래프에 표시해요."}, {"title": "조건 점검표", "body": "무주택 세대주·주택 규모·전입신고·이체 증빙을 한 번에 확인해요."}], "disclaimer": "2026년 귀속 기준 추정이에요. 공제는 낼 세금(산출세액)을 넘지 못하고, 남는 몫은 돌려주지 않아요. 다른 세액공제와 함께 받을 때는 연말정산 결과로 확인하세요."};
+const faqs = [{"q": "집주인 동의가 필요한가요?", "a": "아니요. 임대차계약서와 월세를 낸 증빙(계좌이체 내역 등)만 있으면 돼요. 확정일자도 필요 없어요."}, {"q": "세대원도 받을 수 있나요?", "a": "세대주가 주택 관련 공제를 받지 않았다면 세대원도 받을 수 있어요. 배우자 명의 계약도 인정돼요."}, {"q": "연말정산 때 놓쳤어요.", "a": "5월 종합소득세 신고 때 넣거나, 5년 안에 경정청구로 돌려받을 수 있어요."}, {"q": "관리비도 포함되나요?", "a": "아니요. 월세만 포함하고 관리비는 빼요."}];
+---
+<KrFinancePage slug="monthly-rent-tax-credit-calculator" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <RentCredit client:load />
+  <p class="mt-4 text-xs text-muted-foreground">근거: 조세특례제한법 제95조의2, 시행령 제95조. 기준일 {WELFARE_AS_OF}. <a class="underline" href="/ko/benefit-rights-toolkit/">생활 지원금·노동권 도구 모음</a></p>
+</KrFinancePage>

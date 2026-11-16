@@ -19,6 +19,10 @@ export function formatUnit(unit: AssumptionUnit, v: number, mode: AdvisoryMode =
       return `${Math.round(v).toLocaleString("ko-KR")}주`;
     case "years":
       return `${Math.round(v)}년`;
+    case "months":
+      return `${Math.round(v)}개월`;
+    case "days":
+      return `${Math.round(v)}일`;
   }
 }
 

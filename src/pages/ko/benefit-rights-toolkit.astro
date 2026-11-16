@@ -1,0 +1,75 @@
+---
+// 2026-11-16: 생활 지원금·노동권 도구 모음. Gemini가 만들던 공익 도구를 Claude가 이어받아 정리했어요.
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import { welfareTools } from "../../data/welfare-tools";
+import { WELFARE_AS_OF } from "../../lib/kr-welfare-2026";
+
+const title = "생활 지원금·노동권 도구 모음 — 근로장려금·출산휴가 급여·대지급금·산재·월세 공제·퇴직연금";
+const description = "받을 수 있는 돈을 놓치지 않게 돕는 계산기를 모았어요. 근로·자녀장려금, 출산휴가 급여, 체불 대지급금, 산재 휴업급여, 월세 세액공제, 퇴직연금 DB·DC 비교와 신청 방법, MCP·Claude 스킬까지 있어요.";
+const tools = welfareTools.filter((t) => t.slug !== "benefit-rights-toolkit");
+const situations = [
+  ["소득이 적은데 일하고 있어요", "work-child-incentive-calculator", "근로장려금·자녀장려금은 5월에 신청해요. 3월·9월 반기 신청도 돼요."],
+  ["아이가 곧 태어나요", "maternity-leave-pay-calculator", "출산휴가 급여와 배우자 출산휴가, 그다음엔 육아휴직 급여를 확인해요."],
+  ["월급·퇴직금을 못 받았어요", "unpaid-wage-guarantee-calculator", "노동청 진정부터 하고, 나라가 먼저 주는 대지급금을 신청해요."],
+  ["일하다 다쳤어요", "industrial-accident-leave-pay-calculator", "회사 동의 없이도 근로복지공단에 산재를 신청할 수 있어요."],
+  ["월세를 살아요", "monthly-rent-tax-credit-calculator", "연말정산에서 월세의 15~17%를 돌려받아요. 놓쳤으면 5년 안에 경정청구해요."],
+  ["퇴직연금을 바꿀지 고민돼요", "retirement-pension-db-dc-calculator", "임금 상승률과 수익률을 비교해 갈림길을 확인해요."],
+];
+const more = [
+  ["/ko/unemployment-benefits-calculator/", "실업급여 계산기"],
+  ["/ko/parental-leave-calculator/", "육아휴직 급여 계산기"],
+  ["/ko/benefit-finder/", "생애주기 혜택 찾기"],
+  ["/ko/severance-calculator/", "퇴직금 계산기"],
+];
+const mcpTools = [
+  ["calculate_kr_work_child_incentive", "근로·자녀장려금 예상액"],
+  ["calculate_kr_maternity_leave_pay", "출산전후휴가·배우자 출산휴가 급여"],
+  ["calculate_kr_wage_guarantee", "간이·도산 대지급금"],
+  ["calculate_kr_injury_leave_pay", "산재 휴업급여"],
+  ["calculate_kr_monthly_rent_credit", "월세 세액공제"],
+  ["compare_kr_retirement_pension", "퇴직연금 DB형 vs DC형"],
+];
+const titleOf = (slug: string) => welfareTools.find((t) => t.slug === slug)?.title ?? slug;
+---
+<KrFinancePage slug="benefit-rights-toolkit" locale="ko" title={title} description={description} koOnly>
+  <section>
+    <h2 class="text-lg font-bold text-foreground">바로 쓰는 계산기</h2>
+    <p class="mt-2 text-sm leading-6 text-muted-foreground">모든 도구는 질문에 답하는 <b>쉬운 설명</b>과 숫자를 직접 넣는 <b>전문가</b> 모드가 있고, 가정을 바꾸면 그래프가 바로 움직여요. 결과 아래에는 어디서·언제 신청하는지 적어 두었어요. 입력은 이 브라우저 안에서만 계산·저장해요.</p>
+    <ul class="mt-4 grid gap-3 sm:grid-cols-2">
+      {tools.map((t) => (
+        <li class="rounded-md border border-border bg-background p-4">
+          <a href={`/ko/${t.slug}/`} class="text-base font-semibold text-foreground underline-offset-4 hover:underline">{t.title}</a>
+          <p class="mt-1 text-sm leading-6 text-muted-foreground">{t.description}</p>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="mt-8">
+    <h2 class="text-lg font-bold text-foreground">지금 상황에서 무엇부터</h2>
+    <dl class="mt-3 space-y-3">
+      {situations.map(([s, slug, d]) => (
+        <div><dt class="text-sm font-semibold text-foreground">{s} → <a class="underline" href={`/ko/${slug}/`}>{titleOf(slug)}</a></dt><dd class="text-sm leading-6 text-muted-foreground">{d}</dd></div>
+      ))}
+    </dl>
+    <p class="mt-4 text-sm text-muted-foreground">함께 보면 좋아요: {more.map(([href, label], i) => <>{i > 0 && " · "}<a class="underline" href={href}>{label}</a></>)}</p>
+  </section>
+
+  <section class="mt-8">
+    <h2 class="text-lg font-bold text-foreground">AI 에이전트에서 같은 계산 쓰기 (MCP)</h2>
+    <p class="mt-2 text-sm leading-6 text-muted-foreground">Claude·Cursor·ChatGPT 같은 MCP 클라이언트에 아래 주소를 원격 서버로 추가하면 같은 계산을 도구로 불러요. 공식 MCP Registry 이름은 <code>io.github.yuli3/oiyo-calculations</code>예요.</p>
+    <pre class="mt-3 overflow-x-auto rounded-md border border-border bg-muted px-3 py-2 text-xs"><code>https://api.oiyo.net/mcp</code></pre>
+    <ul class="mt-3 space-y-1 text-sm text-muted-foreground">
+      {mcpTools.map(([name, label]) => <li><code class="text-foreground">{name}</code> · {label}</li>)}
+    </ul>
+  </section>
+
+  <section class="mt-8">
+    <h2 class="text-lg font-bold text-foreground">Claude 스킬: 지원금·노동권 길잡이</h2>
+    <p class="mt-2 text-sm leading-6 text-muted-foreground">Claude에 올리면 상황을 듣고 받을 수 있는 제도를 고르고, 필요한 정보만 물어 같은 공식으로 계산한 뒤 "얼마·어디서·언제까지"가 있는 안내문을 써 줘요. 사회복지사·노무사·상담센터에서 상담 메모를 만들 때도 쓸 수 있어요.</p>
+    <p class="mt-3"><a href="/downloads/oiyo-kr-benefits-navigator-skill.zip" download class="inline-flex min-h-11 items-center rounded-md bg-primary px-4 text-sm font-semibold text-primary-foreground">스킬 내려받기 (.zip)</a></p>
+    <p class="mt-2 text-xs text-muted-foreground">Claude 설정 → 기능 → 스킬에서 zip 파일을 올리거나, Claude Code에서는 압축을 풀어 <code>~/.claude/skills/</code>에 두면 돼요.</p>
+  </section>
+
+  <p class="mt-8 text-xs text-muted-foreground">모든 결과는 {WELFARE_AS_OF} 기준 추정이에요. 실제 지급액은 국세청·고용센터·근로복지공단이 정해요. 법률 자문이 아니며, 어려운 사건은 1350(고용노동부), 132(대한법률구조공단)에 무료로 상담하세요.</p>
+</KrFinancePage>
