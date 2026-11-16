@@ -4,22 +4,26 @@ import { utilityCatalog, utilityGroups, type UtilityGroup } from '../data/utilit
 import { monitorPpiCopy } from '../data/monitor-ppi-copy';
 import { krFinanceTools } from '../data/kr-finance';
 import { bizTools } from '../data/biz-tools';
+import { welfareTools } from '../data/welfare-tools';
 import { krHealthTools, enHealthTools } from '../data/kr-health';
 import { utilityLabels, type Locale } from '../lib/i18n';
 interface Props { locale: Locale; current: string; group: UtilityGroup }
 const { locale, current, group } = Astro.props;
 const isBiz = locale === 'ko' && bizTools.some((t) => t.slug === current);
-const links = isBiz ? [] : utilityCatalog.filter((t) => t.group === group && t.slug !== current).map((t) => ({ href: `/${locale}/${t.slug}/`, label: t.title[locale] }));
+const isWelfare = locale === 'ko' && welfareTools.some((t) => t.slug === current);
+const links = isBiz || isWelfare ? [] : utilityCatalog.filter((t) => t.group === group && t.slug !== current).map((t) => ({ href: `/${locale}/${t.slug}/`, label: t.title[locale] }));
 // WHY: PPI moved earlier (2026-10-21) and sits in the same screen group.
 if (group === 'screen') links.push({ href: `/${locale}/monitor-ppi-calculator/`, label: monitorPpiCopy[locale].title });
 // WHY: the image converter moved first (2026-10-21) and belongs with the W2 image tools.
 if (group === 'image') links.push({ href: `/${locale}/image-converter/`, label: utilityLabels[locale][0] });
 // WHY 2026-11-14: business tools link to each other first, then the tax-advisor toolkit.
 if (isBiz) links.push(...bizTools.filter((t) => t.slug !== current).map((t) => ({ href: `/ko/${t.slug}/`, label: t.title })), { href: '/ko/tax-advisor-toolkit/', label: '세무·회계 실무 도구 모음' });
+// WHY 2026-11-16: benefit/labor-rights tools link to each other first, then the related finance tools.
+if (isWelfare) links.push(...welfareTools.filter((t) => t.slug !== current).map((t) => ({ href: `/ko/${t.slug}/`, label: t.title })), { href: '/ko/unemployment-benefits-calculator/', label: '실업급여 계산기' }, { href: '/ko/parental-leave-calculator/', label: '육아휴직 급여 계산기' }, { href: '/ko/benefit-finder/', label: '생애주기 혜택 찾기' });
 // WHY: the W8 Korean finance tools exist only on ko pages.
-if (group === 'money' && locale === 'ko' && !isBiz) links.push(...krFinanceTools.filter((t) => t.slug !== current).map((t) => ({ href: `/ko/${t.slug}/`, label: t.title })));
+if (group === 'money' && locale === 'ko' && !isBiz && !isWelfare) links.push(...krFinanceTools.filter((t) => t.slug !== current).map((t) => ({ href: `/ko/${t.slug}/`, label: t.title })));
 // WHY: W14 health tools outside the six-locale catalog (ko-only, or en/ko and en only like Blog had them).
 if (group === 'health' && locale === 'ko') links.push(...krHealthTools.filter((t) => t.slug !== current).map((t) => ({ href: `/ko/${t.slug}/`, label: t.title })));
 if (group === 'health' && locale === 'en') links.push(...enHealthTools.filter((t) => t.slug !== current).map((t) => ({ href: `/en/${t.slug}/`, label: t.title })));
 ---
-<RelatedLinkList title={isBiz ? '경영 도구' : utilityGroups[group][locale]} links={links} locale={locale} />
+<RelatedLinkList title={isBiz ? '경영 도구' : isWelfare ? '생활 지원금·노동권 도구' : utilityGroups[group][locale]} links={links} locale={locale} />

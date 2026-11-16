@@ -1,0 +1,15 @@
+---
+// 생활 지원금·노동권 도구 (2026-11-16). 엔진: lib/kr-welfare-2026.ts
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import PensionDbDc from "../../components/tools/welfare/PensionDbDc";
+import { WELFARE_AS_OF } from "../../lib/kr-welfare-2026";
+
+const title = "퇴직연금 DB형 DC형 비교 계산기 — 임금 상승률 vs 수익률, 갈림길 수익률";
+const description = "지금 월급·근속연수·남은 연수와 임금 상승률·운용 수익률로 DB형과 DC형 퇴직금을 비교하고, 어느 수익률부터 DC형이 유리한지 갈림길을 계산해요.";
+const ko = {"introTitle": "DB형과 DC형, 무엇이 유리할까", "intro": "DB형은 퇴직 직전 평균임금 × 근속연수를 회사가 책임지고 줘요. DC형은 회사가 해마다 연봉의 1/12 이상을 넣어 주고 근로자가 직접 굴려요. 그래서 월급이 빨리 오르면 DB형, 운용 수익률이 임금 상승률보다 높으면 DC형이 유리해요. 임금피크제처럼 월급이 줄어들 예정이면 DC형 전환을 검토해요.", "howToTitle": "사용 방법", "steps": ["지금 월급과 근속연수, 앞으로 다닐 햇수를 넣어요.", "임금 상승률과 운용 수익률 슬라이더를 움직여요.", "두 방식의 차이가 0이 되는 갈림길 수익률을 확인해요."], "highlightsTitle": "주요 특징", "highlights": [{"title": "갈림길 수익률", "body": "DB와 DC가 같아지는 연 수익률을 계산해 바로 보여 줘요."}, {"title": "가정이 결과를 흔드는 정도", "body": "임금 상승률·수익률을 ±20% 바꿀 때 차이가 얼마나 움직이는지 토네이도로 보여 줘요."}, {"title": "적립금 곡선", "body": "지금 DC로 바꾸면 해마다 적립금이 어떻게 쌓이는지 그래프로 보여 줘요."}, {"title": "전환 전 점검", "body": "규약·되돌릴 수 없음·임금피크제 같은 확인 사항을 정리했어요."}], "disclaimer": "세전·명목 금액 추정이에요. 수익률은 수수료를 뺀 값으로 넣어 주세요. 실제 DB 퇴직금은 퇴직 전 3개월 평균임금으로 정하고, 퇴직소득세는 같은 금액이면 같아요."};
+const faqs = [{"q": "DC형에서 DB형으로 돌아갈 수 있나요?", "a": "대부분의 규약은 DB→DC 전환만 허용해요. 바꾸기 전에 회사 규약을 꼭 확인하세요."}, {"q": "임금피크제가 있으면요?", "a": "월급이 줄어들기 전에 DC형으로 바꾸면 그때까지의 퇴직금이 줄지 않아요. 이 도구에서 임금 상승률을 음수로 넣어 볼 수 있어요."}, {"q": "원리금보장 상품만 고르면요?", "a": "수익률이 임금 상승률보다 낮으면 DB형보다 불리해질 수 있어요."}, {"q": "둘 다 쓰는 혼합형도 있나요?", "a": "DB와 DC를 함께 두는 혼합형 규약도 있어요. 각 비율만큼 나눠 계산하면 돼요."}];
+---
+<KrFinancePage slug="retirement-pension-db-dc-calculator" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <PensionDbDc client:load />
+  <p class="mt-4 text-xs text-muted-foreground">근거: 근로자퇴직급여 보장법 제13조·제20조, 근로기준법 제2조(평균임금). 기준일 {WELFARE_AS_OF}. <a class="underline" href="/ko/benefit-rights-toolkit/">생활 지원금·노동권 도구 모음</a></p>
+</KrFinancePage>
