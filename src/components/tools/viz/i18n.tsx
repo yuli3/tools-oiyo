@@ -150,6 +150,6 @@ export function money(n: number, lang: VizLang, currency: string, easy = false):
     style: "currency",
     currency,
     maximumFractionDigits: easy || Math.abs(n) >= 1000 || currency === "JPY" || currency === "KRW" ? 0 : 2,
-    ...(easy && Math.abs(n) >= 10000 ? { notation: "compact" as const, maximumFractionDigits: 1 } : {}),
+    ...(easy && Math.abs(n) >= 10000 ? { notation: "compact" as const, maximumFractionDigits: 1, minimumFractionDigits: 0 } : {}),
   }).format(n);
 }
