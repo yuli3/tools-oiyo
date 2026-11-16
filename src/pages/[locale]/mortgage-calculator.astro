@@ -5,6 +5,7 @@ import Layout from '../../components/Layout.astro';
 import UtilityArticle, { type UtilityContent } from '../../components/UtilityArticle.astro';
 import RelatedUtilities from '../../components/RelatedUtilities.astro';
 import MortgageCalculator from '../../components/tools/MortgageCalculator';
+import MortgageScenario from '../../components/tools/MortgageScenario';
 import { locales } from '../../lib/i18n';
 import { utilityJsonLd } from '../../lib/utility-jsonld';
 
@@ -163,7 +164,7 @@ const schema = utilityJsonLd({ name: m.title, description: m.description, url, l
 ---
 <Layout title={m.title} description={m.description} locale={locale} availableLocales={[...locales]} canonicalURL={url}>
   <ToolShell title={m.title} description={m.description}>
-    <MortgageCalculator client:load locale={locale === 'ko' ? 'ko' : 'en'} />
+    {locale === 'ko' ? <MortgageScenario client:load /> : <MortgageCalculator client:load locale="en" />}
     <UtilityArticle c={c} />
     <RelatedUtilities locale={locale} current="mortgage-calculator" group="money" />
   </ToolShell>
