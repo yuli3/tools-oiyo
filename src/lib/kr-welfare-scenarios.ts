@@ -2,7 +2,8 @@
 // 계산은 kr-welfare-2026.ts, 여기는 "무엇을 바꿔 볼 수 있고 어떻게 설명할지"만 정해요.
 import {
   ASSET_CAP, ASSET_HALF, CTC_TABLE, EITC_TABLE, INJURY_2026, RENT_CREDIT,
-  dbVsDc, fixedOvertimeCheck, premiumPay, longTermCareCopay, LTC_2026, injuryLeavePay, maternityLeavePay, monthlyRentCredit, ordinaryWage, wageGuarantee, workChildCredit,
+  dbVsDc, fixedOvertimeCheck, dismissalNoticePay, shutdownAllowance, reducedHoursPay, probationMinWage, REDUCED_HOURS_2026,
+  type DismissalNoticeInput, type ShutdownPayInput, type ReducedHoursInput, type ProbationInput, premiumPay, longTermCareCopay, LTC_2026, injuryLeavePay, maternityLeavePay, monthlyRentCredit, ordinaryWage, wageGuarantee, workChildCredit,
   type EitcInput, type FixedOtInput, type WorkHours, type LtcInput, type GuaranteeInput, type InjuryInput, type MaternityInput, type OrdinaryWageInput, type PensionInput, type RentInput,
 } from "./kr-welfare-2026.ts";
 import { RENTAL, comprehensiveRealEstateTax, creThreshold, rentalIncomeTax, type CreInput, type RentalInput } from "./kr-home-tax-2026.ts";
@@ -194,4 +195,57 @@ export const majorTotal = (i: MajorShareholderInput) => majorShareholderTax(i).t
 export const MAJOR_ASSUMPTIONS: Assumption<MajorShareholderInput>[] = [
   money("gain", "양도차익", "판 값에서 산 값과 수수료를 뺀 이익", (x) => x.gain, (x, v) => ({ ...x, gain: Math.max(0, v) }), () => [0, 1_500_000_000], [{ at: MAJOR_2026.pivot + MAJOR_2026.basicDeduction, label: "3억: 25% 시작" }]),
   money("heldValue", "작년 말 보유 시가", "작년 마지막 거래일에 가진 이 종목 값", (x) => x.heldValue, (x, v) => ({ ...x, heldValue: Math.max(0, v) }), () => [0, 8_000_000_000], [{ at: MAJOR_2026.valueLine, label: "50억: 대주주" }], "fact"),
+];
+
+// ───────────────────────── 노동권 묶음 A: 해고예고·휴업·육아기 단축·수습 ─────────────────────────
+const num = <I>(key: string, label: string, plain: string, unit: "days" | "months" | "hours", get: (i: I) => number, set: (i: I, v: number) => I, range: [number, number], marks?: { at: number; label: string }[], kind: "fact" | "assumption" = "assumption"): Assumption<I> => ({ key, label, plain, unit, kind, get, set, range: () => range, marks });
+
+export const noticePayAmount = (i: DismissalNoticeInput) => dismissalNoticePay(i).amount;
+export const NOTICE_ASSUMPTIONS: Assumption<DismissalNoticeInput>[] = [
+  num("noticeDays", "해고 예고 일수", "해고일 며칠 전에 알렸나", "days", (x) => x.noticeDays, (x, v) => ({ ...x, noticeDays: Math.max(0, Math.round(v)) }), [0, 45], [{ at: 30, label: "30일: 수당 없음" }]),
+  money("monthlyOrdinaryWage", "월 통상임금", "기본급 + 매달 고정 수당", (x) => x.monthlyOrdinaryWage, (x, v) => ({ ...x, monthlyOrdinaryWage: Math.max(0, v) }), () => [2_000_000, 8_000_000]),
+  num("tenureMonths", "계속 근로 개월", "입사하고 몇 달 일했나", "months", (x) => x.tenureMonths, (x, v) => ({ ...x, tenureMonths: Math.max(0, Math.round(v)) }), [0, 24], [{ at: 3, label: "3개월" }], "fact"),
+];
+export function noticePlain(i: DismissalNoticeInput) {
+  const r = dismissalNoticePay(i);
+  const head = {
+    enoughNotice: "30일 전에 알렸으니 해고예고수당은 없어요.",
+    shortTenure: "일한 지 3개월이 안 돼 해고예고수당은 없어요(제26조 단서).",
+    disaster: "천재지변 등으로 사업을 계속할 수 없는 경우라 해고예고수당이 없어요. 이 사유는 회사가 증명해야 해요.",
+    misconduct: "고의로 큰 손해를 끼친 경우(시행규칙 별표)라 해고예고수당이 없어요. 이 사유는 회사가 증명해야 해요.",
+    due: `해고예고수당 약 ${roughWon(r.amount)}을 받을 수 있어요(30일분 통상임금).`,
+  }[r.reason];
+  const reasons = [`1일 통상임금 ${r.daily.toLocaleString("ko-KR")}원 × 30일로 계산했어요.`];
+  if (r.reason === "due" && i.noticeDays > 0) reasons.push(`${i.noticeDays}일 전에 알렸어도 30일에 모자라면 고용노동부는 30일분 전액을 줘야 한다고 봐요.`);
+  reasons.push("해고예고수당을 받아도 해고가 정당해지지는 않아요. 정당한 이유(제23조)는 따로 따져요.");
+  return { headline: head, reasons };
+}
+
+export const shutdownMin = (i: ShutdownPayInput) => shutdownAllowance(i).statutory;
+export const SHUTDOWN_ASSUMPTIONS: Assumption<ShutdownPayInput>[] = [
+  num("shutdownDays", "휴업 일수", "회사 사정으로 쉰 날", "days", (x) => x.shutdownDays, (x, v) => ({ ...x, shutdownDays: Math.max(0, Math.round(v)) }), [0, 92], [{ at: 30, label: "한 달" }]),
+  money("threeMonthWages", "3개월 임금 총액", "쉬기 전 석 달 월급 합계", (x) => x.threeMonthWages, (x, v) => ({ ...x, threeMonthWages: Math.max(0, v) }), () => [6_000_000, 24_000_000]),
+  money("paidDuringShutdown", "쉬는 동안 받은 임금", "쉬는 기간 중 일부 일하고 받은 돈", (x) => x.paidDuringShutdown, (x, v) => ({ ...x, paidDuringShutdown: Math.max(0, v) }), () => [0, 3_000_000]),
+];
+
+export const reducedTotal = (i: ReducedHoursInput) => reducedHoursPay(i).total;
+export const REDUCED_ASSUMPTIONS = (i: ReducedHoursInput): Assumption<ReducedHoursInput>[] => [
+  num("afterHours", "단축 뒤 주 근로시간", "줄인 뒤 한 주에 일하는 시간", "hours", (x) => x.afterHours, (x, v) => ({ ...x, afterHours: Math.round(v) }), [REDUCED_HOURS_2026.minAfter, Math.min(REDUCED_HOURS_2026.maxAfter, Math.max(REDUCED_HOURS_2026.minAfter, i.beforeHours - 1))], [{ at: i.beforeHours - REDUCED_HOURS_2026.firstHours, label: "10시간 줄임" }]),
+  money("monthlyOrdinaryWage", "월 통상임금", "줄이기 전 한 달 월급(고정분)", (x) => x.monthlyOrdinaryWage, (x, v) => ({ ...x, monthlyOrdinaryWage: Math.max(0, v) }), () => [1_500_000, 7_000_000], [{ at: REDUCED_HOURS_2026.capFirst, label: "250만: 상한" }]),
+];
+export function reducedPlain(i: ReducedHoursInput) {
+  const r = reducedHoursPay(i);
+  if (!r.valid) return { headline: "단축 뒤 근로시간은 주 15시간 이상 35시간 이하여야 해요.", reasons: ["이 범위를 벗어나면 육아기 근로시간 단축이 아니라 급여도 나오지 않아요."] };
+  const reasons = [
+    `처음 ${r.firstCut}시간 줄인 몫은 통상임금 100%(기준액 상한 250만 원)로 ${roughWon(r.first)}을 받아요.`,
+  ];
+  if (r.restCut > 0) reasons.push(`그 위로 ${r.restCut}시간 더 줄인 몫은 80%(상한 160만 원)로 ${roughWon(r.rest)}이에요.`);
+  if (r.cappedFirst) reasons.push("월급이 250만 원보다 많아 상한에 걸려, 줄어든 월급을 다 채우지는 못해요.");
+  return { headline: `한 달에 회사 월급 약 ${roughWon(r.companyPay)} + 고용보험 단축급여 약 ${roughWon(r.benefit)} = 약 ${roughWon(r.total)}을 받아요(추정).`, reasons };
+}
+
+export const probationShort = (i: ProbationInput) => probationMinWage(i).shortMonthly;
+export const PROBATION_ASSUMPTIONS: Assumption<ProbationInput>[] = [
+  money("hourlyWage", "시급", "받는 시급(월급 ÷ 209)", (x) => x.hourlyWage, (x, v) => ({ ...x, hourlyWage: Math.max(0, Math.round(v)) }), () => [8_000, 12_000], [{ at: 9_288, label: "90%: 9,288원" }, { at: 10_320, label: "최저 10,320원" }]),
+  num("monthsIntoProbation", "수습 경과 개월", "수습 시작하고 지난 달 수", "months", (x) => x.monthsIntoProbation, (x, v) => ({ ...x, monthsIntoProbation: Math.max(0, Math.round(v)) }), [0, 6], [{ at: 3, label: "3개월: 감액 끝" }], "fact"),
 ];

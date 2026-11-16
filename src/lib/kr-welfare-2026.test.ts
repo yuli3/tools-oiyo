@@ -171,3 +171,71 @@ test("장기요양: 재가 15%·한도 초과 전액, 시설 20%+비급여, 감�
   assert.equal(f.total, f.copay + 450_000);
   assert.equal(longTermCareCopay({ grade: "cognitive", kind: "facility", reduction: "none" }).facilityAllowed, false);
 });
+
+// ── 노동권 묶음 A (2026-11-16) ──
+import { monthlyPaidHours, dismissalNoticePay, shutdownAllowance, reducedHoursPay, probationMinWage, leavePromotionSchedule } from "./kr-welfare-2026.ts";
+
+test("월 소정근로시간: 주 40시간 209, 30시간 156", () => {
+  assert.equal(monthlyPaidHours(40), 209);
+  assert.equal(monthlyPaidHours(30), 156);
+});
+
+test("해고예고수당: 30일분 전액, 30일 예고·3개월 미만·예외면 0", () => {
+  const base = { monthlyOrdinaryWage: 2_090_000, weeklyHours: 40, noticeDays: 10, tenureMonths: 12, exception: "none" as const, fivePlus: true };
+  const r = dismissalNoticePay(base);
+  assert.equal(r.hourly, 10_000);
+  assert.equal(r.daily, 80_000);
+  assert.equal(r.amount, 2_400_000);
+  assert.equal(r.missingDays, 20);
+  assert.equal(dismissalNoticePay({ ...base, noticeDays: 30 }).amount, 0);
+  assert.equal(dismissalNoticePay({ ...base, tenureMonths: 2 }).reason, "shortTenure");
+  assert.equal(dismissalNoticePay({ ...base, exception: "disaster" }).amount, 0);
+});
+
+test("휴업수당: 평균임금 70%, 통상임금 대체, 일부 임금 공제, 5명 미만 0", () => {
+  const base = { threeMonthWages: 9_200_000, calendarDays: 92, monthlyOrdinaryWage: 3_650_000, shutdownDays: 10, paidDuringShutdown: 0, approvedReduction: false, fivePlus: true };
+  const r = shutdownAllowance(base); // 1일 평균 100,000원, 통상 120,000원
+  assert.equal(r.avgDaily, 100_000);
+  assert.equal(r.minimum, 700_000);
+  assert.equal(r.useOrdinary, false);
+  assert.equal(shutdownAllowance({ ...base, paidDuringShutdown: 200_000 }).minimum, 560_000);
+  const low = shutdownAllowance({ ...base, monthlyOrdinaryWage: 1_825_000 }); // 통상 60,000원 < 70,000원
+  assert.equal(low.useOrdinary, true);
+  assert.equal(low.minimum, 600_000);
+  assert.equal(shutdownAllowance({ ...base, fivePlus: false }).minimum, 0);
+});
+
+test("육아기 근로시간 단축 급여 2026: 처음 10시간 100%(250만), 나머지 80%(160만)", () => {
+  const a = reducedHoursPay({ monthlyOrdinaryWage: 3_000_000, beforeHours: 40, afterHours: 20 });
+  assert.equal(a.first, 625_000);
+  assert.equal(a.rest, 400_000);
+  assert.equal(a.benefit, 1_025_000);
+  const b = reducedHoursPay({ monthlyOrdinaryWage: 2_000_000, beforeHours: 40, afterHours: 25 });
+  assert.equal(b.benefit, 700_000);
+  assert.equal(reducedHoursPay({ monthlyOrdinaryWage: 3_000_000, beforeHours: 40, afterHours: 12 }).valid, false);
+  // 하한 50만 원
+  assert.equal(reducedHoursPay({ monthlyOrdinaryWage: 400_000, beforeHours: 40, afterHours: 30 }).first, 125_000);
+});
+
+test("수습 최저임금: 1년 이상·3개월 안·단순노무 아님일 때만 90%", () => {
+  const base = { hourlyWage: 9_300, contractMonths: 0, monthsIntoProbation: 1, simpleLabor: false };
+  assert.equal(probationMinWage(base).minimum, 9_288);
+  assert.equal(probationMinWage(base).ok, true);
+  assert.equal(probationMinWage({ ...base, contractMonths: 6 }).minimum, 10_320);
+  assert.equal(probationMinWage({ ...base, simpleLabor: true }).why, "simpleLabor");
+  const after = probationMinWage({ ...base, monthsIntoProbation: 3 });
+  assert.equal(after.shortHourly, 1_020);
+  assert.equal(after.shortMonthly, 213_180);
+});
+
+test("연차 사용촉진 일정: 회계연도 7/1~7/10, 10/31 / 첫해 10/1~10/10, 11/30, 12/21", () => {
+  const a = leavePromotionSchedule("annual", "2026-12-31");
+  assert.deepEqual(a.map((s) => s.due), ["2026-07-10", "2026-07-20", "2026-10-31", "2026-12-31"]);
+  assert.equal(a[0].from, "2026-07-01");
+  const f = leavePromotionSchedule("firstYear", "2026-12-31");
+  assert.equal(f.find((s) => s.id === "notify")?.from, "2026-10-01");
+  assert.equal(f.find((s) => s.id === "assign")?.due, "2026-11-30");
+  assert.equal(f.find((s) => s.id === "assignLate")?.due, "2026-12-21");
+  // 말일 보정: 6월 30일 끝 → 6개월 전 1월 1일 시작
+  assert.equal(leavePromotionSchedule("annual", "2027-06-30")[0].from, "2027-01-01");
+});
