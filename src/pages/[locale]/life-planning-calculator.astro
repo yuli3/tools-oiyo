@@ -5,6 +5,7 @@ import Layout from '../../components/Layout.astro';
 import UtilityArticle, { type UtilityContent } from '../../components/UtilityArticle.astro';
 import RelatedUtilities from '../../components/RelatedUtilities.astro';
 import LifePlanningCalculator from '../../components/tools/LifePlanningCalculator';
+import LifePlanningScenario from '../../components/tools/LifePlanningScenario';
 import { locales } from '../../lib/i18n';
 import { utilityJsonLd } from '../../lib/utility-jsonld';
 
@@ -295,7 +296,7 @@ const schema = utilityJsonLd({ name: m.title, description: m.description, url, l
 ---
 <Layout title={m.title} description={m.description} locale={locale} availableLocales={[...locales]} canonicalURL={url}>
   <ToolShell title={m.title} description={m.description}>
-    <LifePlanningCalculator client:load locale={locale} />
+    {locale === 'ko' ? <LifePlanningScenario client:load /> : <LifePlanningCalculator client:load locale={locale} />}
     <UtilityArticle c={c} />
     <RelatedUtilities locale={locale} current="life-planning-calculator" group="money" />
   </ToolShell>
