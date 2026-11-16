@@ -31,6 +31,8 @@ export function formatUnit(unit: AssumptionUnit, v: number, mode: AdvisoryMode =
       return `${Math.round(v).toLocaleString("ko-KR")}kWh`;
     case "people":
       return `${Math.round(v)}명`;
+    case "age":
+      return `${Math.round(v)}세`;
   }
 }
 

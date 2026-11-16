@@ -1,7 +1,7 @@
 ---
 // Moved from blog.oiyo.net/isa-vs-pension-calculator/ on 2026-10-27 (W15); ko-only on Tools: Korean ISA and 연금저축 tax rules; pension income tax set to 5.5% (Blog used 3.8%).
 import KrFinancePage from "../../components/KrFinancePage.astro";
-import IsaVsPensionCalculator from "../../components/tools/IsaVsPensionCalculator";
+import KrIsaPensionScenario from "../../components/tools/KrIsaPensionScenario";
 
 const title = ({
     title: "ISA vs 연금저축 비교 계산기 — 세제 혜택 시뮬레이션",
@@ -57,5 +57,5 @@ const faqs = [
   ];
 ---
 <KrFinancePage slug="isa-vs-pension-calculator" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
-  <IsaVsPensionCalculator client:load locale="ko" />
+  <KrIsaPensionScenario client:load />
 </KrFinancePage>

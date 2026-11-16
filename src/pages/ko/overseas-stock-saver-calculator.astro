@@ -1,7 +1,7 @@
 ---
 // Moved from blog.oiyo.net/overseas-stock-saver-calculator/ on 2026-10-27 (W11b).
 import KrFinancePage from "../../components/KrFinancePage.astro";
-import OverseasStockSaverCalculator from "../../components/tools/OverseasStockSaverCalculator";
+import KrOverseasStockScenario from "../../components/tools/KrOverseasStockScenario";
 
 const title = "해외주식 양도세 절세 계산기 — 250만 원 공제와 손익통산";
 const description = "올해 실현한 해외주식 양도차익으로 양도소득세 22%와 250만 원 기본공제 활용, 손실 실현(손익통산) 절세 효과를 계산합니다.";
@@ -43,5 +43,5 @@ const faqs = [
 ];
 ---
 <KrFinancePage slug="overseas-stock-saver-calculator" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
-  <OverseasStockSaverCalculator client:load locale="ko" />
+  <KrOverseasStockScenario client:load />
 </KrFinancePage>
