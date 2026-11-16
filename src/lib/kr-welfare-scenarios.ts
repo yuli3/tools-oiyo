@@ -2,9 +2,10 @@
 // 계산은 kr-welfare-2026.ts, 여기는 "무엇을 바꿔 볼 수 있고 어떻게 설명할지"만 정해요.
 import {
   ASSET_CAP, ASSET_HALF, CTC_TABLE, EITC_TABLE, INJURY_2026, RENT_CREDIT,
-  dbVsDc, injuryLeavePay, maternityLeavePay, monthlyRentCredit, wageGuarantee, workChildCredit,
-  type EitcInput, type GuaranteeInput, type InjuryInput, type MaternityInput, type PensionInput, type RentInput,
+  dbVsDc, fixedOvertimeCheck, injuryLeavePay, maternityLeavePay, monthlyRentCredit, ordinaryWage, wageGuarantee, workChildCredit,
+  type EitcInput, type FixedOtInput, type GuaranteeInput, type InjuryInput, type MaternityInput, type OrdinaryWageInput, type PensionInput, type RentInput,
 } from "./kr-welfare-2026.ts";
+import { RENTAL, comprehensiveRealEstateTax, creThreshold, rentalIncomeTax, type CreInput, type RentalInput } from "./kr-home-tax-2026.ts";
 import { roughWon, type Assumption } from "./scenario.ts";
 
 const money = <I>(key: string, label: string, plain: string, get: (i: I) => number, set: (i: I, v: number) => I, range: (a: number) => [number, number], marks?: { at: number; label: string }[], kind: "fact" | "assumption" = "assumption"): Assumption<I> => ({ key, label, plain, unit: "won", kind, get, set, range, marks });
@@ -91,3 +92,56 @@ export const PENSION_ASSUMPTIONS: Assumption<PensionInput>[] = [
   { key: "dcReturn", label: "DC 연 운용 수익률", plain: "퇴직연금을 굴려 버는 비율", unit: "rate", kind: "assumption", get: (x) => x.dcReturn, set: (x, v) => ({ ...x, dcReturn: v }), range: () => [-0.02, 0.1] },
   { key: "yearsLeft", label: "퇴직까지 남은 연수", plain: "앞으로 더 다닐 햇수", unit: "years", kind: "fact", get: (x) => x.yearsLeft, set: (x, v) => ({ ...x, yearsLeft: Math.max(0, Math.round(v)) }), range: () => [1, 40] },
 ];
+
+// ───────────────────────── 통상임금 ─────────────────────────
+const hoursA = <I extends { overtime: number }>(max = 52): Assumption<I> => ({ key: "overtime", label: "월 연장근로시간", plain: "한 달 동안 더 일한 시간", unit: "hours", kind: "fact", get: (x) => x.overtime, set: (x, v) => ({ ...x, overtime: Math.max(0, Math.round(v)) }), range: () => [0, max], marks: [{ at: 52, label: "주 12시간 한도(월 약 52시간)" }] });
+export const ordinaryPremium = (i: OrdinaryWageInput) => ordinaryWage(i).premium.total;
+export const ORDINARY_ASSUMPTIONS: Assumption<OrdinaryWageInput>[] = [
+  hoursA<OrdinaryWageInput>(60),
+  money("bonusAnnual", "연 정기상여금", "1년에 받는 정기 상여", (x) => x.bonusAnnual, (x, v) => ({ ...x, bonusAnnual: Math.max(0, v) }), () => [0, 20_000_000], undefined, "fact"),
+  money("fixedAllowances", "월 고정수당", "매달 고정으로 받는 수당", (x) => x.fixedAllowances, (x, v) => ({ ...x, fixedAllowances: Math.max(0, v) }), () => [0, 1_500_000], undefined, "fact"),
+];
+
+// ───────────────────────── 포괄임금 고정 연장수당 ─────────────────────────
+export const fixedOtShort = (i: FixedOtInput) => fixedOvertimeCheck(i).shortTotal;
+export const FIXED_OT_ASSUMPTIONS = (i: FixedOtInput): Assumption<FixedOtInput>[] => {
+  const covered = fixedOvertimeCheck(i).coveredHours;
+  const h = hoursA<FixedOtInput>(80);
+  return [
+    { ...h, marks: [{ at: covered, label: "고정수당이 덮는 시간" }, { at: 52, label: "주 12시간 한도" }] },
+    money("fixedOtPay", "고정 연장수당", "월급에 들어 있는 고정 수당", (x) => x.fixedOtPay, (x, v) => ({ ...x, fixedOtPay: Math.max(0, v) }), () => [0, 1_500_000], undefined, "fact"),
+    { key: "months", label: "이렇게 일한 개월 수", plain: "이렇게 일한 달 수", unit: "months", kind: "fact", get: (x) => x.months ?? 36, set: (x, v) => ({ ...x, months: Math.max(0, Math.round(v)) }), range: () => [0, 36], marks: [{ at: 36, label: "3년 소멸시효" }] },
+  ];
+};
+
+// ───────────────────────── 종부세 ─────────────────────────
+// 집이 여러 채면 공시가격 합계를 바꿀 때 집마다 같은 비율로 늘이거나 줄여요.
+export const creTotal = (i: CreInput) => comprehensiveRealEstateTax(i).totalTax;
+const scalePrices = (i: CreInput, total: number) => {
+  const sum = i.prices.reduce((a, b) => a + b, 0);
+  if (sum <= 0) return { ...i, prices: [Math.max(0, total)] };
+  return { ...i, prices: i.prices.map((p) => Math.round((p * Math.max(0, total)) / sum)) };
+};
+export const CRE_ASSUMPTIONS = (i: CreInput): Assumption<CreInput>[] => {
+  const list: Assumption<CreInput>[] = [
+    money("total", "공시가격 합계", "집값(공시가격) 합계", (x) => x.prices.reduce((a, b) => a + b, 0), scalePrices, () => [0, 6_000_000_000], [{ at: creThreshold(i.oneHouse && i.prices.length === 1), label: "공제선" }], "assumption"),
+  ];
+  if (i.oneHouse && i.prices.length === 1) {
+    list.push(
+      { key: "age", label: "나이", plain: "나이", unit: "years", kind: "fact", get: (x) => x.age ?? 0, set: (x, v) => ({ ...x, age: Math.round(v) }), range: () => [40, 80], marks: [{ at: 60, label: "20%" }, { at: 65, label: "30%" }, { at: 70, label: "40%" }] },
+      { key: "holdYears", label: "보유 기간", plain: "집을 가진 햇수", unit: "years", kind: "fact", get: (x) => x.holdYears ?? 0, set: (x, v) => ({ ...x, holdYears: Math.round(v) }), range: () => [0, 20], marks: [{ at: 5, label: "20%" }, { at: 10, label: "40%" }, { at: 15, label: "50%" }] },
+    );
+  }
+  return list;
+};
+
+// ───────────────────────── 주택임대소득세 ─────────────────────────
+export const rentalTax = (i: RentalInput) => rentalIncomeTax(i).tax;
+export const RENTAL_ASSUMPTIONS = (i: RentalInput): Assumption<RentalInput>[] => {
+  const list: Assumption<RentalInput>[] = [
+    money("annualRent", "연 월세 수입", "1년 동안 받는 월세", (x) => x.annualRent, (x, v) => ({ ...x, annualRent: Math.max(0, v) }), () => [0, 40_000_000], [{ at: RENTAL.separateLimit, label: "2천만: 분리과세 끝" }]),
+    money("otherIncome", "다른 종합소득금액", "월급 등 다른 소득", (x) => x.otherIncome, (x, v) => ({ ...x, otherIncome: Math.max(0, v) }), () => [0, 150_000_000], [{ at: 20_000_000, label: "2천만: 기본공제 끝" }], "fact"),
+  ];
+  if (i.houses >= 3) list.push(money("deposits", "보증금 합계", "전세금·보증금 합계", (x) => x.deposits, (x, v) => ({ ...x, deposits: Math.max(0, v) }), () => [0, 2_000_000_000], [{ at: RENTAL.depositFree, label: "3억: 간주임대료 시작" }]));
+  return list;
+};

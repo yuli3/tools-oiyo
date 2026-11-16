@@ -18,4 +18,8 @@ test("benefits skill calculator runs every tool", () => {
   assert.equal(run("injury-leave", '{"avgDailyWage":150000,"days":30}').total, 3_150_000);
   assert.equal(run("rent-credit").rate, 0.17);
   assert.ok(run("pension-db-dc").breakEvenReturn > 0);
+  assert.equal(run("ordinary-wage").hourly, 15_789);
+  assert.equal(run("fixed-overtime", '{"months":36,"night":0}').months, 36);
+  assert.equal(run("comprehensive-real-estate-tax", '{"age":0,"holdYears":0}').totalTax, 691_200);
+  assert.equal(run("rental-income-tax", '{"registered":true,"otherIncome":50000000,"deposits":0}').separateTax, 739_200);
 });

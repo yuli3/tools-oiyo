@@ -1,0 +1,15 @@
+---
+// 생활 지원금·노동권 도구 2차 (2026-11-16). 엔진: lib/kr-home-tax-2026.ts
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import RentalIncomeTax from "../../components/tools/welfare/RentalIncomeTax";
+import { HOME_TAX_AS_OF } from "../../lib/kr-home-tax-2026";
+
+const title = "주택임대소득세 계산기 — 2천만 원 이하 분리과세 14% vs 종합과세, 간주임대료";
+const description = "집 수·월세 수입·보증금으로 주택임대소득세를 계산해요. 1주택 비과세, 3주택 이상 간주임대료, 2천만 원 이하 분리과세 14%(등록 60%·미등록 50% 경비율)와 종합과세 중 유리한 쪽을 보여 줘요.";
+const ko = {"introTitle": "월세 받는 집주인의 세금", "intro": "집이 1채뿐이면(기준시가 12억 원 이하) 월세에 세금이 없어요. 2채부터는 월세에, 3채부터는 보증금 합계 3억 원 넘는 몫의 이자(간주임대료)에도 세금이 붙어요. 1년 수입이 2천만 원 이하면 14%로 따로 끝내는 분리과세와 종합과세 중 싼 쪽을 골라요.", "howToTitle": "사용 방법", "steps": ["부부가 가진 집 수와 1년 월세 수입, 받은 보증금을 넣어요.", "임대 등록 여부와 다른 소득을 넣어요.", "월세·보증금·다른 소득을 바꿔 보며 어느 방식이 싼지 봐요."], "highlightsTitle": "주요 특징", "highlights": [{"title": "분리과세 vs 종합과세", "body": "두 방식을 지방소득세까지 넣어 나란히 보여 주고 싼 쪽을 골라요."}, {"title": "간주임대료", "body": "3주택 이상 보증금 3억 원 초과분 × 60% × 정기예금이자율(3.1%)."}, {"title": "등록 여부 비교", "body": "등록하면 경비율 60%·기본공제 400만 원, 미등록이면 50%·200만 원."}, {"title": "신고 일정", "body": "2월 사업장현황신고, 5월 종합소득세 신고를 안내해요."}], "disclaimer": "추정이에요. 소형주택 주택 수 제외, 2026년부터 생긴 고가 2주택자 간주임대료, 감면(장기일반민간임대 등)은 세부 요건이 있어 세무서나 세무사에게 확인하세요. 건강보험료 변화는 따로 계산해야 해요."};
+const faqs = [{"q": "전세만 놓으면 세금이 없나요?", "a": "집이 2채 이하면 보증금(전세금)에는 세금이 없어요. 3채 이상이고 보증금 합계가 3억 원을 넘으면 간주임대료를 계산해요."}, {"q": "분리과세를 고르면 신고하지 않아도 되나요?", "a": "아니요. 분리과세도 5월 종합소득세 신고 때 신고해야 해요. 세율만 따로 14%로 끝나요."}, {"q": "부부가 각자 1채씩이면 1주택인가요?", "a": "주택임대소득에서는 부부 소유 주택을 합쳐 세요. 각자 1채면 2주택이라 월세에 세금이 붙어요."}, {"q": "임대 등록은 어디서 하나요?", "a": "주소지 시·군·구청(렌트홈)에 임대사업자 등록, 세무서(홈택스)에 사업자 등록을 둘 다 해야 등록 혜택을 받아요."}];
+---
+<KrFinancePage slug="housing-rental-income-tax-calculator" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <RentalIncomeTax client:load />
+  <p class="mt-4 text-xs text-muted-foreground">근거: 소득세법 제12조·제25조·제64조의2, 같은 법 시행령 제53조. 기준일 {HOME_TAX_AS_OF}. <a class="underline" href="/ko/benefit-rights-toolkit/">생활 지원금·노동권 도구 모음</a></p>
+</KrFinancePage>

@@ -36,3 +36,27 @@ test("휴업급여 곡선의 역전 구간과 월세 한도", () => {
   const m = RENT_ASSUMPTIONS(r)[0];
   assert.equal(rentTotal(m.set(r, 1_200_000)), rentTotal(m.set(r, 900_000)));
 });
+
+test("종부세 가정: 합계를 바꾸면 집마다 같은 비율로, 1주택만 나이·보유 기간", async () => {
+  const { CRE_ASSUMPTIONS, creTotal } = await import("./kr-welfare-scenarios.ts");
+  const two = { prices: [800_000_000, 400_000_000], oneHouse: false };
+  const a = CRE_ASSUMPTIONS(two);
+  assert.deepEqual(a.map((x) => x.key), ["total"]);
+  assert.deepEqual(a[0].set(two, 2_400_000_000).prices, [1_600_000_000, 800_000_000]);
+  const one = { prices: [1_500_000_000], oneHouse: true, age: 50, holdYears: 2 };
+  assert.deepEqual(CRE_ASSUMPTIONS(one).map((x) => x.key), ["total", "age", "holdYears"]);
+  assert.ok(creTotal({ ...one, age: 70 }) < creTotal(one));
+});
+
+test("주택임대·통상임금·포괄임금 가정이 결과를 움직여요", async () => {
+  const m = await import("./kr-welfare-scenarios.ts");
+  const rent = { houses: 3, annualRent: 12_000_000, deposits: 800_000_000, registered: false, otherIncome: 10_000_000 };
+  assert.deepEqual(m.RENTAL_ASSUMPTIONS(rent).map((x) => x.key), ["annualRent", "otherIncome", "deposits"]);
+  assert.ok(m.rentalTax({ ...rent, deposits: 1_200_000_000 }) > m.rentalTax(rent));
+  const ow = { basePay: 2_500_000, fixedAllowances: 300_000, bonusAnnual: 6_000_000, bonusConditional: true, overtime: 20, night: 0, holiday: 0 };
+  assert.ok(m.ordinaryPremium({ ...ow, overtime: 40 }) > m.ordinaryPremium(ow));
+  const ot = { basePay: 2_508_000, fixedOtPay: 300_000, overtime: 30, night: 0, holiday: 0, months: 36 };
+  const marks = m.FIXED_OT_ASSUMPTIONS(ot)[0].marks!;
+  assert.equal(marks[0].at, 16.6);
+  assert.equal(m.fixedOtShort({ ...ot, overtime: 10 }), 0);
+});

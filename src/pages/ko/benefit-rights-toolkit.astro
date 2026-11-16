@@ -4,8 +4,8 @@ import KrFinancePage from "../../components/KrFinancePage.astro";
 import { welfareTools } from "../../data/welfare-tools";
 import { WELFARE_AS_OF } from "../../lib/kr-welfare-2026";
 
-const title = "생활 지원금·노동권 도구 모음 — 근로장려금·출산휴가 급여·대지급금·산재·월세 공제·퇴직연금";
-const description = "받을 수 있는 돈을 놓치지 않게 돕는 계산기를 모았어요. 근로·자녀장려금, 출산휴가 급여, 체불 대지급금, 산재 휴업급여, 월세 세액공제, 퇴직연금 DB·DC 비교와 신청 방법, MCP·Claude 스킬까지 있어요.";
+const title = "생활 지원금·노동권 도구 모음 — 근로장려금·출산휴가·대지급금·산재·통상임금·종부세";
+const description = "받을 수 있는 돈을 놓치지 않게 돕는 계산기를 모았어요. 근로·자녀장려금, 출산휴가 급여, 체불 대지급금, 산재 휴업급여, 월세 세액공제, 퇴직연금 DB·DC, 통상임금·포괄임금 점검, 종부세·주택임대소득세와 신청 방법, MCP·Claude 스킬까지 있어요.";
 const tools = welfareTools.filter((t) => t.slug !== "benefit-rights-toolkit");
 const situations = [
   ["소득이 적은데 일하고 있어요", "work-child-incentive-calculator", "근로장려금·자녀장려금은 5월에 신청해요. 3월·9월 반기 신청도 돼요."],
@@ -14,12 +14,18 @@ const situations = [
   ["일하다 다쳤어요", "industrial-accident-leave-pay-calculator", "회사 동의 없이도 근로복지공단에 산재를 신청할 수 있어요."],
   ["월세를 살아요", "monthly-rent-tax-credit-calculator", "연말정산에서 월세의 15~17%를 돌려받아요. 놓쳤으면 5년 안에 경정청구해요."],
   ["퇴직연금을 바꿀지 고민돼요", "retirement-pension-db-dc-calculator", "임금 상승률과 수익률을 비교해 갈림길을 확인해요."],
+  ["상여금이 있는데 수당이 적은 것 같아요", "ordinary-wage-calculator", "2024년 12월 판결로 재직 조건 상여도 통상임금이에요. 시급부터 다시 계산해요."],
+  ["야근이 많은데 시간외수당은 늘 같아요", "fixed-overtime-pay-checker", "고정 수당이 덮는 시간을 넘게 일했다면 차액을 3년치까지 받을 수 있어요."],
+  ["12월 종부세 고지서가 걱정돼요", "comprehensive-real-estate-tax-calculator", "공시가격 합계가 1주택 12억·그 밖 9억 원을 넘는지부터 봐요."],
+  ["집을 세놓고 월세를 받아요", "housing-rental-income-tax-calculator", "2주택부터 월세에 세금이 붙어요. 5월 신고 전에 분리과세와 종합과세를 비교해요."],
 ];
 const more = [
   ["/ko/unemployment-benefits-calculator/", "실업급여 계산기"],
   ["/ko/parental-leave-calculator/", "육아휴직 급여 계산기"],
   ["/ko/benefit-finder/", "생애주기 혜택 찾기"],
   ["/ko/severance-calculator/", "퇴직금 계산기"],
+  ["/ko/overtime-pay-calculator/", "연장근로수당 계산기"],
+  ["/ko/property-tax-calculator/", "재산세 계산기"],
 ];
 const mcpTools = [
   ["calculate_kr_work_child_incentive", "근로·자녀장려금 예상액"],
@@ -28,6 +34,10 @@ const mcpTools = [
   ["calculate_kr_injury_leave_pay", "산재 휴업급여"],
   ["calculate_kr_monthly_rent_credit", "월세 세액공제"],
   ["compare_kr_retirement_pension", "퇴직연금 DB형 vs DC형"],
+  ["calculate_kr_ordinary_wage", "통상임금·연장수당(2024 판결 전후)"],
+  ["check_kr_fixed_overtime_pay", "포괄임금 고정 연장수당 부족액"],
+  ["calculate_kr_comprehensive_real_estate_tax", "종합부동산세(주택분)"],
+  ["calculate_kr_housing_rental_income_tax", "주택임대소득세(분리 vs 종합)"],
 ];
 const titleOf = (slug: string) => welfareTools.find((t) => t.slug === slug)?.title ?? slug;
 ---

@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import {
   MIN_WAGE_2026, eitcAmount, ctcPerChild, workChildCredit, maternityLeavePay, spouseLeavePay, wageGuarantee, guaranteeMonthlyCap,
   injuryLeaveDaily, injuryLeavePay, averageDailyWage, monthlyRentCredit, dbVsDc, breakEvenReturn,
+  premiumPay, ordinaryWage, fixedOvertimeCheck,
 } from "./kr-welfare-2026.ts";
 import { KR_RATES_2026 } from "./kr-rates-2026.mjs";
 
@@ -120,4 +121,38 @@ test("DB vs DC: 수익률이 임금 상승률보다 높으면 DC", () => {
   const be = breakEvenReturn(base);
   assert.ok(Math.abs(dbVsDc({ ...base, dcReturn: be }).diff) < 1000);
   assert.equal(dbVsDc({ ...base, yearsLeft: 0 }).db, 20_000_000);
+});
+
+test("가산수당: 연장 1.5배, 야간 0.5배 가산, 휴일 8시간 넘으면 2배, 5인 미만은 가산 없음", () => {
+  const p = premiumPay(10_000, { overtime: 10, night: 4, holiday: 10, holidayOver8: 2 });
+  assert.equal(p.overtime, 150_000);
+  assert.equal(p.night, 20_000);
+  assert.equal(p.holiday, 10_000 * (1.5 * 8 + 2 * 2));
+  const s = premiumPay(10_000, { overtime: 10, night: 4, holiday: 10 }, true);
+  assert.equal(s.total, 200_000);
+  assert.equal(s.night, 0);
+});
+
+test("통상임금: 재직조건 상여도 넣으면(2024 전원합의체) 시급과 연장수당이 올라요", () => {
+  const r = ordinaryWage({ basePay: 2_500_000, fixedAllowances: 300_000, bonusAnnual: 6_000_000, bonusConditional: true, overtime: 20, night: 0, holiday: 0 });
+  assert.equal(r.monthly, 3_300_000);
+  assert.equal(r.hourly, 15_789);
+  assert.equal(r.hourlyBefore, 13_397);
+  assert.equal(r.ruling, true);
+  assert.equal(r.diffMonthly, r.premium.total - r.premiumBefore.total);
+  assert.ok(r.diffMonthly > 70_000);
+  // 조건 없는 상여는 판결 전에도 들어가서 차이가 없어요.
+  assert.equal(ordinaryWage({ basePay: 2_500_000, fixedAllowances: 300_000, bonusAnnual: 6_000_000, bonusConditional: false, overtime: 20, night: 0, holiday: 0 }).diffMonthly, 0);
+});
+
+test("포괄임금 고정 연장수당 점검: 법정 수당보다 적으면 차액 × 최대 36개월", () => {
+  const r = fixedOvertimeCheck({ basePay: 2_508_000, fixedOtPay: 300_000, overtime: 30, night: 8, holiday: 8 });
+  assert.equal(r.hourly, 12_000);
+  assert.equal(r.legal.total, 732_000);
+  assert.equal(r.shortMonthly, 432_000);
+  assert.equal(r.shortTotal, 432_000 * 36);
+  assert.equal(r.coveredHours, 16.6);
+  assert.equal(fixedOvertimeCheck({ basePay: 2_508_000, fixedOtPay: 800_000, overtime: 30, night: 0, holiday: 0 }).shortMonthly, 0);
+  assert.equal(fixedOvertimeCheck({ basePay: 2_000_000, fixedOtPay: 0, overtime: 0, night: 0, holiday: 0, months: 50 }).months, 36);
+  assert.equal(fixedOvertimeCheck({ basePay: 2_000_000, fixedOtPay: 0, overtime: 0, night: 0, holiday: 0 }).belowMinWage, true);
 });
