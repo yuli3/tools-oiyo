@@ -1,6 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import {
+  youthRentSupport, housingLoanBest, MEDIAN_INCOME_2026,
   MIN_WAGE_2026, eitcAmount, ctcPerChild, workChildCredit, maternityLeavePay, spouseLeavePay, wageGuarantee, guaranteeMonthlyCap,
   injuryLeaveDaily, injuryLeavePay, averageDailyWage, monthlyRentCredit, dbVsDc, breakEvenReturn,
   premiumPay, ordinaryWage, fixedOvertimeCheck, longTermCareCopay,
@@ -262,4 +263,30 @@ test("하도급 직접 지급: 2회분+요청, 발주자 미지급 범위, 60일
   assert.equal(directPaymentCheck({ ...base, cause: "agreement", requested: false }).eligible, true);
   assert.equal(directPaymentCheck({ ...base, primeStopRequest: true }).direct, 0);
   assert.equal(directPaymentCheck({ ...base, daysSinceDelivery: 60 }).lateInterest, 0);
+});
+
+test("청년월세: 중위 60%·100%, 월세 60만(환산 70만), 월 20만 × 24개월", () => {
+  const base = { age: 27, livesApart: true, ownsHome: false, youthIncome: 1_400_000, youthAssets: 30_000_000, parentIncome: 5_000_000, parentHousehold: 3, parentAssets: 300_000_000, deposit: 10_000_000, rent: 550_000 };
+  const r = youthRentSupport(base);
+  assert.equal(r.youthLine, Math.floor(MEDIAN_INCOME_2026[0] * 0.6));
+  assert.equal(r.total, 4_800_000);
+  assert.deepEqual(youthRentSupport({ ...base, rent: 680_000 }).failed, ["rent"]);
+  assert.equal(youthRentSupport({ ...base, rent: 650_000, deposit: 0 }).eligible, true);
+  assert.equal(youthRentSupport({ ...base, rent: 150_000 }).monthly, 150_000);
+  assert.equal(youthRentSupport({ ...base, parentIncome: 9_000_000 }).eligible, false);
+  assert.equal(youthRentSupport({ ...base, age: 31, parentIncome: 9_000_000 }).eligible, true);
+  assert.equal(youthRentSupport({ ...base, housingBenefit: 50_000 }).monthly, 150_000);
+});
+
+test("정책 주거대출: 2026 기금 한도·소득 기준", () => {
+  const buy = { purpose: "buy" as const, age: 33, income: 80_000_000, netAssets: 200_000_000, newlywed: true, children: 1, newbornWithin2y: true, firstTimeBuyer: true, metro: true, amount: 550_000_000, areaM2: 59 };
+  const b = housingLoanBest(buy);
+  assert.equal(b.options.find((o) => o.id === "didimdol")?.maxLoan, 320_000_000);
+  assert.equal(b.best, "newbornBuy");
+  assert.equal(b.bestLoan, 385_000_000);
+  assert.equal(housingLoanBest({ ...buy, newlywed: false, newbornWithin2y: false }).eligibleCount, 0);
+  const j = housingLoanBest({ purpose: "jeonse", age: 28, income: 40_000_000, netAssets: 50_000_000, newlywed: false, children: 0, newbornWithin2y: false, firstTimeBuyer: true, metro: true, amount: 200_000_000, areaM2: 40 });
+  assert.equal(j.best, "youthBeotimmok");
+  assert.equal(j.bestLoan, 150_000_000);
+  assert.equal(housingLoanBest({ purpose: "monthly", age: 28, income: 30_000_000, netAssets: 0, newlywed: false, children: 0, newbornWithin2y: false, firstTimeBuyer: true, metro: true, amount: 5_000_000, monthlyRent: 500_000, areaM2: 30 }).bestLoan, 12_000_000);
 });
