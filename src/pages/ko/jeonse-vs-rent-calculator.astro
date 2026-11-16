@@ -2,7 +2,7 @@
 // Moved from blog.oiyo.net/ko/jeonse-vs-monthly-calculator/ on 2026-10-27 (W8); merged into jeonse-vs-rent-calculator with the older JeonseVsRentCalculator. Copy kept from Blog.
 import KrFinancePage from "../../components/KrFinancePage.astro";
 import JeonseVsRentCalculator from "../../components/tools/JeonseVsRentCalculator";
-import JeonseVsMonthlyCalculator from "../../components/tools/JeonseVsMonthlyCalculator";
+import KrJeonseRentScenario from "../../components/tools/KrJeonseRentScenario";
 
 const title = "전세 vs 월세 비용 비교 계산기 2026 — 대출·기회비용·공제 시나리오";
 const description = "한국 주거비 비교: 전세대출 이자·자기자본 기회비용·월세를 나눠 보고, 자격을 확인한 경우에만 월세 세액공제 시나리오를 반영해요. 실제 환급을 보장하지 않아요.";
@@ -43,7 +43,7 @@ const faqs = [
 <KrFinancePage slug="jeonse-vs-rent-calculator" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
   <h2 class="mb-3 text-xl font-bold">자격 확인 후 공제 시나리오까지 비교하기</h2>
   <p class="mb-3 text-sm text-muted-foreground">한국 관할·2026년 현행 규정 기준이에요. 2027년 개정안은 반영하지 않아요. 관리비·이사비·중개보수·대출 원금 상환은 포함하지 않아요.</p>
-  <JeonseVsMonthlyCalculator client:load />
+  <KrJeonseRentScenario client:load />
   <p class="mt-4 text-xs text-muted-foreground">근거: <a href="https://www.law.go.kr/법령/주택임대차보호법/제7조의2" class="underline">주택임대차보호법 제7조의2</a> · <a href="https://www.law.go.kr/LSW/lsSideInfoP.do?docCls=jo&amp;joBrNo=02&amp;joNo=0095&amp;lsiSeq=284389&amp;urlMode=lsScJoRltInfoR" class="underline">조세특례제한법 제95조의2</a>. 법령 확인: 2026-11-01. 금리는 별도 기준일을 확인해요.</p>
   <section class="mt-10 border-t border-border pt-6">
     <h2 class="mb-4 text-xl font-bold">단순 자본비용 비교 — 공제 미반영</h2>

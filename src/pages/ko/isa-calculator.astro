@@ -2,7 +2,7 @@
 // Moved from blog.oiyo.net/ko/isa-tax-savings-calculator/ on 2026-10-27 (W8); merged into isa-calculator with the older IsaCalculator. Copy kept from Blog.
 import KrFinancePage from "../../components/KrFinancePage.astro";
 import IsaCalculator from "../../components/tools/IsaCalculator";
-import IsaTaxSavingsCalculator from "../../components/tools/IsaTaxSavingsCalculator";
+import KrIsaScenario from "../../components/tools/KrIsaScenario";
 
 const title = "ISA 절세 계산기 2026 — 일반형 vs 서민형 비과세 혜택 및 손익통산 시뮬레이션";
 const description = "ISA 일반형 200만 원·서민형 및 농어민형 400만 원 비과세 한도와 초과분 9.9% 세율을 알아봐요. 상품별 과세손익·가입 요건·손익통산 범위를 확인하고 단순 비교의 한계를 살펴보세요.";
@@ -42,7 +42,7 @@ const faqs = [
 ];
 ---
 <KrFinancePage slug="isa-calculator" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
-  <IsaTaxSavingsCalculator client:load />
+  <KrIsaScenario client:load />
   <p class="mt-4 text-xs text-muted-foreground">근거 확인: 2026-10-18. <a href="https://www.law.go.kr/LSW/lsSideInfoP.do?docCls=jo&amp;joBrNo=18&amp;joNo=0091&amp;lsiSeq=284389&amp;urlMode=lsScJoRltInfoR" class="underline">조세특례제한법 제91조의18</a> · <a href="https://www.law.go.kr/LSW/lsSideInfoP.do?docCls=jo&amp;joBrNo=04&amp;joNo=0093&amp;lsiSeq=288915&amp;urlMode=lsScJoRltInfoR" class="underline">시행령 제93조의4</a> · <a href="https://file.shinhansec.com/filedoc/clause/y_183.pdf" class="underline">신한투자증권 중개형 ISA 핵심설명서(상품별 과세손익·통산 범위)</a></p>
   <section class="mt-10 border-t border-border pt-6">
     <h2 class="mb-4 text-xl font-bold">ISA 만기 수익 간단 계산</h2>

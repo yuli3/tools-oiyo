@@ -2,7 +2,7 @@
 // Moved from blog.oiyo.net/ko/dsr-mortgage-calculator/ on 2026-10-27 (W8); merged into dsr-calculator with the older DsrCalculator. Copy kept from Blog.
 import KrFinancePage from "../../components/KrFinancePage.astro";
 import DsrCalculator from "../../components/tools/DsrCalculator";
-import DsrMortgageCalculator from "../../components/tools/DsrMortgageCalculator";
+import KrDsrScenario from "../../components/tools/KrDsrScenario";
 
 const title = "스트레스 DSR 주택담보대출 한도 계산기 2026 — 3단계(수도권·규제지역 3.0%)·LTV·주담대 상한";
 const description = "2026년 하반기 3단계 스트레스 DSR 기준으로 수도권·규제지역 주담대는 스트레스 금리 3.0%, 지방은 0.75%를 금리 유형별 비율만큼 더해 LTV·주담대 상한·DSR 40% 중 가장 낮은 한도와 월 상환액을 추정해요. 기준일 2026-10-17.";
@@ -42,7 +42,7 @@ const faqs = [
 ];
 ---
 <KrFinancePage slug="dsr-calculator" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
-  <DsrMortgageCalculator client:load />
+  <KrDsrScenario client:load />
   <p class="mt-4 text-xs text-muted-foreground">
     기준일 2026-10-17 · 출처:
     <a class="underline" href="https://better.fsc.go.kr/fsc_new/status/adminMap/OpertnDetail.do?muNo=145&postNo=4215&stNo=11" rel="noopener" target="_blank">금융위원회 3단계 스트레스 DSR 행정지도(2026-07-01~12-31)</a>
