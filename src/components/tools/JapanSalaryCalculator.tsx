@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ToolPanel } from './ToolPanel';
+import { basicDeduction as calcBasicDeduction, employmentDeduction as calcEmploymentIncomeDeduction, incomeTax as calcIncomeTax } from '../../lib/japan-salary';
 
 interface Props {
     locale?: 'ja' | 'en';
@@ -45,49 +46,6 @@ const labels = {
         note: '* 2026 estimate: Kyokai Kenpo Tokyo (health 9.85%, long-term care 1.62%, child support levy 0.23% from April 2026), employment insurance 0.5% (FY2026), employment income deduction minimum ¥740,000 and basic deduction ¥620,000 plus the 2026–27 special addition (¥1,040,000 total up to ¥4.89M total income). The 2026 deduction increases are settled at year-end adjustment rather than in monthly withholding. Resident tax is based on prior-year income and lags by one year.',
     },
 } as const;
-
-/** 給与所得控除（令和8年分: 収入220万円以下は74万円＝本則69万円＋特例5万円）*/
-function calcEmploymentIncomeDeduction(annual: number): number {
-    if (annual <= 2_200_000) return Math.min(annual, 740_000);
-    if (annual <= 3_600_000) return Math.floor(annual * 0.3 + 80_000);
-    if (annual <= 6_600_000) return Math.floor(annual * 0.2 + 440_000);
-    if (annual <= 8_500_000) return Math.floor(annual * 0.1 + 1_100_000);
-    return 1_950_000;
-}
-
-/** 基礎控除（令和8年分: 本則62万円＋令和8・9年の特例加算）*/
-function calcBasicDeduction(totalIncome: number): number {
-    if (totalIncome <= 4_890_000) return 1_040_000;
-    if (totalIncome <= 6_550_000) return 670_000;
-    if (totalIncome <= 23_500_000) return 620_000;
-    if (totalIncome <= 24_000_000) return 480_000;
-    if (totalIncome <= 24_500_000) return 320_000;
-    if (totalIncome <= 25_000_000) return 160_000;
-    return 0;
-}
-
-/** 所得税額（課税所得に対する速算表＋復興特別所得税）*/
-function calcIncomeTax(taxableIncome: number): number {
-    if (taxableIncome <= 0) return 0;
-    let base = 0;
-    if (taxableIncome <= 1_950_000) {
-        base = Math.floor(taxableIncome * 0.05);
-    } else if (taxableIncome <= 3_300_000) {
-        base = Math.floor(taxableIncome * 0.1 - 97_500);
-    } else if (taxableIncome <= 6_950_000) {
-        base = Math.floor(taxableIncome * 0.2 - 427_500);
-    } else if (taxableIncome <= 9_000_000) {
-        base = Math.floor(taxableIncome * 0.23 - 636_000);
-    } else if (taxableIncome <= 18_000_000) {
-        base = Math.floor(taxableIncome * 0.33 - 1_536_000);
-    } else if (taxableIncome <= 40_000_000) {
-        base = Math.floor(taxableIncome * 0.4 - 2_796_000);
-    } else {
-        base = Math.floor(taxableIncome * 0.45 - 4_796_000);
-    }
-    // 復興特別所得税: 2.1%
-    return Math.floor(base * 1.021);
-}
 
 const JapanSalaryCalculator: React.FC<Props> = ({ locale = 'ja' }) => {
     const t = labels[locale === 'ja' ? 'ja' : 'en'];

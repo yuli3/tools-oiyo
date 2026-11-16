@@ -3,6 +3,7 @@ import { sweep, type Assumption } from "../../../lib/scenario";
 import ChoiceChips from "../payroll/ChoiceChips";
 import SweepChart from "./SweepChart";
 import { formatUnit, type AdvisoryMode } from "./format";
+import { useVizCtx, useVizText } from "./i18n";
 
 interface Props<I> {
   /** 훑어 볼 수 있는 가정들(칩으로 골라요) */
@@ -27,17 +28,19 @@ export default function SweepPanel<I>({ options, input, anchors, evaluate, mode,
   const points = useMemo(() => sweep(input, a, evaluate, range, a.unit === "years" ? Math.round(range[1] - range[0]) : a.unit === "pct" ? 100 : 60), [input, a, evaluate, range[0], range[1]]);
   const name = mode === "easy" ? a.plain : a.label;
   const current = evaluate(input);
+  const t = useVizText();
+  const { lang, currency } = useVizCtx();
   return (
     <div className="space-y-3">
-      <ChoiceChips legend="한 가지 가정을 끝까지 바꿔 보기" value={a.key} options={options.map((o) => ({ value: o.key, label: mode === "easy" ? o.plain : o.label }))} onChange={setKey} />
+      <ChoiceChips legend={t.sweepLegend} value={a.key} options={options.map((o) => ({ value: o.key, label: mode === "easy" ? o.plain : o.label }))} onChange={setKey} />
       {Number.isFinite(current) && points.length > 1 && (
         <SweepChart
-          title={`${name}에 따라 ${resultName}이 이렇게 바뀌어요`}
-          caption={caption?.(a) ?? (a.marks ? "점선은 법이나 기준이 바뀌는 지점이에요. 그래프를 누르거나 끌어도 값이 바뀌어요." : "그래프를 누르거나 끌어도 값이 바뀌어요.")}
+          title={t.sweepTitle(name, resultName)}
+          caption={caption?.(a) ?? (a.marks ? t.sweepMarks : t.sweepPlain)}
           points={points}
           current={{ x: a.get(input), y: current }}
           marks={a.marks}
-          formatX={(v) => formatUnit(a.unit, v, "easy")}
+          formatX={(v) => formatUnit(a.unit, v, "easy", lang, currency)}
           formatY={formatY}
           onPick={(x) => onSlide(a.key, a.unit === "years" ? Math.round(x) : discrete ? Math.round(x * 100) / 100 : a.unit === "rate" ? Math.round(x * 1000) / 1000 : x)}
           xLabel={name}

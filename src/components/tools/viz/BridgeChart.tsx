@@ -1,6 +1,7 @@
 import { bridgeLayout, type BridgeStep } from "../../../lib/scenario";
 import BarTrack from "./BarTrack";
 import ChartFrame from "./ChartFrame";
+import { useVizText } from "./i18n";
 
 interface Props {
   title: string;
@@ -12,6 +13,7 @@ interface Props {
 /** 다리(워터폴): 결과가 어떤 단계로 만들어졌는지. 더하는 단계는 초록, 빼는 단계는 빨강, 합계는 진하게. */
 export default function BridgeChart({ title, caption, steps, format }: Props) {
   const bars = bridgeLayout(steps);
+  const t = useVizText();
   const lo = Math.min(0, ...bars.map((b) => Math.min(b.start, b.end)));
   const hi = Math.max(1, ...bars.map((b) => Math.max(b.start, b.end)));
   const x = (v: number) => ((v - lo) / (hi - lo)) * 100;
@@ -19,7 +21,7 @@ export default function BridgeChart({ title, caption, steps, format }: Props) {
     <ChartFrame
       title={title}
       caption={caption}
-      table={[["단계", "금액", "누계"], ...bars.map((b) => [b.label, b.kind === "total" ? format(b.value) : `${b.value >= 0 ? "+" : "−"}${format(Math.abs(b.value))}`, format(b.end)])]}
+      table={[t.bridgeHead, ...bars.map((b) => [b.label, b.kind === "total" ? format(b.value) : `${b.value >= 0 ? "+" : "−"}${format(Math.abs(b.value))}`, format(b.end)])]}
     >
       <ol className="space-y-2">
         {bars.map((b, i) => (

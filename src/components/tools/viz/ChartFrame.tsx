@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { useVizText } from "./i18n";
 
 interface Props {
   title: string;
@@ -11,6 +12,7 @@ interface Props {
 /** 그래프 공통 틀: 제목, 한 줄 설명, 그래프, "표로 보기"(화면 낭독기·인쇄용) */
 export default function ChartFrame({ title, caption, table, children }: Props) {
   const [head, ...rows] = table;
+  const t = useVizText();
   return (
     <figure className="rounded-md border border-border bg-background px-3 py-3">
       <figcaption>
@@ -21,7 +23,7 @@ export default function ChartFrame({ title, caption, table, children }: Props) {
         {children}
       </div>
       <details className="mt-2">
-        <summary className="cursor-pointer text-xs text-muted-foreground">표로 보기</summary>
+        <summary className="cursor-pointer text-xs text-muted-foreground">{t.table}</summary>
         <div className="mt-2 overflow-x-auto">
           <table className="w-full text-left text-xs">
             <thead>

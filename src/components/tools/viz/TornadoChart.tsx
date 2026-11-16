@@ -2,6 +2,7 @@ import type { TornadoBar } from "../../../lib/scenario";
 import BarTrack from "./BarTrack";
 import ChartFrame from "./ChartFrame";
 import type { AdvisoryMode } from "./format";
+import { useVizText } from "./i18n";
 
 interface Props {
   bars: TornadoBar[];
@@ -13,6 +14,7 @@ interface Props {
 
 /** 토네이도: 가정마다 ±20% 바꿀 때 결과가 움직이는 폭, 큰 순서. 세로선은 지금 결과. */
 export default function TornadoChart({ bars, mode, format, delta = 0.2, limit = 6 }: Props) {
+  const t = useVizText();
   const shown = bars.slice(0, limit);
   if (shown.length === 0) return null;
   const base = shown[0].base;
@@ -23,9 +25,9 @@ export default function TornadoChart({ bars, mode, format, delta = 0.2, limit = 
   const pct = Math.round(delta * 100);
   return (
     <ChartFrame
-      title="무엇이 결과를 가장 크게 흔드나요?"
-      caption={`각 가정을 ${pct}% 낮추거나 높였을 때 결과가 움직이는 범위예요. 위에 있을수록 중요해요. 세로선은 지금 결과예요.`}
-      table={[["가정", `−${pct}%일 때`, `+${pct}%일 때`, "폭"], ...shown.map((b) => [mode === "easy" ? b.plain : b.label, format(b.low), format(b.high), format(b.span)])]}
+      title={t.tornadoTitle}
+      caption={t.tornadoCaption(pct)}
+      table={[t.tornadoHead(pct), ...shown.map((b) => [mode === "easy" ? b.plain : b.label, format(b.low), format(b.high), format(b.span)])]}
     >
       <ol className="space-y-2">
         {shown.map((b) => (
@@ -47,11 +49,11 @@ export default function TornadoChart({ bars, mode, format, delta = 0.2, limit = 
       <p className="mt-2 flex flex-wrap gap-3 text-xs text-muted-foreground">
         <span>
           <span className="mr-1 inline-block size-2 rounded-sm bg-warning" aria-hidden="true" />
-          가정을 낮췄을 때
+          {t.lower}
         </span>
         <span>
           <span className="mr-1 inline-block size-2 rounded-sm bg-primary" aria-hidden="true" />
-          가정을 높였을 때
+          {t.higher}
         </span>
       </p>
     </ChartFrame>
