@@ -1497,5 +1497,761 @@ export const devUtilities: Record<string, Record<Locale, { meta: { title: string
     "disclaimer": "Lista basada en guías públicas; no garantiza visibilidad."
    }
   }
+ },
+ "jwt-decoder": {
+  "ko": {
+   "meta": {
+    "title": "JWT 디코더 — 토큰 내용 풀기와 보안 점검",
+    "description": "JWT를 붙여 넣으면 헤더·내용(payload)·만료 시각을 풀어 보여 주고, alg none, 만료 없음, 긴 유효기간, aud 누락, 민감 정보 같은 흔한 실수를 짚어 줘요. 브라우저 안에서만 풀어요."
+   },
+   "content": {
+    "introTitle": "JWT는 점으로 나뉜 세 부분(헤더.내용.서명)이에요",
+    "intro": "JWT(JSON Web Token)는 로그인 상태나 권한을 담아 서비스끼리 주고받는 토큰이에요. 앞 두 부분은 Base64URL로 인코딩된 JSON이라 누구나 읽을 수 있고, 마지막 서명만 위조를 막아요. 이 도구는 토큰을 풀어 내용과 만료 시각을 보여 주고, 서명 우회·영구 토큰처럼 사고로 이어지는 설정을 알려 줘요.",
+    "formulaTitle": "핵심 개념",
+    "formulas": [
+     {
+      "title": "인코딩은 암호화가 아니에요",
+      "body": "payload는 누구나 읽을 수 있어요. 비밀번호·주민번호 같은 값을 넣으면 안 돼요."
+     },
+     {
+      "title": "alg none과 알고리즘 고정",
+      "body": "서버가 토큰 헤더의 alg를 그대로 믿으면 서명 없는 토큰이 통과할 수 있어요. 검증할 때 허용 알고리즘을 고정하세요."
+     },
+     {
+      "title": "exp·aud",
+      "body": "만료가 없거나 대상 서비스(aud)를 확인하지 않으면, 유출되거나 다른 서비스용인 토큰이 통과해요."
+     }
+    ],
+    "howToTitle": "사용 방법",
+    "steps": [
+     "토큰을 붙여 넣습니다(Bearer 붙어 있어도 돼요).",
+     "헤더·내용·만료 시각을 확인합니다.",
+     "위험·주의 항목을 보고 발급·검증 코드를 고칩니다."
+    ],
+    "faqTitle": "자주 묻는 질문",
+    "faqs": [
+     {
+      "question": "서명도 확인해 주나요?",
+      "answer": "아니요. 서명은 비밀키나 공개키가 있어야 확인할 수 있어서 서버에서 검증해야 해요."
+     },
+     {
+      "question": "운영 토큰을 넣어도 안전한가요?",
+      "answer": "브라우저 밖으로 보내지 않지만, 습관상 만료됐거나 테스트용 토큰을 쓰는 게 좋아요."
+     },
+     {
+      "question": "다섯 부분짜리 토큰은요?",
+      "answer": "암호화된 JWE라 키 없이는 내용을 볼 수 없어요."
+     }
+    ],
+    "disclaimer": "점검 항목은 일반적인 권장 사항이며, 서비스의 보안 요구에 따라 판단이 달라질 수 있어요."
+   }
+  },
+  "en": {
+   "meta": {
+    "title": "JWT Decoder — decode a token and check it for common mistakes",
+    "description": "Paste a JWT to decode the header, payload and expiry, and spot common mistakes: alg none, no expiry, long lifetimes, missing aud and sensitive data. Decoding happens only in your browser."
+   },
+   "content": {
+    "introTitle": "A JWT has three dot-separated parts: header.payload.signature",
+    "intro": "A JSON Web Token carries login state or permissions between services. The first two parts are Base64URL-encoded JSON that anyone can read; only the signature prevents forgery. This tool decodes the token, shows its times and flags settings that lead to incidents, like signature bypass or tokens that never expire.",
+    "formulaTitle": "Key concepts",
+    "formulas": [
+     {
+      "title": "Encoded, not encrypted",
+      "body": "Anyone can read the payload, so never put passwords or personal IDs in it."
+     },
+     {
+      "title": "alg none and pinned algorithms",
+      "body": "If a server trusts the header's alg, unsigned tokens can pass. Pin allowed algorithms when verifying."
+     },
+     {
+      "title": "exp and aud",
+      "body": "Without expiry or an audience check, leaked tokens or tokens for another service get accepted."
+     }
+    ],
+    "howToTitle": "How to use",
+    "steps": [
+     "Paste a token (a Bearer prefix is fine).",
+     "Read the header, payload and times.",
+     "Fix the issuing or verifying code for each risk."
+    ],
+    "faqTitle": "Frequently asked questions",
+    "faqs": [
+     {
+      "question": "Does it verify the signature?",
+      "answer": "No. That needs the secret or public key and belongs on the server."
+     },
+     {
+      "question": "Is it safe to paste production tokens?",
+      "answer": "Nothing leaves the browser, but prefer expired or test tokens anyway."
+     },
+     {
+      "question": "What about five-part tokens?",
+      "answer": "Those are encrypted JWEs and cannot be read without the key."
+     }
+    ],
+    "disclaimer": "Findings reflect common recommendations; your system's security needs may differ."
+   }
+  },
+  "ja": {
+   "meta": {
+    "title": "JWTデコーダー — トークンの中身と安全性チェック",
+    "description": "JWTを貼り付けると、ヘッダー・ペイロード・有効期限を表示し、alg none、期限なし、長すぎる有効期間、aud欠落、機密情報などのよくあるミスを指摘します。"
+   },
+   "content": {
+    "introTitle": "JWTはドットで区切られた3つの部分です",
+    "intro": "JWTはログイン状態や権限をサービス間でやり取りするトークンです。前の2つはBase64URLのJSONで誰でも読め、署名だけが改ざんを防ぎます。本ツールは中身を表示し、危険な設定を知らせます。",
+    "formulaTitle": "基本概念",
+    "formulas": [
+     {
+      "title": "エンコードは暗号化ではない",
+      "body": "ペイロードは誰でも読めます。機密情報を入れないでください。"
+     },
+     {
+      "title": "alg noneとアルゴリズム固定",
+      "body": "検証時に許可するアルゴリズムを固定してください。"
+     }
+    ],
+    "howToTitle": "使い方",
+    "steps": [
+     "トークンを貼り付けます。",
+     "ヘッダー・ペイロード・時刻を確認します。",
+     "指摘に沿ってコードを直します。"
+    ],
+    "faqTitle": "よくある質問",
+    "faqs": [
+     {
+      "question": "署名も検証しますか？",
+      "answer": "いいえ、鍵が必要なためサーバーで検証してください。"
+     },
+     {
+      "question": "本番トークンを貼っても安全？",
+      "answer": "外部送信はしませんが、テスト用トークンの利用をおすすめします。"
+     }
+    ],
+    "disclaimer": "一般的な推奨に基づくチェックです。"
+   }
+  },
+  "zh": {
+   "meta": {
+    "title": "JWT 解码器 — 解析令牌内容并检查常见问题",
+    "description": "粘贴 JWT 即可解析头部、载荷和过期时间，并指出 alg none、无过期时间、有效期过长、缺少 aud、包含敏感信息等常见错误。全部在浏览器内完成。"
+   },
+   "content": {
+    "introTitle": "JWT 由点分隔的三部分组成",
+    "intro": "JWT 用于在服务之间传递登录状态或权限。前两部分是 Base64URL 编码的 JSON，任何人都能读；只有签名能防止伪造。本工具解析令牌并提示容易引发事故的设置。",
+    "formulaTitle": "核心概念",
+    "formulas": [
+     {
+      "title": "编码不是加密",
+      "body": "载荷谁都能读，不要放密码或身份证号。"
+     },
+     {
+      "title": "alg none 与固定算法",
+      "body": "验证时应固定允许的算法。"
+     }
+    ],
+    "howToTitle": "使用方法",
+    "steps": [
+     "粘贴令牌。",
+     "查看头部、载荷和时间。",
+     "按提示修复签发或验证代码。"
+    ],
+    "faqTitle": "常见问题",
+    "faqs": [
+     {
+      "question": "会验证签名吗？",
+      "answer": "不会，签名需要密钥，应在服务器端验证。"
+     },
+     {
+      "question": "粘贴生产令牌安全吗？",
+      "answer": "不会上传，但建议使用过期或测试令牌。"
+     }
+    ],
+    "disclaimer": "检查项基于通用建议。"
+   }
+  },
+  "fr": {
+   "meta": {
+    "title": "Décodeur JWT — lire un jeton et repérer les erreurs courantes",
+    "description": "Collez un JWT pour décoder l'en-tête, le payload et l'expiration, et repérer les erreurs courantes : alg none, pas d'expiration, durée trop longue, aud manquant, données sensibles."
+   },
+   "content": {
+    "introTitle": "Un JWT comporte trois parties séparées par des points",
+    "intro": "Un JSON Web Token transporte l'état de connexion ou des droits entre services. Les deux premières parties sont du JSON en Base64URL lisible par tous ; seule la signature empêche la falsification. L'outil décode le jeton et signale les réglages risqués.",
+    "formulaTitle": "Notions clés",
+    "formulas": [
+     {
+      "title": "Encodé, pas chiffré",
+      "body": "Tout le monde peut lire le payload : n'y mettez pas de secrets."
+     },
+     {
+      "title": "alg none et algorithmes imposés",
+      "body": "Imposez les algorithmes autorisés lors de la vérification."
+     }
+    ],
+    "howToTitle": "Mode d'emploi",
+    "steps": [
+     "Collez un jeton.",
+     "Lisez l'en-tête, le payload et les dates.",
+     "Corrigez le code d'émission ou de vérification."
+    ],
+    "faqTitle": "Questions fréquentes",
+    "faqs": [
+     {
+      "question": "La signature est-elle vérifiée ?",
+      "answer": "Non, il faut la clé : vérifiez-la côté serveur."
+     },
+     {
+      "question": "Puis-je coller un jeton de production ?",
+      "answer": "Rien ne sort du navigateur, mais préférez un jeton de test."
+     }
+    ],
+    "disclaimer": "Constats fondés sur des recommandations générales."
+   }
+  },
+  "es": {
+   "meta": {
+    "title": "Decodificador JWT — leer un token y detectar errores comunes",
+    "description": "Pega un JWT para decodificar cabecera, payload y caducidad, y detectar errores comunes: alg none, sin caducidad, vida demasiado larga, sin aud y datos sensibles."
+   },
+   "content": {
+    "introTitle": "Un JWT tiene tres partes separadas por puntos",
+    "intro": "Un JSON Web Token transporta el estado de sesión o permisos entre servicios. Las dos primeras partes son JSON en Base64URL que cualquiera puede leer; solo la firma evita la falsificación. La herramienta decodifica el token y señala configuraciones de riesgo.",
+    "formulaTitle": "Conceptos clave",
+    "formulas": [
+     {
+      "title": "Codificado, no cifrado",
+      "body": "Cualquiera puede leer el payload: no incluyas secretos."
+     },
+     {
+      "title": "alg none y algoritmos fijos",
+      "body": "Fija los algoritmos permitidos al verificar."
+     }
+    ],
+    "howToTitle": "Cómo usarlo",
+    "steps": [
+     "Pega un token.",
+     "Revisa cabecera, payload y fechas.",
+     "Corrige el código de emisión o verificación."
+    ],
+    "faqTitle": "Preguntas frecuentes",
+    "faqs": [
+     {
+      "question": "¿Verifica la firma?",
+      "answer": "No, necesita la clave: verifícala en el servidor."
+     },
+     {
+      "question": "¿Es seguro pegar un token de producción?",
+      "answer": "No sale del navegador, pero mejor usa uno de prueba."
+     }
+    ],
+    "disclaimer": "Hallazgos basados en recomendaciones generales."
+   }
+  }
+ },
+ "code-security-scanner": {
+  "ko": {
+   "meta": {
+    "title": "코드 보안 빠른 점검 — 비밀키·SQL 주입·XSS·프롬프트 주입 찾기",
+    "description": "AI가 쓴 코드나 내 코드를 붙여 넣으면 하드코딩된 API 키, SQL 문자열 이어 붙이기, innerHTML XSS, JWT 오용, CORS 전체 허용, LLM 프롬프트 주입·유출 같은 흔한 위험 패턴 20가지를 줄 번호와 고치는 법으로 보여 줘요."
+   },
+   "content": {
+    "introTitle": "배포 전에 흔한 보안 실수를 빠르게 걸러요",
+    "intro": "코딩 에이전트와 AI 도우미가 코드를 빨리 써 주면서, 비밀키를 코드에 박거나 SQL을 문자열로 이어 붙이는 실수도 같이 늘었어요. 이 도구는 붙여 넣은 코드를 브라우저 안에서 정규식 규칙 20개로 훑어 의심 위치를 줄 번호와 함께 보여 주고, 분야별로 몇 곳인지 그래프로 정리해요.",
+    "formulaTitle": "핵심 개념",
+    "formulas": [
+     {
+      "title": "비밀키",
+      "body": "OpenAI·Anthropic·GitHub·AWS 키 형식과 password= 같은 하드코딩을 찾아요. 찾았다면 코드를 지우는 것보다 키 폐기·재발급이 먼저예요."
+     },
+     {
+      "title": "주입",
+      "body": "SQL·셸 명령·eval에 사용자 값을 이어 붙이는 코드를 찾아요."
+     },
+     {
+      "title": "LLM 프롬프트",
+      "body": "사용자 입력을 시스템 프롬프트에 섞거나, 모델 응답을 코드로 실행하거나, 프롬프트에 비밀을 넣는 패턴을 찾아요."
+     }
+    ],
+    "howToTitle": "사용 방법",
+    "steps": [
+     "점검할 코드를 붙여 넣습니다.",
+     "위험도와 분야별 개수를 확인합니다.",
+     "각 줄의 고치는 법을 보고 결과를 복사해 리뷰에 붙입니다."
+    ],
+    "faqTitle": "자주 묻는 질문",
+    "faqs": [
+     {
+      "question": "이 점검만 통과하면 안전한가요?",
+      "answer": "아니요. 흔한 패턴을 빠르게 거르는 1차 점검이에요. Semgrep·CodeQL 같은 정식 도구와 사람 리뷰를 함께 쓰세요."
+     },
+     {
+      "question": "코드가 밖으로 나가나요?",
+      "answer": "아니요. 브라우저 안에서만 읽어요."
+     },
+     {
+      "question": "잘못 잡은 줄은요?",
+      "answer": "그 줄 앞에 // nosec 주석을 달면 건너뛰어요."
+     }
+    ],
+    "disclaimer": "정규식 기반 점검이라 놓치는 위험과 잘못 잡는 경우가 모두 있어요."
+   }
+  },
+  "en": {
+   "meta": {
+    "title": "Code Security Scanner — find secrets, SQL injection, XSS and prompt injection",
+    "description": "Paste code (yours or AI-written) to flag 20 common risky patterns with line numbers and fixes: hard-coded API keys, SQL string concatenation, innerHTML XSS, JWT misuse, wildcard CORS, and LLM prompt injection or leaks."
+   },
+   "content": {
+    "introTitle": "Catch common security mistakes before you ship",
+    "intro": "Coding agents and AI assistants write code fast, and with it come hard-coded secrets and string-built SQL. This tool scans pasted code in your browser with 20 regex rules, lists suspicious lines with fixes and charts how many issues fall in each area.",
+    "formulaTitle": "Key concepts",
+    "formulas": [
+     {
+      "title": "Secrets",
+      "body": "Detects OpenAI, Anthropic, GitHub and AWS key formats plus password= literals. If found, revoke and rotate the key first."
+     },
+     {
+      "title": "Injection",
+      "body": "Finds user values concatenated into SQL, shell commands or eval."
+     },
+     {
+      "title": "LLM prompts",
+      "body": "Flags user input mixed into system prompts, executing model output, and secrets inside prompts."
+     }
+    ],
+    "howToTitle": "How to use",
+    "steps": [
+     "Paste the code to check.",
+     "Read the risk score and per-area counts.",
+     "Apply each fix and copy the report into your review."
+    ],
+    "faqTitle": "Frequently asked questions",
+    "faqs": [
+     {
+      "question": "Is code that passes safe?",
+      "answer": "No. It is a fast first pass for common patterns; also use Semgrep or CodeQL and human review."
+     },
+     {
+      "question": "Is my code uploaded?",
+      "answer": "No. It is read only in your browser."
+     },
+     {
+      "question": "What about false positives?",
+      "answer": "Add a // nosec comment at the start of the line to skip it."
+     }
+    ],
+    "disclaimer": "Regex-based checks can both miss issues and flag safe code."
+   }
+  },
+  "ja": {
+   "meta": {
+    "title": "コードセキュリティ簡易チェック — 秘密鍵・SQLインジェクション・XSS・プロンプトインジェクション",
+    "description": "コードを貼り付けると、ハードコードされたAPIキー、SQL文字列連結、innerHTMLのXSS、JWTの誤用、CORS全許可、LLMプロンプトインジェクションなど20種類の危険パターンを行番号と修正方法つきで表示します。"
+   },
+   "content": {
+    "introTitle": "公開前によくあるセキュリティミスを素早く見つけます",
+    "intro": "AIがコードを速く書く一方で、秘密鍵の埋め込みや文字列連結のSQLといったミスも増えました。本ツールはブラウザ内で20個のルールでコードを走査します。",
+    "formulaTitle": "基本概念",
+    "formulas": [
+     {
+      "title": "秘密鍵",
+      "body": "主要APIキー形式やpassword=の直書きを検出します。見つけたらまず鍵を失効・再発行してください。"
+     },
+     {
+      "title": "LLMプロンプト",
+      "body": "ユーザー入力をシステムプロンプトに混ぜるパターンなどを検出します。"
+     }
+    ],
+    "howToTitle": "使い方",
+    "steps": [
+     "コードを貼り付けます。",
+     "リスクと分野別件数を確認します。",
+     "修正方法を見て結果をコピーします。"
+    ],
+    "faqTitle": "よくある質問",
+    "faqs": [
+     {
+      "question": "合格すれば安全ですか？",
+      "answer": "いいえ、一次チェックです。正式なツールとレビューも併用してください。"
+     },
+     {
+      "question": "コードは送信されますか？",
+      "answer": "いいえ、ブラウザ内だけで読みます。"
+     }
+    ],
+    "disclaimer": "正規表現ベースのため、見逃しや誤検出があります。"
+   }
+  },
+  "zh": {
+   "meta": {
+    "title": "代码安全快速检查 — 查找密钥泄露、SQL 注入、XSS、提示注入",
+    "description": "粘贴代码，即可按行号列出 20 种常见风险模式及修复方法：硬编码 API 密钥、SQL 字符串拼接、innerHTML XSS、JWT 误用、CORS 全放开、LLM 提示注入与泄露等。"
+   },
+   "content": {
+    "introTitle": "上线前快速拦截常见安全错误",
+    "intro": "AI 写代码越来越快，把密钥写进代码、拼接 SQL 等错误也随之增加。本工具在浏览器内用 20 条规则扫描代码并给出修复建议。",
+    "formulaTitle": "核心概念",
+    "formulas": [
+     {
+      "title": "密钥",
+      "body": "识别常见 API 密钥格式和 password= 硬编码。发现后应先吊销并更换密钥。"
+     },
+     {
+      "title": "LLM 提示",
+      "body": "识别把用户输入混入系统提示、执行模型输出等模式。"
+     }
+    ],
+    "howToTitle": "使用方法",
+    "steps": [
+     "粘贴要检查的代码。",
+     "查看风险分和各类数量。",
+     "按建议修复并复制报告。"
+    ],
+    "faqTitle": "常见问题",
+    "faqs": [
+     {
+      "question": "通过检查就安全吗？",
+      "answer": "不，这只是初筛，请配合正式工具和人工评审。"
+     },
+     {
+      "question": "代码会上传吗？",
+      "answer": "不会，只在浏览器内读取。"
+     }
+    ],
+    "disclaimer": "基于正则的检查可能漏报也可能误报。"
+   }
+  },
+  "fr": {
+   "meta": {
+    "title": "Analyseur de sécurité du code — secrets, injection SQL, XSS, injection de prompt",
+    "description": "Collez du code pour repérer 20 motifs à risque avec numéro de ligne et correctif : clés d'API en dur, SQL concaténé, XSS via innerHTML, mauvais usage de JWT, CORS ouvert, injection ou fuite de prompt LLM."
+   },
+   "content": {
+    "introTitle": "Repérer les erreurs de sécurité courantes avant la mise en ligne",
+    "intro": "Les assistants IA écrivent vite, et avec eux arrivent secrets en dur et SQL concaténé. L'outil analyse le code collé dans votre navigateur avec 20 règles et propose un correctif pour chaque ligne suspecte.",
+    "formulaTitle": "Notions clés",
+    "formulas": [
+     {
+      "title": "Secrets",
+      "body": "Formats de clés OpenAI, Anthropic, GitHub, AWS et mots de passe en dur. Révoquez d'abord la clé."
+     },
+     {
+      "title": "Prompts LLM",
+      "body": "Entrée utilisateur mêlée au prompt système, exécution de la sortie du modèle, secrets dans les prompts."
+     }
+    ],
+    "howToTitle": "Mode d'emploi",
+    "steps": [
+     "Collez le code.",
+     "Lisez le score et le nombre de problèmes par domaine.",
+     "Appliquez les correctifs et copiez le rapport."
+    ],
+    "faqTitle": "Questions fréquentes",
+    "faqs": [
+     {
+      "question": "Un code sans alerte est-il sûr ?",
+      "answer": "Non : c'est un premier filtre. Utilisez aussi Semgrep ou CodeQL et une revue humaine."
+     },
+     {
+      "question": "Mon code est-il envoyé ?",
+      "answer": "Non, il reste dans le navigateur."
+     }
+    ],
+    "disclaimer": "Les règles par expressions régulières peuvent manquer des problèmes ou signaler du code sûr."
+   }
+  },
+  "es": {
+   "meta": {
+    "title": "Analizador de seguridad de código — secretos, inyección SQL, XSS e inyección de prompts",
+    "description": "Pega código para detectar 20 patrones de riesgo con número de línea y solución: claves de API en el código, SQL concatenado, XSS con innerHTML, mal uso de JWT, CORS abierto e inyección o fuga de prompts LLM."
+   },
+   "content": {
+    "introTitle": "Detecta errores de seguridad comunes antes de publicar",
+    "intro": "Los asistentes de IA escriben rápido y con ellos llegan secretos en el código y SQL concatenado. La herramienta analiza el código pegado en tu navegador con 20 reglas y propone una solución para cada línea sospechosa.",
+    "formulaTitle": "Conceptos clave",
+    "formulas": [
+     {
+      "title": "Secretos",
+      "body": "Formatos de claves de OpenAI, Anthropic, GitHub y AWS y contraseñas literales. Revoca primero la clave."
+     },
+     {
+      "title": "Prompts LLM",
+      "body": "Entrada de usuario mezclada con el prompt de sistema, ejecución de la salida del modelo, secretos en prompts."
+     }
+    ],
+    "howToTitle": "Cómo usarlo",
+    "steps": [
+     "Pega el código.",
+     "Revisa la puntuación y los problemas por área.",
+     "Aplica las soluciones y copia el informe."
+    ],
+    "faqTitle": "Preguntas frecuentes",
+    "faqs": [
+     {
+      "question": "¿Si no hay alertas es seguro?",
+      "answer": "No: es un primer filtro. Usa también Semgrep o CodeQL y revisión humana."
+     },
+     {
+      "question": "¿Se sube mi código?",
+      "answer": "No, se queda en el navegador."
+     }
+    ],
+    "disclaimer": "Las reglas con expresiones regulares pueden fallar en ambos sentidos."
+   }
+  }
+ },
+ "security-headers-checker": {
+  "ko": {
+   "meta": {
+    "title": "HTTP 보안 헤더 점검 — HSTS·CSP·CORS·쿠키",
+    "description": "응답 헤더를 붙여 넣으면 HSTS, CSP, X-Frame-Options, nosniff, Referrer-Policy, CORS, 쿠키 Secure·HttpOnly·SameSite, 서버 버전 노출을 점수로 매기고 빠진 헤더의 시작값을 만들어 줘요."
+   },
+   "content": {
+    "introTitle": "보안 헤더는 브라우저에게 '이렇게만 해'라고 알려 주는 규칙이에요",
+    "intro": "몇 줄짜리 응답 헤더가 XSS, 클릭재킹, 쿠키 탈취, HTTPS 우회를 막아 줘요. 이 도구는 개발자 도구나 curl로 복사한 헤더를 읽어 빠졌거나 약한 헤더를 표시하고, 바로 붙일 수 있는 출발점 헤더를 만들어요.",
+    "formulaTitle": "핵심 개념",
+    "formulas": [
+     {
+      "title": "HSTS",
+      "body": "브라우저가 이 사이트를 항상 HTTPS로만 열게 해요."
+     },
+     {
+      "title": "CSP",
+      "body": "허용한 출처의 스크립트만 실행하게 해 XSS를 막아요."
+     },
+     {
+      "title": "CORS와 쿠키",
+      "body": "다른 사이트가 내 API를 부를 수 있는 범위와 쿠키 전송 조건을 정해요."
+     }
+    ],
+    "howToTitle": "사용 방법",
+    "steps": [
+     "개발자 도구 네트워크 탭이나 curl -sI로 응답 헤더를 복사합니다.",
+     "붙여 넣고 점수와 항목을 확인합니다.",
+     "출발점 헤더를 복사해 서버나 CDN 설정에 넣고 다시 점검합니다."
+    ],
+    "faqTitle": "자주 묻는 질문",
+    "faqs": [
+     {
+      "question": "주소만 넣으면 안 되나요?",
+      "answer": "브라우저 보안(CORS) 때문에 다른 사이트 헤더를 직접 읽을 수 없어요. curl -sI 결과를 붙여 넣어 주세요."
+     },
+     {
+      "question": "CSP를 그대로 넣어도 되나요?",
+      "answer": "사이트마다 필요한 출처가 달라요. Content-Security-Policy-Report-Only로 먼저 시험하세요."
+     },
+     {
+      "question": "Cloudflare Pages에서는 어디에 넣나요?",
+      "answer": "public/_headers 파일에 경로별로 적어요."
+     }
+    ],
+    "disclaimer": "점수는 일반적인 권장 설정 기준이며, 서비스 특성에 따라 필요한 값이 달라요."
+   }
+  },
+  "en": {
+   "meta": {
+    "title": "HTTP Security Headers Checker — HSTS, CSP, CORS and cookies",
+    "description": "Paste response headers to score HSTS, CSP, X-Frame-Options, nosniff, Referrer-Policy, CORS, cookie Secure/HttpOnly/SameSite and version disclosure, and get starter values for what is missing."
+   },
+   "content": {
+    "introTitle": "Security headers tell the browser how strictly to treat your site",
+    "intro": "A few response headers block XSS, clickjacking, cookie theft and HTTPS downgrades. This tool reads headers copied from DevTools or curl, marks missing or weak ones and builds starter headers you can paste into your server or CDN.",
+    "formulaTitle": "Key concepts",
+    "formulas": [
+     {
+      "title": "HSTS",
+      "body": "Makes browsers always use HTTPS for your site."
+     },
+     {
+      "title": "CSP",
+      "body": "Only scripts from allowed sources run, which blocks most XSS."
+     },
+     {
+      "title": "CORS and cookies",
+      "body": "Control which sites can call your API and when cookies are sent."
+     }
+    ],
+    "howToTitle": "How to use",
+    "steps": [
+     "Copy response headers from the DevTools Network tab or curl -sI.",
+     "Paste them and read the score and items.",
+     "Copy the starter headers into your server or CDN config and re-check."
+    ],
+    "faqTitle": "Frequently asked questions",
+    "faqs": [
+     {
+      "question": "Why can't I just enter a URL?",
+      "answer": "Browser security (CORS) prevents reading another site's headers; paste curl -sI output."
+     },
+     {
+      "question": "Can I paste the CSP as is?",
+      "answer": "Every site needs different sources; test with Content-Security-Policy-Report-Only first."
+     },
+     {
+      "question": "Where do headers go on Cloudflare Pages?",
+      "answer": "In the public/_headers file, per path."
+     }
+    ],
+    "disclaimer": "The score reflects common recommendations; the right values depend on your service."
+   }
+  },
+  "ja": {
+   "meta": {
+    "title": "HTTPセキュリティヘッダー診断 — HSTS・CSP・CORS・Cookie",
+    "description": "レスポンスヘッダーを貼り付けると、HSTS、CSP、X-Frame-Options、nosniff、Referrer-Policy、CORS、Cookie属性、バージョン露出を採点し、不足分の初期値を作ります。"
+   },
+   "content": {
+    "introTitle": "セキュリティヘッダーはブラウザへの安全ルールです",
+    "intro": "数行のヘッダーでXSS、クリックジャッキング、Cookie盗難、HTTPSの回避を防げます。本ツールはDevToolsやcurlでコピーしたヘッダーを読み、不足や弱い設定を示します。",
+    "formulaTitle": "基本概念",
+    "formulas": [
+     {
+      "title": "HSTS",
+      "body": "常にHTTPSで開くようにします。"
+     },
+     {
+      "title": "CSP",
+      "body": "許可した出所のスクリプトだけを実行させます。"
+     }
+    ],
+    "howToTitle": "使い方",
+    "steps": [
+     "DevToolsやcurl -sIでヘッダーをコピーします。",
+     "貼り付けて点数を確認します。",
+     "初期値ヘッダーを設定に入れて再確認します。"
+    ],
+    "faqTitle": "よくある質問",
+    "faqs": [
+     {
+      "question": "URLだけで調べられませんか？",
+      "answer": "CORS制限のため、curl -sIの結果を貼り付けてください。"
+     },
+     {
+      "question": "CSPはそのまま使えますか？",
+      "answer": "まずReport-Onlyで試してください。"
+     }
+    ],
+    "disclaimer": "一般的な推奨設定に基づく点数です。"
+   }
+  },
+  "zh": {
+   "meta": {
+    "title": "HTTP 安全响应头检查 — HSTS、CSP、CORS、Cookie",
+    "description": "粘贴响应头，即可为 HSTS、CSP、X-Frame-Options、nosniff、Referrer-Policy、CORS、Cookie 属性和版本泄露打分，并为缺失项生成起始配置。"
+   },
+   "content": {
+    "introTitle": "安全响应头是告诉浏览器如何对待你网站的规则",
+    "intro": "几行响应头就能防御 XSS、点击劫持、Cookie 窃取和 HTTPS 降级。本工具读取从开发者工具或 curl 复制的响应头，标出缺失或薄弱项。",
+    "formulaTitle": "核心概念",
+    "formulas": [
+     {
+      "title": "HSTS",
+      "body": "让浏览器始终用 HTTPS 打开网站。"
+     },
+     {
+      "title": "CSP",
+      "body": "只允许指定来源的脚本运行。"
+     }
+    ],
+    "howToTitle": "使用方法",
+    "steps": [
+     "用开发者工具或 curl -sI 复制响应头。",
+     "粘贴后查看得分。",
+     "把起始配置加入服务器或 CDN 后再次检查。"
+    ],
+    "faqTitle": "常见问题",
+    "faqs": [
+     {
+      "question": "能只输入网址吗？",
+      "answer": "受浏览器 CORS 限制，请粘贴 curl -sI 的结果。"
+     },
+     {
+      "question": "CSP 能直接用吗？",
+      "answer": "建议先用 Report-Only 测试。"
+     }
+    ],
+    "disclaimer": "得分基于通用建议配置。"
+   }
+  },
+  "fr": {
+   "meta": {
+    "title": "Vérificateur d'en-têtes de sécurité HTTP — HSTS, CSP, CORS, cookies",
+    "description": "Collez les en-têtes de réponse pour noter HSTS, CSP, X-Frame-Options, nosniff, Referrer-Policy, CORS, attributs des cookies et divulgation de version, avec des valeurs de départ pour ce qui manque."
+   },
+   "content": {
+    "introTitle": "Les en-têtes de sécurité fixent les règles du navigateur pour votre site",
+    "intro": "Quelques en-têtes bloquent XSS, clickjacking, vol de cookies et rétrogradation HTTPS. L'outil lit les en-têtes copiés depuis les DevTools ou curl et signale les manques.",
+    "formulaTitle": "Notions clés",
+    "formulas": [
+     {
+      "title": "HSTS",
+      "body": "Force le navigateur à toujours utiliser HTTPS."
+     },
+     {
+      "title": "CSP",
+      "body": "N'exécute que les scripts des sources autorisées."
+     }
+    ],
+    "howToTitle": "Mode d'emploi",
+    "steps": [
+     "Copiez les en-têtes depuis les DevTools ou curl -sI.",
+     "Collez-les et lisez le score.",
+     "Ajoutez les en-têtes proposés puis revérifiez."
+    ],
+    "faqTitle": "Questions fréquentes",
+    "faqs": [
+     {
+      "question": "Pourquoi pas une simple URL ?",
+      "answer": "La sécurité du navigateur (CORS) l'empêche ; collez la sortie de curl -sI."
+     },
+     {
+      "question": "Puis-je coller la CSP telle quelle ?",
+      "answer": "Testez d'abord en Report-Only."
+     }
+    ],
+    "disclaimer": "Score fondé sur des recommandations générales."
+   }
+  },
+  "es": {
+   "meta": {
+    "title": "Comprobador de cabeceras de seguridad HTTP — HSTS, CSP, CORS, cookies",
+    "description": "Pega las cabeceras de respuesta para puntuar HSTS, CSP, X-Frame-Options, nosniff, Referrer-Policy, CORS, atributos de cookies y exposición de versión, con valores iniciales para lo que falta."
+   },
+   "content": {
+    "introTitle": "Las cabeceras de seguridad marcan las reglas del navegador para tu sitio",
+    "intro": "Unas pocas cabeceras bloquean XSS, clickjacking, robo de cookies y degradación de HTTPS. La herramienta lee las cabeceras copiadas de DevTools o curl y señala las que faltan.",
+    "formulaTitle": "Conceptos clave",
+    "formulas": [
+     {
+      "title": "HSTS",
+      "body": "Obliga al navegador a usar siempre HTTPS."
+     },
+     {
+      "title": "CSP",
+      "body": "Solo ejecuta scripts de orígenes permitidos."
+     }
+    ],
+    "howToTitle": "Cómo usarlo",
+    "steps": [
+     "Copia las cabeceras desde DevTools o curl -sI.",
+     "Pégalas y revisa la puntuación.",
+     "Añade las cabeceras propuestas y vuelve a comprobar."
+    ],
+    "faqTitle": "Preguntas frecuentes",
+    "faqs": [
+     {
+      "question": "¿Por qué no basta con la URL?",
+      "answer": "La seguridad del navegador (CORS) lo impide; pega la salida de curl -sI."
+     },
+     {
+      "question": "¿Puedo usar la CSP tal cual?",
+      "answer": "Pruébala antes en modo Report-Only."
+     }
+    ],
+    "disclaimer": "Puntuación basada en recomendaciones generales."
+   }
+  }
  }
 };
