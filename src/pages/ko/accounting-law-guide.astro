@@ -1,0 +1,32 @@
+---
+// 법령 길잡이 (accounting) 2026-11-16. 엔진: lib/kr-expert-guide-2026.ts. 자격 명칭을 이름에 쓰지 않아요(유사명칭 금지).
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import LawGuide from "../../components/tools/lawguide/LawGuide";
+import { LAW_GUIDE_AS_OF } from "../../lib/kr-expert-guide-2026";
+
+const title = "회계·장부 법령 길잡이 2026 — 복식부기·간편장부, 외부감사 대상, 법인세·배당";
+const description = "직전 연도 수입금액과 업종으로 복식부기·간편장부·성실신고 확인 대상을 판정하고, 자산·부채·매출·종업원 수로 외부감사 대상인지, 법인세 신고기한과 배당 한도를 조문과 함께 보여 줘요.";
+const ko = {
+  introTitle: "장부와 감사, 우리 회사는 어디에 해당할까요",
+  intro: "장부 의무는 업종별 수입금액으로, 외부감사는 자산·부채·매출·종업원 기준으로 정해져요. 숫자를 넣으면 기준표로 바로 판정하고, 무엇을 언제까지 해야 하는지 알려 줘요. 감사·증명 의견은 내지 않아요(공인회계사의 업무예요).",
+  howToTitle: "사용 방법",
+  steps: ["어떤 일이 있었는지 고르세요.", "먼저 묻는 질문에 답하세요. 모르면 건너뛰어도 돼요.", "기한 막대와 확인할 점을 보고, 결과 메모를 복사해 상담 창구에 가져가세요."],
+  highlightsTitle: "주요 특징",
+  highlights: [
+    { title: "장부 종류 판정", body: "도소매 3억·제조 1.5억·서비스 7,500만 원 기준과 성실신고 기준을 비교해요." },
+    { title: "외부감사 대상 판정", body: "500억 단독 기준과 4개 중 2개(유한회사 5개 중 3개) 기준을 계산해요." },
+    { title: "법인세 신고기한", body: "사업연도 말일 기준 3개월(성실신고 확인 4개월)을 휴일 이월까지 계산해요." },
+    { title: "배당 한도", body: "상법 제462조의 배당가능이익을 확인하도록 짚어 줘요." },
+  ],
+  disclaimer: "법령 정보와 기한 계산 도구예요. 대리·서류 작성 대행·특정 전문가 소개를 하지 않아요. 조문 풀이는 쉬운 말 요약이니 원문(국가법령정보센터)과 담당 기관에서 확인하세요. 기준일 2026-11-16.",
+};
+const faqs = [
+  { q: "간편장부대상자인데 복식부기로 써도 되나요?", a: "네. 복식부기로 쓰면 기장세액공제(산출세액의 20%, 100만 원 한도)를 받아요." },
+  { q: "외부감사 대상이 되면 언제까지 감사인을 정하나요?", a: "보통 사업연도 시작 후 45일 안이에요. 처음 대상이 됐다면 4개월 안이에요(외부감사법 제10조)." },
+  { q: "이 페이지가 감사나 결산을 대신하나요?", a: "아니요. 기준표 판정과 조문 안내예요. 감사·증명은 공인회계사, 세무조정은 세무사의 업무예요." },
+];
+---
+<KrFinancePage slug="accounting-law-guide" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <LawGuide client:load domain="accounting" />
+  <p class="mt-4 text-xs text-muted-foreground">기준일 {LAW_GUIDE_AS_OF}. <a class="underline" href="/ko/law-guide/">법령 길잡이 5분야</a> · <a class="underline" href="/ko/benefit-rights-toolkit/">생활 지원금·노동권 도구</a> · <a class="underline" href="/ko/tax-advisor-toolkit/">세무·회계 실무 도구</a></p>
+</KrFinancePage>

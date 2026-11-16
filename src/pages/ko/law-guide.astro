@@ -1,0 +1,70 @@
+---
+// 법령 길잡이 5분야 허브 (2026-11-16). 세운 요청 "AI 세무사·회계사·노무사·행정사·법무사"를 법이 허용하는 방식으로 만들었어요:
+// 자격 명칭을 쓰지 않고(유사명칭 금지·개정 세무사법 제20조 제3항), 질문 정리·조문·기한·계산·공공 창구 안내만 해요.
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import LawGuide from "../../components/tools/lawguide/LawGuide";
+import { lawGuides } from "../../data/law-guides";
+import { LAW_GUIDE_AS_OF, PROFESSIONS, STATUTES, TOPICS, statuteUrl } from "../../lib/kr-expert-guide-2026";
+
+const title = "법령 길잡이 5분야 — 세금·회계·노동·행정·등기 문제, 먼저 묻고 기한과 조문으로 답해요";
+const description = "세금 불복·수정신고, 장부·외부감사, 해고·임금체불·괴롭힘·산재, 영업정지·과태료, 상속 포기·등기·보증금 문제를 고르면 필요한 질문을 먼저 하고, 근거 조문과 기한(D-day), 계산기, 무료 공공 창구, 자격사에게 맡길 일을 정리해 줘요. MCP와 Claude 스킬도 있어요.";
+const guides = lawGuides.filter((g) => g.domain);
+const mcpTools = [
+  ["get_kr_professional_scope", "세무사·공인회계사·공인노무사·행정사·법무사의 법정 업무 범위, 무자격자 금지 조항, 무료 창구"],
+  ["start_kr_law_intake", "상황 → 주제 추천 → 먼저 물을 질문 → 답을 넣으면 기한(D-day)·근거 조문·확인할 점·가져갈 서류"],
+  ["search_kr_statutes", "키워드로 조문 찾기(쉬운 말 풀이와 국가법령정보센터 링크)"],
+];
+const domains = Object.values(PROFESSIONS);
+---
+<KrFinancePage slug="law-guide" locale="ko" title={title} description={description} koOnly>
+  <section>
+    <h2 class="text-lg font-bold text-foreground">상황을 고르면 먼저 물어봐요</h2>
+    <p class="mt-2 text-sm leading-6 text-muted-foreground">전문가는 답하기 전에 묻습니다. 회사가 5인 이상인지, 고지서를 언제 받았는지, 재산을 처분했는지에 따라 결론이 바뀌기 때문이에요. 이 길잡이도 결론을 바꾸는 질문부터 하고, 답할 때마다 기한 막대와 확인할 점이 바로 바뀌어요. 입력은 이 브라우저 안에서만 계산·저장해요.</p>
+    <div class="mt-4"><LawGuide client:load /></div>
+  </section>
+
+  <section class="mt-8">
+    <h2 class="text-lg font-bold text-foreground">분야별 길잡이</h2>
+    <ul class="mt-4 grid gap-3 sm:grid-cols-2">
+      {guides.map((g) => (
+        <li class="rounded-md border border-border bg-background p-4">
+          <a href={`/ko/${g.slug}/`} class="text-base font-semibold text-foreground underline-offset-4 hover:underline">{g.title}</a>
+          <p class="mt-1 text-sm leading-6 text-muted-foreground">{g.description}</p>
+        </li>
+      ))}
+    </ul>
+    <p class="mt-3 text-sm text-muted-foreground">주제 {TOPICS.length}개, 조문 {STATUTES.length}개를 담았어요.</p>
+  </section>
+
+  <section class="mt-8">
+    <h2 class="text-lg font-bold text-foreground">자격사의 업무 범위와 이 길잡이의 경계</h2>
+    <p class="mt-2 text-sm leading-6 text-muted-foreground">세무대리, 노동위원회 신청 대리, 행정 서류 작성 대행, 등기·법원 서류 작성은 각 자격사만 업으로 할 수 있어요. 그래서 이 길잡이는 정보·계산·질문 정리까지만 하고, 그다음은 무료 공공 창구나 자격사로 이어 줘요. 자격 명칭을 쓰는 것도 법으로 금지돼 있어서 "AI 세무사" 같은 이름을 쓰지 않아요.</p>
+    <dl class="mt-4 space-y-4">
+      {domains.map((p) => (
+        <div>
+          <dt class="text-sm font-semibold text-foreground">{p.licensed} — <a class="underline" href={statuteUrl(p.scopeCite)} target="_blank" rel="noopener">{p.act} {p.scopeCite.article}</a></dt>
+          <dd class="mt-1 text-sm leading-6 text-muted-foreground">{p.scope.join(" · ")}</dd>
+          <dd class="mt-1 text-xs leading-5 text-muted-foreground">{p.exclusive.map((x) => `${x.cite.law} ${x.cite.article}: ${x.text}`).join(" ")}</dd>
+        </div>
+      ))}
+    </dl>
+  </section>
+
+  <section class="mt-8">
+    <h2 class="text-lg font-bold text-foreground">AI 에이전트에서 쓰기 (MCP)</h2>
+    <p class="mt-2 text-sm leading-6 text-muted-foreground">Claude·Cursor·ChatGPT 같은 MCP 클라이언트에 아래 주소를 원격 서버로 추가하면, 에이전트가 답하기 전에 같은 질문 목록과 기한 계산을 불러 써요. 공식 MCP Registry 이름은 <code>io.github.yuli3/oiyo-calculations</code>예요.</p>
+    <pre class="mt-3 overflow-x-auto rounded-md border border-border bg-muted px-3 py-2 text-xs"><code>https://api.oiyo.net/mcp</code></pre>
+    <ul class="mt-3 space-y-1 text-sm text-muted-foreground">
+      {mcpTools.map(([name, label]) => <li><code class="text-foreground break-all">{name}</code> · {label}</li>)}
+    </ul>
+  </section>
+
+  <section class="mt-8">
+    <h2 class="text-lg font-bold text-foreground">Claude 스킬: 법령 길잡이</h2>
+    <p class="mt-2 text-sm leading-6 text-muted-foreground">Claude에 올리면 상황을 듣고 분야와 주제를 고른 뒤, 결론을 바꾸는 질문을 2~3개씩 먼저 묻고, 근거 조문·기한·계산·무료 창구가 있는 답을 써 줘요. 업무 범위를 넘는 요청(신고 대리, 서류 대행)은 정중히 경계를 알려 줘요.</p>
+    <p class="mt-3"><a href="/downloads/oiyo-kr-law-guide-skill.zip" download class="inline-flex min-h-11 items-center rounded-md bg-primary px-4 text-sm font-semibold text-primary-foreground">스킬 내려받기 (.zip)</a></p>
+    <p class="mt-2 text-xs text-muted-foreground">Claude 설정 → 기능 → 스킬에서 zip 파일을 올리거나, Claude Code에서는 압축을 풀어 <code>~/.claude/skills/</code>에 두면 돼요.</p>
+  </section>
+
+  <p class="mt-8 text-xs text-muted-foreground">기준일 {LAW_GUIDE_AS_OF}. 법령 정보와 계산 도구이며 세무대리·노무 대행·행정 대리·법률 사무가 아니에요. 조문 풀이는 요약이니 국가법령정보센터 원문을 확인하세요.</p>
+</KrFinancePage>

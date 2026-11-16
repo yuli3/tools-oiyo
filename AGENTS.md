@@ -48,3 +48,9 @@
 - `npm run lint`: `astro check` + `npm run lint:shadcn`(공식 @shadcn/lint). 2026-10-17 기존 위반 187건은 `eslint-suppressions.json` 초기 기준선이에요. 새 위반은 고치고, `--suppress-all`로 기준선을 올리지 않아요. 고친 뒤에는 `npm run lint:shadcn:prune`.
 - `npm test`: 요율 정본 패리티·벡터 테스트
 - `npm run build`: 정적 HTML 빌드 (`dist/`)
+
+## 법령 길잡이와 자격 명칭 (2026-11-16)
+
+- 세운 요청 "AI 세무사·회계사·노무사·행정사·법무사"는 `/ko/law-guide/` + 분야 5페이지, 엔진 `src/lib/kr-expert-guide-2026.ts`, 스킬 `skills/oiyo-kr-law-guide`(`node scripts/build-law-guide-skill.mjs`)로 만들어요.
+- 자격 명칭이나 비슷한 이름을 도구·스킬·광고 문구에 쓰지 않아요(세무사법 제20조②③, 공인회계사법 제11조, 공인노무사법 제8조③·제27조②, 행정사법 제3조②, 법무사법 제3조②). 대리·서류 작성 대행·소개·알선 기능을 넣지 않아요.
+- 조문을 더하거나 고칠 때는 `STATUTES`에 쉬운 말 풀이로 넣고 원문은 law.go.kr 링크로 보내요. 기한은 `dueDate()`(초일 불산입·말일 휴일 이월)로만 계산해요.
