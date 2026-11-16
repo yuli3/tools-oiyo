@@ -1,0 +1,14 @@
+---
+// 운영 문제 도구 (2026-11-16). 엔진: lib/biz-ops.ts
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import CampaignSupply from "../../components/tools/biz/CampaignSupply";
+
+const title = "캠페인 수요·공급 일정 계산기 — 품절 주차와 추가 생산량";
+const description = "캠페인 기간 주별 예상 수요와 재고·생산능력·리드타임으로 품절이 나는 주차, 부족 수량, 막으려면 매주 더 만들어야 할 양을 계산해요.";
+const ko = {"introTitle": "캠페인 전에 품절부터 막기", "intro": "프로모션·방송·인플루언서 캠페인은 수요가 한두 주에 몰려요. 시작 재고와 주당 생산량, 추가 생산이 들어오기까지 걸리는 기간을 넣으면 몇 주차에 품절이 나는지, 언제부터 매주 얼마나 더 만들어야 하는지 바로 보여 줘요. 리드타임 안에 생기는 부족분은 생산으로 못 막으니 재고 이동이나 일정 조정이 필요하다고 따로 알려 줘요.", "howToTitle": "사용 방법", "steps": ["시작 재고, 주당 생산량, 추가 생산 리드타임을 넣어요.", "주별 예상 수요를 넣어요(주를 늘리거나 줄일 수 있어요).", "품절 주차·부족 수량·추가 생산량을 확인하고, 생산능력 곡선을 눌러 바꿔 봐요."], "highlightsTitle": "주요 특징", "highlights": [{"title": "품절 주차와 충족률", "body": "주문 중 몇 %를 채우는지, 처음 품절 나는 주를 보여 줘요."}, {"title": "필요한 추가 생산", "body": "리드타임 이후 매주 균등하게 더 만들 양을 계산해요."}, {"title": "안전재고(전문가)", "body": "늘 남겨 둘 재고를 넣으면 그 아래로 내려가는 주도 알려 줘요."}], "disclaimer": "계획을 돕는 도구예요. 수요 예측이 틀리면 결과도 달라지니 실제 주문 추이로 매주 다시 계산하세요."};
+const faqs = [{"q": "리드타임 안에 모자라면 어떻게 하나요?", "a": "추가 생산으로는 못 막아요. 다른 창고·채널 재고를 옮기거나, 1인 구매 수량을 제한하거나, 캠페인 시작을 늦춰요."}, {"q": "추가 생산량은 어떻게 계산하나요?", "a": "리드타임이 지난 주부터 매주 같은 양을 더 만든다고 보고, 모든 주에서 누적 공급이 누적 수요(+안전재고)를 넘는 가장 작은 양을 구해요."}, {"q": "수요는 어떻게 예측하나요?", "a": "지난 비슷한 캠페인의 주별 판매를 기준으로, 이번 광고비·할인율 차이를 반영해 넣는 것이 가장 현실적이에요."}];
+---
+<KrFinancePage slug="campaign-supply-planner" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <CampaignSupply client:load />
+  <p class="mt-4 text-xs text-muted-foreground"><a class="underline" href="/ko/business-toolkit/">경영 도구 모음</a></p>
+</KrFinancePage>

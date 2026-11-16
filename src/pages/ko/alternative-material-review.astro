@@ -1,0 +1,14 @@
+---
+// 운영 문제 도구 (2026-11-16). 엔진: lib/biz-ops.ts
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import MaterialSwitch from "../../components/tools/biz/MaterialSwitch";
+
+const title = "대체 원료 검토 도구 — 원가 절감·품질·공급·승인 기간 비교";
+const description = "후보 원료별 단가·품질·공급 안정성·시험 기간·인증 비용으로 연 절감액, 시험비 회수 기간, 승인까지 걸리는 기간과 가중 점수를 비교해요.";
+const ko = {"introTitle": "싸기만 한 원료를 고르지 않기", "intro": "원료를 바꿀 때는 단가만 보면 안 돼요. 품질 시험과 전성분 표시·기능성 재심사 같은 신고가 필요하면 몇 달이 걸리고, 공급이 불안하면 더 큰 손해가 나요. 후보마다 단가, 품질·공급 점수, 시험 기간과 비용을 넣으면 연 절감액과 회수 기간, 가중 점수로 순위를 매겨요.", "howToTitle": "사용 방법", "steps": ["지금 원료의 단가와 연 사용량을 넣어요.", "후보마다 단가, 시험 비용, 품질·공급 점수, 시험 기간, 신고 필요 여부를 넣어요.", "결론과 '절감액 × 품질' 그림, 종합 점수를 확인해요(전문가 모드는 가중치 조정)."], "highlightsTitle": "주요 특징", "highlights": [{"title": "절감액과 회수 기간", "body": "연 사용량 기준 절감액과 시험·인증 비용을 몇 개월이면 회수하는지 보여 줘요."}, {"title": "승인까지 걸리는 기간", "body": "시험 기간에 신고가 필요한 원료는 신고 기간을 더해요."}, {"title": "품질 경고", "body": "품질 점수가 낮거나 오히려 비싼 후보는 따로 경고해요."}], "disclaimer": "비교를 돕는 도구예요. 화장품 원료 변경은 안전성·안정성 시험과 전성분 표시 변경이 필요할 수 있으니 인허가 담당자와 확인하세요."};
+const faqs = [{"q": "점수는 어떻게 계산하나요?", "a": "원가는 가장 싼 후보가 5점, 속도는 가장 빨리 쓸 수 있는 후보가 5점이 되도록 맞추고, 품질·공급은 넣은 점수(1~5)를 그대로 써서 가중 평균해요."}, {"q": "두 공급사를 같이 쓰면요?", "a": "공급 안정성이 낮은 원료는 기존 원료와 나눠 쓰는 이중 조달로 위험을 줄일 수 있어요. 이때 절감액은 비율만큼 줄어요."}, {"q": "신고 기간 기본값 8주는 어디서 왔나요?", "a": "일반적인 내부 검토와 표시 변경 준비 기간을 가정한 값이에요. 회사 경험에 맞게 바꿔 쓰세요."}];
+---
+<KrFinancePage slug="alternative-material-review" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <MaterialSwitch client:load />
+  <p class="mt-4 text-xs text-muted-foreground"><a class="underline" href="/ko/business-toolkit/">경영 도구 모음</a></p>
+</KrFinancePage>

@@ -1,0 +1,14 @@
+---
+// 운영 문제 도구 (2026-11-16). 엔진: lib/biz-ops.ts
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import RebateCheck from "../../components/tools/biz/RebateCheck";
+
+const title = "판매장려금 점검 도구 — 구간 계산·특수관계 거래처·과다 지급";
+const description = "거래처별 매출과 계약상 장려금 구간으로 지급할 금액을 계산하고, 관계사 합산, 과다·과소 지급, 특수관계 거래처의 높은 장려금률(부당행위계산 부인 위험)을 점검해요.";
+const ko = {"introTitle": "장려금을 주기 전에 계약과 세법으로 확인", "intro": "판매장려금은 계약서 구간대로만 줘야 하고, 같은 주인이 운영하는 거래처를 합쳐 높은 구간을 받으려는 요청이나 특수관계 거래처에 더 높은 비율을 주는 경우를 걸러야 해요. 구간과 거래처별 매출·요청 금액을 넣으면 지급할 금액, 보류할 건, 검토할 건과 부가세·법인세 처리 메모를 정리해요.", "howToTitle": "사용 방법", "steps": ["계약서의 장려금 구간을 넣어요.", "거래처별 매출, 지급 요청 금액, 묶음 그룹, 특수관계 여부를 넣어요.", "보류·검토 항목과 세무 메모를 확인하고 결과를 복사해 결재에 붙여요."], "highlightsTitle": "주요 특징", "highlights": [{"title": "관계사 합산 점검", "body": "합치면 구간이 바뀌는 묶음을 찾아 계약이 합산을 허용하는지 확인하게 해요."}, {"title": "과다·과소 지급", "body": "요청 금액과 계약 기준 금액 차이를 보류·검토로 나눠요."}, {"title": "정상가격 비교", "body": "특수관계 거래처 장려금률이 일반 거래처 범위보다 높으면 알려 줘요."}], "disclaimer": "내부 점검을 돕는 도구예요. 특수관계 해당 여부와 시가 판단은 사실관계에 따라 달라지니 세무 전문가와 확인하세요."};
+const faqs = [{"q": "판매장려금은 부가세 과세표준에서 빼나요?", "a": "금전으로 준 장려금은 빼지 않아요(부가가치세법 제29조 제6항). 제품으로 주면 사업상 증여로 부가세가 붙을 수 있어요."}, {"q": "법인세에서 비용으로 인정되나요?", "a": "판매와 관련된 장려금은 사전약정이 없어도 판매부대비용으로 손금이에요(법인세법 시행령 제19조 제1호의2)."}, {"q": "특수관계 거래처에 더 주면 안 되나요?", "a": "시가보다 많이 주면 부당행위계산 부인으로 차액이 손금에서 빠질 수 있어요(법인세법 제52조). 일반 거래처와 같은 기준을 쓰는 것이 안전해요."}];
+---
+<KrFinancePage slug="sales-rebate-checker" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <RebateCheck client:load />
+  <p class="mt-4 text-xs text-muted-foreground"><a class="underline" href="/ko/business-toolkit/">경영 도구 모음</a></p>
+</KrFinancePage>

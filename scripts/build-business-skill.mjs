@@ -9,7 +9,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 import { execFileSync } from "node:child_process";
 import { renderSkillLib } from "./build-advisor-skill.mjs";
 
-export const BIZ_SKILL_LIBS = ["kr-business-day", "biz-strategy", "biz-checklist"];
+export const BIZ_SKILL_LIBS = ["kr-business-day", "biz-strategy", "biz-checklist", "biz-ops"];
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 export const BIZ_SKILL_DIR = resolve(root, "skills/oiyo-business-strategist");
 

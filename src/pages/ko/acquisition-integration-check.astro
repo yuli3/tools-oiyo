@@ -1,0 +1,14 @@
+---
+// 운영 문제 도구 (2026-11-16). 엔진: lib/biz-ops.ts
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import AcquisitionCheck from "../../components/tools/biz/AcquisitionCheck";
+
+const title = "인수 검토 계산기 — 주당이익 증감·회수 기간·통합 일정";
+const description = "인수 가격, 대상·우리 회사 순이익, 주식·차입 비율, 시너지와 통합 비용으로 주당이익이 늘지 줄지, 몇 년에 회수하는지, 필요한 시너지와 첫 100일 통합 일정을 보여 줘요.";
+const ko = {"introTitle": "사도 될 회사인지 숫자로 먼저 보기", "intro": "인수는 가격과 시너지 가정에 따라 결과가 크게 바뀌어요. 인수 가격과 두 회사 순이익, 지불 방법(신주·차입), 시너지와 통합 비용을 넣으면 주당이익 증감과 회수 기간, 주당이익을 지키는 데 필요한 시너지를 계산하고, 인수 후 통합(PMI) 기본 일정을 간트 차트로 보여 줘요.", "howToTitle": "사용 방법", "steps": ["인수 가격, 대상·우리 회사 순이익, 시너지와 통합 비용을 넣어요.", "전문가 모드에서 주식 수·주가·지불 비율·이자율·세율을 맞춰요.", "주당이익 곡선과 누적 회수, 통합 일정을 확인해요."], "highlightsTitle": "주요 특징", "highlights": [{"title": "주당이익 증감", "body": "신주 발행과 차입 이자를 반영해 1년차와 시너지 완성 후를 비교해요."}, {"title": "필요한 시너지", "body": "주당이익이 줄지 않으려면 연 시너지가 얼마여야 하는지 알려 줘요."}, {"title": "통합 일정", "body": "실사 정리부터 첫 연결 결산까지 100일 기본 일정을 핵심 경로로 보여 줘요."}], "disclaimer": "초기 검토용 도구예요. 실제 인수는 실사·가치평가·기업결합 신고(공정거래법 제11조)와 회계·세무 구조 검토가 필요해요."};
+const faqs = [{"q": "인수 PER은 무엇인가요?", "a": "인수 가격 ÷ 대상 회사 순이익이에요. 우리 회사 PER보다 높으면 주식으로 살 때 주당이익이 줄기 쉬워요."}, {"q": "시너지는 얼마로 잡아야 하나요?", "a": "원료 단가 인하·물류 통합처럼 확인 가능한 비용 시너지부터 넣고, 매출 시너지는 보수적으로 잡아요."}, {"q": "회수 기간은 어떻게 계산하나요?", "a": "인수 대금과 세후 통합 비용을 대상 회사 순이익과 세후 시너지(이자 차감)로 갚는다고 보고 누적이 0을 넘는 해를 찾아요."}];
+---
+<KrFinancePage slug="acquisition-integration-check" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <AcquisitionCheck client:load />
+  <p class="mt-4 text-xs text-muted-foreground"><a class="underline" href="/ko/business-toolkit/">경영 도구 모음</a></p>
+</KrFinancePage>

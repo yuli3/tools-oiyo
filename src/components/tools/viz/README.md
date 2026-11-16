@@ -2,7 +2,7 @@
 
 세운 결정(2026-11-14): 기존 도구와 앞으로 만들 도구 모두 이 방향을 따라요.
 법을 모르는 사람은 질문에 답하고 결과 문장을 읽고, 전문가는 숫자를 직접 넣어요.
-가정을 바꾸면 결과와 그래프가 같이 움직여요. 첫 적용: `advisory/UnlistedShareValuation.tsx`.
+가정을 바꾸면 결과와 그래프가 같이 움직여요. 적용 예: `advisory/` 4종(가업상속·법인전환·DCF는 공용 틀 `useScenario`·`QuestionStepper`·`SweepPanel`을 씀).
 
 ## 계산 (순수 함수, `src/lib/scenario.ts`)
 
@@ -29,6 +29,12 @@
 | `CompareBars` | `title, caption?, items[{label,value,current?}], format` |
 | `MoneyField` | `label, value, onChange, allowNegative?, hint?` ("6억 3천만" 입력 가능) |
 | `Term` | `k`(용어 키, `src/data/advisory-glossary.ts`), children. 누르면 아래에 한 줄 풀이 |
+| `useScenario(toolId, example, assumptions, keys)` (2026-11-16) | 입력값·예시/가정 표시·슬라이더 기준점. `edit(patch, keys, tag?)`, `slide(key, v)`, `keepAsGuess(keys)`, `hasExample`, `hasGuess` |
+| `QuestionStepper` (2026-11-16) | `questions[{title, keys, body}], onUnknown, resultRef?`. 쉬운 모드 질문 카드 |
+| `PlainSummary`, `ReasonList`, `AskAdviser` (2026-11-16) | 결과 문장·예시 경고 / 이유 목록 / "세무사에게 확인할 것" |
+| `AssumptionPanel` (2026-11-16) | `assumptions, input, anchors, tags, mode, onSlide`. 가정 카드 묶음 |
+| `SweepPanel` (2026-11-16) | `options, input, anchors, evaluate, mode, resultName, formatY, onSlide, caption?`. 칩으로 고르는 훑기 곡선 |
+| `HeatmapChart` (2026-11-16) | `title, caption?, rows, cols(5개), cell, rowLabel, colLabel, formatRow, formatCol, formatCell, current?`. 두 가정 열지도 |
 | `ChartFrame`, `BarTrack` | 새 그래프를 만들 때 쓰는 틀(제목·표로 보기)과 가로 막대 |
 | `QuadrantChart` (2026-11-14) | `title, caption?, points[{label,x,y,size?,tone?}], xDomain, yDomain, xSplit, ySplit, logX?, reverseX?, xLabel, yLabel, quadrants[4], ring?, formatX, formatY`. BCG·포지셔닝·SWOT처럼 2×2 판. 이름표가 겹치면 비켜서 선으로 이어요 |
 | `GanttChart` (2026-11-14) | `rows[{id,name,start,end,slack,critical,milestone,progress?}], total, formatDay, deadline?, highlight?`. 일정 막대와 여유(점선), 핵심 경로 강조 |
