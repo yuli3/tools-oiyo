@@ -1,0 +1,15 @@
+---
+// Gemini 이전 B묶음 1차 (2026-11-16). 엔진: lib/kr-household-tax-2026.ts
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import CommercialRent from "../../components/tools/welfare/CommercialRent";
+import { HOUSEHOLD_TAX_AS_OF } from "../../lib/kr-household-tax-2026";
+
+const title = "상가 임대료 인상 5% 상한 점검 — 환산보증금·1년 제한·전환율";
+const description = "상가 보증금과 월세로 환산보증금(보증금 + 월세 × 100)을 계산해 지역 기준(서울 9억 등) 이하인지, 건물주가 요구한 인상이 5% 상한을 넘는지, 1년 안 재인상인지, 보증금을 월세로 돌릴 때 전환율(12%·기준금리 4.5배)을 알려 줘요.";
+const ko = {"introTitle": "환산보증금이 기준 이하면 5%까지만 올릴 수 있어요", "intro": "상가건물 임대차보호법은 환산보증금(보증금 + 월세 × 100)이 서울 9억, 과밀억제권역·부산 6억 9천만, 광역시 등 5억 4천만, 그 밖 3억 7천만 원 이하인 상가에서 차임·보증금 증액을 5% 이하로, 1년에 한 번으로 제한해요. 기준을 넘어도 계약갱신요구권(10년), 대항력, 권리금 보호는 적용돼요.", "howToTitle": "사용 방법", "steps": ["상가 지역과 지금 보증금·월세를 넣어요.", "건물주가 요구한 보증금·월세와 지난 인상 후 개월을 넣어요.", "5% 상한과 넘는 금액, 대응 방법을 봐요."], "highlightsTitle": "주요 특징", "highlights": [{"title": "환산보증금 판정", "body": "지역별 기준과 비교해 5% 상한이 적용되는지 알려 줘요."}, {"title": "1년 제한", "body": "마지막 인상 후 1년이 안 됐으면 다시 올릴 수 없어요."}, {"title": "전환율", "body": "보증금을 월세로 돌릴 때는 연 12%와 기준금리 × 4.5 중 낮은 비율까지예요."}, {"title": "대응 문구", "body": "넘는 부분 거절, 갱신 요구, 무료 분쟁조정 순서를 알려 줘요."}], "disclaimer": "법령 정보예요. 보증금과 월세를 동시에 올리면 각각 5%를 기준으로 봤어요(전환율로 합친 실질 인상률은 참고). 법률 자문이 아니며 분쟁이 크면 변호사·대한법률구조공단(132)과 상담하세요."};
+const faqs = [{"q": "환산보증금이 기준을 넘으면 마음대로 올려도 되나요?", "a": "5% 상한은 적용되지 않지만, 계약갱신요구권(최초 계약부터 10년)과 권리금 보호는 남아요. 인상률은 주변 시세를 근거로 다툴 수 있어요."}, {"q": "갱신할 때도 5%인가요?", "a": "네. 갱신요구권을 써서 갱신하면 차임 증액도 5% 상한 안에서만 가능해요."}, {"q": "이미 더 낸 월세는요?", "a": "상한을 넘어 낸 부분은 부당이득으로 돌려 달라고 할 수 있어요."}, {"q": "기준금리는 왜 넣나요?", "a": "보증금을 줄이고 월세로 돌릴 때 전환율 상한이 연 12%와 기준금리 × 4.5 중 낮은 값이라서예요. 2026년 10월 기준금리 3.0%면 13.5%라 12%가 상한이에요."}];
+---
+<KrFinancePage slug="commercial-rent-increase-checker" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <CommercialRent client:load />
+  <p class="mt-4 text-xs text-muted-foreground">근거: 상가건물 임대차보호법 제2조·제10조의2·제11조·제12조, 시행령 제2조·제4조·제5조. 기준일 {HOUSEHOLD_TAX_AS_OF}. <a class="underline" href="/ko/jeonse-monthly-converter/">전월세 전환 계산기</a> · <a class="underline" href="/ko/law-guide/">법령 길잡이</a> · <a class="underline" href="/ko/benefit-rights-toolkit/">생활 지원금·노동권 도구 모음</a></p>
+</KrFinancePage>

@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { dependentIncomeTest, dependentsTax, judgeDependent, majorShareholderTax, whoShouldClaim } from "./kr-household-tax-2026.ts";
+import { FREE_USE_FACTOR, commercialRentCheck, dependentIncomeTest, dependentsTax, familyLoanGift, freeUseGift, judgeDependent, lowPriceSale, majorShareholderTax, whoShouldClaim } from "./kr-household-tax-2026.ts";
 
 test("부양가족: 근로소득만 있으면 총급여 500만 원까지, 1원만 넘어도 안 돼요", () => {
   assert.equal(judgeDependent({ relation: "spouse", birthYear: 1990, wage: 5_000_000 }).status, "ok");
@@ -74,4 +74,61 @@ test("대주주 아님: 49억 보유면 세금 0, 대주주였다면 낼 세금�
   assert.equal(r.isMajor, false);
   assert.equal(r.total, 0);
   assert.equal(r.ifMajor, Math.floor(97_500_000 * 0.2 * 1.1));
+});
+
+test("가족 차용: 4.6%로 계산한 이자와의 차이가 연 1천만 원 이상이어야 증여", () => {
+  const two = familyLoanGift({ principal: 200_000_000, rate: 0 });
+  assert.equal(two.benefit, 9_200_000);
+  assert.equal(two.taxable, false);
+  const three = familyLoanGift({ principal: 300_000_000, rate: 0 });
+  assert.equal(three.gift, 13_800_000);
+  assert.equal(three.giftTax, 0); // 성년 자녀 공제 5천만 안
+  assert.equal(three.zeroRateMaxPrincipal, 217_391_304);
+  assert.ok(Math.abs(three.safeRate - (0.046 - 1 / 30)) < 1e-12);
+  const paid = familyLoanGift({ principal: 300_000_000, rate: 0.02 });
+  assert.equal(paid.benefit, 7_800_000);
+  assert.equal(paid.taxable, false);
+  assert.equal(paid.lenderTax, Math.floor(6_000_000 * 0.275));
+  assert.equal(familyLoanGift({ principal: 1_000_000_000, rate: 0, deductionLeft: 0 }).giftTax, Math.floor(46_000_000 * 0.1 * 0.97));
+});
+
+test("부동산 무상사용: 집값 × 2% × 3.7908이 1억 원 이상, 함께 살면 제외", () => {
+  assert.ok(Math.abs(FREE_USE_FACTOR - 3.7907867694) < 1e-9);
+  const r = freeUseGift({ propertyValue: 1_500_000_000 });
+  assert.equal(r.annual, 30_000_000);
+  assert.equal(r.fiveYear, Math.floor(1_500_000_000 * 0.02 * FREE_USE_FACTOR));
+  assert.equal(r.useTaxable, true);
+  assert.ok(r.useTax > 0);
+  assert.equal(freeUseGift({ propertyValue: 1_500_000_000, coResiding: true }).useTaxable, false);
+  assert.equal(freeUseGift({ propertyValue: 1_300_000_000 }).useTaxable, false);
+  assert.ok(r.valueLine > 1_318_000_000 && r.valueLine < 1_320_000_000);
+  const c = freeUseGift({ propertyValue: 500_000_000, collateralLoan: 300_000_000, collateralInterest: 0 });
+  assert.equal(c.collateralGift, 13_800_000);
+});
+
+test("저가 양수도: 증여는 min(30%, 3억), 양도세 시가 재계산은 min(5%, 3억)", () => {
+  const a = lowPriceSale({ marketValue: 1_100_000_000, price: 700_000_000 });
+  assert.equal(a.giftLine, 300_000_000);
+  assert.equal(a.gift, 100_000_000);
+  assert.equal(a.sellerRecalc, true);
+  assert.equal(a.noGiftAbove, 800_000_000);
+  const b = lowPriceSale({ marketValue: 1_000_000_000, price: 950_000_000 });
+  assert.equal(b.giftTaxable, false);
+  assert.equal(b.sellerRecalc, true); // 5천만 = 5% 이상
+  assert.equal(lowPriceSale({ marketValue: 1_000_000_000, price: 960_000_000 }).sellerRecalc, false);
+  assert.equal(lowPriceSale({ marketValue: 500_000_000, price: 360_000_000 }).gift, 0); // 1.4억 < 1.5억
+});
+
+test("상가 임대료: 환산보증금 기준 안이면 5% 상한, 1년 안 재인상 불가", () => {
+  const base = { region: "seoul" as const, deposit: 100_000_000, monthlyRent: 5_000_000, newDeposit: 100_000_000, newMonthlyRent: 5_250_000, monthsSinceLast: 24 };
+  const ok = commercialRentCheck(base);
+  assert.equal(ok.converted, 600_000_000);
+  assert.equal(ok.verdict, "ok");
+  assert.equal(ok.conversionRate, 0.12);
+  assert.equal(commercialRentCheck({ ...base, newMonthlyRent: 5_300_000 }).verdict, "over");
+  assert.equal(commercialRentCheck({ ...base, monthsSinceLast: 6 }).verdict, "tooSoon");
+  assert.equal(commercialRentCheck({ ...base, region: "other" }).verdict, "notCovered");
+  assert.equal(commercialRentCheck({ ...base, baseRate: 0.02 }).conversionRate, 0.09);
+  // 보증금 2천만 줄이고 월세로 돌리면 12% 기준 월 20만 더 허용
+  assert.equal(commercialRentCheck({ ...base, newDeposit: 80_000_000, newMonthlyRent: 5_450_000 }).verdict, "ok");
 });

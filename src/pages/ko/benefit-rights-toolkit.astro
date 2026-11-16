@@ -5,7 +5,7 @@ import { welfareTools } from "../../data/welfare-tools";
 import { WELFARE_AS_OF } from "../../lib/kr-welfare-2026";
 
 const title = "생활 지원금·노동권 도구 모음 — 근로장려금·출산휴가·해고예고·휴업수당·대지급금·산재·통상임금";
-const description = "받을 수 있는 돈을 놓치지 않게 돕는 계산기를 모았어요. 근로·자녀장려금, 출산휴가 급여, 체불 대지급금, 산재 휴업급여, 월세 세액공제, 퇴직연금 DB·DC, 통상임금·포괄임금 점검, 종부세·주택임대소득세, 부양가족 공제, 주식 대주주 양도세와 신청 방법, MCP·Claude 스킬까지 있어요.";
+const description = "받을 수 있는 돈을 놓치지 않게 돕는 계산기를 모았어요. 근로·자녀장려금, 출산휴가 급여, 체불 대지급금, 산재 휴업급여, 월세 세액공제, 퇴직연금 DB·DC, 통상임금·포괄임금 점검, 종부세·주택임대소득세, 부양가족 공제, 주식 대주주 양도세, 가족 차용·무상 거주·저가 거래 증여, 상가 임대료 5% 상한과 신청 방법, MCP·Claude 스킬까지 있어요.";
 const tools = welfareTools.filter((t) => t.slug !== "benefit-rights-toolkit");
 const situations = [
   ["소득이 적은데 일하고 있어요", "work-child-incentive-calculator", "근로장려금·자녀장려금은 5월에 신청해요. 3월·9월 반기 신청도 돼요."],
@@ -27,6 +27,10 @@ const situations = [
   ["남은 연차를 돈으로 받을 수 있을까요", "annual-leave-promotion-planner", "회사가 사용촉진을 날짜에 맞춰 서면으로 안 했다면 수당을 청구할 수 있어요."],
   ["스스로 그만뒀는데 실업급여를 받을 수 있을까요", "voluntary-quit-unemployment-checker", "임금체불 2개월, 직장 내 괴롭힘, 통근 왕복 3시간 같은 정당한 사유가 있으면 자진퇴사여도 받을 수 있어요."],
   ["원청이 하도급대금을 안 줘요", "subcontract-direct-payment-checker", "2회분 이상 밀렸거나 원청이 파산했으면 요청해서 발주자에게 직접 받을 수 있어요."],
+  ["부모님께 돈을 빌려 집을 사요", "family-loan-interest-checker", "무이자면 원금 약 2억 1,700만 원까지는 이자 차이가 증여가 아니에요. 차용증과 상환 기록은 꼭 남겨요."],
+  ["부모님 집에 공짜로 살아요", "parent-house-free-use-gift-checker", "집값이 약 13억 2천만 원을 넘고 부모님과 따로 살면 5년치 사용료가 증여로 잡혀요."],
+  ["가족에게 집을 싸게 사고팔아요", "family-low-price-sale-checker", "시가와 3억 원(또는 30%) 넘게 차이 나면 증여세, 5% 넘게 차이 나면 파는 사람 양도세가 다시 계산돼요."],
+  ["상가 건물주가 월세를 많이 올려 달래요", "commercial-rent-increase-checker", "환산보증금이 지역 기준 이하면 5%까지만, 1년에 한 번만 올릴 수 있어요."],
   ["한 종목에 크게 투자했어요", "stock-major-shareholder-tax-calculator", "작년 말 한 종목을 50억 원 넘게 가졌으면 올해 판 이익에 양도세가 붙어요. 연말 보유를 미리 확인해요."],
 ];
 const more = [
@@ -52,6 +56,17 @@ const mcpTools = [
   ["calculate_kr_long_term_care_copay", "노인장기요양 본인부담금"],
   ["check_kr_dependent_deduction", "부양가족 기본공제 판정과 줄어드는 세금"],
   ["calculate_kr_stock_major_shareholder_tax", "상장주식 대주주 판정과 양도세"],
+  ["calculate_kr_dismissal_notice_pay", "해고예고수당"],
+  ["calculate_kr_shutdown_allowance", "휴업수당"],
+  ["calculate_kr_reduced_hours_childcare_pay", "육아기 근로시간 단축 급여"],
+  ["check_kr_probation_minimum_wage", "수습 최저임금 감액 점검"],
+  ["plan_kr_annual_leave_promotion", "연차 사용촉진 일정"],
+  ["check_kr_voluntary_quit_unemployment", "자진퇴사 실업급여 정당 사유"],
+  ["check_kr_subcontract_direct_payment", "하도급대금 직접 지급·지연이자"],
+  ["check_kr_family_loan_interest", "가족 차용 적정이자(4.6%)와 증여"],
+  ["check_kr_parent_house_free_use", "부모 집 무상 거주·무상 담보 증여"],
+  ["check_kr_family_low_price_sale", "가족 간 저가 양수도 증여·양도세 시가"],
+  ["check_kr_commercial_rent_increase", "상가 임대료 5% 상한"],
 ];
 const titleOf = (slug: string) => welfareTools.find((t) => t.slug === slug)?.title ?? slug;
 ---
