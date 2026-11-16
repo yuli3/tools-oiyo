@@ -1,7 +1,7 @@
 ---
 // Moved from blog.oiyo.net/ko/youth-future-savings-calculator/ on 2026-10-27 (W8). Copy kept from Blog.
 import KrFinancePage from "../../components/KrFinancePage.astro";
-import YouthFutureSavingsCalculator from "../../components/tools/YouthFutureSavingsCalculator";
+import KrYouthSavingsScenario from "../../components/tools/KrYouthSavingsScenario";
 
 import { youthFutureSavings, YOUTH_SAVINGS_AS_OF } from "../../lib/kr-youth-savings-2026";
 
@@ -49,6 +49,6 @@ const faqs = [
 ];
 ---
 <KrFinancePage slug="youth-future-savings-calculator" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
-  <YouthFutureSavingsCalculator client:load />
+  <KrYouthSavingsScenario client:load />
   <p class="mt-4 text-xs text-muted-foreground">근거: 금융위원회 청년미래적금 출시(2026-06-22)·2차 가입 안내(2026-09) 발표, 서민금융진흥원 상품 안내. 기준일 {YOUTH_SAVINGS_AS_OF}.</p>
 </KrFinancePage>

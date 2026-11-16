@@ -3,7 +3,10 @@
 import { computeEmployerInsurance } from "./finance/salary-calculator.ts";
 import { depositInterest, type DepositKind } from "./kr-deposit.ts";
 import { MEDICAL_CREDIT, medicalExpenseCredit } from "./kr-medical-cost-2026.ts";
-import { EMPLOYER_EMPLOYMENT_STABILITY, RATES, weeklyHolidayPay } from "./kr-payroll-2026.ts";
+import { electricityBill, ELECTRICITY, type Season } from "./kr-electricity-2026.ts";
+import { EMPLOYER_EMPLOYMENT_STABILITY, leaverHealthSettlement, RATES, weeklyHolidayPay } from "./kr-payroll-2026.ts";
+import { VAT_RATES } from "./kr-vat-2026.ts";
+import { YOUTH_SAVINGS, youthFutureSavings, type SavingsKind } from "./kr-youth-savings-2026.ts";
 import { fixedRange, josa, roughWon, type Assumption, type BridgeStep, type TornadoBar } from "./scenario.ts";
 
 export const driverLine = (top: TornadoBar | undefined, what: string) =>
@@ -204,6 +207,174 @@ export function medicalPlain(i: MedicalLite, top?: TornadoBar) {
       `연봉의 3%(${roughWon(r.floor)})를 넘게 쓴 몫의 15%를 빼 줘요. 난임시술비는 30%, 미숙아 의료비는 20%예요.`,
       "다른 가족 병원비는 700만 원까지만, 나·65세 이상·6세 이하 병원비는 한도 없이 빼 줘요.",
       "실손보험으로 돌려받은 돈은 빼고 넣어야 해요.",
+    ],
+  };
+}
+
+// ───────────────────────── 전기요금 ─────────────────────────
+
+export interface ElectricityLite {
+  kwh: number;
+  season: Season;
+}
+
+export const electricityTotal = (i: ElectricityLite) => electricityBill(Math.min(5_000, Math.max(0, i.kwh)), i.season).total;
+const tierLimits = (s: Season) => (s === "summer" ? ELECTRICITY.summerLimits : ELECTRICITY.otherLimits);
+
+export const ELECTRICITY_ASSUMPTIONS: Assumption<ElectricityLite>[] = [
+  {
+    key: "kwh", label: "월 사용량(kWh)", plain: "한 달 전기 사용량", unit: "kwh", kind: "assumption",
+    get: (i) => i.kwh, set: (i, v) => ({ ...i, kwh: Math.max(0, Math.round(v)) }), range: (a) => [0, Math.max(a * 2, 700)],
+    marks: [],
+  },
+];
+
+export const electricityMarks = (s: Season) => tierLimits(s).map((l, n) => ({ at: l, label: `${n + 2}단계 시작` }));
+
+export function electricityBridge(i: ElectricityLite): BridgeStep[] {
+  const b = electricityBill(Math.max(0, i.kwh), i.season);
+  return [
+    { label: "기본요금", value: b.basic, kind: "add" },
+    { label: "전력량요금", value: b.energy, kind: "add" },
+    { label: "기후환경·연료비", value: b.climate + b.fuel, kind: "add" },
+    { label: "부가세", value: b.vat, kind: "add" },
+    { label: "전력기금", value: b.fund, kind: "add" },
+    { label: "청구 금액", value: b.total, kind: "total" },
+  ];
+}
+
+export function electricityPlain(i: ElectricityLite, top?: TornadoBar) {
+  const b = electricityBill(Math.max(0, i.kwh), i.season);
+  const limits = tierLimits(i.season);
+  const next = limits.find((l) => i.kwh <= l);
+  const reasons = [
+    b.tier === 1 ? "가장 싼 1단계 구간이에요." : `${b.tier}단계 구간이라 넘은 몫에 더 비싼 단가가 붙었어요.`,
+    next !== undefined ? `${next - Math.round(i.kwh)}kWh를 더 쓰면 다음 단계로 넘어가 단가와 기본요금이 같이 올라요.` : "가장 비싼 3단계예요. 쓸수록 요금이 빨리 늘어요.",
+    i.season === "summer" ? "7~8월은 구간이 300·450kWh로 넓어져요." : "7~8월에는 구간이 넓어져서 같은 사용량이어도 요금이 덜 나와요.",
+  ];
+  return { headline: `${Math.round(i.kwh)}kWh를 쓰면 이번 달 전기요금은 약 ${roughWon(b.total)}이에요(주택용 저압, 추정).`, driver: driverLine(top, "전기요금"), reasons };
+}
+
+// ───────────────────────── 간주임대료 부가세 ─────────────────────────
+
+export interface DeemedLite {
+  deposit: number;
+  /** 과세기간 중 임대 일수 */
+  days: number;
+  rate: number;
+}
+
+export function deemedResult(i: DeemedLite) {
+  const days = Math.max(0, Math.round(i.days));
+  const rent = Math.floor((Math.max(0, i.deposit) * days * Math.max(0, i.rate)) / 365);
+  return { days, rent, vat: Math.floor(rent * VAT_RATES.vat) };
+}
+export const deemedVat = (i: DeemedLite) => deemedResult(i).vat;
+
+export const DEEMED_ASSUMPTIONS: Assumption<DeemedLite>[] = [
+  money<DeemedLite>("deposit", "임대보증금", "보증금", (i) => i.deposit, (i, v) => ({ ...i, deposit: Math.max(0, v) }), (a) => [0, Math.max(a * 2, 500_000_000)]),
+  { key: "days", label: "임대 일수", plain: "빌려준 날수", unit: "days", kind: "fact", get: (i) => i.days, set: (i, v) => ({ ...i, days: Math.max(0, Math.round(v)) }), range: fixedRange(0, 184) },
+  { key: "rate", label: "정기예금이자율", plain: "나라가 정한 이자율", unit: "rate", kind: "assumption", get: (i) => i.rate, set: (i, v) => ({ ...i, rate: Math.max(0, v) }), range: fixedRange(0, 0.06), marks: [{ at: VAT_RATES.deemedRentInterest, label: "2026 고시" }] },
+];
+
+export function deemedPlain(i: DeemedLite, top?: TornadoBar) {
+  const r = deemedResult(i);
+  return {
+    headline: `보증금 ${roughWon(i.deposit)}을 ${r.days}일 받았다면 간주임대료 ${roughWon(r.rent)}에 부가세 약 ${roughWon(r.vat)}을 내요.`,
+    driver: driverLine(top, "부가세"),
+    reasons: [
+      `보증금을 은행에 넣었다면 받았을 이자(연 ${(i.rate * 100).toFixed(1)}%)를 월세처럼 보고 부가세 10%를 매겨요.`,
+      "상가·사무실 임대만 해당하고, 주택 임대는 부가세가 없어요.",
+      "임차인에게 받기로 약속하지 않았다면 보통 임대인이 내요.",
+    ],
+  };
+}
+
+// ───────────────────────── 퇴사월 건강보험 정산 ─────────────────────────
+
+export interface LeaverLite {
+  /** 올해 받은 보수 총액 */
+  totalPay: number;
+  monthsWorked: number;
+  /** 올해 보험료를 낸 달 수 */
+  monthsCharged: number;
+  /** 지금까지 보험료를 매긴 월 보수 */
+  noticeMonthly: number;
+}
+
+export const leaverResult = (i: LeaverLite) =>
+  leaverHealthSettlement({ totalPay: Math.max(0, i.totalPay), monthsWorked: Math.max(1, Math.round(i.monthsWorked)), monthsCharged: Math.max(0, Math.round(i.monthsCharged)), noticeMonthly: Math.max(0, i.noticeMonthly) });
+export const leaverTotal = (i: LeaverLite) => leaverResult(i).total;
+
+export const LEAVER_ASSUMPTIONS: Assumption<LeaverLite>[] = [
+  money<LeaverLite>("totalPay", "보수총액", "올해 받은 월급 합계(상여 포함)", (i) => i.totalPay, (i, v) => ({ ...i, totalPay: Math.max(0, v) }), (a) => [0, Math.max(a * 2, 60_000_000)]),
+  money<LeaverLite>("noticeMonthly", "보수월액(고지 기준)", "보험료를 매긴 월급", (i) => i.noticeMonthly, (i, v) => ({ ...i, noticeMonthly: Math.max(0, v) }), (a) => [0, Math.max(a * 2, 8_000_000)]),
+  { key: "monthsWorked", label: "근무 월수", plain: "올해 일한 달", unit: "months", kind: "fact", get: (i) => i.monthsWorked, set: (i, v) => ({ ...i, monthsWorked: Math.max(1, Math.round(v)) }), range: fixedRange(1, 12) },
+];
+
+export function leaverBridge(i: LeaverLite): BridgeStep[] {
+  const r = leaverResult(i);
+  return [
+    { label: "냈어야 할 보험료", value: r.owedHealth + r.owedCare, kind: "add" },
+    { label: "이미 낸 보험료", value: -(r.paidHealth + r.paidCare), kind: "add" },
+    { label: r.total >= 0 ? "더 낼 돈" : "돌려받을 돈", value: r.total, kind: "total" },
+  ];
+}
+
+export function leaverPlain(i: LeaverLite, top?: TornadoBar) {
+  const r = leaverResult(i);
+  const headline = r.total > 0 ? `마지막 월급에서 건강보험료 약 ${roughWon(r.total)}을 더 떼요.` : r.total < 0 ? `퇴사할 때 건강보험료 약 ${roughWon(-r.total)}을 돌려받아요.` : "올해 낸 건강보험료가 딱 맞아서 정산할 게 없어요.";
+  return {
+    headline,
+    driver: driverLine(top, "정산액"),
+    reasons: [
+      `올해 실제 월급은 평균 ${roughWon(r.actualMonthly)}이고, 그동안은 월 ${roughWon(i.noticeMonthly)} 기준으로 보험료를 냈어요.`,
+      r.total > 0 ? "올해 월급이 오르거나 상여를 받아서 작년 기준으로 낸 보험료가 모자랐어요." : "올해 월급이 작년보다 적어서 그동안 더 낸 몫을 돌려줘요.",
+      "회사도 같은 금액을 정산해요. 장기요양보험료도 같이 계산했어요.",
+    ],
+  };
+}
+
+// ───────────────────────── 청년미래적금 ─────────────────────────
+
+export interface YouthLite {
+  monthly: number;
+  rate: number;
+  kind: SavingsKind;
+}
+
+export const youthResult = (i: YouthLite) => youthFutureSavings({ monthly: Math.min(YOUTH_SAVINGS.monthlyMax, Math.max(0, i.monthly)), annualRate: Math.max(0, i.rate), kind: i.kind });
+export const youthGain = (i: YouthLite) => {
+  const r = youthResult(i);
+  return r.total - r.principal;
+};
+
+export const YOUTH_ASSUMPTIONS: Assumption<YouthLite>[] = [
+  money<YouthLite>("monthly", "월 납입액", "매달 넣는 돈", (i) => i.monthly, (i, v) => ({ ...i, monthly: Math.min(YOUTH_SAVINGS.monthlyMax, Math.max(0, Math.round(v / 10_000) * 10_000)) }), () => [0, YOUTH_SAVINGS.monthlyMax]),
+  { key: "rate", label: "적용 금리", plain: "금리", unit: "rate", kind: "assumption", get: (i) => i.rate, set: (i, v) => ({ ...i, rate: Math.max(0, v) }), range: fixedRange(0.03, 0.09), marks: [{ at: YOUTH_SAVINGS.baseRate, label: "기본 5%" }] },
+];
+
+export function youthBridge(i: YouthLite): BridgeStep[] {
+  const r = youthResult(i);
+  return [
+    { label: "내가 넣은 돈(36개월)", value: r.principal, kind: "total" },
+    { label: "이자(비과세)", value: r.interest, kind: "add" },
+    { label: "정부 기여금", value: r.contribution, kind: "add" },
+    { label: "만기에 받는 돈", value: r.total, kind: "total" },
+  ];
+}
+
+export function youthPlain(i: YouthLite, top?: TornadoBar) {
+  const r = youthResult(i);
+  const gain = r.total - r.principal;
+  const simple = r.principal > 0 ? ((gain / r.principal) * 100).toFixed(0) : "0";
+  return {
+    headline: `매달 ${roughWon(i.monthly)}씩 3년 넣으면 만기에 약 ${roughWon(r.total)}, 넣은 돈보다 약 ${roughWon(gain)}(${simple}%) 더 받아요.`,
+    driver: driverLine(top, "더 받는 돈"),
+    reasons: [
+      r.contribution > 0 ? `정부가 매달 넣은 돈의 ${i.kind === "preferred" ? "12%" : "6%"}(${roughWon(r.monthlyContribution)})를 더 넣어 줘요.` : "비과세만 받는 유형이라 정부 기여금은 없어요.",
+      `이자에 세금(15.4%)이 붙지 않아서 ${roughWon(r.taxSaved)}을 아껴요.`,
+      "중간에 깨면 정부 기여금과 비과세 혜택을 잃을 수 있어요.",
     ],
   };
 }

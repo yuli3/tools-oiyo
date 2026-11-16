@@ -1,7 +1,7 @@
 ---
 // Moved from blog.oiyo.net/ko/electricity-bill-calculator/ on 2026-10-27 (W15); ko-only: KEPCO residential tariff; ko-only on Blog too.
 import KrFinancePage from "../../components/KrFinancePage.astro";
-import ElectricityBillCalculator from "../../components/tools/ElectricityBillCalculator";
+import KrElectricityScenario from "../../components/tools/KrElectricityScenario";
 import { electricityBill, ELECTRICITY_AS_OF } from "../../lib/kr-electricity-2026";
 
 const title = "전기요금 계산기 2026 — 누진 구간별 요금과 기기 하나 더 쓸 때 늘어나는 돈";
@@ -47,6 +47,6 @@ const faqs = [
 
 ---
 <KrFinancePage slug="electricity-bill-calculator" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
-  <ElectricityBillCalculator client:load />
+  <KrElectricityScenario client:load />
   <p class="mt-4 text-xs text-muted-foreground">근거: 한국전력 전기요금표 주택용 전력(저압), 2023-05-16 개정 이후 동결. 2026년 4분기 연료비조정단가 +5원/kWh. 기준일 {ELECTRICITY_AS_OF}.</p>
 </KrFinancePage>
