@@ -34,7 +34,10 @@ export function sweep<I>(base: I, a: Assumption<I>, evaluate: (input: I) => numb
   for (const m of a.marks ?? []) if (m.at >= min && m.at <= max) xs.add(m.at);
   const current = a.get(base);
   if (current >= min && current <= max) xs.add(current);
-  return [...xs].sort((p, q) => p - q).map((x) => ({ x, y: evaluate(a.set(base, x)) }));
+  return [...xs]
+    .sort((p, q) => p - q)
+    .map((x) => ({ x, y: evaluate(a.set(base, x)) }))
+    .filter((p) => Number.isFinite(p.y));
 }
 
 export interface TornadoBar {
@@ -66,9 +69,10 @@ export function tornado<I>(base: I, assumptions: Assumption<I>[], evaluate: (inp
     const highInput = v * (1 + delta);
     const low = evaluate(a.set(base, lowInput));
     const high = evaluate(a.set(base, highInput));
+    if (!Number.isFinite(low) || !Number.isFinite(high) || !Number.isFinite(baseValue)) continue;
     bars.push({ key: a.key, label: a.label, plain: a.plain, lowInput, highInput, low, high, base: baseValue, span: Math.abs(high - low) });
   }
-  return bars.sort((p, q) => q.span - p.span);
+  return bars.filter((b) => b.span > 0).sort((p, q) => q.span - p.span);
 }
 
 export interface BridgeStep {
@@ -97,6 +101,9 @@ export function bridgeLayout(steps: BridgeStep[]): BridgeBar[] {
     return { ...s, start, end: run };
   });
 }
+
+/** 금액 크기를 꼼꼼히 따지지 않고 흔히 쓰는 비율 범위: [min, max] 고정 */
+export const fixedRange = (min: number, max: number) => (): [number, number] => [min, max];
 
 /** 그래프 눈금용 반올림 단위 */
 export function niceStep(span: number, target = 100): number {
@@ -161,18 +168,29 @@ function smallNumber(chunk: string, SMALL: Record<string, number>): number | nul
   return null;
 }
 
-/** 쉬운 금액 표기: 약 26.4억 원, 약 4.4만 원, 830원 */
+/** 쉬운 금액 표기: 26.4억 원, 1,600만 원, 44,000원(100원 단위), 830원 */
 export function roughWon(n: number): string {
   if (!Number.isFinite(n)) return "—";
   const sign = n < 0 ? "−" : "";
   const a = Math.abs(n);
   if (a >= 1e12) return `${sign}${trim(a / 1e12)}조 원`;
   if (a >= 1e8) return `${sign}${trim(a / 1e8)}억 원`;
-  if (a >= 1e4) return `${sign}${trim(a / 1e4)}만 원`;
+  if (a >= 1e6) return `${sign}${trim(a / 1e4)}만 원`;
+  if (a >= 1e4) return `${sign}${(Math.round(a / 100) * 100).toLocaleString("ko-KR")}원`;
   return `${sign}${Math.round(a).toLocaleString("ko-KR")}원`;
 }
 
 function trim(v: number): string {
   const digits = v >= 100 ? 0 : 1;
   return Number(v.toFixed(digits)).toLocaleString("ko-KR", { maximumFractionDigits: digits });
+}
+
+/** 좁은 칸용 짧은 표기: 1.2억, 1.02만, 830 */
+export function compactWon(n: number): string {
+  if (!Number.isFinite(n)) return "—";
+  const a = Math.abs(n);
+  const sign = n < 0 ? "−" : "";
+  if (a >= 1e8) return `${sign}${(a / 1e8).toFixed(a >= 1e10 ? 0 : 1)}억`;
+  if (a >= 1e4) return `${sign}${(a / 1e4).toFixed(a >= 1e6 ? 0 : 2)}만`;
+  return `${sign}${Math.round(a)}`;
 }
