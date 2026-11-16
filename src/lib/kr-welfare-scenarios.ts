@@ -2,8 +2,8 @@
 // 계산은 kr-welfare-2026.ts, 여기는 "무엇을 바꿔 볼 수 있고 어떻게 설명할지"만 정해요.
 import {
   ASSET_CAP, ASSET_HALF, CTC_TABLE, EITC_TABLE, INJURY_2026, RENT_CREDIT,
-  dbVsDc, fixedOvertimeCheck, injuryLeavePay, maternityLeavePay, monthlyRentCredit, ordinaryWage, wageGuarantee, workChildCredit,
-  type EitcInput, type FixedOtInput, type GuaranteeInput, type InjuryInput, type MaternityInput, type OrdinaryWageInput, type PensionInput, type RentInput,
+  dbVsDc, fixedOvertimeCheck, premiumPay, longTermCareCopay, LTC_2026, injuryLeavePay, maternityLeavePay, monthlyRentCredit, ordinaryWage, wageGuarantee, workChildCredit,
+  type EitcInput, type FixedOtInput, type WorkHours, type LtcInput, type GuaranteeInput, type InjuryInput, type MaternityInput, type OrdinaryWageInput, type PensionInput, type RentInput,
 } from "./kr-welfare-2026.ts";
 import { RENTAL, comprehensiveRealEstateTax, creThreshold, rentalIncomeTax, type CreInput, type RentalInput } from "./kr-home-tax-2026.ts";
 import { roughWon, type Assumption } from "./scenario.ts";
@@ -144,4 +144,31 @@ export const RENTAL_ASSUMPTIONS = (i: RentalInput): Assumption<RentalInput>[] =>
   ];
   if (i.houses >= 3) list.push(money("deposits", "보증금 합계", "전세금·보증금 합계", (x) => x.deposits, (x, v) => ({ ...x, deposits: Math.max(0, v) }), () => [0, 2_000_000_000], [{ at: RENTAL.depositFree, label: "3억: 간주임대료 시작" }]));
   return list;
+};
+
+// ───────────────────────── 연장·야간·휴일수당(시급을 알 때) ─────────────────────────
+export interface OvertimeInput extends WorkHours {
+  /** 시간급 통상임금 */
+  hourly: number;
+  smallFirm?: boolean;
+}
+export const overtimeTotal = (i: OvertimeInput) => premiumPay(i.hourly, i, i.smallFirm).total;
+export const OVERTIME_ASSUMPTIONS: Assumption<OvertimeInput>[] = [
+  hoursA<OvertimeInput>(60),
+  { key: "night", label: "월 야간근로시간", plain: "밤 10시~아침 6시에 일한 시간", unit: "hours", kind: "fact", get: (x) => x.night, set: (x, v) => ({ ...x, night: Math.max(0, Math.round(v)) }), range: () => [0, 80] },
+  { key: "holiday", label: "월 휴일근로시간", plain: "쉬는 날 일한 시간", unit: "hours", kind: "fact", get: (x) => x.holiday, set: (x, v) => ({ ...x, holiday: Math.max(0, Math.round(v)) }), range: () => [0, 40] },
+  money("hourly", "시간급 통상임금", "시급", (x) => x.hourly, (x, v) => ({ ...x, hourly: Math.max(0, v) }), () => [10_000, 40_000], [{ at: 10_320, label: "2026 최저임금" }], "fact"),
+];
+
+// ───────────────────────── 노인장기요양 본인부담 ─────────────────────────
+export const ltcTotal = (i: LtcInput) => longTermCareCopay(i).total;
+export const LTC_ASSUMPTIONS = (i: LtcInput): Assumption<LtcInput>[] => {
+  if (i.kind === "home") {
+    const limit = LTC_2026.homeLimit[i.grade];
+    return [money("homeUse", "월 재가급여 이용액", "한 달 쓰는 요양 서비스 비용", (x) => x.homeUse ?? LTC_2026.homeLimit[x.grade], (x, v) => ({ ...x, homeUse: Math.max(0, v) }), () => [0, Math.round(limit * 1.6)], [{ at: limit, label: "등급 한도액" }])];
+  }
+  return [
+    money("dailyExtra", "하루 비급여(식사·간식)", "하루 밥값·간식비", (x) => x.dailyExtra ?? 15_000, (x, v) => ({ ...x, dailyExtra: Math.max(0, v) }), () => [0, 40_000]),
+    { key: "days", label: "월 입소 일수", plain: "한 달 머무는 날", unit: "days", kind: "fact", get: (x) => x.days ?? 30, set: (x, v) => ({ ...x, days: Math.max(0, Math.round(v)) }), range: () => [0, 31] },
+  ];
 };

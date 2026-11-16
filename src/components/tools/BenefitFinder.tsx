@@ -24,8 +24,22 @@ const HUB: Record<Group, { href: string; label: string }> = {
   newlywed: { href: "https://blog.oiyo.net/ko/magazine-newlywed-benefits-roundup/", label: "결혼·신혼부부 혜택 총정리 글 보기" },
 };
 
+// 2026-11-16: 금액을 직접 계산해 볼 수 있는 혜택은 계산기로 이어 줘요.
+const CALCULATOR: Record<string, [string, string]> = {
+  ltc: ["/ko/long-term-care-copay-calculator/", "장기요양 본인부담금 계산기"],
+  "comp-property-tax": ["/ko/comprehensive-real-estate-tax-calculator/", "종부세 계산기"],
+  "maternity-leave": ["/ko/maternity-leave-pay-calculator/", "출산휴가 급여 계산기"],
+  "paternity-leave": ["/ko/maternity-leave-pay-calculator/", "배우자 출산휴가 급여 계산기"],
+  "parental-leave": ["/ko/parental-leave-calculator/", "육아휴직 급여 계산기"],
+  "six-plus-six": ["/ko/parental-leave-calculator/", "육아휴직 급여 계산기"],
+  "gift-tax-marriage": ["/ko/gift-tax-calculator/", "증여세 계산기"],
+  "marriage-gift": ["/ko/gift-tax-calculator/", "증여세 계산기"],
+  "newborn-loan": ["/ko/dsr-calculator/", "대출 한도(DSR) 계산기"],
+};
+
 function ResultCard({ r }: { r: FinderResult }) {
   const b = r.benefit;
+  const calc = CALCULATOR[b.id];
   return (
     <li className="rounded-lg border border-border bg-card p-4">
       <div className="flex flex-wrap items-baseline justify-between gap-2">
@@ -35,6 +49,11 @@ function ResultCard({ r }: { r: FinderResult }) {
       <p className="mt-1 text-sm text-foreground">{b.amount}</p>
       <p className="mt-1 text-sm text-muted-foreground">대상: {b.who}</p>
       <p className="mt-1 text-sm text-muted-foreground">신청: {b.apply}</p>
+      {calc && (
+        <a href={calc[0]} className="mt-2 inline-flex min-h-11 items-center text-sm font-medium text-primary underline underline-offset-4">
+          {calc[1]}로 금액 계산해 보기
+        </a>
+      )}
       {r.unknown.length > 0 && <p className="mt-2 text-sm text-foreground">확인할 조건: {r.unknown.join(", ")}</p>}
       {b.note2027 && <p className="mt-2 text-sm text-muted-foreground">2027년: {b.note2027} (국회 의결 전)</p>}
       {b.source === "press" && <p className="mt-1 text-xs text-muted-foreground">언론·세법 안내 기준이라 신청 전 기관에 한 번 더 확인하세요.</p>}

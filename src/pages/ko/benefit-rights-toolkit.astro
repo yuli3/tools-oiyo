@@ -17,6 +17,7 @@ const situations = [
   ["상여금이 있는데 수당이 적은 것 같아요", "ordinary-wage-calculator", "2024년 12월 판결로 재직 조건 상여도 통상임금이에요. 시급부터 다시 계산해요."],
   ["야근이 많은데 시간외수당은 늘 같아요", "fixed-overtime-pay-checker", "고정 수당이 덮는 시간을 넘게 일했다면 차액을 3년치까지 받을 수 있어요."],
   ["12월 종부세 고지서가 걱정돼요", "comprehensive-real-estate-tax-calculator", "공시가격 합계가 1주택 12억·그 밖 9억 원을 넘는지부터 봐요."],
+  ["부모님 돌봄 비용이 걱정돼요", "long-term-care-copay-calculator", "장기요양등급을 받으면 집에서 돌봄은 15%, 요양원은 20%만 내요. 한도와 식사비를 같이 봐요."],
   ["집을 세놓고 월세를 받아요", "housing-rental-income-tax-calculator", "2주택부터 월세에 세금이 붙어요. 5월 신고 전에 분리과세와 종합과세를 비교해요."],
 ];
 const more = [
@@ -26,6 +27,7 @@ const more = [
   ["/ko/severance-calculator/", "퇴직금 계산기"],
   ["/ko/overtime-pay-calculator/", "연장근로수당 계산기"],
   ["/ko/property-tax-calculator/", "재산세 계산기"],
+  ["/ko/copay-cap-refund-calculator/", "본인부담상한제 환급 계산기"],
 ];
 const mcpTools = [
   ["calculate_kr_work_child_incentive", "근로·자녀장려금 예상액"],
@@ -38,6 +40,7 @@ const mcpTools = [
   ["check_kr_fixed_overtime_pay", "포괄임금 고정 연장수당 부족액"],
   ["calculate_kr_comprehensive_real_estate_tax", "종합부동산세(주택분)"],
   ["calculate_kr_housing_rental_income_tax", "주택임대소득세(분리 vs 종합)"],
+  ["calculate_kr_long_term_care_copay", "노인장기요양 본인부담금"],
 ];
 const titleOf = (slug: string) => welfareTools.find((t) => t.slug === slug)?.title ?? slug;
 ---
