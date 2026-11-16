@@ -1,7 +1,7 @@
 ---
 // 분양·건축 묶음 1 (2026-11-02, CHOSEUN "진행"). ko-only: 한국 아파트 분양 대금 구조.
 import KrFinancePage from "../../components/KrFinancePage.astro";
-import PresalePaymentCalculator from "../../components/tools/PresalePaymentCalculator";
+import KrPresaleScenario from "../../components/tools/KrPresaleScenario";
 import { presaleSchedule, PRESALE_AS_OF } from "../../lib/kr-presale-2026";
 
 const title = "아파트 분양 대금 계산기 — 계약금·중도금·잔금 일정과 입주 때 필요한 돈";
@@ -41,6 +41,6 @@ const faqs = [
 ];
 ---
 <KrFinancePage slug="presale-payment-calculator" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
-  <PresalePaymentCalculator client:load />
+  <KrPresaleScenario client:load />
   <p class="mt-4 text-xs text-muted-foreground">근거: 주택공급에 관한 규칙(입주자모집공고의 분양대금 납부 일정), 지방세법 제11조(주택 취득세 표준세율). 기준일 {PRESALE_AS_OF}.</p>
 </KrFinancePage>
