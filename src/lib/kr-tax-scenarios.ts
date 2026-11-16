@@ -5,7 +5,8 @@ import { acquisitionTax, capitalGainsTax, HIGH_PRICE_LINE, propertyTax, BASIC_DE
 import { comprehensiveIncomeTax, freelancerSettlement, simpleExpense } from "./kr-income-tax-2026.ts";
 import { INHERITANCE_GIFT_2026 as IG, filingCredit, financialAssetDeduction, funeralDeduction, inheritanceGiftProgressiveTax, spouseInheritanceDeduction } from "./kr-payroll-2026.ts";
 import { retirementIncomeTax } from "./kr-retirement-tax.ts";
-import { computeSalaryBreakdownWon } from "./finance/salary-calculator.ts";
+import { computeMonthlyInsurance, computeSalaryBreakdownWon } from "./finance/salary-calculator.ts";
+import { settleYearEnd, type YearEndInput } from "./kr-year-end-2026.ts";
 import { fixedRange, josa, moneyRange, roughWon, type Assumption, type BridgeStep, type TornadoBar } from "./scenario.ts";
 
 export const driverLine = (top: TornadoBar | undefined, what: string) =>
@@ -524,6 +525,182 @@ export function giftPlain(i: GiftInput) {
       `${roughWon(r.deduction)}까지는 빼 주고, 넘는 ${roughWon(r.base)}에 세금을 매겼어요.`,
       "10년 안에 같은 사람(부모님이면 두 분 합쳐서)에게 받은 돈은 모두 더해서 계산해요.",
       "받은 달 말일부터 3개월 안에 신고하면 3%를 깎아 줘요.",
+    ],
+  };
+}
+
+// ───────────────────────── 연말정산(핵심 항목) ─────────────────────────
+
+/** 쉬운 화면용 핵심 입력. 나머지 공제는 전문가 화면의 전체 계산기에서 넣어요. */
+export interface YearEndLite {
+  salary: number;
+  persons: number;
+  /** 자녀세액공제 대상 자녀 수 */
+  children: number;
+  /** 1년 동안 회사가 뗀 소득세(지방세 제외) */
+  withheld: number;
+  credit: number;
+  debit: number;
+  /** 연금저축 + IRP 납입액 */
+  pension: number;
+  medical: number;
+  /** 월세(1년 합계). 무주택·총급여 8천만 이하 등 요건을 채웠다고 봐요 */
+  rent: number;
+}
+
+/** 총급여에서 4대 보험료(연금·건강·장기요양·고용)를 어림해요. */
+export function yearEndInsurance(salary: number) {
+  const m = computeMonthlyInsurance(Math.max(0, salary) / 12);
+  return { nationalPension: m.pension * 12, healthEmployment: (m.health + m.ltc + m.employment) * 12 };
+}
+
+/** 회사가 간이세액표로 뗐을 소득세를 어림(연봉 ÷ 12로 월급 계산기와 같은 방식). */
+export const estimateWithheld = (salary: number, persons: number) => computeSalaryBreakdownWon(Math.max(0, salary) / 12, persons, 0).incomeTax * 12;
+
+export function yearEndInput(i: YearEndLite): YearEndInput {
+  return {
+    salary: i.salary,
+    persons: Math.max(1, i.persons),
+    withheld: i.withheld,
+    ...yearEndInsurance(i.salary),
+    card: { credit: i.credit, debit: i.debit },
+    cardChildren: i.children,
+    creditChildren: i.children,
+    pensionSavings: Math.min(i.pension, 6_000_000),
+    irp: Math.max(0, i.pension - 6_000_000),
+    medical: i.medical,
+    rent: i.rent,
+    rentEligible: i.rent > 0,
+  };
+}
+
+export const yearEndResult = (i: YearEndLite) => settleYearEnd(yearEndInput(i));
+/** 돌려받는 돈(+) / 더 내는 돈(−), 지방소득세 포함 */
+export const yearEndRefund = (i: YearEndLite) => yearEndResult(i).refund?.total ?? 0;
+
+const people = (key: string, label: string, plain: string, get: (i: YearEndLite) => number, set: (i: YearEndLite, v: number) => YearEndLite, min: number): Assumption<YearEndLite> => ({
+  key, label, plain, unit: "people", kind: "assumption", get, set, range: fixedRange(min, 6),
+});
+
+export const YEAR_END_ASSUMPTIONS: Assumption<YearEndLite>[] = [
+  { ...moneyAssumption<YearEndLite>("salary", "총급여", "1년 연봉(비과세 빼고)", (i) => i.salary, (i, v) => ({ ...i, salary: Math.max(0, v) })), kind: "fact" },
+  { ...moneyAssumption<YearEndLite>("withheld", "기납부세액", "회사가 이미 뗀 세금", (i) => i.withheld, (i, v) => ({ ...i, withheld: Math.max(0, v) })), kind: "fact" },
+  {
+    ...moneyAssumption<YearEndLite>("credit", "신용카드 사용액", "신용카드로 쓴 돈", (i) => i.credit, (i, v) => ({ ...i, credit: Math.max(0, v) })),
+    range: (a) => [0, Math.max(a * 2, 40_000_000)],
+  },
+  {
+    ...moneyAssumption<YearEndLite>("debit", "체크카드·현금영수증", "체크카드·현금으로 쓴 돈", (i) => i.debit, (i, v) => ({ ...i, debit: Math.max(0, v) })),
+    range: (a) => [0, Math.max(a * 2, 30_000_000)],
+  },
+  {
+    ...moneyAssumption<YearEndLite>("pension", "연금저축·IRP 납입액", "연금저축·IRP에 넣은 돈", (i) => i.pension, (i, v) => ({ ...i, pension: Math.max(0, v) })),
+    range: fixedRange(0, 12_000_000),
+    marks: [
+      { at: 6_000_000, label: "연금저축 600만" },
+      { at: 9_000_000, label: "합계 900만" },
+    ],
+  },
+  { ...moneyAssumption<YearEndLite>("medical", "의료비", "병원·약값", (i) => i.medical, (i, v) => ({ ...i, medical: Math.max(0, v) })), range: (a) => [0, Math.max(a * 2, 10_000_000)] },
+  { ...moneyAssumption<YearEndLite>("rent", "월세액", "1년 월세", (i) => i.rent, (i, v) => ({ ...i, rent: Math.max(0, v) })), range: fixedRange(0, 12_000_000), marks: [{ at: 10_000_000, label: "한도 1,000만" }] },
+  people("persons", "기본공제 인원", "부양가족 수", (i) => i.persons, (i, v) => ({ ...i, persons: Math.max(1, Math.round(v)) }), 1),
+  people("children", "자녀세액공제 자녀", "8~20세 자녀", (i) => i.children, (i, v) => ({ ...i, children: Math.max(0, Math.round(v)) }), 0),
+];
+
+export function yearEndBridge(i: YearEndLite): BridgeStep[] {
+  const r = yearEndResult(i);
+  const local = Math.floor(i.withheld * 0.1 / 10) * 10;
+  const steps: BridgeStep[] = [
+    { label: "회사가 뗀 세금(지방세 포함)", value: i.withheld + local, kind: "add" },
+    { label: "올해 확정된 세금", value: -r.totalTax, kind: "add" },
+    { label: r.refund && r.refund.total < 0 ? "더 낼 돈" : "돌려받을 돈", value: r.refund?.total ?? 0, kind: "total" },
+  ];
+  return steps;
+}
+
+/** 결정세액이 만들어지는 다리: 산출세액 − 세액공제 = 결정세액 */
+export function yearEndTaxBridge(i: YearEndLite): BridgeStep[] {
+  const r = yearEndResult(i);
+  const steps: BridgeStep[] = [{ label: "산출세액", value: r.calculatedTax, kind: "total" }];
+  const credits: [string, number][] = [
+    ["근로소득세액공제", r.earnedTaxCredit],
+    ["자녀", r.childCredit],
+    ["연금계좌", r.pensionCredit],
+    ["의료비", r.medicalCredit],
+    ["월세", r.rentCredit],
+    ["보험료·교육비·기부금", r.insuranceCredit + r.educationCredit + r.donationCredit],
+    ["표준세액공제", r.usedStandard ? r.standardCredit : 0],
+  ];
+  for (const [label, v] of credits) if (v > 0) steps.push({ label, value: -v, kind: "add" });
+  steps.push({ label: "결정세액", value: r.finalTax, kind: "total" });
+  return steps;
+}
+
+export function yearEndPlain(i: YearEndLite, top?: TornadoBar) {
+  const r = yearEndResult(i);
+  const t = r.refund?.total ?? 0;
+  const headline = t >= 0 ? `연말정산으로 약 ${roughWon(t)}을 돌려받아요(추정, 지방소득세 포함).` : `연말정산으로 약 ${roughWon(-t)}을 더 내야 해요(추정, 지방소득세 포함).`;
+  const reasons: string[] = [];
+  if (r.cardDeduction > 0) reasons.push(`카드를 연봉의 25%(${roughWon(i.salary * 0.25)}) 넘게 써서 ${roughWon(r.cardDeduction)}을 소득에서 빼 줬어요. 넘는 몫은 체크카드가 신용카드보다 2배 유리해요.`);
+  else reasons.push(`카드는 연봉의 25%(${roughWon(i.salary * 0.25)})를 넘게 써야 공제가 시작돼요.`);
+  if (r.pensionCredit > 0) reasons.push(`연금저축·IRP에 넣은 돈의 ${i.salary <= 55_000_000 ? "15%" : "12%"}를 세금에서 바로 빼 줬어요(${roughWon(r.pensionCredit)}).`);
+  else reasons.push("연금저축·IRP에 넣으면 넣은 돈의 12~15%를 세금에서 바로 빼 줘요(합계 900만 원까지).");
+  if (r.usedStandard) reasons.push("의료비·보험료 같은 특별공제보다 표준세액공제 13만 원이 더 유리해서 그걸 골랐어요.");
+  return { headline, driver: driverLine(top, t >= 0 ? "돌려받을 돈" : "더 낼 돈"), reasons };
+}
+
+// ───────────────────────── 퇴직금(어림) ─────────────────────────
+
+export interface SeveranceLite {
+  /** 퇴직 전 3개월 월평균 임금(세전) */
+  monthly: number;
+  /** 근속 기간(년, 소수 가능) */
+  years: number;
+  /** 1년 상여금 */
+  bonus: number;
+  /** 1년 연차수당 */
+  leavePay: number;
+}
+
+/** 근로자퇴직급여 보장법 제8조: 1일 평균임금 × 30 × 재직일수 ÷ 365. 3개월은 91일로 어림해요. */
+export function severanceEstimate(i: SeveranceLite) {
+  const threeMonths = Math.max(0, i.monthly) * 3 + (Math.max(0, i.bonus) * 3) / 12 + (Math.max(0, i.leavePay) * 3) / 12;
+  const daily = threeMonths / 91;
+  const years = Math.max(0, i.years);
+  const gross = years < 1 ? 0 : Math.floor(daily * 30 * years);
+  const serviceYears = Math.max(1, Math.ceil(years));
+  const tax = gross > 0 ? retirementIncomeTax(gross, serviceYears) : null;
+  return { daily, gross, tax: tax?.totalTax ?? 0, net: tax?.netPayout ?? 0, serviceYears };
+}
+
+export const severanceGross = (i: SeveranceLite) => severanceEstimate(i).gross;
+
+export const SEVERANCE_ASSUMPTIONS: Assumption<SeveranceLite>[] = [
+  { ...moneyAssumption<SeveranceLite>("monthly", "평균임금(월)", "최근 3개월 월급", (i) => i.monthly, (i, v) => ({ ...i, monthly: Math.max(0, v) })), range: (a) => [0, Math.max(a * 2, 8_000_000)] },
+  { key: "years", label: "계속근로기간", plain: "일한 기간", unit: "years", kind: "assumption", get: (i) => i.years, set: (i, v) => ({ ...i, years: Math.max(0, Math.round(v * 2) / 2) }), range: fixedRange(0, 30), marks: [{ at: 1, label: "1년" }] },
+  { ...moneyAssumption<SeveranceLite>("bonus", "연간 상여금", "1년 상여금", (i) => i.bonus, (i, v) => ({ ...i, bonus: Math.max(0, v) })), range: (a) => [0, Math.max(a * 2, 20_000_000)] },
+  { ...moneyAssumption<SeveranceLite>("leavePay", "연차수당", "1년 연차수당", (i) => i.leavePay, (i, v) => ({ ...i, leavePay: Math.max(0, v) })), range: (a) => [0, Math.max(a * 2, 5_000_000)] },
+];
+
+export function severanceBridge(i: SeveranceLite): BridgeStep[] {
+  const r = severanceEstimate(i);
+  return [
+    { label: "퇴직금(세전)", value: r.gross, kind: "total" },
+    { label: "퇴직소득세·지방세", value: -r.tax, kind: "add" },
+    { label: "실제 받는 돈", value: r.net, kind: "total" },
+  ];
+}
+
+export function severancePlain(i: SeveranceLite, top?: TornadoBar) {
+  const r = severanceEstimate(i);
+  if (r.gross === 0) return { headline: "1년 넘게 일해야 퇴직금이 생겨요.", driver: null, reasons: ["4주 평균으로 주 15시간 이상 일했어야 해요."] };
+  return {
+    headline: `퇴직금은 세전 약 ${roughWon(r.gross)}, 세금을 떼면 약 ${roughWon(r.net)}이에요(어림).`,
+    driver: driverLine(top, "퇴직금"),
+    reasons: [
+      "대략 '최근 월급 × 일한 햇수'예요. 상여금·연차수당은 1년치의 3/12을 더해요.",
+      "1일 평균임금이 통상임금보다 적으면 통상임금으로 계산해요.",
+      "IRP 계좌로 받으면 세금을 미뤄 두고 나중에 연금으로 받을 때 30~40% 덜 내요.",
     ],
   };
 }
