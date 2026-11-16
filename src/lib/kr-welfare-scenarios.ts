@@ -2,6 +2,7 @@
 // 계산은 kr-welfare-2026.ts, 여기는 "무엇을 바꿔 볼 수 있고 어떻게 설명할지"만 정해요.
 import {
   ASSET_CAP, ASSET_HALF, CTC_TABLE, EITC_TABLE, INJURY_2026, RENT_CREDIT,
+  youthRentSupport, housingLoanBest, specialSupplyCheck, URBAN_WORKER_INCOME, type SpecialSupplyInput, YOUTH_RENT_2026, type YouthRentInput, type HousingLoanInput,
   dbVsDc, fixedOvertimeCheck, dismissalNoticePay, shutdownAllowance, reducedHoursPay, probationMinWage, REDUCED_HOURS_2026, directPaymentCheck, type DirectPayInput,
   type DismissalNoticeInput, type ShutdownPayInput, type ReducedHoursInput, type ProbationInput, premiumPay, longTermCareCopay, LTC_2026, injuryLeavePay, maternityLeavePay, monthlyRentCredit, ordinaryWage, wageGuarantee, workChildCredit,
   type EitcInput, type FixedOtInput, type WorkHours, type LtcInput, type GuaranteeInput, type InjuryInput, type MaternityInput, type OrdinaryWageInput, type PensionInput, type RentInput,
@@ -341,3 +342,25 @@ export const VALUATION_ASSUMPTIONS: Assumption<InheritedValuationInput>[] = [
   money("otherEstate", "다른 순상속재산", "집 말고 물려받는 재산", (x) => x.otherEstate, (x, v) => ({ ...x, otherEstate: Math.max(0, v) }), (a) => [0, Math.max(3_000_000_000, a * 2)], [{ at: 500_000_000, label: "5억" }], "fact"),
   money("salePrice", "나중에 팔 값", "팔 때 받을 값", (x) => x.salePrice, (x, v) => ({ ...x, salePrice: Math.max(0, v) }), (a) => [0, Math.max(2_000_000_000, a * 1.5)]),
 ];
+
+// ───────────────────────── 청년월세·정책 주거대출 (Gemini 이전 C 1차) ─────────────────────────
+export const youthRentTotal = (i: YouthRentInput) => youthRentSupport(i).total;
+export const YOUTH_RENT_ASSUMPTIONS: Assumption<YouthRentInput>[] = [
+  money("rent", "월 임대료", "한 달 월세", (x) => x.rent, (x, v) => ({ ...x, rent: Math.max(0, v) }), () => [0, 900_000], [{ at: YOUTH_RENT_2026.monthly, label: "20만" }, { at: YOUTH_RENT_2026.rent, label: "60만" }]),
+  money("youthIncome", "청년가구 월 소득", "내 한 달 소득", (x) => x.youthIncome, (x, v) => ({ ...x, youthIncome: Math.max(0, v) }), () => [0, 3_000_000], [{ at: 1_538_542, label: "중위 60%(1인)" }], "fact"),
+];
+export const loanBest = (i: HousingLoanInput) => housingLoanBest(i).bestLoan;
+export const LOAN_ASSUMPTIONS = (i: HousingLoanInput): Assumption<HousingLoanInput>[] => [
+  money("income", "부부 합산 연소득", "1년 소득(부부 합산)", (x) => x.income, (x, v) => ({ ...x, income: Math.max(0, v) }), () => [0, 150_000_000], i.purpose === "buy" ? [{ at: 60_000_000, label: "6천" }, { at: 85_000_000, label: "8.5천" }, { at: 130_000_000, label: "1.3억" }] : [{ at: 50_000_000, label: "5천" }, { at: 75_000_000, label: "7.5천" }], "fact"),
+  money("amount", i.purpose === "buy" ? "주택 가격" : "보증금", i.purpose === "buy" ? "집값" : "전세·월세 보증금", (x) => x.amount, (x, v) => ({ ...x, amount: Math.max(0, v) }), () => i.purpose === "buy" ? [0, 1_000_000_000] : [0, 600_000_000], i.purpose === "buy" ? [{ at: 500_000_000, label: "5억" }, { at: 600_000_000, label: "6억" }, { at: 900_000_000, label: "9억" }] : [{ at: 200_000_000, label: "2억" }, { at: 300_000_000, label: "3억" }]),
+];
+
+// ───────────────────────── 청약 특별공급 (Gemini 이전 C 2차) ─────────────────────────
+export const supplyScore = (i: SpecialSupplyInput) => specialSupplyCheck(i).score;
+export const SUPPLY_ASSUMPTIONS = (i: SpecialSupplyInput): Assumption<SpecialSupplyInput>[] => {
+  const base = URBAN_WORKER_INCOME[Math.min(8, Math.max(1, Math.floor(i.householdSize || 1))) - 1];
+  return [
+    money("monthlyIncome", "세대 월평균 소득", "우리 집 한 달 소득(세전)", (x) => x.monthlyIncome, (x, v) => ({ ...x, monthlyIncome: Math.max(0, v) }), () => [0, Math.round(base * 2.2)], [{ at: base, label: "100%" }, { at: Math.round(base * 1.4), label: "140%" }, { at: Math.round(base * 1.6), label: "160%" }], "fact"),
+    money("realEstate", "부동산 가액", "가진 땅·건물 값", (x) => x.realEstate, (x, v) => ({ ...x, realEstate: Math.max(0, v) }), () => [0, 500_000_000], [{ at: 215_500_000, label: "2.155억(공공)" }, { at: 331_000_000, label: "3.31억(민영)" }], "fact"),
+  ];
+};

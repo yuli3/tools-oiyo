@@ -830,3 +830,227 @@ export function directPaymentCheck(input                ) {
   const lateInterest = won((outstanding * SUBCONTRACT_LATE_RATE * lateDays) / 365);
   return { outstanding, causeOk, blocked, eligible, direct, remainder: outstanding - direct, lateDays, lateInterest };
 }
+
+// ───────────────────────── 청년월세 지원 (Gemini 이전 C 1차) ─────────────────────────
+// 국토교통부 청년월세 지원(2026년 계속사업 전환, 신규 신청 2026-03-30~05-29, 예산 범위 안 선정).
+// 만 19~34세, 부모와 따로 사는 무주택 청년. 청년가구 소득 기준중위 60% 이하·재산 1억 2,200만 원 이하,
+// 원가구(부모 포함) 소득 100% 이하·재산 4억 7천만 원 이하(30세 이상, 혼인, 미혼부모 등은 원가구 심사 면제).
+// 보증금 5천만 원 이하·월세 60만 원 이하(넘으면 월세 + 보증금 × 2.5% ÷ 12가 70만 원 이하). 월 20만 원 한도로 실제 월세만큼,
+// 최대 24개월(생애 1회). 주거급여 수급자는 주거급여를 뺀 만큼, 지자체 월세 지원과 동시 수급 불가, 공공임대·2촌 이내 임대 제외.
+
+export const MEDIAN_INCOME_2026 = [2_564_238, 4_199_292, 5_359_036, 6_494_738, 7_556_719, 8_555_952, 9_515_150]         ;
+export const YOUTH_RENT_2026 = {
+  ageMin: 19, ageMax: 34, youthIncomeRate: 0.6, parentIncomeRate: 1, youthAssets: 122_000_000, parentAssets: 470_000_000,
+  deposit: 50_000_000, rent: 600_000, convertedCap: 700_000, conversionRate: 0.025, monthly: 200_000, months: 24,
+}         ;
+const median = (size        ) => MEDIAN_INCOME_2026[Math.min(MEDIAN_INCOME_2026.length, Math.max(1, Math.floor(size || 1))) - 1];
+
+                                 
+              
+                      
+                    
+                              
+                      
+                          
+                      
+                     
+                       
+                           
+                       
+                                      
+                         
+                  
+               
+                        
+                          
+                                          
+                     
+ 
+
+export function youthRentSupport(input                ) {
+  const Y = YOUTH_RENT_2026;
+  const youthLine = Math.floor(median(input.youthHousehold ?? 1) * Y.youthIncomeRate);
+  const parentLine = Math.floor(median(input.parentHousehold ?? 3) * Y.parentIncomeRate);
+  const autoExempt = clamp0(input.age) >= 30;
+  const parentChecked = !(input.parentExempt || autoExempt);
+  const converted = Math.floor(clamp0(input.rent) + (clamp0(input.deposit) * Y.conversionRate) / 12);
+  const checks = [
+    { id: "age", label: "만 19~34세", ok: input.age >= Y.ageMin && input.age <= Y.ageMax },
+    { id: "apart", label: "부모와 따로 사는 무주택자", ok: input.livesApart && !input.ownsHome },
+    { id: "youthIncome", label: `청년가구 소득 월 ${youthLine.toLocaleString("ko-KR")}원 이하(중위 60%)`, ok: clamp0(input.youthIncome) <= youthLine },
+    { id: "youthAssets", label: "청년가구 재산 1억 2,200만 원 이하", ok: clamp0(input.youthAssets) <= Y.youthAssets },
+    { id: "parentIncome", label: parentChecked ? `원가구 소득 월 ${parentLine.toLocaleString("ko-KR")}원 이하(중위 100%)` : "원가구 소득 심사 면제", ok: !parentChecked || clamp0(input.parentIncome) <= parentLine },
+    { id: "parentAssets", label: parentChecked ? "원가구 재산 4억 7천만 원 이하" : "원가구 재산 심사 면제", ok: !parentChecked || clamp0(input.parentAssets) <= Y.parentAssets },
+    { id: "deposit", label: "보증금 5천만 원 이하", ok: clamp0(input.deposit) <= Y.deposit },
+    { id: "rent", label: clamp0(input.rent) <= Y.rent ? "월세 60만 원 이하" : `월세 + 보증금 환산 ${converted.toLocaleString("ko-KR")}원 ≤ 70만 원`, ok: clamp0(input.rent) <= Y.rent || converted <= Y.convertedCap },
+    { id: "excluded", label: "공공임대·2촌 이내 임대·지자체 월세 지원 아님", ok: !input.excluded },
+  ];
+  const eligible = checks.every((c) => c.ok);
+  const monthly = eligible ? Math.max(0, Math.min(Y.monthly, clamp0(input.rent)) - clamp0(input.housingBenefit ?? 0)) : 0;
+  return { eligible, checks, failed: checks.filter((c) => !c.ok).map((c) => c.id), youthLine, parentLine, parentChecked, converted, monthly, total: monthly * Y.months };
+}
+
+// ───────────────────────── 정책 주거대출 자격 (주택도시기금, Gemini 이전 C 1차) ─────────────────────────
+// 기금e든든(nhuf.molit.go.kr) 상품 안내 2026년 기준(순자산 2026: 구입 5.11억, 전세 3.45억). 2025-06-27 대책 뒤 한도.
+// 무주택 세대주, 전용 85㎡ 이하(수도권 밖 읍·면 100㎡)가 공통. 금리는 상품 안내의 범위만 보여 주고, 실제 금리·한도는 수탁은행 심사로 정해져요.
+
+                                                                                                                                      
+                                   
+                                        
+              
+                  
+                 
+                                           
+                        
+                       
+                    
+                                 
+                    
+                   
+                                          
+                           
+                          
+                 
+                              
+                 
+                  
+                       
+                 
+                                               
+                         
+                            
+ 
+
+                             
+                    
+               
+                    
+                    
+                  
+                         
+ 
+
+const EOK = 100_000_000;
+const MAN = 10_000;
+
+export function housingLoanOptions(i                  )               {
+  const inc = clamp0(i.income);
+  const assets = clamp0(i.netAssets);
+  const amt = clamp0(i.amount);
+  const area = clamp0(i.areaM2) || 59;
+  const twoKids = clamp0(i.children) >= 2;
+  const big = i.newlywed || twoKids;
+  const newbornIncomeOk = i.dualIncome ? inc <= 2 * EOK && clamp0(i.higherEarner ?? inc) <= 1.3 * EOK : inc <= 1.3 * EOK;
+  const ltv = i.firstTimeBuyer && !i.metro ? 0.8 : 0.7;
+  const out               = [];
+  const add = (id               , name        , rules                     , cap        , base        , rate                  ) => {
+    const reasons = rules.filter(([ok]) => !ok).map(([, why]) => why);
+    if (area > 85) reasons.push("전용 85㎡ 초과");
+    out.push({ id, name, eligible: reasons.length === 0, reasons, maxLoan: reasons.length ? 0 : Math.floor(Math.min(cap, base)), rate });
+  };
+  if (i.purpose === "buy") {
+    const incCap = i.newlywed ? 8500 * MAN : i.firstTimeBuyer || twoKids ? 7000 * MAN : 6000 * MAN;
+    const cap = big ? 3.2 * EOK : i.firstTimeBuyer ? 2.4 * EOK : 2 * EOK;
+    add("didimdol", "내집마련 디딤돌", [[inc <= incCap, `소득 ${incCap / MAN}만 원 초과`], [assets <= 5.11 * EOK, "순자산 5.11억 원 초과"], [amt <= (big ? 6 : 5) * EOK, `주택 ${big ? 6 : 5}억 원 초과`]], cap, amt * ltv, [0.0285, 0.0415]);
+    add("newbornBuy", "신생아 특례 디딤돌", [[i.newbornWithin2y, "2년 안 출산·입양 아님"], [newbornIncomeOk, i.dualIncome ? "맞벌이 2억(각 1.3억) 초과" : "소득 1.3억 원 초과"], [assets <= 5.11 * EOK, "순자산 5.11억 원 초과"], [amt <= 9 * EOK, "주택 9억 원 초과"]], 4 * EOK, amt * ltv, [0.018, 0.045]);
+    add("dreamBuy", "청년 주택드림 디딤돌", [[clamp0(i.age) <= 39, "만 39세 초과"], [!!i.dreamAccount, "주택드림 통장 1년·1천만 원 + 분양 당첨 아님"], [inc <= (i.newlywed ? 1 * EOK : 7000 * MAN), `소득 ${i.newlywed ? "1억" : "7천만"} 원 초과`], [assets <= 5.11 * EOK, "순자산 5.11억 원 초과"], [amt <= 6 * EOK, "분양가 6억 원 초과"]], i.newlywed ? 4 * EOK : 3 * EOK, amt * ltv, [0.024, 0.0415]);
+  } else if (i.purpose === "jeonse") {
+    const incCap = i.newlywed ? 7500 * MAN : twoKids ? 6000 * MAN : 5000 * MAN;
+    const depCap = big ? (i.metro ? 4 : 3) * EOK : (i.metro ? 3 : 2) * EOK;
+    const cap = big ? (i.metro ? 2.5 : 1.6) * EOK : i.metro ? 1.2 * EOK : 0.8 * EOK;
+    add("beotimmok", "버팀목 전세자금", [[inc <= incCap, `소득 ${incCap / MAN}만 원 초과`], [assets <= 3.45 * EOK, "순자산 3.45억 원 초과"], [amt <= depCap, `보증금 ${depCap / EOK}억 원 초과`]], cap, amt * (big ? 0.8 : 0.7), [0.025, 0.035]);
+    add("youthBeotimmok", "청년전용 버팀목", [[i.age >= 19 && i.age <= 34, "만 19~34세 아님"], [inc <= 5000 * MAN, "소득 5천만 원 초과"], [assets <= 3.45 * EOK, "순자산 3.45억 원 초과"], [amt <= 3 * EOK, "보증금 3억 원 초과"]], i.age < 25 && i.singleHousehold ? 1.2 * EOK : 1.5 * EOK, amt * 0.8, [0.022, 0.033]);
+    add("newbornJeonse", "신생아 특례 버팀목", [[i.newbornWithin2y, "2년 안 출산·입양 아님"], [newbornIncomeOk, i.dualIncome ? "맞벌이 2억(각 1.3억) 초과" : "소득 1.3억 원 초과"], [assets <= 3.45 * EOK, "순자산 3.45억 원 초과"], [amt <= (i.metro ? 5 : 4) * EOK, `보증금 ${i.metro ? 5 : 4}억 원 초과`]], 2.4 * EOK, amt * 0.8, [0.013, 0.043]);
+  } else {
+    add("monthlyRent", "주거안정 월세대출", [[inc <= 5000 * MAN, "소득 5천만 원 초과"], [assets <= 3.45 * EOK, "순자산 3.45억 원 초과"], [amt <= 1 * EOK, "보증금 1억 원 초과"], [clamp0(i.monthlyRent ?? 0) <= 600_000, "월세 60만 원 초과"]], 14_400_000, Math.min(600_000, clamp0(i.monthlyRent ?? 0)) * 24, [0.013, 0.018]);
+  }
+  return out;
+}
+
+export function housingLoanBest(i                  ) {
+  const options = housingLoanOptions(i);
+  const eligible = options.filter((o) => o.eligible);
+  const best = eligible.reduce                   ((a, b) => (!a || b.maxLoan > a.maxLoan || (b.maxLoan === a.maxLoan && b.rate[0] < a.rate[0]) ? b : a), null);
+  return { options, eligibleCount: eligible.length, best: best?.id ?? null, bestLoan: best?.maxLoan ?? 0 };
+}
+
+// ───────────────────────── 청약 특별공급 자격 (Gemini 이전 C 2차) ─────────────────────────
+// 주택공급에 관한 규칙 제40~47조의3(다자녀·노부모·신혼부부·생애최초·신생아). 소득은 전년도 도시근로자 가구원수별 월평균소득
+// (LH 공고 기준 3인 이하 7,533,763원) 대비 비율. 민영: 신혼·신생아 우선 100%(맞벌이 120%), 일반 140%(160%), 넘으면 부동산 3억 3,100만 원
+// 이하일 때 추첨; 생애최초 우선 130%, 일반 160%, 넘으면 부동산 3.31억 추첨; 다자녀·노부모 소득 기준 없음.
+// 공공(국민주택 일반형, LH 기준): 신혼·생애최초 우선 100%(120%), 일반 130%(140%), 추첨 130%(200%); 신생아 100%(120%)·140%(150%)·
+// 140%(200%); 다자녀·노부모 120%(130%), 추첨 120%(200%). 공공 자산: 부동산 2억 1,550만 원, 자동차 4,542만 원(2026 적용).
+// 실제 기준은 입주자모집공고문이 우선이에요.
+
+export const URBAN_WORKER_INCOME = [7_533_763, 7_533_763, 7_533_763, 8_802_202, 9_326_985, 9_906_263, 10_485_541, 11_064_819]         ;
+export const SPECIAL_SUPPLY = { privateRealEstate: 331_000_000, publicRealEstate: 215_500_000, publicCar: 45_420_000 }         ;
+
+                                                                                             
+export const SUPPLY_LABEL                             = { newlywed: "신혼부부", newborn: "신생아", firstTime: "생애최초", multiChild: "다자녀", elderParent: "노부모 부양" };
+
+                                     
+                               
+                        
+                      
+                        
+                      
+                         
+                     
+                   
+               
+                  
+                            
+                      
+                           
+                        
+                           
+                       
+                        
+                        
+                     
+                     
+                                           
+                         
+ 
+
+                                                                                                                                                   
+export const TIER_LABEL = { priority: "우선공급", general: "일반공급", lottery: "추첨", none: "불가" }         ;
+
+export function specialSupplyCheck(i                    ) {
+  const size = Math.min(8, Math.max(1, Math.floor(i.householdSize || 1)));
+  const base = URBAN_WORKER_INCOME[size - 1];
+  const income = clamp0(i.monthlyIncome);
+  const ratio = base > 0 ? income / base : 0;
+  const pub = i.sector === "public";
+  const S = SPECIAL_SUPPLY;
+  const assetsOk = pub ? clamp0(i.realEstate) <= S.publicRealEstate && clamp0(i.car ?? 0) <= S.publicCar : clamp0(i.realEstate) <= S.privateRealEstate;
+  const tiers = (p        , g        , l               )                                                  => {
+    if (ratio <= p) return { tier: "priority", line: Math.floor(base * p) };
+    if (ratio <= g) return { tier: "general", line: Math.floor(base * g) };
+    if (l === null ? assetsOk : ratio <= l && assetsOk) return { tier: "lottery", line: l === null ? undefined : Math.floor(base * l) };
+    return { tier: "none" };
+  };
+  const d = i.dualIncome;
+  const out                 = [];
+  const push = (type            , ok         , why        , t                                                 ) =>
+    out.push({ type, label: SUPPLY_LABEL[type], ...(ok ? t : { tier: "none"          }), reason: !ok ? why : t.tier === "none" ? (assetsOk ? "소득 기준 초과" : "소득 초과 + 자산 기준 초과") : t.line ? `${TIER_LABEL[t.tier]}: 월 ${t.line.toLocaleString("ko-KR")}원 이하` : t.tier === "lottery" ? `추첨: 부동산 ${pub ? "2억 1,550만" : "3억 3,100만"} 원 이하` : "소득 기준 없음" });
+  const married = i.marriedYears !== undefined && i.marriedYears >= 0;
+  const home = i.noHome ? "" : "무주택이 아님";
+  // 신혼부부
+  push("newlywed", i.noHome && married && (i.marriedYears ?? 99) <= 7, home || "혼인 7년 이내 아님", pub ? tiers(d ? 1.2 : 1, d ? 1.4 : 1.3, d ? 2 : 1.3) : tiers(d ? 1.2 : 1, d ? 1.6 : 1.4, null));
+  // 신생아
+  push("newborn", i.noHome && i.childUnder2, home || "2세 미만 자녀 없음", pub ? tiers(d ? 1.2 : 1, d ? 1.5 : 1.4, d ? 2 : 1.4) : tiers(d ? 1.2 : 1, d ? 1.6 : 1.4, null));
+  // 생애최초
+  const ftOk = i.noHome && i.neverOwned && i.taxPaid5y && (married || clamp0(i.minorChildren) > 0 || !pub);
+  push("firstTime", ftOk, !i.neverOwned ? "주택 소유 이력 있음" : !i.taxPaid5y ? "소득세 5년 납부 아님" : home || "혼인·자녀 요건(공공) 없음", pub ? tiers(d ? 1.2 : 1, d ? 1.4 : 1.3, d ? 2 : 1.3) : tiers(1.3, 1.6, null));
+  // 다자녀
+  const mcOk = i.noHome && clamp0(i.minorChildren) >= 2;
+  push("multiChild", mcOk, home || "미성년 자녀 2명 미만", pub ? tiers(d ? 1.3 : 1.2, d ? 1.3 : 1.2, d ? 2 : 1.2) : { tier: "priority" });
+  // 노부모
+  const epOk = i.noHome && i.elderParent3y;
+  push("elderParent", epOk, home || "65세 이상 부모 3년 부양 세대주 아님", pub ? tiers(d ? 1.3 : 1.2, d ? 1.3 : 1.2, d ? 2 : 1.2) : { tier: "priority" });
+  const rank = { priority: 3, general: 2, lottery: 1, none: 0 }         ;
+  const eligible = out.filter((o) => o.tier !== "none");
+  const best = eligible.reduce                     ((a, b) => (!a || rank[b.tier] > rank[a.tier] ? b : a), null);
+  return { base, ratio, assetsOk, results: out, eligibleCount: eligible.length, best: best?.type ?? null, bestTier: best?.tier ?? "none", score: best ? rank[best.tier] : 0 };
+}
