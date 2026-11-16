@@ -5,6 +5,7 @@ import Layout from '../../components/Layout.astro';
 import UtilityArticle, { type UtilityContent } from '../../components/UtilityArticle.astro';
 import RelatedUtilities from '../../components/RelatedUtilities.astro';
 import InflationCalculator from '../../components/tools/InflationCalculator';
+import InflationScenario from '../../components/tools/InflationScenario';
 import { locales } from '../../lib/i18n';
 import { utilityJsonLd } from '../../lib/utility-jsonld';
 
@@ -187,7 +188,7 @@ const schema = utilityJsonLd({ name: m.title, description: m.description, url, l
 ---
 <Layout title={m.title} description={m.description} locale={locale} availableLocales={[...locales]} canonicalURL={url}>
   <ToolShell title={m.title} description={m.description}>
-    <InflationCalculator client:load locale={locale === 'ko' ? 'ko' : 'en'} />
+    {locale === 'ko' ? <InflationScenario client:load /> : <InflationCalculator client:load locale="en" />}
     <UtilityArticle c={c} />
     <RelatedUtilities locale={locale} current="inflation-calculator" group="money" />
   </ToolShell>

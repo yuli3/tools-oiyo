@@ -12,7 +12,7 @@ type Key = (typeof KEYS)[number];
 const EXAMPLE: CompoundLite = { principal: 10_000_000, monthly: 1_000_000, rate: 0.07, years: 20 };
 const pctField = (v: number) => Number((v * 100).toFixed(2));
 
-export default function CompoundScenario() {
+export default function CompoundScenario({ toolId = "compound-interest-calculator" }: { toolId?: string }) {
   const all = (input: CompoundLite, edit: (p: Partial<CompoundLite>, k: Key[]) => void) => (
     <div className="grid gap-3 sm:grid-cols-2">
       <MoneyField label="처음 넣는 돈" value={input.principal} onChange={(v) => edit({ principal: v }, ["principal"])} />
@@ -23,7 +23,7 @@ export default function CompoundScenario() {
   );
   return (
     <ScenarioTool<CompoundLite, Key>
-      toolId="compound-interest-calculator"
+      toolId={toolId}
       example={EXAMPLE}
       assumptions={COMPOUND_ASSUMPTIONS}
       keys={KEYS}

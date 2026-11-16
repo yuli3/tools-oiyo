@@ -37,3 +37,34 @@ test("FIRE: 4% 규칙 목표와 저축을 늘리면 빨라져요", () => {
   assert.ok(W.fireYears({ ...i, monthlySave: 3_000_000 }) < r.years);
   assert.equal(W.fireYears({ ...i, assets: 1_000_000_000 }), 0);
 });
+
+test("2차: 물가·ROI·임대·평단가", () => {
+  const inf = W.inflationResult({ amount: 1_000_000, rate: 0.03, years: 10 });
+  assert.equal(Math.round(inf.needed), Math.round(1_000_000 * Math.pow(1.03, 10)));
+  const roi = W.roiResult({ cost: 10_000_000, value: 15_000_000, years: 2 });
+  assert.equal(roi.roi, 0.5);
+  assert.ok(Math.abs(roi.cagr - (Math.sqrt(1.5) - 1)) < 1e-12);
+  const rent = W.rentalResult({ price: 500_000_000, deposit: 50_000_000, rent: 2_000_000, loan: 200_000_000, loanRate: 0.045, vacancy: 0, costs: 0 });
+  assert.equal(rent.equity, 250_000_000);
+  assert.equal(rent.net, 24_000_000 - 9_000_000);
+  assert.ok(W.rentalNet({ price: 500_000_000, deposit: 50_000_000, rent: 2_000_000, loan: 200_000_000, loanRate: 0.045, vacancy: 0.1, costs: 1_000_000 }) < rent.net);
+  const avg = W.avgResult({ price: 10_000, qty: 100, addPrice: 8_000, addQty: 100, market: 8_000 });
+  assert.equal(avg.avg, 9_000);
+  assert.equal(avg.pl, -200_000);
+});
+
+test("3차: 라떼 효과·현재가치", () => {
+  const l = W.latteResult({ cost: 5_000, freq: "daily", rate: 0, years: 10 });
+  assert.equal(l.monthly, 150_000);
+  assert.equal(l.fv, 150_000 * 120);
+  assert.equal(W.pvCoefficient("leibniz", 12, 0), 12);
+  const h = W.pvResult({ monthly: 1_000_000, months: 120, rate: 0.05, method: "hoffman" });
+  const lz = W.pvResult({ monthly: 1_000_000, months: 120, rate: 0.05, method: "leibniz" });
+  assert.ok(h.pv > lz.pv && lz.pv < 120_000_000);
+  assert.equal(Math.round(lz.coef * 1000) / 1000, 94.281);
+});
+
+test("호프만 계수는 240을 넘지 않아요", () => {
+  const r = W.pvResult({ monthly: 1_000_000, months: 480, rate: 0.05, method: "hoffman" });
+  assert.ok(r.capped && r.coef === 240 && r.raw > 240);
+});

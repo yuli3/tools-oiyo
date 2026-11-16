@@ -2,6 +2,7 @@
 // Moved from blog.oiyo.net/present-value-calculator/ on 2026-10-27 (W15); ko-only on Tools: Hoffman/Leibniz discounting as used by Korean courts.
 import KrFinancePage from "../../components/KrFinancePage.astro";
 import PresentValueCalculator from "../../components/tools/PresentValueCalculator";
+import PresentValueScenario from '../../components/tools/PresentValueScenario';
 
 const title = ({
     title: "연금 현재가치 계산기 — 라이프니츠·호프만 방식",
@@ -39,5 +40,5 @@ const faqs = [
   ];
 ---
 <KrFinancePage slug="present-value-calculator" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
-  <PresentValueCalculator client:load locale="ko" />
+  <PresentValueScenario client:load />
 </KrFinancePage>

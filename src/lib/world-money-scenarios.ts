@@ -239,3 +239,246 @@ export function firePlain(i: FireLite, top?: TornadoBar) {
     ],
   };
 }
+
+// ───────────────────────── 2차: 물가·ROI·임대 수익률·평단가 (2026-11-17) ─────────────────────────
+
+export interface InflationLite {
+  amount: number;
+  rate: number;
+  years: number;
+}
+
+export function inflationResult(i: InflationLite) {
+  const g = Math.pow(1 + i.rate, Math.max(0, i.years));
+  return { real: i.amount / g, needed: i.amount * g, loss: 1 - 1 / g, half: i.rate > 0 ? Math.log(2) / Math.log(1 + i.rate) : Infinity };
+}
+export const inflationReal = (i: InflationLite) => inflationResult(i).real;
+
+export const INFLATION_ASSUMPTIONS: Assumption<InflationLite>[] = [
+  { key: "rate", label: "연 물가상승률", plain: "물가 오름폭", unit: "rate", kind: "assumption", get: (i) => i.rate, set: (i, v) => ({ ...i, rate: v }), range: fixedRange(0, 0.1), marks: [{ at: 0.02, label: "한은 목표 2%" }] },
+  { key: "years", label: "기간", plain: "기간", unit: "years", kind: "assumption", get: (i) => i.years, set: (i, v) => ({ ...i, years: Math.max(0, Math.round(v)) }), range: fixedRange(1, 50) },
+  won<InflationLite>("amount", "금액", "지금 돈", (i) => i.amount, (i, v) => ({ ...i, amount: Math.max(0, v) }), (a) => [0, Math.max(a * 2, 10_000_000)]),
+];
+
+export function inflationPlain(i: InflationLite, top?: TornadoBar) {
+  const r = inflationResult(i);
+  return {
+    headline: `물가가 해마다 ${pct(i.rate)}씩 오르면 ${i.years}년 뒤 ${roughWon(i.amount)}은 지금 돈으로 약 ${roughWon(r.real)}어치예요. 같은 물건을 사려면 약 ${roughWon(r.needed)}이 필요해요.`,
+    driver: driverLine(top, "그때 돈의 가치"),
+    reasons: [
+      `돈의 가치가 ${Math.round(r.loss * 100)}% 줄어요.${Number.isFinite(r.half) ? ` 이 속도면 약 ${r.half.toFixed(0)}년마다 돈의 가치가 반으로 줄어요.` : ""}`,
+      "예금 이자가 물가보다 낮으면 통장에 둔 돈은 실제로 줄어드는 셈이에요. 이자율에서 물가를 뺀 값이 실질 금리예요.",
+      "소비자물가는 평균이라 집값·교육비·외식비처럼 더 빨리 오르는 항목은 따로 생각해야 해요.",
+    ],
+  };
+}
+
+export interface RoiLite {
+  cost: number;
+  value: number;
+  years: number;
+}
+
+export function roiResult(i: RoiLite) {
+  const profit = i.value - i.cost;
+  const roi = i.cost > 0 ? profit / i.cost : 0;
+  const cagr = i.cost > 0 && i.value > 0 && i.years > 0 ? Math.pow(i.value / i.cost, 1 / i.years) - 1 : 0;
+  return { profit, roi, cagr, multiple: i.cost > 0 ? i.value / i.cost : 0 };
+}
+export const roiProfit = (i: RoiLite) => roiResult(i).profit;
+
+export const ROI_ASSUMPTIONS: Assumption<RoiLite>[] = [
+  won<RoiLite>("value", "회수 금액(현재 가치)", "돌려받은 돈", (i) => i.value, (i, v) => ({ ...i, value: Math.max(0, v) }), (a) => [0, Math.max(a * 2, 20_000_000)]),
+  won<RoiLite>("cost", "투자 원금", "넣은 돈", (i) => i.cost, (i, v) => ({ ...i, cost: Math.max(1, v) }), (a) => [1, Math.max(a * 2, 20_000_000)]),
+  { key: "years", label: "보유 기간", plain: "기간", unit: "years", kind: "fact", get: (i) => i.years, set: (i, v) => ({ ...i, years: Math.max(1, Math.round(v)) }), range: fixedRange(1, 30) },
+];
+
+export function roiPlain(i: RoiLite, top?: TornadoBar) {
+  const r = roiResult(i);
+  return {
+    headline: `${roughWon(i.cost)}을 넣어 ${roughWon(i.value)}이 됐으니 수익률 ${pct(r.roi)}(${r.profit >= 0 ? "이익" : "손실"} ${roughWon(Math.abs(r.profit))})이에요.`,
+    driver: driverLine(top, "손익"),
+    reasons: [
+      `${i.years}년 걸렸다면 1년 평균(연복리) ${pct(r.cagr)}예요. 기간이 다른 투자끼리는 이 연평균으로 비교해야 공정해요.`,
+      `원금의 ${r.multiple.toFixed(2)}배가 됐어요. 같은 기간 예금(연 3%)이었다면 약 ${roughWon(i.cost * Math.pow(1.03, i.years))}이에요.`,
+      "세금·수수료·물가를 빼기 전 수익률이에요. 중간에 받은 배당·이자가 있으면 회수 금액에 더해서 넣어요.",
+    ],
+  };
+}
+
+export interface RentalLite {
+  price: number;
+  deposit: number;
+  rent: number;
+  loan: number;
+  loanRate: number;
+  /** 공실 비율 */
+  vacancy: number;
+  /** 1년 비용(재산세·수선비·관리비 중 집주인 몫) */
+  costs: number;
+}
+
+export function rentalResult(i: RentalLite) {
+  const equity = i.price - i.deposit - i.loan;
+  const rentYear = i.rent * 12 * (1 - Math.min(1, Math.max(0, i.vacancy)));
+  const interest = Math.max(0, i.loan) * Math.max(0, i.loanRate);
+  const net = rentYear - interest - Math.max(0, i.costs);
+  const gross = i.price > 0 ? (i.rent * 12) / i.price : 0;
+  return { equity, rentYear, interest, net, monthly: net / 12, gross, cashYield: equity > 0 ? net / equity : NaN };
+}
+export const rentalNet = (i: RentalLite) => rentalResult(i).net;
+
+export const RENTAL_ASSUMPTIONS: Assumption<RentalLite>[] = [
+  won<RentalLite>("rent", "월세", "월세", (i) => i.rent, (i, v) => ({ ...i, rent: Math.max(0, v) }), (a) => [0, Math.max(a * 2, 3_000_000)]),
+  { key: "loanRate", label: "대출 금리", plain: "대출 이자율", unit: "rate", kind: "assumption", get: (i) => i.loanRate, set: (i, v) => ({ ...i, loanRate: Math.max(0, v) }), range: fixedRange(0, 0.08) },
+  { key: "vacancy", label: "공실률", plain: "비어 있는 기간", unit: "pct", kind: "assumption", get: (i) => i.vacancy, set: (i, v) => ({ ...i, vacancy: Math.min(1, Math.max(0, v)) }), range: fixedRange(0, 0.3) },
+  won<RentalLite>("loan", "대출", "빌린 돈", (i) => i.loan, (i, v) => ({ ...i, loan: Math.max(0, v) }), (a) => [0, Math.max(a * 2, 300_000_000)]),
+  won<RentalLite>("costs", "연 보유 비용", "1년 비용", (i) => i.costs, (i, v) => ({ ...i, costs: Math.max(0, v) }), (a) => [0, Math.max(a * 2, 5_000_000)]),
+  won<RentalLite>("price", "매입가", "집값", (i) => i.price, (i, v) => ({ ...i, price: Math.max(0, v) }), (a) => [0, Math.max(a * 2, 600_000_000)]),
+];
+
+export function rentalBridge(i: RentalLite): BridgeStep[] {
+  const r = rentalResult(i);
+  return [
+    { label: "1년 월세(공실 반영)", value: r.rentYear, kind: "total" },
+    { label: "대출 이자", value: -r.interest, kind: "add" },
+    { label: "보유 비용", value: -Math.max(0, i.costs), kind: "add" },
+    { label: "1년 순수익", value: r.net, kind: "total" },
+  ];
+}
+
+export function rentalPlain(i: RentalLite, top?: TornadoBar) {
+  const r = rentalResult(i);
+  const breakEvenRate = i.loan > 0 ? (r.rentYear - Math.max(0, i.costs)) / i.loan : null;
+  return {
+    headline: Number.isFinite(r.cashYield)
+      ? `내 돈 ${roughWon(r.equity)}을 넣고 1년에 약 ${roughWon(r.net)}(한 달 약 ${roughWon(r.monthly)})이 남아요. 내 돈 대비 수익률 ${pct(r.cashYield)}예요.`
+      : `보증금과 대출로 집값을 다 채워 내 돈이 들지 않아요. 1년에 약 ${roughWon(r.net)}이 남아요.`,
+    driver: driverLine(top, "1년 순수익"),
+    reasons: [
+      `집값 대비 월세 수익률(표면 수익률)은 ${pct(r.gross)}예요. 대출을 쓰면 대출 금리보다 이 수익률이 높을 때만 레버리지가 이득이에요.`,
+      breakEvenRate !== null ? `대출 금리가 ${pct(Math.max(0, breakEvenRate))}를 넘으면 적자가 나요.` : "대출이 없어 금리 변화에 흔들리지 않아요.",
+      "임대소득세·건강보험료, 취득세·중개수수료, 집값 오르내림은 빼고 1년 현금 흐름만 봤어요. 보증금은 돌려줄 돈이라 수익이 아니에요.",
+    ],
+  };
+}
+
+export interface AvgLite {
+  price: number;
+  qty: number;
+  addPrice: number;
+  addQty: number;
+  /** 지금 시세(평가 손익 계산용) */
+  market: number;
+}
+
+export function avgResult(i: AvgLite) {
+  const q = Math.max(0, i.qty) + Math.max(0, i.addQty);
+  const cost = i.price * Math.max(0, i.qty) + i.addPrice * Math.max(0, i.addQty);
+  const avg = q > 0 ? cost / q : 0;
+  const pl = (i.market - avg) * q;
+  return { avg, qty: q, cost, pl, toEven: i.market > 0 ? avg / i.market - 1 : 0, drop: i.price > 0 ? 1 - avg / i.price : 0 };
+}
+export const avgPrice = (i: AvgLite) => avgResult(i).avg;
+
+export const AVG_ASSUMPTIONS: Assumption<AvgLite>[] = [
+  won<AvgLite>("addPrice", "추가 매수가", "새로 사는 값", (i) => i.addPrice, (i, v) => ({ ...i, addPrice: Math.max(0, v) }), (a) => [0, Math.max(a * 2, 10_000)]),
+  { key: "addQty", label: "추가 수량", plain: "새로 사는 주식 수", unit: "shares", kind: "assumption", get: (i) => i.addQty, set: (i, v) => ({ ...i, addQty: Math.max(0, Math.round(v)) }), range: (a) => [0, Math.max(a * 3, 100)] },
+  { key: "qty", label: "보유 수량", plain: "가진 주식 수", unit: "shares", kind: "fact", get: (i) => i.qty, set: (i, v) => ({ ...i, qty: Math.max(0, Math.round(v)) }), range: (a) => [0, Math.max(a * 3, 100)] },
+];
+
+export function avgPlain(i: AvgLite, top?: TornadoBar) {
+  const r = avgResult(i);
+  return {
+    headline: `평균 단가가 ${Math.round(i.price).toLocaleString("ko-KR")}원에서 ${Math.round(r.avg).toLocaleString("ko-KR")}원으로 ${r.drop >= 0 ? "내려가요" : "올라가요"}(${pct(Math.abs(r.drop))}).`,
+    driver: driverLine(top, "평균 단가"),
+    reasons: [
+      i.market > 0 ? (r.toEven > 0 ? `지금 시세 ${Math.round(i.market).toLocaleString("ko-KR")}원에서 ${pct(r.toEven)} 오르면 본전이에요. 지금 평가손익은 ${roughWon(r.pl)}이에요.` : `지금 시세가 평균 단가보다 높아 평가이익 약 ${roughWon(r.pl)}이에요.`) : "지금 시세를 넣으면 본전까지 남은 상승률을 알려 줘요.",
+      `총 ${r.qty.toLocaleString("ko-KR")}주, 들어간 돈 ${roughWon(r.cost)}이에요. 물타기는 손실 종목에 돈이 더 몰리는 거라 회사가 괜찮은지 먼저 확인하세요.`,
+      "매매 수수료와 세금은 빼고 계산했어요.",
+    ],
+  };
+}
+
+// ───────────────────────── 3차: 라떼 효과·현재가치 (2026-11-17) ─────────────────────────
+
+export const LATTE_PER_MONTH = { daily: 30, weekdays: 21.6, weekly: 4.3 } as const;
+export type LatteFrequency = keyof typeof LATTE_PER_MONTH;
+
+export interface LatteLite {
+  cost: number;
+  freq: LatteFrequency;
+  rate: number;
+  years: number;
+}
+
+export function latteResult(i: LatteLite) {
+  const monthly = Math.max(0, i.cost) * LATTE_PER_MONTH[i.freq];
+  return { monthly, ...compoundResult({ principal: 0, monthly, rate: i.rate, years: i.years }) };
+}
+export const latteFv = (i: LatteLite) => latteResult(i).fv;
+
+export const LATTE_ASSUMPTIONS: Assumption<LatteLite>[] = [
+  won<LatteLite>("cost", "한 번에 쓰는 돈", "한 잔 값", (i) => i.cost, (i, v) => ({ ...i, cost: Math.max(0, v) }), (a) => [0, Math.max(a * 3, 15_000)]),
+  { key: "years", label: "기간", plain: "기간", unit: "years", kind: "assumption", get: (i) => i.years, set: (i, v) => ({ ...i, years: Math.max(1, Math.round(v)) }), range: fixedRange(1, 40) },
+  { key: "rate", label: "연 수익률", plain: "수익률", unit: "rate", kind: "assumption", get: (i) => i.rate, set: (i, v) => ({ ...i, rate: Math.max(0, v) }), range: fixedRange(0, 0.1) },
+];
+
+export function lattePlain(i: LatteLite, top?: TornadoBar) {
+  const r = latteResult(i);
+  return {
+    headline: `한 달 약 ${roughWon(r.monthly)}을 대신 모아 연 ${pct(i.rate)}로 굴리면 ${i.years}년 뒤 약 ${roughWon(r.fv)}이 돼요.`,
+    driver: driverLine(top, "모이는 돈"),
+    reasons: [
+      `넣은 돈은 ${roughWon(r.paid)}이고 나머지 ${roughWon(r.gain)}은 복리로 붙은 돈이에요.`,
+      "작은 지출을 모두 끊으라는 뜻은 아니에요. 정말 좋아하는 건 두고, 습관처럼 나가는 돈 하나만 자동이체로 돌려도 차이가 커요.",
+      "세금·물가는 빼고 매달 말에 넣는다고 봤어요.",
+    ],
+  };
+}
+
+export interface PvLite {
+  monthly: number;
+  months: number;
+  rate: number;
+  method: "leibniz" | "hoffman";
+}
+
+/** 월 단위 현재가치 계수. 라이프니츠 = 월 복리, 호프만 = 월 단리(법원 실무는 합계 240 상한) */
+export function pvCoefficient(method: PvLite["method"], months: number, annualRate: number) {
+  const n = Math.max(0, Math.round(months));
+  if (method === "leibniz") {
+    const i = annualRate / 12;
+    return i === 0 ? n : (1 - Math.pow(1 + i, -n)) / i;
+  }
+  let total = 0;
+  for (let k = 1; k <= n; k++) total += 1 / (1 + annualRate * (k / 12));
+  return total;
+}
+export function pvResult(i: PvLite) {
+  const raw = pvCoefficient(i.method, i.months, i.rate);
+  const capped = i.method === "hoffman" && raw > 240;
+  const coef = capped ? 240 : raw;
+  return { coef, raw, pv: Math.max(0, i.monthly) * coef, nominal: Math.max(0, i.monthly) * Math.max(0, Math.round(i.months)), capped };
+}
+export const pvValue = (i: PvLite) => pvResult(i).pv;
+
+export const PV_ASSUMPTIONS: Assumption<PvLite>[] = [
+  { key: "rate", label: "할인율(연)", plain: "이자율", unit: "rate", kind: "assumption", get: (i) => i.rate, set: (i, v) => ({ ...i, rate: Math.max(0, v) }), range: fixedRange(0, 0.1), marks: [{ at: 0.05, label: "민사 법정이율 5%" }] },
+  { key: "months", label: "기간", plain: "받는 기간", unit: "months", kind: "assumption", get: (i) => i.months, set: (i, v) => ({ ...i, months: Math.max(1, Math.round(v)) }), range: fixedRange(12, 480) },
+  won<PvLite>("monthly", "월 수령액", "매달 받는 돈", (i) => i.monthly, (i, v) => ({ ...i, monthly: Math.max(0, v) }), (a) => [0, Math.max(a * 2, 2_000_000)]),
+];
+
+export function pvPlain(i: PvLite, top?: TornadoBar) {
+  const r = pvResult(i);
+  const other = pvResult({ ...i, method: i.method === "leibniz" ? "hoffman" : "leibniz" });
+  return {
+    headline: `매달 ${roughWon(i.monthly)}씩 ${i.months}개월 받을 돈은 지금 한 번에 받으면 약 ${roughWon(r.pv)}이에요(${i.method === "leibniz" ? "라이프니츠" : "호프만"}).`,
+    driver: driverLine(top, "현재가치"),
+    reasons: [
+      `나눠 받는 돈의 합계는 ${roughWon(r.nominal)}이지만, 미래의 돈은 이자를 빼고 지금 가치로 바꾸면 줄어요. 계수는 ${r.coef.toFixed(4)}예요.`,
+      `${i.method === "leibniz" ? "호프만(단리)" : "라이프니츠(복리)"}으로 하면 약 ${roughWon(other.pv)}이에요. 단리인 호프만이 늘 더 커서 받는 사람에게 유리해요.`,
+      r.capped ? `호프만 계수 합(${r.raw.toFixed(1)})이 240을 넘어 240으로 잘랐어요. 법원은 이자만으로 원금보다 많이 받는 일을 막으려고 이렇게 해요.` : "법원 손해배상은 주로 호프만, 보험사는 주로 라이프니츠를 써요. 호프만 계수 합은 240을 넘지 않게 잘라요.",
+    ],
+  };
+}

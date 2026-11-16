@@ -7,6 +7,7 @@ import Layout from '../../components/Layout.astro';
 import UtilityArticle from '../../components/UtilityArticle.astro';
 import RelatedUtilities from '../../components/RelatedUtilities.astro';
 import LatteFactor from '../../components/tools/LatteFactor';
+import LatteScenario from '../../components/tools/LatteScenario';
 import { locales } from '../../lib/i18n';
 import { utilityJsonLd } from '../../lib/utility-jsonld';
 
@@ -146,7 +147,7 @@ const schema = utilityJsonLd({ name: c.title, description: c.description, url, l
 ---
 <Layout title={c.title} description={c.description} locale={locale} availableLocales={[...locales]} canonicalURL={url}>
   <ToolShell title={c.title} description={c.description}>
-    <LatteFactor client:load locale={locale} />
+    {locale === 'ko' ? <LatteScenario client:load /> : <LatteFactor client:load locale={locale} />}
     <UtilityArticle c={c} />
     <RelatedUtilities locale={locale} current="latte-factor-calculator" group="money" />
   </ToolShell>
