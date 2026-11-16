@@ -1,7 +1,7 @@
 ---
 // Moved from blog.oiyo.net/jeonse-monthly-converter/ on 2026-10-27 (W12); ko-only on Tools because it applies Korean rules. Default rate 5.5% -> 4.5% (legal cap is min(10%, base rate + 2%p)).
 import KrFinancePage from "../../components/KrFinancePage.astro";
-import JeonseMonthlyConverter from "../../components/tools/JeonseMonthlyConverter";
+import KrRentConvertScenario from "../../components/tools/KrRentConvertScenario";
 
 const title = ({
     title: "전월세 전환 계산기 — 전세↔월세 전환율 계산",
@@ -38,5 +38,5 @@ const ko = { introTitle: c.introTitle, intro: c.intro, howToTitle: c.howToTitle,
 const faqs = c.faqs.map((f) => ({ q: f.question, a: f.answer }));
 ---
 <KrFinancePage slug="jeonse-monthly-converter" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
-  <JeonseMonthlyConverter client:load locale="ko" />
+  <KrRentConvertScenario client:load />
 </KrFinancePage>

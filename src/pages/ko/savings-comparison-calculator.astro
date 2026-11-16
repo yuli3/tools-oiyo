@@ -1,7 +1,7 @@
 ---
 // Moved from blog.oiyo.net/savings-comparison-calculator/ on 2026-10-27 (W15); ko-only on Tools: Korean deposit products and 15.4% interest tax.
 import KrFinancePage from "../../components/KrFinancePage.astro";
-import SavingsComparisonCalculator from "../../components/tools/SavingsComparisonCalculator";
+import KrSavingsCompareScenario from "../../components/tools/KrSavingsCompareScenario";
 
 const title = ({
     title: "저축 상품 비교 계산기 — 세후 수령액으로 최적 상품 비교",
@@ -39,5 +39,5 @@ const faqs = [
   ];
 ---
 <KrFinancePage slug="savings-comparison-calculator" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
-  <SavingsComparisonCalculator client:load locale="ko" />
+  <KrSavingsCompareScenario client:load />
 </KrFinancePage>
