@@ -7,6 +7,7 @@ import Layout from '../../components/Layout.astro';
 import UtilityArticle, { type UtilityContent } from '../../components/UtilityArticle.astro';
 import RelatedUtilities from '../../components/RelatedUtilities.astro';
 import PensionTaxCalculator from '../../components/tools/PensionTaxCalculator';
+import KrPensionCreditScenario from '../../components/tools/KrPensionCreditScenario';
 import PensionCountryCalculator from '../../components/tools/PensionCountryCalculator';
 import type { PensionCountry } from '../../lib/pension-countries';
 import { locales } from '../../lib/i18n';
@@ -216,7 +217,7 @@ const schema = utilityJsonLd({ name: m.title, description: m.description, url, l
 ---
 <Layout title={m.title} description={m.description} locale={locale} availableLocales={[...locales]} canonicalURL={url}>
   <ToolShell title={m.title} description={m.description}>
-    {country ? <PensionCountryCalculator client:load country={country} initialTab="withdrawal" /> : <PensionTaxCalculator client:load locale={locale === 'ko' ? 'ko' : 'en'} />}
+    {country ? <PensionCountryCalculator client:load country={country} initialTab="withdrawal" /> : locale === 'ko' ? <KrPensionCreditScenario client:load /> : <PensionTaxCalculator client:load locale="en" />}
     <UtilityArticle c={c} />
     <RelatedUtilities locale={locale} current="pension-tax-calculator" group="money" />
   </ToolShell>
