@@ -1,0 +1,15 @@
+---
+// 노동권 도구 묶음 A (2026-11-16, Gemini 이전). 엔진: lib/kr-welfare-2026.ts
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import VoluntaryQuit from "../../components/tools/welfare/VoluntaryQuit";
+import { WELFARE_AS_OF } from "../../lib/kr-welfare-2026";
+
+const title = "자진퇴사 실업급여 점검 — 정당한 이직 사유(체불 2개월·통근 3시간·괴롭힘) 해당 여부";
+const description = "자진퇴사해도 실업급여를 받을 수 있는 정당한 이직 사유(고용보험법 시행규칙 별표 2)에 해당하는지, 임금체불 2개월·통근 왕복 3시간·가족 간호 30일·가입 기간 180일 요건과 준비할 증빙을 알려 줘요.";
+const ko = {"introTitle": "스스로 그만둬도 실업급여를 받을 수 있나요", "intro": "실업급여는 원래 회사 사정으로 그만둔 사람이 받지만, 임금이 2개월 이상 밀렸거나 직장 내 괴롭힘을 당했거나 사업장 이전으로 통근이 왕복 3시간 이상이 되는 등 고용보험법 시행규칙 별표 2의 정당한 사유가 있으면 자진퇴사여도 받을 수 있어요. 이직 전 18개월 동안 피보험 단위기간 180일 이상도 필요해요.", "howToTitle": "사용 방법", "steps": ["그만둔 이유를 모두 골라요.", "기간(개월)·통근 시간·간호 날수 같은 조건과 가입 기간을 넣어요.", "요건을 채웠는지 막대로 보고, 고용센터에 낼 증빙 목록을 받아요."], "highlightsTitle": "주요 특징", "highlights": [{"title": "별표 2 전체", "body": "근로조건 저하·체불·최저임금 미달·연장근로 위반·휴업 70% 미만(1년 안 2개월 이상), 차별, 성희롱, 직장 내 괴롭힘, 폐업·감원, 권고사직, 통근, 간호, 질병, 임신·육아, 계약 만료."}, {"title": "기준선 막대", "body": "2개월, 왕복 3시간, 30일, 180일 기준까지 얼마나 왔는지 보여 줘요."}, {"title": "증빙 목록", "body": "사유별로 고용센터에 낼 서류를 정리해요."}, {"title": "최종 판단은 고용센터", "body": "이 도구는 법령 기준 점검이에요. 거절되면 90일 안에 심사청구할 수 있어요."}], "disclaimer": "고용보험법 시행규칙 별표 2(개정 2024. 7. 1.) 기준의 점검이에요. 실제 인정 여부는 고용센터가 사실관계와 증빙으로 판단해요. 법률 자문이 아니며 1350에서 무료 상담을 받으세요."};
+const faqs = [{"q": "이직확인서에 '개인 사정'으로 적혀 있어요", "a": "고용센터에 정당한 사유와 증빙을 내면 다시 판단받을 수 있어요. 회사에 정정도 요청해 보세요."}, {"q": "임금이 한 달만 밀렸어요", "a": "별표 2 제1호는 이직 전 1년 안에 2개월 이상 있어야 해요. 한 달이면 다른 사유가 있는지 확인해요."}, {"q": "괴롭힘은 어떻게 증명하나요?", "a": "회사 신고·조사 결과, 노동청 진정 기록, 메시지, 진단서, 동료 진술이 도움이 돼요."}, {"q": "얼마나 받나요?", "a": "실업급여 계산기에서 나이·가입 기간·평균임금으로 계산해요."}];
+---
+<KrFinancePage slug="voluntary-quit-unemployment-checker" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <VoluntaryQuit client:load />
+  <p class="mt-4 text-xs text-muted-foreground">근거: 고용보험법 제40조·제58조·제87조, 시행규칙 제101조②·별표 2(개정 2024. 7. 1.). 기준일 {WELFARE_AS_OF}. <a class="underline" href="/ko/benefit-rights-toolkit/">생활 지원금·노동권 도구 모음</a> · <a class="underline" href="/ko/labor-law-guide/">노동법 길잡이</a></p>
+</KrFinancePage>

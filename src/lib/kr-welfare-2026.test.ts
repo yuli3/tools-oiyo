@@ -239,3 +239,27 @@ test("연차 사용촉진 일정: 회계연도 7/1~7/10, 10/31 / 첫해 10/1~10/
   // 말일 보정: 6월 30일 끝 → 6개월 전 1월 1일 시작
   assert.equal(leavePromotionSchedule("annual", "2027-06-30")[0].from, "2027-01-01");
 });
+
+import { voluntaryQuitCheck, directPaymentCheck } from "./kr-welfare-2026.ts";
+
+test("자진퇴사 정당 사유: 체불 2개월·통근 3시간·간호 30일+휴직 거부·가입 180일", () => {
+  assert.equal(voluntaryQuitCheck({ reasons: ["unpaidWages"], months: 2, insuredDays: 200 }).verdict, "likely");
+  assert.equal(voluntaryQuitCheck({ reasons: ["unpaidWages"], months: 1, insuredDays: 200 }).verdict, "check");
+  assert.equal(voluntaryQuitCheck({ reasons: ["commute"], commuteHours: 3, insuredDays: 200 }).reasonOk, true);
+  assert.equal(voluntaryQuitCheck({ reasons: ["familyCare"], careDays: 40, leaveRefused: false, insuredDays: 200 }).reasonOk, false);
+  assert.equal(voluntaryQuitCheck({ reasons: ["workplaceHarassment"], insuredDays: 150 }).verdict, "check");
+  assert.equal(voluntaryQuitCheck({ reasons: [], insuredDays: 300 }).verdict, "unlikely");
+});
+
+test("하도급 직접 지급: 2회분+요청, 발주자 미지급 범위, 60일 뒤 지연이자 15.5%", () => {
+  const base = { cause: "twoMissed" as const, missedInstallments: 2, requested: true, primeStopRequest: false, workValue: 50_000_000, receivedFromPrime: 10_000_000, ownerUnpaidToPrime: 30_000_000, daysSinceDelivery: 125 };
+  const r = directPaymentCheck(base);
+  assert.equal(r.direct, 30_000_000);
+  assert.equal(r.remainder, 10_000_000);
+  assert.equal(r.lateInterest, Math.floor((40_000_000 * 0.155 * 65) / 365));
+  assert.equal(directPaymentCheck({ ...base, requested: false }).direct, 0);
+  assert.equal(directPaymentCheck({ ...base, missedInstallments: 1 }).eligible, false);
+  assert.equal(directPaymentCheck({ ...base, cause: "agreement", requested: false }).eligible, true);
+  assert.equal(directPaymentCheck({ ...base, primeStopRequest: true }).direct, 0);
+  assert.equal(directPaymentCheck({ ...base, daysSinceDelivery: 60 }).lateInterest, 0);
+});
