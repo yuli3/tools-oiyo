@@ -4,6 +4,7 @@ import ToolShell from '../../components/ToolShell.astro';
 import Layout from '../../components/Layout.astro';
 import RelatedUtilities from '../../components/RelatedUtilities.astro';
 import WeddingPlanningCalculator from '../../components/tools/WeddingPlanningCalculator';
+import WeddingPlanningScenario from '../../components/tools/WeddingPlanningScenario';
 import { locales } from '../../lib/i18n';
 import { utilityJsonLd } from '../../lib/utility-jsonld';
 
@@ -45,7 +46,7 @@ const schema = utilityJsonLd({ name: m.title, description: m.description, url, l
 ---
 <Layout title={m.title} description={m.description} locale={locale} availableLocales={[...locales]} canonicalURL={url}>
   <ToolShell title={m.title} description={m.description}>
-    <WeddingPlanningCalculator client:load locale={locale === 'ko' ? 'ko' : 'en'} />
+    {locale === 'ko' ? <WeddingPlanningScenario client:load /> : <WeddingPlanningCalculator client:load locale="en" />}
     <RelatedUtilities locale={locale} current="wedding-planning-calculator" group="calc" />
   </ToolShell>
   <script type="application/ld+json" set:html={JSON.stringify(schema)} />
