@@ -5,6 +5,7 @@ import Layout from '../../components/Layout.astro';
 import UtilityArticle, { type UtilityContent } from '../../components/UtilityArticle.astro';
 import RelatedUtilities from '../../components/RelatedUtilities.astro';
 import OneRepMaxCalculator from '../../components/tools/OneRepMaxCalculator';
+import OneRepMaxScenario from '../../components/tools/OneRepMaxScenario';
 import { locales } from '../../lib/i18n';
 import { utilityJsonLd } from '../../lib/utility-jsonld';
 
@@ -145,7 +146,7 @@ const schema = utilityJsonLd({ name: m.title, description: m.description, url, l
 ---
 <Layout title={m.title} description={m.description} locale={locale} availableLocales={[...locales]} canonicalURL={url}>
   <ToolShell title={m.title} description={m.description}>
-    <OneRepMaxCalculator client:load locale={locale} />
+    {locale === 'ko' ? <OneRepMaxScenario client:load /> : <OneRepMaxCalculator client:load locale={locale} />}
     <UtilityArticle c={c} />
     <RelatedUtilities locale={locale} current="one-rep-max-calculator" group="health" />
   </ToolShell>

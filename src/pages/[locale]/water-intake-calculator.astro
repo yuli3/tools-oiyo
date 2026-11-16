@@ -5,6 +5,7 @@ import Layout from '../../components/Layout.astro';
 import UtilityArticle, { type UtilityContent } from '../../components/UtilityArticle.astro';
 import RelatedUtilities from '../../components/RelatedUtilities.astro';
 import WaterIntakeCalculator from '../../components/tools/WaterIntakeCalculator';
+import WaterIntakeScenario from '../../components/tools/WaterIntakeScenario';
 import { locales } from '../../lib/i18n';
 import { utilityJsonLd } from '../../lib/utility-jsonld';
 
@@ -163,7 +164,7 @@ const schema = utilityJsonLd({ name: m.title, description: m.description, url, l
 ---
 <Layout title={m.title} description={m.description} locale={locale} availableLocales={[...locales]} canonicalURL={url}>
   <ToolShell title={m.title} description={m.description}>
-    <WaterIntakeCalculator client:load locale={locale === 'ko' ? 'ko' : 'en'} />
+    {locale === 'ko' ? <WaterIntakeScenario client:load /> : <WaterIntakeCalculator client:load locale="en" />}
     <UtilityArticle c={c} />
     <RelatedUtilities locale={locale} current="water-intake-calculator" group="health" />
   </ToolShell>

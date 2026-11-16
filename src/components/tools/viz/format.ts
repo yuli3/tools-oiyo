@@ -39,6 +39,16 @@ export function formatUnit(unit: AssumptionUnit, v: number, mode: AdvisoryMode =
       return `${(Math.round(v * 10) / 10).toLocaleString("ko-KR")}cm`;
     case "kcal":
       return `${Math.round(v).toLocaleString("ko-KR")}kcal`;
+    case "g":
+      return `${Math.round(v).toLocaleString("ko-KR")}g`;
+    case "ml":
+      return `${Math.round(v).toLocaleString("ko-KR")}ml`;
+    case "mg":
+      return `${Math.round(v).toLocaleString("ko-KR")}mg`;
+    case "bpm":
+      return `${Math.round(v)}회/분`;
+    case "reps":
+      return `${Math.round(v)}회`;
   }
 }
 
