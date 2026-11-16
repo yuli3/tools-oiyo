@@ -1,0 +1,15 @@
+---
+// Gemini 이전 B묶음 4차 (2026-11-16). 엔진: lib/kr-household-tax-2026.ts
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import FilingDeadline from "../../components/tools/welfare/FilingDeadline";
+import { HOUSEHOLD_TAX_AS_OF } from "../../lib/kr-household-tax-2026";
+
+const title = "상속세·증여세 신고기한 계산기 — 6개월·3개월·가산세";
+const description = "상속개시일이나 증여일을 넣으면 상속세(말일부터 6개월)·증여세(3개월) 신고기한, 취득세·사망신고·상속포기 기한을 날짜로 보여 주고, 늦을 때 3% 공제 상실·무신고 가산세·납부지연 가산세를 계산해요.";
+const ko = {"introTitle": "기한은 '속한 달의 말일'부터 세요", "intro": "상속세는 돌아가신 날이 속한 달의 말일부터 6개월(해외 9개월), 증여세는 증여일이 속한 달의 말일부터 3개월 안에 신고·납부해요. 기한 안에 신고하면 3%를 빼 주고, 늦으면 무신고 가산세 20%와 하루 0.022% 납부지연 가산세가 붙어요.", "howToTitle": "사용 방법", "steps": ["상속인지 증여인지 고르고 날짜를 넣어요.", "예상 세금을 넣어요.", "슬라이더로 며칠 늦으면 얼마를 더 내는지 봐요."], "highlightsTitle": "주요 특징", "highlights": [{"title": "모든 기한 한눈에", "body": "사망신고, 상속포기, 종합소득세, 취득세, 상속·증여세 기한을 함께 보여 줘요."}, {"title": "가산세 계산", "body": "기한 후 신고 감면(50·30·20%)과 납부지연 가산세를 반영해요."}, {"title": "증여 반환", "body": "신고기한 안팎에 돌려줄 때의 효과를 알려 줘요."}, {"title": "D-day 그래프", "body": "오늘부터 남은 날을 막대로 보여 줘요."}], "disclaimer": "추정이에요. 사망신고·상속포기 기한은 사망·상속을 안 날부터 세요. 과소신고·부정 무신고 가산세는 넣지 않았어요."};
+const faqs = [{"q": "3월 15일에 돌아가셨으면 언제까지예요?", "a": "3월 31일부터 6개월이라 9월 30일까지 상속세를 신고·납부해요."}, {"q": "증여세는 누가 내요?", "a": "받은 사람(수증자)이 신고·납부해요."}, {"q": "기한을 넘겼어요.", "a": "1개월 안에 기한 후 신고를 하면 무신고 가산세의 50%를 깎아 줘요. 빠를수록 좋아요."}, {"q": "세금을 한 번에 못 내요.", "a": "1천만 원을 넘으면 2개월 분납, 2천만 원을 넘으면 담보를 잡고 연부연납(상속 10년, 증여 5년)을 신청할 수 있어요."}];
+---
+<KrFinancePage slug="inheritance-gift-filing-deadline-calculator" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <FilingDeadline client:load />
+  <p class="mt-4 text-xs text-muted-foreground">근거: 상속세 및 증여세법 제4조④·제67조·제68조·제69조, 지방세법 제20조①, 국세기본법 제47조의2·제47조의4·제48조②, 민법 제1019조. 기준일 {HOUSEHOLD_TAX_AS_OF}. <a class="underline" href="/ko/inheritance-tax-calculator/">상속세 계산기</a> · <a class="underline" href="/ko/gift-tax-calculator/">증여세 계산기</a> · <a class="underline" href="/ko/tax-law-guide/">세금 법령 길잡이</a> · <a class="underline" href="/ko/benefit-rights-toolkit/">생활 지원금·노동권 도구 모음</a></p>
+</KrFinancePage>

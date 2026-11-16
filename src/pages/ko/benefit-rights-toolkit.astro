@@ -36,6 +36,10 @@ const situations = [
   ["창업하는데 간이과세가 나을까요", "general-vs-simplified-vat-calculator", "매출 1억 400만 원 미만이면 간이를 고를 수 있어요. 인테리어 매입이 크면 일반과세 환급이 나을 수 있어요."],
   ["사업용 차를 사거나 리스하려고 해요", "business-car-expense-calculator", "운행기록부가 없으면 1년 1,500만 원까지만 비용이에요. 감가상각은 연 800만 원까지예요."],
   ["미국 주식을 직접 살까, 국내 ETF로 살까", "overseas-stock-vs-etf-tax-calculator", "1년 이익이 약 833만 원보다 적으면 직접 투자, 크면 국내 상장 ETF가 세금이 적어요."],
+  ["주거용 오피스텔이 있는데 집을 또 사요", "officetel-house-count-checker", "2020-08-12 이후 산 주거용 오피스텔은 다음 집 취득세 주택 수에 들어가요. 청약에서는 주택이 아니에요."],
+  ["재건축 입주권이나 분양권을 팔아요", "redevelopment-ticket-vs-presale-tax-calculator", "입주권은 2년을 넘기면 기본세율, 분양권은 1년 넘어도 60%예요."],
+  ["부모님 집을 상속받았어요", "inherited-house-appraisal-vs-official-price-calculator", "상속세가 0이면 감정평가로 높게 신고해야 나중 양도세가 줄어요."],
+  ["상속·증여 신고는 언제까지예요", "inheritance-gift-filing-deadline-calculator", "상속은 돌아가신 달 말일부터 6개월, 증여는 받은 달 말일부터 3개월이에요."],
   ["한 종목에 크게 투자했어요", "stock-major-shareholder-tax-calculator", "작년 말 한 종목을 50억 원 넘게 가졌으면 올해 판 이익에 양도세가 붙어요. 연말 보유를 미리 확인해요."],
 ];
 const more = [
@@ -77,6 +81,10 @@ const mcpTools = [
   ["compare_kr_general_vs_simplified_vat", "일반과세 vs 간이과세 부가세"],
   ["calculate_kr_business_car_expense", "업무용 승용차 비용 한도"],
   ["compare_kr_overseas_stock_vs_etf_tax", "해외주식 직접 vs 국내 상장 해외ETF 세금"],
+  ["check_kr_officetel_house_count", "오피스텔 주택 수 판정"],
+  ["compare_kr_ticket_vs_presale_tax", "재건축 입주권 vs 분양권 양도세"],
+  ["compare_kr_inherited_house_valuation", "상속주택 감정평가 vs 공시가격"],
+  ["plan_kr_inheritance_gift_filing_deadline", "상속·증여 신고기한·가산세"],
 ];
 const titleOf = (slug: string) => welfareTools.find((t) => t.slug === slug)?.title ?? slug;
 ---

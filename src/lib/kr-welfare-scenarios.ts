@@ -7,7 +7,7 @@ import {
   type EitcInput, type FixedOtInput, type WorkHours, type LtcInput, type GuaranteeInput, type InjuryInput, type MaternityInput, type OrdinaryWageInput, type PensionInput, type RentInput,
 } from "./kr-welfare-2026.ts";
 import { RENTAL, comprehensiveRealEstateTax, creThreshold, rentalIncomeTax, type CreInput, type RentalInput } from "./kr-home-tax-2026.ts";
-import { COMMERCIAL_LEASE, DEPENDENT_2026, FAMILY_2026, FREE_USE_FACTOR, MAJOR_2026, RELATION_LABEL, commercialRentCheck, businessCarExpense, overseasCompare, BUSINESS_CAR, OVERSEAS_COMPARE, type BusinessCarInput, type OverseasCompareInput, smeYouthReduction, vatTypeCompare, yellowUmbrella, SIMPLIFIED_VAT, YELLOW_UMBRELLA, type SmeYouthInput, type VatTypeInput, type YellowUmbrellaInput, dependentsTax, familyLoanGift, freeUseGift, lowPriceSale, majorShareholderTax, type CommercialRentInput, type DependentsInput, type FamilyLoanInput, type FreeUseInput, type LowPriceSaleInput, type MajorShareholderInput } from "./kr-household-tax-2026.ts";
+import { officetelHouseCount, ticketPresaleTax, inheritedValuation, type OfficetelInput, type TicketPresaleInput, type InheritedValuationInput, COMMERCIAL_LEASE, DEPENDENT_2026, FAMILY_2026, FREE_USE_FACTOR, MAJOR_2026, RELATION_LABEL, commercialRentCheck, businessCarExpense, overseasCompare, BUSINESS_CAR, OVERSEAS_COMPARE, type BusinessCarInput, type OverseasCompareInput, smeYouthReduction, vatTypeCompare, yellowUmbrella, SIMPLIFIED_VAT, YELLOW_UMBRELLA, type SmeYouthInput, type VatTypeInput, type YellowUmbrellaInput, dependentsTax, familyLoanGift, freeUseGift, lowPriceSale, majorShareholderTax, type CommercialRentInput, type DependentsInput, type FamilyLoanInput, type FreeUseInput, type LowPriceSaleInput, type MajorShareholderInput } from "./kr-household-tax-2026.ts";
 import { roughWon, type Assumption } from "./scenario.ts";
 
 const money = <I>(key: string, label: string, plain: string, get: (i: I) => number, set: (i: I, v: number) => I, range: (a: number) => [number, number], marks?: { at: number; label: string }[], kind: "fact" | "assumption" = "assumption"): Assumption<I> => ({ key, label, plain, unit: "won", kind, get, set, range, marks });
@@ -320,4 +320,24 @@ export const overseasGap = (i: OverseasCompareInput) => { const r = overseasComp
 export const OVERSEAS_ASSUMPTIONS: Assumption<OverseasCompareInput>[] = [
   money("gain", "연간 실현 매매차익", "올해 팔아서 번 돈", (x) => x.gain, (x, v) => ({ ...x, gain: Math.max(0, v) }), (a) => [0, Math.max(40_000_000, a * 1.5)], [{ at: Math.ceil((OVERSEAS_COMPARE.deduction * OVERSEAS_COMPARE.directRate) / (OVERSEAS_COMPARE.directRate - OVERSEAS_COMPARE.etfRate)), label: "약 833만" }, { at: OVERSEAS_COMPARE.comprehensiveLine, label: "2천만" }]),
   money("otherFinancial", "다른 이자·배당소득", "예금 이자·배당", (x) => x.otherFinancial ?? 0, (x, v) => ({ ...x, otherFinancial: Math.max(0, v) }), () => [0, 30_000_000], undefined, "fact"),
+];
+
+// ───────────────────────── 오피스텔·입주권 vs 분양권·상속주택 평가 (Gemini 이전 B 4차) ─────────────────────────
+export const officetelExtra = (i: OfficetelInput) => officetelHouseCount(i).nextExtra;
+export const OFFICETEL_ASSUMPTIONS: Assumption<OfficetelInput>[] = [
+  money("nextHomePrice", "다음에 살 집 가격", "다음에 살 집 값", (x) => x.nextHomePrice ?? 0, (x, v) => ({ ...x, nextHomePrice: Math.max(0, v) }), (a) => [0, Math.max(1_500_000_000, a * 1.5)], [{ at: 600_000_000, label: "6억" }, { at: 900_000_000, label: "9억" }]),
+  money("price", "오피스텔 취득가", "오피스텔 값", (x) => x.price, (x, v) => ({ ...x, price: Math.max(0, v) }), (a) => [0, Math.max(800_000_000, a * 2)], [{ at: 300_000_000, label: "3억(지방 소형)" }, { at: 600_000_000, label: "6억(수도권 소형)" }], "fact"),
+];
+
+export const ticketTotal = (i: TicketPresaleInput) => ticketPresaleTax(i).total;
+export const TICKET_ASSUMPTIONS: Assumption<TicketPresaleInput>[] = [
+  money("gain", "양도차익", "판 값 − 산 값", (x) => x.gain, (x, v) => ({ ...x, gain: Math.max(0, v) }), (a) => [0, Math.max(500_000_000, a * 2)]),
+  { key: "holdYears", label: "보유기간", plain: "가지고 있던 기간", unit: "years", kind: "fact", get: (x) => x.holdYears, set: (x, v) => ({ ...x, holdYears: Math.max(0, v) }), range: () => [0, 10], marks: [{ at: 1, label: "1년" }, { at: 2, label: "2년" }] },
+];
+
+export const valuationGap = (i: InheritedValuationInput) => { const r = inheritedValuation(i); return r.official.total - r.appraisal.total; };
+export const VALUATION_ASSUMPTIONS: Assumption<InheritedValuationInput>[] = [
+  money("appraisal", "감정평가액", "감정평가로 나올 값", (x) => x.appraisal, (x, v) => ({ ...x, appraisal: Math.max(0, v) }), (a) => [0, Math.max(2_000_000_000, a * 1.5)]),
+  money("otherEstate", "다른 순상속재산", "집 말고 물려받는 재산", (x) => x.otherEstate, (x, v) => ({ ...x, otherEstate: Math.max(0, v) }), (a) => [0, Math.max(3_000_000_000, a * 2)], [{ at: 500_000_000, label: "5억" }], "fact"),
+  money("salePrice", "나중에 팔 값", "팔 때 받을 값", (x) => x.salePrice, (x, v) => ({ ...x, salePrice: Math.max(0, v) }), (a) => [0, Math.max(2_000_000_000, a * 1.5)]),
 ];

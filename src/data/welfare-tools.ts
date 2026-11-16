@@ -30,5 +30,9 @@ export const welfareTools = [
   { slug: "general-vs-simplified-vat-calculator", title: "일반과세 vs 간이과세 계산기", description: "매출·매입·업종으로 일반과세자와 간이과세자의 1년 부가세를 비교해요. 1억 400만 원 기준, 4,800만 원 면제, 업종 부가가치율, 환급 차이를 반영해요." },
   { slug: "business-car-expense-calculator", title: "업무용 승용차 비용 한도 계산기", description: "업무용 승용차 1년 비용 중 세법상 인정되는 금액을 운행기록부 1,500만 원·감가상각 800만 원 한도, 리스·렌트까지 반영해 계산해요." },
   { slug: "overseas-stock-vs-etf-tax-calculator", title: "해외주식 직접 vs 해외ETF 세금 비교", description: "같은 이익을 해외주식 직접(22%), 국내 상장 해외ETF(15.4%·종합과세), ISA로 냈을 때 세금을 비교하고 유리한 쪽이 바뀌는 지점을 보여 줘요." },
+  { slug: "officetel-house-count-checker", title: "오피스텔 주택 수 판정", description: "오피스텔이 다음 집 취득세, 양도세 중과·종부세, 1주택 비과세, 청약에서 주택 수에 들어가는지 세목별로 판정하고 늘어나는 취득세를 계산해요." },
+  { slug: "redevelopment-ticket-vs-presale-tax-calculator", title: "재건축 입주권 vs 분양권 양도세", description: "조합원입주권과 분양권을 팔 때 양도세를 비교해요. 입주권은 2년 뒤 기본세율·장기보유특별공제·비과세, 분양권은 70%·60%예요." },
+  { slug: "inherited-house-appraisal-vs-official-price-calculator", title: "상속주택 감정평가 vs 공시가격", description: "상속받은 집을 공시가격과 감정평가로 신고할 때 상속세와 나중 양도세 합계를 비교해 어느 쪽이 유리한지 알려 줘요." },
+  { slug: "inheritance-gift-filing-deadline-calculator", title: "상속세·증여세 신고기한 계산기", description: "상속 6개월·증여 3개월 신고기한과 취득세·사망신고·상속포기 기한을 날짜로 보여 주고, 늦을 때 가산세를 계산해요." },
   { slug: "commercial-rent-increase-checker", title: "상가 임대료 인상 5% 상한 점검", description: "보증금과 월세로 환산보증금을 계산해 상가임대차법 5% 증액 상한이 적용되는지, 올릴 수 있는 최대 월세와 1년 재인상 제한, 보증금 월세 전환율(12%·기준금리 4.5배)을 알려 줘요." },
 ] as const;
