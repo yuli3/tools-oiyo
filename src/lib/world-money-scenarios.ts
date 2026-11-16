@@ -399,3 +399,86 @@ export function avgPlain(i: AvgLite, top?: TornadoBar) {
     ],
   };
 }
+
+// ───────────────────────── 3차: 라떼 효과·현재가치 (2026-11-17) ─────────────────────────
+
+export const LATTE_PER_MONTH = { daily: 30, weekdays: 21.6, weekly: 4.3 } as const;
+export type LatteFrequency = keyof typeof LATTE_PER_MONTH;
+
+export interface LatteLite {
+  cost: number;
+  freq: LatteFrequency;
+  rate: number;
+  years: number;
+}
+
+export function latteResult(i: LatteLite) {
+  const monthly = Math.max(0, i.cost) * LATTE_PER_MONTH[i.freq];
+  return { monthly, ...compoundResult({ principal: 0, monthly, rate: i.rate, years: i.years }) };
+}
+export const latteFv = (i: LatteLite) => latteResult(i).fv;
+
+export const LATTE_ASSUMPTIONS: Assumption<LatteLite>[] = [
+  won<LatteLite>("cost", "한 번에 쓰는 돈", "한 잔 값", (i) => i.cost, (i, v) => ({ ...i, cost: Math.max(0, v) }), (a) => [0, Math.max(a * 3, 15_000)]),
+  { key: "years", label: "기간", plain: "기간", unit: "years", kind: "assumption", get: (i) => i.years, set: (i, v) => ({ ...i, years: Math.max(1, Math.round(v)) }), range: fixedRange(1, 40) },
+  { key: "rate", label: "연 수익률", plain: "수익률", unit: "rate", kind: "assumption", get: (i) => i.rate, set: (i, v) => ({ ...i, rate: Math.max(0, v) }), range: fixedRange(0, 0.1) },
+];
+
+export function lattePlain(i: LatteLite, top?: TornadoBar) {
+  const r = latteResult(i);
+  return {
+    headline: `한 달 약 ${roughWon(r.monthly)}을 대신 모아 연 ${pct(i.rate)}로 굴리면 ${i.years}년 뒤 약 ${roughWon(r.fv)}이 돼요.`,
+    driver: driverLine(top, "모이는 돈"),
+    reasons: [
+      `넣은 돈은 ${roughWon(r.paid)}이고 나머지 ${roughWon(r.gain)}은 복리로 붙은 돈이에요.`,
+      "작은 지출을 모두 끊으라는 뜻은 아니에요. 정말 좋아하는 건 두고, 습관처럼 나가는 돈 하나만 자동이체로 돌려도 차이가 커요.",
+      "세금·물가는 빼고 매달 말에 넣는다고 봤어요.",
+    ],
+  };
+}
+
+export interface PvLite {
+  monthly: number;
+  months: number;
+  rate: number;
+  method: "leibniz" | "hoffman";
+}
+
+/** 월 단위 현재가치 계수. 라이프니츠 = 월 복리, 호프만 = 월 단리(법원 실무는 합계 240 상한) */
+export function pvCoefficient(method: PvLite["method"], months: number, annualRate: number) {
+  const n = Math.max(0, Math.round(months));
+  if (method === "leibniz") {
+    const i = annualRate / 12;
+    return i === 0 ? n : (1 - Math.pow(1 + i, -n)) / i;
+  }
+  let total = 0;
+  for (let k = 1; k <= n; k++) total += 1 / (1 + annualRate * (k / 12));
+  return total;
+}
+export function pvResult(i: PvLite) {
+  const raw = pvCoefficient(i.method, i.months, i.rate);
+  const capped = i.method === "hoffman" && raw > 240;
+  const coef = capped ? 240 : raw;
+  return { coef, raw, pv: Math.max(0, i.monthly) * coef, nominal: Math.max(0, i.monthly) * Math.max(0, Math.round(i.months)), capped };
+}
+export const pvValue = (i: PvLite) => pvResult(i).pv;
+
+export const PV_ASSUMPTIONS: Assumption<PvLite>[] = [
+  { key: "rate", label: "할인율(연)", plain: "이자율", unit: "rate", kind: "assumption", get: (i) => i.rate, set: (i, v) => ({ ...i, rate: Math.max(0, v) }), range: fixedRange(0, 0.1), marks: [{ at: 0.05, label: "민사 법정이율 5%" }] },
+  { key: "months", label: "기간", plain: "받는 기간", unit: "months", kind: "assumption", get: (i) => i.months, set: (i, v) => ({ ...i, months: Math.max(1, Math.round(v)) }), range: fixedRange(12, 480) },
+  won<PvLite>("monthly", "월 수령액", "매달 받는 돈", (i) => i.monthly, (i, v) => ({ ...i, monthly: Math.max(0, v) }), (a) => [0, Math.max(a * 2, 2_000_000)]),
+];
+
+export function pvPlain(i: PvLite, top?: TornadoBar) {
+  const r = pvResult(i);
+  const other = pvResult({ ...i, method: i.method === "leibniz" ? "hoffman" : "leibniz" });
+  return {
+    headline: `매달 ${roughWon(i.monthly)}씩 ${i.months}개월 받을 돈은 지금 한 번에 받으면 약 ${roughWon(r.pv)}이에요(${i.method === "leibniz" ? "라이프니츠" : "호프만"}).`,
+    driver: driverLine(top, "현재가치"),
+    reasons: [
+      `나눠 받는 돈의 합계는 ${roughWon(r.nominal)}이지만, 미래의 돈은 이자를 빼고 지금 가치로 바꾸면 줄어요. 계수는 ${r.coef.toFixed(4)}예요.`,
+      `${i.method === "leibniz" ? "호프만(단리)" : "라이프니츠(복리)"}으로 하면 약 ${roughWon(other.pv)}이에요. 단리인 호프만이 늘 더 커서 받는 사람에게 유리해요.`,
+      r.capped ? `호프만 계수 합(${r.raw.toFixed(1)})이 240을 넘어 240으로 잘랐어요. 법원은 이자만으로 원금보다 많이 받는 일을 막으려고 이렇게 해요.` : "법원 손해배상은 주로 호프만, 보험사는 주로 라이프니츠를 써요. 호프만 계수 합은 240을 넘지 않게 잘라요.",
+    ],
+  };
+}

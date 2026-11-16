@@ -52,3 +52,19 @@ test("2차: 물가·ROI·임대·평단가", () => {
   assert.equal(avg.avg, 9_000);
   assert.equal(avg.pl, -200_000);
 });
+
+test("3차: 라떼 효과·현재가치", () => {
+  const l = W.latteResult({ cost: 5_000, freq: "daily", rate: 0, years: 10 });
+  assert.equal(l.monthly, 150_000);
+  assert.equal(l.fv, 150_000 * 120);
+  assert.equal(W.pvCoefficient("leibniz", 12, 0), 12);
+  const h = W.pvResult({ monthly: 1_000_000, months: 120, rate: 0.05, method: "hoffman" });
+  const lz = W.pvResult({ monthly: 1_000_000, months: 120, rate: 0.05, method: "leibniz" });
+  assert.ok(h.pv > lz.pv && lz.pv < 120_000_000);
+  assert.equal(Math.round(lz.coef * 1000) / 1000, 94.281);
+});
+
+test("호프만 계수는 240을 넘지 않아요", () => {
+  const r = W.pvResult({ monthly: 1_000_000, months: 480, rate: 0.05, method: "hoffman" });
+  assert.ok(r.capped && r.coef === 240 && r.raw > 240);
+});
