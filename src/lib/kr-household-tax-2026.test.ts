@@ -143,12 +143,13 @@ test("중소기업 청년 감면: 90%, 연 200만, 병역 최대 6년 차감, 5�
   assert.equal(smeYouthReduction({ salary: 120_000_000, ageAtContract: 30, start: "2026-01" }).capped, true);
 });
 
-test("노란우산: 사업소득 4천 이하 600만, 1억 이하 400만, 법인대표 총급여 8천 초과는 안 돼요", () => {
+test("노란우산: 사업소득 4천 이하 600만, 6천 이하 500만, 1억 이하 400만, 법인대표 총급여 8천 초과는 안 돼요", () => {
   const a = yellowUmbrella({ kind: "business", income: 35_000_000, paid: 12_000_000 });
   assert.equal(a.limit, 6_000_000);
   assert.equal(a.deduction, 6_000_000);
   assert.equal(a.overLimit, 6_000_000);
   assert.ok(a.saved > 0);
+  assert.equal(yellowUmbrella({ kind: "business", income: 50_000_000, paid: 6_000_000 }).deduction, 5_000_000);
   assert.equal(yellowUmbrella({ kind: "business", income: 80_000_000, paid: 6_000_000 }).deduction, 4_000_000);
   assert.equal(yellowUmbrella({ kind: "business", income: 150_000_000, paid: 6_000_000 }).deduction, 2_000_000);
   assert.equal(yellowUmbrella({ kind: "ceo", income: 90_000_000, paid: 3_000_000 }).eligible, false);

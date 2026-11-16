@@ -26,7 +26,7 @@ export const welfareTools = [
   { slug: "parent-house-free-use-gift-checker", title: "부모 집 무상 거주 증여 점검", description: "부모님 집에 공짜로 살 때 집값 × 2% × 5년 현가(3.7908)가 1억 원 이상이라 증여가 되는지, 부모님 집을 담보로 빌린 돈의 증여 이익까지 계산해요." },
   { slug: "family-low-price-sale-checker", title: "가족 간 저가 양수도 점검", description: "가족에게 집을 시가보다 싸게 사고팔 때 사는 사람 증여세(시가 30%·3억 기준)와 파는 사람 양도세 시가 재계산(5%·3억 기준), 안전한 최저 거래가를 알려 줘요." },
   { slug: "sme-youth-income-tax-reduction-calculator", title: "중소기업 청년 소득세 감면 계산기", description: "중소기업에 취업한 15~34세 청년의 근로소득세 90% 감면(연 200만 원 한도, 5년)을 연봉으로 계산하고, 병역 차감·끝나는 달·신청 방법을 알려 줘요." },
-  { slug: "yellow-umbrella-deduction-calculator", title: "노란우산공제 소득공제 계산기", description: "노란우산공제 납입액으로 줄어드는 종합소득세를 사업소득금액 구간별 한도(600·400·200만 원)와 법인 대표 8천만 원 기준으로 계산해요." },
+  { slug: "yellow-umbrella-deduction-calculator", title: "노란우산공제 소득공제 계산기", description: "노란우산공제 납입액으로 줄어드는 종합소득세를 사업소득금액 구간별 한도(600·500·400·200만 원)와 법인 대표 8천만 원 기준으로 계산해요." },
   { slug: "general-vs-simplified-vat-calculator", title: "일반과세 vs 간이과세 계산기", description: "매출·매입·업종으로 일반과세자와 간이과세자의 1년 부가세를 비교해요. 1억 400만 원 기준, 4,800만 원 면제, 업종 부가가치율, 환급 차이를 반영해요." },
   { slug: "commercial-rent-increase-checker", title: "상가 임대료 인상 5% 상한 점검", description: "보증금과 월세로 환산보증금을 계산해 상가임대차법 5% 증액 상한이 적용되는지, 올릴 수 있는 최대 월세와 1년 재인상 제한, 보증금 월세 전환율(12%·기준금리 4.5배)을 알려 줘요." },
 ] as const;

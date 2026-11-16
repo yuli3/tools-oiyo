@@ -300,7 +300,7 @@ export const YOUTH_ASSUMPTIONS: Assumption<SmeYouthInput>[] = [
 export const umbrellaSaved = (i: YellowUmbrellaInput) => yellowUmbrella(i).saved;
 export const UMBRELLA_ASSUMPTIONS = (i: YellowUmbrellaInput): Assumption<YellowUmbrellaInput>[] => [
   money("paid", "1년 납입액", "1년에 넣는 돈", (x) => x.paid, (x, v) => ({ ...x, paid: Math.max(0, v) }), () => [0, YELLOW_UMBRELLA.annualPayCap], [{ at: yellowUmbrella(i).limit, label: "공제 한도" }]),
-  money("income", i.kind === "ceo" ? "총급여" : "사업소득금액", i.kind === "ceo" ? "1년 급여" : "1년 매출 − 경비", (x) => x.income, (x, v) => ({ ...x, income: Math.max(0, v) }), (a) => [0, Math.max(150_000_000, a * 1.5)], i.kind === "ceo" ? [{ at: YELLOW_UMBRELLA.ceoSalaryMax, label: "8천만" }] : [{ at: 40_000_000, label: "4천만" }, { at: 100_000_000, label: "1억" }], "fact"),
+  money("income", i.kind === "ceo" ? "총급여" : "사업소득금액", i.kind === "ceo" ? "1년 급여" : "1년 매출 − 경비", (x) => x.income, (x, v) => ({ ...x, income: Math.max(0, v) }), (a) => [0, Math.max(150_000_000, a * 1.5)], i.kind === "ceo" ? [{ at: YELLOW_UMBRELLA.ceoSalaryMax, label: "8천만" }] : [{ at: 40_000_000, label: "4천만" }, { at: 60_000_000, label: "6천만" }, { at: 100_000_000, label: "1억" }], "fact"),
 ];
 
 export const vatSaving = (i: VatTypeInput) => vatTypeCompare(i).saving;

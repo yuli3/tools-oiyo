@@ -87,7 +87,7 @@ export default function YellowUmbrella() {
           yLabel="줄어드는 세금"
           formatY={roughWon}
           noTornado
-          caption={(k) => (k === "paid" ? "공제 한도까지는 넣을수록 세금이 줄고, 그 뒤로는 평평해요." : k === "income" ? "소득이 높을수록 세율이 높아 같은 공제의 효과가 커지지만, 4천만·1억을 넘으면 한도가 줄어요." : undefined)}
+          caption={(k) => (k === "paid" ? "공제 한도까지는 넣을수록 세금이 줄고, 그 뒤로는 평평해요." : k === "income" ? "소득이 높을수록 세율이 높아 같은 공제의 효과가 커지지만, 4천만·6천만·1억을 넘을 때마다 한도가 줄어요." : undefined)}
         />
         {easy ? (
           <HowToApply
