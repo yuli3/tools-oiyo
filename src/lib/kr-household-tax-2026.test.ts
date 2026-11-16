@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { FREE_USE_FACTOR, commercialRentCheck, smeYouthReduction, vatTypeCompare, yellowUmbrella, dependentIncomeTest, dependentsTax, familyLoanGift, freeUseGift, judgeDependent, lowPriceSale, majorShareholderTax, whoShouldClaim } from "./kr-household-tax-2026.ts";
+import { FREE_USE_FACTOR, businessCarExpense, overseasCompare, commercialRentCheck, smeYouthReduction, vatTypeCompare, yellowUmbrella, dependentIncomeTest, dependentsTax, familyLoanGift, freeUseGift, judgeDependent, lowPriceSale, majorShareholderTax, whoShouldClaim } from "./kr-household-tax-2026.ts";
 
 test("부양가족: 근로소득만 있으면 총급여 500만 원까지, 1원만 넘어도 안 돼요", () => {
   assert.equal(judgeDependent({ relation: "spouse", birthYear: 1990, wage: 5_000_000 }).status, "ok");
@@ -168,4 +168,28 @@ test("일반 vs 간이: 4,800만 미만 면제, 업종 부가가치율, 1억 400
   const refund = vatTypeCompare({ sector: "manufacturing", sales: 60_000_000, purchases: 120_000_000 });
   assert.ok(refund.generalRefund > 0);
   assert.equal(refund.simple, 600_000);
+});
+
+test("업무용 승용차: 운행기록부 없으면 1,500만 원, 감가상각 800만 원 초과 이월", () => {
+  const noLog = businessCarExpense({ ownership: "own", amount: 60_000_000, otherCosts: 8_000_000, logbook: false });
+  assert.equal(noLog.depreciation, 12_000_000);
+  assert.equal(noLog.businessCost, 15_000_000);
+  assert.ok(Math.abs(noLog.ratio - 0.75) < 1e-9);
+  assert.equal(noLog.carriedOver, 1_000_000); // 1,200만 × 75% = 900만 − 800만
+  assert.equal(noLog.deductible, 14_000_000);
+  const log = businessCarExpense({ ownership: "own", amount: 60_000_000, otherCosts: 8_000_000, logbook: true, businessShare: 1 });
+  assert.equal(log.carriedOver, 4_000_000);
+  assert.equal(log.deductible, 16_000_000);
+  assert.equal(businessCarExpense({ ownership: "rent", amount: 12_000_000, otherCosts: 2_000_000, logbook: false }).depreciation, 8_400_000);
+});
+
+test("해외주식 직접 vs 국내 상장 해외ETF: 약 833만 원에서 같아져요", () => {
+  const r = overseasCompare({ gain: 10_000_000 });
+  assert.equal(r.direct, Math.floor(7_500_000 * 0.22));
+  assert.equal(r.etf, 1_540_000);
+  assert.equal(r.isa, Math.floor(8_000_000 * 0.099));
+  assert.equal(r.breakEven, 8_333_334);
+  const big = overseasCompare({ gain: 30_000_000, otherFinancial: 5_000_000, marginalRate: 0.418 });
+  assert.equal(big.comprehensive, true);
+  assert.equal(big.etfExtra, Math.floor(15_000_000 * (0.418 - 0.154)));
 });

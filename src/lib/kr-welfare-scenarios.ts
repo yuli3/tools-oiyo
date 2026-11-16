@@ -7,7 +7,7 @@ import {
   type EitcInput, type FixedOtInput, type WorkHours, type LtcInput, type GuaranteeInput, type InjuryInput, type MaternityInput, type OrdinaryWageInput, type PensionInput, type RentInput,
 } from "./kr-welfare-2026.ts";
 import { RENTAL, comprehensiveRealEstateTax, creThreshold, rentalIncomeTax, type CreInput, type RentalInput } from "./kr-home-tax-2026.ts";
-import { COMMERCIAL_LEASE, DEPENDENT_2026, FAMILY_2026, FREE_USE_FACTOR, MAJOR_2026, RELATION_LABEL, commercialRentCheck, smeYouthReduction, vatTypeCompare, yellowUmbrella, SIMPLIFIED_VAT, YELLOW_UMBRELLA, type SmeYouthInput, type VatTypeInput, type YellowUmbrellaInput, dependentsTax, familyLoanGift, freeUseGift, lowPriceSale, majorShareholderTax, type CommercialRentInput, type DependentsInput, type FamilyLoanInput, type FreeUseInput, type LowPriceSaleInput, type MajorShareholderInput } from "./kr-household-tax-2026.ts";
+import { COMMERCIAL_LEASE, DEPENDENT_2026, FAMILY_2026, FREE_USE_FACTOR, MAJOR_2026, RELATION_LABEL, commercialRentCheck, businessCarExpense, overseasCompare, BUSINESS_CAR, OVERSEAS_COMPARE, type BusinessCarInput, type OverseasCompareInput, smeYouthReduction, vatTypeCompare, yellowUmbrella, SIMPLIFIED_VAT, YELLOW_UMBRELLA, type SmeYouthInput, type VatTypeInput, type YellowUmbrellaInput, dependentsTax, familyLoanGift, freeUseGift, lowPriceSale, majorShareholderTax, type CommercialRentInput, type DependentsInput, type FamilyLoanInput, type FreeUseInput, type LowPriceSaleInput, type MajorShareholderInput } from "./kr-household-tax-2026.ts";
 import { roughWon, type Assumption } from "./scenario.ts";
 
 const money = <I>(key: string, label: string, plain: string, get: (i: I) => number, set: (i: I, v: number) => I, range: (a: number) => [number, number], marks?: { at: number; label: string }[], kind: "fact" | "assumption" = "assumption"): Assumption<I> => ({ key, label, plain, unit: "won", kind, get, set, range, marks });
@@ -307,4 +307,17 @@ export const vatSaving = (i: VatTypeInput) => vatTypeCompare(i).saving;
 export const VAT_TYPE_ASSUMPTIONS: Assumption<VatTypeInput>[] = [
   money("sales", "공급대가(매출, 부가세 포함)", "1년 매출", (x) => x.sales, (x, v) => ({ ...x, sales: Math.max(0, v) }), (a) => [0, Math.max(150_000_000, a * 1.5)], [{ at: SIMPLIFIED_VAT.exemptBelow, label: "4,800만" }, { at: SIMPLIFIED_VAT.threshold, label: "1억 400만" }], "fact"),
   money("purchases", "매입(부가세 포함)", "세금계산서·카드로 산 재료·비용", (x) => x.purchases, (x, v) => ({ ...x, purchases: Math.max(0, v) }), (a) => [0, Math.max(100_000_000, a * 2)]),
+];
+
+// ───────────────────────── 업무용 승용차·해외주식 vs ETF (Gemini 이전 B 3차) ─────────────────────────
+export const carDisallowed = (i: BusinessCarInput) => businessCarExpense(i).disallowed;
+export const CAR_ASSUMPTIONS = (i: BusinessCarInput): Assumption<BusinessCarInput>[] => [
+  money("otherCosts", "유지비(유류·보험·세금·수리)", "1년 기름값·보험료 등", (x) => x.otherCosts, (x, v) => ({ ...x, otherCosts: Math.max(0, v) }), (a) => [0, Math.max(20_000_000, a * 2)]),
+  money("amount", i.ownership === "own" ? "취득가액" : i.ownership === "lease" ? "연 리스료" : "연 렌트료", i.ownership === "own" ? "차값" : "1년 리스·렌트료", (x) => x.amount, (x, v) => ({ ...x, amount: Math.max(0, v) }), (a) => [0, Math.max(i.ownership === "own" ? 150_000_000 : 30_000_000, a * 1.5)], i.ownership === "own" ? [{ at: BUSINESS_CAR.depreciationCap * BUSINESS_CAR.years, label: "4천만(감가 800만)" }] : undefined),
+];
+
+export const overseasGap = (i: OverseasCompareInput) => { const r = overseasCompare(i); return r.direct - r.etf; };
+export const OVERSEAS_ASSUMPTIONS: Assumption<OverseasCompareInput>[] = [
+  money("gain", "연간 실현 매매차익", "올해 팔아서 번 돈", (x) => x.gain, (x, v) => ({ ...x, gain: Math.max(0, v) }), (a) => [0, Math.max(40_000_000, a * 1.5)], [{ at: Math.ceil((OVERSEAS_COMPARE.deduction * OVERSEAS_COMPARE.directRate) / (OVERSEAS_COMPARE.directRate - OVERSEAS_COMPARE.etfRate)), label: "약 833만" }, { at: OVERSEAS_COMPARE.comprehensiveLine, label: "2천만" }]),
+  money("otherFinancial", "다른 이자·배당소득", "예금 이자·배당", (x) => x.otherFinancial ?? 0, (x, v) => ({ ...x, otherFinancial: Math.max(0, v) }), () => [0, 30_000_000], undefined, "fact"),
 ];

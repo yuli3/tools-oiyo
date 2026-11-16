@@ -34,6 +34,8 @@ const situations = [
   ["중소기업에 막 취업했어요", "sme-youth-income-tax-reduction-calculator", "34세 이하(병역 기간 빼고)면 5년 동안 소득세 90%를 덜 내요. 회사에 신청서부터 내요."],
   ["가게를 하는데 종합소득세가 많아요", "yellow-umbrella-deduction-calculator", "노란우산공제에 넣은 돈은 사업소득금액 4천만 원 이하면 600만 원까지 소득에서 빼 줘요."],
   ["창업하는데 간이과세가 나을까요", "general-vs-simplified-vat-calculator", "매출 1억 400만 원 미만이면 간이를 고를 수 있어요. 인테리어 매입이 크면 일반과세 환급이 나을 수 있어요."],
+  ["사업용 차를 사거나 리스하려고 해요", "business-car-expense-calculator", "운행기록부가 없으면 1년 1,500만 원까지만 비용이에요. 감가상각은 연 800만 원까지예요."],
+  ["미국 주식을 직접 살까, 국내 ETF로 살까", "overseas-stock-vs-etf-tax-calculator", "1년 이익이 약 833만 원보다 적으면 직접 투자, 크면 국내 상장 ETF가 세금이 적어요."],
   ["한 종목에 크게 투자했어요", "stock-major-shareholder-tax-calculator", "작년 말 한 종목을 50억 원 넘게 가졌으면 올해 판 이익에 양도세가 붙어요. 연말 보유를 미리 확인해요."],
 ];
 const more = [
@@ -73,6 +75,8 @@ const mcpTools = [
   ["calculate_kr_sme_youth_tax_reduction", "중소기업 취업 청년 소득세 감면"],
   ["calculate_kr_yellow_umbrella_deduction", "노란우산공제 소득공제 절세액"],
   ["compare_kr_general_vs_simplified_vat", "일반과세 vs 간이과세 부가세"],
+  ["calculate_kr_business_car_expense", "업무용 승용차 비용 한도"],
+  ["compare_kr_overseas_stock_vs_etf_tax", "해외주식 직접 vs 국내 상장 해외ETF 세금"],
 ];
 const titleOf = (slug: string) => welfareTools.find((t) => t.slug === slug)?.title ?? slug;
 ---

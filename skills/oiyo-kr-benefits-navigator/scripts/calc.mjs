@@ -3,7 +3,7 @@
 // Usage: node scripts/calc.mjs <tool> '<json>'   ·   node scripts/calc.mjs help
 import { WELFARE_AS_OF, workChildCredit, maternityLeavePay, spouseLeavePay, wageGuarantee, injuryLeavePay, averageDailyWage, monthlyRentCredit, dbVsDc, breakEvenReturn, ordinaryWage, fixedOvertimeCheck, longTermCareCopay, dismissalNoticePay, shutdownAllowance, reducedHoursPay, probationMinWage, leavePromotionSchedule, voluntaryQuitCheck, directPaymentCheck } from "./kr-welfare-2026.mjs";
 import { comprehensiveRealEstateTax, rentalIncomeTax } from "./kr-home-tax-2026.mjs";
-import { dependentsTax, majorShareholderTax, familyLoanGift, freeUseGift, lowPriceSale, commercialRentCheck, smeYouthReduction, yellowUmbrella, vatTypeCompare } from "./kr-household-tax-2026.mjs";
+import { dependentsTax, majorShareholderTax, familyLoanGift, freeUseGift, lowPriceSale, commercialRentCheck, smeYouthReduction, yellowUmbrella, vatTypeCompare, businessCarExpense, overseasCompare } from "./kr-household-tax-2026.mjs";
 
 const EXAMPLES = {
   "work-child-incentive": { household: "oneEarner", income: 24000000, assets: 120000000, children: 1, late: false },
@@ -32,6 +32,8 @@ const EXAMPLES = {
   "sme-youth": { salary: 36000000, persons: 1, ageAtContract: 29, militaryMonths: 0, start: "2026-03" },
   "yellow-umbrella": { kind: "business", income: 35000000, paid: 6000000, otherDeductions: 1500000 },
   "vat-type": { sector: "retail", sales: 80000000, purchases: 35000000, cardShare: 0.8 },
+  "business-car": { ownership: "own", amount: 60000000, otherCosts: 8000000, logbook: false, businessShare: 0.9, marginalRate: 0.264 },
+  "overseas-etf": { gain: 15000000, otherFinancial: 3000000, marginalRate: 0.264, isaLowIncome: false },
   "rental-income-tax": { houses: 2, annualRent: 12000000, deposits: 100000000, registered: false, otherIncome: 40000000, highPriceOneHouse: false },
 };
 
@@ -78,6 +80,8 @@ switch (tool) {
   case "sme-youth": result = smeYouthReduction(i); break;
   case "yellow-umbrella": result = yellowUmbrella(i); break;
   case "vat-type": result = vatTypeCompare(i); break;
+  case "business-car": result = businessCarExpense(i); break;
+  case "overseas-etf": result = overseasCompare(i); break;
   case "long-term-care": result = longTermCareCopay({ ...i, homeUse: i.homeUse ?? undefined }); break;
 }
 console.log(JSON.stringify({ tool, asOf: WELFARE_AS_OF, input: i, result }, null, 2));
