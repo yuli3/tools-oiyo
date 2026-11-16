@@ -24,4 +24,12 @@ test("business skill calculator runs every tool", () => {
   assert.ok(run("positioning").result.gap);
   assert.ok(run("rice").result.length === 2);
   assert.ok(run("decision-tree").result.ev);
+  assert.equal(run("campaign-supply").result.firstStockoutWeek, 4);
+  assert.equal(run("influencer").result.withholding, 99000);
+  assert.equal(run("quality-recovery").result.cheapestRule, "penalty");
+  assert.equal(run("material-switch").result.best, "X");
+  assert.equal(run("order-allocation").result.recommended, "full");
+  assert.equal(run("market-test").result.entry.verdict, "go");
+  assert.ok(run("rebate").result.flags.length >= 2);
+  assert.equal(run("acquisition").result.paybackYear, 10);
 });

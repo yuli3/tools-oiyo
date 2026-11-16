@@ -6,6 +6,10 @@ import {
   riceScores, runway, scheduleCpm, swotPosition, treeFromOptions, unitEconomics, weightedDecision,
 } from "./biz-strategy.mjs";
 import { taxCalendar, filterItems } from "./biz-checklist.mjs";
+import {
+  acquisitionCheck, campaignSupply, influencerDeal, marketEntry, materialSwitch, orderAllocation, proportionTest, qualityRecovery, rebateCheck,
+  sampleSizePerGroup,
+} from "./biz-ops.mjs";
 
 const EXAMPLES = {
   "decision-options": { question: "신규 사업?", options: [{ label: "새 사업", successProb: 0.3, ifSuccess: 1000, ifFail: -200 }, { label: "현상 유지", successProb: 1, ifSuccess: 400, ifFail: 400 }] },
@@ -21,6 +25,14 @@ const EXAMPLES = {
   "weighted-decision": { criteria: [{ name: "비용", weight: 0.5 }, { name: "속도", weight: 0.5 }], options: [{ name: "X", scores: [5, 1] }, { name: "Y", scores: [2, 3] }] },
   "tax-calendar": { year: 2026, profile: { entity: "corp", vat: "general", employer: true, halfYearWithholding: false, sincere: false } },
   checklist: { roles: ["ceo"], stages: ["start"] },
+  "campaign-supply": { demand: [100, 100, 300, 300, 100], openingStock: 100, capacityPerWeek: 150, leadTimeWeeks: 1, safetyStock: 0 },
+  influencer: { fee: 3000000, views: 200000, clickRate: 0.02, conversionRate: 0.05, aov: 30000, grossMargin: 0.7, payee: "freelancer" },
+  "quality-recovery": { lots: [{ id: "L1", units: 1000, defectRate: 0.1, shippedRatio: 0.5 }], recallCostPerUnit: 500, remakeCostPerUnit: 2000, goodStock: 600, customers: [{ name: "A", demand: 600, priority: 2, penaltyPerUnit: 1000 }, { name: "B", demand: 400, priority: 1, penaltyPerUnit: 200 }] },
+  "material-switch": { currentPrice: 1000, annualVolume: 100000, candidates: [{ name: "X", unitPrice: 900, quality: 4, supply: 3, testWeeks: 6, testCost: 5000000 }, { name: "Y", unitPrice: 800, quality: 2, supply: 2, testWeeks: 12, testCost: 8000000, needsFiling: true }], weights: { cost: 1, quality: 1, supply: 1, speed: 1 } },
+  "order-allocation": { capacity: 1000, existing: [{ name: "핵심", qty: 500, price: 100, unitCost: 60, penaltyPerUnit: 100, locked: true }, { name: "일반", qty: 300, price: 80, unitCost: 60, penaltyPerUnit: 5 }], newOrder: { name: "대형", qty: 500, price: 110, unitCost: 60 } },
+  "market-test": { baseline: 0.05, lift: 0.2, convA: 100, nA: 2000, convB: 140, nB: 2000, entry: { visitors: 10000, conversionRate: 0.02, aov: 50000, costRatio: 0.6, monthlyFixed: 10000000, entryCost: 60000000, scaleFactor: 5 } },
+  rebate: { tiers: [{ from: 0, rate: 0.01 }, { from: 100000000, rate: 0.03 }], partners: [{ name: "D1", sales: 60000000, group: "G", related: true, paid: 1800000 }, { name: "D2", sales: 50000000, group: "G", related: true }, { name: "E", sales: 80000000, paid: 800000 }], aggregateGroups: false, armsLengthCheck: true },
+  acquisition: { price: 10000, targetNetIncome: 1000, acquirerNetIncome: 5000, acquirerShares: 1000, sharePrice: 50, stockPortion: 1, debtRate: 0.05, taxRate: 0.2, synergy: 0, rampYears: 1, integrationCost: 0, years: 12 },
 };
 
 const [tool, json] = process.argv.slice(2);
@@ -54,5 +66,13 @@ switch (tool) {
   case "weighted-decision": result = weightedDecision(i.criteria, i.options); break;
   case "tax-calendar": result = taxCalendar(i.year, i.profile); break;
   case "checklist": result = filterItems(i); break;
+  case "campaign-supply": result = campaignSupply(i); break;
+  case "influencer": result = influencerDeal(i); break;
+  case "quality-recovery": result = qualityRecovery(i); break;
+  case "material-switch": result = materialSwitch(i); break;
+  case "order-allocation": result = orderAllocation(i); break;
+  case "market-test": result = { sampleSizePerGroup: sampleSizePerGroup(i.baseline, i.lift), test: proportionTest(i.convA, i.nA, i.convB, i.nB), entry: marketEntry(i.entry) }; break;
+  case "rebate": result = rebateCheck(i); break;
+  case "acquisition": result = acquisitionCheck(i); break;
 }
 console.log(JSON.stringify({ tool, asOf: BIZ_AS_OF, input: i, result }, null, 2));

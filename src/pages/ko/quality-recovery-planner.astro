@@ -1,0 +1,14 @@
+---
+// 운영 문제 도구 (2026-11-16). 엔진: lib/biz-ops.ts
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import QualityRecovery from "../../components/tools/biz/QualityRecovery";
+
+const title = "품질 이슈 회수·공급 복구 계산기 — 회수 범위 비용과 재고 배분";
+const description = "불량이 나온 로트의 불량률·출고 비율로 회수 범위별 비용을 비교하고, 남은 양품을 고객에게 어떻게 나눠야 위약금이 가장 적은지 계산해요.";
+const ko = {"introTitle": "회수 범위와 남은 재고 배분 정하기", "intro": "품질 문제가 생기면 두 가지를 동시에 정해야 해요. 어디까지 회수할지(불량만, 시장 출고분 전량, 로트 전체)와, 남은 양품을 어느 고객에게 먼저 보낼지예요. 로트별 수량·불량률·출고 비율과 고객별 약속 수량·위약금을 넣으면 범위별 비용과 배분 방법별 손실을 나란히 보여 줘요.", "howToTitle": "사용 방법", "steps": ["문제가 생긴 로트의 수량, 불량률, 이미 출고된 비율을 넣어요.", "회수·폐기 비용과 재생산 원가를 넣어요.", "남은 양품과 고객별 약속 수량·위약금을 넣고, 배분 방법별 손실을 비교해요."], "highlightsTitle": "주요 특징", "highlights": [{"title": "회수 범위 3가지 비교", "body": "불량만 / 시장 출고분 전량 / 창고 포함 전량의 비용을 나란히 봐요."}, {"title": "배분 방법 3가지", "body": "중요 고객 먼저, 위약금 큰 곳 먼저, 모두 같은 비율의 손실을 비교해요."}, {"title": "부서 영향", "body": "품질·생산·영업·법무·재무가 할 일을 결론에 함께 적어요."}], "disclaimer": "비용 비교를 돕는 도구예요. 소비자 안전에 관한 문제는 비용과 상관없이 법정 회수 의무(화장품법 제5조의2)와 식약처 안내를 먼저 따르세요."};
+const faqs = [{"q": "불량만 회수해도 되나요?", "a": "안전과 관계없는 외관 불량이면 가능하지만, 안전 문제이거나 불량을 골라낼 수 없으면 로트 전량 회수가 원칙이에요."}, {"q": "배분은 위약금이 적은 쪽이 항상 맞나요?", "a": "아니에요. 장기 거래 관계나 법적 공급 의무가 있으면 '중요 고객 먼저'가 맞을 수 있어요. 숫자는 판단 근거로 쓰세요."}, {"q": "재생산 원가에는 무엇을 넣나요?", "a": "원재료·포장재·가공비와 긴급 생산에 드는 추가 인건비까지 넣어요."}];
+---
+<KrFinancePage slug="quality-recovery-planner" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <QualityRecovery client:load />
+  <p class="mt-4 text-xs text-muted-foreground"><a class="underline" href="/ko/business-toolkit/">경영 도구 모음</a></p>
+</KrFinancePage>

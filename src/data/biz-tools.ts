@@ -1,5 +1,5 @@
 // 경영 도구 모음 (2026-11-14). 기업가·경영팀·회계사·세무사·경리가 함께 쓰는 ko 전용 도구와 경영 이론 정리.
-export const bizTools = [
+export const coreBizTools = [
   { slug: "business-toolkit", title: "경영 도구 모음", description: "의사결정 트리·타임라인·SWOT·BCG·포지셔닝·단위경제와 경영 이론 정리, MCP·Claude 스킬을 모았어요." },
   { slug: "decision-tree-calculator", title: "의사결정 트리 계산기", description: "선택지별 성공 확률과 결과로 기대값·손실 확률·1등이 바뀌는 확률을 트리로 보여 줘요." },
   { slug: "project-timeline-planner", title: "타임라인·마일스톤 관리", description: "할 일과 선후관계로 간트 차트·핵심 경로·지연 영향·PERT 마감 확률을 계산해요." },
@@ -10,6 +10,20 @@ export const bizTools = [
   { slug: "unit-economics-runway-calculator", title: "단위경제·런웨이 계산기", description: "LTV/CAC·CAC 회수 기간과 월별 현금 잔고, 흑자 전환·현금 소진 달을 계산해요." },
   { slug: "priority-decision-matrix", title: "우선순위·가중 의사결정표", description: "기준별 가중 점수로 선택지를 비교하고, RICE로 할 일 순서를 정해요." },
 ] as const;
+
+// 2026-11-16: 운영 문제 8유형(소비재 회사가 자주 만나는 운영 의사결정). 엔진 lib/biz-ops.ts.
+export const opsTools = [
+  { slug: "campaign-supply-planner", title: "캠페인 수요·공급 일정", problem: "캠페인에 수요가 몰릴 때 품절을 막으려면?", description: "주별 수요와 재고·생산능력·리드타임으로 품절 주차와 매주 더 만들 양을 계산해요." },
+  { slug: "influencer-deal-calculator", title: "인플루언서 계약 계산기", problem: "이 인플루언서에게 이 돈을 줘도 남나?", description: "수수료·조회수·전환율로 ROAS, 남는 돈, 본전 전환율과 3.3%·8.8% 원천징수를 계산해요." },
+  { slug: "quality-recovery-planner", title: "품질 이슈 회수·공급 복구", problem: "불량이 났을 때 어디까지 회수하고 남은 재고는 누구에게?", description: "회수 범위별 비용과 남은 양품 배분 방법별 위약금을 비교해요." },
+  { slug: "alternative-material-review", title: "대체 원료 검토", problem: "원료를 바꾸면 얼마를 아끼고 언제 쓸 수 있나?", description: "후보별 연 절감액·시험비 회수·승인 기간과 품질·공급 가중 점수를 비교해요." },
+  { slug: "big-order-capacity-check", title: "대형 수주 vs 기존 약속", problem: "큰 주문을 받으면 기존 고객 중 누가 손해를 보나?", description: "생산능력·위약금·특근 비용으로 전량·일부·거절의 이익과 줄어드는 물량을 비교해요." },
+  { slug: "market-test-calculator", title: "해외 시장 실험 계산기", problem: "해외 실험 결과를 믿고 본 진출해도 되나?", description: "필요한 표본 수, A/B 결과 p값, 본 진출 월 이익과 회수 기간으로 진행 여부를 판단해요." },
+  { slug: "sales-rebate-checker", title: "판매장려금·특수관계 점검", problem: "이 장려금 지급 요청, 계약·세법상 맞나?", description: "구간별 지급액, 관계사 합산, 과다 지급, 특수관계 장려금률과 세무 메모를 점검해요." },
+  { slug: "acquisition-integration-check", title: "인수 검토·통합 일정", problem: "이 회사를 이 가격에 사면 주주에게 이득인가?", description: "주당이익 증감, 회수 기간, 필요한 시너지와 인수 후 100일 통합 일정을 보여 줘요." },
+] as const;
+
+export const bizTools = [...coreBizTools, ...opsTools];
 
 export type FrameworkGroup = "strategy" | "customer" | "execution" | "finance" | "decision" | "people";
 export const FRAMEWORK_GROUPS: Record<FrameworkGroup, string> = {
