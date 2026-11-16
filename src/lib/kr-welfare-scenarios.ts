@@ -7,7 +7,7 @@ import {
   type EitcInput, type FixedOtInput, type WorkHours, type LtcInput, type GuaranteeInput, type InjuryInput, type MaternityInput, type OrdinaryWageInput, type PensionInput, type RentInput,
 } from "./kr-welfare-2026.ts";
 import { RENTAL, comprehensiveRealEstateTax, creThreshold, rentalIncomeTax, type CreInput, type RentalInput } from "./kr-home-tax-2026.ts";
-import { DEPENDENT_2026, MAJOR_2026, RELATION_LABEL, dependentsTax, majorShareholderTax, type DependentsInput, type MajorShareholderInput } from "./kr-household-tax-2026.ts";
+import { COMMERCIAL_LEASE, DEPENDENT_2026, FAMILY_2026, FREE_USE_FACTOR, MAJOR_2026, RELATION_LABEL, commercialRentCheck, dependentsTax, familyLoanGift, freeUseGift, lowPriceSale, majorShareholderTax, type CommercialRentInput, type DependentsInput, type FamilyLoanInput, type FreeUseInput, type LowPriceSaleInput, type MajorShareholderInput } from "./kr-household-tax-2026.ts";
 import { roughWon, type Assumption } from "./scenario.ts";
 
 const money = <I>(key: string, label: string, plain: string, get: (i: I) => number, set: (i: I, v: number) => I, range: (a: number) => [number, number], marks?: { at: number; label: string }[], kind: "fact" | "assumption" = "assumption"): Assumption<I> => ({ key, label, plain, unit: "won", kind, get, set, range, marks });
@@ -256,4 +256,37 @@ export const SUBCONTRACT_ASSUMPTIONS: Assumption<DirectPayInput>[] = [
   num("daysSinceDelivery", "수령일부터 지난 날", "물건·공사를 넘긴 날부터 오늘까지", "days", (x) => x.daysSinceDelivery, (x, v) => ({ ...x, daysSinceDelivery: Math.max(0, Math.round(v)) }), [0, 365], [{ at: 60, label: "60일: 지급 기한" }]),
   money("workValue", "이행한 부분 하도급대금", "내가 한 일의 대금", (x) => x.workValue, (x, v) => ({ ...x, workValue: Math.max(0, v) }), () => [0, 200_000_000]),
   money("receivedFromPrime", "원사업자에게 받은 돈", "이미 받은 금액", (x) => x.receivedFromPrime, (x, v) => ({ ...x, receivedFromPrime: Math.max(0, v) }), () => [0, 200_000_000]),
+];
+
+// ───────────────────────── 가족 사이 돈·집 거래, 상가 임대료 (Gemini 이전 B) ─────────────────────────
+const rateA = <I>(key: string, label: string, plain: string, get: (i: I) => number, set: (i: I, v: number) => I, range: [number, number], marks?: { at: number; label: string }[]): Assumption<I> => ({ key, label, plain, unit: "rate", kind: "assumption", get, set, range: () => range, marks });
+
+export const familyLoanAmount = (i: FamilyLoanInput) => familyLoanGift(i).gift;
+export const FAMILY_LOAN_ASSUMPTIONS: Assumption<FamilyLoanInput>[] = [
+  money("principal", "차입 원금", "빌린 돈", (x) => x.principal, (x, v) => ({ ...x, principal: Math.max(0, v) }), (a) => [0, Math.max(600_000_000, a * 1.5)], [{ at: Math.ceil(FAMILY_2026.loanThreshold / FAMILY_2026.fairRate), label: "무이자 2.17억" }]),
+  rateA("rate", "약정 이자율", "실제로 주는 이자율", (x) => x.rate, (x, v) => ({ ...x, rate: Math.max(0, v) }), [0, 0.06], [{ at: FAMILY_2026.fairRate, label: "적정 4.6%" }]),
+];
+
+export const freeUseAmount = (i: FreeUseInput) => freeUseGift(i).useGift + freeUseGift(i).collateralGift;
+export const FREE_USE_ASSUMPTIONS: Assumption<FreeUseInput>[] = [
+  money("propertyValue", "부동산 시가", "부모님 집값", (x) => x.propertyValue, (x, v) => ({ ...x, propertyValue: Math.max(0, v) }), (a) => [0, Math.max(3_000_000_000, a * 1.5)], [{ at: Math.ceil(FAMILY_2026.useThreshold / (FAMILY_2026.useRate * FREE_USE_FACTOR)), label: "약 13.2억" }]),
+];
+
+export const lowPriceGift = (i: LowPriceSaleInput) => lowPriceSale(i).gift;
+export const lowPriceMarks = (i: LowPriceSaleInput) => {
+  const r = lowPriceSale(i);
+  return [
+    { at: r.noGiftAbove, label: "증여 경계" },
+    { at: r.noRecalcAbove, label: "양도세 경계" },
+  ];
+};
+export const LOW_PRICE_ASSUMPTIONS = (i: LowPriceSaleInput): Assumption<LowPriceSaleInput>[] => [
+  money("price", "실제 거래가", "가족끼리 정한 값", (x) => x.price, (x, v) => ({ ...x, price: Math.max(0, v) }), () => [0, Math.max(1, i.marketValue)], lowPriceMarks(i)),
+  money("marketValue", "시가", "주변 시세·감정가", (x) => x.marketValue, (x, v) => ({ ...x, marketValue: Math.max(0, v) }), (a) => [Math.max(0, i.price), Math.max(a * 1.6, i.price * 2)], undefined, "fact"),
+];
+
+export const commercialExcess = (i: CommercialRentInput) => commercialRentCheck(i).rentExcess;
+export const COMMERCIAL_ASSUMPTIONS = (i: CommercialRentInput): Assumption<CommercialRentInput>[] => [
+  money("newMonthlyRent", "올리려는 월세", "새 월세", (x) => x.newMonthlyRent, (x, v) => ({ ...x, newMonthlyRent: Math.max(0, v) }), () => [i.monthlyRent * 0.9, i.monthlyRent * 1.2], [{ at: Math.floor(i.monthlyRent * 1.05), label: "5%" }]),
+  rateA("baseRate", "한국은행 기준금리", "기준금리", (x) => x.baseRate ?? COMMERCIAL_LEASE.baseRate, (x, v) => ({ ...x, baseRate: Math.max(0, v) }), [0, 0.05], [{ at: COMMERCIAL_LEASE.conversionCap / COMMERCIAL_LEASE.baseRateMultiple, label: "12% 상한 시작" }]),
 ];
