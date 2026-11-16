@@ -8,7 +8,7 @@ import { fileURLToPath } from "node:url";
 import { execFileSync } from "node:child_process";
 import { renderSkillLib } from "./build-advisor-skill.mjs";
 
-export const BENEFITS_SKILL_LIBS = ["kr-welfare-2026", "kr-home-tax-2026", "kr-real-estate-tax", "kr-payroll-2026", "kr-vat-2026"];
+export const BENEFITS_SKILL_LIBS = ["kr-welfare-2026", "kr-home-tax-2026", "kr-household-tax-2026", "kr-year-end-2026", "kr-real-estate-tax", "kr-payroll-2026", "kr-vat-2026"];
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 export const BENEFITS_SKILL_DIR = resolve(root, "skills/oiyo-kr-benefits-navigator");
 

@@ -3,6 +3,7 @@
 // Usage: node scripts/calc.mjs <tool> '<json>'   ·   node scripts/calc.mjs help
 import { WELFARE_AS_OF, workChildCredit, maternityLeavePay, spouseLeavePay, wageGuarantee, injuryLeavePay, averageDailyWage, monthlyRentCredit, dbVsDc, breakEvenReturn, ordinaryWage, fixedOvertimeCheck, longTermCareCopay } from "./kr-welfare-2026.mjs";
 import { comprehensiveRealEstateTax, rentalIncomeTax } from "./kr-home-tax-2026.mjs";
+import { dependentsTax, majorShareholderTax } from "./kr-household-tax-2026.mjs";
 
 const EXAMPLES = {
   "work-child-incentive": { household: "oneEarner", income: 24000000, assets: 120000000, children: 1, late: false },
@@ -15,6 +16,8 @@ const EXAMPLES = {
   "fixed-overtime": { basePay: 2508000, fixedOtPay: 300000, overtime: 30, night: 4, holiday: 0, months: 12, monthlyHours: 209, smallFirm: false },
   "comprehensive-real-estate-tax": { prices: [1500000000], oneHouse: true, corporate: false, age: 62, holdYears: 7 },
   "long-term-care": { grade: "3", kind: "home", reduction: "none", homeUse: null, days: 30, dailyExtra: 15000 },
+  "dependents": { salary: 50000000, married: true, selfFemale: false, selfDisabled: false, people: [{ relation: "spouse", birthYear: 1990, wage: 4000000 }, { relation: "child", birthYear: 2015 }, { relation: "parent", birthYear: 1954 }] },
+  "stock-major-shareholder": { market: "kospi", heldValue: 6000000000, heldShare: 0, gain: 500000000, sme: false, overOneYear: true, deductionUsed: false },
   "rental-income-tax": { houses: 2, annualRent: 12000000, deposits: 100000000, registered: false, otherIncome: 40000000, highPriceOneHouse: false },
 };
 
@@ -45,6 +48,8 @@ switch (tool) {
   case "fixed-overtime": result = fixedOvertimeCheck(i); break;
   case "comprehensive-real-estate-tax": result = comprehensiveRealEstateTax(i); break;
   case "rental-income-tax": result = rentalIncomeTax(i); break;
+  case "dependents": result = dependentsTax(i); break;
+  case "stock-major-shareholder": result = majorShareholderTax(i); break;
   case "long-term-care": result = longTermCareCopay({ ...i, homeUse: i.homeUse ?? undefined }); break;
 }
 console.log(JSON.stringify({ tool, asOf: WELFARE_AS_OF, input: i, result }, null, 2));

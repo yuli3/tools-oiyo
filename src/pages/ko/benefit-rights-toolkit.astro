@@ -4,8 +4,8 @@ import KrFinancePage from "../../components/KrFinancePage.astro";
 import { welfareTools } from "../../data/welfare-tools";
 import { WELFARE_AS_OF } from "../../lib/kr-welfare-2026";
 
-const title = "생활 지원금·노동권 도구 모음 — 근로장려금·출산휴가·대지급금·산재·통상임금·종부세";
-const description = "받을 수 있는 돈을 놓치지 않게 돕는 계산기를 모았어요. 근로·자녀장려금, 출산휴가 급여, 체불 대지급금, 산재 휴업급여, 월세 세액공제, 퇴직연금 DB·DC, 통상임금·포괄임금 점검, 종부세·주택임대소득세와 신청 방법, MCP·Claude 스킬까지 있어요.";
+const title = "생활 지원금·노동권 도구 모음 — 근로장려금·출산휴가·대지급금·산재·통상임금·종부세·부양가족";
+const description = "받을 수 있는 돈을 놓치지 않게 돕는 계산기를 모았어요. 근로·자녀장려금, 출산휴가 급여, 체불 대지급금, 산재 휴업급여, 월세 세액공제, 퇴직연금 DB·DC, 통상임금·포괄임금 점검, 종부세·주택임대소득세, 부양가족 공제, 주식 대주주 양도세와 신청 방법, MCP·Claude 스킬까지 있어요.";
 const tools = welfareTools.filter((t) => t.slug !== "benefit-rights-toolkit");
 const situations = [
   ["소득이 적은데 일하고 있어요", "work-child-incentive-calculator", "근로장려금·자녀장려금은 5월에 신청해요. 3월·9월 반기 신청도 돼요."],
@@ -19,6 +19,8 @@ const situations = [
   ["12월 종부세 고지서가 걱정돼요", "comprehensive-real-estate-tax-calculator", "공시가격 합계가 1주택 12억·그 밖 9억 원을 넘는지부터 봐요."],
   ["부모님 돌봄 비용이 걱정돼요", "long-term-care-copay-calculator", "장기요양등급을 받으면 집에서 돌봄은 15%, 요양원은 20%만 내요. 한도와 식사비를 같이 봐요."],
   ["집을 세놓고 월세를 받아요", "housing-rental-income-tax-calculator", "2주택부터 월세에 세금이 붙어요. 5월 신고 전에 분리과세와 종합과세를 비교해요."],
+  ["연말정산에 부모님을 올려도 될까요", "dependent-deduction-checker", "부모님은 60세 이상, 소득금액 100만 원(월급만 있으면 500만 원) 이하면 따로 살아도 올릴 수 있어요."],
+  ["한 종목에 크게 투자했어요", "stock-major-shareholder-tax-calculator", "작년 말 한 종목을 50억 원 넘게 가졌으면 올해 판 이익에 양도세가 붙어요. 연말 보유를 미리 확인해요."],
 ];
 const more = [
   ["/ko/unemployment-benefits-calculator/", "실업급여 계산기"],
@@ -41,6 +43,8 @@ const mcpTools = [
   ["calculate_kr_comprehensive_real_estate_tax", "종합부동산세(주택분)"],
   ["calculate_kr_housing_rental_income_tax", "주택임대소득세(분리 vs 종합)"],
   ["calculate_kr_long_term_care_copay", "노인장기요양 본인부담금"],
+  ["check_kr_dependent_deduction", "부양가족 기본공제 판정과 줄어드는 세금"],
+  ["calculate_kr_stock_major_shareholder_tax", "상장주식 대주주 판정과 양도세"],
 ];
 const titleOf = (slug: string) => welfareTools.find((t) => t.slug === slug)?.title ?? slug;
 ---
