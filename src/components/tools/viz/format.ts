@@ -49,6 +49,14 @@ export function formatUnit(unit: AssumptionUnit, v: number, mode: AdvisoryMode =
       return `${Math.round(v)}회/분`;
     case "reps":
       return `${Math.round(v)}회`;
+    case "km":
+      return `${Math.round(v).toLocaleString("ko-KR")}km`;
+    case "kmpl":
+      return `${(Math.round(v * 10) / 10).toLocaleString("ko-KR")}km/L`;
+    case "nights":
+      return `${Math.round(v)}박`;
+    case "amount":
+      return (Math.round(v * 100) / 100).toLocaleString("ko-KR");
   }
 }
 
