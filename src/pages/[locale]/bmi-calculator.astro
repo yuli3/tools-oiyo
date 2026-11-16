@@ -5,6 +5,7 @@ import Layout from '../../components/Layout.astro';
 import UtilityArticle, { type UtilityContent } from '../../components/UtilityArticle.astro';
 import RelatedUtilities from '../../components/RelatedUtilities.astro';
 import BmiCalculator from '../../components/tools/BmiCalculator';
+import BmiScenario from '../../components/tools/BmiScenario';
 import { locales } from '../../lib/i18n';
 import { utilityJsonLd } from '../../lib/utility-jsonld';
 
@@ -187,7 +188,7 @@ const schema = utilityJsonLd({ name: m.title, description: m.description, url, l
 ---
 <Layout title={m.title} description={m.description} locale={locale} availableLocales={[...locales]} canonicalURL={url}>
   <ToolShell title={m.title} description={m.description}>
-    <BmiCalculator client:load locale={locale === 'ko' ? 'ko' : 'en'} />
+    {locale === 'ko' ? <BmiScenario client:load /> : <BmiCalculator client:load locale="en" />}
     <UtilityArticle c={c} />
     <RelatedUtilities locale={locale} current="bmi-calculator" group="health" />
   </ToolShell>

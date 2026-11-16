@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ToolPanel } from './ToolPanel';
+import { navyBodyFat } from '../../lib/health-scenarios';
 
 type Gender = 'm' | 'f';
 
@@ -55,12 +56,10 @@ const BodyFatCalculator: React.FC<{ locale?: 'ko' | 'en' }> = ({ locale = 'ko' }
 
     const { gender, height, weight, waist, neck, hip } = state;
 
-    // Navy Method
-    const bodyFat = gender === 'm'
-        ? 86.010 * Math.log10(waist - neck) - 70.041 * Math.log10(height) + 36.76
-        : 163.205 * Math.log10(waist + hip - neck) - 97.684 * Math.log10(height) - 78.387;
+    // Navy Method (cm inputs; the inch formula must not be used with cm)
+    const bodyFat = navyBodyFat({ sex: gender === 'm' ? 'm' : 'f', height, weight, waist, neck, hip });
 
-    const clamped = Math.max(1, Math.min(60, bodyFat));
+    const clamped = Number.isFinite(bodyFat) ? Math.max(1, Math.min(60, bodyFat)) : 0;
     const fatMass = (weight * clamped) / 100;
     const leanMass = weight - fatMass;
 
