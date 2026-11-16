@@ -4,7 +4,7 @@ import KrFinancePage from "../../components/KrFinancePage.astro";
 import { welfareTools } from "../../data/welfare-tools";
 import { WELFARE_AS_OF } from "../../lib/kr-welfare-2026";
 
-const title = "생활 지원금·노동권 도구 모음 — 근로장려금·출산휴가·대지급금·산재·통상임금·종부세·부양가족";
+const title = "생활 지원금·노동권 도구 모음 — 근로장려금·출산휴가·해고예고·휴업수당·대지급금·산재·통상임금";
 const description = "받을 수 있는 돈을 놓치지 않게 돕는 계산기를 모았어요. 근로·자녀장려금, 출산휴가 급여, 체불 대지급금, 산재 휴업급여, 월세 세액공제, 퇴직연금 DB·DC, 통상임금·포괄임금 점검, 종부세·주택임대소득세, 부양가족 공제, 주식 대주주 양도세와 신청 방법, MCP·Claude 스킬까지 있어요.";
 const tools = welfareTools.filter((t) => t.slug !== "benefit-rights-toolkit");
 const situations = [
@@ -20,6 +20,11 @@ const situations = [
   ["부모님 돌봄 비용이 걱정돼요", "long-term-care-copay-calculator", "장기요양등급을 받으면 집에서 돌봄은 15%, 요양원은 20%만 내요. 한도와 식사비를 같이 봐요."],
   ["집을 세놓고 월세를 받아요", "housing-rental-income-tax-calculator", "2주택부터 월세에 세금이 붙어요. 5월 신고 전에 분리과세와 종합과세를 비교해요."],
   ["연말정산에 부모님을 올려도 될까요", "dependent-deduction-checker", "부모님은 60세 이상, 소득금액 100만 원(월급만 있으면 500만 원) 이하면 따로 살아도 올릴 수 있어요."],
+  ["갑자기 해고 통보를 받았어요", "dismissal-notice-pay-calculator", "30일 전에 듣지 못했다면 30일분 통상임금을 받을 수 있어요. 해고가 부당한지는 3개월 안에 따로 다퉈요."],
+  ["회사가 일이 없다며 쉬라고 해요", "shutdown-allowance-calculator", "회사 사정으로 쉬면 평균임금의 70% 이상을 받아야 해요(5명 이상 사업장)."],
+  ["아이 때문에 일을 줄이고 싶어요", "reduced-hours-childcare-pay-calculator", "주 15~35시간으로 줄이면 줄어든 월급 일부를 고용보험이 채워 줘요. 처음 10시간분은 100%예요."],
+  ["수습이라 최저임금보다 적게 받아요", "probation-minimum-wage-checker", "1년 이상 계약·3개월 안·단순노무 아님일 때만 90%까지 줄일 수 있어요."],
+  ["남은 연차를 돈으로 받을 수 있을까요", "annual-leave-promotion-planner", "회사가 사용촉진을 날짜에 맞춰 서면으로 안 했다면 수당을 청구할 수 있어요."],
   ["한 종목에 크게 투자했어요", "stock-major-shareholder-tax-calculator", "작년 말 한 종목을 50억 원 넘게 가졌으면 올해 판 이익에 양도세가 붙어요. 연말 보유를 미리 확인해요."],
 ];
 const more = [

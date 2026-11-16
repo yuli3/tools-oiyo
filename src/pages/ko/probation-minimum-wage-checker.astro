@@ -1,0 +1,15 @@
+---
+// 노동권 도구 묶음 A (2026-11-16, Gemini 이전). 엔진: lib/kr-welfare-2026.ts
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import ProbationWage from "../../components/tools/welfare/ProbationWage";
+import { WELFARE_AS_OF } from "../../lib/kr-welfare-2026";
+
+const title = "수습 최저임금 점검 2026 — 90% 감액 9,288원 되는지 확인";
+const description = "시급과 계약 기간, 수습 개월, 단순노무 여부로 2026년 수습 최저임금 90%(시급 9,288원) 감액이 되는지, 모자란 금액이 얼마인지 알려 줘요.";
+const ko = {"introTitle": "수습이라고 최저임금보다 적게 받아도 되나요", "intro": "1년 이상(기간을 정하지 않은 계약 포함) 계약한 수습 근로자는 수습을 시작하고 3개월까지 최저임금의 90%를 받을 수 있어요(최저임금법 제5조②). 1년 미만 계약, 3개월이 지난 뒤, 청소·경비·배달 같은 단순노무직은 감액할 수 없어 최저임금 100%(2026년 시급 10,320원)를 받아야 해요.", "howToTitle": "사용 방법", "steps": ["받는 시급(월급이면 ÷ 209)을 넣어요.", "계약 기간과 수습 몇 달째인지, 단순 업무인지 골라요.", "지금 받아야 할 최저 시급과 한 달 부족액을 봐요."], "highlightsTitle": "주요 특징", "highlights": [{"title": "90% 조건 3가지", "body": "1년 이상 계약, 수습 3개월 안, 단순노무직 아님. 하나라도 빠지면 100%."}, {"title": "2026 금액", "body": "최저임금 10,320원, 수습 90% 9,288원, 월(209시간) 2,156,880원."}, {"title": "부족액 계산", "body": "시급 차이 × 209시간으로 한 달 부족액을 보여 줘요."}, {"title": "해고예고와 연결", "body": "3개월 이상 일했으면 수습 중에도 해고예고가 필요해요."}], "disclaimer": "2026년 최저임금 기준이에요. 단순노무직종 해당 여부는 고용노동부 고시(한국표준직업분류 대분류 9)로 판단해요. 법률 자문이 아니며 1350에서 무료 상담을 받으세요."};
+const faqs = [{"q": "단순노무직은 어떤 일인가요?", "a": "건설·청소·경비·배달·운반·주방 보조·매장 정리·포장 같은 일이에요(한국표준직업분류 대분류 9)."}, {"q": "수습 기간을 6개월로 정했어요", "a": "수습 기간이 길어도 감액은 수습 시작 후 3개월까지만 돼요."}, {"q": "편의점 아르바이트도 감액되나요?", "a": "계약이 1년 미만이면 감액할 수 없고, 매장 정리·진열 업무는 단순노무로 볼 수 있어요."}, {"q": "부족분은 어떻게 받나요?", "a": "회사에 요청하고, 안 주면 노동포털에 진정을 내요. 3년 안에 청구해요."}];
+---
+<KrFinancePage slug="probation-minimum-wage-checker" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <ProbationWage client:load />
+  <p class="mt-4 text-xs text-muted-foreground">근거: 최저임금법 제5조②·제28조, 시행령 제3조, 고용노동부고시(단순노무업무 종사자), 2026 최저임금 고시(10,320원). 기준일 {WELFARE_AS_OF}. <a class="underline" href="/ko/benefit-rights-toolkit/">생활 지원금·노동권 도구 모음</a> · <a class="underline" href="/ko/labor-law-guide/">노동법 길잡이</a></p>
+</KrFinancePage>

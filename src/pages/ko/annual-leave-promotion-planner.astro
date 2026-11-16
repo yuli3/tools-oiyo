@@ -1,0 +1,15 @@
+---
+// 노동권 도구 묶음 A (2026-11-16, Gemini 이전). 엔진: lib/kr-welfare-2026.ts
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import LeavePromotion from "../../components/tools/welfare/LeavePromotion";
+import { WELFARE_AS_OF } from "../../lib/kr-welfare-2026";
+
+const title = "연차 사용촉진 날짜 계산기 — 6개월·2개월 전 서면 통보 일정";
+const description = "연차 사용기간 종료일로 근로기준법 제61조 연차 사용촉진 일정(6개월 전 10일 안 촉구, 2개월 전까지 지정 통보, 입사 첫해 3개월·1개월 전)을 계산하고, 수당을 청구할 수 있는지 알려 줘요.";
+const ko = {"introTitle": "남은 연차를 수당으로 받을 수 있나요", "intro": "회사가 연차 사용촉진 절차(근로기준법 제61조)를 날짜에 맞춰 서면으로 지키면 남은 연차의 수당을 주지 않아도 돼요. 1년 이상 근무자는 사용기간이 끝나기 6개월 전 기준 10일 안에 촉구, 근로자가 10일 안에 날짜를 안 정하면 2개월 전까지 회사가 지정해 통보해요. 입사 첫해 월차는 3개월 전·1개월 전 기준이에요.", "howToTitle": "사용 방법", "steps": ["어떤 연차인지(1년 이상·입사 첫해)와 사용기간이 끝나는 날을 넣어요.", "단계별 기한과 오늘부터 남은 날을 봐요.", "절차가 빠졌다면 남은 연차를 수당으로 청구할 수 있어요."], "highlightsTitle": "주요 특징", "highlights": [{"title": "법 조문 그대로", "body": "제61조①(6개월·2개월 전)과 제61조②(3개월·1개월 전, 촉구 뒤 생긴 휴가 5일·10일)를 모두 계산해요."}, {"title": "근로자·회사 관점", "body": "근로자는 수당 청구 가능 여부, 회사는 놓치면 안 되는 기한을 봐요."}, {"title": "며칠 뒤에 시작하면?", "body": "슬라이더로 늦게 시작하면 놓치는 단계를 바로 봐요."}, {"title": "서면 요건", "body": "개별 서면 통보가 필요해요. 단체 공지는 인정되지 않을 수 있어요."}], "disclaimer": "날짜는 조문 문언으로 계산한 추정이에요. 회계연도 기준 운영, 퇴사 시 정산 등은 사업장 규정과 고용노동부 해석을 확인하세요. 법률 자문이 아니에요."};
+const faqs = [{"q": "회사가 문자로만 촉구했어요", "a": "고용노동부는 개별 근로자에게 서면(전자문서 포함)으로 해야 한다고 봐요. 단체 문자·게시판 공지는 인정되지 않을 수 있어요."}, {"q": "지정된 날에 출근했어요", "a": "회사가 노무 수령을 거부한다는 뜻을 분명히 하지 않았다면 수당을 청구할 수 있어요."}, {"q": "퇴사하면 촉진은 어떻게 되나요?", "a": "퇴사로 근로관계가 끝나면 남은 연차는 수당으로 정산하는 것이 원칙이에요."}, {"q": "5명 미만 회사는요?", "a": "연차휴가 자체가 적용되지 않아 촉진 절차도 없어요."}];
+---
+<KrFinancePage slug="annual-leave-promotion-planner" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <LeavePromotion client:load />
+  <p class="mt-4 text-xs text-muted-foreground">근거: 근로기준법 제60조·제61조, 시행령 별표 1. 기준일 {WELFARE_AS_OF}. <a class="underline" href="/ko/benefit-rights-toolkit/">생활 지원금·노동권 도구 모음</a> · <a class="underline" href="/ko/labor-law-guide/">노동법 길잡이</a></p>
+</KrFinancePage>
