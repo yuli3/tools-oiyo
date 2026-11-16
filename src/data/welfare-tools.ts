@@ -1,7 +1,7 @@
 // 생활 지원금·노동권 도구 모음 (2026-11-16). Gemini가 만들던 공익 도구를 Claude가 이어받아 ko 전용으로 만들었어요.
 // 받을 수 있는 돈을 놓치지 않게 돕는 도구라 "얼마 받나 + 어디서 신청하나"를 같이 보여 줘요.
 export const welfareTools = [
-  { slug: "benefit-rights-toolkit", title: "생활 지원금·노동권 도구 모음", description: "근로·자녀장려금, 출산휴가 급여, 체불 대지급금, 산재 휴업급여, 월세 세액공제, 퇴직연금 DB·DC, 통상임금·포괄임금 점검, 종부세·주택임대소득세, 부양가족 공제, 주식 대주주 양도세, 해고예고수당·휴업수당·육아기 단축급여·수습 최저임금·연차 사용촉진, 자진퇴사 실업급여 점검, 하도급대금 직접 지급, 가족 차용증 이자·부모 집 무상 거주·가족 저가 거래 증여, 상가 임대료 5% 상한, 중소기업 청년 감면·노란우산공제·일반 vs 간이과세를 한곳에 모았어요." },
+  { slug: "benefit-rights-toolkit", title: "생활 지원금·노동권 도구 모음", description: "근로·자녀장려금, 출산휴가 급여, 체불 대지급금, 산재 휴업급여, 월세 세액공제, 퇴직연금 DB·DC, 통상임금·포괄임금 점검, 종부세·주택임대소득세, 부양가족 공제, 주식 대주주 양도세, 해고예고수당·휴업수당·육아기 단축급여·수습 최저임금·연차 사용촉진, 자진퇴사 실업급여 점검, 하도급대금 직접 지급, 가족 차용증 이자·부모 집 무상 거주·가족 저가 거래 증여, 상가 임대료 5% 상한, 중소기업 청년 감면·노란우산공제·일반 vs 간이과세, 업무용 승용차, 해외주식 vs 해외ETF를 한곳에 모았어요." },
   { slug: "work-child-incentive-calculator", title: "근로장려금·자녀장려금 계산기", description: "가구 유형·소득·재산·자녀 수로 2026년 근로장려금과 자녀장려금 예상액, 신청 방법을 알려 줘요." },
   { slug: "maternity-leave-pay-calculator", title: "출산휴가 급여 계산기", description: "출산전후휴가 90일(다태아 120일·미숙아 100일)과 배우자 출산휴가 20일 급여를 회사·고용보험 몫으로 나눠 계산해요." },
   { slug: "unpaid-wage-guarantee-calculator", title: "체불임금 대지급금 계산기", description: "월급·퇴직금을 못 받았을 때 나라가 먼저 주는 간이·도산 대지급금을 나이별 상한과 2026년 6개월 확대까지 반영해 계산해요." },
@@ -28,5 +28,7 @@ export const welfareTools = [
   { slug: "sme-youth-income-tax-reduction-calculator", title: "중소기업 청년 소득세 감면 계산기", description: "중소기업에 취업한 15~34세 청년의 근로소득세 90% 감면(연 200만 원 한도, 5년)을 연봉으로 계산하고, 병역 차감·끝나는 달·신청 방법을 알려 줘요." },
   { slug: "yellow-umbrella-deduction-calculator", title: "노란우산공제 소득공제 계산기", description: "노란우산공제 납입액으로 줄어드는 종합소득세를 사업소득금액 구간별 한도(600·500·400·200만 원)와 법인 대표 8천만 원 기준으로 계산해요." },
   { slug: "general-vs-simplified-vat-calculator", title: "일반과세 vs 간이과세 계산기", description: "매출·매입·업종으로 일반과세자와 간이과세자의 1년 부가세를 비교해요. 1억 400만 원 기준, 4,800만 원 면제, 업종 부가가치율, 환급 차이를 반영해요." },
+  { slug: "business-car-expense-calculator", title: "업무용 승용차 비용 한도 계산기", description: "업무용 승용차 1년 비용 중 세법상 인정되는 금액을 운행기록부 1,500만 원·감가상각 800만 원 한도, 리스·렌트까지 반영해 계산해요." },
+  { slug: "overseas-stock-vs-etf-tax-calculator", title: "해외주식 직접 vs 해외ETF 세금 비교", description: "같은 이익을 해외주식 직접(22%), 국내 상장 해외ETF(15.4%·종합과세), ISA로 냈을 때 세금을 비교하고 유리한 쪽이 바뀌는 지점을 보여 줘요." },
   { slug: "commercial-rent-increase-checker", title: "상가 임대료 인상 5% 상한 점검", description: "보증금과 월세로 환산보증금을 계산해 상가임대차법 5% 증액 상한이 적용되는지, 올릴 수 있는 최대 월세와 1년 재인상 제한, 보증금 월세 전환율(12%·기준금리 4.5배)을 알려 줘요." },
 ] as const;
