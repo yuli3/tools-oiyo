@@ -3,7 +3,7 @@
 // Usage: node scripts/calc.mjs <tool> '<json>'   ·   node scripts/calc.mjs help
 import { WELFARE_AS_OF, workChildCredit, maternityLeavePay, spouseLeavePay, wageGuarantee, injuryLeavePay, averageDailyWage, monthlyRentCredit, dbVsDc, breakEvenReturn, ordinaryWage, fixedOvertimeCheck, longTermCareCopay, dismissalNoticePay, shutdownAllowance, reducedHoursPay, probationMinWage, leavePromotionSchedule, voluntaryQuitCheck, directPaymentCheck } from "./kr-welfare-2026.mjs";
 import { comprehensiveRealEstateTax, rentalIncomeTax } from "./kr-home-tax-2026.mjs";
-import { dependentsTax, majorShareholderTax, familyLoanGift, freeUseGift, lowPriceSale, commercialRentCheck, smeYouthReduction, yellowUmbrella, vatTypeCompare, businessCarExpense, overseasCompare } from "./kr-household-tax-2026.mjs";
+import { dependentsTax, majorShareholderTax, familyLoanGift, freeUseGift, lowPriceSale, commercialRentCheck, smeYouthReduction, yellowUmbrella, vatTypeCompare, businessCarExpense, overseasCompare, officetelHouseCount, ticketPresaleTax, inheritedValuation, filingDeadlines } from "./kr-household-tax-2026.mjs";
 
 const EXAMPLES = {
   "work-child-incentive": { household: "oneEarner", income: 24000000, assets: 120000000, children: 1, late: false },
@@ -34,6 +34,10 @@ const EXAMPLES = {
   "vat-type": { sector: "retail", sales: 80000000, purchases: 35000000, cardShare: 0.8 },
   "business-car": { ownership: "own", amount: 60000000, otherCosts: 8000000, logbook: false, businessShare: 0.9, marginalRate: 0.264 },
   "overseas-etf": { gain: 15000000, otherFinancial: 3000000, marginalRate: 0.264, isaLowIncome: false },
+  officetel: { price: 250000000, acquired: "2023-05-01", residentialUse: true, areaM2: 30, metro: true, firstSaleNew: false, otherHouses: 1, nextHomePrice: 800000000, nextRegulated: true },
+  "ticket-presale": { kind: "ticket", gain: 300000000, holdYears: 8, original: true, preApprovalGain: 150000000, yearsToApproval: 6, oneHouseExempt: false, salePrice: 1100000000 },
+  "inherited-valuation": { official: 600000000, appraisal: 900000000, otherEstate: 200000000, spouse: false, salePrice: 1000000000, yearsAfter: 1, appraisalFee: 2000000 },
+  "filing-deadline": { kind: "inheritance", date: "2026-11-01", abroad: false, tax: 50000000, lateDays: 0 },
   "rental-income-tax": { houses: 2, annualRent: 12000000, deposits: 100000000, registered: false, otherIncome: 40000000, highPriceOneHouse: false },
 };
 
@@ -82,6 +86,10 @@ switch (tool) {
   case "vat-type": result = vatTypeCompare(i); break;
   case "business-car": result = businessCarExpense(i); break;
   case "overseas-etf": result = overseasCompare(i); break;
+  case "officetel": result = officetelHouseCount(i); break;
+  case "ticket-presale": result = ticketPresaleTax(i); break;
+  case "inherited-valuation": result = inheritedValuation(i); break;
+  case "filing-deadline": result = filingDeadlines(i); break;
   case "long-term-care": result = longTermCareCopay({ ...i, homeUse: i.homeUse ?? undefined }); break;
 }
 console.log(JSON.stringify({ tool, asOf: WELFARE_AS_OF, input: i, result }, null, 2));

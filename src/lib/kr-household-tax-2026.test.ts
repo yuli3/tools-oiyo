@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { FREE_USE_FACTOR, businessCarExpense, overseasCompare, commercialRentCheck, smeYouthReduction, vatTypeCompare, yellowUmbrella, dependentIncomeTest, dependentsTax, familyLoanGift, freeUseGift, judgeDependent, lowPriceSale, majorShareholderTax, whoShouldClaim } from "./kr-household-tax-2026.ts";
+import { filingDeadlines, inheritedValuation, officetelHouseCount, ticketPresaleTax, FREE_USE_FACTOR, businessCarExpense, overseasCompare, commercialRentCheck, smeYouthReduction, vatTypeCompare, yellowUmbrella, dependentIncomeTest, dependentsTax, familyLoanGift, freeUseGift, judgeDependent, lowPriceSale, majorShareholderTax, whoShouldClaim } from "./kr-household-tax-2026.ts";
 
 test("부양가족: 근로소득만 있으면 총급여 500만 원까지, 1원만 넘어도 안 돼요", () => {
   assert.equal(judgeDependent({ relation: "spouse", birthYear: 1990, wage: 5_000_000 }).status, "ok");
@@ -192,4 +192,52 @@ test("해외주식 직접 vs 국내 상장 해외ETF: 약 833만 원에서 같�
   const big = overseasCompare({ gain: 30_000_000, otherFinancial: 5_000_000, marginalRate: 0.418 });
   assert.equal(big.comprehensive, true);
   assert.equal(big.etfExtra, Math.floor(15_000_000 * (0.418 - 0.154)));
+});
+
+test("오피스텔 주택 수: 2020-08-12 뒤 주거용은 취득세 주택 수, 소형 신축은 빠져요", () => {
+  const base = { price: 250_000_000, acquired: "2023-05-01", residentialUse: true, areaM2: 30, metro: true, firstSaleNew: false, otherHouses: 1, nextHomePrice: 800_000_000, nextRegulated: true };
+  const r = officetelHouseCount(base);
+  assert.equal(r.officetelTax, 11_500_000);
+  assert.equal(r.acquisitionCount, true);
+  assert.equal(r.nextRate, 0.12);
+  assert.equal(r.nextExtra, r.nextTax - r.nextTaxWithout);
+  assert.equal(officetelHouseCount({ ...base, acquired: "2020-08-11" }).acquisitionCount, false);
+  const small = officetelHouseCount({ ...base, acquired: "2025-05-01", firstSaleNew: true });
+  assert.equal(small.smallNew, true);
+  assert.equal(small.heavyCount, false);
+  assert.equal(small.exemptCount, true);
+  assert.equal(officetelHouseCount({ ...base, price: 350_000_000, acquired: "2025-05-01", firstSaleNew: true, metro: false }).smallNew, false);
+  assert.equal(officetelHouseCount({ ...base, residentialUse: false }).heavyCount, false);
+});
+
+test("입주권 vs 분양권: 2년 뒤 기본세율, 분양권은 60%", () => {
+  const t = ticketPresaleTax({ kind: "ticket", gain: 300_000_000, holdYears: 8, original: true, preApprovalGain: 150_000_000, yearsToApproval: 6 });
+  assert.equal(t.longTerm, 18_000_000);
+  assert.equal(t.base, 279_500_000);
+  assert.equal(t.presale, Math.floor((297_500_000 * 0.6) / 10) * 10 + Math.floor((Math.floor((297_500_000 * 0.6) / 10) * 10 * 0.1) / 10) * 10);
+  assert.equal(ticketPresaleTax({ kind: "presale", gain: 100_000_000, holdYears: 0.5 }).rateLabel, "70%");
+  assert.equal(ticketPresaleTax({ kind: "ticket", gain: 100_000_000, holdYears: 3, original: true, oneHouseExempt: true, salePrice: 1_000_000_000 }).total, 0);
+  assert.equal(ticketPresaleTax({ kind: "ticket", gain: 100_000_000, holdYears: 3, original: false }).longTerm, 0);
+});
+
+test("상속주택 평가: 상속세가 0인 구간이면 감정평가가 유리해요", () => {
+  const r = inheritedValuation({ official: 300_000_000, appraisal: 450_000_000, otherEstate: 0, spouse: false, salePrice: 500_000_000, yearsAfter: 1 });
+  assert.equal(r.appraisal.inheritance, 0);
+  assert.equal(r.better, "appraisal");
+  const big = inheritedValuation({ official: 600_000_000, appraisal: 900_000_000, otherEstate: 200_000_000, spouse: false, salePrice: 1_000_000_000, yearsAfter: 1 });
+  assert.equal(big.official.base, 300_000_000);
+  assert.equal(big.appraisal.base, 598_000_000);
+});
+
+test("상속·증여 신고기한: 속한 달 말일부터 6개월·3개월, 늦으면 가산세", () => {
+  const i = filingDeadlines({ kind: "inheritance", date: "2026-03-15", tax: 100_000_000, lateDays: 20 });
+  assert.equal(i.filingDue, "2026-09-30");
+  assert.equal(i.noFiling, 10_000_000);
+  assert.equal(i.latePayment, 440_000);
+  assert.equal(i.extra, 13_440_000);
+  assert.equal(filingDeadlines({ kind: "inheritance", date: "2026-03-15", abroad: true }).filingDue, "2026-12-31");
+  const g = filingDeadlines({ kind: "gift", date: "2026-11-16", tax: 10_000_000 });
+  assert.equal(g.filingDue, "2027-02-28");
+  assert.equal(g.onTime, 9_700_000);
+  assert.equal(g.steps.at(-1)?.due, "2027-05-31");
 });
