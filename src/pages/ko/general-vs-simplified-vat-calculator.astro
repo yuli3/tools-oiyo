@@ -1,0 +1,15 @@
+---
+// Gemini 이전 B묶음 2차 (2026-11-16). 엔진: lib/kr-household-tax-2026.ts
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import VatTypeCompare from "../../components/tools/welfare/VatTypeCompare";
+import { HOUSEHOLD_TAX_AS_OF } from "../../lib/kr-household-tax-2026";
+
+const title = "일반과세 vs 간이과세 계산기 — 업종 부가가치율로 1년 부가세 비교";
+const description = "창업할 때 일반과세자와 간이과세자 중 어느 쪽이 부가세를 덜 내는지 매출·매입·업종으로 비교해요. 간이 기준 1억 400만 원, 4,800만 원 미만 납부 면제, 업종별 부가가치율 15~40%, 카드매출 1.3% 공제, 환급 차이를 반영해요.";
+const ko = {"introTitle": "매출과 매입 비율이 답을 정해요", "intro": "간이과세는 1년 매출(공급대가) 1억 400만 원 미만 개인사업자가 쓸 수 있어요(부동산임대 등은 4,800만 원). 매출 × 업종 부가가치율(15~40%) × 10%에서 매입의 0.5%만 빼고, 4,800만 원 미만이면 아예 면제예요. 일반과세는 매출 부가세에서 매입 부가세를 모두 빼고, 매입이 많으면 환급받아요.", "howToTitle": "사용 방법", "steps": ["업종을 골라요.", "1년 예상 매출과 세금계산서·카드로 받을 매입, 카드매출 비율을 넣어요.", "매출과 매입을 바꿔 보며 어느 쪽이 유리한지 봐요."], "highlightsTitle": "주요 특징", "highlights": [{"title": "업종 부가가치율", "body": "소매·음식 15%, 제조 20%, 숙박 25%, 건설·운수·IT 30%, 전문서비스·부동산 40%."}, {"title": "면제와 기준선", "body": "4,800만 원 미만 면제, 1억 400만 원부터 간이 불가를 그래프로 보여 줘요."}, {"title": "환급 차이", "body": "인테리어·장비 매입이 커서 일반과세 환급이 나는지 알려 줘요."}, {"title": "세금계산서", "body": "간이과세자도 매출 4,800만 원 이상이면 세금계산서를 발급해야 해요."}], "disclaimer": "추정이에요. 간이배제 업종·지역, 의제매입세액공제, 겸영은 넣지 않았어요. 사업자등록 전에 세무 전문가와 확인하세요."};
+const faqs = [{"q": "간이로 시작했는데 매출이 늘면요?", "a": "1년 매출이 1억 400만 원 이상이 되면 다음 해 7월 1일부터 일반과세자로 바뀌어요."}, {"q": "카페 창업은 어느 쪽이 좋아요?", "a": "인테리어·장비 매입이 크면 일반과세 환급이 클 수 있어요. 매입이 적고 매출이 1억 미만이면 간이가 보통 유리해요."}, {"q": "간이과세자는 세금계산서를 못 주나요?", "a": "직전 연도 매출 4,800만 원 이상 간이과세자는 발급 의무가 있고, 그 미만은 영수증만 발급해요."}, {"q": "간이를 포기하면요?", "a": "3년 동안 다시 간이과세를 쓸 수 없어요."}];
+---
+<KrFinancePage slug="general-vs-simplified-vat-calculator" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <VatTypeCompare client:load />
+  <p class="mt-4 text-xs text-muted-foreground">근거: 부가가치세법 제36조·제46조·제61조·제63조·제69조·제70조, 시행령 제109조·제111조. 기준일 {HOUSEHOLD_TAX_AS_OF}. <a class="underline" href="/ko/vat-calculator/">부가세 계산기</a> · <a class="underline" href="/ko/tax-law-guide/">세금 법령 길잡이</a> · <a class="underline" href="/ko/benefit-rights-toolkit/">생활 지원금·노동권 도구 모음</a></p>
+</KrFinancePage>

@@ -1,0 +1,15 @@
+---
+// Gemini 이전 B묶음 2차 (2026-11-16). 엔진: lib/kr-household-tax-2026.ts
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import YellowUmbrella from "../../components/tools/welfare/YellowUmbrella";
+import { HOUSEHOLD_TAX_AS_OF } from "../../lib/kr-household-tax-2026";
+
+const title = "노란우산공제 소득공제 계산기 2026 — 600·500·400·200만 원 한도와 절세액";
+const description = "노란우산공제(소기업·소상공인 공제부금) 납입액으로 줄어드는 종합소득세를 계산해요. 사업소득금액 4천만 원 이하 600만, 6천만 이하 500만, 1억 이하 400만, 초과 200만 원 한도, 법인 대표 총급여 8천만 원 기준, 2026년 7월부터 연 1,800만 원 납입 한도를 반영해요.";
+const ko = {"introTitle": "넣은 돈만큼 소득에서 빼 줘요", "intro": "조세특례제한법 제86조의3은 노란우산공제에 낸 돈을 사업소득금액에서 빼 줘요. 한도는 사업소득금액 4천만 원 이하 600만, 6천만 원 이하 500만, 1억 원 이하 400만, 그 위 200만 원이에요. 소기업 법인 대표는 총급여 8천만 원 이하일 때 근로소득금액에서 빼요. 폐업·노령으로 받으면 퇴직소득으로 낮게 과세되지만 임의 해지하면 기타소득이에요.", "howToTitle": "사용 방법", "steps": ["개인사업자인지 법인 대표인지 고르고 소득을 넣어요.", "1년에 넣는 돈을 넣어요.", "납입액을 바꿔 보며 한도에서 절세가 멈추는 지점을 봐요."], "highlightsTitle": "주요 특징", "highlights": [{"title": "구간별 한도", "body": "사업소득금액 4천만·6천만·1억 경계에서 한도가 600만→500만→400만→200만 원으로 줄어요."}, {"title": "실제 절세액", "body": "종합소득세 누진세율로 공제 전후를 비교해 지방세까지 더해요."}, {"title": "납입 한도", "body": "2026년 7월 납입분부터 연 1,800만 원(종전 분기 300만)."}, {"title": "해지 주의", "body": "임의 해지하면 공제받은 원금과 이자가 기타소득(16.5%)이에요."}], "disclaimer": "추정이에요. 다른 소득공제·세액공제와 다른 종합소득은 단순하게 넣었어요. 부동산임대업 소득은 공제 대상이 아니에요. 신고 전에는 세무 전문가와 확인하세요."};
+const faqs = [{"q": "한도보다 많이 넣으면 손해인가요?", "a": "공제는 한도까지만 되지만, 넣은 돈은 적립되고 복리 이자가 붙어요. 압류도 금지돼요."}, {"q": "법인 대표도 되나요?", "a": "소기업 법인 대표는 총급여 8천만 원 이하일 때 근로소득금액에서 공제받아요."}, {"q": "폐업하면요?", "a": "폐업은 공제금 지급 사유라 퇴직소득으로 과세돼 세 부담이 낮아요."}, {"q": "언제 공제받나요?", "a": "낸 해의 다음 해 5월 종합소득세 신고 때 공제해요."}];
+---
+<KrFinancePage slug="yellow-umbrella-deduction-calculator" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <YellowUmbrella client:load />
+  <p class="mt-4 text-xs text-muted-foreground">근거: 조세특례제한법 제86조의3, 중소기업협동조합법 제115조. 기준일 {HOUSEHOLD_TAX_AS_OF}. <a class="underline" href="/ko/comprehensive-income-tax-calculator/">종합소득세 계산기</a> · <a class="underline" href="/ko/tax-law-guide/">세금 법령 길잡이</a> · <a class="underline" href="/ko/benefit-rights-toolkit/">생활 지원금·노동권 도구 모음</a></p>
+</KrFinancePage>

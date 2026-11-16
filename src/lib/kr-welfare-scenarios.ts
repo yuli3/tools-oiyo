@@ -7,7 +7,7 @@ import {
   type EitcInput, type FixedOtInput, type WorkHours, type LtcInput, type GuaranteeInput, type InjuryInput, type MaternityInput, type OrdinaryWageInput, type PensionInput, type RentInput,
 } from "./kr-welfare-2026.ts";
 import { RENTAL, comprehensiveRealEstateTax, creThreshold, rentalIncomeTax, type CreInput, type RentalInput } from "./kr-home-tax-2026.ts";
-import { COMMERCIAL_LEASE, DEPENDENT_2026, FAMILY_2026, FREE_USE_FACTOR, MAJOR_2026, RELATION_LABEL, commercialRentCheck, dependentsTax, familyLoanGift, freeUseGift, lowPriceSale, majorShareholderTax, type CommercialRentInput, type DependentsInput, type FamilyLoanInput, type FreeUseInput, type LowPriceSaleInput, type MajorShareholderInput } from "./kr-household-tax-2026.ts";
+import { COMMERCIAL_LEASE, DEPENDENT_2026, FAMILY_2026, FREE_USE_FACTOR, MAJOR_2026, RELATION_LABEL, commercialRentCheck, smeYouthReduction, vatTypeCompare, yellowUmbrella, SIMPLIFIED_VAT, YELLOW_UMBRELLA, type SmeYouthInput, type VatTypeInput, type YellowUmbrellaInput, dependentsTax, familyLoanGift, freeUseGift, lowPriceSale, majorShareholderTax, type CommercialRentInput, type DependentsInput, type FamilyLoanInput, type FreeUseInput, type LowPriceSaleInput, type MajorShareholderInput } from "./kr-household-tax-2026.ts";
 import { roughWon, type Assumption } from "./scenario.ts";
 
 const money = <I>(key: string, label: string, plain: string, get: (i: I) => number, set: (i: I, v: number) => I, range: (a: number) => [number, number], marks?: { at: number; label: string }[], kind: "fact" | "assumption" = "assumption"): Assumption<I> => ({ key, label, plain, unit: "won", kind, get, set, range, marks });
@@ -289,4 +289,22 @@ export const commercialExcess = (i: CommercialRentInput) => commercialRentCheck(
 export const COMMERCIAL_ASSUMPTIONS = (i: CommercialRentInput): Assumption<CommercialRentInput>[] => [
   money("newMonthlyRent", "올리려는 월세", "새 월세", (x) => x.newMonthlyRent, (x, v) => ({ ...x, newMonthlyRent: Math.max(0, v) }), () => [i.monthlyRent * 0.9, i.monthlyRent * 1.2], [{ at: Math.floor(i.monthlyRent * 1.05), label: "5%" }]),
   rateA("baseRate", "한국은행 기준금리", "기준금리", (x) => x.baseRate ?? COMMERCIAL_LEASE.baseRate, (x, v) => ({ ...x, baseRate: Math.max(0, v) }), [0, 0.05], [{ at: COMMERCIAL_LEASE.conversionCap / COMMERCIAL_LEASE.baseRateMultiple, label: "12% 상한 시작" }]),
+];
+
+// ───────────────────────── 청년 감면·노란우산·간이과세 (Gemini 이전 B 2차) ─────────────────────────
+export const youthYearly = (i: SmeYouthInput) => smeYouthReduction(i).yearly;
+export const YOUTH_ASSUMPTIONS: Assumption<SmeYouthInput>[] = [
+  money("salary", "총급여", "1년 연봉(비과세 빼고)", (x) => x.salary, (x, v) => ({ ...x, salary: Math.max(0, v) }), (a) => [15_000_000, Math.max(100_000_000, a * 1.5)]),
+];
+
+export const umbrellaSaved = (i: YellowUmbrellaInput) => yellowUmbrella(i).saved;
+export const UMBRELLA_ASSUMPTIONS = (i: YellowUmbrellaInput): Assumption<YellowUmbrellaInput>[] => [
+  money("paid", "1년 납입액", "1년에 넣는 돈", (x) => x.paid, (x, v) => ({ ...x, paid: Math.max(0, v) }), () => [0, YELLOW_UMBRELLA.annualPayCap], [{ at: yellowUmbrella(i).limit, label: "공제 한도" }]),
+  money("income", i.kind === "ceo" ? "총급여" : "사업소득금액", i.kind === "ceo" ? "1년 급여" : "1년 매출 − 경비", (x) => x.income, (x, v) => ({ ...x, income: Math.max(0, v) }), (a) => [0, Math.max(150_000_000, a * 1.5)], i.kind === "ceo" ? [{ at: YELLOW_UMBRELLA.ceoSalaryMax, label: "8천만" }] : [{ at: 40_000_000, label: "4천만" }, { at: 60_000_000, label: "6천만" }, { at: 100_000_000, label: "1억" }], "fact"),
+];
+
+export const vatSaving = (i: VatTypeInput) => vatTypeCompare(i).saving;
+export const VAT_TYPE_ASSUMPTIONS: Assumption<VatTypeInput>[] = [
+  money("sales", "공급대가(매출, 부가세 포함)", "1년 매출", (x) => x.sales, (x, v) => ({ ...x, sales: Math.max(0, v) }), (a) => [0, Math.max(150_000_000, a * 1.5)], [{ at: SIMPLIFIED_VAT.exemptBelow, label: "4,800만" }, { at: SIMPLIFIED_VAT.threshold, label: "1억 400만" }], "fact"),
+  money("purchases", "매입(부가세 포함)", "세금계산서·카드로 산 재료·비용", (x) => x.purchases, (x, v) => ({ ...x, purchases: Math.max(0, v) }), (a) => [0, Math.max(100_000_000, a * 2)]),
 ];

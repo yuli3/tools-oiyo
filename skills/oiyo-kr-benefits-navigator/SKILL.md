@@ -1,6 +1,6 @@
 ---
 name: oiyo-kr-benefits-navigator
-description: 한국의 생활 지원금·노동권 길잡이. 상황을 듣고 받을 수 있는 제도(근로장려금·자녀장려금, 출산전후휴가·배우자 출산휴가 급여, 체불임금 대지급금, 산재 휴업급여, 월세 세액공제, 퇴직연금 DB·DC 선택, 통상임금·포괄임금 고정 연장수당, 종합부동산세, 주택임대소득세, 노인장기요양 본인부담금, 해고예고수당·휴업수당·육아기 단축 급여·수습 최저임금·연차 사용촉진, 자진퇴사 실업급여 정당 사유, 하도급대금 직접 지급, 가족 차용 적정이자·부모 집 무상 거주·가족 간 저가 양수도 증여, 상가 임대료 5% 상한)를 골라 2026년 기준으로 계산하고, "얼마·어디서·언제까지"가 있는 안내문을 쓴다. "근로장려금", "자녀장려금", "출산휴가 급여", "배우자 출산휴가", "월급을 못 받았", "임금체불", "대지급금", "산재", "휴업급여", "월세 세액공제", "DB형", "DC형", "퇴직연금", "통상임금", "재직조건 상여", "포괄임금", "시간외수당", "종부세", "종합부동산세", "월세 소득세", "주택임대소득", "장기요양", "요양원 비용", "방문요양", "해고예고", "휴업수당", "근로시간 단축", "수습", "연차 촉진", "자진퇴사", "하도급", "차용증", "부모님께 빌린 돈", "무상 거주", "저가 양도", "가족 간 매매", "상가 월세 인상"을 물을 때 쓴다.
+description: 한국의 생활 지원금·노동권 길잡이. 상황을 듣고 받을 수 있는 제도(근로장려금·자녀장려금, 출산전후휴가·배우자 출산휴가 급여, 체불임금 대지급금, 산재 휴업급여, 월세 세액공제, 퇴직연금 DB·DC 선택, 통상임금·포괄임금 고정 연장수당, 종합부동산세, 주택임대소득세, 노인장기요양 본인부담금, 해고예고수당·휴업수당·육아기 단축 급여·수습 최저임금·연차 사용촉진, 자진퇴사 실업급여 정당 사유, 하도급대금 직접 지급, 가족 차용 적정이자·부모 집 무상 거주·가족 간 저가 양수도 증여, 상가 임대료 5% 상한, 중소기업 취업 청년 소득세 감면, 노란우산공제, 일반 vs 간이과세)를 골라 2026년 기준으로 계산하고, "얼마·어디서·언제까지"가 있는 안내문을 쓴다. "근로장려금", "자녀장려금", "출산휴가 급여", "배우자 출산휴가", "월급을 못 받았", "임금체불", "대지급금", "산재", "휴업급여", "월세 세액공제", "DB형", "DC형", "퇴직연금", "통상임금", "재직조건 상여", "포괄임금", "시간외수당", "종부세", "종합부동산세", "월세 소득세", "주택임대소득", "장기요양", "요양원 비용", "방문요양", "해고예고", "휴업수당", "근로시간 단축", "수습", "연차 촉진", "자진퇴사", "하도급", "차용증", "부모님께 빌린 돈", "무상 거주", "저가 양도", "가족 간 매매", "상가 월세 인상", "청년 소득세 감면", "중소기업 취업", "노란우산", "간이과세", "일반과세"를 물을 때 쓴다.
 ---
 
 # 지원금·노동권 길잡이 (OIYO)
@@ -10,8 +10,8 @@ description: 한국의 생활 지원금·노동권 길잡이. 상황을 듣고 �
 ## 계산 경로 (위에서부터 쓸 수 있는 것)
 
 1. MCP 서버 `https://api.oiyo.net/mcp`(Registry 이름 `io.github.yuli3/oiyo-calculations`)가 연결돼 있으면 그 도구를 쓴다:
-   `calculate_kr_work_child_incentive`, `calculate_kr_maternity_leave_pay`, `calculate_kr_wage_guarantee`, `calculate_kr_injury_leave_pay`, `calculate_kr_monthly_rent_credit`, `compare_kr_retirement_pension`, `calculate_kr_ordinary_wage`, `check_kr_fixed_overtime_pay`, `calculate_kr_comprehensive_real_estate_tax`, `calculate_kr_housing_rental_income_tax`, `calculate_kr_long_term_care_copay`, `check_kr_dependent_deduction`, `calculate_kr_stock_major_shareholder_tax`, `calculate_kr_dismissal_notice_pay`, `calculate_kr_shutdown_allowance`, `calculate_kr_reduced_hours_childcare_pay`, `check_kr_probation_minimum_wage`, `plan_kr_annual_leave_promotion`, `check_kr_voluntary_quit_unemployment`, `check_kr_subcontract_direct_payment`, `check_kr_family_loan_interest`, `check_kr_parent_house_free_use`, `check_kr_family_low_price_sale`, `check_kr_commercial_rent_increase`
-2. 코드 실행이 되면 `node scripts/calc.mjs <도구> '<JSON>'`(Node 22 이상, 의존성 없음). 도구: `work-child-incentive`, `maternity-leave`, `wage-guarantee`, `injury-leave`, `rent-credit`, `pension-db-dc`, `ordinary-wage`, `fixed-overtime`, `comprehensive-real-estate-tax`, `rental-income-tax`, `long-term-care`, `dependents`, `stock-major-shareholder`, `dismissal-notice`, `shutdown-allowance`, `reduced-hours`, `probation-min-wage`, `leave-promotion`, `voluntary-quit`, `subcontract-direct-pay`, `family-loan`, `free-use`, `low-price-sale`, `commercial-rent`.
+   `calculate_kr_work_child_incentive`, `calculate_kr_maternity_leave_pay`, `calculate_kr_wage_guarantee`, `calculate_kr_injury_leave_pay`, `calculate_kr_monthly_rent_credit`, `compare_kr_retirement_pension`, `calculate_kr_ordinary_wage`, `check_kr_fixed_overtime_pay`, `calculate_kr_comprehensive_real_estate_tax`, `calculate_kr_housing_rental_income_tax`, `calculate_kr_long_term_care_copay`, `check_kr_dependent_deduction`, `calculate_kr_stock_major_shareholder_tax`, `calculate_kr_dismissal_notice_pay`, `calculate_kr_shutdown_allowance`, `calculate_kr_reduced_hours_childcare_pay`, `check_kr_probation_minimum_wage`, `plan_kr_annual_leave_promotion`, `check_kr_voluntary_quit_unemployment`, `check_kr_subcontract_direct_payment`, `check_kr_family_loan_interest`, `check_kr_parent_house_free_use`, `check_kr_family_low_price_sale`, `check_kr_commercial_rent_increase`, `calculate_kr_sme_youth_tax_reduction`, `calculate_kr_yellow_umbrella_deduction`, `compare_kr_general_vs_simplified_vat`
+2. 코드 실행이 되면 `node scripts/calc.mjs <도구> '<JSON>'`(Node 22 이상, 의존성 없음). 도구: `work-child-incentive`, `maternity-leave`, `wage-guarantee`, `injury-leave`, `rent-credit`, `pension-db-dc`, `ordinary-wage`, `fixed-overtime`, `comprehensive-real-estate-tax`, `rental-income-tax`, `long-term-care`, `dependents`, `stock-major-shareholder`, `dismissal-notice`, `shutdown-allowance`, `reduced-hours`, `probation-min-wage`, `leave-promotion`, `voluntary-quit`, `subcontract-direct-pay`, `family-loan`, `free-use`, `low-price-sale`, `commercial-rent`, `sme-youth`, `yellow-umbrella`, `vat-type`.
 3. 둘 다 안 되면 계산하지 말고 아래 웹 도구 링크를 주고, 필요한 입력을 정리해 준다.
 
 ## 진행 순서
@@ -34,6 +34,9 @@ description: 한국의 생활 지원금·노동권 길잡이. 상황을 듣고 �
    - 부모 집 무상 거주: 집 시가, 부모와 함께 사는지, (있으면) 그 집 담보 대출액과 낸 연 이자
    - 가족 간 저가 거래: 시가(감정가·매매사례가), 실제 거래가
    - 상가 임대료: 지역(서울·과밀억제권역/부산·광역시 등·그 밖), 지금 보증금·월세, 요구 보증금·월세, 마지막 인상 후 개월, 기준금리
+   - 청년 감면: 총급여, 근로계약일 나이, 병역 개월, 취업 연월(YYYY-MM)
+   - 노란우산: 개인사업자/법인 대표, 사업소득금액(또는 총급여), 1년 납입액
+   - 일반 vs 간이: 업종, 1년 매출(부가세 포함), 세금계산서·카드 매입, 카드매출 비율
    - 주식 대주주: 시장(코스피·코스닥·코넥스), 작년 말(직전 사업연도 말) 그 종목 보유 시가와 지분율(최대주주면 특수관계인 합산), 올해 양도차익, 1년 이상 보유·중소기업 여부
 3. **계산**: 위 경로로 계산한다. 결과 숫자를 바꾸지 않는다.
 4. **안내문**: 아래 순서로 짧게 쓴다.
@@ -68,6 +71,9 @@ description: 한국의 생활 지원금·노동권 길잡이. 상황을 듣고 �
 | 부모 집 무상 거주 | https://tools.oiyo.net/ko/parent-house-free-use-gift-checker/ |
 | 가족 간 저가 양수도 | https://tools.oiyo.net/ko/family-low-price-sale-checker/ |
 | 상가 임대료 5% 상한 | https://tools.oiyo.net/ko/commercial-rent-increase-checker/ |
+| 중소기업 청년 감면 | https://tools.oiyo.net/ko/sme-youth-income-tax-reduction-calculator/ |
+| 노란우산공제 | https://tools.oiyo.net/ko/yellow-umbrella-deduction-calculator/ |
+| 일반 vs 간이과세 | https://tools.oiyo.net/ko/general-vs-simplified-vat-calculator/ |
 | 모음 | https://tools.oiyo.net/ko/benefit-rights-toolkit/ |
 
 실업급여·육아휴직은 https://tools.oiyo.net/ko/unemployment-benefits-calculator/, https://tools.oiyo.net/ko/parental-leave-calculator/ 를 안내한다.

@@ -3,7 +3,7 @@
 // Usage: node scripts/calc.mjs <tool> '<json>'   ·   node scripts/calc.mjs help
 import { WELFARE_AS_OF, workChildCredit, maternityLeavePay, spouseLeavePay, wageGuarantee, injuryLeavePay, averageDailyWage, monthlyRentCredit, dbVsDc, breakEvenReturn, ordinaryWage, fixedOvertimeCheck, longTermCareCopay, dismissalNoticePay, shutdownAllowance, reducedHoursPay, probationMinWage, leavePromotionSchedule, voluntaryQuitCheck, directPaymentCheck } from "./kr-welfare-2026.mjs";
 import { comprehensiveRealEstateTax, rentalIncomeTax } from "./kr-home-tax-2026.mjs";
-import { dependentsTax, majorShareholderTax, familyLoanGift, freeUseGift, lowPriceSale, commercialRentCheck } from "./kr-household-tax-2026.mjs";
+import { dependentsTax, majorShareholderTax, familyLoanGift, freeUseGift, lowPriceSale, commercialRentCheck, smeYouthReduction, yellowUmbrella, vatTypeCompare } from "./kr-household-tax-2026.mjs";
 
 const EXAMPLES = {
   "work-child-incentive": { household: "oneEarner", income: 24000000, assets: 120000000, children: 1, late: false },
@@ -29,6 +29,9 @@ const EXAMPLES = {
   "free-use": { propertyValue: 1500000000, coResiding: false, collateralLoan: 0, collateralInterest: 0, deductionLeft: 50000000 },
   "low-price-sale": { marketValue: 1100000000, price: 700000000, deductionLeft: 50000000 },
   "commercial-rent": { region: "seoul", deposit: 100000000, monthlyRent: 5000000, newDeposit: 100000000, newMonthlyRent: 5500000, monthsSinceLast: 24, baseRate: 0.03 },
+  "sme-youth": { salary: 36000000, persons: 1, ageAtContract: 29, militaryMonths: 0, start: "2026-03" },
+  "yellow-umbrella": { kind: "business", income: 35000000, paid: 6000000, otherDeductions: 1500000 },
+  "vat-type": { sector: "retail", sales: 80000000, purchases: 35000000, cardShare: 0.8 },
   "rental-income-tax": { houses: 2, annualRent: 12000000, deposits: 100000000, registered: false, otherIncome: 40000000, highPriceOneHouse: false },
 };
 
@@ -72,6 +75,9 @@ switch (tool) {
   case "free-use": result = freeUseGift(i); break;
   case "low-price-sale": result = lowPriceSale(i); break;
   case "commercial-rent": result = commercialRentCheck(i); break;
+  case "sme-youth": result = smeYouthReduction(i); break;
+  case "yellow-umbrella": result = yellowUmbrella(i); break;
+  case "vat-type": result = vatTypeCompare(i); break;
   case "long-term-care": result = longTermCareCopay({ ...i, homeUse: i.homeUse ?? undefined }); break;
 }
 console.log(JSON.stringify({ tool, asOf: WELFARE_AS_OF, input: i, result }, null, 2));
