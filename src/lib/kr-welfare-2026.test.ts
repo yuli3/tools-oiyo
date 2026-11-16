@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import {
-  youthRentSupport, housingLoanBest, MEDIAN_INCOME_2026,
+  youthRentSupport, housingLoanBest, MEDIAN_INCOME_2026, specialSupplyCheck,
   MIN_WAGE_2026, eitcAmount, ctcPerChild, workChildCredit, maternityLeavePay, spouseLeavePay, wageGuarantee, guaranteeMonthlyCap,
   injuryLeaveDaily, injuryLeavePay, averageDailyWage, monthlyRentCredit, dbVsDc, breakEvenReturn,
   premiumPay, ordinaryWage, fixedOvertimeCheck, longTermCareCopay,
@@ -289,4 +289,18 @@ test("정책 주거대출: 2026 기금 한도·소득 기준", () => {
   assert.equal(j.best, "youthBeotimmok");
   assert.equal(j.bestLoan, 150_000_000);
   assert.equal(housingLoanBest({ purpose: "monthly", age: 28, income: 30_000_000, netAssets: 0, newlywed: false, children: 0, newbornWithin2y: false, firstTimeBuyer: true, metro: true, amount: 5_000_000, monthlyRent: 500_000, areaM2: 30 }).bestLoan, 12_000_000);
+});
+
+test("청약 특별공급: 민영 신혼 100/120·140/160·3.31억 추첨, 공공 다자녀 120%", () => {
+  const b = { sector: "private" as const, householdSize: 3, monthlyIncome: 9_000_000, dualIncome: true, realEstate: 0, noHome: true, neverOwned: true, marriedYears: 2, childUnder2: false, minorChildren: 1, taxPaid5y: true, elderParent3y: false };
+  const nl = (x: ReturnType<typeof specialSupplyCheck>) => x.results.find((o) => o.type === "newlywed")!;
+  assert.equal(nl(specialSupplyCheck(b)).tier, "priority");
+  assert.equal(nl(specialSupplyCheck({ ...b, monthlyIncome: 11_000_000 })).tier, "general");
+  assert.equal(nl(specialSupplyCheck({ ...b, monthlyIncome: 13_000_000 })).tier, "lottery");
+  assert.equal(nl(specialSupplyCheck({ ...b, monthlyIncome: 13_000_000, realEstate: 400_000_000 })).tier, "none");
+  assert.equal(nl(specialSupplyCheck({ ...b, marriedYears: 8 })).tier, "none");
+  const pub = specialSupplyCheck({ ...b, sector: "public", dualIncome: false, monthlyIncome: 8_500_000, minorChildren: 2 });
+  assert.equal(pub.results.find((o) => o.type === "multiChild")!.tier, "priority");
+  assert.equal(nl(pub).tier, "general");
+  assert.equal(specialSupplyCheck({ ...b, minorChildren: 2 }).results.find((o) => o.type === "multiChild")!.reason, "소득 기준 없음");
 });

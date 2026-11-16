@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // OIYO 지원금·노동권 길잡이 계산기. tools.oiyo.net과 같은 공식(kr-welfare-2026.mjs는 생성 파일, 고치지 않아요).
 // Usage: node scripts/calc.mjs <tool> '<json>'   ·   node scripts/calc.mjs help
-import { WELFARE_AS_OF, workChildCredit, maternityLeavePay, spouseLeavePay, wageGuarantee, injuryLeavePay, averageDailyWage, monthlyRentCredit, dbVsDc, breakEvenReturn, ordinaryWage, fixedOvertimeCheck, longTermCareCopay, dismissalNoticePay, shutdownAllowance, reducedHoursPay, probationMinWage, leavePromotionSchedule, voluntaryQuitCheck, directPaymentCheck, youthRentSupport, housingLoanBest } from "./kr-welfare-2026.mjs";
+import { WELFARE_AS_OF, workChildCredit, maternityLeavePay, spouseLeavePay, wageGuarantee, injuryLeavePay, averageDailyWage, monthlyRentCredit, dbVsDc, breakEvenReturn, ordinaryWage, fixedOvertimeCheck, longTermCareCopay, dismissalNoticePay, shutdownAllowance, reducedHoursPay, probationMinWage, leavePromotionSchedule, voluntaryQuitCheck, directPaymentCheck, youthRentSupport, housingLoanBest, specialSupplyCheck } from "./kr-welfare-2026.mjs";
 import { comprehensiveRealEstateTax, rentalIncomeTax } from "./kr-home-tax-2026.mjs";
 import { dependentsTax, majorShareholderTax, familyLoanGift, freeUseGift, lowPriceSale, commercialRentCheck, smeYouthReduction, yellowUmbrella, vatTypeCompare, businessCarExpense, overseasCompare, officetelHouseCount, ticketPresaleTax, inheritedValuation, filingDeadlines } from "./kr-household-tax-2026.mjs";
 
@@ -26,6 +26,7 @@ const EXAMPLES = {
   "voluntary-quit": { reasons: ["unpaidWages"], months: 2, commuteHours: 0, careDays: 0, leaveRefused: false, insuredDays: 300 },
   "youth-rent": { age: 27, livesApart: true, ownsHome: false, youthIncome: 1400000, youthHousehold: 1, youthAssets: 30000000, parentIncome: 5000000, parentHousehold: 3, parentAssets: 300000000, deposit: 10000000, rent: 550000 },
   "housing-loan": { purpose: "jeonse", age: 29, income: 42000000, netAssets: 60000000, newlywed: false, children: 0, newbornWithin2y: false, firstTimeBuyer: true, metro: true, amount: 200000000, areaM2: 40, singleHousehold: true },
+  "special-supply": { sector: "private", householdSize: 3, monthlyIncome: 9000000, dualIncome: true, realEstate: 0, noHome: true, neverOwned: true, marriedYears: 2, childUnder2: true, minorChildren: 1, taxPaid5y: true, elderParent3y: false },
   "subcontract-direct-pay": { cause: "twoMissed", missedInstallments: 2, requested: true, primeStopRequest: false, workValue: 50000000, receivedFromPrime: 10000000, ownerUnpaidToPrime: 30000000, daysSinceDelivery: 120 },
   "family-loan": { principal: 300000000, rate: 0, deductionLeft: 50000000 },
   "free-use": { propertyValue: 1500000000, coResiding: false, collateralLoan: 0, collateralInterest: 0, deductionLeft: 50000000 },
@@ -81,6 +82,7 @@ switch (tool) {
   case "subcontract-direct-pay": result = directPaymentCheck(i); break;
   case "youth-rent": result = youthRentSupport(i); break;
   case "housing-loan": result = housingLoanBest(i); break;
+  case "special-supply": result = specialSupplyCheck(i); break;
   case "family-loan": result = familyLoanGift(i); break;
   case "free-use": result = freeUseGift(i); break;
   case "low-price-sale": result = lowPriceSale(i); break;

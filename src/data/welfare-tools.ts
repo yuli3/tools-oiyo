@@ -36,5 +36,6 @@ export const welfareTools = [
   { slug: "inheritance-gift-filing-deadline-calculator", title: "상속세·증여세 신고기한 계산기", description: "상속 6개월·증여 3개월 신고기한과 취득세·사망신고·상속포기 기한을 날짜로 보여 주고, 늦을 때 가산세를 계산해요." },
   { slug: "youth-monthly-rent-support-checker", title: "청년월세 지원 자격·금액", description: "만 19~34세 청년월세 지원(월 20만 원 × 24개월) 자격을 청년·원가구 소득·재산과 보증금·월세 기준으로 점검하고 받을 금액을 계산해요." },
   { slug: "policy-housing-loan-eligibility-checker", title: "정책 주거대출 자격 찾기", description: "디딤돌, 신생아 특례, 청년 주택드림, 버팀목, 청년전용 버팀목, 월세대출 자격과 최대 한도·금리 범위를 한 번에 비교해요." },
+  { slug: "special-supply-eligibility-checker", title: "청약 특별공급 자격 점검", description: "신혼부부·신생아·생애최초·다자녀·노부모 특별공급 중 넣을 수 있는 유형과 우선·일반·추첨 단계를 소득·자산 기준으로 점검해요." },
   { slug: "commercial-rent-increase-checker", title: "상가 임대료 인상 5% 상한 점검", description: "보증금과 월세로 환산보증금을 계산해 상가임대차법 5% 증액 상한이 적용되는지, 올릴 수 있는 최대 월세와 1년 재인상 제한, 보증금 월세 전환율(12%·기준금리 4.5배)을 알려 줘요." },
 ] as const;

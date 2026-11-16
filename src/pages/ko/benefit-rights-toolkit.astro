@@ -42,6 +42,7 @@ const situations = [
   ["상속·증여 신고는 언제까지예요", "inheritance-gift-filing-deadline-calculator", "상속은 돌아가신 달 말일부터 6개월, 증여는 받은 달 말일부터 3개월이에요."],
   ["혼자 월세 사는 20대예요", "youth-monthly-rent-support-checker", "보증금 5천만 원·월세 60만 원 이하, 내 소득이 월 약 153만 원 이하면 월 20만 원씩 24개월 받을 수 있어요."],
   ["전세·집 살 때 싼 대출이 있나요", "policy-housing-loan-eligibility-checker", "소득·순자산·집값으로 디딤돌·버팀목·신생아 특례 중 되는 상품과 한도를 비교해요."],
+  ["신혼인데 청약 특공 넣을 수 있을까요", "special-supply-eligibility-checker", "3인 이하 월 소득 약 753만 원(맞벌이 904만 원) 이하면 민영 신혼 특공 우선공급이에요."],
   ["한 종목에 크게 투자했어요", "stock-major-shareholder-tax-calculator", "작년 말 한 종목을 50억 원 넘게 가졌으면 올해 판 이익에 양도세가 붙어요. 연말 보유를 미리 확인해요."],
 ];
 const more = [
@@ -89,6 +90,7 @@ const mcpTools = [
   ["plan_kr_inheritance_gift_filing_deadline", "상속·증여 신고기한·가산세"],
   ["check_kr_youth_rent_support", "청년월세 지원 자격·금액"],
   ["find_kr_policy_housing_loans", "정책 주거대출(디딤돌·버팀목·신생아 특례) 자격"],
+  ["check_kr_special_supply", "청약 특별공급 자격(신혼·신생아·생애최초·다자녀·노부모)"],
 ];
 const titleOf = (slug: string) => welfareTools.find((t) => t.slug === slug)?.title ?? slug;
 ---
