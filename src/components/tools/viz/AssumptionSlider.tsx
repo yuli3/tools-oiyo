@@ -1,9 +1,9 @@
 import { useId } from "react";
 import { niceStep, type AssumptionUnit } from "../../../lib/scenario";
 import { formatUnit, type AdvisoryMode } from "./format";
+import { useVizCtx, useVizText } from "./i18n";
 
 export type ValueTag = "example" | "guess" | null;
-const TAG_LABEL = { example: "예시", guess: "가정" } as const;
 
 interface Props {
   label: string;
@@ -23,6 +23,9 @@ export default function AssumptionSlider({ label, unit, value, range, onChange, 
   const [min, max] = range;
   const step = unit === "pct" ? 0.01 : niceStep(max - min, 200);
   const clamped = Math.min(max, Math.max(min, value));
+  const t = useVizText();
+  const { lang, currency } = useVizCtx();
+  const TAG_LABEL = { example: t.tagExample, guess: t.tagGuess } as const;
   return (
     <div className="rounded-md border border-border bg-background px-3 py-2">
       <div className="flex items-baseline justify-between gap-2">
@@ -31,7 +34,7 @@ export default function AssumptionSlider({ label, unit, value, range, onChange, 
           {tag && <span className="ml-2 rounded-sm bg-warning px-1 text-xs font-semibold text-warning-foreground">{TAG_LABEL[tag]}</span>}
         </label>
         <output htmlFor={id} className="shrink-0 font-mono text-sm font-semibold text-foreground">
-          {formatUnit(unit, value, mode)}
+          {formatUnit(unit, value, mode, lang, currency)}
         </output>
       </div>
       <input
@@ -45,8 +48,8 @@ export default function AssumptionSlider({ label, unit, value, range, onChange, 
         className="mt-1 h-11 w-full cursor-pointer accent-primary"
       />
       <div className="flex justify-between text-xs text-muted-foreground">
-        <span>{formatUnit(unit, min, "easy")}</span>
-        <span>{formatUnit(unit, max, "easy")}</span>
+        <span>{formatUnit(unit, min, "easy", lang, currency)}</span>
+        <span>{formatUnit(unit, max, "easy", lang, currency)}</span>
       </div>
     </div>
   );

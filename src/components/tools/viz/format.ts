@@ -1,13 +1,30 @@
 import type { AssumptionUnit } from "../../../lib/scenario";
 import { roughWon } from "../../../lib/scenario";
+import { intlOf, money, type VizLang } from "./i18n";
 
 export type AdvisoryMode = "easy" | "expert";
 
 const exactWon = (n: number) => (Number.isFinite(n) ? `${Math.round(n).toLocaleString("ko-KR")}원` : "—");
 
 /** 단위별 표기. 쉬운 모드는 "약 26.4억 원", 전문가 모드는 원 단위까지. */
-export function formatUnit(unit: AssumptionUnit, v: number, mode: AdvisoryMode = "expert"): string {
+type Other = Exclude<VizLang, "ko">;
+/** 한국어 밖에서 쓰는 단위 꼬리표 */
+const SUFFIX: Record<Other, Partial<Record<AssumptionUnit, (n: string) => string>>> = {
+  en: { years: (n) => `${n} yr`, months: (n) => `${n} mo`, days: (n) => `${n} d`, hours: (n) => `${n} h`, people: (n) => `${n} ppl`, age: (n) => `age ${n}`, shares: (n) => `${n} sh`, count: (n) => n, reps: (n) => `${n}×`, nights: (n) => `${n} nights`, bpm: (n) => `${n} bpm` },
+  ja: { years: (n) => `${n}年`, months: (n) => `${n}か月`, days: (n) => `${n}日`, hours: (n) => `${n}時間`, people: (n) => `${n}人`, age: (n) => `${n}歳`, shares: (n) => `${n}株`, count: (n) => `${n}件`, reps: (n) => `${n}回`, nights: (n) => `${n}泊`, bpm: (n) => `${n}拍/分` },
+  zh: { years: (n) => `${n}年`, months: (n) => `${n}个月`, days: (n) => `${n}天`, hours: (n) => `${n}小时`, people: (n) => `${n}人`, age: (n) => `${n}岁`, shares: (n) => `${n}股`, count: (n) => `${n}套`, reps: (n) => `${n}次`, nights: (n) => `${n}晚`, bpm: (n) => `${n}次/分` },
+  fr: { years: (n) => `${n} ans`, months: (n) => `${n} mois`, days: (n) => `${n} j`, hours: (n) => `${n} h`, people: (n) => `${n} pers.`, age: (n) => `${n} ans`, shares: (n) => `${n} actions`, count: (n) => n, reps: (n) => `${n} rép.`, nights: (n) => `${n} nuits`, bpm: (n) => `${n} bpm` },
+  es: { years: (n) => `${n} años`, months: (n) => `${n} meses`, days: (n) => `${n} días`, hours: (n) => `${n} h`, people: (n) => `${n} pers.`, age: (n) => `${n} años`, shares: (n) => `${n} acc.`, count: (n) => n, reps: (n) => `${n} rep.`, nights: (n) => `${n} noches`, bpm: (n) => `${n} lpm` },
+};
+
+export function formatUnit(unit: AssumptionUnit, v: number, mode: AdvisoryMode = "expert", lang: VizLang = "ko", currency = "KRW"): string {
   if (!Number.isFinite(v)) return "—";
+  if (lang !== "ko") {
+    if (unit === "won") return money(v, lang, currency, mode === "easy");
+    const suffix = SUFFIX[lang][unit];
+    if (suffix) return suffix(Math.round(v).toLocaleString(intlOf(lang)));
+    if (unit !== "pct" && unit !== "rate") return formatUnit(unit, v, mode).replace(/,/g, lang === "fr" ? "\u202f" : lang === "es" ? "." : ",");
+  }
   switch (unit) {
     case "won":
       return mode === "easy" ? roughWon(v) : exactWon(v);

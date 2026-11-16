@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ToolPanel } from './ToolPanel';
+import { BASIC_DEDUCTION, SI_BASE_CAP, SI_BASE_MIN, annualIIT as calcMonthlyIIT } from '../../lib/china-salary';
 
 interface Props {
     locale?: 'zh' | 'en';
@@ -51,41 +52,6 @@ const labels = {
         note: '* Shanghai 2026 program year contribution base: cap 37,731 CNY/month, floor 7,546 CNY/month, in force from 1 July 2026 and derived from the 2025 city-wide average wage of 12,577 CNY/month. IIT applies the 5,000 CNY monthly basic deduction and seven progressive brackets from 3% to 45%. Special additional deductions are not included. Annual reconciliation may result in a refund or further payment. Figures checked 2026-08-19.',
     },
 } as const;
-
-// Shanghai social insurance contribution base, 2026 program year (in force from
-// 2026-07-01). Derived from the 2025 city-wide average wage of 12,577 CNY/month:
-// cap = average x 300%, floor = average x 60%. Beijing is no longer named here --
-// its 2026 figure could not be verified against a consistent source.
-// Checked 2026-08-19.
-const SI_BASE_CAP = 37_731;
-const SI_BASE_MIN = 7_546;
-
-// Basic deduction: 5,000 CNY/month
-const BASIC_DEDUCTION = 5_000;
-
-// IIT brackets (综合所得 cumulative annual, using monthly quick-calc)
-// Taxable = monthly gross - SI employee - 5000 basic deduction
-// For monthly payroll withholding (累计预扣):
-// We approximate with annual brackets / 12 for monthly display
-function calcMonthlyIIT(annualTaxable: number): number {
-    if (annualTaxable <= 0) return 0;
-    const brackets: [number, number, number][] = [
-        // [upper limit, rate, quick deduction]
-        [36_000, 0.03, 0],
-        [144_000, 0.10, 2_520],
-        [300_000, 0.20, 16_920],
-        [420_000, 0.25, 31_920],
-        [660_000, 0.30, 52_920],
-        [960_000, 0.35, 85_920],
-        [Infinity, 0.45, 181_920],
-    ];
-    for (const [limit, rate, quickDed] of brackets) {
-        if (annualTaxable <= limit) {
-            return Math.max(0, Math.round(annualTaxable * rate - quickDed));
-        }
-    }
-    return 0;
-}
 
 const ChinaSalaryCalculator: React.FC<Props> = ({ locale = 'zh' }) => {
     const t = labels[locale === 'en' ? 'en' : 'zh'];

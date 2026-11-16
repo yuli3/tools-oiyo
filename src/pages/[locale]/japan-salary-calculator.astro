@@ -5,6 +5,7 @@ import Layout from '../../components/Layout.astro';
 import UtilityArticle, { type UtilityContent } from '../../components/UtilityArticle.astro';
 import RelatedUtilities from '../../components/RelatedUtilities.astro';
 import JapanSalaryCalculator from '../../components/tools/JapanSalaryCalculator';
+import JapanSalaryScenario from '../../components/tools/JapanSalaryScenario';
 import { locales } from '../../lib/i18n';
 import { utilityJsonLd } from '../../lib/utility-jsonld';
 
@@ -223,7 +224,7 @@ const schema = utilityJsonLd({ name: m.title, description: m.description, url, l
 ---
 <Layout title={m.title} description={m.description} locale={locale} availableLocales={[...locales]} canonicalURL={url}>
   <ToolShell title={m.title} description={m.description}>
-    <JapanSalaryCalculator client:load locale={locale === 'ja' ? 'ja' : 'en'} />
+    {locale === 'ja' ? <JapanSalaryScenario client:load /> : <JapanSalaryCalculator client:load locale="en" />}
     <UtilityArticle c={c} />
     <RelatedUtilities locale={locale} current="japan-salary-calculator" group="money" />
   </ToolShell>

@@ -1,5 +1,6 @@
 import BarTrack from "./BarTrack";
 import ChartFrame from "./ChartFrame";
+import { useVizText } from "./i18n";
 
 interface Item {
   label: string;
@@ -11,15 +12,16 @@ interface Item {
 export default function CompareBars({ title, caption, items, format }: { title: string; caption?: string; items: Item[]; format: (n: number) => string }) {
   const max = Math.max(1, ...items.map((i) => Math.abs(i.value)));
   const diff = items.length === 2 ? items[1].value - items[0].value : null;
+  const t = useVizText();
   return (
-    <ChartFrame title={title} caption={caption} table={[["경우", "금액"], ...items.map((i) => [i.label, format(i.value)])]}>
+    <ChartFrame title={title} caption={caption} table={[t.caseHead, ...items.map((i) => [i.label, format(i.value)])]}>
       <ul className="space-y-2">
         {items.map((i) => (
           <li key={i.label}>
             <div className="flex items-baseline justify-between gap-2 text-xs">
               <span className={i.current ? "font-semibold text-foreground" : "text-muted-foreground"}>
                 {i.label}
-                {i.current && " (지금)"}
+                {i.current && t.now}
               </span>
               <span className="font-mono text-foreground">{format(i.value)}</span>
             </div>
@@ -29,7 +31,7 @@ export default function CompareBars({ title, caption, items, format }: { title: 
       </ul>
       {diff !== null && diff !== 0 && (
         <p className="mt-2 text-xs font-semibold text-foreground">
-          차이 {diff > 0 ? "+" : "−"}
+          {t.diff} {diff > 0 ? "+" : "−"}
           {format(Math.abs(diff))}
         </p>
       )}

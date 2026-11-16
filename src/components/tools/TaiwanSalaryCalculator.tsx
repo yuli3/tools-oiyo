@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ToolPanel } from './ToolPanel';
+import { LI_CAP, LI_RATE, NHI_CAP, NHI_RATE, twAnnualTax as calcAnnualTax } from '../../lib/taiwan-salary';
 
 interface Props {
     locale?: 'zh' | 'en';
@@ -37,51 +38,6 @@ const labels = {
         note: '* 2026: labor insurance 12.5% (11.5% ordinary + 1% employment insurance, employee pays 20%), insured salary cap 45,800 NTD; NHI 5.17% (employee pays 30%, dependents not included), cap 313,000 NTD. Income tax estimated with the 2026 (ROC 115) comprehensive income tax figures: standard deduction 136,000 + salary deduction 227,000 + personal exemption 101,000/person, brackets at 610K/1.38M/2.77M/5.19M; 2026 income is filed in May 2027.',
     },
 } as const;
-
-// Labor Insurance 2026: employee pays 20% of 12.5% (11.5% ordinary + 1% employment) = 2.5%,
-// capped at 45,800 NTD/month
-const LI_CAP = 45_800;
-const LI_RATE = 0.025;
-
-// NHI 2026: employee pays 30% of 5.17% = 1.551%, capped at 313,000 NTD/month
-const NHI_CAP = 313_000;
-const NHI_RATE = 0.01551;
-
-// Income tax 2026 (ROC 115, MOF announcement 2025-11-27)
-// Standard deduction (single): 136,000
-// Salary special deduction: 227,000 (capped at salary income)
-// Personal exemption: 101,000 per person
-const STANDARD_DEDUCTION = 136_000;
-const SALARY_DEDUCTION   = 227_000;
-const PERSONAL_EXEMPTION = 101_000;
-
-function calcAnnualTax(annualGross: number, dependents: number): number {
-    const totalDeduction =
-        STANDARD_DEDUCTION +
-        Math.min(SALARY_DEDUCTION, annualGross) +
-        PERSONAL_EXEMPTION * dependents;
-
-    const taxableIncome = Math.max(0, annualGross - totalDeduction);
-
-    const brackets: [number, number][] = [
-        [610_000, 0.05],
-        [1_380_000 - 610_000, 0.12],
-        [2_770_000 - 1_380_000, 0.20],
-        [5_190_000 - 2_770_000, 0.30],
-    ];
-
-    let tax = 0;
-    let remaining = taxableIncome;
-    for (const [limit, rate] of brackets) {
-        if (remaining <= 0) break;
-        const taxable = Math.min(remaining, limit);
-        tax += taxable * rate;
-        remaining -= taxable;
-    }
-    if (remaining > 0) tax += remaining * 0.40;
-
-    return Math.round(Math.max(0, tax));
-}
 
 const TaiwanSalaryCalculator: React.FC<Props> = ({ locale = 'zh' }) => {
     const t = labels[locale === 'en' ? 'en' : 'zh'];

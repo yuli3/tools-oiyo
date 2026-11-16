@@ -1,13 +1,14 @@
 import type { AdvisoryMode } from "./format";
-
-const OPTIONS: { value: AdvisoryMode; label: string; hint: string }[] = [
-  { value: "easy", label: "쉬운 설명", hint: "질문에 답하면 돼요" },
-  { value: "expert", label: "전문가", hint: "숫자·근거 직접 입력" },
-];
+import { useVizText } from "./i18n";
 
 export default function ModeToggle({ mode, onChange }: { mode: AdvisoryMode; onChange: (m: AdvisoryMode) => void }) {
+  const t = useVizText();
+  const OPTIONS: { value: AdvisoryMode; label: string; hint: string }[] = [
+    { value: "easy", label: t.easy, hint: t.easyHint },
+    { value: "expert", label: t.expert, hint: t.expertHint },
+  ];
   return (
-    <div role="group" aria-label="화면 모드" className="grid grid-cols-2 gap-1 rounded-lg border border-border bg-muted p-1">
+    <div role="group" aria-label={t.modeGroup} className="grid grid-cols-2 gap-1 rounded-lg border border-border bg-muted p-1">
       {OPTIONS.map((o) => (
         <button
           key={o.value}
