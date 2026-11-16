@@ -41,3 +41,32 @@ test("의료비: 연봉 3% 문턱 아래는 0, 다리가 공제 대상으로 닫
   closes(S.medicalBridge(big));
   assert.ok(S.medicalPlain(big).headline.includes("줄어요"));
 });
+
+test("전기요금: 누진 경계를 넘으면 요금이 뛰고, 다리가 청구 금액으로 닫혀요", () => {
+  const below = S.electricityTotal({ kwh: 200, season: "other" });
+  const above = S.electricityTotal({ kwh: 201, season: "other" });
+  assert.ok(above - below > 1_000);
+  closes(S.electricityBridge({ kwh: 350, season: "other" }), 50);
+  assert.equal(S.electricityMarks("summer")[0].at, 300);
+});
+
+test("간주임대료: 보증금 1억 184일 3.1%", () => {
+  const r = S.deemedResult({ deposit: 100_000_000, days: 184, rate: 0.031 });
+  assert.equal(r.rent, Math.floor((100_000_000 * 184 * 0.031) / 365));
+  assert.equal(r.vat, Math.floor(r.rent * 0.1));
+});
+
+test("퇴사 건보 정산: 월급이 고지 기준보다 높으면 더 내요", () => {
+  const i = { totalPay: 30_000_000, monthsWorked: 6, monthsCharged: 6, noticeMonthly: 4_500_000 };
+  assert.ok(S.leaverTotal(i) > 0);
+  assert.ok(S.leaverTotal({ ...i, noticeMonthly: 6_000_000 }) < 0);
+  closes(S.leaverBridge(i));
+});
+
+test("청년미래적금: 우대형 기여금이 일반형의 2배, 월 50만 원 상한", () => {
+  const g = S.youthResult({ monthly: 500_000, rate: 0.05, kind: "general" });
+  const p = S.youthResult({ monthly: 500_000, rate: 0.05, kind: "preferred" });
+  assert.equal(p.contribution, g.contribution * 2);
+  assert.equal(S.youthResult({ monthly: 900_000, rate: 0.05, kind: "general" }).principal, g.principal);
+  closes(S.youthBridge({ monthly: 500_000, rate: 0.05, kind: "general" }));
+});

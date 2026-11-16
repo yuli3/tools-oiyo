@@ -1,7 +1,7 @@
 ---
 // Moved from blog.oiyo.net/ko/health-insurance-leaver-settlement/ on 2026-10-27 (W15); ko-only: Korean health insurance (국민건강보험법); ko-only on Blog too.
 import KrFinancePage from "../../components/KrFinancePage.astro";
-import HealthInsuranceLeaverSettlement from "../../components/tools/HealthInsuranceLeaverSettlement";
+import KrLeaverHealthScenario from "../../components/tools/KrLeaverHealthScenario";
 import { leaverHealthSettlement, RATES, RATES_AS_OF } from "../../lib/kr-payroll-2026";
 
 const title = "퇴사월 건강보험 정산 계산기 2026 — 퇴직정산 보험료 미리 보기";
@@ -45,6 +45,6 @@ const faqs = [
 
 ---
 <KrFinancePage slug="health-insurance-leaver-settlement" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
-  <HealthInsuranceLeaverSettlement client:load />
+  <KrLeaverHealthScenario client:load />
   <p class="mt-4 text-xs text-muted-foreground">근거: 국민건강보험법 제69조(보험료), 제70조(보수월액). 2026년 건강보험료율 7.19%, 장기요양보험료율 건강보험료의 13.14%. 기준일 {RATES_AS_OF}.</p>
 </KrFinancePage>

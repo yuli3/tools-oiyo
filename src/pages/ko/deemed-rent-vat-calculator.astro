@@ -1,7 +1,7 @@
 ---
 // Moved from blog.oiyo.net/ko/deemed-rent-vat-calculator/ on 2026-10-27 (W9). Copy kept from Blog.
 import KrFinancePage from "../../components/KrFinancePage.astro";
-import DeemedRentVatCalculator from "../../components/tools/DeemedRentVatCalculator";
+import KrDeemedRentScenario from "../../components/tools/KrDeemedRentScenario";
 import { VAT_RATES, VAT_RATES_AS_OF, deemedRent } from "../../lib/kr-vat-2026";
 
 const title = "간주임대료 계산기 2026 — 상가 보증금 부가세와 회계처리";
@@ -45,6 +45,6 @@ const faqs = [
 ];
 ---
 <KrFinancePage slug="deemed-rent-vat-calculator" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
-  <DeemedRentVatCalculator client:load />
+  <KrDeemedRentScenario client:load />
   <p class="mt-4 text-xs text-muted-foreground">근거: 부가가치세법 제29조 제10항, 같은 법 시행령 제65조(간주임대료), 시행규칙 제47조(정기예금이자율), 시행령 제71조(세금계산서 발급의무 면제). 기준일 {VAT_RATES_AS_OF}.</p>
 </KrFinancePage>
