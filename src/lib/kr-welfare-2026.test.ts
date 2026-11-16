@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import {
   MIN_WAGE_2026, eitcAmount, ctcPerChild, workChildCredit, maternityLeavePay, spouseLeavePay, wageGuarantee, guaranteeMonthlyCap,
   injuryLeaveDaily, injuryLeavePay, averageDailyWage, monthlyRentCredit, dbVsDc, breakEvenReturn,
-  premiumPay, ordinaryWage, fixedOvertimeCheck,
+  premiumPay, ordinaryWage, fixedOvertimeCheck, longTermCareCopay,
 } from "./kr-welfare-2026.ts";
 import { KR_RATES_2026 } from "./kr-rates-2026.mjs";
 
@@ -155,4 +155,19 @@ test("포괄임금 고정 연장수당 점검: 법정 수당보다 적으면 차
   assert.equal(fixedOvertimeCheck({ basePay: 2_508_000, fixedOtPay: 800_000, overtime: 30, night: 0, holiday: 0 }).shortMonthly, 0);
   assert.equal(fixedOvertimeCheck({ basePay: 2_000_000, fixedOtPay: 0, overtime: 0, night: 0, holiday: 0, months: 50 }).months, 36);
   assert.equal(fixedOvertimeCheck({ basePay: 2_000_000, fixedOtPay: 0, overtime: 0, night: 0, holiday: 0 }).belowMinWage, true);
+});
+
+test("장기요양: 재가 15%·한도 초과 전액, 시설 20%+비급여, 감경 40·60%, 수급자 0", () => {
+  const h = longTermCareCopay({ grade: "3", kind: "home", reduction: "none" });
+  assert.equal(h.limit, 1_528_200);
+  assert.equal(h.copay, 229_230);
+  const over = longTermCareCopay({ grade: "3", kind: "home", homeUse: 1_700_000, reduction: "none" });
+  assert.equal(over.over, 171_800);
+  assert.equal(over.total, 229_230 + 171_800);
+  assert.equal(longTermCareCopay({ grade: "3", kind: "home", reduction: "40" }).copay, Math.floor(1_528_200 * 0.09));
+  assert.equal(longTermCareCopay({ grade: "3", kind: "home", reduction: "basic" }).copay, 0);
+  const f = longTermCareCopay({ grade: "1", kind: "facility", days: 30, dailyExtra: 15_000, reduction: "none" });
+  assert.equal(f.copay, Math.floor(93_070 * 30 * 0.2));
+  assert.equal(f.total, f.copay + 450_000);
+  assert.equal(longTermCareCopay({ grade: "cognitive", kind: "facility", reduction: "none" }).facilityAllowed, false);
 });

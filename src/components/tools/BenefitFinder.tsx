@@ -26,6 +26,7 @@ const HUB: Record<Group, { href: string; label: string }> = {
 
 // 2026-11-16: 금액을 직접 계산해 볼 수 있는 혜택은 계산기로 이어 줘요.
 const CALCULATOR: Record<string, [string, string]> = {
+  ltc: ["/ko/long-term-care-copay-calculator/", "장기요양 본인부담금 계산기"],
   "comp-property-tax": ["/ko/comprehensive-real-estate-tax-calculator/", "종부세 계산기"],
   "maternity-leave": ["/ko/maternity-leave-pay-calculator/", "출산휴가 급여 계산기"],
   "paternity-leave": ["/ko/maternity-leave-pay-calculator/", "배우자 출산휴가 급여 계산기"],

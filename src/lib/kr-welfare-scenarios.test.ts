@@ -68,3 +68,15 @@ test("연장수당 가정: 시급과 시간이 늘면 수당도 늘어요", asyn
   assert.equal(m.overtimeTotal({ ...i, smallFirm: true }), 180_000);
   assert.deepEqual(m.OVERTIME_ASSUMPTIONS.map((a) => a.key), ["overtime", "night", "holiday", "hourly"]);
 });
+
+test("장기요양 가정: 재가는 한도액 표시, 넘으면 기울기가 100%로", async () => {
+  const m = await import("./kr-welfare-scenarios.ts");
+  const i = { grade: "3" as const, kind: "home" as const, reduction: "none" as const };
+  const a = m.LTC_ASSUMPTIONS(i);
+  assert.equal(a[0].marks![0].at, 1_528_200);
+  const below = m.ltcTotal({ ...i, homeUse: 1_000_000 + 100_000 }) - m.ltcTotal({ ...i, homeUse: 1_000_000 });
+  const above = m.ltcTotal({ ...i, homeUse: 1_800_000 }) - m.ltcTotal({ ...i, homeUse: 1_700_000 });
+  assert.equal(below, 15_000);
+  assert.equal(above, 100_000);
+  assert.deepEqual(m.LTC_ASSUMPTIONS({ ...i, kind: "facility" }).map((x) => x.key), ["dailyExtra", "days"]);
+});

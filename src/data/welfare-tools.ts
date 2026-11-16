@@ -12,4 +12,5 @@ export const welfareTools = [
   { slug: "fixed-overtime-pay-checker", title: "포괄임금 고정 연장수당 점검", description: "고정 연장수당이 실제로 일한 시간의 법정 수당보다 적은지 확인하고, 모자란 돈을 3년치까지 계산해요." },
   { slug: "comprehensive-real-estate-tax-calculator", title: "종합부동산세 계산기", description: "공시가격으로 2026년 주택분 종부세를 계산해요. 12억·9억 공제, 다주택 중과, 재산세 중복분, 고령·장기보유 공제까지 반영해요." },
   { slug: "housing-rental-income-tax-calculator", title: "주택임대소득세 계산기", description: "집 수·월세·보증금으로 주택임대소득세를 계산하고 2천만 원 이하 분리과세 14%와 종합과세 중 싼 쪽을 알려 줘요." },
+  { slug: "long-term-care-copay-calculator", title: "노인장기요양 본인부담금 계산기", description: "장기요양등급과 집·요양원 여부로 2026년 한 달 본인부담금을 계산해요. 한도액, 감경, 식사비까지 반영해요." },
 ] as const;

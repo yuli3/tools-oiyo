@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // OIYO 지원금·노동권 길잡이 계산기. tools.oiyo.net과 같은 공식(kr-welfare-2026.mjs는 생성 파일, 고치지 않아요).
 // Usage: node scripts/calc.mjs <tool> '<json>'   ·   node scripts/calc.mjs help
-import { WELFARE_AS_OF, workChildCredit, maternityLeavePay, spouseLeavePay, wageGuarantee, injuryLeavePay, averageDailyWage, monthlyRentCredit, dbVsDc, breakEvenReturn, ordinaryWage, fixedOvertimeCheck } from "./kr-welfare-2026.mjs";
+import { WELFARE_AS_OF, workChildCredit, maternityLeavePay, spouseLeavePay, wageGuarantee, injuryLeavePay, averageDailyWage, monthlyRentCredit, dbVsDc, breakEvenReturn, ordinaryWage, fixedOvertimeCheck, longTermCareCopay } from "./kr-welfare-2026.mjs";
 import { comprehensiveRealEstateTax, rentalIncomeTax } from "./kr-home-tax-2026.mjs";
 
 const EXAMPLES = {
@@ -14,6 +14,7 @@ const EXAMPLES = {
   "ordinary-wage": { basePay: 2500000, fixedAllowances: 300000, bonusAnnual: 6000000, bonusConditional: true, overtime: 20, night: 0, holiday: 0, holidayOver8: 0, monthlyHours: 209, smallFirm: false },
   "fixed-overtime": { basePay: 2508000, fixedOtPay: 300000, overtime: 30, night: 4, holiday: 0, months: 12, monthlyHours: 209, smallFirm: false },
   "comprehensive-real-estate-tax": { prices: [1500000000], oneHouse: true, corporate: false, age: 62, holdYears: 7 },
+  "long-term-care": { grade: "3", kind: "home", reduction: "none", homeUse: null, days: 30, dailyExtra: 15000 },
   "rental-income-tax": { houses: 2, annualRent: 12000000, deposits: 100000000, registered: false, otherIncome: 40000000, highPriceOneHouse: false },
 };
 
@@ -44,5 +45,6 @@ switch (tool) {
   case "fixed-overtime": result = fixedOvertimeCheck(i); break;
   case "comprehensive-real-estate-tax": result = comprehensiveRealEstateTax(i); break;
   case "rental-income-tax": result = rentalIncomeTax(i); break;
+  case "long-term-care": result = longTermCareCopay({ ...i, homeUse: i.homeUse ?? undefined }); break;
 }
 console.log(JSON.stringify({ tool, asOf: WELFARE_AS_OF, input: i, result }, null, 2));
