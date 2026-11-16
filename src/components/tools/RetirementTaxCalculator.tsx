@@ -1,107 +1,90 @@
-import React, { useState, useMemo } from 'react';
+// 퇴직소득세 (2026-11-16 쉬운 설명·가정 변화 적용). 계산: lib/kr-retirement-tax.ts, 가정·문장: lib/kr-tax-scenarios.ts.
+import { retirementIncomeTax } from "../../lib/kr-retirement-tax";
+import { RETIREMENT_ASSUMPTIONS, retirementBridge, retirementNet, retirementPlain, type RetirementInput } from "../../lib/kr-tax-scenarios";
+import NumberField from "./payroll/NumberField";
+import ResultSteps from "./payroll/ResultSteps";
+import BridgeChart from "./viz/BridgeChart";
+import MoneyField from "./viz/MoneyField";
+import ScenarioTool from "./viz/ScenarioTool";
+import { exactWon } from "./viz/format";
 
-import { retirementIncomeTax } from '../../lib/kr-retirement-tax';
+const KEYS = ["gross", "years"] as const;
+type Key = (typeof KEYS)[number];
+const EXAMPLE: RetirementInput = { gross: 80_000_000, years: 10 };
 
 export default function RetirementTaxCalculator() {
-  const [grossSeverance, setGrossSeverance] = useState<number>(80000000); // 8,000만원
-  const [serviceYears, setServiceYears] = useState<number>(10); // 10년
-
-  const calculation = useMemo(() => retirementIncomeTax(grossSeverance, serviceYears), [grossSeverance, serviceYears]);
-
-  const formatWon = (val: number) => Math.round(val).toLocaleString('ko-KR') + '원';
-
   return (
-    <div className="mx-auto w-full max-w-2xl">
-      <div className="mb-6">
-        <span className="inline-block rounded-full bg-primary/10 px-3 py-1 text-xs font-bold text-primary">
-          2026 최신 퇴직소득세법 반영
-        </span>
-        <h2 className="mt-2 text-2xl font-black text-foreground">
-          퇴직소득세 & 퇴직금 실수령액 정밀 계산기
-        </h2>
-        <p className="mt-1 text-xs text-muted-foreground">
-          근속연수 공제 및 환산급여 공제율을 적용하여 실제 통장에 입금되는 세후 퇴직금과 공제 세액을 계산합니다.
-        </p>
-      </div>
-
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <div>
-          <label className="block text-xs font-bold text-foreground">
-            세전 퇴직금 총액 (원)
-          </label>
-          <input
-            type="number"
-            min="0"
-            step="1000000"
-            value={grossSeverance}
-            onChange={(e) => setGrossSeverance(Number(e.target.value) || 0)}
-            className="mt-1 w-full rounded-xl border border-input bg-background px-3 py-2 text-sm font-bold text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+    <ScenarioTool<RetirementInput, Key>
+      toolId="retirement-tax-calculator"
+      example={EXAMPLE}
+      assumptions={RETIREMENT_ASSUMPTIONS}
+      keys={KEYS}
+      evaluate={retirementNet}
+      resultName="실제 받는 돈"
+      questions={({ input, edit }) => [
+        {
+          title: "퇴직금은 세금 떼기 전 얼마인가요?",
+          keys: ["gross"],
+          body: (
+            <>
+              <p className="mb-3 text-sm leading-6 text-muted-foreground">
+                모르면 <a className="underline" href="/ko/severance-calculator/">퇴직금 계산기</a>로 먼저 구해 보세요. 퇴직연금(DC·DB)으로 받는 금액도 같아요.
+              </p>
+              <MoneyField label="세전 퇴직금" value={input.gross} onChange={(v) => edit({ gross: v }, ["gross"])} />
+            </>
+          ),
+        },
+        {
+          title: "이 회사에서 몇 년 일했나요?",
+          keys: ["years"],
+          body: (
+            <>
+              <NumberField label="일한 기간(1년 안 되는 달은 1년으로 쳐요)" value={input.years} onChange={(v) => edit({ years: v }, ["years"])} suffix="년" step={1} />
+              <p className="mt-2 text-xs text-muted-foreground">오래 일할수록 빼 주는 금액이 커져서 세금이 줄어요.</p>
+            </>
+          ),
+        },
+      ]}
+      expert={({ input, edit }) => (
+        <div className="grid gap-3 sm:grid-cols-2">
+          <MoneyField label="세전 퇴직급여 총액" value={input.gross} onChange={(v) => edit({ gross: v }, ["gross"])} />
+          <NumberField label="근속연수(1년 미만 끝수는 1년)" value={input.years} onChange={(v) => edit({ years: v }, ["years"])} suffix="년" step={1} />
+        </div>
+      )}
+      summary={retirementPlain}
+      metrics={(i, s) => {
+        const r = retirementIncomeTax(i.gross, i.years);
+        return [
+          { label: "실제 받는 돈", value: s.money(r.netPayout), tone: "primary" },
+          { label: "세금 합계", value: s.money(r.totalTax) },
+          { label: "실제 세율", value: `${r.effectiveTaxRate.toFixed(2)}%` },
+        ];
+      }}
+      sliders={["gross", "years"]}
+      sweepCaption={(a) => (a.key === "years" ? "점선은 근속연수공제가 늘어나는 폭이 바뀌는 지점이에요(5년 이하 1년에 100만, 10년까지 200만, 20년까지 250만, 그 뒤 300만)." : undefined)}
+      charts={(i, s) => <BridgeChart title="퇴직금에서 세금을 떼면" steps={retirementBridge(i)} format={s.money} />}
+      ask={[
+        "퇴직금을 IRP 계좌로 받으면 세금을 떼지 않고 옮겨지고, 나중에 연금으로 받을 때 세금이 30~40% 줄어요. 회사와 은행에 확인해 주세요.",
+        "같은 해에 중간정산이나 다른 회사 퇴직금을 받았다면 합쳐서 계산할 수 있어요.",
+      ]}
+      expertFooter={(i) => {
+        const r = retirementIncomeTax(i.gross, i.years);
+        return (
+          <ResultSteps
+            steps={[
+              `근속연수공제(제48조①1, ${r.years}년) ${exactWon(r.serviceDeduction)}`,
+              `환산급여 = (${exactWon(r.gross)} − 근속연수공제) × 12 ÷ ${r.years} = ${exactWon(r.convertedSalary)}`,
+              `환산급여공제(제48조①2) ${exactWon(r.salaryDeduction)} → 환산 과세표준 ${exactWon(r.convertedTaxBase)}`,
+              `환산 산출세액 ${exactWon(r.convertedCalculatedTax)} ÷ 12 × ${r.years} = 퇴직소득세 ${exactWon(r.nationalTax)}, 지방소득세 ${exactWon(r.localTax)}`,
+              "IRP 이연, 임원 퇴직소득 한도, 2012년 이전 근속분 특례는 넣지 않았어요.",
+            ]}
+            next={[
+              { href: "/ko/severance-calculator/", label: "퇴직금 계산" },
+              { href: "/ko/isa-vs-pension-calculator/", label: "ISA vs 연금저축" },
+            ]}
           />
-          <span className="text-xs text-muted-foreground">
-            {(grossSeverance / 10000).toLocaleString('ko-KR')}만 원
-          </span>
-        </div>
-
-        <div>
-          <label className="block text-xs font-bold text-foreground">
-            근속연수 (년)
-          </label>
-          <input
-            type="number"
-            min="1"
-            max="50"
-            value={serviceYears}
-            onChange={(e) => setServiceYears(Number(e.target.value) || 1)}
-            className="mt-1 w-full rounded-xl border border-input bg-background px-3 py-2 text-sm font-bold text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
-          />
-          <span className="text-xs text-muted-foreground">
-            만 {serviceYears}년 근무
-          </span>
-        </div>
-      </div>
-
-      {/* Main Result Card */}
-      <div className="mt-6 rounded-2xl border border-border bg-muted p-5">
-        <p className="text-xs font-bold text-foreground">실제 수령하는 세후 퇴직금</p>
-        <p className="mt-1 text-3xl font-black text-primary">
-          {formatWon(calculation.netPayout)}
-        </p>
-        <p className="mt-1 text-xs text-muted-foreground">
-          총 퇴직소득세 공제: {formatWon(calculation.totalTax)} (실효세율 {calculation.effectiveTaxRate.toFixed(2)}%)
-        </p>
-      </div>
-
-      {/* Breakdown Details */}
-      <div className="mt-6 space-y-2 rounded-xl border border-border p-4 text-xs">
-        <div className="flex justify-between border-b border-border/60 pb-2">
-          <span className="text-muted-foreground">세전 퇴직소득</span>
-          <span className="font-bold text-foreground">{formatWon(calculation.gross)}</span>
-        </div>
-        <div className="flex justify-between border-b border-border/60 pb-2">
-          <span className="text-muted-foreground">근속연수 공제 ({calculation.years}년)</span>
-          <span className="font-bold text-primary">-{formatWon(calculation.serviceDeduction)}</span>
-        </div>
-        <div className="flex justify-between border-b border-border/60 pb-2">
-          <span className="text-muted-foreground">환산급여 (연환산액)</span>
-          <span className="font-bold text-foreground">{formatWon(calculation.convertedSalary)}</span>
-        </div>
-        <div className="flex justify-between border-b border-border/60 pb-2">
-          <span className="text-muted-foreground">환산급여 소득공제</span>
-          <span className="font-bold text-primary">-{formatWon(calculation.salaryDeduction)}</span>
-        </div>
-        <div className="flex justify-between border-b border-border/60 pb-2">
-          <span className="text-muted-foreground">환산 과세표준</span>
-          <span className="font-bold text-foreground">{formatWon(calculation.convertedTaxBase)}</span>
-        </div>
-        <div className="flex justify-between border-b border-border/60 pb-2">
-          <span className="text-muted-foreground">퇴직소득세 (국세)</span>
-          <span className="font-bold text-destructive">{formatWon(calculation.nationalTax)}</span>
-        </div>
-        <div className="flex justify-between pt-1">
-          <span className="text-muted-foreground">지방소득세 (10%)</span>
-          <span className="font-bold text-destructive">{formatWon(calculation.localTax)}</span>
-        </div>
-      </div>
-    </div>
+        );
+      }}
+    />
   );
 }

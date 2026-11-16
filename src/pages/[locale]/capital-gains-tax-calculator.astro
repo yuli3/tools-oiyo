@@ -7,6 +7,7 @@ import Layout from '../../components/Layout.astro';
 import UtilityArticle, { type UtilityContent } from '../../components/UtilityArticle.astro';
 import RelatedUtilities from '../../components/RelatedUtilities.astro';
 import KrCapitalGainsTaxCalculator from '../../components/tools/KrCapitalGainsTaxCalculator';
+import KrCapitalGainsScenario from '../../components/tools/KrCapitalGainsScenario';
 import CapitalGainsTaxCountryCalculator from '../../components/tools/CapitalGainsTaxCountryCalculator';
 import type { CapitalGainsCountry } from '../../lib/capital-gains-tax-countries';
 import { REAL_ESTATE_TAX_AS_OF } from '../../lib/kr-real-estate-tax';
@@ -303,7 +304,7 @@ const schema = utilityJsonLd({ name: m.title, description: m.description, url, l
 ---
 <Layout title={m.title} description={m.description} locale={locale} availableLocales={[...locales]} canonicalURL={url}>
   <ToolShell title={m.title} description={m.description}>
-    {country ? <CapitalGainsTaxCountryCalculator client:load country={country} /> : <KrCapitalGainsTaxCalculator client:load locale={locale} />}
+    {country ? <CapitalGainsTaxCountryCalculator client:load country={country} /> : locale === 'ko' ? <KrCapitalGainsScenario client:load /> : <KrCapitalGainsTaxCalculator client:load locale={locale} />}
     {!country && <p class="mt-4 text-xs text-muted-foreground">근거: 소득세법 제55조·제89조·제95조·제103조·제104조, 시행령 제154조·제160조. 기준일 {REAL_ESTATE_TAX_AS_OF}.</p>}
     <UtilityArticle c={c} />
     <RelatedUtilities locale={locale} current="capital-gains-tax-calculator" group="money" />
