@@ -2,7 +2,7 @@
 // 계산은 kr-welfare-2026.ts, 여기는 "무엇을 바꿔 볼 수 있고 어떻게 설명할지"만 정해요.
 import {
   ASSET_CAP, ASSET_HALF, CTC_TABLE, EITC_TABLE, INJURY_2026, RENT_CREDIT,
-  dbVsDc, fixedOvertimeCheck, dismissalNoticePay, shutdownAllowance, reducedHoursPay, probationMinWage, REDUCED_HOURS_2026,
+  dbVsDc, fixedOvertimeCheck, dismissalNoticePay, shutdownAllowance, reducedHoursPay, probationMinWage, REDUCED_HOURS_2026, directPaymentCheck, type DirectPayInput,
   type DismissalNoticeInput, type ShutdownPayInput, type ReducedHoursInput, type ProbationInput, premiumPay, longTermCareCopay, LTC_2026, injuryLeavePay, maternityLeavePay, monthlyRentCredit, ordinaryWage, wageGuarantee, workChildCredit,
   type EitcInput, type FixedOtInput, type WorkHours, type LtcInput, type GuaranteeInput, type InjuryInput, type MaternityInput, type OrdinaryWageInput, type PensionInput, type RentInput,
 } from "./kr-welfare-2026.ts";
@@ -248,4 +248,12 @@ export const probationShort = (i: ProbationInput) => probationMinWage(i).shortMo
 export const PROBATION_ASSUMPTIONS: Assumption<ProbationInput>[] = [
   money("hourlyWage", "시급", "받는 시급(월급 ÷ 209)", (x) => x.hourlyWage, (x, v) => ({ ...x, hourlyWage: Math.max(0, Math.round(v)) }), () => [8_000, 12_000], [{ at: 9_288, label: "90%: 9,288원" }, { at: 10_320, label: "최저 10,320원" }]),
   num("monthsIntoProbation", "수습 경과 개월", "수습 시작하고 지난 달 수", "months", (x) => x.monthsIntoProbation, (x, v) => ({ ...x, monthsIntoProbation: Math.max(0, Math.round(v)) }), [0, 6], [{ at: 3, label: "3개월: 감액 끝" }], "fact"),
+];
+
+// ───────────────────────── 하도급대금 직접 지급·지연이자 ─────────────────────────
+export const subcontractLate = (i: DirectPayInput) => directPaymentCheck(i).lateInterest;
+export const SUBCONTRACT_ASSUMPTIONS: Assumption<DirectPayInput>[] = [
+  num("daysSinceDelivery", "수령일부터 지난 날", "물건·공사를 넘긴 날부터 오늘까지", "days", (x) => x.daysSinceDelivery, (x, v) => ({ ...x, daysSinceDelivery: Math.max(0, Math.round(v)) }), [0, 365], [{ at: 60, label: "60일: 지급 기한" }]),
+  money("workValue", "이행한 부분 하도급대금", "내가 한 일의 대금", (x) => x.workValue, (x, v) => ({ ...x, workValue: Math.max(0, v) }), () => [0, 200_000_000]),
+  money("receivedFromPrime", "원사업자에게 받은 돈", "이미 받은 금액", (x) => x.receivedFromPrime, (x, v) => ({ ...x, receivedFromPrime: Math.max(0, v) }), () => [0, 200_000_000]),
 ];
