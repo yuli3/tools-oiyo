@@ -1,0 +1,14 @@
+---
+// 운영 문제 도구 (2026-11-16). 엔진: lib/biz-ops.ts
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import MarketTest from "../../components/tools/biz/MarketTest";
+
+const title = "해외 시장 실험 계산기 — 표본 수·A/B 결과 판정·진출 손익";
+const description = "해외 시장 실험에 필요한 표본 수, A안·B안 결과가 우연인지(p값), 본 진출 시 월 이익과 진입 비용 회수 기간을 한 번에 계산해요.";
+const ko = {"introTitle": "작게 실험하고, 숫자로 진출 여부 정하기", "intro": "해외 진출은 작은 실험으로 시작해요. 실험 전에는 몇 명에게 보여 줘야 차이를 알 수 있는지, 실험 뒤에는 결과가 우연이 아닌지, 마지막으로 본 진출하면 고정비를 넘어 남는지를 차례로 보여 줘요.", "howToTitle": "사용 방법", "steps": ["지금 전환율과 찾고 싶은 개선 폭으로 필요한 표본 수를 확인해요.", "실험 결과(방문·구매 수)를 넣어 차이가 의미 있는지 봐요.", "현지 원가율·고정비·진출 비용을 넣고 진행·연장·중단 판단을 확인해요."], "highlightsTitle": "주요 특징", "highlights": [{"title": "표본 수 계산", "body": "두 비율 비교, 유의수준 5%, 검정력 80%(전문가 모드 조정) 기준이에요."}, {"title": "결과 판정", "body": "z-검정 p값과 개선 폭을 쉬운 말로 알려 줘요."}, {"title": "진출 손익", "body": "월 이익, 진입 비용 회수 기간, 흑자가 시작되는 전환율."}], "disclaimer": "판단을 돕는 도구예요. 현지 화장품 등록·표시 규정과 관세·환율은 나라마다 달라 따로 확인하세요."};
+const faqs = [{"q": "표본이 모자라면 어떻게 되나요?", "a": "실제 차이가 있어도 못 찾거나, 우연한 차이를 성과로 착각할 수 있어요. 계획한 표본을 다 모은 뒤 판단해요."}, {"q": "p값 0.05는 무슨 뜻인가요?", "a": "차이가 전혀 없는데도 이만큼 차이가 날 확률이 5%라는 뜻이에요. 작을수록 차이를 믿을 만해요."}, {"q": "진행·연장·중단 기준은요?", "a": "진입 비용을 12개월 안에 회수하면 진행, 24개월 안이면 실험 연장, 그보다 길거나 적자면 중단으로 봐요."}];
+---
+<KrFinancePage slug="market-test-calculator" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <MarketTest client:load />
+  <p class="mt-4 text-xs text-muted-foreground"><a class="underline" href="/ko/business-toolkit/">경영 도구 모음</a></p>
+</KrFinancePage>

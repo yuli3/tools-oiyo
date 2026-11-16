@@ -1,0 +1,14 @@
+---
+// 운영 문제 도구 (2026-11-16). 엔진: lib/biz-ops.ts
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import OrderAllocation from "../../components/tools/biz/OrderAllocation";
+
+const title = "대형 수주 검토 계산기 — 생산능력·기존 약속·위약금 비교";
+const description = "생산능력이 모자랄 때 대형 신규 주문을 전량·일부·거절 중 어떻게 받을지, 기존 고객 약속과 위약금, 특근·외주 비용까지 넣어 이익을 비교해요.";
+const ko = {"introTitle": "큰 주문을 받으면 누가 손해를 보나", "intro": "큰 주문은 반갑지만 기존 고객 약속을 깨면 위약금과 신뢰를 잃어요. 생산능력과 기존 약속(수량·단가·위약금·반드시 지킬지)을 넣으면 새 주문을 거절·전량·남는 능력만·특근 포함·이익 최대 수량으로 받았을 때 이익과 누구 물량이 줄어드는지 보여 줘요.", "howToTitle": "사용 방법", "steps": ["새 주문 수량·최소 수량·단가·원가를 넣어요.", "기간 내 생산능력과 기존 약속(수량·단가·위약금)을 넣고, 꼭 지킬 약속을 표시해요.", "방법별 이익과 줄어드는 물량을 확인해요(전문가 모드는 특근·외주 추가)."], "highlightsTitle": "주요 특징", "highlights": [{"title": "수락 방법별 이익", "body": "거절, 전량, 남는 능력만, 특근 포함, 이익 최대 수량을 비교해요."}, {"title": "반드시 지킬 약속 보호", "body": "표시한 약속을 깨는 방법은 추천에서 빼요."}, {"title": "누구 물량이 줄어드나", "body": "지킬 가치(마진+위약금)가 작은 약속부터 줄여요."}], "disclaimer": "판단을 돕는 도구예요. 공급계약의 위약·면책 조항과 고객 관계는 숫자로 다 담기지 않으니 영업·법무와 함께 결정하세요."};
+const faqs = [{"q": "위약금에는 무엇을 넣나요?", "a": "계약상 위약금에 더해, 그 고객을 잃을 때의 미래 이익 손실을 1개당으로 나눠 넣으면 현실적이에요."}, {"q": "일부만 수락할 수 있나요?", "a": "새 주문에 최소 수량이 있으면 그 이상일 때만 일부 수락을 계산해요."}, {"q": "특근 비용은 어떻게 넣나요?", "a": "특근 수당·외주 단가 차이처럼 1개 더 만들 때 추가로 드는 돈을 넣어요."}];
+---
+<KrFinancePage slug="big-order-capacity-check" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <OrderAllocation client:load />
+  <p class="mt-4 text-xs text-muted-foreground"><a class="underline" href="/ko/business-toolkit/">경영 도구 모음</a></p>
+</KrFinancePage>

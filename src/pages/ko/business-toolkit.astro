@@ -1,11 +1,11 @@
 ---
 // 2026-11-14: 기업가·경영팀·회계사·세무사·경리용 경영 도구 모음 + 경영 이론 정리 + MCP·Claude 스킬 안내.
 import KrFinancePage from "../../components/KrFinancePage.astro";
-import { bizTools, FRAMEWORKS, FRAMEWORK_GROUPS, type FrameworkGroup } from "../../data/biz-tools";
+import { bizTools, coreBizTools, opsTools, FRAMEWORKS, FRAMEWORK_GROUPS, type FrameworkGroup } from "../../data/biz-tools";
 
 const title = "경영 도구 모음 — 의사결정 트리·타임라인·SWOT·BCG·포지셔닝·단위경제와 경영 이론 총정리";
 const description = "기업가와 경영팀, 회계사·세무사·경리가 함께 쓰는 경영 도구와 요즘 많이 쓰는 경영 이론 40가지를 한곳에 모았어요. 같은 계산을 AI 에이전트에서 쓰는 MCP 도구와 Claude 스킬도 있어요.";
-const tools = bizTools.filter((t) => t.slug !== "business-toolkit");
+const tools = coreBizTools.filter((t) => t.slug !== "business-toolkit");
 const groups = Object.keys(FRAMEWORK_GROUPS) as FrameworkGroup[];
 const toolTitle = (slug?: string) => (slug === "dcf-valuation-calculator" ? "DCF 계산기" : bizTools.find((t) => t.slug === slug)?.title);
 const roles = [
@@ -20,8 +20,17 @@ const mcpTools = [
   ["analyze_swot", "SWOT 전략 위치·TOWS·IFE·EFE·IE"],
   ["classify_bcg_portfolio", "BCG 분류·매출 구성 진단"],
   ["calculate_unit_economics_runway", "LTV/CAC·회수 기간·런웨이·흑자 전환"],
+  ["map_brand_positioning", "포지셔닝 맵 가장 가까운 경쟁자·빈자리"],
   ["rank_priorities", "가중 의사결정표·RICE"],
-  ["kr_business_tax_calendar", "사업자 세무·노무 신고 일정(휴일 반영)"],
+  ["get_kr_business_tax_calendar", "사업자 세무·노무 신고 일정(휴일 반영)·체크리스트"],
+  ["plan_campaign_supply", "캠페인 품절 주차·추가 생산량"],
+  ["evaluate_influencer_deal", "인플루언서 ROAS·본전 전환율·원천징수"],
+  ["plan_quality_recovery", "회수 범위 비용·남은 재고 배분"],
+  ["compare_alternative_materials", "대체 원료 절감·승인 기간·가중 점수"],
+  ["check_big_order_capacity", "대형 수주 vs 기존 약속 이익 비교"],
+  ["analyze_market_test", "표본 수·A/B 판정·진출 손익"],
+  ["check_sales_rebates", "판매장려금 구간·특수관계·과다 지급"],
+  ["evaluate_acquisition", "인수 주당이익 증감·회수·필요 시너지"],
 ];
 ---
 <KrFinancePage slug="business-toolkit" locale="ko" title={title} description={description} koOnly>
@@ -32,6 +41,20 @@ const mcpTools = [
       {tools.map((t) => (
         <li class="rounded-md border border-border bg-background p-4">
           <a href={`/ko/${t.slug}/`} class="text-base font-semibold text-foreground underline-offset-4 hover:underline">{t.title}</a>
+          <p class="mt-1 text-sm leading-6 text-muted-foreground">{t.description}</p>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="mt-8">
+    <h2 class="text-lg font-bold text-foreground">운영 문제 8가지 바로 풀기</h2>
+    <p class="mt-2 text-sm leading-6 text-muted-foreground">제조·유통 회사에서 부서가 엮여 자주 터지는 운영 문제를 하나씩 계산으로 풀어요. 결론마다 영향을 받는 부서와 근거 조문을 함께 적어요.</p>
+    <ul class="mt-4 grid gap-3 sm:grid-cols-2">
+      {opsTools.map((t) => (
+        <li class="rounded-md border border-border bg-background p-4">
+          <p class="text-xs font-semibold text-muted-foreground">{t.problem}</p>
+          <a href={`/ko/${t.slug}/`} class="mt-1 block text-base font-semibold text-foreground underline-offset-4 hover:underline">{t.title}</a>
           <p class="mt-1 text-sm leading-6 text-muted-foreground">{t.description}</p>
         </li>
       ))}
