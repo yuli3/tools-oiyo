@@ -64,7 +64,7 @@ export default function InfluencerDeal() {
         {r.contribution >= 0 ? <>원가와 수수료를 빼고 <b>{money(r.contribution)}</b> 남아요.</> : <>원가와 수수료를 빼면 <b>{money(-r.contribution)}</b> 손해예요.</>}{" "}
         본전이 되려면 주문이 {r.breakEvenOrders.toLocaleString("ko-KR")}건, 클릭한 사람의 {r.breakEvenConversion === null ? "-" : pct1(r.breakEvenConversion)}가 사야 해요.
         <span className="mt-1 block text-sm text-muted-foreground">
-          지급할 때 {r.withholding > 0 ? <>원천징수 {money(r.withholding)}를 떼고 {money(r.netPaid)}를 보내요({r.payee.basis}).</> : <>세금계산서를 받고 부가세 {money(r.vat)}를 더해 보내요.</>}
+          지급할 때 {r.withholding > 0 ? <>원천징수 {money(r.withholding)}을 떼고 {money(r.netPaid)}을 보내요({r.payee.basis}).</> : <>세금계산서를 받고 부가세 {money(r.vat)}을 더해 보내요.</>}
         </span>
       </Verdict>
 

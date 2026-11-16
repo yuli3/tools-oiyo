@@ -6,6 +6,7 @@ import Layout from '../../components/Layout.astro';
 import UtilityArticle, { type UtilityContent } from '../../components/UtilityArticle.astro';
 import RelatedUtilities from '../../components/RelatedUtilities.astro';
 import SalaryCalculator from '../../components/tools/SalaryCalculator';
+import KrSalaryScenario from '../../components/tools/KrSalaryScenario';
 import { locales } from '../../lib/i18n';
 import { utilityJsonLd } from '../../lib/utility-jsonld';
 
@@ -287,7 +288,7 @@ const schema = utilityJsonLd({ name: m.title, description: m.description, url, l
 ---
 <Layout title={m.title} description={m.description} locale={locale} availableLocales={[...locales]} canonicalURL={url}>
   <ToolShell title={m.title} description={m.description}>
-    <SalaryCalculator client:load locale={locale} />
+    {locale === 'ko' ? <KrSalaryScenario client:load /> : <SalaryCalculator client:load locale={locale} />}
     <p class="mt-4 text-xs text-muted-foreground">
       {locale === "ko" ? "기준일 2026-10-17 · 출처: " : "As of 2026-10-17 · Sources: "}
       <a class="underline" href="https://www.nts.go.kr/nts/cm/cntnts/cntntsView.do?cntntsId=7873&mi=6437" rel="noopener" target="_blank">{locale === "ko" ? "국세청 근로소득 과세표준·세율" : "NTS earned income & tax brackets"}</a>
