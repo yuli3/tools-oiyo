@@ -45,3 +45,4 @@
 새 범용 그래프(2×2 사분면, 간트 등)는 이 폴더에 새 파일로 더하고 이 표에 한 줄 추가해요.
 | 단위 `months`·`days` (2026-11-16) | `Assumption.unit`에 개월·일수를 더했어요(대지급금 체불 개월, 산재 휴업 일수). 생활 지원금 도구는 `../welfare/common.tsx`의 `ScenarioBlock`으로 슬라이더·훑기·토네이도를 한 번에 그려요 |
 | 단위 `hours`·`count` (2026-11-16) | 연장근로 시간, 주택 수(채)를 위해 더했어요 |
+| `DeadlineChart` (2026-11-16) | `title, caption?, rows[{id,label,due,daysLeft,cite,note?}], delay?, cap?`. 기한까지 남은 날 막대, "며칠 뒤에 움직이면?" 표시를 넘는 기한은 놓친 것으로 칠해요(법령 길잡이) |
