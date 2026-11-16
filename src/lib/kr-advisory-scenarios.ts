@@ -4,7 +4,7 @@ import {
   ACQUISITION_RELIEF_UNTIL, dcfValuation, familyBusinessInheritance, incorporationConversion, valueUnlistedShares,
   type ConversionInput, type DcfInput, type FamilyBusinessInput, type UnlistedShareInput,
 } from "./kr-advisory-2026.ts";
-import { fixedRange, moneyRange, roughWon, type Assumption, type BridgeStep, type TornadoBar } from "./scenario.ts";
+import { fixedRange, josa, moneyRange, roughWon, type Assumption, type BridgeStep, type TornadoBar } from "./scenario.ts";
 
 // ───────────────────────── 비상장주식 평가 ─────────────────────────
 
@@ -106,7 +106,7 @@ export function unlistedPlain(r: ShareResult, top?: TornadoBar) {
       ? `이 회사 주식 1주는 약 ${roughWon(r.perShare)}, 평가할 ${r.held.toLocaleString("ko-KR")}주는 모두 약 ${roughWon(r.total)}으로 평가돼요(추정).`
       : `이 회사 주식 1주는 약 ${roughWon(r.perShare)}으로 평가돼요(추정).`;
   const driver = top && top.span > 0
-    ? `결과를 가장 크게 움직이는 건 ${top.plain}이에요. 이 값이 20% 늘거나 줄면 1주당 값이 약 ${roughWon(Math.min(top.low, top.high))}에서 ${roughWon(Math.max(top.low, top.high))} 사이로 바뀌어요.`
+    ? `결과를 가장 크게 움직이는 건 ${josa(top.plain, "이에요", "예요")}. 이 값이 20% 늘거나 줄면 1주당 값이 약 ${roughWon(Math.min(top.low, top.high))}에서 ${roughWon(Math.max(top.low, top.high))} 사이로 바뀌어요.`
     : null;
   const reasons: string[] = [];
   if (r.shareClass === "netAssetOnly") reasons.push("이익은 보지 않고 회사 재산(빚을 뺀 금액)만으로 값을 매겼어요.");
@@ -120,7 +120,7 @@ export function unlistedPlain(r: ShareResult, top?: TornadoBar) {
 
 const driverLine = (top: TornadoBar | undefined, what: string) =>
   top && top.span > 0
-    ? `결과를 가장 크게 움직이는 건 ${top.plain}이에요. 이 값이 20% 늘거나 줄면 ${what}이 약 ${roughWon(Math.min(top.low, top.high))}에서 ${roughWon(Math.max(top.low, top.high))} 사이로 바뀌어요.`
+    ? `결과를 가장 크게 움직이는 건 ${josa(top.plain, "이에요", "예요")}. 이 값이 20% 늘거나 줄면 ${josa(what, "이", "가")} 약 ${roughWon(Math.min(top.low, top.high))}에서 ${roughWon(Math.max(top.low, top.high))} 사이로 바뀌어요.`
     : null;
 
 const money = <I>(key: string, label: string, plain: string, get: (i: I) => number, set: (i: I, v: number) => I, opts: { kind?: "fact" | "assumption"; signed?: boolean } = {}): Assumption<I> => ({
@@ -173,8 +173,8 @@ export function familyBridge(r: FamilyResult): BridgeStep[] {
 
 export function familyPlain(i: FamilyBusinessInput, r: FamilyResult, top?: TornadoBar) {
   const headline = r.deduction > 0
-    ? `가업상속공제로 약 ${roughWon(r.deduction)}을 빼면 상속세는 약 ${roughWon(r.with.tax)}예요(추정). 공제가 없을 때(약 ${roughWon(r.without.tax)})보다 약 ${roughWon(r.saving)} 줄어요.`
-    : `가업상속공제를 받지 못하면 상속세는 약 ${roughWon(r.without.tax)}예요(추정).`;
+    ? `가업상속공제로 약 ${roughWon(r.deduction)}을 빼면 상속세는 약 ${roughWon(r.with.tax)}이에요(추정). 공제가 없을 때(약 ${roughWon(r.without.tax)})보다 약 ${roughWon(r.saving)} 줄어요.`
+    : `가업상속공제를 받지 못하면 상속세는 약 ${roughWon(r.without.tax)}이에요(추정).`;
   const reasons: string[] = [...r.reasons];
   if (r.limit > 0) reasons.push(`고인이 회사를 경영한 기간으로 정해지는 공제 한도는 ${roughWon(r.limit)}이에요.`);
   if (i.unrelatedAssetRatio > 0 && r.deduction > 0) reasons.push(`회사 재산 중 사업과 관계없는 몫(${Math.round(i.unrelatedAssetRatio * 100)}%)은 공제에서 빠져요.`);
@@ -215,12 +215,12 @@ export function conversionBridge(i: ConversionInput, r: ConversionResult): Bridg
 
 export function conversionPlain(i: ConversionInput, r: ConversionResult, top?: TornadoBar) {
   const headline = r.rolloverEligible
-    ? `법인으로 바꾸려면 자본금이 최소 약 ${roughWon(r.minCapital)} 필요해요. 땅·건물을 법인에 넘길 때 생기는 양도세 약 ${roughWon(r.cgtTotal)}는 지금 내지 않고 미뤄요(이월과세, 추정).`
-    : `이 업종은 양도세를 미룰 수 없어서, 땅·건물을 법인에 넘기면 양도세 약 ${roughWon(r.cgtTotal)}를 바로 내야 해요(추정).`;
+    ? `법인으로 바꾸려면 자본금이 최소 약 ${roughWon(r.minCapital)} 필요해요. 땅·건물을 법인에 넘길 때 생기는 양도세 약 ${roughWon(r.cgtTotal)}은 지금 내지 않고 미뤄요(이월과세, 추정).`
+    : `이 업종은 양도세를 미룰 수 없어서, 땅·건물을 법인에 넘기면 양도세 약 ${roughWon(r.cgtTotal)}을 바로 내야 해요(추정).`;
   const reasons: string[] = [];
   reasons.push(r.reliefEligible
-    ? `법인이 땅·건물을 받을 때 취득세 약 ${roughWon(r.acquisitionTax)} 중 절반을 감면받아, 농특세를 더해 약 ${roughWon(r.acquisitionNet)}를 내요. 감면은 ${ACQUISITION_RELIEF_UNTIL}까지 취득분이에요.`
-    : `이 업종은 취득세 감면이 없어 약 ${roughWon(r.acquisitionTax)}를 내요.`);
+    ? `법인이 땅·건물을 받을 때 취득세 약 ${roughWon(r.acquisitionTax)} 중 절반을 감면받아, 농특세를 더해 약 ${roughWon(r.acquisitionNet)}을 내요. 감면은 ${ACQUISITION_RELIEF_UNTIL}까지 취득분이에요.`
+    : `이 업종은 취득세 감면이 없어 약 ${roughWon(r.acquisitionTax)}을 내요.`);
   if (r.longTermRate > 0) reasons.push(`오래 가진 만큼 양도차익의 ${Math.round(r.longTermRate * 100)}%를 빼 줬어요(장기보유특별공제).`);
   if (i.realEstateMarket > 0 && r.gain === 0) reasons.push("산 가격보다 오르지 않아 양도세가 없어요.");
   return { headline, driver: driverLine(top, "미루는 양도세"), reasons };
@@ -263,7 +263,7 @@ export function dcfBridge(i: DcfInput, r: DcfResult): BridgeStep[] {
 
 export function dcfPlain(r: DcfResult, top?: TornadoBar) {
   if (!r.valid) return { headline: "투자자가 바라는 수익률이 먼 미래 성장률보다 커야 계산할 수 있어요.", driver: null, reasons: [] as string[] };
-  const headline = `이 회사의 가치는 약 ${roughWon(r.equity)}, 1주당 약 ${roughWon(r.perShare)}로 추정돼요.`;
+  const headline = `이 회사의 가치는 약 ${roughWon(r.equity)}, 1주당 약 ${roughWon(r.perShare)}으로 추정돼요.`;
   const reasons: string[] = [];
   if (r.terminalShare > 0.6) reasons.push(`가치의 ${Math.round(r.terminalShare * 100)}%가 5년 뒤 먼 미래 몫(잔존가치)이라, 먼 미래 가정이 조금만 바뀌어도 값이 크게 바뀌어요.`);
   if (r.rows.some((x) => x.fcff < 0)) reasons.push("앞으로 몇 해는 투자 때문에 현금이 빠져나가는 해가 있어요.");

@@ -39,6 +39,8 @@ interface Props<I, K extends string> {
   /** 훑기 곡선 후보 key(없으면 sliders) */
   sweeps?: string[];
   sweepCaption?: (a: Assumption<I>) => string | undefined;
+  /** 입력에 따라 바뀌는 경계 점선(예: 증여 관계별 공제 한도) */
+  marksFor?: (key: string, i: I) => Assumption<I>["marks"] | undefined;
   /** 다리·전후 비교 같은 도구별 그래프 */
   charts?: (i: I, s: ScenarioState<I, K>) => ReactNode;
   /** 쉬운 모드 아래 "세무사에게 확인할 것" */
@@ -59,7 +61,8 @@ export default function ScenarioTool<I, K extends string>(p: Props<I, K>) {
   const { input } = s;
   const bars = useMemo(() => tornado(input, p.assumptions, p.evaluate), [input, p.assumptions, p.evaluate]);
   const plain = p.summary(input, bars[0]);
-  const pick = (keys?: string[]) => (keys ? p.assumptions.filter((a) => keys.includes(a.key)) : p.assumptions.slice(0, 4));
+  const live = p.marksFor ? p.assumptions.map((a) => ({ ...a, marks: p.marksFor!(a.key, input) ?? a.marks })) : p.assumptions;
+  const pick = (keys?: string[]) => (keys ? live.filter((a) => keys.includes(a.key)) : live.slice(0, 4));
   const sliders = pick(p.sliders);
   const sweeps = pick(p.sweeps ?? p.sliders);
   const fmt = p.formatResult ?? roughWon;

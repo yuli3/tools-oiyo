@@ -23,6 +23,8 @@ export function formatUnit(unit: AssumptionUnit, v: number, mode: AdvisoryMode =
       return `${Math.round(v)}개월`;
     case "days":
       return `${Math.round(v)}일`;
+    case "people":
+      return `${Math.round(v)}명`;
   }
 }
 

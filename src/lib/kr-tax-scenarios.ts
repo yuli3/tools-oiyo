@@ -2,12 +2,15 @@
 // 계산은 각 엔진 파일이 하고, 여기는 "무엇을 바꿔 볼 수 있고 어떻게 설명할지"만 정해요.
 import { compareIncorporation } from "./kr-incorporation-2026.ts";
 import { acquisitionTax, capitalGainsTax, HIGH_PRICE_LINE, propertyTax, BASIC_DEDUCTION, type AcquisitionInput, type GainsInput } from "./kr-real-estate-tax.ts";
+import { comprehensiveIncomeTax, freelancerSettlement, simpleExpense } from "./kr-income-tax-2026.ts";
+import { INHERITANCE_GIFT_2026 as IG, filingCredit, financialAssetDeduction, funeralDeduction, inheritanceGiftProgressiveTax, spouseInheritanceDeduction } from "./kr-payroll-2026.ts";
 import { retirementIncomeTax } from "./kr-retirement-tax.ts";
-import { fixedRange, moneyRange, roughWon, type Assumption, type BridgeStep, type TornadoBar } from "./scenario.ts";
+import { computeSalaryBreakdownWon } from "./finance/salary-calculator.ts";
+import { fixedRange, josa, moneyRange, roughWon, type Assumption, type BridgeStep, type TornadoBar } from "./scenario.ts";
 
 export const driverLine = (top: TornadoBar | undefined, what: string) =>
   top && top.span > 0
-    ? `결과를 가장 크게 움직이는 건 ${top.plain}이에요. 이 값이 20% 늘거나 줄면 ${what}이 약 ${roughWon(Math.min(top.low, top.high))}에서 ${roughWon(Math.max(top.low, top.high))} 사이로 바뀌어요.`
+    ? `결과를 가장 크게 움직이는 건 ${josa(top.plain, "이에요", "예요")}. 이 값이 20% 늘거나 줄면 ${josa(what, "이", "가")} 약 ${roughWon(Math.min(top.low, top.high))}에서 ${roughWon(Math.max(top.low, top.high))} 사이로 바뀌어요.`
     : null;
 
 export const moneyAssumption = <I>(key: string, label: string, plain: string, get: (i: I) => number, set: (i: I, v: number) => I, opts: { kind?: "fact" | "assumption"; signed?: boolean } = {}): Assumption<I> => ({
@@ -49,7 +52,7 @@ export function retirementBridge(i: RetirementInput): BridgeStep[] {
 
 export function retirementPlain(i: RetirementInput, top?: TornadoBar) {
   const r = retirementIncomeTax(i.gross, i.years);
-  const headline = `퇴직금 ${roughWon(r.gross)} 중 세금 약 ${roughWon(r.totalTax)}를 떼고 약 ${roughWon(r.netPayout)}를 받아요(추정, 실제 세율 ${r.effectiveTaxRate.toFixed(1)}%).`;
+  const headline = `퇴직금 ${roughWon(r.gross)} 중 세금 약 ${roughWon(r.totalTax)}을 떼고 약 ${roughWon(r.netPayout)}을 받아요(추정, 실제 세율 ${r.effectiveTaxRate.toFixed(1)}%).`;
   const reasons = [
     `오래 일할수록 빼 주는 금액(근속연수공제 ${roughWon(r.serviceDeduction)})이 커져서 세금이 줄어요.`,
     "퇴직금을 IRP 계좌로 옮겨 연금으로 나눠 받으면 이 세금의 30%(10년 넘게 나눠 받으면 그 뒤로 40%)가 줄어요.",
@@ -144,7 +147,7 @@ export function gainsBridge(i: GainsInput): BridgeStep[] {
 export function gainsPlain(i: GainsInput, top?: TornadoBar) {
   const r = capitalGainsTax(i);
   if (r.exempt) return { headline: "1세대 1주택 비과세라 양도세가 없어요(추정).", driver: null, reasons: ["파는 값이 12억 원을 넘으면 넘는 몫만큼 세금이 생겨요."] };
-  const headline = `오른 값 ${roughWon(r.gain)}에 양도세 약 ${roughWon(r.total)}를 내요(추정, 지방소득세 포함).`;
+  const headline = `오른 값 ${roughWon(r.gain)}에 양도세 약 ${roughWon(r.total)}을 내요(추정, 지방소득세 포함).`;
   const reasons: string[] = [];
   if (r.taxableGain !== r.gain) reasons.push("1주택이라 12억 원 넘는 몫만 세금을 매겼어요.");
   if (r.longTermRate > 0) reasons.push(`오래 가진(살았던) 만큼 오른 값의 ${Math.round(r.longTermRate * 100)}%를 빼 줬어요.`);
@@ -181,7 +184,7 @@ export function acquisitionBridge(i: AcquisitionInput): BridgeStep[] {
 
 export function acquisitionPlain(i: AcquisitionInput) {
   const r = acquisitionTax(i);
-  const headline = `${roughWon(i.price)}짜리 집을 사면 취득세 등 약 ${roughWon(r.total)}를 내요(추정).`;
+  const headline = `${roughWon(i.price)}짜리 집을 사면 취득세 등 약 ${roughWon(r.total)}을 내요(추정).`;
   const reasons: string[] = [];
   if (r.heavy) reasons.push(`집이 여러 채라 세율이 ${(r.rate * 100).toFixed(0)}%로 무거워졌어요(다주택 중과).`);
   else if (i.price > 600_000_000 && i.price <= 900_000_000) reasons.push("6억~9억 원 사이는 집값이 오를수록 세율이 1%에서 3%까지 조금씩 올라가요.");
@@ -223,11 +226,304 @@ export function propertyBridge(i: PropertyInput): BridgeStep[] {
 
 export function propertyPlain(i: PropertyInput) {
   const r = propertyTax(i.official, i.oneHouse, i.urban);
-  const headline = `공시가격 ${roughWon(i.official)}인 집의 올해 재산세는 약 ${roughWon(r.total)}예요(추정).`;
+  const headline = `공시가격 ${roughWon(i.official)}인 집의 올해 재산세는 약 ${roughWon(r.total)}이에요(추정).`;
   const reasons = [
     `공시가격의 ${Math.round(r.ratio * 100)}%에만 세금을 매겨요(공정시장가액비율).`,
     r.special ? "1세대 1주택이고 공시가격 9억 원 이하라 낮은 세율(특례)을 적용했어요." : "1주택 특례(공시가격 9억 원 이하)를 받지 않아요.",
     r.tax > 200_000 ? "재산세가 20만 원을 넘어서 7월과 9월에 반씩 나눠 내요." : "20만 원 이하라 7월에 한 번에 내요.",
   ];
   return { headline, driver: null, reasons };
+}
+
+// ───────────────────────── 월급 실수령액 ─────────────────────────
+
+export interface SalaryInput {
+  /** 월 세전 급여(원) */
+  monthly: number;
+  /** 기본공제 인원(본인 포함) */
+  dependents: number;
+  /** 월 비과세 수당(식대 등) */
+  nonTaxable: number;
+}
+
+export const salaryBreakdown = (i: SalaryInput) => computeSalaryBreakdownWon(i.monthly, i.dependents, i.nonTaxable);
+export const salaryNet = (i: SalaryInput) => salaryBreakdown(i).net;
+
+export const SALARY_ASSUMPTIONS: Assumption<SalaryInput>[] = [
+  { ...moneyAssumption<SalaryInput>("monthly", "월 세전 급여", "월급(세전)", (i) => i.monthly, (i, v) => ({ ...i, monthly: Math.max(0, v) })), range: (a) => [0, Math.max(a * 2, 10_000_000)] },
+  { key: "dependents", label: "기본공제 인원", plain: "부양가족 수", unit: "people", kind: "assumption", get: (i) => i.dependents, set: (i, v) => ({ ...i, dependents: Math.max(1, Math.round(v)) }), range: fixedRange(1, 6) },
+  {
+    ...moneyAssumption<SalaryInput>("nonTaxable", "비과세 급여", "세금 안 붙는 수당", (i) => i.nonTaxable, (i, v) => ({ ...i, nonTaxable: Math.max(0, v) })),
+    range: fixedRange(0, 500_000),
+    marks: [{ at: 200_000, label: "식대 20만" }],
+  },
+];
+
+export function salaryBridge(i: SalaryInput): BridgeStep[] {
+  const r = salaryBreakdown(i);
+  return [
+    { label: "월급(세전)", value: r.gross, kind: "total" },
+    { label: "국민연금", value: -r.pension, kind: "add" },
+    { label: "건강보험·장기요양", value: -(r.health + r.ltc), kind: "add" },
+    { label: "고용보험", value: -r.employment, kind: "add" },
+    { label: "소득세·지방소득세", value: -(r.incomeTax + r.localTax), kind: "add" },
+    { label: "통장에 들어오는 돈", value: r.net, kind: "total" },
+  ];
+}
+
+export function salaryPlain(i: SalaryInput, top?: TornadoBar) {
+  const r = salaryBreakdown(i);
+  const ins = r.pension + r.health + r.ltc + r.employment;
+  const tax = r.incomeTax + r.localTax;
+  const headline = `월급 ${roughWon(r.gross)} 중 약 ${roughWon(r.net)}이 통장에 들어와요(추정).`;
+  const reasons = [
+    `4대 보험으로 ${roughWon(ins)}, 세금으로 ${roughWon(tax)}을 떼요. 보험료가 세금보다 큰 경우가 많아요.`,
+    i.nonTaxable > 0 ? `비과세 수당 ${roughWon(i.nonTaxable)}에는 보험료와 세금이 붙지 않아요.` : "식대 같은 비과세 수당이 있으면 그만큼 떼는 돈이 줄어요.",
+    "회사가 떼는 세금은 간이세액표라 이 추정과 조금 달라요. 차이는 연말정산 때 맞춰져요.",
+  ];
+  return { headline, driver: driverLine(top, "실수령액"), reasons };
+}
+
+// ───────────────────────── 종합소득세·프리랜서 ─────────────────────────
+
+export type ExpenseMode = "simple" | "actual";
+
+export interface IncomeInput {
+  /** 사업(프리랜서) 수입금액 */
+  revenue: number;
+  expenseMode: ExpenseMode;
+  /** expenseMode = actual 일 때 필요경비 */
+  expenses: number;
+  salary: number;
+  other: number;
+  people: number;
+  pension: number;
+  /** 이미 낸 소득세(원천징수·중간예납). 프리랜서는 3% 원천징수로 자동 계산 */
+  prepaid: number;
+}
+
+export const incomeExpense = (i: IncomeInput) => (i.expenseMode === "simple" ? simpleExpense(i.revenue) : Math.max(0, i.expenses));
+
+export function incomeResult(i: IncomeInput, freelancer: boolean) {
+  if (freelancer) return freelancerSettlement(i.revenue, i.revenue > 0 ? incomeExpense(i) / i.revenue : 0, i.people, i.pension);
+  const r = comprehensiveIncomeTax({ businessIncome: i.revenue - incomeExpense(i), salary: i.salary, otherIncome: i.other, people: i.people, pensionPremium: i.pension, prepaid: i.prepaid });
+  return { ...r, revenue: i.revenue, expense: incomeExpense(i), withheld: i.prepaid, withheldLocal: Math.floor(Math.round(i.prepaid * 0.1) / 10) * 10 };
+}
+
+/** 5월에 더 낼 돈(+) / 돌려받을 돈(−), 지방소득세 포함 */
+export const incomeDue = (freelancer: boolean) => (i: IncomeInput) => incomeResult(i, freelancer).due;
+
+export function incomeAssumptions(freelancer: boolean): Assumption<IncomeInput>[] {
+  const list: Assumption<IncomeInput>[] = [
+    { ...moneyAssumption<IncomeInput>("revenue", freelancer ? "사업소득 수입금액(3.3% 원천징수 전)" : "사업 수입금액", freelancer ? "1년 수입(세전)" : "1년 매출", (i) => i.revenue, (i, v) => ({ ...i, revenue: Math.max(0, v) })), range: (a) => [0, Math.max(a * 2, 100_000_000)] },
+    {
+      ...moneyAssumption<IncomeInput>("expenses", "필요경비", "일에 쓴 비용", incomeExpense, (i, v) => ({ ...i, expenseMode: "actual", expenses: Math.max(0, v) })),
+      range: (a) => [0, Math.max(a * 2, 50_000_000)],
+    },
+  ];
+  if (!freelancer) {
+    list.push(moneyAssumption<IncomeInput>("salary", "근로 총급여", "회사 월급(1년치)", (i) => i.salary, (i, v) => ({ ...i, salary: Math.max(0, v) })));
+    list.push(moneyAssumption<IncomeInput>("other", "기타소득금액", "강연료 등 기타소득", (i) => i.other, (i, v) => ({ ...i, other: Math.max(0, v) })));
+  }
+  list.push({ key: "people", label: "기본공제 인원", plain: "부양가족 수", unit: "people", kind: "assumption", get: (i) => i.people, set: (i, v) => ({ ...i, people: Math.max(1, Math.round(v)) }), range: fixedRange(1, 6) });
+  list.push({ ...moneyAssumption<IncomeInput>("pension", "연금보험료 공제", "낸 국민연금", (i) => i.pension, (i, v) => ({ ...i, pension: Math.max(0, v) })), range: (a) => [0, Math.max(a * 2, 6_000_000)] });
+  if (!freelancer) list.push({ ...moneyAssumption<IncomeInput>("prepaid", "기납부세액", "이미 낸 세금", (i) => i.prepaid, (i, v) => ({ ...i, prepaid: Math.max(0, v) })), kind: "fact" });
+  return list;
+}
+
+export function incomeBridge(i: IncomeInput, freelancer: boolean): BridgeStep[] {
+  const r = incomeResult(i, freelancer);
+  const steps: BridgeStep[] = [
+    { label: "산출세액", value: r.calculated, kind: "add" },
+    { label: "세액공제", value: -r.credits, kind: "add" },
+    { label: "결정세액", value: r.determined, kind: "total" },
+    { label: "지방소득세", value: r.local, kind: "add" },
+  ];
+  const paid = r.withheld + r.withheldLocal;
+  if (paid > 0) steps.push({ label: freelancer ? "이미 뗀 3.3%" : "이미 낸 세금", value: -paid, kind: "add" });
+  steps.push({ label: r.due >= 0 ? "5월에 더 낼 돈" : "5월에 돌려받을 돈", value: r.due, kind: "total" });
+  return steps;
+}
+
+export function incomePlain(i: IncomeInput, freelancer: boolean, top?: TornadoBar) {
+  const r = incomeResult(i, freelancer);
+  const headline =
+    r.due >= 0
+      ? `5월 종합소득세 신고 때 약 ${roughWon(r.due)}을 더 내요(추정, 지방소득세 포함).`
+      : `5월 종합소득세 신고 때 약 ${roughWon(-r.due)}을 돌려받아요(추정, 지방소득세 포함).`;
+  const reasons: string[] = [];
+  reasons.push(
+    i.expenseMode === "simple"
+      ? `수입의 약 ${Math.round((r.expense / Math.max(1, r.revenue)) * 100)}%를 비용으로 쳐 줬어요(단순경비율). 실제 비용이 더 크면 장부를 써서 더 빼 볼 수 있어요.`
+      : `일에 쓴 비용 ${roughWon(r.expense)}을 빼고 세금을 매겼어요.`,
+  );
+  if (freelancer) reasons.push(`일할 때 3.3%로 ${roughWon(r.withheld + r.withheldLocal)}을 이미 뗐어요. 실제 세금이 그보다 적으면 돌려받아요.`);
+  reasons.push(`부양가족 한 명당 150만 원씩 소득에서 빼 줘요(지금 ${i.people}명).`);
+  return { headline, driver: driverLine(top, r.due >= 0 ? "낼 세금" : "돌려받을 돈"), reasons };
+}
+
+// ───────────────────────── 상속세 ─────────────────────────
+
+export interface InheritanceInput {
+  /** 총 상속재산(사전증여 합산 전) */
+  estate: number;
+  /** 채무·공과금 */
+  debts: number;
+  /** 장례비용(증빙 금액) */
+  funeral: number;
+  spouse: boolean;
+  /** 배우자가 실제로 받는 금액 */
+  spouseAmount: number;
+  /** 순금융재산 */
+  financial: number;
+}
+
+/** 상속세 추정(상증법 제18~22·26·69조). 계산식은 기존 화면 그대로 옮겼어요. */
+export function inheritanceTax(i: InheritanceInput) {
+  const funeral = funeralDeduction(i.funeral);
+  const netEstate = Math.max(0, Math.max(0, i.estate) - Math.max(0, i.debts) - funeral);
+  const lumpSum = IG.inheritanceLumpSum;
+  const spouseDeduction = i.spouse ? spouseInheritanceDeduction(i.spouseAmount) : 0;
+  const financialDeduction = financialAssetDeduction(i.financial);
+  const deductions = lumpSum + spouseDeduction + financialDeduction;
+  const base = Math.max(0, netEstate - deductions);
+  const raw = inheritanceGiftProgressiveTax(base);
+  const credit = filingCredit(raw);
+  const total = Math.max(0, raw - credit);
+  return { funeral, netEstate, lumpSum, spouseDeduction, financialDeduction, deductions, base, raw, credit, total, rate: netEstate > 0 ? total / netEstate : 0 };
+}
+
+export const inheritanceTotal = (i: InheritanceInput) => inheritanceTax(i).total;
+
+export const INHERITANCE_ASSUMPTIONS: Assumption<InheritanceInput>[] = [
+  {
+    ...moneyAssumption<InheritanceInput>("estate", "총 상속재산가액", "남긴 재산", (i) => i.estate, (i, v) => ({ ...i, estate: Math.max(0, v) })),
+    range: (a) => [0, Math.max(a * 2, 3_000_000_000)],
+    marks: [
+      { at: 1_000_000_000, label: "10억" },
+      { at: 1_500_000_000, label: "15억" },
+    ],
+  },
+  moneyAssumption<InheritanceInput>("debts", "채무·공과금", "남은 빚", (i) => i.debts, (i, v) => ({ ...i, debts: Math.max(0, v) })),
+  {
+    ...moneyAssumption<InheritanceInput>("spouseAmount", "배우자 실제 상속액", "배우자가 받는 몫", (i) => i.spouseAmount, (i, v) => ({ ...i, spouseAmount: Math.max(0, v) })),
+    range: (a) => [0, Math.max(a * 2, 3_500_000_000)],
+    marks: [
+      { at: IG.spouseInheritanceMin, label: "5억" },
+      { at: IG.spouseInheritanceMax, label: "30억" },
+    ],
+  },
+  {
+    ...moneyAssumption<InheritanceInput>("financial", "순금융재산", "예금·주식", (i) => i.financial, (i, v) => ({ ...i, financial: Math.max(0, v) })),
+    range: (a) => [0, Math.max(a * 2, 1_200_000_000)],
+    marks: [{ at: 1_000_000_000, label: "공제 2억 한도" }],
+  },
+];
+
+export function inheritanceBridge(i: InheritanceInput): BridgeStep[] {
+  const r = inheritanceTax(i);
+  const steps: BridgeStep[] = [{ label: "남긴 재산", value: Math.max(0, i.estate), kind: "add" }];
+  if (i.debts > 0) steps.push({ label: "빚·공과금", value: -Math.max(0, i.debts), kind: "add" });
+  steps.push({ label: "장례비", value: -r.funeral, kind: "add" });
+  steps.push({ label: "순 상속재산", value: r.netEstate, kind: "total" });
+  steps.push({ label: "일괄공제 5억", value: -r.lumpSum, kind: "add" });
+  if (r.spouseDeduction > 0) steps.push({ label: "배우자공제", value: -r.spouseDeduction, kind: "add" });
+  if (r.financialDeduction > 0) steps.push({ label: "금융재산공제", value: -r.financialDeduction, kind: "add" });
+  steps.push({ label: "과세표준", value: r.base, kind: "total" });
+  return steps;
+}
+
+export function inheritancePlain(i: InheritanceInput, top?: TornadoBar) {
+  const r = inheritanceTax(i);
+  if (r.total === 0)
+    return {
+      headline: `공제가 ${roughWon(r.deductions)}이라 순 상속재산 ${roughWon(r.netEstate)}에는 상속세가 없어요(추정).`,
+      driver: driverLine(top, "상속세"),
+      reasons: ["배우자가 있으면 보통 10억 원, 없으면 5억 원까지는 상속세가 나오지 않아요.", "10년 안에 미리 증여한 재산이 있으면 합쳐서 다시 계산해요."],
+    };
+  const reasons = [
+    `공제 ${roughWon(r.deductions)}을 빼고 남은 ${roughWon(r.base)}에 10~50% 세율을 매겼어요.`,
+    i.spouse ? `배우자가 실제로 받는 몫만큼(최소 5억, 최대 30억) 빼 줘요. 배우자 몫을 늘리면 세금이 줄지만, 나중에 배우자 상속 때 다시 세금이 생길 수 있어요.` : "배우자가 없으면 배우자공제(최소 5억)가 없어서 세금이 커져요.",
+    "기한(사망한 달 말일부터 6개월) 안에 신고하면 3%를 깎아 줘요.",
+  ];
+  return { headline: `상속세는 약 ${roughWon(r.total)}이에요(추정, 신고공제 3% 반영).`, driver: driverLine(top, "상속세"), reasons };
+}
+
+// ───────────────────────── 증여세 ─────────────────────────
+
+export type GiftRelation = "spouse" | "child_adult" | "child_minor" | "parent" | "marriage_child" | "relative";
+
+export interface GiftInput {
+  amount: number;
+  relation: GiftRelation;
+}
+
+export const GIFT_RELATIONS: { value: GiftRelation; label: string; plain: string; deduction: number }[] = [
+  { value: "child_adult", label: "성년 자녀(직계존속에게서)", plain: "부모님이 성인 자녀에게", deduction: IG.giftDeductions.child_adult },
+  { value: "marriage_child", label: "혼인·출산 자녀(+1억)", plain: "결혼·출산하는 자녀에게", deduction: IG.giftDeductions.child_adult + IG.marriageBirthDeduction },
+  { value: "child_minor", label: "미성년 자녀", plain: "미성년 자녀에게", deduction: IG.giftDeductions.child_minor },
+  { value: "spouse", label: "배우자", plain: "남편·아내에게", deduction: IG.giftDeductions.spouse },
+  { value: "parent", label: "부모(직계비속에게서)", plain: "자녀가 부모님께", deduction: IG.giftDeductions.parent },
+  { value: "relative", label: "기타 친족", plain: "형제·친척에게", deduction: IG.giftDeductions.other_relative },
+];
+
+export function giftTax(i: GiftInput) {
+  const gross = Math.max(0, i.amount);
+  const deduction = GIFT_RELATIONS.find((r) => r.value === i.relation)!.deduction;
+  const base = Math.max(0, gross - deduction);
+  const raw = inheritanceGiftProgressiveTax(base);
+  const credit = filingCredit(raw);
+  const total = Math.max(0, raw - credit);
+  return { gross, deduction, base, raw, credit, total, rate: gross > 0 ? total / gross : 0 };
+}
+
+export const giftTotal = (i: GiftInput) => giftTax(i).total;
+
+export const GIFT_ASSUMPTIONS: Assumption<GiftInput>[] = [
+  {
+    ...moneyAssumption<GiftInput>("amount", "증여재산가액", "주는 돈", (i) => i.amount, (i, v) => ({ ...i, amount: Math.max(0, v) })),
+    range: (a) => [0, Math.max(a * 2, 1_000_000_000)],
+  },
+];
+
+/** 공제 경계와 세율 경계(과세표준 1억·5억)를 주는 돈 기준 점선으로 */
+export function giftMarks(relation: GiftRelation) {
+  const d = GIFT_RELATIONS.find((r) => r.value === relation)!.deduction;
+  return [
+    { at: d, label: "공제 끝" },
+    { at: d + 100_000_000, label: "세율 20%" },
+    { at: d + 500_000_000, label: "세율 30%" },
+  ];
+}
+
+export function giftBridge(i: GiftInput): BridgeStep[] {
+  const r = giftTax(i);
+  return [
+    { label: "주는 돈", value: r.gross, kind: "add" },
+    { label: "증여재산공제", value: -Math.min(r.gross, r.deduction), kind: "add" },
+    { label: "과세표준", value: r.base, kind: "total" },
+    { label: "산출세액", value: r.raw, kind: "total" },
+    { label: "신고세액공제 3%", value: -r.credit, kind: "add" },
+    { label: "낼 증여세", value: r.total, kind: "total" },
+  ];
+}
+
+export function giftPlain(i: GiftInput) {
+  const r = giftTax(i);
+  const rel = GIFT_RELATIONS.find((x) => x.value === i.relation)!;
+  if (r.total === 0)
+    return {
+      headline: `${rel.plain} ${roughWon(r.gross)}을 주면 증여세가 없어요(공제 ${roughWon(r.deduction)} 안, 10년 합산).`,
+      driver: null,
+      reasons: [`같은 관계에서 10년 동안 ${roughWon(r.deduction)}까지 세금 없이 줄 수 있어요. 남은 한도는 ${roughWon(r.deduction - r.gross)}이에요.`],
+    };
+  return {
+    headline: `${rel.plain} ${roughWon(r.gross)}을 주면 증여세는 약 ${roughWon(r.total)}이에요(추정, 신고공제 3% 반영).`,
+    driver: null,
+    reasons: [
+      `${roughWon(r.deduction)}까지는 빼 주고, 넘는 ${roughWon(r.base)}에 세금을 매겼어요.`,
+      "10년 안에 같은 사람(부모님이면 두 분 합쳐서)에게 받은 돈은 모두 더해서 계산해요.",
+      "받은 달 말일부터 3개월 안에 신고하면 3%를 깎아 줘요.",
+    ],
+  };
 }
