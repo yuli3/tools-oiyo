@@ -1,0 +1,15 @@
+---
+// 노동권 도구 묶음 A (2026-11-16, Gemini 이전). 엔진: lib/kr-welfare-2026.ts
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import DismissalNotice from "../../components/tools/welfare/DismissalNotice";
+import { WELFARE_AS_OF } from "../../lib/kr-welfare-2026";
+
+const title = "해고예고수당 계산기 2026 — 30일 전 예고 안 했을 때 받는 30일분 통상임금";
+const description = "월 통상임금과 예고 일수, 근무 기간으로 해고예고수당(30일분 통상임금)을 계산하고, 3개월 미만·천재지변 예외와 5명 미만 사업장 적용 여부를 알려 줘요.";
+const ko = {"introTitle": "해고 통보를 30일 전에 받지 못했다면", "intro": "회사는 해고하려면 적어도 30일 전에 알려야 하고, 그러지 않았으면 30일분 이상의 통상임금(해고예고수당)을 줘야 해요(근로기준법 제26조). 5명 미만 사업장에도 적용돼요. 일한 지 3개월이 안 됐거나, 천재지변 등으로 사업을 계속할 수 없거나, 고의로 큰 손해를 끼친 경우는 예외예요.", "howToTitle": "사용 방법", "steps": ["한 달 고정 월급(통상임금)과 주 근로시간을 넣어요.", "해고일 며칠 전에 통보받았는지, 입사하고 몇 달 일했는지 넣어요.", "받을 수 있는 금액과, 예고 일수가 바뀌면 어떻게 되는지 그래프로 봐요."], "highlightsTitle": "주요 특징", "highlights": [{"title": "30일분 전액", "body": "예고가 30일에 모자라면 일할 계산이 아니라 30일분 전액이 원칙이에요(고용노동부 해석)."}, {"title": "예외 3가지", "body": "3개월 미만 근무, 천재지변 등 사업 계속 불가, 고의 중대 손해(시행규칙 별표)."}, {"title": "5명 미만도 적용", "body": "해고예고는 모든 사업장, 서면통지·구제신청은 5명 이상만 적용돼요."}, {"title": "해고 정당성과 별개", "body": "수당을 받아도 해고가 정당해지지는 않아요. 부당해고 구제신청은 3개월 안에."}], "disclaimer": "2026년 기준 추정이에요. 통상임금 범위는 임금 규정에 따라 달라요. 법률 자문이 아니며 고용노동부(1350)나 대한법률구조공단(132)에서 무료 상담을 받으세요."};
+const faqs = [{"q": "수습 중에 해고되면요?", "a": "입사하고 3개월 미만이면 해고예고 의무가 없어요. 3개월 이상이면 수습 중이어도 30일 전 예고나 수당이 필요해요."}, {"q": "10일 전에 알려 주면 20일분만 받나요?", "a": "고용노동부는 30일 전 예고를 하지 않았으면 30일분 전액을 줘야 한다고 봐요."}, {"q": "언제까지 청구할 수 있나요?", "a": "임금채권이라 3년 안에 청구해요(근로기준법 제49조)."}, {"q": "해고 자체가 부당하면요?", "a": "5명 이상 사업장은 해고일부터 3개월 안에 지방노동위원회에 부당해고 구제신청을 할 수 있어요."}];
+---
+<KrFinancePage slug="dismissal-notice-pay-calculator" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <DismissalNotice client:load />
+  <p class="mt-4 text-xs text-muted-foreground">근거: 근로기준법 제26조·제27조·제28조·제49조, 시행령 별표 1, 시행규칙 별표(해고예고 예외 사유). 기준일 {WELFARE_AS_OF}. <a class="underline" href="/ko/benefit-rights-toolkit/">생활 지원금·노동권 도구 모음</a> · <a class="underline" href="/ko/labor-law-guide/">노동법 길잡이</a></p>
+</KrFinancePage>

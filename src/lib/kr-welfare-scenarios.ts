@@ -2,10 +2,13 @@
 // 계산은 kr-welfare-2026.ts, 여기는 "무엇을 바꿔 볼 수 있고 어떻게 설명할지"만 정해요.
 import {
   ASSET_CAP, ASSET_HALF, CTC_TABLE, EITC_TABLE, INJURY_2026, RENT_CREDIT,
-  dbVsDc, fixedOvertimeCheck, premiumPay, longTermCareCopay, LTC_2026, injuryLeavePay, maternityLeavePay, monthlyRentCredit, ordinaryWage, wageGuarantee, workChildCredit,
+  youthRentSupport, housingLoanBest, specialSupplyCheck, URBAN_WORKER_INCOME, type SpecialSupplyInput, YOUTH_RENT_2026, type YouthRentInput, type HousingLoanInput,
+  dbVsDc, fixedOvertimeCheck, dismissalNoticePay, shutdownAllowance, reducedHoursPay, probationMinWage, REDUCED_HOURS_2026, directPaymentCheck, type DirectPayInput,
+  type DismissalNoticeInput, type ShutdownPayInput, type ReducedHoursInput, type ProbationInput, premiumPay, longTermCareCopay, LTC_2026, injuryLeavePay, maternityLeavePay, monthlyRentCredit, ordinaryWage, wageGuarantee, workChildCredit,
   type EitcInput, type FixedOtInput, type WorkHours, type LtcInput, type GuaranteeInput, type InjuryInput, type MaternityInput, type OrdinaryWageInput, type PensionInput, type RentInput,
 } from "./kr-welfare-2026.ts";
 import { RENTAL, comprehensiveRealEstateTax, creThreshold, rentalIncomeTax, type CreInput, type RentalInput } from "./kr-home-tax-2026.ts";
+import { officetelHouseCount, ticketPresaleTax, inheritedValuation, type OfficetelInput, type TicketPresaleInput, type InheritedValuationInput, COMMERCIAL_LEASE, DEPENDENT_2026, FAMILY_2026, FREE_USE_FACTOR, MAJOR_2026, RELATION_LABEL, commercialRentCheck, businessCarExpense, overseasCompare, BUSINESS_CAR, OVERSEAS_COMPARE, type BusinessCarInput, type OverseasCompareInput, smeYouthReduction, vatTypeCompare, yellowUmbrella, SIMPLIFIED_VAT, YELLOW_UMBRELLA, type SmeYouthInput, type VatTypeInput, type YellowUmbrellaInput, dependentsTax, familyLoanGift, freeUseGift, lowPriceSale, majorShareholderTax, type CommercialRentInput, type DependentsInput, type FamilyLoanInput, type FreeUseInput, type LowPriceSaleInput, type MajorShareholderInput } from "./kr-household-tax-2026.ts";
 import { roughWon, type Assumption } from "./scenario.ts";
 
 const money = <I>(key: string, label: string, plain: string, get: (i: I) => number, set: (i: I, v: number) => I, range: (a: number) => [number, number], marks?: { at: number; label: string }[], kind: "fact" | "assumption" = "assumption"): Assumption<I> => ({ key, label, plain, unit: "won", kind, get, set, range, marks });
@@ -170,5 +173,194 @@ export const LTC_ASSUMPTIONS = (i: LtcInput): Assumption<LtcInput>[] => {
   return [
     money("dailyExtra", "하루 비급여(식사·간식)", "하루 밥값·간식비", (x) => x.dailyExtra ?? 15_000, (x, v) => ({ ...x, dailyExtra: Math.max(0, v) }), () => [0, 40_000]),
     { key: "days", label: "월 입소 일수", plain: "한 달 머무는 날", unit: "days", kind: "fact", get: (x) => x.days ?? 30, set: (x, v) => ({ ...x, days: Math.max(0, Math.round(v)) }), range: () => [0, 31] },
+  ];
+};
+
+// ───────────────────────── 부양가족 기본공제 판정 ─────────────────────────
+// 본인 총급여와, 첫 번째 가족(보통 배우자)의 총급여를 바꿔 보며 500만 원 절벽을 보여 줘요.
+export const dependentsSaving = (i: DependentsInput) => dependentsTax(i).saving;
+export const DEPENDENTS_ASSUMPTIONS = (i: DependentsInput): Assumption<DependentsInput>[] => {
+  const list: Assumption<DependentsInput>[] = [
+    money("salary", "본인 총급여", "내 1년 월급 합계(세전)", (x) => x.salary, (x, v) => ({ ...x, salary: Math.max(0, v) }), () => [20_000_000, 150_000_000], [{ at: 87_000_000, label: "세율 24→35% 근처" }], "fact"),
+  ];
+  const idx = i.people.length ? Math.max(0, i.people.findIndex((p) => p.relation === "spouse")) : -1;
+  if (idx >= 0) {
+    const who = RELATION_LABEL[i.people[idx].relation].split("(")[0];
+    list.push(money("depWage", `${who} 총급여`, `${who}가 1년에 버는 월급`, (x) => x.people[idx]?.wage ?? 0, (x, v) => ({ ...x, people: x.people.map((p, j) => (j === idx ? { ...p, wage: Math.max(0, v) } : p)) }), () => [0, 10_000_000], [{ at: DEPENDENT_2026.wageOnlyMax, label: "500만: 공제 끝" }]));
+  }
+  return list;
+};
+
+// ───────────────────────── 상장주식 대주주 양도세 ─────────────────────────
+export const majorTotal = (i: MajorShareholderInput) => majorShareholderTax(i).total;
+export const MAJOR_ASSUMPTIONS: Assumption<MajorShareholderInput>[] = [
+  money("gain", "양도차익", "판 값에서 산 값과 수수료를 뺀 이익", (x) => x.gain, (x, v) => ({ ...x, gain: Math.max(0, v) }), () => [0, 1_500_000_000], [{ at: MAJOR_2026.pivot + MAJOR_2026.basicDeduction, label: "3억: 25% 시작" }]),
+  money("heldValue", "작년 말 보유 시가", "작년 마지막 거래일에 가진 이 종목 값", (x) => x.heldValue, (x, v) => ({ ...x, heldValue: Math.max(0, v) }), () => [0, 8_000_000_000], [{ at: MAJOR_2026.valueLine, label: "50억: 대주주" }], "fact"),
+];
+
+// ───────────────────────── 노동권 묶음 A: 해고예고·휴업·육아기 단축·수습 ─────────────────────────
+const num = <I>(key: string, label: string, plain: string, unit: "days" | "months" | "hours", get: (i: I) => number, set: (i: I, v: number) => I, range: [number, number], marks?: { at: number; label: string }[], kind: "fact" | "assumption" = "assumption"): Assumption<I> => ({ key, label, plain, unit, kind, get, set, range: () => range, marks });
+
+export const noticePayAmount = (i: DismissalNoticeInput) => dismissalNoticePay(i).amount;
+export const NOTICE_ASSUMPTIONS: Assumption<DismissalNoticeInput>[] = [
+  num("noticeDays", "해고 예고 일수", "해고일 며칠 전에 알렸나", "days", (x) => x.noticeDays, (x, v) => ({ ...x, noticeDays: Math.max(0, Math.round(v)) }), [0, 45], [{ at: 30, label: "30일: 수당 없음" }]),
+  money("monthlyOrdinaryWage", "월 통상임금", "기본급 + 매달 고정 수당", (x) => x.monthlyOrdinaryWage, (x, v) => ({ ...x, monthlyOrdinaryWage: Math.max(0, v) }), () => [2_000_000, 8_000_000]),
+  num("tenureMonths", "계속 근로 개월", "입사하고 몇 달 일했나", "months", (x) => x.tenureMonths, (x, v) => ({ ...x, tenureMonths: Math.max(0, Math.round(v)) }), [0, 24], [{ at: 3, label: "3개월" }], "fact"),
+];
+export function noticePlain(i: DismissalNoticeInput) {
+  const r = dismissalNoticePay(i);
+  const head = {
+    enoughNotice: "30일 전에 알렸으니 해고예고수당은 없어요.",
+    shortTenure: "일한 지 3개월이 안 돼 해고예고수당은 없어요(제26조 단서).",
+    disaster: "천재지변 등으로 사업을 계속할 수 없는 경우라 해고예고수당이 없어요. 이 사유는 회사가 증명해야 해요.",
+    misconduct: "고의로 큰 손해를 끼친 경우(시행규칙 별표)라 해고예고수당이 없어요. 이 사유는 회사가 증명해야 해요.",
+    due: `해고예고수당 약 ${roughWon(r.amount)}을 받을 수 있어요(30일분 통상임금).`,
+  }[r.reason];
+  const reasons = [`1일 통상임금 ${r.daily.toLocaleString("ko-KR")}원 × 30일로 계산했어요.`];
+  if (r.reason === "due" && i.noticeDays > 0) reasons.push(`${i.noticeDays}일 전에 알렸어도 30일에 모자라면 고용노동부는 30일분 전액을 줘야 한다고 봐요.`);
+  reasons.push("해고예고수당을 받아도 해고가 정당해지지는 않아요. 정당한 이유(제23조)는 따로 따져요.");
+  return { headline: head, reasons };
+}
+
+export const shutdownMin = (i: ShutdownPayInput) => shutdownAllowance(i).statutory;
+export const SHUTDOWN_ASSUMPTIONS: Assumption<ShutdownPayInput>[] = [
+  num("shutdownDays", "휴업 일수", "회사 사정으로 쉰 날", "days", (x) => x.shutdownDays, (x, v) => ({ ...x, shutdownDays: Math.max(0, Math.round(v)) }), [0, 92], [{ at: 30, label: "한 달" }]),
+  money("threeMonthWages", "3개월 임금 총액", "쉬기 전 석 달 월급 합계", (x) => x.threeMonthWages, (x, v) => ({ ...x, threeMonthWages: Math.max(0, v) }), () => [6_000_000, 24_000_000]),
+  money("paidDuringShutdown", "쉬는 동안 받은 임금", "쉬는 기간 중 일부 일하고 받은 돈", (x) => x.paidDuringShutdown, (x, v) => ({ ...x, paidDuringShutdown: Math.max(0, v) }), () => [0, 3_000_000]),
+];
+
+export const reducedTotal = (i: ReducedHoursInput) => reducedHoursPay(i).total;
+export const REDUCED_ASSUMPTIONS = (i: ReducedHoursInput): Assumption<ReducedHoursInput>[] => [
+  num("afterHours", "단축 뒤 주 근로시간", "줄인 뒤 한 주에 일하는 시간", "hours", (x) => x.afterHours, (x, v) => ({ ...x, afterHours: Math.round(v) }), [REDUCED_HOURS_2026.minAfter, Math.min(REDUCED_HOURS_2026.maxAfter, Math.max(REDUCED_HOURS_2026.minAfter, i.beforeHours - 1))], [{ at: i.beforeHours - REDUCED_HOURS_2026.firstHours, label: "10시간 줄임" }]),
+  money("monthlyOrdinaryWage", "월 통상임금", "줄이기 전 한 달 월급(고정분)", (x) => x.monthlyOrdinaryWage, (x, v) => ({ ...x, monthlyOrdinaryWage: Math.max(0, v) }), () => [1_500_000, 7_000_000], [{ at: REDUCED_HOURS_2026.capFirst, label: "250만: 상한" }]),
+];
+export function reducedPlain(i: ReducedHoursInput) {
+  const r = reducedHoursPay(i);
+  if (!r.valid) return { headline: "단축 뒤 근로시간은 주 15시간 이상 35시간 이하여야 해요.", reasons: ["이 범위를 벗어나면 육아기 근로시간 단축이 아니라 급여도 나오지 않아요."] };
+  const reasons = [
+    `처음 ${r.firstCut}시간 줄인 몫은 통상임금 100%(기준액 상한 250만 원)로 ${roughWon(r.first)}을 받아요.`,
+  ];
+  if (r.restCut > 0) reasons.push(`그 위로 ${r.restCut}시간 더 줄인 몫은 80%(상한 160만 원)로 ${roughWon(r.rest)}이에요.`);
+  if (r.cappedFirst) reasons.push("월급이 250만 원보다 많아 상한에 걸려, 줄어든 월급을 다 채우지는 못해요.");
+  return { headline: `한 달에 회사 월급 약 ${roughWon(r.companyPay)} + 고용보험 단축급여 약 ${roughWon(r.benefit)} = 약 ${roughWon(r.total)}을 받아요(추정).`, reasons };
+}
+
+export const probationShort = (i: ProbationInput) => probationMinWage(i).shortMonthly;
+export const PROBATION_ASSUMPTIONS: Assumption<ProbationInput>[] = [
+  money("hourlyWage", "시급", "받는 시급(월급 ÷ 209)", (x) => x.hourlyWage, (x, v) => ({ ...x, hourlyWage: Math.max(0, Math.round(v)) }), () => [8_000, 12_000], [{ at: 9_288, label: "90%: 9,288원" }, { at: 10_320, label: "최저 10,320원" }]),
+  num("monthsIntoProbation", "수습 경과 개월", "수습 시작하고 지난 달 수", "months", (x) => x.monthsIntoProbation, (x, v) => ({ ...x, monthsIntoProbation: Math.max(0, Math.round(v)) }), [0, 6], [{ at: 3, label: "3개월: 감액 끝" }], "fact"),
+];
+
+// ───────────────────────── 하도급대금 직접 지급·지연이자 ─────────────────────────
+export const subcontractLate = (i: DirectPayInput) => directPaymentCheck(i).lateInterest;
+export const SUBCONTRACT_ASSUMPTIONS: Assumption<DirectPayInput>[] = [
+  num("daysSinceDelivery", "수령일부터 지난 날", "물건·공사를 넘긴 날부터 오늘까지", "days", (x) => x.daysSinceDelivery, (x, v) => ({ ...x, daysSinceDelivery: Math.max(0, Math.round(v)) }), [0, 365], [{ at: 60, label: "60일: 지급 기한" }]),
+  money("workValue", "이행한 부분 하도급대금", "내가 한 일의 대금", (x) => x.workValue, (x, v) => ({ ...x, workValue: Math.max(0, v) }), () => [0, 200_000_000]),
+  money("receivedFromPrime", "원사업자에게 받은 돈", "이미 받은 금액", (x) => x.receivedFromPrime, (x, v) => ({ ...x, receivedFromPrime: Math.max(0, v) }), () => [0, 200_000_000]),
+];
+
+// ───────────────────────── 가족 사이 돈·집 거래, 상가 임대료 (Gemini 이전 B) ─────────────────────────
+const rateA = <I>(key: string, label: string, plain: string, get: (i: I) => number, set: (i: I, v: number) => I, range: [number, number], marks?: { at: number; label: string }[]): Assumption<I> => ({ key, label, plain, unit: "rate", kind: "assumption", get, set, range: () => range, marks });
+
+export const familyLoanAmount = (i: FamilyLoanInput) => familyLoanGift(i).gift;
+export const FAMILY_LOAN_ASSUMPTIONS: Assumption<FamilyLoanInput>[] = [
+  money("principal", "차입 원금", "빌린 돈", (x) => x.principal, (x, v) => ({ ...x, principal: Math.max(0, v) }), (a) => [0, Math.max(600_000_000, a * 1.5)], [{ at: Math.ceil(FAMILY_2026.loanThreshold / FAMILY_2026.fairRate), label: "무이자 2.17억" }]),
+  rateA("rate", "약정 이자율", "실제로 주는 이자율", (x) => x.rate, (x, v) => ({ ...x, rate: Math.max(0, v) }), [0, 0.06], [{ at: FAMILY_2026.fairRate, label: "적정 4.6%" }]),
+];
+
+export const freeUseAmount = (i: FreeUseInput) => freeUseGift(i).useGift + freeUseGift(i).collateralGift;
+export const FREE_USE_ASSUMPTIONS: Assumption<FreeUseInput>[] = [
+  money("propertyValue", "부동산 시가", "부모님 집값", (x) => x.propertyValue, (x, v) => ({ ...x, propertyValue: Math.max(0, v) }), (a) => [0, Math.max(3_000_000_000, a * 1.5)], [{ at: Math.ceil(FAMILY_2026.useThreshold / (FAMILY_2026.useRate * FREE_USE_FACTOR)), label: "약 13.2억" }]),
+];
+
+export const lowPriceGift = (i: LowPriceSaleInput) => lowPriceSale(i).gift;
+export const lowPriceMarks = (i: LowPriceSaleInput) => {
+  const r = lowPriceSale(i);
+  return [
+    { at: r.noGiftAbove, label: "증여 경계" },
+    { at: r.noRecalcAbove, label: "양도세 경계" },
+  ];
+};
+export const LOW_PRICE_ASSUMPTIONS = (i: LowPriceSaleInput): Assumption<LowPriceSaleInput>[] => [
+  money("price", "실제 거래가", "가족끼리 정한 값", (x) => x.price, (x, v) => ({ ...x, price: Math.max(0, v) }), () => [0, Math.max(1, i.marketValue)], lowPriceMarks(i)),
+  money("marketValue", "시가", "주변 시세·감정가", (x) => x.marketValue, (x, v) => ({ ...x, marketValue: Math.max(0, v) }), (a) => [Math.max(0, i.price), Math.max(a * 1.6, i.price * 2)], undefined, "fact"),
+];
+
+export const commercialExcess = (i: CommercialRentInput) => commercialRentCheck(i).rentExcess;
+export const COMMERCIAL_ASSUMPTIONS = (i: CommercialRentInput): Assumption<CommercialRentInput>[] => [
+  money("newMonthlyRent", "올리려는 월세", "새 월세", (x) => x.newMonthlyRent, (x, v) => ({ ...x, newMonthlyRent: Math.max(0, v) }), () => [i.monthlyRent * 0.9, i.monthlyRent * 1.2], [{ at: Math.floor(i.monthlyRent * 1.05), label: "5%" }]),
+  rateA("baseRate", "한국은행 기준금리", "기준금리", (x) => x.baseRate ?? COMMERCIAL_LEASE.baseRate, (x, v) => ({ ...x, baseRate: Math.max(0, v) }), [0, 0.05], [{ at: COMMERCIAL_LEASE.conversionCap / COMMERCIAL_LEASE.baseRateMultiple, label: "12% 상한 시작" }]),
+];
+
+// ───────────────────────── 청년 감면·노란우산·간이과세 (Gemini 이전 B 2차) ─────────────────────────
+export const youthYearly = (i: SmeYouthInput) => smeYouthReduction(i).yearly;
+export const YOUTH_ASSUMPTIONS: Assumption<SmeYouthInput>[] = [
+  money("salary", "총급여", "1년 연봉(비과세 빼고)", (x) => x.salary, (x, v) => ({ ...x, salary: Math.max(0, v) }), (a) => [15_000_000, Math.max(100_000_000, a * 1.5)]),
+];
+
+export const umbrellaSaved = (i: YellowUmbrellaInput) => yellowUmbrella(i).saved;
+export const UMBRELLA_ASSUMPTIONS = (i: YellowUmbrellaInput): Assumption<YellowUmbrellaInput>[] => [
+  money("paid", "1년 납입액", "1년에 넣는 돈", (x) => x.paid, (x, v) => ({ ...x, paid: Math.max(0, v) }), () => [0, YELLOW_UMBRELLA.annualPayCap], [{ at: yellowUmbrella(i).limit, label: "공제 한도" }]),
+  money("income", i.kind === "ceo" ? "총급여" : "사업소득금액", i.kind === "ceo" ? "1년 급여" : "1년 매출 − 경비", (x) => x.income, (x, v) => ({ ...x, income: Math.max(0, v) }), (a) => [0, Math.max(150_000_000, a * 1.5)], i.kind === "ceo" ? [{ at: YELLOW_UMBRELLA.ceoSalaryMax, label: "8천만" }] : [{ at: 40_000_000, label: "4천만" }, { at: 60_000_000, label: "6천만" }, { at: 100_000_000, label: "1억" }], "fact"),
+];
+
+export const vatSaving = (i: VatTypeInput) => vatTypeCompare(i).saving;
+export const VAT_TYPE_ASSUMPTIONS: Assumption<VatTypeInput>[] = [
+  money("sales", "공급대가(매출, 부가세 포함)", "1년 매출", (x) => x.sales, (x, v) => ({ ...x, sales: Math.max(0, v) }), (a) => [0, Math.max(150_000_000, a * 1.5)], [{ at: SIMPLIFIED_VAT.exemptBelow, label: "4,800만" }, { at: SIMPLIFIED_VAT.threshold, label: "1억 400만" }], "fact"),
+  money("purchases", "매입(부가세 포함)", "세금계산서·카드로 산 재료·비용", (x) => x.purchases, (x, v) => ({ ...x, purchases: Math.max(0, v) }), (a) => [0, Math.max(100_000_000, a * 2)]),
+];
+
+// ───────────────────────── 업무용 승용차·해외주식 vs ETF (Gemini 이전 B 3차) ─────────────────────────
+export const carDisallowed = (i: BusinessCarInput) => businessCarExpense(i).disallowed;
+export const CAR_ASSUMPTIONS = (i: BusinessCarInput): Assumption<BusinessCarInput>[] => [
+  money("otherCosts", "유지비(유류·보험·세금·수리)", "1년 기름값·보험료 등", (x) => x.otherCosts, (x, v) => ({ ...x, otherCosts: Math.max(0, v) }), (a) => [0, Math.max(20_000_000, a * 2)]),
+  money("amount", i.ownership === "own" ? "취득가액" : i.ownership === "lease" ? "연 리스료" : "연 렌트료", i.ownership === "own" ? "차값" : "1년 리스·렌트료", (x) => x.amount, (x, v) => ({ ...x, amount: Math.max(0, v) }), (a) => [0, Math.max(i.ownership === "own" ? 150_000_000 : 30_000_000, a * 1.5)], i.ownership === "own" ? [{ at: BUSINESS_CAR.depreciationCap * BUSINESS_CAR.years, label: "4천만(감가 800만)" }] : undefined),
+];
+
+export const overseasGap = (i: OverseasCompareInput) => { const r = overseasCompare(i); return r.direct - r.etf; };
+export const OVERSEAS_ASSUMPTIONS: Assumption<OverseasCompareInput>[] = [
+  money("gain", "연간 실현 매매차익", "올해 팔아서 번 돈", (x) => x.gain, (x, v) => ({ ...x, gain: Math.max(0, v) }), (a) => [0, Math.max(40_000_000, a * 1.5)], [{ at: Math.ceil((OVERSEAS_COMPARE.deduction * OVERSEAS_COMPARE.directRate) / (OVERSEAS_COMPARE.directRate - OVERSEAS_COMPARE.etfRate)), label: "약 833만" }, { at: OVERSEAS_COMPARE.comprehensiveLine, label: "2천만" }]),
+  money("otherFinancial", "다른 이자·배당소득", "예금 이자·배당", (x) => x.otherFinancial ?? 0, (x, v) => ({ ...x, otherFinancial: Math.max(0, v) }), () => [0, 30_000_000], undefined, "fact"),
+];
+
+// ───────────────────────── 오피스텔·입주권 vs 분양권·상속주택 평가 (Gemini 이전 B 4차) ─────────────────────────
+export const officetelExtra = (i: OfficetelInput) => officetelHouseCount(i).nextExtra;
+export const OFFICETEL_ASSUMPTIONS: Assumption<OfficetelInput>[] = [
+  money("nextHomePrice", "다음에 살 집 가격", "다음에 살 집 값", (x) => x.nextHomePrice ?? 0, (x, v) => ({ ...x, nextHomePrice: Math.max(0, v) }), (a) => [0, Math.max(1_500_000_000, a * 1.5)], [{ at: 600_000_000, label: "6억" }, { at: 900_000_000, label: "9억" }]),
+  money("price", "오피스텔 취득가", "오피스텔 값", (x) => x.price, (x, v) => ({ ...x, price: Math.max(0, v) }), (a) => [0, Math.max(800_000_000, a * 2)], [{ at: 300_000_000, label: "3억(지방 소형)" }, { at: 600_000_000, label: "6억(수도권 소형)" }], "fact"),
+];
+
+export const ticketTotal = (i: TicketPresaleInput) => ticketPresaleTax(i).total;
+export const TICKET_ASSUMPTIONS: Assumption<TicketPresaleInput>[] = [
+  money("gain", "양도차익", "판 값 − 산 값", (x) => x.gain, (x, v) => ({ ...x, gain: Math.max(0, v) }), (a) => [0, Math.max(500_000_000, a * 2)]),
+  { key: "holdYears", label: "보유기간", plain: "가지고 있던 기간", unit: "years", kind: "fact", get: (x) => x.holdYears, set: (x, v) => ({ ...x, holdYears: Math.max(0, v) }), range: () => [0, 10], marks: [{ at: 1, label: "1년" }, { at: 2, label: "2년" }] },
+];
+
+export const valuationGap = (i: InheritedValuationInput) => { const r = inheritedValuation(i); return r.official.total - r.appraisal.total; };
+export const VALUATION_ASSUMPTIONS: Assumption<InheritedValuationInput>[] = [
+  money("appraisal", "감정평가액", "감정평가로 나올 값", (x) => x.appraisal, (x, v) => ({ ...x, appraisal: Math.max(0, v) }), (a) => [0, Math.max(2_000_000_000, a * 1.5)]),
+  money("otherEstate", "다른 순상속재산", "집 말고 물려받는 재산", (x) => x.otherEstate, (x, v) => ({ ...x, otherEstate: Math.max(0, v) }), (a) => [0, Math.max(3_000_000_000, a * 2)], [{ at: 500_000_000, label: "5억" }], "fact"),
+  money("salePrice", "나중에 팔 값", "팔 때 받을 값", (x) => x.salePrice, (x, v) => ({ ...x, salePrice: Math.max(0, v) }), (a) => [0, Math.max(2_000_000_000, a * 1.5)]),
+];
+
+// ───────────────────────── 청년월세·정책 주거대출 (Gemini 이전 C 1차) ─────────────────────────
+export const youthRentTotal = (i: YouthRentInput) => youthRentSupport(i).total;
+export const YOUTH_RENT_ASSUMPTIONS: Assumption<YouthRentInput>[] = [
+  money("rent", "월 임대료", "한 달 월세", (x) => x.rent, (x, v) => ({ ...x, rent: Math.max(0, v) }), () => [0, 900_000], [{ at: YOUTH_RENT_2026.monthly, label: "20만" }, { at: YOUTH_RENT_2026.rent, label: "60만" }]),
+  money("youthIncome", "청년가구 월 소득", "내 한 달 소득", (x) => x.youthIncome, (x, v) => ({ ...x, youthIncome: Math.max(0, v) }), () => [0, 3_000_000], [{ at: 1_538_542, label: "중위 60%(1인)" }], "fact"),
+];
+export const loanBest = (i: HousingLoanInput) => housingLoanBest(i).bestLoan;
+export const LOAN_ASSUMPTIONS = (i: HousingLoanInput): Assumption<HousingLoanInput>[] => [
+  money("income", "부부 합산 연소득", "1년 소득(부부 합산)", (x) => x.income, (x, v) => ({ ...x, income: Math.max(0, v) }), () => [0, 150_000_000], i.purpose === "buy" ? [{ at: 60_000_000, label: "6천" }, { at: 85_000_000, label: "8.5천" }, { at: 130_000_000, label: "1.3억" }] : [{ at: 50_000_000, label: "5천" }, { at: 75_000_000, label: "7.5천" }], "fact"),
+  money("amount", i.purpose === "buy" ? "주택 가격" : "보증금", i.purpose === "buy" ? "집값" : "전세·월세 보증금", (x) => x.amount, (x, v) => ({ ...x, amount: Math.max(0, v) }), () => i.purpose === "buy" ? [0, 1_000_000_000] : [0, 600_000_000], i.purpose === "buy" ? [{ at: 500_000_000, label: "5억" }, { at: 600_000_000, label: "6억" }, { at: 900_000_000, label: "9억" }] : [{ at: 200_000_000, label: "2억" }, { at: 300_000_000, label: "3억" }]),
+];
+
+// ───────────────────────── 청약 특별공급 (Gemini 이전 C 2차) ─────────────────────────
+export const supplyScore = (i: SpecialSupplyInput) => specialSupplyCheck(i).score;
+export const SUPPLY_ASSUMPTIONS = (i: SpecialSupplyInput): Assumption<SpecialSupplyInput>[] => {
+  const base = URBAN_WORKER_INCOME[Math.min(8, Math.max(1, Math.floor(i.householdSize || 1))) - 1];
+  return [
+    money("monthlyIncome", "세대 월평균 소득", "우리 집 한 달 소득(세전)", (x) => x.monthlyIncome, (x, v) => ({ ...x, monthlyIncome: Math.max(0, v) }), () => [0, Math.round(base * 2.2)], [{ at: base, label: "100%" }, { at: Math.round(base * 1.4), label: "140%" }, { at: Math.round(base * 1.6), label: "160%" }], "fact"),
+    money("realEstate", "부동산 가액", "가진 땅·건물 값", (x) => x.realEstate, (x, v) => ({ ...x, realEstate: Math.max(0, v) }), () => [0, 500_000_000], [{ at: 215_500_000, label: "2.155억(공공)" }, { at: 331_000_000, label: "3.31억(민영)" }], "fact"),
   ];
 };

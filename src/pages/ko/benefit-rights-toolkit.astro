@@ -4,8 +4,8 @@ import KrFinancePage from "../../components/KrFinancePage.astro";
 import { welfareTools } from "../../data/welfare-tools";
 import { WELFARE_AS_OF } from "../../lib/kr-welfare-2026";
 
-const title = "생활 지원금·노동권 도구 모음 — 근로장려금·출산휴가·대지급금·산재·통상임금·종부세";
-const description = "받을 수 있는 돈을 놓치지 않게 돕는 계산기를 모았어요. 근로·자녀장려금, 출산휴가 급여, 체불 대지급금, 산재 휴업급여, 월세 세액공제, 퇴직연금 DB·DC, 통상임금·포괄임금 점검, 종부세·주택임대소득세와 신청 방법, MCP·Claude 스킬까지 있어요.";
+const title = "생활 지원금·노동권 도구 모음 — 근로장려금·출산휴가·해고예고·휴업수당·대지급금·산재·통상임금";
+const description = "받을 수 있는 돈을 놓치지 않게 돕는 계산기를 모았어요. 근로·자녀장려금, 출산휴가 급여, 체불 대지급금, 산재 휴업급여, 월세 세액공제, 퇴직연금 DB·DC, 통상임금·포괄임금 점검, 종부세·주택임대소득세, 부양가족 공제, 주식 대주주 양도세, 가족 차용·무상 거주·저가 거래 증여, 상가 임대료 5% 상한과 신청 방법, MCP·Claude 스킬까지 있어요.";
 const tools = welfareTools.filter((t) => t.slug !== "benefit-rights-toolkit");
 const situations = [
   ["소득이 적은데 일하고 있어요", "work-child-incentive-calculator", "근로장려금·자녀장려금은 5월에 신청해요. 3월·9월 반기 신청도 돼요."],
@@ -19,6 +19,31 @@ const situations = [
   ["12월 종부세 고지서가 걱정돼요", "comprehensive-real-estate-tax-calculator", "공시가격 합계가 1주택 12억·그 밖 9억 원을 넘는지부터 봐요."],
   ["부모님 돌봄 비용이 걱정돼요", "long-term-care-copay-calculator", "장기요양등급을 받으면 집에서 돌봄은 15%, 요양원은 20%만 내요. 한도와 식사비를 같이 봐요."],
   ["집을 세놓고 월세를 받아요", "housing-rental-income-tax-calculator", "2주택부터 월세에 세금이 붙어요. 5월 신고 전에 분리과세와 종합과세를 비교해요."],
+  ["연말정산에 부모님을 올려도 될까요", "dependent-deduction-checker", "부모님은 60세 이상, 소득금액 100만 원(월급만 있으면 500만 원) 이하면 따로 살아도 올릴 수 있어요."],
+  ["갑자기 해고 통보를 받았어요", "dismissal-notice-pay-calculator", "30일 전에 듣지 못했다면 30일분 통상임금을 받을 수 있어요. 해고가 부당한지는 3개월 안에 따로 다퉈요."],
+  ["회사가 일이 없다며 쉬라고 해요", "shutdown-allowance-calculator", "회사 사정으로 쉬면 평균임금의 70% 이상을 받아야 해요(5명 이상 사업장)."],
+  ["아이 때문에 일을 줄이고 싶어요", "reduced-hours-childcare-pay-calculator", "주 15~35시간으로 줄이면 줄어든 월급 일부를 고용보험이 채워 줘요. 처음 10시간분은 100%예요."],
+  ["수습이라 최저임금보다 적게 받아요", "probation-minimum-wage-checker", "1년 이상 계약·3개월 안·단순노무 아님일 때만 90%까지 줄일 수 있어요."],
+  ["남은 연차를 돈으로 받을 수 있을까요", "annual-leave-promotion-planner", "회사가 사용촉진을 날짜에 맞춰 서면으로 안 했다면 수당을 청구할 수 있어요."],
+  ["스스로 그만뒀는데 실업급여를 받을 수 있을까요", "voluntary-quit-unemployment-checker", "임금체불 2개월, 직장 내 괴롭힘, 통근 왕복 3시간 같은 정당한 사유가 있으면 자진퇴사여도 받을 수 있어요."],
+  ["원청이 하도급대금을 안 줘요", "subcontract-direct-payment-checker", "2회분 이상 밀렸거나 원청이 파산했으면 요청해서 발주자에게 직접 받을 수 있어요."],
+  ["부모님께 돈을 빌려 집을 사요", "family-loan-interest-checker", "무이자면 원금 약 2억 1,700만 원까지는 이자 차이가 증여가 아니에요. 차용증과 상환 기록은 꼭 남겨요."],
+  ["부모님 집에 공짜로 살아요", "parent-house-free-use-gift-checker", "집값이 약 13억 2천만 원을 넘고 부모님과 따로 살면 5년치 사용료가 증여로 잡혀요."],
+  ["가족에게 집을 싸게 사고팔아요", "family-low-price-sale-checker", "시가와 3억 원(또는 30%) 넘게 차이 나면 증여세, 5% 넘게 차이 나면 파는 사람 양도세가 다시 계산돼요."],
+  ["상가 건물주가 월세를 많이 올려 달래요", "commercial-rent-increase-checker", "환산보증금이 지역 기준 이하면 5%까지만, 1년에 한 번만 올릴 수 있어요."],
+  ["중소기업에 막 취업했어요", "sme-youth-income-tax-reduction-calculator", "34세 이하(병역 기간 빼고)면 5년 동안 소득세 90%를 덜 내요. 회사에 신청서부터 내요."],
+  ["가게를 하는데 종합소득세가 많아요", "yellow-umbrella-deduction-calculator", "노란우산공제에 넣은 돈은 사업소득금액 4천만 원 이하면 600만 원까지 소득에서 빼 줘요."],
+  ["창업하는데 간이과세가 나을까요", "general-vs-simplified-vat-calculator", "매출 1억 400만 원 미만이면 간이를 고를 수 있어요. 인테리어 매입이 크면 일반과세 환급이 나을 수 있어요."],
+  ["사업용 차를 사거나 리스하려고 해요", "business-car-expense-calculator", "운행기록부가 없으면 1년 1,500만 원까지만 비용이에요. 감가상각은 연 800만 원까지예요."],
+  ["미국 주식을 직접 살까, 국내 ETF로 살까", "overseas-stock-vs-etf-tax-calculator", "1년 이익이 약 833만 원보다 적으면 직접 투자, 크면 국내 상장 ETF가 세금이 적어요."],
+  ["주거용 오피스텔이 있는데 집을 또 사요", "officetel-house-count-checker", "2020-08-12 이후 산 주거용 오피스텔은 다음 집 취득세 주택 수에 들어가요. 청약에서는 주택이 아니에요."],
+  ["재건축 입주권이나 분양권을 팔아요", "redevelopment-ticket-vs-presale-tax-calculator", "입주권은 2년을 넘기면 기본세율, 분양권은 1년 넘어도 60%예요."],
+  ["부모님 집을 상속받았어요", "inherited-house-appraisal-vs-official-price-calculator", "상속세가 0이면 감정평가로 높게 신고해야 나중 양도세가 줄어요."],
+  ["상속·증여 신고는 언제까지예요", "inheritance-gift-filing-deadline-calculator", "상속은 돌아가신 달 말일부터 6개월, 증여는 받은 달 말일부터 3개월이에요."],
+  ["혼자 월세 사는 20대예요", "youth-monthly-rent-support-checker", "보증금 5천만 원·월세 60만 원 이하, 내 소득이 월 약 153만 원 이하면 월 20만 원씩 24개월 받을 수 있어요."],
+  ["전세·집 살 때 싼 대출이 있나요", "policy-housing-loan-eligibility-checker", "소득·순자산·집값으로 디딤돌·버팀목·신생아 특례 중 되는 상품과 한도를 비교해요."],
+  ["신혼인데 청약 특공 넣을 수 있을까요", "special-supply-eligibility-checker", "3인 이하 월 소득 약 753만 원(맞벌이 904만 원) 이하면 민영 신혼 특공 우선공급이에요."],
+  ["한 종목에 크게 투자했어요", "stock-major-shareholder-tax-calculator", "작년 말 한 종목을 50억 원 넘게 가졌으면 올해 판 이익에 양도세가 붙어요. 연말 보유를 미리 확인해요."],
 ];
 const more = [
   ["/ko/unemployment-benefits-calculator/", "실업급여 계산기"],
@@ -41,6 +66,31 @@ const mcpTools = [
   ["calculate_kr_comprehensive_real_estate_tax", "종합부동산세(주택분)"],
   ["calculate_kr_housing_rental_income_tax", "주택임대소득세(분리 vs 종합)"],
   ["calculate_kr_long_term_care_copay", "노인장기요양 본인부담금"],
+  ["check_kr_dependent_deduction", "부양가족 기본공제 판정과 줄어드는 세금"],
+  ["calculate_kr_stock_major_shareholder_tax", "상장주식 대주주 판정과 양도세"],
+  ["calculate_kr_dismissal_notice_pay", "해고예고수당"],
+  ["calculate_kr_shutdown_allowance", "휴업수당"],
+  ["calculate_kr_reduced_hours_childcare_pay", "육아기 근로시간 단축 급여"],
+  ["check_kr_probation_minimum_wage", "수습 최저임금 감액 점검"],
+  ["plan_kr_annual_leave_promotion", "연차 사용촉진 일정"],
+  ["check_kr_voluntary_quit_unemployment", "자진퇴사 실업급여 정당 사유"],
+  ["check_kr_subcontract_direct_payment", "하도급대금 직접 지급·지연이자"],
+  ["check_kr_family_loan_interest", "가족 차용 적정이자(4.6%)와 증여"],
+  ["check_kr_parent_house_free_use", "부모 집 무상 거주·무상 담보 증여"],
+  ["check_kr_family_low_price_sale", "가족 간 저가 양수도 증여·양도세 시가"],
+  ["check_kr_commercial_rent_increase", "상가 임대료 5% 상한"],
+  ["calculate_kr_sme_youth_tax_reduction", "중소기업 취업 청년 소득세 감면"],
+  ["calculate_kr_yellow_umbrella_deduction", "노란우산공제 소득공제 절세액"],
+  ["compare_kr_general_vs_simplified_vat", "일반과세 vs 간이과세 부가세"],
+  ["calculate_kr_business_car_expense", "업무용 승용차 비용 한도"],
+  ["compare_kr_overseas_stock_vs_etf_tax", "해외주식 직접 vs 국내 상장 해외ETF 세금"],
+  ["check_kr_officetel_house_count", "오피스텔 주택 수 판정"],
+  ["compare_kr_ticket_vs_presale_tax", "재건축 입주권 vs 분양권 양도세"],
+  ["compare_kr_inherited_house_valuation", "상속주택 감정평가 vs 공시가격"],
+  ["plan_kr_inheritance_gift_filing_deadline", "상속·증여 신고기한·가산세"],
+  ["check_kr_youth_rent_support", "청년월세 지원 자격·금액"],
+  ["find_kr_policy_housing_loans", "정책 주거대출(디딤돌·버팀목·신생아 특례) 자격"],
+  ["check_kr_special_supply", "청약 특별공급 자격(신혼·신생아·생애최초·다자녀·노부모)"],
 ];
 const titleOf = (slug: string) => welfareTools.find((t) => t.slug === slug)?.title ?? slug;
 ---

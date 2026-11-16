@@ -1,0 +1,15 @@
+---
+// Gemini 이전 B묶음 3차 (2026-11-16). 엔진: lib/kr-household-tax-2026.ts
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import BusinessCar from "../../components/tools/welfare/BusinessCar";
+import { HOUSEHOLD_TAX_AS_OF } from "../../lib/kr-household-tax-2026";
+
+const title = "업무용 승용차 비용 한도 계산기 — 운행기록부 1,500만 원, 감가상각 800만 원";
+const description = "법인·개인사업자 업무용 승용차의 1년 비용 중 세법상 인정되는 금액을 계산해요. 운행기록부가 없으면 1,500만 원, 감가상각비 연 800만 원 초과분 이월, 리스·장기렌트 감가상각 상당액(렌트료 70%)을 반영해요.";
+const ko = {"introTitle": "차량 비용은 다 인정되지 않아요", "intro": "법인세법 제27조의2와 소득세법 제33조의2는 업무용 승용차 비용(감가상각·리스·렌트료·유류비·보험료·수리비 등)에 한도를 둬요. 운행기록부가 없으면 1년 1,500만 원까지만 업무용으로 보고, 업무용 감가상각비는 연 800만 원을 넘으면 넘는 몫을 다음 해로 넘겨요. 업무전용자동차보험에 가입해야 하고, 법인 차량은 8천만 원 이상이면 연두색 번호판이에요.", "howToTitle": "사용 방법", "steps": ["샀는지·리스인지·장기렌트인지 고르고 금액을 넣어요.", "1년 유지비와 운행기록부 여부를 넣어요.", "유지비와 차값을 바꿔 보며 불인정 금액이 어떻게 변하는지 봐요."], "highlightsTitle": "주요 특징", "highlights": [{"title": "1,500만 원 기준", "body": "운행기록부가 없으면 총비용 1,500만 원까지만 업무용으로 봐요."}, {"title": "감가상각 800만 원", "body": "업무용 감가상각비가 800만 원을 넘으면 넘는 몫은 다음 해로 넘어가요."}, {"title": "리스·렌트", "body": "리스료는 보험료·세금·수리비를 뺀 금액, 렌트료는 70%를 감가상각으로 봐요."}, {"title": "운행기록부 효과", "body": "기록부를 쓰면 얼마까지 인정받을 수 있는지 비교해 줘요."}], "disclaimer": "추정이에요. 부동산임대업 주업 법인 등 특정법인(500만·400만 원), 처분손실 한도, 개인사업자 보험 미가입 시 감액은 넣지 않았어요. 신고 전에는 세무 전문가와 확인하세요."};
+const faqs = [{"q": "운행기록부가 없으면 어떻게 되나요?", "a": "차량 관련 비용 합계가 1,500만 원 이하면 전부 인정되고, 넘으면 1,500만 원까지만 인정돼요."}, {"q": "감가상각 800만 원을 넘은 돈은 사라지나요?", "a": "아니요. 다음 해 이후로 넘겨서 800만 원 한도 안에서 비용으로 써요."}, {"q": "경차나 9인승 승합차도 해당되나요?", "a": "아니요. 경차, 9인승 이상 승합차, 화물차, 운수업·렌트업 영업용 차는 이 규정을 적용하지 않아요."}, {"q": "출퇴근도 업무인가요?", "a": "네. 시행령에서 출퇴근과 거래처 방문 등을 업무용 사용으로 봐요."}];
+---
+<KrFinancePage slug="business-car-expense-calculator" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <BusinessCar client:load />
+  <p class="mt-4 text-xs text-muted-foreground">근거: 법인세법 제27조의2, 소득세법 제33조의2, 각 시행령. 기준일 {HOUSEHOLD_TAX_AS_OF}. <a class="underline" href="/ko/comprehensive-income-tax-calculator/">종합소득세 계산기</a> · <a class="underline" href="/ko/tax-law-guide/">세금 법령 길잡이</a> · <a class="underline" href="/ko/benefit-rights-toolkit/">생활 지원금·노동권 도구 모음</a></p>
+</KrFinancePage>

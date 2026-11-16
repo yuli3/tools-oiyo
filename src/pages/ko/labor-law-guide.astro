@@ -1,0 +1,32 @@
+---
+// 법령 길잡이 (labor) 2026-11-16. 엔진: lib/kr-expert-guide-2026.ts. 자격 명칭을 이름에 쓰지 않아요(유사명칭 금지).
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import LawGuide from "../../components/tools/lawguide/LawGuide";
+import { LAW_GUIDE_AS_OF } from "../../lib/kr-expert-guide-2026";
+
+const title = "노동법 길잡이 2026 — 해고·임금체불·직장 내 괴롭힘·산재 기한과 근거 조문";
+const description = "해고 통보, 월급·퇴직금 체불, 직장 내 괴롭힘, 산재에서 5인 미만 여부, 부당해고 구제신청 3개월, 금품청산 14일, 임금 시효 3년 같은 기한을 질문으로 계산하고 근로기준법 조문과 무료 창구(1350·132)를 알려 줘요.";
+const ko = {
+  introTitle: "회사에서 문제가 생겼다면, 먼저 이것부터",
+  intro: "노동 문제는 회사 규모(5인 이상인지)와 날짜가 결론을 바꿔요. 질문에 답하면 적용되는 조문, 구제신청·청구 기한, 받을 수 있는 돈을 계산하는 도구를 이어 줘요. 진정·구제신청서를 대신 내지는 않아요(공인노무사의 대리 업무예요).",
+  howToTitle: "사용 방법",
+  steps: ["어떤 일이 있었는지 고르세요.", "먼저 묻는 질문에 답하세요. 모르면 건너뛰어도 돼요.", "기한 막대와 확인할 점을 보고, 결과 메모를 복사해 상담 창구에 가져가세요."],
+  highlightsTitle: "주요 특징",
+  highlights: [
+    { title: "5인 미만 자동 구분", body: "해고 제한·연장가산·괴롭힘 조항이 빠지는지 알려 줘요." },
+    { title: "구제신청·금품청산·시효 D-day", body: "3개월·14일·3년을 날짜로 계산해요." },
+    { title: "받을 돈 계산 연결", body: "해고예고수당, 퇴직금, 실업급여, 대지급금, 산재 휴업급여 계산기로 이어요." },
+    { title: "무료 창구", body: "1350, 노동위원회 무료 대리, 132, 근로복지공단을 안내해요." },
+  ],
+  disclaimer: "법령 정보와 기한 계산 도구예요. 대리·서류 작성 대행·특정 전문가 소개를 하지 않아요. 조문 풀이는 쉬운 말 요약이니 원문(국가법령정보센터)과 담당 기관에서 확인하세요. 기준일 2026-11-16.",
+};
+const faqs = [
+  { q: "문자로 해고됐어요.", a: "5인 이상 사업장이면 해고 사유와 시기를 서면으로 알려야 효력이 있어요(근로기준법 제27조). 문자만으로는 서면 통지로 보기 어려운 경우가 많아요." },
+  { q: "4명이 일하는 가게예요.", a: "해고 제한과 구제신청은 적용되지 않지만, 해고예고(30일분), 최저임금, 주휴수당, 퇴직금은 적용돼요." },
+  { q: "노무사 상담 없이 해도 되나요?", a: "노동법 상담은 누구나 할 수 있는 영역이지만, 노동위원회 신청 대리와 서류 작성은 공인노무사·변호사의 업무예요. 월급이 낮으면 노동위원회 무료 대리를 신청하세요." },
+];
+---
+<KrFinancePage slug="labor-law-guide" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <LawGuide client:load domain="labor" />
+  <p class="mt-4 text-xs text-muted-foreground">기준일 {LAW_GUIDE_AS_OF}. <a class="underline" href="/ko/law-guide/">법령 길잡이 5분야</a> · <a class="underline" href="/ko/benefit-rights-toolkit/">생활 지원금·노동권 도구</a> · <a class="underline" href="/ko/tax-advisor-toolkit/">세무·회계 실무 도구</a></p>
+</KrFinancePage>

@@ -1,0 +1,15 @@
+---
+// Gemini 이전 C묶음 1차 (2026-11-16). 엔진: lib/kr-welfare-2026.ts
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import HousingLoanFinder from "../../components/tools/welfare/HousingLoanFinder";
+import { WELFARE_AS_OF } from "../../lib/kr-welfare-2026";
+
+const title = "정책 주거대출 자격 찾기 — 디딤돌·버팀목·신생아 특례·주택드림";
+const description = "소득·순자산·집값(보증금)·결혼·출산 여부로 주택도시기금 디딤돌, 신생아 특례, 청년 주택드림 디딤돌, 버팀목, 청년전용 버팀목, 신생아 특례 버팀목, 월세대출 자격과 최대 한도·금리 범위를 한 번에 비교해요(2026 기준).";
+const ko = {"introTitle": "받을 수 있는 기금 대출을 한 번에 비교해요", "intro": "주택도시기금 대출은 상품마다 소득·자산·집값 기준이 달라요. 집 사기는 디딤돌(소득 6천~8.5천만, 5억~6억), 신생아 특례(1.3억, 맞벌이 2억, 9억), 전세는 버팀목(5천~7.5천만), 청년전용 버팀목(34세 이하, 1.5억), 신생아 특례 버팀목(2.4억)을 비교해요.", "howToTitle": "사용 방법", "steps": ["집 사기·전세·월세 중 고르고 소득, 순자산, 집값이나 보증금을 넣어요.", "결혼·출산·생애최초 여부를 골라요.", "상품별 가능 여부와 한도를 비교하고, 소득·집값을 바꿔 봐요."], "highlightsTitle": "주요 특징", "highlights": [{"title": "7개 상품 비교", "body": "디딤돌, 신생아 특례, 주택드림, 버팀목, 청년전용, 신생아 버팀목, 월세대출을 함께 봐요."}, {"title": "막힌 이유", "body": "안 되는 상품은 어떤 기준에서 막히는지 알려 줘요."}, {"title": "한도 계산", "body": "상품 한도와 LTV(70·80%), 전세금 70·80% 중 작은 쪽을 보여 줘요."}, {"title": "계단 그래프", "body": "소득이 기준을 넘는 지점에서 한도가 어떻게 바뀌는지 그려요."}], "disclaimer": "기금e든든 2026년 상품 안내를 바탕으로 한 추정이에요. 금리는 범위만 보여 주고, 최종 한도·금리는 수탁은행 심사로 정해져요."};
+const faqs = [{"q": "순자산은 어떻게 계산해요?", "a": "부부의 부동산·예금·차량 등 자산에서 부채를 뺀 값이에요. 2026년 기준 구입자금 5.11억, 전세자금 3.45억 원 이하예요."}, {"q": "2025년 6월 27일 이후 한도가 줄었나요?", "a": "네. 디딤돌은 일반 2억·생애최초 2.4억·신혼 3.2억, 신생아 특례 구입 4억·전세 2.4억으로 줄었어요. 그 전 계약은 예전 한도가 적용돼요."}, {"q": "청년 주택드림 디딤돌은 누가 받나요?", "a": "청년 주택드림 청약통장에 1년 이상 1천만 원 넘게 넣고 분양에 당첨된 만 39세 이하예요."}, {"q": "오피스텔도 되나요?", "a": "청년전용 버팀목은 주거용 오피스텔도 돼요. 오피스텔 구입은 별도 상품이에요."}];
+---
+<KrFinancePage slug="policy-housing-loan-eligibility-checker" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <HousingLoanFinder client:load />
+  <p class="mt-4 text-xs text-muted-foreground">근거: 주택도시기금 기금e든든 상품 안내(내집마련 디딤돌, 신생아 특례 디딤돌, 청년 주택드림 디딤돌, 버팀목, 청년전용 버팀목, 신생아 특례 버팀목, 주거안정 월세대출), 2026년 순자산 기준. 기준일 {WELFARE_AS_OF}. <a class="underline" href="/ko/jeonse-vs-buy-calculator/">전세 vs 매매</a> · <a class="underline" href="/ko/youth-monthly-rent-support-checker/">청년월세 지원</a> · <a class="underline" href="/ko/benefit-rights-toolkit/">생활 지원금·노동권 도구 모음</a></p>
+</KrFinancePage>

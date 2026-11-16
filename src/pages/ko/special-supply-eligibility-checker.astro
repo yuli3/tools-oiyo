@@ -1,0 +1,15 @@
+---
+// Gemini 이전 C묶음 2차 (2026-11-16). 엔진: lib/kr-welfare-2026.ts
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import SpecialSupply from "../../components/tools/welfare/SpecialSupply";
+import { WELFARE_AS_OF } from "../../lib/kr-welfare-2026";
+
+const title = "청약 특별공급 자격 점검 — 신혼·신생아·생애최초·다자녀·노부모";
+const description = "세대원 수·월평균 소득·맞벌이·부동산으로 민영·공공분양 특별공급(신혼부부, 신생아, 생애최초, 다자녀, 노부모 부양) 중 넣을 수 있는 유형과 우선·일반·추첨 단계를 도시근로자 월평균소득 기준으로 점검해요.";
+const ko = {"introTitle": "소득이 몇 %인지에 따라 우선·일반·추첨이 갈려요", "intro": "특별공급 소득 기준은 전년도 도시근로자 가구원수별 월평균소득(3인 이하 약 753만 원)의 비율이에요. 민영 신혼·신생아는 100%(맞벌이 120%)까지 우선, 140%(160%)까지 일반, 넘어도 부동산 3억 3,100만 원 이하면 추첨이에요. 다자녀·노부모 민영은 소득을 보지 않아요.", "howToTitle": "사용 방법", "steps": ["민영·공공을 고르고 세대원 수와 월 소득을 넣어요.", "결혼·자녀·무주택 여부를 골라요.", "유형별 단계를 보고 소득을 바꿔 단계가 바뀌는 지점을 봐요."], "highlightsTitle": "주요 특징", "highlights": [{"title": "5개 유형 한 번에", "body": "신혼부부, 신생아, 생애최초, 다자녀, 노부모 부양을 함께 점검해요."}, {"title": "민영·공공 구분", "body": "민영(3.31억 추첨)과 공공 일반형(2.155억·자동차 4,542만 원) 기준을 따로 적용해요."}, {"title": "맞벌이 기준", "body": "맞벌이면 올라가는 소득 기준을 반영해요."}, {"title": "단계 그래프", "body": "소득에 따라 우선→일반→추첨→불가로 바뀌는 지점을 그려요."}], "disclaimer": "공고 기준 안내예요. 실제 기준은 입주자모집공고문과 청약홈이 우선이고, 지역·순위·당첨 이력 요건은 넣지 않았어요."};
+const faqs = [{"q": "소득은 어떻게 계산해요?", "a": "세대원 모두의 전년도 근로·사업소득을 월평균으로 나눠요. 공고일 기준 세대원 수로 기준표를 골라요."}, {"q": "특별공급은 몇 번 당첨될 수 있나요?", "a": "평생 한 번이에요. 다만 신생아 특별공급 등 일부는 출산 가구에 예외가 있어 공고를 확인해요."}, {"q": "1인 가구도 생애최초를 넣을 수 있나요?", "a": "민영은 추첨 물량에서 전용 60㎡ 이하만 가능해요. 공공은 혼인 중이거나 자녀가 있어야 해요."}, {"q": "다자녀는 자녀가 몇 명이어야 해요?", "a": "2024년 3월부터 미성년 자녀(태아 포함) 2명 이상이에요."}];
+---
+<KrFinancePage slug="special-supply-eligibility-checker" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <SpecialSupply client:load />
+  <p class="mt-4 text-xs text-muted-foreground">근거: 주택공급에 관한 규칙 제40조~제47조의3, LH 공급유형별 소득·자산 기준(전년도 도시근로자 가구원수별 월평균소득). 기준일 {WELFARE_AS_OF}. <a class="underline" href="/ko/subscription-points-calculator/">청약 가점 계산기</a> · <a class="underline" href="/ko/policy-housing-loan-eligibility-checker/">정책 주거대출 자격</a> · <a class="underline" href="/ko/benefit-rights-toolkit/">생활 지원금·노동권 도구 모음</a></p>
+</KrFinancePage>

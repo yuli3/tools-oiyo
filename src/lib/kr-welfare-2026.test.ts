@@ -1,6 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import {
+  youthRentSupport, housingLoanBest, MEDIAN_INCOME_2026, specialSupplyCheck,
   MIN_WAGE_2026, eitcAmount, ctcPerChild, workChildCredit, maternityLeavePay, spouseLeavePay, wageGuarantee, guaranteeMonthlyCap,
   injuryLeaveDaily, injuryLeavePay, averageDailyWage, monthlyRentCredit, dbVsDc, breakEvenReturn,
   premiumPay, ordinaryWage, fixedOvertimeCheck, longTermCareCopay,
@@ -170,4 +171,136 @@ test("장기요양: 재가 15%·한도 초과 전액, 시설 20%+비급여, 감�
   assert.equal(f.copay, Math.floor(93_070 * 30 * 0.2));
   assert.equal(f.total, f.copay + 450_000);
   assert.equal(longTermCareCopay({ grade: "cognitive", kind: "facility", reduction: "none" }).facilityAllowed, false);
+});
+
+// ── 노동권 묶음 A (2026-11-16) ──
+import { monthlyPaidHours, dismissalNoticePay, shutdownAllowance, reducedHoursPay, probationMinWage, leavePromotionSchedule } from "./kr-welfare-2026.ts";
+
+test("월 소정근로시간: 주 40시간 209, 30시간 156", () => {
+  assert.equal(monthlyPaidHours(40), 209);
+  assert.equal(monthlyPaidHours(30), 156);
+});
+
+test("해고예고수당: 30일분 전액, 30일 예고·3개월 미만·예외면 0", () => {
+  const base = { monthlyOrdinaryWage: 2_090_000, weeklyHours: 40, noticeDays: 10, tenureMonths: 12, exception: "none" as const, fivePlus: true };
+  const r = dismissalNoticePay(base);
+  assert.equal(r.hourly, 10_000);
+  assert.equal(r.daily, 80_000);
+  assert.equal(r.amount, 2_400_000);
+  assert.equal(r.missingDays, 20);
+  assert.equal(dismissalNoticePay({ ...base, noticeDays: 30 }).amount, 0);
+  assert.equal(dismissalNoticePay({ ...base, tenureMonths: 2 }).reason, "shortTenure");
+  assert.equal(dismissalNoticePay({ ...base, exception: "disaster" }).amount, 0);
+});
+
+test("휴업수당: 평균임금 70%, 통상임금 대체, 일부 임금 공제, 5명 미만 0", () => {
+  const base = { threeMonthWages: 9_200_000, calendarDays: 92, monthlyOrdinaryWage: 3_650_000, shutdownDays: 10, paidDuringShutdown: 0, approvedReduction: false, fivePlus: true };
+  const r = shutdownAllowance(base); // 1일 평균 100,000원, 통상 120,000원
+  assert.equal(r.avgDaily, 100_000);
+  assert.equal(r.minimum, 700_000);
+  assert.equal(r.useOrdinary, false);
+  assert.equal(shutdownAllowance({ ...base, paidDuringShutdown: 200_000 }).minimum, 560_000);
+  const low = shutdownAllowance({ ...base, monthlyOrdinaryWage: 1_825_000 }); // 통상 60,000원 < 70,000원
+  assert.equal(low.useOrdinary, true);
+  assert.equal(low.minimum, 600_000);
+  assert.equal(shutdownAllowance({ ...base, fivePlus: false }).minimum, 0);
+});
+
+test("육아기 근로시간 단축 급여 2026: 처음 10시간 100%(250만), 나머지 80%(160만)", () => {
+  const a = reducedHoursPay({ monthlyOrdinaryWage: 3_000_000, beforeHours: 40, afterHours: 20 });
+  assert.equal(a.first, 625_000);
+  assert.equal(a.rest, 400_000);
+  assert.equal(a.benefit, 1_025_000);
+  const b = reducedHoursPay({ monthlyOrdinaryWage: 2_000_000, beforeHours: 40, afterHours: 25 });
+  assert.equal(b.benefit, 700_000);
+  assert.equal(reducedHoursPay({ monthlyOrdinaryWage: 3_000_000, beforeHours: 40, afterHours: 12 }).valid, false);
+  // 하한 50만 원
+  assert.equal(reducedHoursPay({ monthlyOrdinaryWage: 400_000, beforeHours: 40, afterHours: 30 }).first, 125_000);
+});
+
+test("수습 최저임금: 1년 이상·3개월 안·단순노무 아님일 때만 90%", () => {
+  const base = { hourlyWage: 9_300, contractMonths: 0, monthsIntoProbation: 1, simpleLabor: false };
+  assert.equal(probationMinWage(base).minimum, 9_288);
+  assert.equal(probationMinWage(base).ok, true);
+  assert.equal(probationMinWage({ ...base, contractMonths: 6 }).minimum, 10_320);
+  assert.equal(probationMinWage({ ...base, simpleLabor: true }).why, "simpleLabor");
+  const after = probationMinWage({ ...base, monthsIntoProbation: 3 });
+  assert.equal(after.shortHourly, 1_020);
+  assert.equal(after.shortMonthly, 213_180);
+});
+
+test("연차 사용촉진 일정: 회계연도 7/1~7/10, 10/31 / 첫해 10/1~10/10, 11/30, 12/21", () => {
+  const a = leavePromotionSchedule("annual", "2026-12-31");
+  assert.deepEqual(a.map((s) => s.due), ["2026-07-10", "2026-07-20", "2026-10-31", "2026-12-31"]);
+  assert.equal(a[0].from, "2026-07-01");
+  const f = leavePromotionSchedule("firstYear", "2026-12-31");
+  assert.equal(f.find((s) => s.id === "notify")?.from, "2026-10-01");
+  assert.equal(f.find((s) => s.id === "assign")?.due, "2026-11-30");
+  assert.equal(f.find((s) => s.id === "assignLate")?.due, "2026-12-21");
+  // 말일 보정: 6월 30일 끝 → 6개월 전 1월 1일 시작
+  assert.equal(leavePromotionSchedule("annual", "2027-06-30")[0].from, "2027-01-01");
+});
+
+import { voluntaryQuitCheck, directPaymentCheck } from "./kr-welfare-2026.ts";
+
+test("자진퇴사 정당 사유: 체불 2개월·통근 3시간·간호 30일+휴직 거부·가입 180일", () => {
+  assert.equal(voluntaryQuitCheck({ reasons: ["unpaidWages"], months: 2, insuredDays: 200 }).verdict, "likely");
+  assert.equal(voluntaryQuitCheck({ reasons: ["unpaidWages"], months: 1, insuredDays: 200 }).verdict, "check");
+  assert.equal(voluntaryQuitCheck({ reasons: ["commute"], commuteHours: 3, insuredDays: 200 }).reasonOk, true);
+  assert.equal(voluntaryQuitCheck({ reasons: ["familyCare"], careDays: 40, leaveRefused: false, insuredDays: 200 }).reasonOk, false);
+  assert.equal(voluntaryQuitCheck({ reasons: ["workplaceHarassment"], insuredDays: 150 }).verdict, "check");
+  assert.equal(voluntaryQuitCheck({ reasons: [], insuredDays: 300 }).verdict, "unlikely");
+});
+
+test("하도급 직접 지급: 2회분+요청, 발주자 미지급 범위, 60일 뒤 지연이자 15.5%", () => {
+  const base = { cause: "twoMissed" as const, missedInstallments: 2, requested: true, primeStopRequest: false, workValue: 50_000_000, receivedFromPrime: 10_000_000, ownerUnpaidToPrime: 30_000_000, daysSinceDelivery: 125 };
+  const r = directPaymentCheck(base);
+  assert.equal(r.direct, 30_000_000);
+  assert.equal(r.remainder, 10_000_000);
+  assert.equal(r.lateInterest, Math.floor((40_000_000 * 0.155 * 65) / 365));
+  assert.equal(directPaymentCheck({ ...base, requested: false }).direct, 0);
+  assert.equal(directPaymentCheck({ ...base, missedInstallments: 1 }).eligible, false);
+  assert.equal(directPaymentCheck({ ...base, cause: "agreement", requested: false }).eligible, true);
+  assert.equal(directPaymentCheck({ ...base, primeStopRequest: true }).direct, 0);
+  assert.equal(directPaymentCheck({ ...base, daysSinceDelivery: 60 }).lateInterest, 0);
+});
+
+test("청년월세: 중위 60%·100%, 월세 60만(환산 70만), 월 20만 × 24개월", () => {
+  const base = { age: 27, livesApart: true, ownsHome: false, youthIncome: 1_400_000, youthAssets: 30_000_000, parentIncome: 5_000_000, parentHousehold: 3, parentAssets: 300_000_000, deposit: 10_000_000, rent: 550_000 };
+  const r = youthRentSupport(base);
+  assert.equal(r.youthLine, Math.floor(MEDIAN_INCOME_2026[0] * 0.6));
+  assert.equal(r.total, 4_800_000);
+  assert.deepEqual(youthRentSupport({ ...base, rent: 680_000 }).failed, ["rent"]);
+  assert.equal(youthRentSupport({ ...base, rent: 650_000, deposit: 0 }).eligible, true);
+  assert.equal(youthRentSupport({ ...base, rent: 150_000 }).monthly, 150_000);
+  assert.equal(youthRentSupport({ ...base, parentIncome: 9_000_000 }).eligible, false);
+  assert.equal(youthRentSupport({ ...base, age: 31, parentIncome: 9_000_000 }).eligible, true);
+  assert.equal(youthRentSupport({ ...base, housingBenefit: 50_000 }).monthly, 150_000);
+});
+
+test("정책 주거대출: 2026 기금 한도·소득 기준", () => {
+  const buy = { purpose: "buy" as const, age: 33, income: 80_000_000, netAssets: 200_000_000, newlywed: true, children: 1, newbornWithin2y: true, firstTimeBuyer: true, metro: true, amount: 550_000_000, areaM2: 59 };
+  const b = housingLoanBest(buy);
+  assert.equal(b.options.find((o) => o.id === "didimdol")?.maxLoan, 320_000_000);
+  assert.equal(b.best, "newbornBuy");
+  assert.equal(b.bestLoan, 385_000_000);
+  assert.equal(housingLoanBest({ ...buy, newlywed: false, newbornWithin2y: false }).eligibleCount, 0);
+  const j = housingLoanBest({ purpose: "jeonse", age: 28, income: 40_000_000, netAssets: 50_000_000, newlywed: false, children: 0, newbornWithin2y: false, firstTimeBuyer: true, metro: true, amount: 200_000_000, areaM2: 40 });
+  assert.equal(j.best, "youthBeotimmok");
+  assert.equal(j.bestLoan, 150_000_000);
+  assert.equal(housingLoanBest({ purpose: "monthly", age: 28, income: 30_000_000, netAssets: 0, newlywed: false, children: 0, newbornWithin2y: false, firstTimeBuyer: true, metro: true, amount: 5_000_000, monthlyRent: 500_000, areaM2: 30 }).bestLoan, 12_000_000);
+});
+
+test("청약 특별공급: 민영 신혼 100/120·140/160·3.31억 추첨, 공공 다자녀 120%", () => {
+  const b = { sector: "private" as const, householdSize: 3, monthlyIncome: 9_000_000, dualIncome: true, realEstate: 0, noHome: true, neverOwned: true, marriedYears: 2, childUnder2: false, minorChildren: 1, taxPaid5y: true, elderParent3y: false };
+  const nl = (x: ReturnType<typeof specialSupplyCheck>) => x.results.find((o) => o.type === "newlywed")!;
+  assert.equal(nl(specialSupplyCheck(b)).tier, "priority");
+  assert.equal(nl(specialSupplyCheck({ ...b, monthlyIncome: 11_000_000 })).tier, "general");
+  assert.equal(nl(specialSupplyCheck({ ...b, monthlyIncome: 13_000_000 })).tier, "lottery");
+  assert.equal(nl(specialSupplyCheck({ ...b, monthlyIncome: 13_000_000, realEstate: 400_000_000 })).tier, "none");
+  assert.equal(nl(specialSupplyCheck({ ...b, marriedYears: 8 })).tier, "none");
+  const pub = specialSupplyCheck({ ...b, sector: "public", dualIncome: false, monthlyIncome: 8_500_000, minorChildren: 2 });
+  assert.equal(pub.results.find((o) => o.type === "multiChild")!.tier, "priority");
+  assert.equal(nl(pub).tier, "general");
+  assert.equal(specialSupplyCheck({ ...b, minorChildren: 2 }).results.find((o) => o.type === "multiChild")!.reason, "소득 기준 없음");
 });

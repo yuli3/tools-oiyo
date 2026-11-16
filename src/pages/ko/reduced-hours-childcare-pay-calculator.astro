@@ -1,0 +1,15 @@
+---
+// 노동권 도구 묶음 A (2026-11-16, Gemini 이전). 엔진: lib/kr-welfare-2026.ts
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import ReducedHoursPay from "../../components/tools/welfare/ReducedHoursPay";
+import { WELFARE_AS_OF } from "../../lib/kr-welfare-2026";
+
+const title = "육아기 근로시간 단축 급여 계산기 2026 — 주 10시간까지 100%, 상한 250만 원";
+const description = "월 통상임금과 단축 전후 주 근로시간으로 2026년 육아기 근로시간 단축 급여(처음 10시간 100%·상한 250만 원, 나머지 80%·상한 160만 원)와 회사 월급 합계를 계산해요.";
+const ko = {"introTitle": "일을 줄이면 한 달에 얼마를 받나요", "intro": "만 12세 이하(초등 6학년 이하) 자녀를 둔 근로자는 주 15~35시간으로 일을 줄일 수 있고, 줄어든 월급 일부를 고용보험이 육아기 근로시간 단축 급여로 채워 줘요. 2026년에는 매주 처음 10시간 줄인 몫을 통상임금 100%(기준액 상한 250만 원), 그 위는 80%(상한 160만 원)로 계산해요.", "howToTitle": "사용 방법", "steps": ["줄이기 전 한 달 고정 월급(통상임금)을 넣어요.", "지금 주 근로시간과 줄인 뒤 주 근로시간(15~35)을 넣어요.", "회사 월급 + 단축급여 합계와, 시간을 더 줄이면 어떻게 되는지 그래프로 봐요."], "highlightsTitle": "주요 특징", "highlights": [{"title": "2026 상한 반영", "body": "처음 10시간분 기준액 250만 원, 나머지 160만 원, 하한 50만 원(고용보험법 시행령 제104조의2)."}, {"title": "회사 + 보험 합계", "body": "줄어든 시간만큼 회사 월급이 줄고, 단축급여가 얼마나 채우는지 보여 줘요."}, {"title": "최대 3년", "body": "기본 1년에 쓰지 않은 육아휴직의 2배를 더해 최대 3년, 1개월 단위로 나눠 써요."}, {"title": "12세 이하 자녀", "body": "대상 자녀가 만 12세 이하·초등 6학년 이하로 넓어졌어요."}], "disclaimer": "2026년 기준 추정이에요. 한 달을 다 채우지 않은 달은 일할 계산하고, 회사가 따로 주는 보전금이 있으면 급여가 줄 수 있어요. 실제 금액은 고용센터가 정해요."};
+const faqs = [{"q": "육아휴직이랑 같이 쓸 수 있나요?", "a": "같은 자녀로 육아휴직과 단축을 나눠 쓸 수 있어요. 쓰지 않은 육아휴직 기간의 2배만큼 단축 기간이 늘어요."}, {"q": "회사가 거절할 수 있나요?", "a": "계속 근로 6개월 미만, 대체 인력을 못 구한 경우 등 시행령이 정한 사유가 아니면 거절할 수 없어요."}, {"q": "언제 신청하나요?", "a": "단축 시작 1개월 뒤부터, 끝난 날부터 12개월 안에 고용24에서 신청해요."}, {"q": "퇴직금이 줄지 않나요?", "a": "단축 기간은 평균임금 산정에서 빼므로 퇴직금이 불리해지지 않아요."}];
+---
+<KrFinancePage slug="reduced-hours-childcare-pay-calculator" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <ReducedHoursPay client:load />
+  <p class="mt-4 text-xs text-muted-foreground">근거: 고용보험법 제73조의2, 시행령 제104조의2(2026 상한 250만·160만 원), 남녀고용평등법 제19조의2~제19조의4. 기준일 {WELFARE_AS_OF}. <a class="underline" href="/ko/benefit-rights-toolkit/">생활 지원금·노동권 도구 모음</a> · <a class="underline" href="/ko/labor-law-guide/">노동법 길잡이</a></p>
+</KrFinancePage>

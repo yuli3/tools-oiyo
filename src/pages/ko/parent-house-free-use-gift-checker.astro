@@ -1,0 +1,15 @@
+---
+// Gemini 이전 B묶음 1차 (2026-11-16). 엔진: lib/kr-household-tax-2026.ts
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import FreeUseGift from "../../components/tools/welfare/FreeUseGift";
+import { HOUSEHOLD_TAX_AS_OF } from "../../lib/kr-household-tax-2026";
+
+const title = "부모 집 무상 거주 증여 점검 — 집값 × 2% × 5년, 1억 기준";
+const description = "부모님 집에 공짜로 살 때 증여세가 나오는지 계산해요. 집값 × 2%를 5년치 현재가치(3.7908배)로 합친 무상사용 이익이 1억 원 이상인지, 함께 살면 빠지는지, 부모님 집을 담보로 빌린 돈의 이익까지 보여 줘요.";
+const ko = {"introTitle": "집값 약 13억 2천만 원이 갈림길이에요", "intro": "상속세 및 증여세법 제37조는 가족 집을 공짜로 쓰면 집값의 2%를 1년 사용료로 보고, 5년치를 연 10%로 할인해 합친 금액(집값 × 약 7.58%)이 1억 원 이상일 때 증여로 봐요. 집 주인과 함께 사는 집은 빠져요. 부모님 집을 담보로 대출받으면 4.6% 이자와 낸 이자 차이가 연 1천만 원 이상일 때 증여예요.", "howToTitle": "사용 방법", "steps": ["부모님 집 시세를 넣고 함께 사는지 골라요.", "5년치 무상사용 이익과 증여세를 봐요.", "집값을 바꿔 보며 증여가 생기는 경계를 확인해요."], "highlightsTitle": "주요 특징", "highlights": [{"title": "5년 단위", "body": "5년치 이익을 한 번에 증여로 보고, 5년이 지나 계속 살면 다시 계산해요."}, {"title": "동거 제외", "body": "집 주인인 부모님과 함께 사는 주택은 무상사용 증여에서 빠져요."}, {"title": "무상 담보", "body": "부모님 집을 담보로 빌린 돈의 이자 이익도 함께 계산해요."}, {"title": "경계 그래프", "body": "집값이 기준을 넘는 순간 이익 1억여 원이 한꺼번에 잡히는 모습을 보여 줘요."}], "disclaimer": "추정이에요. 집값은 시가가 원칙이고 없으면 기준시가로 평가해요. 월세를 일부 내면 제42조(시세보다 30% 이상 낮은 사용료)를 따로 봐요. 신고 전에는 세무 전문가와 확인하세요."};
+const faqs = [{"q": "부모님 집에 같이 살아도 증여인가요?", "a": "아니요. 집 주인과 함께 사는 주택은 무상사용 증여에서 빠져요."}, {"q": "10억 원 아파트에 공짜로 살면요?", "a": "10억 × 2% × 3.7908 = 약 7,582만 원이라 1억 원 미만이므로 증여가 아니에요."}, {"q": "5년이 지나면요?", "a": "계속 무상으로 살면 5년마다 새로 계산해요."}, {"q": "상가나 토지도 같은가요?", "a": "네. 제37조는 부동산 전체에 적용돼요. 다만 상가는 월세 시세와 비교하는 다른 규정도 있어요."}];
+---
+<KrFinancePage slug="parent-house-free-use-gift-checker" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <FreeUseGift client:load />
+  <p class="mt-4 text-xs text-muted-foreground">근거: 상속세 및 증여세법 제37조, 시행령 제27조, 시행규칙 제10조(연 2%)·제10조의5(4.6%). 기준일 {HOUSEHOLD_TAX_AS_OF}. <a class="underline" href="/ko/gift-tax-calculator/">증여세 계산기</a> · <a class="underline" href="/ko/law-guide/">법령 길잡이</a> · <a class="underline" href="/ko/benefit-rights-toolkit/">생활 지원금·노동권 도구 모음</a></p>
+</KrFinancePage>

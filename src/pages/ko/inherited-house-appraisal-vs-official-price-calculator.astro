@@ -1,0 +1,15 @@
+---
+// Gemini 이전 B묶음 4차 (2026-11-16). 엔진: lib/kr-household-tax-2026.ts
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import InheritedHouseValuation from "../../components/tools/welfare/InheritedHouseValuation";
+import { HOUSEHOLD_TAX_AS_OF } from "../../lib/kr-household-tax-2026";
+
+const title = "상속주택 감정평가 vs 공시가격 — 상속세+양도세 합계 비교";
+const description = "상속받은 집을 공시가격으로 신고할 때와 감정평가로 신고할 때 상속세와 나중 양도세를 합쳐 비교해요. 공제(일괄 5억·배우자 5억~30억), 감정수수료 500만 원 공제, 상속 뒤 장기보유특별공제를 반영해요.";
+const ko = {"introTitle": "상속세를 줄이면 나중 양도세가 늘어요", "intro": "상속받은 집을 팔 때 취득가액은 상속 때 신고한 평가액이에요. 공시가격으로 낮게 신고하면 상속세는 줄지만 팔 때 차익이 커져 양도세가 늘어요. 공제 안이라 상속세가 0이면 감정평가로 높게 신고하는 쪽이 거의 늘 유리해요.", "howToTitle": "사용 방법", "steps": ["공시가격과 감정평가로 나올 값을 넣어요.", "다른 재산, 배우자 여부, 팔 값과 시기를 넣어요.", "두 방식의 상속세+양도세 합계를 비교해요."], "highlightsTitle": "주요 특징", "highlights": [{"title": "합계로 비교", "body": "상속세, 양도세, 감정수수료를 더해 어느 쪽이 싼지 보여 줘요."}, {"title": "공제 반영", "body": "일괄공제 5억, 배우자공제 5억~30억, 감정수수료 500만 원 공제를 넣어요."}, {"title": "양도세 연결", "body": "신고한 평가액을 취득가액으로 써서 나중 양도세를 계산해요."}, {"title": "가정 그래프", "body": "다른 재산·감정가·판매가를 바꿔 유리한 쪽이 바뀌는 지점을 봐요."}], "disclaimer": "추정이에요. 다른 집이 있어 비과세가 안 되고 중과가 없는 경우로 봤어요. 동거주택 상속공제, 금융재산공제, 유사매매사례가는 넣지 않았어요."};
+const faqs = [{"q": "아파트도 공시가격으로 신고할 수 있나요?", "a": "상속개시 전후 6개월 안에 같은 단지 비슷한 집 매매가가 있으면 그 값이 시가가 돼 공시가격을 쓰기 어려워요."}, {"q": "감정평가는 몇 곳에서 받아요?", "a": "기준시가 10억 원 이하면 1곳, 넘으면 2곳 평균이에요."}, {"q": "감정수수료도 공제되나요?", "a": "상속세 신고용 감정수수료는 500만 원까지 상속재산에서 빼 줘요."}, {"q": "상속받고 바로 팔면요?", "a": "6개월 안에 팔면 그 매매가가 상속 평가액이 돼요. 양도차익이 거의 없어 양도세도 거의 없어요."}];
+---
+<KrFinancePage slug="inherited-house-appraisal-vs-official-price-calculator" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <InheritedHouseValuation client:load />
+  <p class="mt-4 text-xs text-muted-foreground">근거: 상속세 및 증여세법 제60조·제61조, 시행령 제20조의3·제49조, 소득세법 시행령 제163조⑨. 기준일 {HOUSEHOLD_TAX_AS_OF}. <a class="underline" href="/ko/inheritance-tax-calculator/">상속세 계산기</a> · <a class="underline" href="/ko/capital-gains-tax-calculator/">양도소득세 계산기</a> · <a class="underline" href="/ko/tax-law-guide/">세금 법령 길잡이</a> · <a class="underline" href="/ko/benefit-rights-toolkit/">생활 지원금·노동권 도구 모음</a></p>
+</KrFinancePage>

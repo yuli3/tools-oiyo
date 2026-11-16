@@ -35,6 +35,7 @@ const CALCULATOR: Record<string, [string, string]> = {
   "gift-tax-marriage": ["/ko/gift-tax-calculator/", "증여세 계산기"],
   "marriage-gift": ["/ko/gift-tax-calculator/", "증여세 계산기"],
   "newborn-loan": ["/ko/dsr-calculator/", "대출 한도(DSR) 계산기"],
+  "child-tax-credit": ["/ko/dependent-deduction-checker/", "부양가족 공제 판정기"],
 };
 
 function ResultCard({ r }: { r: FinderResult }) {

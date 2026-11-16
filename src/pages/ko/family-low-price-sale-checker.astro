@@ -1,0 +1,15 @@
+---
+// Gemini 이전 B묶음 1차 (2026-11-16). 엔진: lib/kr-household-tax-2026.ts
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import LowPriceSale from "../../components/tools/welfare/LowPriceSale";
+import { HOUSEHOLD_TAX_AS_OF } from "../../lib/kr-household-tax-2026";
+
+const title = "가족 간 저가 양수도 점검 — 증여 30%·3억, 양도세 5%·3억";
+const description = "부모·자녀 등 가족에게 집을 시가보다 싸게 사고팔 때 사는 사람 증여세(차이가 시가 30%와 3억 중 적은 값 이상)와 파는 사람 양도세 시가 재계산(5%와 3억 중 적은 값 이상)을 판정하고, 문제없는 최저 거래가를 알려 줘요.";
+const ko = {"introTitle": "사는 쪽은 30%, 파는 쪽은 5%를 봐요", "intro": "가족끼리 시가보다 싸게 거래하면 두 가지를 봐요. 사는 사람은 상증법 제35조에 따라 시가와 거래가 차이가 시가 30%와 3억 원 중 적은 값 이상이면, 그 차이에서 기준금액을 뺀 만큼 증여세를 내요. 파는 사람은 소득세법 제101조에 따라 차이가 시가 5%와 3억 원 중 적은 값 이상이면 양도세를 시가로 다시 계산해요.", "howToTitle": "사용 방법", "steps": ["시가(주변 거래가·감정가)와 실제 거래가를 넣어요.", "증여세와 양도세 재계산 여부를 봐요.", "거래가를 바꿔 보며 안전한 최저 가격을 확인해요."], "highlightsTitle": "주요 특징", "highlights": [{"title": "두 경계", "body": "증여 경계(30%·3억)와 양도세 경계(5%·3억)를 함께 보여 줘요."}, {"title": "증여재산가액", "body": "차이 전체가 아니라 기준금액을 뺀 나머지만 증여예요."}, {"title": "안전 가격", "body": "두 문제가 모두 없는 최저 거래가를 알려 줘요."}, {"title": "메모 복사", "body": "전문가 모드에서 계산 근거를 세무사에게 그대로 전달할 수 있어요."}], "disclaimer": "추정이에요. 시가 판정(매매사례가액·감정가액)이 결과를 좌우해요. 배우자·직계존비속 간 양도는 제44조에 따라 증여로 추정될 수 있어 대금 지급 증빙이 꼭 필요해요. 신고 전에는 세무 전문가와 확인하세요."};
+const faqs = [{"q": "10억 집을 7억에 사면요?", "a": "차이 3억이 기준(3억)과 같아 증여 대상이지만, 기준을 빼면 증여재산은 0원이에요. 파는 사람 양도세는 시가 10억으로 다시 계산해요."}, {"q": "시가는 어떻게 정하나요?", "a": "거래일 전후 6개월(증여는 전 6개월~후 3개월) 안의 감정가, 비슷한 집 매매가 등을 써요. 아파트는 같은 단지 거래가가 주로 쓰여요."}, {"q": "비싸게 사도 문제인가요?", "a": "네. 시가보다 비싸게 사면 파는 사람이 증여를 받은 것으로 봐요(고가 양도). 기준은 같아요."}, {"q": "취득세는요?", "a": "특수관계인 간 거래가가 시가와 크게 다르면 취득세도 시가인정액으로 매겨질 수 있어요."}];
+---
+<KrFinancePage slug="family-low-price-sale-checker" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <LowPriceSale client:load />
+  <p class="mt-4 text-xs text-muted-foreground">근거: 상속세 및 증여세법 제35조, 시행령 제26조, 소득세법 제101조①, 시행령 제167조③. 기준일 {HOUSEHOLD_TAX_AS_OF}. <a class="underline" href="/ko/gift-tax-calculator/">증여세 계산기</a> · <a class="underline" href="/ko/law-guide/">법령 길잡이</a> · <a class="underline" href="/ko/benefit-rights-toolkit/">생활 지원금·노동권 도구 모음</a></p>
+</KrFinancePage>

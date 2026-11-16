@@ -1,0 +1,32 @@
+---
+// 법령 길잡이 (tax) 2026-11-16. 엔진: lib/kr-expert-guide-2026.ts. 자격 명칭을 이름에 쓰지 않아요(유사명칭 금지).
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import LawGuide from "../../components/tools/lawguide/LawGuide";
+import { LAW_GUIDE_AS_OF } from "../../lib/kr-expert-guide-2026";
+
+const title = "세금 법령 길잡이 2026 — 불복·수정신고·상속증여·양도세 기한과 근거 조문";
+const description = "세금 고지서에 불복하는 기한(30·90일), 경정청구 5년, 수정신고 가산세 감면 구간, 상속 6개월·증여 3개월·양도 2개월 신고기한을 질문 몇 개로 계산하고 국세기본법·소득세법 조문을 보여 줘요.";
+const ko = {
+  introTitle: "세금 문제, 무엇부터 확인할까요",
+  intro: "세금 문제는 대부분 기한 싸움이에요. 고지서를 받으면 90일, 과세예고는 30일, 더 낸 세금은 5년 안에 돌려받아요. 상황을 고르면 필요한 질문을 먼저 하고, 근거 조문과 남은 날을 보여 줘요. 신고·불복을 대신하지는 않아요(세무대리는 세무사의 업무예요).",
+  howToTitle: "사용 방법",
+  steps: ["어떤 일이 있었는지 고르세요.", "먼저 묻는 질문에 답하세요. 모르면 건너뛰어도 돼요.", "기한 막대와 확인할 점을 보고, 결과 메모를 복사해 상담 창구에 가져가세요."],
+  highlightsTitle: "주요 특징",
+  highlights: [
+    { title: "고지서 받은 날로 불복 기한(D-day) 계산", body: "과세전적부심사·이의신청·심판청구·지방세 이의신청을 구분해요." },
+    { title: "가산세 감면 구간", body: "수정신고 90%→10%, 기한 후 신고 50%→20%가 언제 바뀌는지 알려 줘요." },
+    { title: "상속·증여·양도 신고기한", body: "말일 기준 6·3·2개월과 휴일 이월까지 계산해요." },
+    { title: "무료 창구", body: "126, 마을세무사, 국선대리인을 안내해요." },
+  ],
+  disclaimer: "법령 정보와 기한 계산 도구예요. 대리·서류 작성 대행·특정 전문가 소개를 하지 않아요. 조문 풀이는 쉬운 말 요약이니 원문(국가법령정보센터)과 담당 기관에서 확인하세요. 기준일 2026-11-16.",
+};
+const faqs = [
+  { q: "고지서를 받았는데 세금을 먼저 내야 하나요?", a: "불복해도 납부 의무는 멈추지 않아요. 내지 않으면 납부지연가산세(하루 0.022%)가 붙으니 먼저 내고 이기면 이자(환급가산금)와 함께 돌려받는 방법을 많이 써요." },
+  { q: "세무사 없이 이의신청할 수 있나요?", a: "네. 본인이 직접 할 수 있고, 소득·재산이 적고 청구세액이 작으면 국선대리인을 무료로 신청할 수 있어요(국세기본법 제59조의2)." },
+  { q: "이 페이지는 세무 상담인가요?", a: "아니요. 법령 정보와 계산 도구예요. 개별 사안 판단과 신고 대리는 세무사(또는 등록 공인회계사·변호사)에게 맡겨야 해요." },
+];
+---
+<KrFinancePage slug="tax-law-guide" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <LawGuide client:load domain="tax" />
+  <p class="mt-4 text-xs text-muted-foreground">기준일 {LAW_GUIDE_AS_OF}. <a class="underline" href="/ko/law-guide/">법령 길잡이 5분야</a> · <a class="underline" href="/ko/benefit-rights-toolkit/">생활 지원금·노동권 도구</a> · <a class="underline" href="/ko/tax-advisor-toolkit/">세무·회계 실무 도구</a></p>
+</KrFinancePage>

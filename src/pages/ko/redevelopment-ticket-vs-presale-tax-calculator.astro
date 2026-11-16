@@ -1,0 +1,15 @@
+---
+// Gemini 이전 B묶음 4차 (2026-11-16). 엔진: lib/kr-household-tax-2026.ts
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import TicketVsPresale from "../../components/tools/welfare/TicketVsPresale";
+import { HOUSEHOLD_TAX_AS_OF } from "../../lib/kr-household-tax-2026";
+
+const title = "재건축 입주권 vs 분양권 양도세 계산기 — 70%·60%·기본세율";
+const description = "재건축·재개발 조합원입주권과 아파트 분양권을 팔 때 양도세를 비교해요. 입주권은 2년 이상이면 기본세율과 관리처분인가 전 차익 장기보유특별공제, 1세대1주택 비과세가 되고, 분양권은 1년 미만 70%, 그 뒤 60%예요.";
+const ko = {"introTitle": "입주권은 집처럼, 분양권은 권리처럼 세금을 매겨요", "intro": "조합원입주권은 주택처럼 1년 미만 70%, 2년 미만 60%, 2년 이상 기본세율이고, 원조합원은 관리처분계획인가일까지 오른 몫에 장기보유특별공제를 받아요. 분양권은 아무리 오래 가져도 60%이고 공제도 비과세도 없어요.", "howToTitle": "사용 방법", "steps": ["입주권인지 분양권인지 고르고 차익과 보유기간을 넣어요.", "원조합원이면 관리처분인가 전 차익과 연수를 넣어요.", "보유기간을 바꿔 세율이 바뀌는 지점을 봐요."], "highlightsTitle": "주요 특징", "highlights": [{"title": "두 권리 비교", "body": "같은 차익을 입주권과 분양권으로 팔 때 세금을 나란히 보여 줘요."}, {"title": "장기보유특별공제", "body": "원조합원 입주권은 기존 집 기간만큼 공제해요."}, {"title": "1주택 비과세", "body": "관리처분인가일 요건을 채우면 12억 원까지 비과세예요."}, {"title": "보유기간 그래프", "body": "1년·2년 계단을 그래프로 보여 줘요."}], "disclaimer": "추정이에요. 청산금, 조정대상지역 중과, 대체주택 특례, 일시적 2주택은 넣지 않았어요."};
+const faqs = [{"q": "원조합원과 승계조합원은 뭐가 달라요?", "a": "원조합원은 기존 집을 갖고 있다가 입주권이 된 사람이라 기존 집 취득일부터 보유기간을 세고 장기보유특별공제를 받아요. 입주권을 산 승계조합원은 입주권 취득일부터 세고 공제가 없어요."}, {"q": "분양권도 비과세가 되나요?", "a": "아니요. 분양권은 1세대1주택 비과세 대상이 아니에요."}, {"q": "분양권이 다른 집 양도세에 영향을 주나요?", "a": "2021년 이후 취득한 분양권은 다른 집을 팔 때 주택 수에 들어가요."}, {"q": "신고는 언제 해요?", "a": "양도일이 속한 달의 말일부터 2개월 안에 예정신고해요."}];
+---
+<KrFinancePage slug="redevelopment-ticket-vs-presale-tax-calculator" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <TicketVsPresale client:load />
+  <p class="mt-4 text-xs text-muted-foreground">근거: 소득세법 제89조①4호·제95조②·제103조·제104조①, 시행령 제166조. 기준일 {HOUSEHOLD_TAX_AS_OF}. <a class="underline" href="/ko/capital-gains-tax-calculator/">양도소득세 계산기</a> · <a class="underline" href="/ko/presale-payment-calculator/">분양 대금 계산기</a> · <a class="underline" href="/ko/reconstruction-profit/">재건축 수익</a> · <a class="underline" href="/ko/tax-law-guide/">세금 법령 길잡이</a> · <a class="underline" href="/ko/benefit-rights-toolkit/">생활 지원금·노동권 도구 모음</a></p>
+</KrFinancePage>
