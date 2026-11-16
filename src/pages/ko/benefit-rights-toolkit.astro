@@ -31,6 +31,9 @@ const situations = [
   ["부모님 집에 공짜로 살아요", "parent-house-free-use-gift-checker", "집값이 약 13억 2천만 원을 넘고 부모님과 따로 살면 5년치 사용료가 증여로 잡혀요."],
   ["가족에게 집을 싸게 사고팔아요", "family-low-price-sale-checker", "시가와 3억 원(또는 30%) 넘게 차이 나면 증여세, 5% 넘게 차이 나면 파는 사람 양도세가 다시 계산돼요."],
   ["상가 건물주가 월세를 많이 올려 달래요", "commercial-rent-increase-checker", "환산보증금이 지역 기준 이하면 5%까지만, 1년에 한 번만 올릴 수 있어요."],
+  ["중소기업에 막 취업했어요", "sme-youth-income-tax-reduction-calculator", "34세 이하(병역 기간 빼고)면 5년 동안 소득세 90%를 덜 내요. 회사에 신청서부터 내요."],
+  ["가게를 하는데 종합소득세가 많아요", "yellow-umbrella-deduction-calculator", "노란우산공제에 넣은 돈은 사업소득금액 4천만 원 이하면 600만 원까지 소득에서 빼 줘요."],
+  ["창업하는데 간이과세가 나을까요", "general-vs-simplified-vat-calculator", "매출 1억 400만 원 미만이면 간이를 고를 수 있어요. 인테리어 매입이 크면 일반과세 환급이 나을 수 있어요."],
   ["한 종목에 크게 투자했어요", "stock-major-shareholder-tax-calculator", "작년 말 한 종목을 50억 원 넘게 가졌으면 올해 판 이익에 양도세가 붙어요. 연말 보유를 미리 확인해요."],
 ];
 const more = [
@@ -67,6 +70,9 @@ const mcpTools = [
   ["check_kr_parent_house_free_use", "부모 집 무상 거주·무상 담보 증여"],
   ["check_kr_family_low_price_sale", "가족 간 저가 양수도 증여·양도세 시가"],
   ["check_kr_commercial_rent_increase", "상가 임대료 5% 상한"],
+  ["calculate_kr_sme_youth_tax_reduction", "중소기업 취업 청년 소득세 감면"],
+  ["calculate_kr_yellow_umbrella_deduction", "노란우산공제 소득공제 절세액"],
+  ["compare_kr_general_vs_simplified_vat", "일반과세 vs 간이과세 부가세"],
 ];
 const titleOf = (slug: string) => welfareTools.find((t) => t.slug === slug)?.title ?? slug;
 ---
