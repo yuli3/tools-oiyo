@@ -5,6 +5,7 @@ import Layout from '../../components/Layout.astro';
 import UtilityArticle, { type UtilityContent } from '../../components/UtilityArticle.astro';
 import RelatedUtilities from '../../components/RelatedUtilities.astro';
 import IdealWeightCalculator from '../../components/tools/IdealWeightCalculator';
+import IdealWeightScenario from '../../components/tools/IdealWeightScenario';
 import { locales } from '../../lib/i18n';
 import { utilityJsonLd } from '../../lib/utility-jsonld';
 
@@ -145,7 +146,7 @@ const schema = utilityJsonLd({ name: m.title, description: m.description, url, l
 ---
 <Layout title={m.title} description={m.description} locale={locale} availableLocales={[...locales]} canonicalURL={url}>
   <ToolShell title={m.title} description={m.description}>
-    <IdealWeightCalculator client:load locale={locale} />
+    {locale === 'ko' ? <IdealWeightScenario client:load /> : <IdealWeightCalculator client:load locale={locale} />}
     <UtilityArticle c={c} />
     <RelatedUtilities locale={locale} current="ideal-weight-calculator" group="health" />
   </ToolShell>
