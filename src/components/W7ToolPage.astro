@@ -13,16 +13,16 @@ import PomodoroTimer from './tools/PomodoroTimer';
 import Metronome from './tools/Metronome';
 import PercentageCalculator from './tools/PercentageCalculator';
 import RatioCalculator from './tools/RatioCalculator';
-import DiscountCalculator from './tools/DiscountCalculator';
-import TipCalculator from './tools/TipCalculator';
 import TipScenario from './tools/TipScenario';
 import DiscountScenario from './tools/DiscountScenario';
 import TravelBudgetScenario from './tools/TravelBudgetScenario';
 import FuelCostScenario from './tools/FuelCostScenario';
+import FuelCostWorld from './tools/world/FuelCostWorld';
+import TravelBudgetWorld from './tools/world/TravelBudgetWorld';
+import TipWorld from './tools/world/TipWorld';
+import DiscountWorld from './tools/world/DiscountWorld';
 import DutchPayCalculator from './tools/DutchPayCalculator';
 import UnitPriceCalculator from './tools/UnitPriceCalculator';
-import TravelBudgetCalculator from './tools/TravelBudgetCalculator';
-import FuelCostCalculator from './tools/FuelCostCalculator';
 import FuelEfficiencyCalculator from './tools/FuelEfficiencyCalculator';
 import BasicCalculator from './tools/BasicCalculator';
 import WordCounterTool from './tools/WordCounterTool';
@@ -49,12 +49,12 @@ const group = (w7TimeSlugs as readonly string[]).includes(slug) ? 'time' : slug 
       : slug === 'metronome' ? <Metronome client:load locale={locale} />
       : slug === 'percentage-calculator' ? <PercentageCalculator client:load locale={locale} />
       : slug === 'ratio-calculator' ? <RatioCalculator client:load locale={locale} />
-      : slug === 'discount-calculator' ? (locale === 'ko' ? <DiscountScenario client:load /> : <DiscountCalculator client:load locale={locale} />)
-      : slug === 'tip-calculator' ? (locale === 'ko' ? <TipScenario client:load /> : <TipCalculator client:load locale={locale} />)
+      : slug === 'discount-calculator' ? (locale === 'ko' ? <DiscountScenario client:load /> : <DiscountWorld client:load lang={locale} />)
+      : slug === 'tip-calculator' ? (locale === 'ko' ? <TipScenario client:load /> : <TipWorld client:load lang={locale} />)
       : slug === 'dutch-pay-calculator' ? <DutchPayCalculator client:load locale={koEn} />
       : slug === 'unit-price-calculator' ? <UnitPriceCalculator client:load locale={locale} />
-      : slug === 'travel-budget-calculator' ? (locale === 'ko' ? <TravelBudgetScenario client:load /> : <TravelBudgetCalculator client:load locale={locale} />)
-      : slug === 'fuel-cost-calculator' ? (locale === 'ko' ? <FuelCostScenario client:load /> : <FuelCostCalculator client:load locale={locale} />)
+      : slug === 'travel-budget-calculator' ? (locale === 'ko' ? <TravelBudgetScenario client:load /> : <TravelBudgetWorld client:load lang={locale} />)
+      : slug === 'fuel-cost-calculator' ? (locale === 'ko' ? <FuelCostScenario client:load /> : <FuelCostWorld client:load lang={locale} />)
       : slug === 'fuel-efficiency-calculator' ? <FuelEfficiencyCalculator client:load locale={locale} />
       : slug === 'calculator' ? <BasicCalculator client:load locale={locale} />
       : <WordCounterTool client:load locale={koEn} />}
