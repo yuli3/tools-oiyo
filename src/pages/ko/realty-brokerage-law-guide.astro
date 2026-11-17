@@ -1,0 +1,27 @@
+---
+// 법령 길잡이 (realty) 2026-11-17. 엔진: lib/kr-expert-guide-2026.ts + 분야 팩 lib/kr-law-packs-2026.ts. 세운 "지식전문가를 더 늘릴 수 있어야 해요"(2026-11-17).
+// 자격 명칭을 이름에 쓰지 않아요(각 자격법의 유사명칭 금지). 대리·대행·감정·중개를 하지 않아요.
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import LawGuide from "../../components/tools/lawguide/LawGuide";
+import { LAW_GUIDE_AS_OF } from "../../lib/kr-expert-guide-2026";
+
+const title = "부동산 거래·중개 법령 길잡이 2026 — 중개보수 상한, 거래신고 30일, 중개사고 배상";
+const description = "중개보수(복비) 상한과 초과 수수 금지, 매매 거래신고·주택 임대차 신고 30일, 중개사 확인·설명 의무 위반으로 손해를 봤을 때 손해배상·공제 청구와 시효 3년을 질문으로 정리하고 공인중개사법·부동산거래신고법 조문을 알려 줘요.";
+const ko = {
+  introTitle: "부동산 거래, 계약일부터 30일",
+  intro: "계약일을 넣으면 거래·임대차 신고 마감일을, 중개사 설명과 달라 손해를 봤다면 청구 시효와 모을 증거를 정리해 줘요. 매물을 소개하거나 중개하지는 않아요.",
+  howToTitle: "사용 방법",
+  steps: ["상황을 고르세요.", "먼저 묻는 질문에 답하세요. 모르면 건너뛰어도 돼요.", "기한 막대와 확인할 점을 보고, 결과 메모를 복사해 담당 기관이나 전문가에게 가져가세요."],
+  highlightsTitle: "주요 특징",
+  highlights: [{ title: "신고 마감", body: "매매 거래신고·임대차 신고 30일" }, { title: "중개사고 청구", body: "확인·설명 의무, 공제 청구, 시효 3년" }, { title: "무료 창구", body: "지자체 부동산 담당, 공인중개사협회 공제" }],
+  disclaimer: "법령 정보와 기한 계산 도구예요. 대리·대행·감정·중개를 하지 않고 특정 전문가를 소개하지 않아요. 조문 풀이는 쉬운 말 요약이니 원문(국가법령정보센터)을 확인하세요. 기준일 2026-11-17.",
+};
+const faqs = [
+  { q: "복비를 상한보다 많이 냈어요.", a: "법정 상한을 넘는 금품을 받는 것은 금지행위라 초과분을 돌려받을 수 있고, 시·군·구청에 신고할 수 있어요(공인중개사법 제32조·제33조)." },
+  { q: "중개사가 근저당을 설명하지 않았어요.", a: "중개사는 계약 전에 권리관계를 확인·설명해야 하고, 고의·과실로 손해가 나면 배상해야 해요. 중개사가 가입한 공제·보증보험에 청구할 수 있어요(공인중개사법 제25조·제30조)." },
+];
+---
+<KrFinancePage slug="realty-brokerage-law-guide" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <LawGuide client:load domain="realty" />
+  <p class="mt-4 text-xs text-muted-foreground">기준일 {LAW_GUIDE_AS_OF}. <a class="underline" href="/ko/law-guide/">법령 길잡이 10분야</a> · <a class="underline" href="/ko/brokerage-calculator/">중개보수 계산기</a></p>
+</KrFinancePage>

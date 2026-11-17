@@ -1,5 +1,5 @@
 // 전문 직업 역량 지도 (2026-11-17). 세운 요청: "각 전문가들에게 필요한 역량들을 리스트화·분류·카테고리화, 도구와 스킬 등을 연결".
-// 직업 8개 × 역량 분류 7개. 역량마다 tools.oiyo.net 도구, Claude 스킬(github.com/yuli3/oiyo-skills), MCP 도구를 붙이고,
+// 직업 13개(11-17 관세사·변리사·감정평가사·공인중개사·경영지도사 추가) × 역량 분류 7개. 역량마다 tools.oiyo.net 도구, Claude 스킬(github.com/yuli3/oiyo-skills), MCP 도구를 붙이고,
 // 아직 도구가 없는 역량은 gap으로 남겨 다음 제작 목록이 되게 해요.
 // 이름 경계: 우리는 자격사가 아니에요. 직업 이름은 "누가 이 역량을 쓰는지" 설명할 때만 쓰고, 도구·페이지 이름에는 넣지 않아요.
 // exclusive: 그 자격사만 할 수 있는 업무와 맞닿은 역량. 도구는 원리·정보만 주고 대리·작성은 하지 않아요.
@@ -7,7 +7,7 @@
 import type { DomainId } from "../lib/kr-expert-guide-2026";
 
 export type CategoryId = "law" | "calc" | "deadline" | "docs" | "consult" | "ethics" | "digital";
-export type JobId = "tax" | "cpa" | "labor" | "admin" | "court" | "actuary" | "adjuster" | "agent";
+export type JobId = "tax" | "cpa" | "labor" | "admin" | "court" | "actuary" | "adjuster" | "agent" | "customs" | "patent" | "appraiser" | "broker" | "mgmt";
 export type Audience = "pro" | "public";
 
 export const COMPETENCY_AS_OF = "2026-11-17";
@@ -22,7 +22,8 @@ export const CATEGORIES: { id: CategoryId; name: string; desc: string }[] = [
   { id: "digital", name: "전자 업무·데이터", desc: "홈택스·전자소송·인터넷등기소 같은 전자 창구와 데이터 분석·자동화" },
 ];
 
-export const JOBS: { id: JobId; name: string; domain: DomainId; act: string; summary: string }[] = [
+/** domain: 법령 길잡이 분야(없으면 법령 길잡이 밖의 직업, 예: 경영지도사는 경영 도구와 이어져요). */
+export const JOBS: { id: JobId; name: string; domain?: DomainId; act: string; summary: string }[] = [
   { id: "tax", name: "세무사", domain: "tax", act: "세무사법 제2조", summary: "세금 신고·불복 대리, 세무 상담, 장부 작성 대행" },
   { id: "cpa", name: "공인회계사", domain: "accounting", act: "공인회계사법 제2조", summary: "회계감사, 재무 자문, 기업가치 평가, 세무 대리" },
   { id: "labor", name: "공인노무사", domain: "labor", act: "공인노무사법 제2조", summary: "노동 사건 대리(구제신청 등), 노무 서류 작성, 노무관리진단, 노동 상담" },
@@ -31,6 +32,11 @@ export const JOBS: { id: JobId; name: string; domain: DomainId; act: string; sum
   { id: "actuary", name: "보험계리사", domain: "insurance", act: "보험업법 제181조·제184조", summary: "보험료·책임준비금 산출, 기초서류 확인, 지급여력 평가" },
   { id: "adjuster", name: "손해사정사", domain: "insurance", act: "보험업법 제185조·제188조", summary: "손해 발생 사실 확인, 손해액·보험금 사정, 손해사정서 작성" },
   { id: "agent", name: "보험설계사·대리점", domain: "insurance", act: "보험업법 제83조·제84조·제87조", summary: "등록한 소속 회사 상품 모집, 설명·적합성 확인, 계약 관리" },
+  { id: "customs", name: "관세사", domain: "customs", act: "관세사법 제2조·제3조", summary: "수출입 통관 신고 대리, 관세 불복 대리, 품목분류·관세평가·원산지 자문" },
+  { id: "patent", name: "변리사", domain: "ip", act: "변리사법 제2조·제21조", summary: "특허·상표·디자인 출원과 심판 대리, 침해 감정, 심결취소소송 대리" },
+  { id: "appraiser", name: "감정평가사", domain: "appraisal", act: "감정평가법 제10조", summary: "공시지가 평가, 보상·소송·경매·담보 감정평가, 감정 상담" },
+  { id: "broker", name: "공인중개사", domain: "realty", act: "공인중개사법 제9조·제25조", summary: "등록 사무소에서 매매·임대차 중개, 확인·설명, 거래계약서 작성" },
+  { id: "mgmt", name: "경영지도사", act: "중소기업진흥에 관한 법률(지도사)", summary: "중소기업 경영 진단·지도: 전략·마케팅·재무·인사·생산 관리 자문(독점 업무는 아님)" },
 ];
 
 export type Competency = {
@@ -144,6 +150,53 @@ export const COMPETENCIES: Competency[] = [
   c("agent-tax", "agent", "calc", "보험·연금 세제", "연금 수령 세금, ISA·연금저축 비교처럼 상품 선택에 붙는 세금을 계산해요.", { tools: ["pension-tax-calculator", "isa-vs-pension-calculator"], audience: ["pro", "public"] }),
   c("agent-record", "agent", "docs", "설명·적합성 기록", "설명서 교부, 적합성 확인 결과를 계약마다 남기는 역량이에요.", {}),
   c("agent-scope", "agent", "ethics", "등록·소속 범위", "등록한 설계사·대리점·중개사만 모집할 수 있고(보험업법 제83조), 소속 회사 상품만 다뤄요.", { tools: ["insurance-law-guide"], skills: [LAW], mcp: ["get_kr_professional_scope"] }),
+  // 관세사
+  c("cu-law", "customs", "law", "관세법·FTA 원산지 규정", "신고납부·보정·경정, 소액 면세, FTA 원산지 결정 기준을 읽어요.", { tools: ["customs-law-guide"], skills: [LAW], mcp: ["search_kr_statutes"], audience: ["pro", "public"] }),
+  c("cu-deadline", "customs", "deadline", "납부·보정·경정·불복 기한", "수리일부터 15일 납부, 6개월 보정, 5년 경정청구, 90일 불복을 날짜로 세요.", { tools: ["customs-law-guide"], skills: [LAW], mcp: ["start_kr_law_intake", "check_kr_business_day"], audience: ["pro", "public"], exclusive: true }),
+  c("cu-direct", "customs", "consult", "해외직구 면세 판정", "150달러(미국발 200달러), 합산과세, 판매용 여부를 확인해요.", { tools: ["customs-law-guide"], skills: [LAW], mcp: ["start_kr_law_intake"], audience: ["pro", "public"] }),
+  c("cu-fx", "customs", "calc", "과세가격·환율 환산", "물품가격과 운임을 과세환율로 원화 환산해요.", { tools: ["currency-converter", "foreign-exchange-fee-calculator"], audience: ["pro", "public"] }),
+  c("cu-hs", "customs", "calc", "품목분류(HS)와 세율", "HS 코드를 정하고 기본·FTA 세율을 비교하는 역량이에요.", { exclusive: true }),
+  c("cu-docs", "customs", "docs", "수입신고·원산지증명 서류", "인보이스·패킹리스트·원산지증명서를 맞춰 신고해요. 신고 대리는 관세사 업무예요.", { exclusive: true }),
+  c("cu-unipass", "customs", "digital", "유니패스 전자 통관", "통관 진행 조회와 전자 신고 실무예요.", {}),
+  c("cu-scope", "customs", "ethics", "통관업 범위와 명칭 제한", "관세사·관세법인·통관취급법인만 남의 의뢰로 통관업을 하고(관세사법 제3조), 유사명칭을 쓸 수 없어요(제25조).", { tools: ["law-guide"], skills: [LAW], mcp: ["get_kr_professional_scope"] }),
+
+  // 변리사
+  c("pt-law", "patent", "law", "특허법·상표법·디자인보호법", "신규성·진보성, 상표 식별력·유사 판단 기준을 읽어요.", { tools: ["ip-law-guide"], skills: [LAW], mcp: ["search_kr_statutes"], audience: ["pro", "public"] }),
+  c("pt-deadline", "patent", "deadline", "공지예외·거절 대응 기한", "공지예외 12개월, 의견서 제출기간, 거절결정 불복 3개월, 연차료 납부를 관리해요.", { tools: ["ip-law-guide"], skills: [LAW], mcp: ["start_kr_law_intake"], audience: ["pro", "public"] }),
+  c("pt-search", "patent", "consult", "선행기술·등록상표 조사", "출원 전에 키프리스로 같은 기술·비슷한 상표를 찾아 가능성을 가늠해요.", { tools: ["ip-law-guide"], audience: ["pro", "public"] }),
+  c("pt-claims", "patent", "docs", "명세서·청구범위 작성", "권리 범위를 정하는 청구범위를 쓰는 역량이에요. 출원 대리는 변리사 업무예요.", { exclusive: true }),
+  c("pt-value", "patent", "calc", "지식재산 가치평가", "특허의 미래 현금흐름을 할인해 가치를 추정해요.", { tools: ["dcf-valuation-calculator", "present-value-calculator"], mcp: ["calculate_dcf_valuation"] }),
+  c("pt-infringe", "patent", "consult", "침해 경고장 대응", "권리 유효성·침해 여부·선사용 여부를 사실로 나눠 대응 순서를 정해요.", { tools: ["ip-law-guide"], skills: [LAW], audience: ["pro", "public"], exclusive: true }),
+  c("pt-efile", "patent", "digital", "특허로 전자출원", "전자출원과 수수료 납부, 심사 진행 조회 실무예요.", {}),
+  c("pt-scope", "patent", "ethics", "변리 업무 범위와 명칭 제한", "변리사가 아니면 특허 등 대리를 업으로 할 수 없고(변리사법 제21조), 유사명칭을 쓸 수 없어요(제22조).", { tools: ["law-guide"], skills: [LAW], mcp: ["get_kr_professional_scope"] }),
+
+  // 감정평가사
+  c("ap-law", "appraiser", "law", "감정평가법·토지보상법·부동산공시법", "감정평가 기준, 보상 원칙, 공시가격 체계를 읽어요.", { tools: ["appraisal-law-guide"], skills: [LAW], mcp: ["search_kr_statutes"], audience: ["pro", "public"] }),
+  c("ap-deadline", "appraiser", "deadline", "보상금·공시가격 다툼 기한", "재결 이의신청 30일, 소송 90일(이의재결 뒤 60일), 공시가격 이의신청 30일을 세요.", { tools: ["appraisal-law-guide"], skills: [LAW], mcp: ["start_kr_law_intake"], audience: ["pro", "public"] }),
+  c("ap-income", "appraiser", "calc", "수익환원법", "임대수익과 환원율로 수익 부동산 가치를 구해요.", { tools: ["rental-yield-calculator", "present-value-calculator"], audience: ["pro", "public"] }),
+  c("ap-tax", "appraiser", "calc", "감정가와 세금", "상속·증여 신고에서 감정가와 공시가격의 세금 차이를 비교해요.", { tools: ["inherited-house-appraisal-vs-official-price-calculator", "inheritance-tax-calculator"], mcp: ["compare_kr_inherited_house_valuation", "calculate_inheritance_gift_tax"], audience: ["pro", "public"] }),
+  c("ap-redevelop", "appraiser", "calc", "정비사업 권리가액", "재건축·재개발 종전자산 평가와 분담금 구조를 이해해요.", { tools: ["reconstruction-profit", "redevelopment-ticket-vs-presale-tax-calculator"], mcp: ["compare_kr_ticket_vs_presale_tax"], audience: ["pro", "public"] }),
+  c("ap-report", "appraiser", "docs", "감정평가서 작성", "가격 결정 근거를 담은 감정평가서는 감정평가사 업무예요.", { exclusive: true }),
+  c("ap-scope", "appraiser", "ethics", "감정평가 업무 범위와 명칭 제한", "감정평가는 사무소·법인 소속 감정평가사가 하고(감정평가법 제21조·제29조), 유사명칭을 쓸 수 없어요(제22조).", { tools: ["law-guide"], skills: [LAW], mcp: ["get_kr_professional_scope"] }),
+
+  // 공인중개사
+  c("br-law", "broker", "law", "공인중개사법·주택임대차보호법", "확인·설명 의무, 금지행위, 대항력·우선변제를 읽어요.", { tools: ["realty-brokerage-law-guide", "registry-court-law-guide"], skills: [LAW], mcp: ["search_kr_statutes"], audience: ["pro", "public"] }),
+  c("br-fee", "broker", "calc", "중개보수 계산", "거래 종류·금액별 상한요율로 보수를 계산해요.", { tools: ["brokerage-calculator", "realty-brokerage-law-guide"], audience: ["pro", "public"] }),
+  c("br-deadline", "broker", "deadline", "거래·임대차 신고 기한", "매매 거래신고와 주택 임대차 신고를 계약일부터 30일 안에 해요.", { tools: ["realty-brokerage-law-guide"], skills: [LAW], mcp: ["start_kr_law_intake"], audience: ["pro", "public"] }),
+  c("br-jeonse", "broker", "consult", "전세 위험 점검", "보증금 대비 시세·선순위, 보증보험 가입 가능성을 확인해요.", { tools: ["jeonse-guarantee-calculator", "jeonse-vs-buy-calculator", "jeonse-monthly-converter"], mcp: ["diagnose_hug_guarantee"], audience: ["pro", "public"] }),
+  c("br-tax", "broker", "calc", "거래 세금 안내", "취득세·양도세·보유세를 거래 전에 가늠해요.", { tools: ["acquisition-tax-calculator", "capital-gains-tax-calculator", "property-tax-calculator"], mcp: ["calculate_kr_acquisition_tax", "calculate_capital_gains_tax", "calculate_kr_property_tax"], audience: ["pro", "public"] }),
+  c("br-docs", "broker", "docs", "확인·설명서와 계약서", "등기부·건축물대장을 확인해 확인·설명서를 쓰는 역량이에요. 중개는 등록한 개업공인중개사 업무예요.", { exclusive: true }),
+  c("br-scope", "broker", "ethics", "등록과 금지행위", "개설등록한 사람만 중개하고(공인중개사법 제9조), 초과 보수·직접거래·쌍방대리가 금지돼요(제33조).", { tools: ["realty-brokerage-law-guide"], skills: [LAW], mcp: ["get_kr_professional_scope"] }),
+
+  // 경영지도사 (법령 길잡이 밖: 경영 도구·경영 전략 참모 스킬과 연결)
+  c("mg-strategy", "mgmt", "consult", "전략 진단", "SWOT·BCG·포지셔닝으로 현재 위치와 선택지를 정리해요.", { tools: ["swot-analysis", "bcg-matrix", "positioning-map"], skills: [BIZ], mcp: ["analyze_swot"], audience: ["pro", "public"] }),
+  c("mg-decision", "mgmt", "calc", "의사결정 분석", "가중 의사결정표·의사결정 트리로 대안을 숫자로 비교해요.", { tools: ["priority-decision-matrix", "decision-tree-calculator"], skills: [BIZ], audience: ["pro", "public"] }),
+  c("mg-finance", "mgmt", "calc", "단위경제·런웨이·시장 실험", "LTV/CAC, 남은 현금 개월 수, 시장 테스트 손익을 계산해요.", { tools: ["unit-economics-runway-calculator", "market-test-calculator"], skills: [BIZ], mcp: ["calculate_unit_economics_runway", "analyze_market_test"], audience: ["pro", "public"] }),
+  c("mg-ops", "mgmt", "consult", "운영 문제 해결", "캠페인 품절, 품질 회수, 대체 원료, 대형 수주, 판매장려금, 인수 통합을 점검해요.", { tools: ["campaign-supply-planner", "quality-recovery-planner", "alternative-material-review", "big-order-capacity-check", "sales-rebate-checker", "acquisition-integration-check", "influencer-deal-calculator"], skills: [BIZ], mcp: ["plan_campaign_supply", "plan_quality_recovery", "compare_alternative_materials", "check_big_order_capacity", "check_sales_rebates"], audience: ["pro", "public"] }),
+  c("mg-plan", "mgmt", "deadline", "일정·마일스톤 관리", "CPM으로 핵심 경로를 찾고 신고·납부 일정을 사업 일정에 얹어요.", { tools: ["project-timeline-planner", "tax-calendar"], skills: [BIZ], mcp: ["get_kr_business_tax_calendar"], audience: ["pro", "public"] }),
+  c("mg-checklist", "mgmt", "docs", "사업자 필수 의무 점검", "창업·고용·신고 단계별로 반드시 할 것과 하지 말 것을 챙겨요.", { tools: ["business-must-do-checklist", "business-toolkit"], skills: [BIZ], audience: ["pro", "public"] }),
+  c("mg-law", "mgmt", "law", "경영 문제의 법령 연결", "운영 문제가 세금·노무·행정·보험 중 어디에 걸리는지 찾아 해당 길잡이로 넘겨요.", { tools: ["law-guide"], skills: [LAW, BIZ], mcp: ["start_kr_law_intake"], audience: ["pro", "public"] }),
+  c("mg-scope", "mgmt", "ethics", "자문 범위", "경영 지도는 독점 업무가 아니지만, 세무대리·노무 대리·법률 사무는 해당 자격사에게 넘겨요.", { tools: ["law-guide"], skills: [LAW], mcp: ["get_kr_professional_scope"] }),
 ];
 
 /** 링크한 도구의 짧은 한국어 이름. 테스트가 COMPETENCIES에 쓰인 slug와 1:1로 맞는지 봐요. */
@@ -170,7 +223,7 @@ export const TOOL_NAMES: Record<string, string> = {
   "general-vs-simplified-vat-calculator": "간이 vs 일반과세",
   "incorporation-conversion-calculator": "법인전환 계산기",
   "tax-savings-roadmap": "절세 로드맵",
-  "law-guide": "법령 길잡이 6분야",
+  "law-guide": "법령 길잡이 10분야",
   "financial-ratio-trend": "재무비율 추세",
   "cost-accounting-simulator": "원가계산 시뮬레이터",
   "dcf-valuation-calculator": "DCF 기업가치",
@@ -231,11 +284,38 @@ export const TOOL_NAMES: Record<string, string> = {
   "long-term-care-copay-calculator": "장기요양 본인부담",
   "pension-tax-calculator": "연금소득세 계산기",
   "isa-vs-pension-calculator": "ISA vs 연금저축",
+  "customs-law-guide": "관세·통관 법령 길잡이",
+  "ip-law-guide": "특허·상표 법령 길잡이",
+  "appraisal-law-guide": "감정평가·보상 법령 길잡이",
+  "realty-brokerage-law-guide": "부동산 거래·중개 법령 길잡이",
+  "currency-converter": "환율 계산기",
+  "foreign-exchange-fee-calculator": "환전 수수료 계산기",
+  "rental-yield-calculator": "임대수익률 계산기",
+  "inherited-house-appraisal-vs-official-price-calculator": "감정가 vs 공시가격",
+  "reconstruction-profit": "재건축 수익 계산",
+  "redevelopment-ticket-vs-presale-tax-calculator": "입주권 vs 분양권 세금",
+  "brokerage-calculator": "중개보수 계산기",
+  "jeonse-vs-buy-calculator": "전세 vs 매매",
+  "property-tax-calculator": "재산세 계산기",
+  "swot-analysis": "SWOT 분석",
+  "bcg-matrix": "BCG 매트릭스",
+  "positioning-map": "포지셔닝 맵",
+  "priority-decision-matrix": "가중 의사결정표",
+  "market-test-calculator": "시장 실험 손익",
+  "campaign-supply-planner": "캠페인 품절 대비",
+  "quality-recovery-planner": "품질 회수 계획",
+  "alternative-material-review": "대체 원료 검토",
+  "big-order-capacity-check": "대형 수주 생산 점검",
+  "sales-rebate-checker": "판매장려금 점검",
+  "influencer-deal-calculator": "인플루언서 계약 계산",
+  "project-timeline-planner": "프로젝트 일정(CPM)",
+  "business-must-do-checklist": "사업자 필수 체크리스트",
+  "business-toolkit": "경영 도구 모음",
 };
 
 /** 링크할 수 있는 스킬. 소스는 tools-oiyo skills/, 공개 배포는 github.com/yuli3/oiyo-skills. */
 export const SKILLS: Record<string, { name: string; zip: string }> = {
-  "oiyo-kr-law-guide": { name: "법령 길잡이 6분야", zip: "/downloads/oiyo-kr-law-guide-skill.zip" },
+  "oiyo-kr-law-guide": { name: "법령 길잡이 10분야", zip: "/downloads/oiyo-kr-law-guide-skill.zip" },
   "kr-tax-advisor": { name: "세무·회계 실무 보조", zip: "/downloads/oiyo-kr-tax-advisor-skill.zip" },
   "oiyo-kr-benefits-navigator": { name: "생활 지원금·노동권 길잡이", zip: "/downloads/oiyo-kr-benefits-navigator-skill.zip" },
   "oiyo-business-strategist": { name: "경영 전략 참모", zip: "/downloads/oiyo-business-strategist-skill.zip" },
@@ -256,6 +336,8 @@ export const MCP_TOOLS = [
   "calculate_kr_dismissal_notice_pay", "calculate_kr_wage_guarantee", "calculate_kr_shutdown_allowance", "plan_kr_annual_leave_promotion", "check_kr_probation_minimum_wage",
   "calculate_kr_injury_leave_pay", "calculate_unemployment_benefits", "check_kr_voluntary_quit_unemployment",
   "calculate_kr_acquisition_tax", "diagnose_hug_guarantee", "calculate_compound_interest", "calculate_kr_long_term_care_copay",
+  "compare_kr_inherited_house_valuation", "compare_kr_ticket_vs_presale_tax", "calculate_kr_property_tax",
+  "analyze_swot", "analyze_market_test", "plan_campaign_supply", "plan_quality_recovery", "compare_alternative_materials", "check_big_order_capacity", "check_sales_rebates",
 ] as const;
 
 export const isGap = (x: Competency) => x.tools.length + x.skills.length + x.mcp.length === 0;

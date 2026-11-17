@@ -13,7 +13,7 @@ test("자료: 주제가 가리키는 조문이 모두 있고, 다섯 분야 모�
 });
 
 test("자격 명칭을 이름으로 쓰지 않아요(유사명칭 금지)", () => {
-  for (const p of Object.values(PROFESSIONS)) assert.doesNotMatch(p.name, /세무사|회계사|노무사|행정사|법무사|계리사|손해사정사|설계사/);
+  for (const p of Object.values(PROFESSIONS)) assert.doesNotMatch(p.name, /세무사|회계사|노무사|행정사|법무사|계리사|손해사정사|설계사|관세사|변리사|감정평가사|중개사/);
 });
 
 test("기한: 초일 불산입, 월 단위는 같은 날, 말일 기준은 그 달 말일", () => {
@@ -156,4 +156,33 @@ test("보험 주제: 질문·기한·확인할 점", () => {
   assert.equal(suggestTopics("보험 청약철회 하고 싶어요")[0].id, "ins-undo");
   assert.equal(findStatutes("사은품", "insurance")[0].id, "ins-98");
   assert.equal(statuteUrl({ law: "금융소비자 보호에 관한 법률", article: "제46조" }), "https://www.law.go.kr/법령/금융소비자보호에관한법률/제46조");
+});
+
+test("분야 팩: 관세·특허·감정평가·중개가 10분야로 붙고 기한이 맞아요", () => {
+  assert.equal(Object.keys(PROFESSIONS).length, 10);
+  for (const d of ["customs", "ip", "appraisal", "realty"] as const) {
+    assert.ok(TOPICS.filter((t) => t.domain === d).length >= 2, d);
+    assert.ok(STATUTES.some((x) => x.domain === d), d);
+    assert.ok(SCOPE_MATRIX.some((m) => m.who[d] === "yes"), d);
+    assert.ok(PROFESSIONS[d].exclusive.length >= 1 && PROFESSIONS[d].freeHelp.length >= 1, d);
+  }
+  const refund = intake("customs-correct", { situation: "over", payDate: "2026-03-10" }, "2026-11-17").deadlines.find((x) => x.id === "refund");
+  assert.equal(refund?.due, "2031-03-10");
+  const appeal = intake("customs-correct", { situation: "assessed", noticeDate: "2026-11-02" }, "2026-11-17").deadlines;
+  assert.equal(appeal.length, 1);
+  assert.equal(appeal[0].due, "2027-02-01"); // 90일째 2027-01-31이 일요일이라 다음 날
+  const grace = intake("ip-disclosed", { discloseDate: "2026-05-20", byInventor: "yes" }, "2026-11-17").deadlines[0];
+  assert.equal(grace.due, "2027-05-20");
+  const exp = intake("appr-expropriation", { decisionDate: "2026-11-10" }, "2026-11-17").deadlines;
+  assert.deepEqual(exp.map((x) => x.id), ["objection", "suit"]);
+  assert.equal(exp[0].due, "2026-12-10");
+  const fee = intake("realty-fee", { dealType: "sale", contractDate: "2026-11-01" }, "2026-11-17");
+  assert.equal(fee.deadlines[0].due, "2026-12-01");
+  assert.ok(fee.tools.some((t) => t.href === "/ko/brokerage-calculator/"));
+  const direct = intake("customs-direct", { price: 180, fromUs: "yes", resale: "no" }).flags;
+  assert.equal(direct[0].tone, "good");
+  assert.equal(intake("customs-direct", { price: 180, fromUs: "no", resale: "no" }).flags[0].tone, "warn");
+  assert.equal(suggestTopics("해외직구 200달러 관세")[0].id, "customs-direct");
+  assert.equal(suggestTopics("수용 보상금 이의신청")[0].id, "appr-expropriation");
+  assert.equal(findStatutes("공지예외")[0].id, "pa-30");
 });
