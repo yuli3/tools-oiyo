@@ -3,12 +3,13 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { execFileSync } from "node:child_process";
-import { LAW_SKILL_LIBS, LAW_SKILL_DIR, renderReferences } from "./build-law-guide-skill.mjs";
+import { LAW_SKILL_LIBS, LAW_SKILL_DIR, renderReferences, renderCompetencies } from "./build-law-guide-skill.mjs";
 import { renderSkillLib } from "./build-advisor-skill.mjs";
 
 test("law guide skill scripts and references match src/lib", async () => {
   for (const name of LAW_SKILL_LIBS) assert.equal(readFileSync(resolve(LAW_SKILL_DIR, "scripts", `${name}.mjs`), "utf8"), renderSkillLib(name), `${name}: run node scripts/build-law-guide-skill.mjs`);
   for (const [d, md] of Object.entries(await renderReferences())) assert.equal(readFileSync(resolve(LAW_SKILL_DIR, "references", `${d}.md`), "utf8"), md, `references/${d}.md: run node scripts/build-law-guide-skill.mjs`);
+  assert.equal(readFileSync(resolve(LAW_SKILL_DIR, "references/competencies.md"), "utf8"), await renderCompetencies(), "references/competencies.md: run node scripts/build-law-guide-skill.mjs");
 });
 
 test("law guide CLI: suggest → intake → statutes", () => {

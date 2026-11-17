@@ -42,6 +42,8 @@ description: 한국 세금·회계·노동·행정·등기(법원 서류)·보�
 - 등기·법원 `references/court.md` — 상속 포기, 이전등기, 돈 받기, 보증금, 법인 변경등기
 - 보험 `references/insurance.md` — 청약철회·약관 취소·위법계약해지·승환 부활(일반인), 보험금 청구·거절·고지의무 해지(일반인), 사은품 한도·승환 점검(설계사·대리점), 계리·손해사정 업무 범위(종사자)
 
+- 직업별 역량 지도 `references/competencies.md` — 세무사·공인회계사·공인노무사·행정사·법무사·보험계리사·손해사정사·보험설계사의 역량 7분류와 연결 도구·MCP. 종사자가 "이 업무에 쓸 도구"를 물으면 여기서 고른다.
+
 ## 쓸 수 있는 경로 (위에서부터)
 
 1. MCP `https://api.oiyo.net/mcp`(Registry `io.github.yuli3/oiyo-calculations`): `start_kr_law_intake`, `search_kr_statutes`, `get_kr_professional_scope`

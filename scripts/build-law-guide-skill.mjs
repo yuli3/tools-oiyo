@@ -3,7 +3,10 @@
 //   tools.oiyo.net/ko/law-guide/ (src/lib/kr-expert-guide-2026.ts, types stripped). references/*.md are generated too.
 //   node scripts/build-law-guide-skill.mjs      (Node >= 22.13; needs the `zip` command)
 // scripts/law-guide-skill.test.mjs fails when the committed files drift from src/lib.
-import { writeFileSync, mkdirSync, rmSync } from "node:fs";
+import { writeFileSync, mkdirSync, rmSync, readFileSync, mkdtempSync } from "node:fs";
+import { stripTypeScriptTypes } from "node:module";
+import { tmpdir } from "node:os";
+import { pathToFileURL } from "node:url";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { execFileSync } from "node:child_process";
@@ -48,9 +51,32 @@ export async function renderReferences() {
   return out;
 }
 
+/** references/competencies.md: 직업 8개 역량 지도와 연결 도구 (src/data/pro-competencies.ts에서 만들어요). */
+export async function renderCompetencies() {
+  const src = stripTypeScriptTypes(readFileSync(resolve(root, "src/data/pro-competencies.ts"), "utf8"));
+  const tmp = resolve(mkdtempSync(resolve(tmpdir(), "oiyo-comp-")), "pro-competencies.mjs");
+  writeFileSync(tmp, src);
+  const d = await import(pathToFileURL(tmp).href);
+  const lines = ["# 전문 직업 역량 지도", "", `GENERATED from tools-oiyo src/data/pro-competencies.ts. 기준일 ${d.COMPETENCY_AS_OF}. 웹: https://tools.oiyo.net/ko/pro-competency-map/`, "", "질문이 어느 직업의 어떤 역량에 해당하는지 고른 뒤, 연결된 도구·MCP로 계산하고 업무 범위(ethics) 역량으로 경계를 확인한다. '준비 중'은 아직 도구가 없으니 계산하지 말고 공공 창구나 자격사로 안내한다.", "", "## 역량 분류", ""];
+  for (const c of d.CATEGORIES) lines.push(`- \`${c.id}\` ${c.name}: ${c.desc}`);
+  for (const j of d.JOBS) {
+    lines.push("", `## ${j.name} (${j.act})`, "", j.summary, "");
+    for (const x of d.COMPETENCIES.filter((y) => y.job === j.id)) {
+      const cat = d.CATEGORIES.find((c) => c.id === x.cat).name;
+      const tags = [x.audience.includes("public") ? "일반인도 씀" : "", x.exclusive ? "자격사 업무와 맞닿음: 정보만" : "", d.isGap(x) ? "준비 중" : ""].filter(Boolean).join(", ");
+      lines.push(`- **${x.name}** [${cat}]${tags ? ` (${tags})` : ""}: ${x.desc}`);
+      if (x.tools.length) lines.push(`  - 도구: ${x.tools.map((t) => `${d.TOOL_NAMES[t]} https://tools.oiyo.net${d.toolHref(t)}`).join(" · ")}`);
+      if (x.mcp.length) lines.push(`  - MCP: ${x.mcp.map((m) => `\`${m}\``).join(", ")}`);
+      if (x.skills.length) lines.push(`  - 스킬: ${x.skills.join(", ")}`);
+    }
+  }
+  return lines.join("\n") + "\n";
+}
+
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   for (const name of LAW_SKILL_LIBS) writeFileSync(resolve(LAW_SKILL_DIR, "scripts", `${name}.mjs`), renderSkillLib(name));
   for (const [d, md] of Object.entries(await renderReferences())) writeFileSync(resolve(LAW_SKILL_DIR, "references", `${d}.md`), md);
+  writeFileSync(resolve(LAW_SKILL_DIR, "references", "competencies.md"), await renderCompetencies());
   const out = resolve(root, "public/downloads/oiyo-kr-law-guide-skill.zip");
   mkdirSync(dirname(out), { recursive: true });
   rmSync(out, { force: true });
