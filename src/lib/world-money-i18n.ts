@@ -8,7 +8,7 @@ export const WL_CURRENCY: Record<WL, string> = { en: "USD", ja: "JPY", zh: "CNY"
 const INTL: Record<WL, string> = { en: "en-US", ja: "ja-JP", zh: "zh-CN", fr: "fr-FR", es: "es-ES" };
 /** USD 1에 해당하는 대략의 금액(범위·예시용, 환율 계산 아님) */
 const SCALE: Record<string, number> = { USD: 1, EUR: 1, JPY: 150, CNY: 7, TWD: 32 };
-const sc = (cur: string) => SCALE[cur] ?? 1;
+export const sc = (cur: string) => SCALE[cur] ?? 1;
 
 /** 짧은 금액(1.2M, 120万). Node·브라우저 ICU 차이를 막으려고 minimumFractionDigits 0을 꼭 넣어요. */
 export function cash(n: number, lang: WL, cur: string): string {
@@ -20,7 +20,7 @@ export function cash(n: number, lang: WL, cur: string): string {
 export const cashExact = (n: number, lang: WL, cur: string) =>
   Number.isFinite(n) ? new Intl.NumberFormat(INTL[lang], { style: "currency", currency: cur, maximumFractionDigits: 0, minimumFractionDigits: 0 }).format(n) : "—";
 export const pctOf = (r: number, lang: WL) => new Intl.NumberFormat(INTL[lang], { style: "percent", maximumFractionDigits: 1, minimumFractionDigits: 0 }).format(r);
-const num = (n: number, lang: WL, d = 1) => new Intl.NumberFormat(INTL[lang], { maximumFractionDigits: d, minimumFractionDigits: 0 }).format(n);
+export const num = (n: number, lang: WL, d = 1) => new Intl.NumberFormat(INTL[lang], { maximumFractionDigits: d, minimumFractionDigits: 0 }).format(n);
 
 export const YEARS: Record<WL, (n: number) => string> = {
   en: (n) => `${n} yr`,
@@ -51,11 +51,11 @@ export function driverOf(lang: WL, top: TornadoBar | undefined, what: string, fm
   }[lang];
 }
 
-type Names = Record<WL, [label: string, plain: string]>;
-const money = <I>(lang: WL, key: string, n: Names, get: (i: I) => number, set: (i: I, v: number) => I, range: (a: number) => [number, number]): Assumption<I> => ({
+export type Names = Record<WL, [label: string, plain: string]>;
+export const money = <I>(lang: WL, key: string, n: Names, get: (i: I) => number, set: (i: I, v: number) => I, range: (a: number) => [number, number]): Assumption<I> => ({
   key, label: n[lang][0], plain: n[lang][1], unit: "won", kind: "assumption", get, set, range,
 });
-const RATE: Names = { en: ["Annual interest rate", "the interest rate"], ja: ["年利", "金利"], zh: ["年利率", "利率"], fr: ["Taux annuel", "le taux"], es: ["Tipo de interés anual", "el tipo de interés"] };
+export const RATE: Names = { en: ["Annual interest rate", "the interest rate"], ja: ["年利", "金利"], zh: ["年利率", "利率"], fr: ["Taux annuel", "le taux"], es: ["Tipo de interés anual", "el tipo de interés"] };
 
 // ───────────────────────── 복리 ─────────────────────────
 

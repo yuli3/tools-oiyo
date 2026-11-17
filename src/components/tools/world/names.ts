@@ -6,6 +6,11 @@ const N = {
   "fire-retirement-calculator": { en: "FIRE retirement", ja: "FIRE（早期リタイア）", zh: "FIRE 提前退休", fr: "Retraite anticipée FIRE", es: "Jubilación anticipada FIRE" },
   "loan-calculator": { en: "Loan repayment", ja: "ローン返済", zh: "贷款还款", fr: "Remboursement de prêt", es: "Préstamo" },
   "mortgage-calculator": { en: "Mortgage", ja: "住宅ローン", zh: "房贷", fr: "Prêt immobilier", es: "Hipoteca" },
+  "inflation-calculator": { en: "Inflation", ja: "インフレ計算", zh: "通胀计算", fr: "Inflation", es: "Inflación" },
+  "roi-calculator": { en: "ROI", ja: "投資利回り（ROI）", zh: "投资回报率", fr: "Rendement (ROI)", es: "Rentabilidad (ROI)" },
+  "rental-yield-calculator": { en: "Rental yield", ja: "賃貸利回り", zh: "租金回报率", fr: "Rendement locatif", es: "Rentabilidad del alquiler" },
+  "stock-average-calculator": { en: "Average cost", ja: "平均取得単価", zh: "持仓均价", fr: "Prix de revient moyen", es: "Precio medio" },
+  "latte-factor-calculator": { en: "Latte factor", ja: "ラテマネー", zh: "拿铁因子", fr: "Effet latte", es: "Efecto latte" },
 } as const;
 
 export type WorldToolId = keyof typeof N;
