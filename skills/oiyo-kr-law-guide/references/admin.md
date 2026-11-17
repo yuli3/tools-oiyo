@@ -1,6 +1,6 @@
 # 행정 절차 길잡이 (행정사 업무 영역)
 
-GENERATED from tools-oiyo src/lib/kr-expert-guide-2026.ts. 기준일 2026-11-16.
+GENERATED from tools-oiyo src/lib/kr-expert-guide-2026.ts. 기준일 2026-11-17.
 
 ## 행정사의 법정 업무 (행정사법 제2조 제1항)
 
