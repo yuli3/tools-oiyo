@@ -17,6 +17,10 @@ const N = {
   "water-intake-calculator": { en: "Water intake", ja: "水分摂取量", zh: "饮水量", fr: "Besoins en eau", es: "Agua diaria" },
   "caffeine-calculator": { en: "Caffeine", ja: "カフェイン", zh: "咖啡因", fr: "Caféine", es: "Cafeína" },
   "macro-calculator": { en: "Macros", ja: "PFCバランス", zh: "宏量营养素", fr: "Macronutriments", es: "Macronutrientes" },
+  "ideal-weight-calculator": { en: "Ideal weight", ja: "標準体重", zh: "标准体重", fr: "Poids idéal", es: "Peso ideal" },
+  "heart-rate-calculator": { en: "Heart rate zones", ja: "心拍ゾーン", zh: "心率区间", fr: "Zones cardiaques", es: "Zonas de frecuencia cardiaca" },
+  "one-rep-max-calculator": { en: "One-rep max", ja: "1RM計算", zh: "1RM计算", fr: "1RM (charge max)", es: "1RM (repetición máxima)" },
+  "child-height-calculator": { en: "Child's adult height", ja: "子どもの予想身長", zh: "孩子预测身高", fr: "Taille adulte de l'enfant", es: "Altura adulta del niño" },
 } as const;
 
 export type WorldToolId = keyof typeof N;
