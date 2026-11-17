@@ -3,7 +3,7 @@ import ToolShell from '../../components/ToolShell.astro';
 // Moved from blog.oiyo.net/{locale}/rental-roi-calculator/ on 2026-10-27 (W12).
 import Layout from '../../components/Layout.astro';
 import RelatedUtilities from '../../components/RelatedUtilities.astro';
-import RentalRoiCalculator from '../../components/tools/RentalRoiCalculator';
+import RentalWorld from '../../components/tools/world/RentalWorld';
 import RentalScenario from '../../components/tools/RentalScenario';
 import { locales } from '../../lib/i18n';
 import { utilityJsonLd } from '../../lib/utility-jsonld';
@@ -46,7 +46,7 @@ const schema = utilityJsonLd({ name: m.title, description: m.description, url, l
 ---
 <Layout title={m.title} description={m.description} locale={locale} availableLocales={[...locales]} canonicalURL={url}>
   <ToolShell title={m.title} description={m.description}>
-    {locale === 'ko' ? <RentalScenario client:load toolId="rental-roi-calculator" /> : <RentalRoiCalculator client:load locale="en" />}
+    {locale === 'ko' ? <RentalScenario client:load toolId="rental-roi-calculator" /> : <RentalWorld client:load lang={locale} toolId="rental-roi-calculator" />}
     <RelatedUtilities locale={locale} current="rental-roi-calculator" group="money" />
   </ToolShell>
   <script type="application/ld+json" set:html={JSON.stringify(schema)} />
