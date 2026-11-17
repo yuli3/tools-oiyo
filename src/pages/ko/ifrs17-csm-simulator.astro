@@ -1,0 +1,31 @@
+---
+// IFRS 17 보험계약마진(CSM) 계산 원리 2026 (2026-11-17, 전문 직업 역량 지도의 빈칸 채우기). 엔진: lib/pro-practice-2026.ts
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import CsmSimulator from "../../components/tools/practice/CsmSimulator";
+import { LAW_GUIDE_AS_OF } from "../../lib/kr-expert-guide-2026";
+
+const title = "IFRS 17 보험계약마진(CSM) 계산 원리 2026 — 이행현금흐름·위험조정·상각";
+const description = "보험료·보험금·유지비·신계약비와 할인율, 위험조정 비율로 이행현금흐름과 최초 보험계약마진(CSM) 또는 손실요소를 계산하고, 해마다 이익으로 풀리는 CSM을 그래프로 보여 줘요. 일반모형 설명용이에요.";
+const ko = {
+  introTitle: "보험사 이익은 CSM으로 나눠서 인식해요",
+  intro: "IFRS 17에서는 계약 첫날 미래 현금흐름을 현재가치로 바꾸고, 남는 이익을 보험계약마진(CSM)으로 쌓았다가 보장 기간에 걸쳐 풀어요. 가정을 바꾸면 CSM과 손실요소가 어떻게 바뀌는지 바로 봐요.",
+  howToTitle: "사용 방법",
+  steps: ["연 보험료·보장 기간·예상 보험금·유지비·신계약비를 넣어요.", "할인율과 위험조정 비율을 정해요.", "CSM 워터폴과 해마다 풀리는 금액을 보고, 가정 슬라이더로 민감도를 확인해요."],
+  highlightsTitle: "주요 특징",
+  highlights: [
+    { title: "이행현금흐름", body: "유출 현재가치 + 위험조정 − 유입 현재가치." },
+    { title: "CSM과 손실요소", body: "남으면 CSM, 모자라면 첫날 손실." },
+    { title: "상각 일정", body: "이자를 더한 뒤 보장 단위로 나눠 풀어요." },
+    { title: "민감도", body: "보험금·할인율·위험조정을 바꿔 봐요." },
+  ],
+  disclaimer: "회계 원리를 보여 주는 설명용 계산이에요. 실제 책임준비금·CSM 측정은 계약 묶음, 할인율 곡선, 보장 단위, 보험회사 내부 가정을 써요. 기준일 2026-11-17.",
+};
+const faqs = [
+  { q: "CSM이 크면 좋은 건가요?", a: "앞으로 인식할 이익이 많다는 뜻이에요. 다만 가정(해지율·손해율)이 나빠지면 CSM이 먼저 줄어들어요." },
+  { q: "손실요소는 언제 생기나요?", a: "예상 유출과 위험조정이 보험료보다 커서 처음부터 손실인 계약 묶음이에요. 첫날 바로 비용으로 인식해요." },
+];
+---
+<KrFinancePage slug="ifrs17-csm-simulator" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <CsmSimulator client:load />
+  <p class="mt-4 text-xs text-muted-foreground">근거: K-IFRS 제1117호 보험계약 문단 32·38·44·47. 기준일 {LAW_GUIDE_AS_OF}. <a class="underline" href="/ko/insurance-law-guide/">보험 법령 길잡이</a> · <a class="underline" href="/ko/pro-competency-map/">전문 직업 역량 지도</a></p>
+</KrFinancePage>

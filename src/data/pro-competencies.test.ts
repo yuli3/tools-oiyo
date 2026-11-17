@@ -38,7 +38,8 @@ test("역량 지도: 직업 13개 모두 분류 4개 이상, 업무 범위(ethic
 
 test("역량 지도: 빈칸(gap)은 다음 제작 목록이고, 커버리지 합이 맞아요", () => {
   const gaps = COMPETENCIES.filter(isGap);
-  assert.ok(gaps.length > 0 && gaps.length < COMPETENCIES.length / 3);
+  // 2026-11-17 세운 "업무범위에 필요한 모든 도구 추가"로 빈칸 0개. 새 직업을 넣으면 빈칸이 다시 생길 수 있어요.
+  assert.ok(gaps.length < COMPETENCIES.length / 3);
   const cov = coverage();
   const total = cov.flatMap((r) => r.cells).reduce((a, c) => a + c.total, 0);
   const linked = cov.flatMap((r) => r.cells).reduce((a, c) => a + c.linked, 0);

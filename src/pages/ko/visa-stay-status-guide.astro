@@ -1,0 +1,31 @@
+---
+// 체류자격·외국인등록 기한 길잡이 (2026-11-17, 전문 직업 역량 지도의 빈칸 채우기). 데이터: lib/pro-practice-guides-2026.ts
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import PracticeGuide from "../../components/tools/practice/PracticeGuide";
+import { LAW_GUIDE_AS_OF } from "../../lib/kr-expert-guide-2026";
+
+const title = "체류자격·외국인등록 기한 길잡이 2026 — 등록 90일, 체류지 변경 15일, 연장 4개월 전";
+const description = "입국 뒤 외국인등록 90일, 체류지 변경 신고 15일, 등록사항 변경 15일, 체류기간 연장 신청 시작일을 날짜로 계산하고, 준비 서류와 자주 묻는 체류자격(D-2·D-10·E-7·E-9·F-2·F-4·F-5·F-6)을 정리해요.";
+const ko = {
+  introTitle: "체류 기한은 하루만 넘겨도 범칙금이에요",
+  intro: "외국인 체류는 기한을 지키는 게 가장 중요해요. 입국일이나 이사한 날을 넣으면 신고 마감일을 계산하고, 준비 서류를 체크리스트로 보여 줘요.",
+  howToTitle: "사용 방법",
+  steps: ["상황(등록, 연장·변경, 체류자격)을 골라요.", "준비 서류를 체크해요.", "날짜를 넣어 신고 기한을 확인하고, 하이코리아에서 예약하거나 신청해요."],
+  highlightsTitle: "주요 특징",
+  highlights: [
+    { title: "등록 90일", body: "출입국관리법 제31조." },
+    { title: "변경 신고 15일", body: "체류지·등록사항(제35조·제36조)." },
+    { title: "연장 시작일", body: "만료 4개월 전부터." },
+    { title: "무료 상담 1345", body: "20개 언어." },
+  ],
+  disclaimer: "정보 도구예요. 체류 허가 여부를 판단하거나 신청을 대리하지 않아요. 체류자격별 세부 요건은 하이코리아 안내와 관할 출입국·외국인관서에 확인하세요. 기준일 2026-11-17.",
+};
+const faqs = [
+  { q: "만료일이 주말이면요?", a: "기한 계산은 말일이 공휴일이면 다음 날로 미뤄지지만, 출입국 관서 업무 기준이 다를 수 있으니 미리 신청하세요." },
+  { q: "체류자격을 바꾸고 싶어요.", a: "새 활동을 시작하기 전에 체류자격 변경 허가를 받아야 해요(출입국관리법 제24조)." },
+];
+---
+<KrFinancePage slug="visa-stay-status-guide" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <PracticeGuide client:load slug="visa-stay-status-guide" />
+  <p class="mt-4 text-xs text-muted-foreground">근거: 출입국관리법 제18조·제20조·제24조·제25조·제31조·제35조·제36조. 기준일 {LAW_GUIDE_AS_OF}. <a class="underline" href="/ko/administrative-law-guide/">행정 절차 길잡이</a> · <a class="underline" href="/ko/pro-competency-map/">전문 직업 역량 지도</a></p>
+</KrFinancePage>

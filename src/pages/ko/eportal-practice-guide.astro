@@ -1,0 +1,31 @@
+---
+// 전자 창구 실무 길잡이 (2026-11-17, 전문 직업 역량 지도의 빈칸 채우기). 데이터: lib/pro-practice-guides-2026.ts
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import PracticeGuide from "../../components/tools/practice/PracticeGuide";
+import { LAW_GUIDE_AS_OF } from "../../lib/kr-expert-guide-2026";
+
+const title = "전자 창구 실무 길잡이 2026 — 홈택스·4대보험·인터넷등기소·전자소송·유니패스·특허로";
+const description = "홈택스 전자세금계산서·원천세, 4대보험 취득·상실 신고(다음 달 15일), 인터넷등기소 이전등기 60일, 전자소송 항소·지급명령 이의 2주, 유니패스 FTA 사후 적용 1년, 특허로 심사청구 3년까지 창구별 할 일과 기한을 한 화면에서 계산해요.";
+const ko = {
+  introTitle: "전문 실무는 결국 전자 창구에서 끝나요",
+  intro: "세금·노무·등기·소송·통관·특허는 각각 공공 전자 창구가 있어요. 창구를 고르면 로그인 준비물, 자주 놓치는 점, 기한 계산을 보여 줘요. 본인 일은 직접 할 수 있고, 남의 일을 대리하는 건 자격사 업무예요.",
+  howToTitle: "사용 방법",
+  steps: ["창구를 골라요.", "준비물과 확인할 점을 체크해요.", "날짜를 넣어 기한을 계산하고 공식 창구로 이동해요."],
+  highlightsTitle: "주요 특징",
+  highlights: [
+    { title: "6개 창구", body: "홈택스·4대보험·등기·전자소송·유니패스·특허로." },
+    { title: "기한 계산", body: "말일이 휴일이면 다음 날." },
+    { title: "자주 놓치는 점", body: "전자 송달 1주, 연차료 등." },
+    { title: "대리 경계", body: "창구마다 대리할 수 있는 자격사." },
+  ],
+  disclaimer: "정보 도구예요. 신고·등기·소송·통관·출원을 대리하지 않아요. 화면과 메뉴 이름은 창구 개편으로 바뀔 수 있어요. 기준일 2026-11-17.",
+};
+const faqs = [
+  { q: "4대보험 취득 신고를 늦게 하면요?", a: "과태료가 부과될 수 있고, 근로자의 고용보험 이력이 빠져 실업급여 계산에 영향을 줄 수 있어요." },
+  { q: "전자소송 송달을 안 열어 보면요?", a: "통지한 날부터 1주가 지나면 송달된 것으로 봐서 항소 기간이 흘러가요." },
+];
+---
+<KrFinancePage slug="eportal-practice-guide" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <PracticeGuide client:load slug="eportal-practice-guide" />
+  <p class="mt-4 text-xs text-muted-foreground">근거: 부가가치세법 제34조, 소득세법 제128조, 고용보험법 제15조, 부동산등기특별조치법 제2조, 민사소송법 제396조·제470조, FTA관세특례법 제9조, 특허법 제59조. 기준일 {LAW_GUIDE_AS_OF}. <a class="underline" href="/ko/law-guide/">법령 길잡이 10분야</a> · <a class="underline" href="/ko/pro-competency-map/">전문 직업 역량 지도</a></p>
+</KrFinancePage>

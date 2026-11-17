@@ -6,7 +6,21 @@
 //   node scripts/guide.mjs intake <topicId> '<answers json>' [YYYY-MM-DD]
 //   node scripts/guide.mjs statutes "<키워드>" [domain]
 //   node scripts/guide.mjs scope <domain>
+//   node scripts/guide.mjs calc <fine|duty|csm|kics|claim|record> '<input json>'
+//   node scripts/guide.mjs calc entries <csv 파일> [결재 한도]
+//   node scripts/guide.mjs practice [<길잡이 slug> [<상황 id> '<{"기한id":"YYYY-MM-DD"}>']]
+import { readFileSync } from "node:fs";
 import { LAW_GUIDE_AS_OF, PROFESSIONS, SCOPE_MATRIX, TOPICS, findStatutes, intake, statuteUrl, suggestTopics } from "./kr-expert-guide-2026.mjs";
+import { analyzeEntries, claimPlain, claimResult, csmPlain, csmResult, dutyPlain, dutyResult, finePlain, fineResult, kicsPlain, kicsResult, parseEntries } from "./pro-practice-2026.mjs";
+import { GUIDES, guideBySlug, guideDeadlines, recordCheck, recordText } from "./pro-practice-guides-2026.mjs";
+
+const CALC = {
+  fine: [fineResult, finePlain],
+  duty: [dutyResult, dutyPlain],
+  csm: [csmResult, csmPlain],
+  kics: [kicsResult, kicsPlain],
+  claim: [claimResult, claimPlain],
+};
 
 const [cmd, a1, a2, a3] = process.argv.slice(2);
 const print = (x) => console.log(JSON.stringify(x, null, 2));
@@ -28,7 +42,34 @@ switch (cmd) {
   case "scope":
     print({ profession: PROFESSIONS[a1], matrix: SCOPE_MATRIX });
     break;
+  case "calc": {
+    if (a1 === "entries") {
+      const { rows, skipped } = parseEntries(readFileSync(a2, "utf8"));
+      const r = analyzeEntries(rows, { approvalLimit: Number(a3 ?? 0) });
+      print({ ...r, skipped, flagged: r.flagged.slice(0, 50) });
+    } else if (a1 === "record") {
+      const i = JSON.parse(a2 ?? "{}");
+      print({ check: recordCheck(i), text: recordText(i) });
+    } else if (CALC[a1]) {
+      const i = JSON.parse(a2 ?? "{}");
+      print({ result: CALC[a1][0](i), plain: CALC[a1][1](i) });
+    } else {
+      console.error(`calc: ${Object.keys(CALC).join(", ")}, entries, record`);
+      process.exit(1);
+    }
+    break;
+  }
+  case "practice": {
+    if (!a1) print(GUIDES.map((g) => ({ slug: g.slug, title: g.title, cases: g.cases.map((c) => `${c.id} ${c.label}`) })));
+    else {
+      const g = guideBySlug(a1);
+      const c = g?.cases.find((x) => x.id === a2);
+      if (!g) { console.error("practice: 길잡이 slug를 확인하세요"); process.exit(1); }
+      print(c ? { ...c, deadlines: guideDeadlines(c, a3 ? JSON.parse(a3) : {}) } : g);
+    }
+    break;
+  }
   default:
-    console.log(`기준일 ${LAW_GUIDE_AS_OF}\ncommands: suggest, topics, intake, statutes, scope\n예: node scripts/guide.mjs intake labor-dismissal '{"size":"5plus","dismissDate":"2026-10-30"}'`);
+    console.log(`기준일 ${LAW_GUIDE_AS_OF}\ncommands: suggest, topics, intake, statutes, scope, calc, practice\n예: node scripts/guide.mjs intake labor-dismissal '{"size":"5plus","dismissDate":"2026-10-30"}'`);
     process.exit(cmd ? 1 : 0);
 }

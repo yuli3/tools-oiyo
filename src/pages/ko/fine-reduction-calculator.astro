@@ -1,0 +1,31 @@
+---
+// 과태료 자진납부 감경·가산금 계산기 2026 (2026-11-17, 전문 직업 역량 지도의 빈칸 채우기). 엔진: lib/pro-practice-2026.ts
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import FineReduction from "../../components/tools/practice/FineReduction";
+import { LAW_GUIDE_AS_OF } from "../../lib/kr-expert-guide-2026";
+
+const title = "과태료 자진납부 감경·가산금 계산기 2026 — 20% 감경 기한, 늦으면 최대 75%";
+const description = "사전통지서의 과태료와 받은 날을 넣으면 의견제출 기한 안 자진납부 20% 감경, 기초생활수급자·장애인 등 50% 감경, 납부기한을 넘겼을 때 가산금 3%와 매월 1.2% 중가산금(60개월 한도)을 계산해요.";
+const ko = {
+  introTitle: "과태료는 언제 내느냐로 금액이 바뀌어요",
+  intro: "질서위반행위규제법은 의견제출 기한 안에 스스로 내면 깎아 주고, 납부기한을 넘기면 매달 더 붙여요. 통지서 금액과 날짜만 넣으면 감경 기한과 낼 금액, 늦을수록 늘어나는 금액을 그래프로 보여 줘요.",
+  howToTitle: "사용 방법",
+  steps: ["사전통지서의 과태료와 받은 날, 의견제출 기간을 넣어요.", "언제 낼지 고르고, 사회적 약자 감경 대상인지 답해요.", "낼 금액과 감경 기한을 보고, 늦게 낼 때 얼마가 붙는지 확인해요."],
+  highlightsTitle: "주요 특징",
+  highlights: [
+    { title: "자진납부 20%", body: "의견제출 기한 안에 내면 20%까지 감경(제18조, 시행령 제5조)." },
+    { title: "사회적 약자 50%", body: "기초생활수급자·중증장애인·미성년자 등(시행령 제2조의2)." },
+    { title: "가산금·중가산금", body: "3% + 매월 1.2%, 60개월 한도로 최대 75%(제24조)." },
+    { title: "이의제기 60일", body: "부과 통지를 받은 날부터 60일(제20조)." },
+  ],
+  disclaimer: "법령 정보와 계산 도구예요. 과태료 부과·감경 여부를 확정하지 않고, 개별 법률의 특별 규정이 먼저 적용돼요. 기준일 2026-11-17.",
+};
+const faqs = [
+  { q: "자동차 과태료도 똑같나요?", a: "주정차·속도위반 과태료도 질서위반행위규제법을 따라서 의견제출 기한 안에 내면 20% 감경돼요. 다만 범칙금(도로교통법 통고처분)은 다른 제도예요." },
+  { q: "이의제기하면 어떻게 되나요?", a: "부과 처분은 효력을 잃고 행정청이 법원에 통보해 과태료 재판으로 넘어가요. 자진납부 감경은 받을 수 없어요(제20조·제21조)." },
+];
+---
+<KrFinancePage slug="fine-reduction-calculator" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <FineReduction client:load />
+  <p class="mt-4 text-xs text-muted-foreground">근거: 질서위반행위규제법 제16조·제18조·제20조·제24조, 시행령 제2조의2·제5조. 기준일 {LAW_GUIDE_AS_OF}. <a class="underline" href="/ko/administrative-law-guide/">행정 절차 길잡이</a> · <a class="underline" href="/ko/pro-competency-map/">전문 직업 역량 지도</a></p>
+</KrFinancePage>
