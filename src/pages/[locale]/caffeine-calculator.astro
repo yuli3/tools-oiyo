@@ -4,7 +4,7 @@ import ToolShell from '../../components/ToolShell.astro';
 import Layout from '../../components/Layout.astro';
 import UtilityArticle, { type UtilityContent } from '../../components/UtilityArticle.astro';
 import RelatedUtilities from '../../components/RelatedUtilities.astro';
-import CaffeineCalculator from '../../components/tools/CaffeineCalculator';
+import CaffeineWorld from '../../components/tools/world/CaffeineWorld';
 import CaffeineScenario from '../../components/tools/CaffeineScenario';
 import { locales } from '../../lib/i18n';
 import { utilityJsonLd } from '../../lib/utility-jsonld';
@@ -164,7 +164,7 @@ const schema = utilityJsonLd({ name: m.title, description: m.description, url, l
 ---
 <Layout title={m.title} description={m.description} locale={locale} availableLocales={[...locales]} canonicalURL={url}>
   <ToolShell title={m.title} description={m.description}>
-    {locale === 'ko' ? <CaffeineScenario client:load /> : <CaffeineCalculator client:load locale="en" />}
+    {locale === 'ko' ? <CaffeineScenario client:load /> : <CaffeineWorld client:load lang={locale} />}
     <UtilityArticle c={c} />
     <RelatedUtilities locale={locale} current="caffeine-calculator" group="health" />
   </ToolShell>

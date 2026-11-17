@@ -4,7 +4,7 @@ import ToolShell from '../../components/ToolShell.astro';
 import Layout from '../../components/Layout.astro';
 import UtilityArticle, { type UtilityContent } from '../../components/UtilityArticle.astro';
 import RelatedUtilities from '../../components/RelatedUtilities.astro';
-import BodyFatCalculator from '../../components/tools/BodyFatCalculator';
+import BodyFatWorld from '../../components/tools/world/BodyFatWorld';
 import BodyFatScenario from '../../components/tools/BodyFatScenario';
 import { locales } from '../../lib/i18n';
 import { utilityJsonLd } from '../../lib/utility-jsonld';
@@ -188,7 +188,7 @@ const schema = utilityJsonLd({ name: m.title, description: m.description, url, l
 ---
 <Layout title={m.title} description={m.description} locale={locale} availableLocales={[...locales]} canonicalURL={url}>
   <ToolShell title={m.title} description={m.description}>
-    {locale === 'ko' ? <BodyFatScenario client:load /> : <BodyFatCalculator client:load locale="en" />}
+    {locale === 'ko' ? <BodyFatScenario client:load /> : <BodyFatWorld client:load lang={locale} />}
     <UtilityArticle c={c} />
     <RelatedUtilities locale={locale} current="body-fat-calculator" group="health" />
   </ToolShell>
