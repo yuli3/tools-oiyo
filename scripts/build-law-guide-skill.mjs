@@ -12,7 +12,7 @@ import { fileURLToPath } from "node:url";
 import { execFileSync } from "node:child_process";
 import { renderSkillLib } from "./build-advisor-skill.mjs";
 
-export const LAW_SKILL_LIBS = ["kr-expert-guide-2026", "kr-legal-2026", "kr-business-day"];
+export const LAW_SKILL_LIBS = ["kr-expert-guide-2026", "kr-law-packs-2026", "kr-legal-2026", "kr-business-day"];
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 export const LAW_SKILL_DIR = resolve(root, "skills/oiyo-kr-law-guide");
 

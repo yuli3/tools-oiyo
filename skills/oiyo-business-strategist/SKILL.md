@@ -56,6 +56,10 @@ description: 기업가·경영팀·회계사·세무사·경리를 위한 경영
 
 세무 상담(비상장주식·가업상속·법인전환·DCF)은 `kr-tax-advisor` 스킬(https://tools.oiyo.net/ko/tax-advisor-toolkit/)을 쓴다.
 
+## 법 문제로 넘길 때
+
+운영 문제가 신고·불복·구제 기한이나 조문 판단으로 이어지면(품질 회수 → 행정 처분, 판매장려금 → 세금, 인력 조정 → 노동, 수입 원료 → 관세, 브랜드·기술 → 특허·상표) `oiyo-kr-law-guide` 스킬이나 MCP `start_kr_law_intake`로 넘겨 기한과 근거 조문을 붙인다. 웹: https://tools.oiyo.net/ko/law-guide/
+
 ## 지켜야 할 것
 
 - 결과는 판단을 돕는 참고값이다. 확률·점수·성장률은 사용자가 준 가정이라는 점을 메모에 남긴다.

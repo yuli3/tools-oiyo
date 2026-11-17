@@ -5,8 +5,8 @@ import KrFinancePage from "../../components/KrFinancePage.astro";
 import CompetencyMap from "../../components/tools/lawguide/CompetencyMap";
 import { CATEGORIES, COMPETENCIES, COMPETENCY_AS_OF, JOBS, SKILLS, SKILLS_REPO, isGap } from "../../data/pro-competencies";
 
-const title = "전문 직업 역량 지도 — 세무·회계·노무·행정·등기·보험 8개 직업의 역량과 연결 도구";
-const description = `세무사·공인회계사·공인노무사·행정사·법무사·보험계리사·손해사정사·보험설계사에게 필요한 역량 ${COMPETENCIES.length}개를 법령 해석·계산·기한·서류·상담·업무 범위·전자 업무 7가지로 나누고, 바로 쓸 수 있는 계산 도구·Claude 스킬·MCP를 연결했어요. 일반인도 같은 도구로 자기 문제를 정리할 수 있어요.`;
+const title = `전문 직업 역량 지도 — 세무·회계·노무·행정·등기·보험·관세·특허·감정평가·중개·경영 ${JOBS.length}개 직업의 역량과 연결 도구`;
+const description = `${JOBS.map((j) => j.name).join("·")}에게 필요한 역량 ${COMPETENCIES.length}개를 법령 해석·계산·기한·서류·상담·업무 범위·전자 업무 7가지로 나누고, 바로 쓸 수 있는 계산 도구·Claude 스킬·MCP를 연결했어요. 일반인도 같은 도구로 자기 문제를 정리할 수 있어요.`;
 const gaps = COMPETENCIES.filter(isGap);
 const jobName = (id: string) => JOBS.find((j) => j.id === id)!.name;
 const faqs = [
@@ -48,5 +48,5 @@ const faqs = [
     </ul>
   </section>
 
-  <p class="mt-8 text-xs text-muted-foreground">기준일 {COMPETENCY_AS_OF}. 직업별 업무 범위는 각 자격법 조문을 요약한 것이에요. 이 페이지와 도구는 법령 정보·계산이며 대리·자문이 아니에요. <a class="underline" href="/ko/law-guide/">법령 길잡이 6분야</a></p>
+  <p class="mt-8 text-xs text-muted-foreground">기준일 {COMPETENCY_AS_OF}. 직업별 업무 범위는 각 자격법 조문을 요약한 것이에요. 이 페이지와 도구는 법령 정보·계산이며 대리·자문이 아니에요. <a class="underline" href="/ko/law-guide/">법령 길잡이 10분야</a></p>
 </KrFinancePage>

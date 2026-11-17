@@ -1,0 +1,27 @@
+---
+// 법령 길잡이 (appraisal) 2026-11-17. 엔진: lib/kr-expert-guide-2026.ts + 분야 팩 lib/kr-law-packs-2026.ts. 세운 "지식전문가를 더 늘릴 수 있어야 해요"(2026-11-17).
+// 자격 명칭을 이름에 쓰지 않아요(각 자격법의 유사명칭 금지). 대리·대행·감정·중개를 하지 않아요.
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import LawGuide from "../../components/tools/lawguide/LawGuide";
+import { LAW_GUIDE_AS_OF } from "../../lib/kr-expert-guide-2026";
+
+const title = "감정평가·보상 법령 길잡이 2026 — 수용 보상금 이의신청 30일, 공시지가 이의신청";
+const description = "토지 수용 보상금이 적을 때 재결서 받은 날부터 이의신청 30일·행정소송 90일(이의재결 뒤 60일), 개별공시지가·표준지공시지가 이의신청 30일을 날짜로 계산하고 토지보상법·부동산공시법·감정평가법 조문과 무료 창구를 알려 줘요.";
+const ko = {
+  introTitle: "보상금·공시가격, 재결서와 공시일부터",
+  intro: "보상금과 공시가격은 기한이 짧아요. 재결서를 받은 날이나 공시일을 넣으면 이의신청·소송 마감일과 준비할 자료를 정리해 줘요. 감정평가나 보상금 산정을 대신하지는 않아요.",
+  howToTitle: "사용 방법",
+  steps: ["상황을 고르세요.", "먼저 묻는 질문에 답하세요. 모르면 건너뛰어도 돼요.", "기한 막대와 확인할 점을 보고, 결과 메모를 복사해 담당 기관이나 전문가에게 가져가세요."],
+  highlightsTitle: "주요 특징",
+  highlights: [{ title: "보상금 다툼 기한", body: "이의신청 30일, 소송 90일·이의재결 뒤 60일" }, { title: "공시가격 이의신청", body: "공시일부터 30일" }, { title: "무료 창구", body: "중앙토지수용위원회, 공시가격 알리미, 132" }],
+  disclaimer: "법령 정보와 기한 계산 도구예요. 대리·대행·감정·중개를 하지 않고 특정 전문가를 소개하지 않아요. 조문 풀이는 쉬운 말 요약이니 원문(국가법령정보센터)을 확인하세요. 기준일 2026-11-17.",
+};
+const faqs = [
+  { q: "이의신청하면 수용이 멈추나요?", a: "아니에요. 이의신청이나 소송을 해도 수용 절차는 진행되고, 보상금은 이의를 남기고 받을 수 있어요(토지보상법 제88조)." },
+  { q: "공시지가가 너무 높게 나왔어요.", a: "개별공시지가는 결정·공시일부터 30일 안에 시·군·구청에 이의신청할 수 있어요(부동산 가격공시에 관한 법률 제11조)." },
+];
+---
+<KrFinancePage slug="appraisal-law-guide" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <LawGuide client:load domain="appraisal" />
+  <p class="mt-4 text-xs text-muted-foreground">기준일 {LAW_GUIDE_AS_OF}. <a class="underline" href="/ko/law-guide/">법령 길잡이 10분야</a> · <a class="underline" href="/ko/inherited-house-appraisal-vs-official-price-calculator/">상속 주택 감정가 vs 공시가격</a></p>
+</KrFinancePage>

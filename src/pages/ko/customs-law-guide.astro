@@ -1,0 +1,27 @@
+---
+// 법령 길잡이 (customs) 2026-11-17. 엔진: lib/kr-expert-guide-2026.ts + 분야 팩 lib/kr-law-packs-2026.ts. 세운 "지식전문가를 더 늘릴 수 있어야 해요"(2026-11-17).
+// 자격 명칭을 이름에 쓰지 않아요(각 자격법의 유사명칭 금지). 대리·대행·감정·중개를 하지 않아요.
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import LawGuide from "../../components/tools/lawguide/LawGuide";
+import { LAW_GUIDE_AS_OF } from "../../lib/kr-expert-guide-2026";
+
+const title = "관세·통관 법령 길잡이 2026 — 해외직구 면세, 관세 보정·경정청구·불복 기한";
+const description = "해외직구 면세 기준(150달러, 미국발 200달러)과 합산과세, 관세를 덜 냈을 때 보정 6개월, 더 냈을 때 경정청구 5년, 세관 추징에 대한 이의신청·심사청구·심판청구 90일을 질문으로 계산하고 관세법·관세사법 조문과 무료 창구(125)를 알려 줘요.";
+const ko = {
+  introTitle: "해외직구·수입 관세, 날짜와 금액부터",
+  intro: "관세는 '수리일', '신고납부일', '통지 받은 날'이 기한을 정해요. 날짜와 물품가격을 넣으면 면세 여부와 고칠 수 있는 기한, 근거 조문을 정리해 줘요. 통관 신고나 품목분류를 대신하지는 않아요.",
+  howToTitle: "사용 방법",
+  steps: ["상황을 고르세요.", "먼저 묻는 질문에 답하세요. 모르면 건너뛰어도 돼요.", "기한 막대와 확인할 점을 보고, 결과 메모를 복사해 담당 기관이나 전문가에게 가져가세요."],
+  highlightsTitle: "주요 특징",
+  highlights: [{ title: "직구 면세 판정", body: "150달러(미국발 200달러), 판매용·합산과세 경고" }, { title: "고칠 수 있는 기한", body: "보정 6개월, 경정청구 5년, 불복 90일" }, { title: "무료 창구", body: "관세청 125, 유니패스, FTA 1380" }],
+  disclaimer: "법령 정보와 기한 계산 도구예요. 대리·대행·감정·중개를 하지 않고 특정 전문가를 소개하지 않아요. 조문 풀이는 쉬운 말 요약이니 원문(국가법령정보센터)을 확인하세요. 기준일 2026-11-17.",
+};
+const faqs = [
+  { q: "직구 면세를 넘으면 얼마나 내나요?", a: "기준을 넘으면 물품가격 전체에 관세와 부가가치세가 붙어요. 세율은 품목마다 달라요(관세법 제94조, 시행규칙 제45조)." },
+  { q: "관세를 더 낸 걸 늦게 알았어요.", a: "최초 신고납부한 날부터 5년 안에 경정청구를 해서 돌려받을 수 있어요(관세법 제38조의3)." },
+];
+---
+<KrFinancePage slug="customs-law-guide" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <LawGuide client:load domain="customs" />
+  <p class="mt-4 text-xs text-muted-foreground">기준일 {LAW_GUIDE_AS_OF}. <a class="underline" href="/ko/law-guide/">법령 길잡이 10분야</a> · <a class="underline" href="/ko/pro-competency-map/">전문 직업 역량 지도</a></p>
+</KrFinancePage>

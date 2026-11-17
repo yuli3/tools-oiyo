@@ -1,9 +1,9 @@
-// 세금·회계·노동·행정·등기 법령 길잡이 (2026-11-16). 계산·자료: lib/kr-expert-guide-2026.ts.
+// 법령 길잡이 (2026-11-16, 11-17 분야 팩으로 10분야). 분야 목록은 엔진의 DOMAIN_LABEL에서 와요. 계산·자료: lib/kr-expert-guide-2026.ts.
 // 쉬운 설명: 상황 고르기 → 한 번에 한 질문(왜 묻는지 함께) → 기한·조문·할 일.
 // 전문가: 질문 전체를 한 화면에, 조문 찾기와 자격사 업무 범위 표.
 // 가정 변화: "며칠 뒤에 움직이면?" 슬라이더로 어느 기한을 놓치는지 막대가 바로 바뀌어요.
 import { useMemo, useState } from "react";
-import { DISCLAIMER, LAW_GUIDE_AS_OF, PROFESSIONS, SCOPE_MATRIX, domainTopics, findStatutes, intake, statuteUrl, visibleQuestions, type Answers, type DomainId, type Question, type Topic } from "../../../lib/kr-expert-guide-2026";
+import { DISCLAIMER, DOMAIN_LABEL, LAW_GUIDE_AS_OF, PROFESSIONS, SCOPE_MATRIX, domainTopics, findStatutes, intake, statuteUrl, visibleQuestions, type Answers, type DomainId, type Question, type Topic } from "../../../lib/kr-expert-guide-2026";
 import { useSaved, CopyMemo } from "../biz/common";
 import ChoiceChips from "../payroll/ChoiceChips";
 import BarTrack from "../viz/BarTrack";
@@ -13,14 +13,9 @@ import MoneyField from "../viz/MoneyField";
 import { track } from "../viz/track";
 import { useAdvisoryMode } from "../viz/useAdvisoryMode";
 
-const DOMAINS: { value: DomainId; label: string }[] = [
-  { value: "tax", label: "세금" },
-  { value: "accounting", label: "회계·장부" },
-  { value: "labor", label: "노동" },
-  { value: "admin", label: "행정" },
-  { value: "court", label: "등기·법원" },
-  { value: "insurance", label: "보험" },
-];
+const DOMAIN_IDS = Object.keys(DOMAIN_LABEL) as DomainId[];
+const DOMAINS: { value: DomainId; label: string }[] = DOMAIN_IDS.map((d) => ({ value: d, label: DOMAIN_LABEL[d].area }));
+const MATRIX_COLS = [...DOMAIN_IDS, "lawyer"] as const;
 const UNIT = { months: "개월", days: "일", people: "명", count: "개", years: "년" } as const;
 const TONE = { warn: "border-destructive/40", info: "border-border", good: "border-primary/40" } as const;
 const TONE_LABEL = { warn: "주의", info: "참고", good: "유리" } as const;
@@ -378,7 +373,7 @@ export default function LawGuide({ domain: fixed }: { domain?: DomainId }) {
                 <thead>
                   <tr>
                     <th className="p-1 font-semibold">업무</th>
-                    {["세무사", "회계사", "노무사", "행정사", "법무사", "보험 자격", "변호사"].map((h) => (
+                    {[...DOMAIN_IDS.map((d) => DOMAIN_LABEL[d].pro), "변호사"].map((h) => (
                       <th key={h} className="p-1 font-semibold">
                         {h}
                       </th>
@@ -392,7 +387,7 @@ export default function LawGuide({ domain: fixed }: { domain?: DomainId }) {
                         {m.task}
                         <span className="block text-muted-foreground">{m.cite}</span>
                       </td>
-                      {(["tax", "accounting", "labor", "admin", "court", "insurance", "lawyer"] as const).map((k) => (
+                      {MATRIX_COLS.map((k) => (
                         <td key={k} className="p-1 text-center font-mono">
                           {m.who[k] === "yes" ? "○" : m.who[k] === "partial" ? "△" : "–"}
                         </td>

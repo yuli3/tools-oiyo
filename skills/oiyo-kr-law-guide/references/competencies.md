@@ -49,7 +49,7 @@ GENERATED from tools-oiyo src/data/pro-competencies.ts. 기준일 2026-11-17. �
   - MCP: `compare_kr_general_vs_simplified_vat`, `calculate_kr_incorporation_conversion`
   - 스킬: kr-tax-advisor, oiyo-business-strategist
 - **세무대리 범위와 성실의무** [업무 범위·윤리]: 세무대리는 세무사 업무예요(세무사법 제2조). 개정 제20조 제3항(2026-06-24 시행)은 무자격자의 세무대리 암시 광고도 금지해요.
-  - 도구: 법령 길잡이 6분야 https://tools.oiyo.net/ko/law-guide/
+  - 도구: 법령 길잡이 10분야 https://tools.oiyo.net/ko/law-guide/
   - MCP: `get_kr_professional_scope`
   - 스킬: oiyo-kr-law-guide
 - **홈택스 전자신고·자료 조회** [전자 업무·데이터] (준비 중): 간소화 자료, 전자세금계산서, 신고서 제출 화면을 다루는 실무 역량이에요.
@@ -78,7 +78,7 @@ GENERATED from tools-oiyo src/data/pro-competencies.ts. 기준일 2026-11-17. �
   - MCP: `calculate_unit_economics_runway`
   - 스킬: oiyo-business-strategist
 - **독립성과 감사 업무 범위** [업무 범위·윤리] (자격사 업무와 맞닿음: 정보만): 회계감사는 공인회계사 업무예요(공인회계사법 제2조). 이해관계가 있는 회사의 감사는 제한돼요(제21조).
-  - 도구: 법령 길잡이 6분야 https://tools.oiyo.net/ko/law-guide/
+  - 도구: 법령 길잡이 10분야 https://tools.oiyo.net/ko/law-guide/
   - MCP: `get_kr_professional_scope`
   - 스킬: oiyo-kr-law-guide
 - **감사 데이터 분석** [전자 업무·데이터] (준비 중): 전표 전수 분석, 이상 거래 탐지 같은 데이터 기반 감사 기법이에요.
@@ -115,7 +115,7 @@ GENERATED from tools-oiyo src/data/pro-competencies.ts. 기준일 2026-11-17. �
   - MCP: `calculate_kr_injury_leave_pay`, `calculate_unemployment_benefits`, `check_kr_voluntary_quit_unemployment`
   - 스킬: oiyo-kr-benefits-navigator
 - **대리·서류 작성의 독점 범위** [업무 범위·윤리]: 노동 상담은 누구나 할 수 있지만, 사건 대리·서류 작성·노무관리진단은 공인노무사 업무예요(공인노무사법 제2조·제27조).
-  - 도구: 법령 길잡이 6분야 https://tools.oiyo.net/ko/law-guide/
+  - 도구: 법령 길잡이 10분야 https://tools.oiyo.net/ko/law-guide/
   - MCP: `get_kr_professional_scope`
   - 스킬: oiyo-kr-law-guide
 - **고용24·노동포털 전자 신고** [전자 업무·데이터] (준비 중): 4대보험 취득·상실 신고, 진정 접수 같은 전자 창구 실무예요.
@@ -142,7 +142,7 @@ GENERATED from tools-oiyo src/data/pro-competencies.ts. 기준일 2026-11-17. �
   - MCP: `start_kr_law_intake`
   - 스킬: oiyo-kr-law-guide
 - **행정사 업무 범위** [업무 범위·윤리]: 행정기관 제출 서류 작성·제출 대행은 행정사 업무예요(행정사법 제2조·제3조).
-  - 도구: 법령 길잡이 6분야 https://tools.oiyo.net/ko/law-guide/
+  - 도구: 법령 길잡이 10분야 https://tools.oiyo.net/ko/law-guide/
   - MCP: `get_kr_professional_scope`
   - 스킬: oiyo-kr-law-guide
 
@@ -172,7 +172,7 @@ GENERATED from tools-oiyo src/data/pro-competencies.ts. 기준일 2026-11-17. �
 - **채무 조정 선택지** [상담·설계] (일반인도 씀): 개인회생 변제액과 기간을 계산해 선택지를 비교해요.
   - 도구: 개인회생 계산기 https://tools.oiyo.net/ko/personal-rehabilitation-calculator/
 - **법무사 업무 범위** [업무 범위·윤리]: 등기·공탁 신청 대리와 법원 제출 서류 작성은 법무사 업무예요(법무사법 제2조). 소송 대리는 변호사 업무예요(변호사법 제109조).
-  - 도구: 법령 길잡이 6분야 https://tools.oiyo.net/ko/law-guide/
+  - 도구: 법령 길잡이 10분야 https://tools.oiyo.net/ko/law-guide/
   - MCP: `get_kr_professional_scope`
   - 스킬: oiyo-kr-law-guide
 - **인터넷등기소·전자소송** [전자 업무·데이터] (준비 중): 등기부 열람, 전자소송 제출 같은 전자 창구 실무예요.
@@ -252,5 +252,145 @@ GENERATED from tools-oiyo src/data/pro-competencies.ts. 기준일 2026-11-17. �
 - **설명·적합성 기록** [서류·증빙] (준비 중): 설명서 교부, 적합성 확인 결과를 계약마다 남기는 역량이에요.
 - **등록·소속 범위** [업무 범위·윤리]: 등록한 설계사·대리점·중개사만 모집할 수 있고(보험업법 제83조), 소속 회사 상품만 다뤄요.
   - 도구: 보험 법령 길잡이 https://tools.oiyo.net/ko/insurance-law-guide/
+  - MCP: `get_kr_professional_scope`
+  - 스킬: oiyo-kr-law-guide
+
+## 관세사 (관세사법 제2조·제3조)
+
+수출입 통관 신고 대리, 관세 불복 대리, 품목분류·관세평가·원산지 자문
+
+- **관세법·FTA 원산지 규정** [법령 해석] (일반인도 씀): 신고납부·보정·경정, 소액 면세, FTA 원산지 결정 기준을 읽어요.
+  - 도구: 관세·통관 법령 길잡이 https://tools.oiyo.net/ko/customs-law-guide/
+  - MCP: `search_kr_statutes`
+  - 스킬: oiyo-kr-law-guide
+- **납부·보정·경정·불복 기한** [기한·절차] (일반인도 씀, 자격사 업무와 맞닿음: 정보만): 수리일부터 15일 납부, 6개월 보정, 5년 경정청구, 90일 불복을 날짜로 세요.
+  - 도구: 관세·통관 법령 길잡이 https://tools.oiyo.net/ko/customs-law-guide/
+  - MCP: `start_kr_law_intake`, `check_kr_business_day`
+  - 스킬: oiyo-kr-law-guide
+- **해외직구 면세 판정** [상담·설계] (일반인도 씀): 150달러(미국발 200달러), 합산과세, 판매용 여부를 확인해요.
+  - 도구: 관세·통관 법령 길잡이 https://tools.oiyo.net/ko/customs-law-guide/
+  - MCP: `start_kr_law_intake`
+  - 스킬: oiyo-kr-law-guide
+- **과세가격·환율 환산** [계산·평가] (일반인도 씀): 물품가격과 운임을 과세환율로 원화 환산해요.
+  - 도구: 환율 계산기 https://tools.oiyo.net/ko/currency-converter/ · 환전 수수료 계산기 https://tools.oiyo.net/ko/foreign-exchange-fee-calculator/
+- **품목분류(HS)와 세율** [계산·평가] (자격사 업무와 맞닿음: 정보만, 준비 중): HS 코드를 정하고 기본·FTA 세율을 비교하는 역량이에요.
+- **수입신고·원산지증명 서류** [서류·증빙] (자격사 업무와 맞닿음: 정보만, 준비 중): 인보이스·패킹리스트·원산지증명서를 맞춰 신고해요. 신고 대리는 관세사 업무예요.
+- **유니패스 전자 통관** [전자 업무·데이터] (준비 중): 통관 진행 조회와 전자 신고 실무예요.
+- **통관업 범위와 명칭 제한** [업무 범위·윤리]: 관세사·관세법인·통관취급법인만 남의 의뢰로 통관업을 하고(관세사법 제3조), 유사명칭을 쓸 수 없어요(제25조).
+  - 도구: 법령 길잡이 10분야 https://tools.oiyo.net/ko/law-guide/
+  - MCP: `get_kr_professional_scope`
+  - 스킬: oiyo-kr-law-guide
+
+## 변리사 (변리사법 제2조·제21조)
+
+특허·상표·디자인 출원과 심판 대리, 침해 감정, 심결취소소송 대리
+
+- **특허법·상표법·디자인보호법** [법령 해석] (일반인도 씀): 신규성·진보성, 상표 식별력·유사 판단 기준을 읽어요.
+  - 도구: 특허·상표 법령 길잡이 https://tools.oiyo.net/ko/ip-law-guide/
+  - MCP: `search_kr_statutes`
+  - 스킬: oiyo-kr-law-guide
+- **공지예외·거절 대응 기한** [기한·절차] (일반인도 씀): 공지예외 12개월, 의견서 제출기간, 거절결정 불복 3개월, 연차료 납부를 관리해요.
+  - 도구: 특허·상표 법령 길잡이 https://tools.oiyo.net/ko/ip-law-guide/
+  - MCP: `start_kr_law_intake`
+  - 스킬: oiyo-kr-law-guide
+- **선행기술·등록상표 조사** [상담·설계] (일반인도 씀): 출원 전에 키프리스로 같은 기술·비슷한 상표를 찾아 가능성을 가늠해요.
+  - 도구: 특허·상표 법령 길잡이 https://tools.oiyo.net/ko/ip-law-guide/
+- **명세서·청구범위 작성** [서류·증빙] (자격사 업무와 맞닿음: 정보만, 준비 중): 권리 범위를 정하는 청구범위를 쓰는 역량이에요. 출원 대리는 변리사 업무예요.
+- **지식재산 가치평가** [계산·평가]: 특허의 미래 현금흐름을 할인해 가치를 추정해요.
+  - 도구: DCF 기업가치 https://tools.oiyo.net/ko/dcf-valuation-calculator/ · 현재가치 계산기 https://tools.oiyo.net/ko/present-value-calculator/
+  - MCP: `calculate_dcf_valuation`
+- **침해 경고장 대응** [상담·설계] (일반인도 씀, 자격사 업무와 맞닿음: 정보만): 권리 유효성·침해 여부·선사용 여부를 사실로 나눠 대응 순서를 정해요.
+  - 도구: 특허·상표 법령 길잡이 https://tools.oiyo.net/ko/ip-law-guide/
+  - 스킬: oiyo-kr-law-guide
+- **특허로 전자출원** [전자 업무·데이터] (준비 중): 전자출원과 수수료 납부, 심사 진행 조회 실무예요.
+- **변리 업무 범위와 명칭 제한** [업무 범위·윤리]: 변리사가 아니면 특허 등 대리를 업으로 할 수 없고(변리사법 제21조), 유사명칭을 쓸 수 없어요(제22조).
+  - 도구: 법령 길잡이 10분야 https://tools.oiyo.net/ko/law-guide/
+  - MCP: `get_kr_professional_scope`
+  - 스킬: oiyo-kr-law-guide
+
+## 감정평가사 (감정평가법 제10조)
+
+공시지가 평가, 보상·소송·경매·담보 감정평가, 감정 상담
+
+- **감정평가법·토지보상법·부동산공시법** [법령 해석] (일반인도 씀): 감정평가 기준, 보상 원칙, 공시가격 체계를 읽어요.
+  - 도구: 감정평가·보상 법령 길잡이 https://tools.oiyo.net/ko/appraisal-law-guide/
+  - MCP: `search_kr_statutes`
+  - 스킬: oiyo-kr-law-guide
+- **보상금·공시가격 다툼 기한** [기한·절차] (일반인도 씀): 재결 이의신청 30일, 소송 90일(이의재결 뒤 60일), 공시가격 이의신청 30일을 세요.
+  - 도구: 감정평가·보상 법령 길잡이 https://tools.oiyo.net/ko/appraisal-law-guide/
+  - MCP: `start_kr_law_intake`
+  - 스킬: oiyo-kr-law-guide
+- **수익환원법** [계산·평가] (일반인도 씀): 임대수익과 환원율로 수익 부동산 가치를 구해요.
+  - 도구: 임대수익률 계산기 https://tools.oiyo.net/ko/rental-yield-calculator/ · 현재가치 계산기 https://tools.oiyo.net/ko/present-value-calculator/
+- **감정가와 세금** [계산·평가] (일반인도 씀): 상속·증여 신고에서 감정가와 공시가격의 세금 차이를 비교해요.
+  - 도구: 감정가 vs 공시가격 https://tools.oiyo.net/ko/inherited-house-appraisal-vs-official-price-calculator/ · 상속세 계산기 https://tools.oiyo.net/ko/inheritance-tax-calculator/
+  - MCP: `compare_kr_inherited_house_valuation`, `calculate_inheritance_gift_tax`
+- **정비사업 권리가액** [계산·평가] (일반인도 씀): 재건축·재개발 종전자산 평가와 분담금 구조를 이해해요.
+  - 도구: 재건축 수익 계산 https://tools.oiyo.net/ko/reconstruction-profit/ · 입주권 vs 분양권 세금 https://tools.oiyo.net/ko/redevelopment-ticket-vs-presale-tax-calculator/
+  - MCP: `compare_kr_ticket_vs_presale_tax`
+- **감정평가서 작성** [서류·증빙] (자격사 업무와 맞닿음: 정보만, 준비 중): 가격 결정 근거를 담은 감정평가서는 감정평가사 업무예요.
+- **감정평가 업무 범위와 명칭 제한** [업무 범위·윤리]: 감정평가는 사무소·법인 소속 감정평가사가 하고(감정평가법 제21조·제29조), 유사명칭을 쓸 수 없어요(제22조).
+  - 도구: 법령 길잡이 10분야 https://tools.oiyo.net/ko/law-guide/
+  - MCP: `get_kr_professional_scope`
+  - 스킬: oiyo-kr-law-guide
+
+## 공인중개사 (공인중개사법 제9조·제25조)
+
+등록 사무소에서 매매·임대차 중개, 확인·설명, 거래계약서 작성
+
+- **공인중개사법·주택임대차보호법** [법령 해석] (일반인도 씀): 확인·설명 의무, 금지행위, 대항력·우선변제를 읽어요.
+  - 도구: 부동산 거래·중개 법령 길잡이 https://tools.oiyo.net/ko/realty-brokerage-law-guide/ · 등기·법원 서류 길잡이 https://tools.oiyo.net/ko/registry-court-law-guide/
+  - MCP: `search_kr_statutes`
+  - 스킬: oiyo-kr-law-guide
+- **중개보수 계산** [계산·평가] (일반인도 씀): 거래 종류·금액별 상한요율로 보수를 계산해요.
+  - 도구: 중개보수 계산기 https://tools.oiyo.net/ko/brokerage-calculator/ · 부동산 거래·중개 법령 길잡이 https://tools.oiyo.net/ko/realty-brokerage-law-guide/
+- **거래·임대차 신고 기한** [기한·절차] (일반인도 씀): 매매 거래신고와 주택 임대차 신고를 계약일부터 30일 안에 해요.
+  - 도구: 부동산 거래·중개 법령 길잡이 https://tools.oiyo.net/ko/realty-brokerage-law-guide/
+  - MCP: `start_kr_law_intake`
+  - 스킬: oiyo-kr-law-guide
+- **전세 위험 점검** [상담·설계] (일반인도 씀): 보증금 대비 시세·선순위, 보증보험 가입 가능성을 확인해요.
+  - 도구: 전세보증 진단 https://tools.oiyo.net/ko/jeonse-guarantee-calculator/ · 전세 vs 매매 https://tools.oiyo.net/ko/jeonse-vs-buy-calculator/ · 전월세 전환 https://tools.oiyo.net/ko/jeonse-monthly-converter/
+  - MCP: `diagnose_hug_guarantee`
+- **거래 세금 안내** [계산·평가] (일반인도 씀): 취득세·양도세·보유세를 거래 전에 가늠해요.
+  - 도구: 취득세 계산기 https://tools.oiyo.net/ko/acquisition-tax-calculator/ · 양도소득세 계산기 https://tools.oiyo.net/ko/capital-gains-tax-calculator/ · 재산세 계산기 https://tools.oiyo.net/ko/property-tax-calculator/
+  - MCP: `calculate_kr_acquisition_tax`, `calculate_capital_gains_tax`, `calculate_kr_property_tax`
+- **확인·설명서와 계약서** [서류·증빙] (자격사 업무와 맞닿음: 정보만, 준비 중): 등기부·건축물대장을 확인해 확인·설명서를 쓰는 역량이에요. 중개는 등록한 개업공인중개사 업무예요.
+- **등록과 금지행위** [업무 범위·윤리]: 개설등록한 사람만 중개하고(공인중개사법 제9조), 초과 보수·직접거래·쌍방대리가 금지돼요(제33조).
+  - 도구: 부동산 거래·중개 법령 길잡이 https://tools.oiyo.net/ko/realty-brokerage-law-guide/
+  - MCP: `get_kr_professional_scope`
+  - 스킬: oiyo-kr-law-guide
+
+## 경영지도사 (중소기업진흥에 관한 법률(지도사))
+
+중소기업 경영 진단·지도: 전략·마케팅·재무·인사·생산 관리 자문(독점 업무는 아님)
+
+- **전략 진단** [상담·설계] (일반인도 씀): SWOT·BCG·포지셔닝으로 현재 위치와 선택지를 정리해요.
+  - 도구: SWOT 분석 https://tools.oiyo.net/ko/swot-analysis/ · BCG 매트릭스 https://tools.oiyo.net/ko/bcg-matrix/ · 포지셔닝 맵 https://tools.oiyo.net/ko/positioning-map/
+  - MCP: `analyze_swot`
+  - 스킬: oiyo-business-strategist
+- **의사결정 분석** [계산·평가] (일반인도 씀): 가중 의사결정표·의사결정 트리로 대안을 숫자로 비교해요.
+  - 도구: 가중 의사결정표 https://tools.oiyo.net/ko/priority-decision-matrix/ · 의사결정 트리 https://tools.oiyo.net/ko/decision-tree-calculator/
+  - 스킬: oiyo-business-strategist
+- **단위경제·런웨이·시장 실험** [계산·평가] (일반인도 씀): LTV/CAC, 남은 현금 개월 수, 시장 테스트 손익을 계산해요.
+  - 도구: 단위경제·런웨이 https://tools.oiyo.net/ko/unit-economics-runway-calculator/ · 시장 실험 손익 https://tools.oiyo.net/ko/market-test-calculator/
+  - MCP: `calculate_unit_economics_runway`, `analyze_market_test`
+  - 스킬: oiyo-business-strategist
+- **운영 문제 해결** [상담·설계] (일반인도 씀): 캠페인 품절, 품질 회수, 대체 원료, 대형 수주, 판매장려금, 인수 통합을 점검해요.
+  - 도구: 캠페인 품절 대비 https://tools.oiyo.net/ko/campaign-supply-planner/ · 품질 회수 계획 https://tools.oiyo.net/ko/quality-recovery-planner/ · 대체 원료 검토 https://tools.oiyo.net/ko/alternative-material-review/ · 대형 수주 생산 점검 https://tools.oiyo.net/ko/big-order-capacity-check/ · 판매장려금 점검 https://tools.oiyo.net/ko/sales-rebate-checker/ · 인수 통합 점검 https://tools.oiyo.net/ko/acquisition-integration-check/ · 인플루언서 계약 계산 https://tools.oiyo.net/ko/influencer-deal-calculator/
+  - MCP: `plan_campaign_supply`, `plan_quality_recovery`, `compare_alternative_materials`, `check_big_order_capacity`, `check_sales_rebates`
+  - 스킬: oiyo-business-strategist
+- **일정·마일스톤 관리** [기한·절차] (일반인도 씀): CPM으로 핵심 경로를 찾고 신고·납부 일정을 사업 일정에 얹어요.
+  - 도구: 프로젝트 일정(CPM) https://tools.oiyo.net/ko/project-timeline-planner/ · 세무 일정 https://tools.oiyo.net/ko/tax-calendar/
+  - MCP: `get_kr_business_tax_calendar`
+  - 스킬: oiyo-business-strategist
+- **사업자 필수 의무 점검** [서류·증빙] (일반인도 씀): 창업·고용·신고 단계별로 반드시 할 것과 하지 말 것을 챙겨요.
+  - 도구: 사업자 필수 체크리스트 https://tools.oiyo.net/ko/business-must-do-checklist/ · 경영 도구 모음 https://tools.oiyo.net/ko/business-toolkit/
+  - 스킬: oiyo-business-strategist
+- **경영 문제의 법령 연결** [법령 해석] (일반인도 씀): 운영 문제가 세금·노무·행정·보험 중 어디에 걸리는지 찾아 해당 길잡이로 넘겨요.
+  - 도구: 법령 길잡이 10분야 https://tools.oiyo.net/ko/law-guide/
+  - MCP: `start_kr_law_intake`
+  - 스킬: oiyo-kr-law-guide, oiyo-business-strategist
+- **자문 범위** [업무 범위·윤리]: 경영 지도는 독점 업무가 아니지만, 세무대리·노무 대리·법률 사무는 해당 자격사에게 넘겨요.
+  - 도구: 법령 길잡이 10분야 https://tools.oiyo.net/ko/law-guide/
   - MCP: `get_kr_professional_scope`
   - 스킬: oiyo-kr-law-guide
