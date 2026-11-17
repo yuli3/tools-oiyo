@@ -11,6 +11,12 @@ const N = {
   "rental-yield-calculator": { en: "Rental yield", ja: "賃貸利回り", zh: "租金回报率", fr: "Rendement locatif", es: "Rentabilidad del alquiler" },
   "stock-average-calculator": { en: "Average cost", ja: "平均取得単価", zh: "持仓均价", fr: "Prix de revient moyen", es: "Precio medio" },
   "latte-factor-calculator": { en: "Latte factor", ja: "ラテマネー", zh: "拿铁因子", fr: "Effet latte", es: "Efecto latte" },
+  "bmi-calculator": { en: "BMI", ja: "BMI計算", zh: "BMI计算", fr: "IMC", es: "IMC" },
+  "body-fat-calculator": { en: "Body fat", ja: "体脂肪率", zh: "体脂率", fr: "Masse grasse", es: "Grasa corporal" },
+  "tdee-calculator": { en: "Daily calories (TDEE)", ja: "消費カロリー（TDEE）", zh: "每日消耗（TDEE）", fr: "Dépense calorique (TDEE)", es: "Gasto calórico (TDEE)" },
+  "water-intake-calculator": { en: "Water intake", ja: "水分摂取量", zh: "饮水量", fr: "Besoins en eau", es: "Agua diaria" },
+  "caffeine-calculator": { en: "Caffeine", ja: "カフェイン", zh: "咖啡因", fr: "Caféine", es: "Cafeína" },
+  "macro-calculator": { en: "Macros", ja: "PFCバランス", zh: "宏量营养素", fr: "Macronutriments", es: "Macronutrientes" },
 } as const;
 
 export type WorldToolId = keyof typeof N;
