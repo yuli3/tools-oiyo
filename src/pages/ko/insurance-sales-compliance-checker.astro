@@ -1,0 +1,32 @@
+---
+// 보험 사은품 한도·승환 점검기 (2026-11-17, 보험 법령 길잡이 곁 도구, 설계사·대리점용). 엔진: lib/insurance-law-tools.ts
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import SalesCompliance from "../../components/tools/insurance/SalesCompliance";
+import { LAW_GUIDE_AS_OF } from "../../lib/kr-expert-guide-2026";
+
+const title = "보험 사은품 한도·승환계약 점검기 2026 — 10%와 20만 원 중 적은 금액, 1개월·6개월";
+const description = "월 보험료와 사은품 가액을 넣으면 특별이익 한도(최초 1년 보험료의 10%와 20만 원 중 적은 금액)를 넘는지, 기존 계약 소멸일과 새 청약일로 승환계약 간주(1개월·6개월) 여부를 바로 판정해요. 설계사·보험대리점의 계약 전 점검용이에요.";
+const ko = {
+  introTitle: "계약 전에 두 가지만 확인하세요",
+  intro: "보험 모집에서 가장 흔한 제재는 사은품 한도 초과(특별이익)와 부당 승환이에요. 보험료와 사은품, 기존·신규 계약 날짜만 넣으면 한도와 간주 기간을 계산하고, 보험료가 바뀌면 한도가 어떻게 움직이는지 그래프로 보여 줘요.",
+  howToTitle: "사용 방법",
+  steps: ["월 보험료와 사은품 가액을 넣어요.", "갈아타는 계약이면 기존 계약 소멸일과 새 청약일, 비교 안내 여부를 넣어요.", "한도 여유와 승환 판정을 보고, 전문가 모드에서 계산 근거를 확인해요."],
+  highlightsTitle: "주요 특징",
+  highlights: [
+    { title: "2023년 7월 개정 한도", body: "최초 1년 보험료의 10%와 20만 원 중 적은 금액(보험업법 시행령 제46조)." },
+    { title: "승환 간주 1개월·6개월", body: "새 계약을 먼저 들고 기존을 나중에 깨는 경우도 같은 기준으로 계산해요(보험업법 제97조 제3항)." },
+    { title: "보험료별 한도 그래프", body: "월 보험료 약 16.7만 원부터 한도가 20만 원에서 멈춰요." },
+    { title: "쉬운 모드·전문가 모드", body: "처음 쓰는 사람은 질문 두 개, 익숙한 사람은 한 화면에서 입력해요." },
+  ],
+  disclaimer: "법령 정보와 계산 도구예요. 보험 모집·권유를 하지 않고 개별 사안의 위법 여부를 확정하지 않아요. 회사 내규가 더 엄격할 수 있으니 소속 회사 준법감시 부서에 확인하세요. 기준일 2026-11-17.",
+};
+const faqs = [
+  { q: "연납 계약이면 어떻게 넣나요?", a: "연 보험료를 12로 나눈 값을 월 보험료에 넣고 첫해 내는 달 수를 12로 두면 최초 1년 보험료가 맞게 계산돼요." },
+  { q: "고객이 먼저 사은품을 요구했어요.", a: "특별이익을 요구해 받은 계약자·피보험자도 처벌 대상이에요(보험업법 제202조). 한도 안에서만 줄 수 있어요." },
+  { q: "1개월 안에 갈아타도 되는 경우가 있나요?", a: "고객이 손해 발생 가능성을 알고 있음을 자필로 서명하는 등 본인 의사가 명백히 증명되면 승환으로 보지 않아요(보험업법 제97조 제3항 단서)." },
+];
+---
+<KrFinancePage slug="insurance-sales-compliance-checker" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <SalesCompliance client:load />
+  <p class="mt-4 text-xs text-muted-foreground">근거: 보험업법 제97조·제98조·제202조, 시행령 제46조. 기준일 {LAW_GUIDE_AS_OF}. <a class="underline" href="/ko/insurance-law-guide/">보험 법령 길잡이</a> · <a class="underline" href="/ko/law-guide/">법령 길잡이 6분야</a></p>
+</KrFinancePage>

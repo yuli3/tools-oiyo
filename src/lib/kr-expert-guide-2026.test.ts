@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { PROFESSIONS, STATUTES, TOPICS, SCOPE_MATRIX, amendRelief, auditTest, booksDuty, dueDate, findStatutes, intake, lateRelief, statuteUrl, suggestTopics, visibleQuestions } from "./kr-expert-guide-2026.ts";
+import { PROFESSIONS, STATUTES, TOPICS, SCOPE_MATRIX, amendRelief, auditTest, booksDuty, dueDate, findStatutes, giftLimit, intake, lateRelief, statuteUrl, suggestTopics, twistingTest, visibleQuestions, withdrawDeadline } from "./kr-expert-guide-2026.ts";
 
 test("자료: 주제가 가리키는 조문이 모두 있고, 다섯 분야 모두 주제가 있어요", () => {
   const ids = new Set(STATUTES.map((s) => s.id));
@@ -13,7 +13,7 @@ test("자료: 주제가 가리키는 조문이 모두 있고, 다섯 분야 모�
 });
 
 test("자격 명칭을 이름으로 쓰지 않아요(유사명칭 금지)", () => {
-  for (const p of Object.values(PROFESSIONS)) assert.doesNotMatch(p.name, /세무사|회계사|노무사|행정사|법무사/);
+  for (const p of Object.values(PROFESSIONS)) assert.doesNotMatch(p.name, /세무사|회계사|노무사|행정사|법무사|계리사|손해사정사|설계사/);
 });
 
 test("기한: 초일 불산입, 월 단위는 같은 날, 말일 기준은 그 달 말일", () => {
@@ -123,4 +123,37 @@ test("찾기: 조문 키워드·상황 문장으로 주제 추천", () => {
   assert.equal(suggestTopics("전세 보증금을 못 돌려받아요")[0].id, "court-deposit");
   assert.equal(statuteUrl({ law: "소득세법 시행령", article: "제208조 제5항" }), "https://www.law.go.kr/법령/소득세법시행령/제208조");
   assert.equal(statuteUrl({ law: "근로기준법", article: "제76조의2·제76조의3" }), "https://www.law.go.kr/법령/근로기준법/제76조의2");
+});
+
+test("보험: 청약철회는 15일·30일 중 먼저, 사은품 한도는 10%와 20만 원 중 적은 금액, 승환 1·6개월", () => {
+  // 증권 2026-11-10 → 11-25(수), 청약 2026-11-01 → 12-01 → 증권 기준이 먼저
+  assert.deepEqual(withdrawDeadline("2026-11-01", "2026-11-10"), { due: "2026-11-25", by: "policy" });
+  // 증권을 늦게 받으면 청약 30일이 먼저: 청약 10-01 → 10-31(토) → 11-02(월)
+  assert.deepEqual(withdrawDeadline("2026-10-01", "2026-10-25"), { due: "2026-11-02", by: "apply" });
+  assert.equal(giftLimit(1_200_000), 120_000);
+  assert.equal(giftLimit(3_600_000), 200_000);
+  assert.equal(giftLimit(0), 0);
+  assert.equal(twistingTest("2026-05-01", "2026-05-20", true)?.level, "deemed");
+  assert.equal(twistingTest("2026-05-01", "2026-08-01", false)?.level, "deemed");
+  assert.equal(twistingTest("2026-05-01", "2026-08-01", true)?.level, "check");
+  assert.equal(twistingTest("2026-01-01", "2026-09-01", false)?.level, "clear");
+  // 새 계약을 먼저 들고 기존을 나중에 깨도 같은 기준
+  assert.equal(twistingTest("2026-06-10", "2026-06-01", false)?.level, "deemed");
+});
+
+test("보험 주제: 질문·기한·확인할 점", () => {
+  const r = intake("ins-undo", { why: "mind", applyDate: "2026-11-01", policyDate: "2026-11-10" }, "2026-11-17");
+  assert.equal(r.deadlines[0].id, "withdraw-15");
+  assert.equal(r.deadlines[0].due, "2026-11-25");
+  assert.ok(r.flags.some((f) => f.text.includes("2026-11-25")));
+  const c = intake("ins-claim", { status: "rescind", accidentDate: "2026-09-01", contractDate: "2022-03-01", noticeDate: "2026-10-01" }, "2026-11-17");
+  assert.equal(c.deadlines[0].due, "2029-09-03"); // 2029-09-01(토) → 09-03(월)
+  assert.ok(c.flags.some((f) => f.tone === "good" && f.cite === "상법 제651조"));
+  const sc = intake("ins-sales-check", { premium: 1_200_000, gift: 150_000, replace: "yes", oldEndDate: "2026-10-01", newApplyDate: "2026-10-15", compared: "yes" }, "2026-11-17");
+  assert.ok(sc.flags.some((f) => f.tone === "warn" && f.text.includes("120,000원")));
+  assert.ok(sc.flags.some((f) => f.text.includes("1개월 안")));
+  assert.equal(intake("ins-pro-scope", { role: "adjuster", task: "settle" }).flags[0].tone, "warn");
+  assert.equal(suggestTopics("보험 청약철회 하고 싶어요")[0].id, "ins-undo");
+  assert.equal(findStatutes("사은품", "insurance")[0].id, "ins-98");
+  assert.equal(statuteUrl({ law: "금융소비자 보호에 관한 법률", article: "제46조" }), "https://www.law.go.kr/법령/금융소비자보호에관한법률/제46조");
 });

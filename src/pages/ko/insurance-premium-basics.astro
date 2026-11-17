@@ -1,0 +1,31 @@
+---
+// 보험료 계산 원리 (2026-11-17, 보험 법령 길잡이 곁 도구). 일반인은 "보험료가 왜 이만큼인가", 계리 입문자는 수지상등 계산을 봐요. 엔진: lib/insurance-law-tools.ts
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import PremiumBasics from "../../components/tools/insurance/PremiumBasics";
+
+const title = "보험료 계산 원리 — 위험보험료·예정이율·사업비로 나눠 보는 정기보험료";
+const description = "나이·보험기간·사망보험금과 예정이율·사업비·위험률을 바꾸면 정기보험 보험료가 어떻게 만들어지고 얼마나 바뀌는지 워터폴 그래프로 보여 줘요. 금리가 내리면 왜 보험료가 오르는지, 수지상등 원칙의 계산식도 전문가 모드에서 볼 수 있어요.";
+const ko = {
+  introTitle: "보험료는 세 덩어리예요",
+  intro: "보험료는 사망 위험만큼 내는 위험보험료에서, 미리 받은 돈을 굴려 생기는 이자(예정이율)만큼 깎고, 판매·관리 비용(사업비)을 더한 값이에요. 이 도구는 그 세 가지를 따로 보여 주고, 하나씩 바꿔 보면 보험료가 얼마나 움직이는지 알려 줘요. 사망률은 설명용 근사 모형이라 실제 견적과 달라요.",
+  howToTitle: "사용 방법",
+  steps: ["성별·나이·보험기간·사망보험금을 넣어요.", "예정이율·사업비·위험률은 예시 그대로 두거나 바꿔 봐요.", "워터폴 그래프와 예정이율별 막대에서 무엇이 보험료를 움직이는지 봐요."],
+  highlightsTitle: "주요 특징",
+  highlights: [
+    { title: "워터폴로 보는 보험료", body: "위험보험료 → 이자 할인 → 순보험료 → 사업비 → 영업보험료." },
+    { title: "금리와 보험료", body: "예정이율 1.5~3.5%에서 같은 보장의 월 보험료를 비교해요." },
+    { title: "수지상등 계산식", body: "전문가 모드에서 순보험료·영업보험료 산식을 숫자로 따라가요." },
+    { title: "설명용 모형", body: "곰퍼츠 사망률(40세 남성 약 0.12%)로 근사해요. 실제 경험생명표가 아니에요." },
+  ],
+  disclaimer: "보험료 산출 원리를 설명하는 교육용 계산이에요. 실제 보험료는 보험회사의 경험위험률·사업비·상품 구조로 정해지니 공시실과 상품 요약서를 확인하세요. 보험 모집·권유가 아니에요.",
+};
+const faqs = [
+  { q: "예정이율이 뭐예요?", a: "보험회사가 받은 보험료를 굴려 낼 것으로 가정한 이율이에요. 높게 잡으면 미래 이자로 보험금을 더 많이 충당한다고 보고 보험료를 깎아 줘요." },
+  { q: "사업비 비율은 어디서 보나요?", a: "보험회사 공시실의 상품 요약서·사업비 공시에서 볼 수 있어요. 상품과 판매 채널마다 달라요." },
+  { q: "종신보험도 이렇게 계산하나요?", a: "같은 수지상등 원칙이지만 보험기간이 평생이고 해지환급금·저축 부분이 커서 예정이율에 훨씬 민감해요." },
+];
+---
+<KrFinancePage slug="insurance-premium-basics" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <PremiumBasics client:load />
+  <p class="mt-4 text-xs text-muted-foreground">참고: 보험업법 제181조(보험계리)·제184조(선임계리사). <a class="underline" href="/ko/insurance-law-guide/">보험 법령 길잡이</a> · <a class="underline" href="/ko/insurance-premium-calculator/">보험료 추정 계산기</a></p>
+</KrFinancePage>

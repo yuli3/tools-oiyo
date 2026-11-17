@@ -2,7 +2,7 @@
 // 계산 엔진은 건드리지 않고, "가정 하나를 바꾸면 결과가 어떻게 되나"만 순수 함수로 계산해요.
 // 도구는 가정 목록(Assumption)과 결과 함수(evaluate)만 넘기면 돼요. 화면 부품은 components/tools/viz/.
 
-export type AssumptionUnit = "won" | "pct" | "shares" | "years" | "rate" | "months" | "days" | "hours" | "count" | "people" | "kwh" | "age" | "kg" | "cm" | "kcal" | "g" | "ml" | "mg" | "bpm" | "reps" | "km" | "kmpl" | "nights" | "amount";
+export type AssumptionUnit = "won" | "pct" | "shares" | "years" | "rate" | "months" | "days" | "hours" | "count" | "people" | "kwh" | "age" | "kg" | "cm" | "kcal" | "g" | "ml" | "mg" | "bpm" | "reps" | "km" | "kmpl" | "nights" | "amount" | "times";
 
 export interface Assumption<I> {
   key: string;

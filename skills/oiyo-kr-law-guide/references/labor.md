@@ -1,6 +1,6 @@
 # 노동법 길잡이 (공인노무사 업무 영역)
 
-GENERATED from tools-oiyo src/lib/kr-expert-guide-2026.ts. 기준일 2026-11-16.
+GENERATED from tools-oiyo src/lib/kr-expert-guide-2026.ts. 기준일 2026-11-17.
 
 ## 공인노무사의 법정 업무 (공인노무사법 제2조 제1항)
 

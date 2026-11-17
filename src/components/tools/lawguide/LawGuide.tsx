@@ -19,6 +19,7 @@ const DOMAINS: { value: DomainId; label: string }[] = [
   { value: "labor", label: "노동" },
   { value: "admin", label: "행정" },
   { value: "court", label: "등기·법원" },
+  { value: "insurance", label: "보험" },
 ];
 const UNIT = { months: "개월", days: "일", people: "명", count: "개", years: "년" } as const;
 const TONE = { warn: "border-destructive/40", info: "border-border", good: "border-primary/40" } as const;
@@ -377,7 +378,7 @@ export default function LawGuide({ domain: fixed }: { domain?: DomainId }) {
                 <thead>
                   <tr>
                     <th className="p-1 font-semibold">업무</th>
-                    {["세무사", "회계사", "노무사", "행정사", "법무사", "변호사"].map((h) => (
+                    {["세무사", "회계사", "노무사", "행정사", "법무사", "보험 자격", "변호사"].map((h) => (
                       <th key={h} className="p-1 font-semibold">
                         {h}
                       </th>
@@ -391,7 +392,7 @@ export default function LawGuide({ domain: fixed }: { domain?: DomainId }) {
                         {m.task}
                         <span className="block text-muted-foreground">{m.cite}</span>
                       </td>
-                      {(["tax", "accounting", "labor", "admin", "court", "lawyer"] as const).map((k) => (
+                      {(["tax", "accounting", "labor", "admin", "court", "insurance", "lawyer"] as const).map((k) => (
                         <td key={k} className="p-1 text-center font-mono">
                           {m.who[k] === "yes" ? "○" : m.who[k] === "partial" ? "△" : "–"}
                         </td>
