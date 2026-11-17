@@ -11,5 +11,6 @@ export const lawGuides: { slug: string; domain?: DomainId; title: string; descri
   { slug: "registry-court-law-guide", domain: "court", title: "등기·법원 서류 길잡이", description: "상속 포기·한정승인, 부동산 이전등기, 빌려준 돈 받기(지급명령·소액), 전세보증금, 법인 변경등기의 기한과 절차를 정리해요." },
   { slug: "insurance-law-guide", domain: "insurance", title: "보험 법령 길잡이", description: "청약철회 15일·30일, 약관 미설명 취소 3개월, 위법계약해지 1년, 보험금 청구 시효 3년, 고지의무 해지 3년 제한을 날짜로 계산하고, 설계사·대리점의 사은품 한도와 승환계약 기간을 점검해요." },
   { slug: "insurance-sales-compliance-checker", title: "보험 사은품 한도·승환 점검기", description: "월 보험료와 사은품 가액, 기존·신규 계약 날짜로 특별이익 한도(10%와 20만 원 중 적은 금액)와 승환계약 간주(1개월·6개월)를 판정해요. 설계사·대리점용." },
+  { slug: "pro-competency-map", title: "전문 직업 역량 지도", description: "세무·회계·노무·행정·등기·보험 8개 직업의 역량 67개를 7가지로 분류하고, 역량마다 계산 도구·Claude 스킬·MCP를 연결했어요. 일반인도 쓰는 역량만 골라 볼 수 있어요." },
   { slug: "insurance-premium-basics", title: "보험료 계산 원리", description: "나이·보험기간·보험금과 예정이율·사업비·위험률을 바꾸며 정기보험 보험료가 어떻게 만들어지는지 워터폴 그래프로 봐요." },
 ];
