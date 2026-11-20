@@ -10,12 +10,14 @@
 //   node scripts/guide.mjs calc entries <csv 파일> [결재 한도]
 //   node scripts/guide.mjs calc breach '{"knownAt":"2026-11-20T09:00","affected":1200,"sensitive":false,"hacking":false}'
 //   node scripts/guide.mjs calc policy <처리방침.txt> '{"website":true,"outsource":true}'
+//   node scripts/guide.mjs calc contract <계약서.txt> '{"creative":true,"registered":false}' [계약 금액]
 //   node scripts/guide.mjs practice [<길잡이 slug> [<상황 id> '<{"기한id":"YYYY-MM-DD"}>']]
 import { readFileSync } from "node:fs";
 import { LAW_GUIDE_AS_OF, PROFESSIONS, SCOPE_MATRIX, TOPICS, findStatutes, intake, statuteUrl, suggestTopics } from "./kr-expert-guide-2026.mjs";
 import { analyzeEntries, claimPlain, claimResult, csmPlain, csmResult, dutyPlain, dutyResult, finePlain, fineResult, kicsPlain, kicsResult, parseEntries } from "./pro-practice-2026.mjs";
 import { GUIDES, guideBySlug, guideDeadlines, recordCheck, recordText } from "./pro-practice-guides-2026.mjs";
 import { breachClock, checkPolicy } from "./privacy-check-2026.mjs";
+import { checkContract } from "./freelance-contract-check-2026.mjs";
 
 const CALC = {
   fine: [fineResult, finePlain],
@@ -25,7 +27,7 @@ const CALC = {
   claim: [claimResult, claimPlain],
 };
 
-const [cmd, a1, a2, a3] = process.argv.slice(2);
+const [cmd, a1, a2, a3, a4] = process.argv.slice(2);
 const print = (x) => console.log(JSON.stringify(x, null, 2));
 const today = () => new Date().toISOString().slice(0, 10);
 
@@ -55,6 +57,9 @@ switch (cmd) {
     } else if (a1 === "policy") {
       // a2: 처리방침 텍스트 파일, a3: 상황 JSON {"website":true,"outsource":true,"thirdParty":false,"overseas":false}
       print(checkPolicy(readFileSync(a2, "utf8"), a3 ? JSON.parse(a3) : {}));
+    } else if (a1 === "contract") {
+      // a2: 계약서 텍스트 파일, a3: 상황 JSON {"creative":true,"registered":false}, a4: 계약 금액(원)
+      print(checkContract(readFileSync(a2, "utf8"), a3 ? JSON.parse(a3) : {}, a4 ? Number(a4) : undefined));
     } else if (a1 === "record") {
       const i = JSON.parse(a2 ?? "{}");
       print({ check: recordCheck(i), text: recordText(i) });
@@ -62,7 +67,7 @@ switch (cmd) {
       const i = JSON.parse(a2 ?? "{}");
       print({ result: CALC[a1][0](i), plain: CALC[a1][1](i) });
     } else {
-      console.error(`calc: ${Object.keys(CALC).join(", ")}, entries, record, breach, policy`);
+      console.error(`calc: ${Object.keys(CALC).join(", ")}, entries, record, breach, policy, contract`);
       process.exit(1);
     }
     break;

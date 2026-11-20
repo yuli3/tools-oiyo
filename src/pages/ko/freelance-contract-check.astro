@@ -1,0 +1,31 @@
+---
+// 프리랜서·외주 계약서 읽기 점검 (2026-11-20, 다음 10종 #5). 엔진: lib/freelance-contract-check-2026.ts (스킬 oiyo-kr-law-guide guide.mjs calc contract와 같은 코드)
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import FreelanceContractCheck from "../../components/tools/lawguide/FreelanceContractCheck";
+
+const title = "프리랜서·외주 계약서 읽기 점검 — 빠진 항목, 조심할 문장, 3.3% 떼고 받을 돈";
+const description = "받은 용역·외주 계약서를 붙여 넣으면 업무 범위·납기·대금·지급일·세금(3.3%·부가세)·검수·수정 횟수·저작권·포트폴리오·해지 정산·손해배상 한도·분쟁 해결 중 빠진 항목과, 권리 전부 양도·수정 무제한·고객사 결제 후 지급·일방 해지·출퇴근 같은 조심할 문장을 찾아요. 계약 금액으로 통장에 들어올 돈도 계산해요.";
+const ko = {
+  introTitle: "서명하기 전에 한 번",
+  intro: "프리랜서 계약서는 맡기는 쪽이 만든 양식이 많아요. 서명하기 전에 꼭 있어야 할 항목이 빠졌는지, 나중에 다툼이 잦은 문장이 있는지 확인하고, 고칠 부분은 상대와 합의해요.",
+  howToTitle: "사용 방법",
+  steps: ["저작권이 생기는 결과물인지, 사업자등록을 했는지 눌러요.", "계약 금액과 계약서 글을 붙여 넣어요.", "조심할 문장과 빠진 항목을 보고, 메모를 복사해 상대에게 물어볼 목록으로 써요."],
+  highlightsTitle: "주요 특징",
+  highlights: [
+    { title: "조심할 문장", body: "권리 전부 양도, 수정 무제한, 고객사 결제 후 지급, 일방 해지, 출퇴근 지시를 찾아요." },
+    { title: "빠진 항목", body: "지급일·검수·수정 횟수·해지 정산처럼 다툼을 줄이는 13가지를 봐요." },
+    { title: "받을 돈", body: "3.3%(소득세 3%+지방소득세 0.3%)를 떼거나 부가세 10%를 더해 계산해요." },
+    { title: "개인정보 안전", body: "붙여 넣은 글은 서버로 보내지 않아요." },
+  ],
+  disclaimer: "법령 정보와 읽기 보조 도구예요. 계약서를 대신 쓰거나 고치지 않고, 낱말이 있는지만 확인해요. 조건이 나에게 맞는지는 직접 읽고 판단하세요.",
+};
+const faqs = [
+  { q: "저작권을 '일체' 넘긴다고 쓰면 다 넘어가나요?", a: "저작재산권을 전부 넘겨도 특약이 없으면 2차적저작물을 만들 권리는 넘기지 않은 것으로 추정해요(저작권법 제45조②). 넘기는 범위·시점(대금을 다 받은 뒤)·포트폴리오 사용을 함께 적는 게 좋아요." },
+  { q: "출퇴근을 정해 주는 프리랜서 계약도 있나요?", a: "근무 시간·장소를 정하고 지휘·감독을 받으면 계약 이름과 상관없이 근로자로 볼 수 있어요(근로기준법 제2조). 그러면 퇴직금·4대보험·최저임금이 적용돼요. 노동 법령 길잡이에서 더 확인해요." },
+  { q: "3.3%는 왜 떼나요?", a: "사업자가 아닌 개인에게 인적용역 대가를 주면 맡긴 쪽이 소득세 3%와 지방소득세 0.3%를 떼어 대신 내요(소득세법 제127조·제129조). 다음 해 5월 종합소득세 신고 때 정산해요." },
+];
+---
+<KrFinancePage slug="freelance-contract-check" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <FreelanceContractCheck client:load />
+  <p class="mt-4 text-xs text-muted-foreground">근거: 민법 제398조·제664조·제665조·제673조, 저작권법 제45조, 소득세법 제127조·제129조, 하도급법 제13조, 근로기준법 제2조. <a class="underline" href="/ko/labor-law-guide/">노동 법령 길잡이</a> · <a class="underline" href="/ko/freelancer-tax-calculator/">프리랜서 세금 계산기</a> · <a class="underline" href="/ko/law-guide/">법령 길잡이 17분야</a></p>
+</KrFinancePage>

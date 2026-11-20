@@ -26,6 +26,10 @@ test("law guide CLI: 실무 계산·길잡이", () => {
   const tmp = resolve(tmpdir(), `oiyo-policy-${process.pid}.txt`);
   writeFileSync(tmp, "개인정보 처리 목적과 보유 기간, 파기 방법을 적었습니다.");
   assert.ok(run("calc", "policy", tmp, '{"website":true}').missing.some((m) => m.id === "cookies"));
+  writeFileSync(tmp, "대금은 고객사로부터 결제를 받은 후 지급한다. 을은 갑이 만족할 때까지 수정한다.");
+  const c = run("calc", "contract", tmp, '{"creative":true}', "1000000");
+  assert.deepEqual(c.flags.map((f) => f.id), ["unlimitedRevision", "payAfterClient"]);
+  assert.equal(c.pay.receive, 967000);
 });
 
 test("law guide CLI: suggest → intake → statutes", () => {
