@@ -12,7 +12,7 @@ description: 한국 세무·회계 실무 상담 보조. 비상장주식 보충�
 1. MCP 서버 `https://api.oiyo.net/mcp`(Registry 이름 `io.github.yuli3/oiyo-calculations`)가 연결돼 있으면 그 도구를 쓴다.
    - `value_kr_unlisted_shares`, `calculate_kr_family_business_deduction`, `calculate_kr_incorporation_conversion`, `calculate_dcf_valuation`
 2. 코드 실행이 되면 이 스킬의 스크립트를 쓴다: `node scripts/calc.mjs <도구> '<JSON 입력>'` (Node 22 이상, 의존성 없음).
-   - 도구: `unlisted-shares`, `family-business`, `incorporation-conversion`, `dcf`, `wacc`. 입력 예시는 `node scripts/calc.mjs help`.
+   - 도구: `unlisted-shares`, `family-business`, `incorporation-conversion`, `dcf`, `wacc`, `corp-tax`(법인세 어림과 세무조정 한도), `entertainment`(기업업무추진비 한도), `penalty`(무신고·과소신고·납부지연·원천세 가산세와 감면). 입력 예시는 `node scripts/calc.mjs help`.
 3. 둘 다 안 되면 계산하지 말고, 웹 계산기 링크(아래)를 주고 필요한 입력을 정리해 준다.
 
 ## 진행 순서
@@ -29,6 +29,22 @@ description: 한국 세무·회계 실무 상담 보조. 비상장주식 보충�
 | 가업상속공제 | 가업 주식 평가액, 사업무관자산 비율, 경영 기간, 기업 규모, 가업 외 재산·순금융재산·채무·배우자 상속액 | https://tools.oiyo.net/ko/family-business-inheritance-calculator/ |
 | 법인전환 | 업종, 사업용 부동산 시가·취득가·보유 기간, 기타 자산, 부채 | https://tools.oiyo.net/ko/incorporation-conversion-calculator/ |
 | DCF | 직전 매출, 성장률, 영업이익률, 세율, 감가상각·CAPEX·운전자본 비율, WACC(또는 CAPM 입력), 영구성장률, 순차입금, 주식수 | https://tools.oiyo.net/ko/dcf-valuation-calculator/ |
+
+## 법인세 어림과 세무조정 한도 (corp-tax, 기준 2026-01-01 이후 개시 사업연도)
+
+결산 숫자로 법인세를 어림할 때 쓴다. 먼저 이것부터 묻는다: 중소기업인지, 사업연도 월수, 수입금액(특수관계인 매출 따로), 기업업무추진비 총액과 그중 3만 원 넘는데 적격증빙이 없는 금액, 특례·일반기부금, 이월결손금, 받을 세액공제·감면(최저한세 대상인지), 이미 낸 중간예납.
+
+- 계산 순서: 기업업무추진비 한도 초과(법인세법 제25조) → 기부금 한도 초과(제24조) → 이월결손금(제13조, 중소 100%·일반 80%) → 세율(제55조: 2억 10%, 200억 20%, 3,000억 22%, 초과 25%) → 최저한세(조특법 제132조: 중소 7%, 일반 10·12·17%) → 지방소득세 10% 어림 → 다음 해 중간예납(제63조, 중소기업 50만 원 미만이면 없음).
+- 1년 미만 사업연도는 1년으로 환산해 세율을 적용한다. 성실신고확인 대상 소규모 부동산임대 법인은 `smallRealEstate: true`(2억 이하 구간 없음).
+- 감가상각 한도 초과, 업무무관 경비, 가지급금 인정이자 같은 다른 조정은 `addBack`·`deduct`에 합계로 넣는다. 결과는 어림이고 세무조정계산서가 아니라고 말한다.
+
+## 가산세와 감면 (penalty)
+
+신고를 놓쳤거나 덜 신고했을 때 쓴다. 먼저 묻는다: 신고를 안 했는지·덜 했는지·원천세를 늦게 냈는지, 더 낼 세액, 법정 기한, 언제 신고·납부할 수 있는지, 세무조사 통지를 받았는지, 복식부기의무자·법인이면 수입금액.
+
+- 무신고 20%(부정 40%, 복식부기·법인은 수입금액 0.07%와 비교), 과소신고 10%(부정 40%), 납부지연 하루 0.022%, 원천세 3% + 하루 0.022%(10% 한도).
+- 감면: 수정신고 1개월 90%·3개월 75%·6개월 50%·1년 30%·1년 6개월 20%·2년 10%, 기한후신고 1개월 50%·3개월 30%·6개월 20%. 결과의 `next`는 지금 감면율이 끝나는 날이다. "그날 전에 내면 이만큼 줄어요"로 알려 준다.
+- 납부지연 가산세는 감면되지 않으니, 신고와 함께 납부까지 하라고 말한다.
 
 ## 세무 프로그램과 이어 쓰기 (장부 입력 자료 정리)
 

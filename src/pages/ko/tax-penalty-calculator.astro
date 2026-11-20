@@ -1,0 +1,31 @@
+---
+// 국세 가산세 계산기 (2026-11-20, 전문 직군 전수조사 3번). 엔진: lib/kr-tax-penalty-2026.ts (스킬 kr-tax-advisor calc.mjs penalty)
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import TaxPenalty from "../../components/tools/advisory/TaxPenalty";
+
+const title = "가산세 계산기 — 무신고·과소신고·납부지연, 기한후·수정신고 감면까지";
+const description = "종합소득세·법인세·양도세·상속·증여세를 신고하지 않았거나 덜 신고했을 때 가산세를 어림해요. 무신고 20%, 과소신고 10%, 부정 40%, 납부지연 하루 0.022%, 원천세 3%와 기한후신고(최대 50%)·수정신고(최대 90%) 감면 구간을 날짜로 계산해요.";
+const ko = {
+  introTitle: "늦었어도 빨리 낼수록 줄어요",
+  intro: "가산세는 신고를 안 하거나 덜 해서 붙는 신고 가산세와, 늦게 내서 날마다 붙는 납부지연 가산세로 나뉘어요. 기한 뒤 빨리 신고하면 신고 가산세를 크게 줄일 수 있어요.",
+  howToTitle: "사용 방법",
+  steps: ["신고를 안 했는지, 덜 했는지, 원천세를 늦게 냈는지 골라요.", "더 낼 세금과 원래 기한, 신고·납부할 날을 넣어요.", "감면 구간이 끝나는 날을 보고 그 전에 신고·납부해요."],
+  highlightsTitle: "주요 특징",
+  highlights: [
+    { title: "감면 구간", body: "수정신고 1개월 90%부터 2년 10%까지, 기한후신고 1개월 50%부터 6개월 20%까지 날짜로 따져요." },
+    { title: "납부지연", body: "하루 0.022%로 실제 늦은 날수만큼 계산해요." },
+    { title: "원천세", body: "3%에 하루 0.022%를 더하고 10% 한도를 적용해요." },
+    { title: "세목 공통", body: "종합소득세·법인세·양도세·상속·증여세에 같은 규칙을 써요." },
+  ],
+  disclaimer: "법령 정보와 어림 계산이에요. 세금계산서·증빙 관련 가산세는 빠져 있고, 실제 고지액은 국세청 계산을 따라요.",
+};
+const faqs = [
+  { q: "기한후신고하면 가산세가 얼마나 줄어요?", a: "법정신고기한이 지난 뒤 1개월 안에 신고하면 무신고 가산세의 50%, 3개월 안 30%, 6개월 안 20%를 줄여 줘요(국세기본법 제48조 ②). 세무서가 경정할 것을 미리 알고 신고하면 줄지 않아요." },
+  { q: "수정신고 감면은요?", a: "1개월 안 90%, 3개월 안 75%, 6개월 안 50%, 1년 안 30%, 1년 6개월 안 20%, 2년 안 10%예요. 과소신고 가산세에만 적용되고 납부지연 가산세는 줄지 않아요." },
+  { q: "납부지연 가산세는 어떻게 붙어요?", a: "내지 않은 세금에 납부기한 다음 날부터 낸 날까지 하루 0.022%(연 약 8%)가 붙어요(국세기본법 제47조의4). 신고만 하고 안 내면 계속 늘어나요." },
+];
+---
+<KrFinancePage slug="tax-penalty-calculator" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <TaxPenalty client:load />
+  <p class="mt-4 text-xs text-muted-foreground">근거: 국세기본법 제47조의2~제47조의5·제48조. <a class="underline" href="/ko/vat-penalty-calculator/">부가세 가산세</a> · <a class="underline" href="/ko/appeal-deadline-calculator/">불복·이의신청 기한</a> · <a class="underline" href="/ko/tax-law-guide/">세법 길잡이</a></p>
+</KrFinancePage>

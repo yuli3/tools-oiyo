@@ -26,6 +26,9 @@ GENERATED from tools-oiyo src/data/pro-competencies.ts. 기준일 2026-11-20. �
   - 도구: 종합소득세 계산기 https://tools.oiyo.net/ko/comprehensive-income-tax-calculator/ · 프리랜서 세금 계산기 https://tools.oiyo.net/ko/freelancer-tax-calculator/ · 양도소득세 계산기 https://tools.oiyo.net/ko/capital-gains-tax-calculator/ · 상속세 계산기 https://tools.oiyo.net/ko/inheritance-tax-calculator/ · 증여세 계산기 https://tools.oiyo.net/ko/gift-tax-calculator/
   - MCP: `calculate_kr_freelancer_income_tax`, `calculate_capital_gains_tax`, `calculate_inheritance_gift_tax`
   - 스킬: kr-tax-advisor
+- **법인세와 세무조정 한도** [계산·평가]: 업무추진비·기부금 한도 초과를 더하고 이월결손금을 빼 과세표준을 만든 뒤, 2026년 세율과 최저한세로 법인세를 어림해요.
+  - 도구: 법인세 어림·세무조정 한도 https://tools.oiyo.net/ko/corporate-tax-adjustment-calculator/ · 개인 vs 법인 세금 비교 https://tools.oiyo.net/ko/incorporation-calculator/
+  - 스킬: kr-tax-advisor
 - **연말정산·공제 판정** [계산·평가] (일반인도 씀): 부양가족·의료비·월세·카드 공제 요건을 하나씩 판정하고 환급액 차이를 비교해요.
   - 도구: 연말정산 계산기 https://tools.oiyo.net/ko/year-end-settlement-calculator/ · 부양가족 공제 판정 https://tools.oiyo.net/ko/dependent-deduction-checker/ · 의료비 세액공제 https://tools.oiyo.net/ko/medical-expense-tax-credit-calculator/ · 월세 세액공제 https://tools.oiyo.net/ko/monthly-rent-tax-credit-calculator/
   - MCP: `calculate_kr_year_end_settlement`, `check_kr_dependent_deduction`, `calculate_kr_monthly_rent_credit`, `calculate_card_tax_deduction`
@@ -35,10 +38,10 @@ GENERATED from tools-oiyo src/data/pro-competencies.ts. 기준일 2026-11-20. �
   - MCP: `value_kr_unlisted_shares`, `calculate_kr_family_business_deduction`
   - 스킬: kr-tax-advisor
 - **신고·납부 일정과 가산세 관리** [기한·절차] (일반인도 씀): 부가세·원천세·종합소득세·법인세 신고 일정을 잡고, 늦었을 때 가산세 감면 구간을 계산해요.
-  - 도구: 세무 일정 https://tools.oiyo.net/ko/tax-calendar/ · 부가세 가산세 https://tools.oiyo.net/ko/vat-penalty-calculator/ · 상속·증여 신고기한 https://tools.oiyo.net/ko/inheritance-gift-filing-deadline-calculator/
+  - 도구: 세무 일정 https://tools.oiyo.net/ko/tax-calendar/ · 가산세 계산 https://tools.oiyo.net/ko/tax-penalty-calculator/ · 부가세 가산세 https://tools.oiyo.net/ko/vat-penalty-calculator/ · 상속·증여 신고기한 https://tools.oiyo.net/ko/inheritance-gift-filing-deadline-calculator/
   - MCP: `get_kr_business_tax_calendar`, `plan_kr_inheritance_gift_filing_deadline`, `check_kr_business_day`
 - **조세불복 기한과 절차** [기한·절차] (일반인도 씀, 자격사 업무와 맞닿음: 정보만): 고지서를 받은 날부터 90일 안에 이의신청·심사청구·심판청구를 고르고, 경정청구 5년을 따져요.
-  - 도구: 세금 법령 길잡이 https://tools.oiyo.net/ko/tax-law-guide/
+  - 도구: 불복·이의신청 기한 계산 https://tools.oiyo.net/ko/appeal-deadline-calculator/ · 세금 법령 길잡이 https://tools.oiyo.net/ko/tax-law-guide/
   - MCP: `start_kr_law_intake`
   - 스킬: oiyo-kr-law-guide
 - **장부·증빙 검토** [서류·증빙] (자격사 업무와 맞닿음: 정보만): 간편장부·복식부기 대상, 업무용 승용차 운행기록, 적격증빙을 확인해요.
@@ -78,8 +81,9 @@ GENERATED from tools-oiyo src/data/pro-competencies.ts. 기준일 2026-11-20. �
 - **분개와 계정 흐름** [서류·증빙] (일반인도 씀): 거래를 차변·대변으로 나누고 T계정으로 잔액 흐름을 확인해요.
   - 도구: 분개 연습 https://tools.oiyo.net/ko/journal-entry-trainer/ · T계정 시각화 https://tools.oiyo.net/ko/t-account-visualizer/
 - **결산·감사·법인세 일정** [기한·절차]: 결산 → 감사 → 주총 → 법인세 신고(사업연도 종료 후 3개월) 순서를 맞춰요.
-  - 도구: 회계·장부 법령 길잡이 https://tools.oiyo.net/ko/accounting-law-guide/ · 세무 일정 https://tools.oiyo.net/ko/tax-calendar/
+  - 도구: 회계·장부 법령 길잡이 https://tools.oiyo.net/ko/accounting-law-guide/ · 세무 일정 https://tools.oiyo.net/ko/tax-calendar/ · 법인세 어림·세무조정 한도 https://tools.oiyo.net/ko/corporate-tax-adjustment-calculator/
   - MCP: `get_kr_business_tax_calendar`
+  - 스킬: kr-tax-advisor
 - **경영·재무 자문** [상담·설계]: 단위경제·런웨이·인수 통합을 숫자로 검토하고 결론·근거·다음 행동을 한 장으로 정리해요.
   - 도구: 단위경제·런웨이 https://tools.oiyo.net/ko/unit-economics-runway-calculator/ · 인수 통합 점검 https://tools.oiyo.net/ko/acquisition-integration-check/ · 의사결정 트리 https://tools.oiyo.net/ko/decision-tree-calculator/
   - MCP: `calculate_unit_economics_runway`
@@ -113,7 +117,7 @@ GENERATED from tools-oiyo src/data/pro-competencies.ts. 기준일 2026-11-20. �
   - 도구: 인건비 계산기 https://tools.oiyo.net/ko/labor-cost-calculator/ · 건강보험료 계산기 https://tools.oiyo.net/ko/health-insurance-calculator/ · 일용직 4대보험 https://tools.oiyo.net/ko/daily-worker-insurance-checker/ · 실수령액 계산기 https://tools.oiyo.net/ko/salary-calculator/
   - MCP: `calculate_health_insurance`, `calculate_net_salary`
 - **해고·체불 구제 기한** [기한·절차] (일반인도 씀, 자격사 업무와 맞닿음: 정보만): 부당해고 구제신청 3개월, 해고예고수당, 체불임금 대지급금 신청 기한을 세요.
-  - 도구: 노동법 길잡이 https://tools.oiyo.net/ko/labor-law-guide/ · 해고예고수당 https://tools.oiyo.net/ko/dismissal-notice-pay-calculator/ · 체불 대지급금 https://tools.oiyo.net/ko/unpaid-wage-guarantee-calculator/ · 휴업수당 https://tools.oiyo.net/ko/shutdown-allowance-calculator/
+  - 도구: 불복·이의신청 기한 계산 https://tools.oiyo.net/ko/appeal-deadline-calculator/ · 노동법 길잡이 https://tools.oiyo.net/ko/labor-law-guide/ · 해고예고수당 https://tools.oiyo.net/ko/dismissal-notice-pay-calculator/ · 체불 대지급금 https://tools.oiyo.net/ko/unpaid-wage-guarantee-calculator/ · 휴업수당 https://tools.oiyo.net/ko/shutdown-allowance-calculator/
   - MCP: `start_kr_law_intake`, `calculate_kr_dismissal_notice_pay`, `calculate_kr_wage_guarantee`, `calculate_kr_shutdown_allowance`
   - 스킬: oiyo-kr-law-guide, oiyo-kr-benefits-navigator
 - **근로계약·연차촉진·수습 서류** [서류·증빙] (자격사 업무와 맞닿음: 정보만): 연차 사용촉진 통보 순서, 수습 감액 요건처럼 서류로 남겨야 효력이 생기는 절차를 챙겨요.
@@ -142,7 +146,7 @@ GENERATED from tools-oiyo src/data/pro-competencies.ts. 기준일 2026-11-20. �
   - MCP: `search_kr_statutes`
   - 스킬: oiyo-kr-law-guide
 - **의견제출·행정심판·소송 기한** [기한·절차] (일반인도 씀): 처분을 안 날부터 90일, 있은 날부터 180일, 영업일 기준 기한을 계산해요.
-  - 도구: 행정 절차 길잡이 https://tools.oiyo.net/ko/administrative-law-guide/ · 영업일 계산 https://tools.oiyo.net/ko/business-day-checker/
+  - 도구: 불복·이의신청 기한 계산 https://tools.oiyo.net/ko/appeal-deadline-calculator/ · 행정 절차 길잡이 https://tools.oiyo.net/ko/administrative-law-guide/ · 영업일 계산 https://tools.oiyo.net/ko/business-day-checker/
   - MCP: `start_kr_law_intake`, `check_kr_business_day`
   - 스킬: oiyo-kr-law-guide
 - **인허가·민원 서류** [서류·증빙] (일반인도 씀, 자격사 업무와 맞닿음: 정보만): 영업신고·허가 신청에 필요한 서류와 요건을 정리해요. 작성·제출 대행은 행정사 업무예요.
@@ -247,7 +251,7 @@ GENERATED from tools-oiyo src/data/pro-competencies.ts. 기준일 2026-11-20. �
 - **의료비·실손 보상 계산** [계산·평가] (일반인도 씀): 실손 세대별 자기부담, 본인부담상한제 환급을 계산해요.
   - 도구: 실손보험 세대 비교 https://tools.oiyo.net/ko/silson-insurance-generation-calculator/ · 본인부담상한 환급 https://tools.oiyo.net/ko/copay-cap-refund-calculator/
 - **보험금 청구 시효와 지급 기한** [기한·절차] (일반인도 씀): 청구권 소멸시효 3년, 고지의무 해지 제한 기간을 날짜로 세요.
-  - 도구: 보험 법령 길잡이 https://tools.oiyo.net/ko/insurance-law-guide/ · 소멸시효 계산기 https://tools.oiyo.net/ko/statute-limitations-calculator/
+  - 도구: 불복·이의신청 기한 계산 https://tools.oiyo.net/ko/appeal-deadline-calculator/ · 보험 법령 길잡이 https://tools.oiyo.net/ko/insurance-law-guide/ · 소멸시효 계산기 https://tools.oiyo.net/ko/statute-limitations-calculator/
   - MCP: `start_kr_law_intake`
   - 스킬: oiyo-kr-law-guide
 - **손해사정서 작성** [서류·증빙] (일반인도 씀, 자격사 업무와 맞닿음: 정보만): 사고 사실·손해액·근거를 정리한 손해사정서는 손해사정사 업무예요(보험업법 제188조).
@@ -304,7 +308,7 @@ GENERATED from tools-oiyo src/data/pro-competencies.ts. 기준일 2026-11-20. �
   - MCP: `search_kr_statutes`
   - 스킬: oiyo-kr-law-guide
 - **납부·보정·경정·불복 기한** [기한·절차] (일반인도 씀, 자격사 업무와 맞닿음: 정보만): 수리일부터 15일 납부, 6개월 보정, 5년 경정청구, 90일 불복을 날짜로 세요.
-  - 도구: 관세·통관 법령 길잡이 https://tools.oiyo.net/ko/customs-law-guide/
+  - 도구: 불복·이의신청 기한 계산 https://tools.oiyo.net/ko/appeal-deadline-calculator/ · 관세·통관 법령 길잡이 https://tools.oiyo.net/ko/customs-law-guide/
   - MCP: `start_kr_law_intake`, `check_kr_business_day`
   - 스킬: oiyo-kr-law-guide
 - **해외직구 면세 판정** [상담·설계] (일반인도 씀): 150달러(미국발 200달러), 합산과세, 판매용 여부를 확인해요.
@@ -339,7 +343,7 @@ GENERATED from tools-oiyo src/data/pro-competencies.ts. 기준일 2026-11-20. �
   - MCP: `search_kr_statutes`
   - 스킬: oiyo-kr-law-guide
 - **공지예외·거절 대응 기한** [기한·절차] (일반인도 씀): 공지예외 12개월, 의견서 제출기간, 거절결정 불복 3개월, 연차료 납부를 관리해요.
-  - 도구: 특허·상표 법령 길잡이 https://tools.oiyo.net/ko/ip-law-guide/
+  - 도구: 불복·이의신청 기한 계산 https://tools.oiyo.net/ko/appeal-deadline-calculator/ · 특허·상표 법령 길잡이 https://tools.oiyo.net/ko/ip-law-guide/
   - MCP: `start_kr_law_intake`
   - 스킬: oiyo-kr-law-guide
 - **선행기술·등록상표 조사** [상담·설계] (일반인도 씀): 출원 전에 키프리스로 같은 기술·비슷한 상표를 찾아 가능성을 가늠해요.
@@ -372,7 +376,7 @@ GENERATED from tools-oiyo src/data/pro-competencies.ts. 기준일 2026-11-20. �
   - MCP: `search_kr_statutes`
   - 스킬: oiyo-kr-law-guide
 - **보상금·공시가격 다툼 기한** [기한·절차] (일반인도 씀): 재결 이의신청 30일, 소송 90일(이의재결 뒤 60일), 공시가격 이의신청 30일을 세요.
-  - 도구: 감정평가·보상 법령 길잡이 https://tools.oiyo.net/ko/appraisal-law-guide/
+  - 도구: 불복·이의신청 기한 계산 https://tools.oiyo.net/ko/appeal-deadline-calculator/ · 감정평가·보상 법령 길잡이 https://tools.oiyo.net/ko/appraisal-law-guide/
   - MCP: `start_kr_law_intake`
   - 스킬: oiyo-kr-law-guide
 - **수익환원법** [계산·평가] (일반인도 씀): 임대수익과 환원율로 수익 부동산 가치를 구해요.
@@ -432,7 +436,7 @@ GENERATED from tools-oiyo src/data/pro-competencies.ts. 기준일 2026-11-20. �
 - **건폐율·용적률 계산** [계산·평가] (일반인도 씀): 대지면적과 바닥면적으로 증축 여유를 계산해요.
   - 도구: 건폐율·용적률 https://tools.oiyo.net/ko/building-coverage-floor-area-ratio-calculator/
 - **착공·불복 기한** [기한·절차] (일반인도 씀): 허가 2년·신고 1년 착공 기한, 시정명령·이행강제금 행정심판 90일을 챙겨요.
-  - 도구: 건축·인허가 법령 길잡이 https://tools.oiyo.net/ko/building-permit-law-guide/
+  - 도구: 불복·이의신청 기한 계산 https://tools.oiyo.net/ko/appeal-deadline-calculator/ · 건축·인허가 법령 길잡이 https://tools.oiyo.net/ko/building-permit-law-guide/
   - MCP: `start_kr_law_intake`
   - 스킬: oiyo-kr-law-guide
 - **설계도서 작성** [서류·증빙] (자격사 업무와 맞닿음: 정보만, 준비 중): 허가·신고 대상 건축물의 설계는 건축사 업무예요(건축법 제23조).
@@ -461,7 +465,7 @@ GENERATED from tools-oiyo src/data/pro-competencies.ts. 기준일 2026-11-20. �
   - MCP: `start_kr_law_intake`
   - 스킬: oiyo-kr-law-guide
 - **의료분쟁 조정 기한** [기한·절차] (일반인도 씀): 안 날부터 3년·진료 끝난 날부터 10년 안에 조정을 신청해요.
-  - 도구: 보건·의료 이용 길잡이 https://tools.oiyo.net/ko/medical-care-law-guide/
+  - 도구: 불복·이의신청 기한 계산 https://tools.oiyo.net/ko/appeal-deadline-calculator/ · 보건·의료 이용 길잡이 https://tools.oiyo.net/ko/medical-care-law-guide/
   - MCP: `start_kr_law_intake`
   - 스킬: oiyo-kr-law-guide
 - **진료비·보험료·의료비 공제** [계산·평가] (일반인도 씀): 비급여 확인 요청, 건강보험료, 의료비 세액공제를 계산해요.
@@ -484,7 +488,7 @@ GENERATED from tools-oiyo src/data/pro-competencies.ts. 기준일 2026-11-20. �
   - MCP: `search_kr_statutes`
   - 스킬: oiyo-kr-law-guide
 - **이혼 절차 기한** [기한·절차] (일반인도 씀): 숙려 3개월·1개월, 이혼신고 3개월, 재산분할 2년, 이혼청구 6개월·2년을 챙겨요.
-  - 도구: 가사·이혼 법령 길잡이 https://tools.oiyo.net/ko/divorce-family-law-guide/
+  - 도구: 불복·이의신청 기한 계산 https://tools.oiyo.net/ko/appeal-deadline-calculator/ · 가사·이혼 법령 길잡이 https://tools.oiyo.net/ko/divorce-family-law-guide/
   - MCP: `start_kr_law_intake`
   - 스킬: oiyo-kr-law-guide
 - **양육비 이행 확보** [상담·설계] (일반인도 씀): 이행명령 → 감치 → 양육비이행관리원 지원 순서를 안내해요.
@@ -520,7 +524,7 @@ GENERATED from tools-oiyo src/data/pro-competencies.ts. 기준일 2026-11-20. �
   - MCP: `calculate_unemployment_benefits`
   - 스킬: oiyo-kr-benefits-navigator
 - **결정·이의신청 기한** [기한·절차] (일반인도 씀): 신청일부터 30일, 통지일부터 90일을 챙겨요.
-  - 도구: 복지급여 길잡이 https://tools.oiyo.net/ko/welfare-benefit-law-guide/
+  - 도구: 불복·이의신청 기한 계산 https://tools.oiyo.net/ko/appeal-deadline-calculator/ · 복지급여 길잡이 https://tools.oiyo.net/ko/welfare-benefit-law-guide/
   - MCP: `start_kr_law_intake`
   - 스킬: oiyo-kr-law-guide
 - **사례관리 기록** [서류·증빙] (준비 중): 상담·욕구 조사·서비스 연계를 기록해요.

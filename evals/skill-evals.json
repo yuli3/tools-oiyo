@@ -753,6 +753,103 @@
           }
         }
       ]
+    },
+    {
+      "skill": "kr-tax-advisor",
+      "id": "corp-tax-5eok",
+      "ask": "중소기업 법인, 올해 이익 5억이면 법인세 얼마예요? 접대비는 안 썼어요",
+      "run": [
+        "corp-tax",
+        {
+          "size": "sme",
+          "profit": 500000000,
+          "revenue": 0,
+          "entertainment": 0,
+          "generalDonation": 0
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.base",
+          "eq": 500000000
+        },
+        {
+          "path": "result.computed",
+          "eq": 80000000
+        },
+        {
+          "path": "result.interim.amount",
+          "eq": 40000000
+        }
+      ]
+    },
+    {
+      "skill": "kr-tax-advisor",
+      "id": "entertainment-limit",
+      "ask": "매출 150억 중소기업인데 접대비 1억 썼어요. 얼마까지 비용 처리돼요?",
+      "run": [
+        "entertainment",
+        {
+          "size": "sme",
+          "revenue": 15000000000,
+          "spent": 100000000
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.limit",
+          "eq": 76000000
+        },
+        {
+          "path": "result.excess",
+          "eq": 24000000
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-kr-law-guide",
+      "id": "appeal-tax-notice",
+      "ask": "11월 20일에 세금 고지서를 받았어요. 다투려면 언제까지예요?",
+      "run": [
+        "calc",
+        "appeal",
+        "2026-11-20",
+        "tax",
+        "2026-11-20"
+      ],
+      "expect": [
+        {
+          "path": "deadlines",
+          "has": {
+            "key": "tax-dispute:appeal-90",
+            "due": "2027-02-18"
+          }
+        }
+      ]
+    },
+    {
+      "skill": "kr-tax-advisor",
+      "id": "penalty-late-filing",
+      "ask": "종합소득세 신고를 놓쳤어요. 낼 세금 1,000만 원, 6월 21일에 기한후신고하고 바로 내면 가산세가 얼마예요?",
+      "run": [
+        "penalty",
+        {
+          "kind": "none",
+          "tax": 10000000,
+          "due": "2026-06-01",
+          "filed": "2026-06-21"
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.reduction",
+          "eq": 0.5
+        },
+        {
+          "path": "result.total",
+          "eq": 1044000
+        }
+      ]
     }
   ],
   "boundaries": {
