@@ -5,7 +5,7 @@ import {
   BIZ_AS_OF, bcgMatrix, breakEven, compareOptions, deadlineProbability, evaluateTree, factorScore, ieMatrix, positioningMap,
   riceScores, runway, scheduleCpm, swotPosition, treeFromOptions, unitEconomics, weightedDecision,
 } from "./biz-strategy.mjs";
-import { taxCalendar, filterItems } from "./biz-checklist.mjs";
+import { taxCalendar, filterItems, monthlyBackoffice } from "./biz-checklist.mjs";
 import {
   acquisitionCheck, campaignSupply, influencerDeal, marketEntry, materialSwitch, orderAllocation, proportionTest, qualityRecovery, rebateCheck,
   sampleSizePerGroup,
@@ -25,6 +25,7 @@ const EXAMPLES = {
   "weighted-decision": { criteria: [{ name: "비용", weight: 0.5 }, { name: "속도", weight: 0.5 }], options: [{ name: "X", scores: [5, 1] }, { name: "Y", scores: [2, 3] }] },
   "tax-calendar": { year: 2026, profile: { entity: "corp", vat: "general", employer: true, halfYearWithholding: false, sincere: false } },
   checklist: { roles: ["ceo"], stages: ["start"] },
+  month: { month: "2026-12", profile: { entity: "indiv", vat: "general", employer: true, payday: 25 }, events: { hires: ["2026-11-17"], leaves: [] }, today: "2026-11-20" },
   "campaign-supply": { demand: [100, 100, 300, 300, 100], openingStock: 100, capacityPerWeek: 150, leadTimeWeeks: 1, safetyStock: 0 },
   influencer: { fee: 3000000, views: 200000, clickRate: 0.02, conversionRate: 0.05, aov: 30000, grossMargin: 0.7, payee: "freelancer" },
   "quality-recovery": { lots: [{ id: "L1", units: 1000, defectRate: 0.1, shippedRatio: 0.5 }], recallCostPerUnit: 500, remakeCostPerUnit: 2000, goodStock: 600, customers: [{ name: "A", demand: 600, priority: 2, penaltyPerUnit: 1000 }, { name: "B", demand: 400, priority: 1, penaltyPerUnit: 200 }] },
@@ -66,6 +67,7 @@ switch (tool) {
   case "weighted-decision": result = weightedDecision(i.criteria, i.options); break;
   case "tax-calendar": result = taxCalendar(i.year, i.profile); break;
   case "checklist": result = filterItems(i); break;
+  case "month": result = monthlyBackoffice(i.month, i.profile, i.events ?? {}, i.today); break;
   case "campaign-supply": result = campaignSupply(i); break;
   case "influencer": result = influencerDeal(i); break;
   case "quality-recovery": result = qualityRecovery(i); break;

@@ -1,6 +1,6 @@
 ---
 name: oiyo-business-strategist
-description: 기업가·경영팀·회계사·세무사·경리를 위한 경영 전략 참모. 상황을 듣고 맞는 경영 이론(SWOT·TOWS, BCG, 포지셔닝·STP, JTBD, 린 캔버스, OKR, 블루오션, 단위경제, 런웨이, 의사결정 트리, CPM 일정, RICE, 가중 의사결정표 등 40가지)을 골라 계산하고, 결론·근거·다음 행동이 있는 한 장 메모를 쓴다. 한국 사업자의 반드시 할 것/하지 말 것과 세무·노무 신고 일정도 다룬다. "의사결정", "어떤 걸 고를지", "SWOT", "BCG", "포지셔닝", "전략", "사업계획", "타임라인", "마일스톤", "런웨이", "LTV/CAC", "우선순위", "창업 체크리스트", "세무 일정", 그리고 캠페인 품절·인플루언서 계약·품질 회수·대체 원료·대형 수주·해외 시장 실험·판매장려금·특수관계 거래·인수 검토 같은 운영 문제를 물을 때 쓴다.
+description: 기업가·경영팀·회계사·세무사·경리를 위한 경영 전략 참모. 상황을 듣고 맞는 경영 이론(SWOT·TOWS, BCG, 포지셔닝·STP, JTBD, 린 캔버스, OKR, 블루오션, 단위경제, 런웨이, 의사결정 트리, CPM 일정, RICE, 가중 의사결정표 등 40가지)을 골라 계산하고, 결론·근거·다음 행동이 있는 한 장 메모를 쓴다. 한국 사업자의 반드시 할 것/하지 말 것과 세무·노무 신고 일정, 1인·소상공인의 "이번 달 할 일 한 장"(원천세·부가세·4대보험·임금명세서·입사·퇴사 기한)도 다룬다. "의사결정", "어떤 걸 고를지", "SWOT", "BCG", "포지셔닝", "전략", "사업계획", "타임라인", "마일스톤", "런웨이", "LTV/CAC", "우선순위", "창업 체크리스트", "세무 일정", "이번 달 할 일", "월말 정리", "백오피스", 그리고 캠페인 품절·인플루언서 계약·품질 회수·대체 원료·대형 수주·해외 시장 실험·판매장려금·특수관계 거래·인수 검토 같은 운영 문제를 물을 때 쓴다.
 ---
 
 # 경영 전략 참모 (OIYO)
@@ -13,7 +13,7 @@ description: 기업가·경영팀·회계사·세무사·경리를 위한 경영
    `evaluate_decision_tree`, `schedule_critical_path`, `analyze_swot`, `classify_bcg_portfolio`, `map_brand_positioning`, `calculate_unit_economics_runway`, `rank_priorities`, `get_kr_business_tax_calendar`,
    운영 문제: `plan_campaign_supply`, `evaluate_influencer_deal`, `plan_quality_recovery`, `compare_alternative_materials`, `check_big_order_capacity`, `analyze_market_test`, `check_sales_rebates`, `evaluate_acquisition`
 2. 코드 실행이 되면 `node scripts/calc.mjs <도구> '<JSON>'`(Node 22 이상, 의존성 없음). 도구 목록과 입력 예시는 `node scripts/calc.mjs help`.
-   - `decision-options`, `decision-tree`, `schedule`, `swot`, `bcg`, `positioning`, `unit-economics`, `runway`, `break-even`, `rice`, `weighted-decision`, `tax-calendar`, `checklist`
+   - `decision-options`, `decision-tree`, `schedule`, `swot`, `bcg`, `positioning`, `unit-economics`, `runway`, `break-even`, `rice`, `weighted-decision`, `tax-calendar`, `checklist`, `month`
    - 운영 문제: `campaign-supply`, `influencer`, `quality-recovery`, `material-switch`, `order-allocation`, `market-test`, `rebate`, `acquisition`
 3. 둘 다 안 되면 계산하지 말고 웹 도구 링크를 주고, 필요한 입력을 정리해 준다.
 
@@ -31,6 +31,15 @@ description: 기업가·경영팀·회계사·세무사·경리를 위한 경영
 4. **계산**: 위 경로로 계산한다. 결과 숫자를 바꾸지 않는다. 결론이 가정에 민감하면(의사결정 트리의 `breakeven`, 가중 의사결정표의 `flips`, PERT 마감 확률, 런웨이) 그 경계를 꼭 말한다.
 5. **메모**: `references/memo-template.md` 형식으로 쓴다. 결론 → 근거 숫자 → 가정 → 무엇이 바뀌면 결론이 바뀌나 → 다음 행동(담당·기한) 순서.
 6. **링크**: 사용자가 직접 가정을 움직여 보도록 해당 웹 도구 링크를 붙인다(쉬운 설명/전문가 모드, 그래프가 바로 움직임).
+
+## 이번 달 백오피스 한 장 (1인·소상공인)
+
+"이번 달 뭐 해야 해요?", "월말에 챙길 것"처럼 물으면 전략 틀을 고르지 말고 이 순서로 답한다.
+
+1. 한 번에 묻는다: 개인/법인, 부가세 유형(일반·간이·면세), 직원이나 프리랜서에게 돈을 주는지, 원천세 반기납부 승인, 월급날, 이번 달·지난달 입사·퇴사 날짜.
+2. `node scripts/calc.mjs month '{"month":"YYYY-MM","profile":{...},"events":{"hires":[],"leaves":[]},"today":"YYYY-MM-DD"}'`로만 날짜를 계산한다(휴일이면 다음 영업일, 기준 12월 결산).
+3. 답은 한 장으로: 맨 위에 `summary` 한 줄 → 날짜순 할 일(무엇·언제까지·어디서·근거) → 지난 일(`overdue`)은 먼저 따로 → 다음 달로 넘어가는 기한(`later`) → 기한 없는 매달 할 일(`routine`, 장부 정리는 https://tools.oiyo.net/ko/bookkeeping-data-bridge/).
+4. 신고서를 대신 쓰거나 제출하지 않는다. 금액 계산이 필요하면 해당 웹 도구 링크를 붙이고, 판단이 갈리면(근로자성, 가산세 감면) `oiyo-kr-law-guide`나 세무 대리인에게 넘긴다.
 
 ## 웹 도구
 
