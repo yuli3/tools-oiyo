@@ -1,6 +1,7 @@
 import test from "node:test";
+import { tmpdir } from "node:os";
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { readFileSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { execFileSync } from "node:child_process";
 import { LAW_SKILL_LIBS, LAW_SKILL_DIR, renderReferences, renderCompetencies, renderPractice } from "./build-law-guide-skill.mjs";
@@ -21,6 +22,10 @@ test("law guide CLI: 실무 계산·길잡이", () => {
   const p = run("practice", "eportal-practice-guide", "insurance4", '{"acquire":"2026-11-03"}');
   assert.equal(p.deadlines[0].due, "2026-12-15");
   assert.ok(run("practice").some((g) => g.slug === "pro-document-reading-guide"));
+  assert.equal(run("calc", "breach", '{"knownAt":"2026-12-24T15:30","affected":10,"hacking":true}').deadline, "2026-12-27 15:30");
+  const tmp = resolve(tmpdir(), `oiyo-policy-${process.pid}.txt`);
+  writeFileSync(tmp, "개인정보 처리 목적과 보유 기간, 파기 방법을 적었습니다.");
+  assert.ok(run("calc", "policy", tmp, '{"website":true}').missing.some((m) => m.id === "cookies"));
 });
 
 test("law guide CLI: suggest → intake → statutes", () => {

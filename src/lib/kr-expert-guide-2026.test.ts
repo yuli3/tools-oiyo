@@ -159,7 +159,7 @@ test("보험 주제: 질문·기한·확인할 점", () => {
 });
 
 test("분야 팩: 관세·특허·감정평가·중개가 붙고 기한이 맞아요", () => {
-  assert.equal(Object.keys(PROFESSIONS).length, 15);
+  assert.equal(Object.keys(PROFESSIONS).length, 16);
   for (const d of ["customs", "ip", "appraisal", "realty"] as const) {
     assert.ok(TOPICS.filter((t) => t.domain === d).length >= 2, d);
     assert.ok(STATUTES.some((x) => x.domain === d), d);
@@ -238,4 +238,24 @@ test("분야 팩 11-20: 소비자·온라인 구매 청약철회·해지", () =>
   assert.equal(intake("cons-contract", { type: "continuing" }).flags[0].tone, "good");
   assert.equal(suggestTopics("온라인 쇼핑 환불 반품 7일")[0].id, "cons-online");
   assert.equal(suggestTopics("헬스장 중도 해지 위약금")[0].id, "cons-contract");
+});
+
+test("분야 팩 11-20: 개인정보 16분야, 72시간은 휴일에도 미루지 않아요", () => {
+  assert.ok(TOPICS.filter((t) => t.domain === "privacy").length >= 3);
+  assert.ok(STATUTES.filter((x) => x.domain === "privacy").length >= 8);
+  assert.ok(SCOPE_MATRIX.some((m) => m.who.privacy === "yes"));
+  assert.equal(dueDate({ hours: 72 }, "2026-12-24")?.due, "2026-12-27");
+  const small = intake("privacy-breach", { knownDate: "2026-12-24", count: 120, sensitive: "no", hacking: "no", contact: "yes" }, "2026-12-24");
+  assert.deepEqual(small.deadlines.map((d) => d.id), ["notify"]);
+  assert.equal(small.deadlines[0].due, "2026-12-27");
+  const big = intake("privacy-breach", { knownDate: "2026-12-24", count: 5000 }, "2026-12-24");
+  assert.deepEqual(big.deadlines.map((d) => d.id).sort(), ["notify", "report"]);
+  assert.equal(big.flags[0].tone, "warn");
+  assert.equal(intake("privacy-breach", { knownDate: "2026-12-24", count: 3, hacking: "yes" }).deadlines.length, 2);
+  const pol = intake("privacy-policy", { website: "yes", outsource: "yes", rrn: "yes" });
+  assert.match(pol.flags[0].text, /11가지/);
+  assert.equal(pol.flags[1].tone, "warn");
+  assert.equal(intake("privacy-victim", { noticeDate: "2026-11-20" }).deadlines[0].due, "2029-11-20");
+  assert.equal(suggestTopics("고객 개인정보 유출 72시간 신고")[0].id, "privacy-breach");
+  assert.equal(findStatutes("처리방침")[0].id, "pipa-30");
 });
