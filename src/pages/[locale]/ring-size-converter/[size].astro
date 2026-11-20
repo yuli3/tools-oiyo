@@ -1,0 +1,224 @@
+---
+/**
+ * One page per ring size: "ring size 7 in mm" / "반지 13호 몇 mm".
+ *
+ * 2026-11-20: English converter pages earn the family's best RPM after the puzzle
+ * games (operator revenue pass 2026-11-09, blog height-converter $1.27), and ring
+ * size queries are asked per size. Numbers come from lib/ring-size-equivalent.ts,
+ * the same module the interactive converter imports.
+ */
+import Layout from "../../../components/Layout.astro";
+import RelatedUtilities from "../../../components/RelatedUtilities.astro";
+import { ringSizePages, type RingSizePage } from "../../../lib/ring-size-equivalent";
+
+export function getStaticPaths() {
+  return (["ko", "en"] as const).flatMap((lang) =>
+    ringSizePages(lang).map((page) => ({ params: { locale: lang, size: page.slug }, props: { locale: lang, page } })),
+  );
+}
+
+const { locale, page } = Astro.props as { locale: "ko" | "en"; page: RingSizePage };
+const ko = locale === "ko";
+const d = page.data;
+const toolUrl = `/${locale}/ring-size-converter/`;
+const pageUrl = `https://tools.oiyo.net/${locale}/ring-size-converter/${page.slug}/`;
+const mm = (n: number) => `${n.toFixed(2).replace(/\.?0+$/, "")} mm`;
+
+// Coin diameters (US Mint specifications; Bank of Korea, 10원 from 2006).
+// A ring's inside diameter close to a coin lets readers check without a ruler.
+const COINS = ko
+  ? [
+      { name: "10원 동전", d: 18.0 },
+      { name: "50원 동전", d: 21.6 },
+      { name: "100원 동전", d: 24.0 },
+      { name: "500원 동전", d: 26.5 },
+    ]
+  : [
+      { name: "a US dime", d: 17.91 },
+      { name: "a US penny", d: 19.05 },
+      { name: "a US nickel", d: 21.21 },
+      { name: "a US quarter", d: 24.26 },
+    ];
+const coin = COINS.map((c) => ({ ...c, gap: d.diameter - c.d })).sort((a, b) => Math.abs(a.gap) - Math.abs(b.gap))[0];
+const coinNear = coin && Math.abs(coin.gap) <= 0.6;
+
+const label = ko ? `${page.value}호` : `US ${page.value}`;
+const t = ko
+  ? {
+      eyebrow: "반지 호수 환산",
+      title: `반지 ${page.value}호 사이즈: 내경 ${mm(d.diameter)}, 둘레 ${mm(d.circumference)}`,
+      description: `한국·일본 반지 ${page.value}호는 안쪽 지름 ${mm(d.diameter)}, 안쪽 둘레 ${mm(d.circumference)}예요. 해외 사이즈로는 US ${d.us}, UK ${d.uk}, EU ${d.eu}에 해당해요.`,
+      crumb: "반지 호수 변환기",
+      diam: "안쪽 지름(내경)",
+      circ: "안쪽 둘레",
+      us: "US 사이즈",
+      uk: "UK 사이즈",
+      eu: "EU(ISO) 사이즈",
+      jp: "한국·일본 호수",
+      checkTitle: `집에서 ${page.value}호가 맞는지 확인하기`,
+      checkBody: `가지고 있는 반지의 안쪽 지름을 자로 재서 ${mm(d.diameter)}에 가까우면 ${page.value}호예요. 손가락을 잴 때는 종이띠를 손가락 밑동에 감고 겹치는 곳까지 길이를 재면 둘레가 나와요. ${mm(d.circumference)} 안팎이면 이 호수예요.`,
+      coin: coinNear ? `${coin.name}(지름 ${coin.d}mm)와 비슷한 크기예요. 반지를 동전 위에 올려 안쪽 테두리가 동전 테두리와 겹치는지 보면 돼요.` : "",
+      whyTitle: "표마다 호수가 조금씩 다른 이유",
+      whyBody: "한국·일본 호수(JIS), 미국(US), 영국(UK), 유럽(EU)은 서로 다른 눈금이라 정수끼리 딱 맞지 않아요. 시중 환산표는 이것을 말없이 반올림해서, 같은 손가락인데도 표마다 반 호수씩 다르게 적혀 있어요. 이 페이지는 정확값과 판매 호수를 함께 보여 줘요.",
+      fitTitle: "두 호수 사이라면",
+      fitBody: "폭이 넓은 반지는 같은 호수라도 더 꽉 끼고, 손가락은 저녁·더운 날·짠 음식을 먹은 뒤 조금 굵어져요. 두 호수 사이라면 큰 쪽을 고르는 편이 안전해요.",
+      tableTitle: "주변 호수 환산표",
+      colSize: "호수",
+      exact: (n: number) => `정확값 ${n}`,
+      toolCta: "다른 치수로 직접 변환하기",
+      sources: "공식: JIS S 4700 내경 = 13.0 + (호수−1)/3 mm · US 내경 = 11.63 + 0.8128 × 사이즈 · BS 6820 둘레 = 37.8 + 글자당 1.25 mm · EU/ISO 8653 = 둘레 mm.",
+    }
+  : {
+      eyebrow: "Ring size conversion",
+      title: `US Ring Size ${page.value} in mm: ${mm(d.diameter)} diameter, ${mm(d.circumference)} around`,
+      description: `A US size ${page.value} ring has an inside diameter of ${mm(d.diameter)} and an inside circumference of ${mm(d.circumference)}. That is UK ${d.uk}, EU ${d.eu} and Japan ${d.jp}.`,
+      crumb: "Ring Size Converter",
+      diam: "Inside diameter",
+      circ: "Inside circumference",
+      us: "US size",
+      uk: "UK size",
+      eu: "EU (ISO) size",
+      jp: "Japan / Korea",
+      checkTitle: `How to check a size ${page.value} at home`,
+      checkBody: `Measure across the inside of a ring that fits. If it reads close to ${mm(d.diameter)}, it is a size ${page.value}. For a finger, wrap a strip of paper round the base, mark the overlap and measure it flat: about ${mm(d.circumference)} means size ${page.value}.`,
+      coin: coinNear ? `That is about the size of ${coin.name} (${coin.d} mm across). Lay the ring on the coin: the inside edge should line up with the coin's edge.` : "",
+      whyTitle: "Why ring size charts disagree",
+      whyBody: "US, UK, EU and Japanese sizes are different scales that do not land on each other's whole numbers. Printed charts round silently, so the same finger can get different sizes on two charts. This page shows the exact value next to the size you would buy.",
+      fitTitle: "Between two sizes?",
+      fitBody: "A wide band sits tighter than a thin one at the same size, and fingers swell in the evening, in heat and after salty food. If you are between two sizes, take the larger one.",
+      tableTitle: "Nearby ring sizes",
+      colSize: "Size",
+      exact: (n: number) => `exact ${n}`,
+      toolCta: "Convert another measurement",
+      sources: "Formulas: US inside diameter = 11.63 + 0.8128 × size · JIS S 4700 = 13.0 + (size−1)/3 mm · BS 6820 circumference = 37.8 + 1.25 mm per letter · EU/ISO 8653 = circumference in mm.",
+    };
+
+const all = ringSizePages(locale);
+const i = all.findIndex((p) => p.slug === page.slug);
+const nearby = all.slice(Math.max(0, i - 4), i + 5);
+const cards = ko
+  ? [
+      { k: t.us, v: String(d.us), sub: t.exact(d.usExact) },
+      { k: t.uk, v: d.uk, sub: "" },
+      { k: t.eu, v: String(d.eu), sub: "" },
+    ]
+  : [
+      { k: t.uk, v: d.uk, sub: "" },
+      { k: t.eu, v: String(d.eu), sub: "" },
+      { k: t.jp, v: String(d.jp), sub: t.exact(d.jpExact) },
+    ];
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: t.crumb, item: `https://tools.oiyo.net${toolUrl}` },
+        { "@type": "ListItem", position: 2, name: t.title, item: pageUrl },
+      ],
+    },
+    {
+      "@type": "FAQPage",
+      mainEntity: [
+        { "@type": "Question", name: t.title.split(":")[0], acceptedAnswer: { "@type": "Answer", text: t.description } },
+        { "@type": "Question", name: t.checkTitle, acceptedAnswer: { "@type": "Answer", text: `${t.checkBody} ${t.coin}`.trim() } },
+        { "@type": "Question", name: t.whyTitle, acceptedAnswer: { "@type": "Answer", text: t.whyBody } },
+      ],
+    },
+  ],
+};
+---
+
+<Layout title={t.title} description={t.description} locale={locale} availableLocales={[locale]} canonicalURL={pageUrl}>
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(structuredData)} />
+  <div class="mx-auto max-w-3xl px-4 py-5 sm:py-8">
+    <nav class="text-sm text-muted-foreground" aria-label="Breadcrumb">
+      <a class="font-semibold text-primary underline-offset-4 hover:underline" href={toolUrl}>{t.crumb}</a>
+      <span aria-hidden="true"> / </span>
+      <span class="font-medium text-foreground">{label}</span>
+    </nav>
+
+    <section class="mt-3 rounded-2xl border border-border bg-card p-4 sm:p-6">
+      <p class="text-sm font-semibold uppercase tracking-wide text-primary">{t.eyebrow}</p>
+      <h1 class="mt-2 text-2xl font-black tracking-tight text-foreground sm:text-3xl">{t.title}</h1>
+      <p class="mt-3 text-sm leading-relaxed text-muted-foreground">{t.description}</p>
+      <div class="mt-5 grid gap-3 sm:grid-cols-2">
+        <div class="rounded-xl border border-primary bg-primary/10 p-4">
+          <p class="text-sm font-semibold text-muted-foreground">{t.diam}</p>
+          <p class="mt-1 font-mono text-3xl font-black text-foreground">{mm(d.diameter)}</p>
+        </div>
+        <div class="rounded-xl border border-primary bg-primary/10 p-4">
+          <p class="text-sm font-semibold text-muted-foreground">{t.circ}</p>
+          <p class="mt-1 font-mono text-3xl font-black text-foreground">{mm(d.circumference)}</p>
+        </div>
+      </div>
+      <div class="mt-3 grid grid-cols-3 gap-3">
+        {cards.map((c) => (
+          <div class="rounded-xl border border-border bg-muted p-3 text-center">
+            <p class="text-xs font-semibold text-muted-foreground">{c.k}</p>
+            <p class="mt-1 font-mono text-2xl font-bold text-foreground">{c.v}</p>
+            {c.sub && <p class="mt-1 text-xs text-muted-foreground">{c.sub}</p>}
+          </div>
+        ))}
+      </div>
+      <a class="mt-5 inline-flex min-h-11 items-center rounded-full bg-primary px-5 text-sm font-bold text-primary-foreground" href={toolUrl}>{t.toolCta}</a>
+    </section>
+
+    <section class="mt-5 space-y-5 rounded-2xl border border-border bg-card p-4 sm:p-6" data-manual-ad-after>
+      <div>
+        <h2 class="text-lg font-bold text-foreground">{t.checkTitle}</h2>
+        <p class="mt-2 leading-7 text-foreground">{t.checkBody}</p>
+        {t.coin && <p class="mt-2 leading-7 text-foreground">{t.coin}</p>}
+      </div>
+      <div class="border-t border-border pt-4">
+        <h2 class="text-lg font-bold text-foreground">{t.whyTitle}</h2>
+        <p class="mt-2 leading-7 text-foreground">{t.whyBody}</p>
+      </div>
+      <div class="border-t border-border pt-4">
+        <h2 class="text-lg font-bold text-foreground">{t.fitTitle}</h2>
+        <p class="mt-2 leading-7 text-foreground">{t.fitBody}</p>
+      </div>
+    </section>
+
+    <section class="mt-5 rounded-2xl border border-border bg-card p-4 sm:p-6">
+      <h2 class="text-lg font-bold text-foreground">{t.tableTitle}</h2>
+      <div class="mt-4 overflow-x-auto">
+        <table class="w-full text-left text-sm">
+          <thead>
+            <tr class="border-b border-border text-xs font-semibold text-muted-foreground">
+              <th class="py-2 pr-3">{t.colSize}</th>
+              <th class="py-2 pr-3">{t.diam}</th>
+              <th class="py-2 pr-3">{t.circ}</th>
+              <th class="py-2 pr-3">{ko ? "US" : "UK"}</th>
+              <th class="py-2 pr-3">EU</th>
+              <th class="py-2">{ko ? "UK" : "JP"}</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-border">
+            {nearby.map((p) => {
+              const r = p.data;
+              const current = p.slug === page.slug;
+              const name = ko ? `${p.value}호` : `US ${p.value}`;
+              return (
+                <tr class={current ? "bg-primary/10 font-bold" : ""}>
+                  <td class="py-2 pr-3 font-mono">{current ? name : <a class="text-primary underline-offset-4 hover:underline" href={`/${locale}/ring-size-converter/${p.slug}/`}>{name}</a>}</td>
+                  <td class="py-2 pr-3 font-mono">{mm(r.diameter)}</td>
+                  <td class="py-2 pr-3 font-mono">{mm(r.circumference)}</td>
+                  <td class="py-2 pr-3 font-mono">{ko ? r.us : r.uk}</td>
+                  <td class="py-2 pr-3 font-mono">{r.eu}</td>
+                  <td class="py-2 font-mono">{ko ? r.uk : r.jp}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+      <p class="mt-4 text-xs leading-6 text-muted-foreground">{t.sources}</p>
+    </section>
+
+    <div class="mt-8">
+      <RelatedUtilities locale={locale} current="ring-size-converter" group="everyday" />
+    </div>
+  </div>
+</Layout>
