@@ -15,7 +15,7 @@ import { PACKS } from "./kr-law-packs-2026.ts";
 export const LAW_GUIDE_AS_OF = "2026-11-17";
 
 /** 앞의 6개는 이 파일, 뒤의 분야는 kr-law-packs-2026.ts의 팩이에요. 새 분야는 팩 하나를 더하면 돼요. */
-export type DomainId = "tax" | "accounting" | "labor" | "admin" | "court" | "insurance" | "customs" | "ip" | "appraisal" | "realty" | "building" | "health" | "family" | "welfare";
+export type DomainId = "tax" | "accounting" | "labor" | "admin" | "court" | "insurance" | "customs" | "ip" | "appraisal" | "realty" | "building" | "health" | "family" | "welfare" | "consumer";
 
 export interface Cite {
   law: string;
@@ -42,7 +42,7 @@ export interface Profession {
   freeHelp: { name: string; how: string; what: string }[];
 }
 
-const CORE_PROFESSIONS: Omit<Record<DomainId, Profession>, "customs" | "ip" | "appraisal" | "realty" | "building" | "health" | "family" | "welfare"> = {
+const CORE_PROFESSIONS: Omit<Record<DomainId, Profession>, "customs" | "ip" | "appraisal" | "realty" | "building" | "health" | "family" | "welfare" | "consumer"> = {
   tax: {
     domain: "tax",
     name: "세금 법령 길잡이",
@@ -216,6 +216,7 @@ export const DOMAIN_LABEL: Record<DomainId, { area: string; pro: string }> = {
   health: { area: "보건·의료 이용", pro: "의료인·약사" },
   family: { area: "가사·이혼", pro: "변호사" },
   welfare: { area: "복지급여", pro: "사회복지사" },
+  consumer: { area: "소비자·온라인 구매", pro: "변호사·소비자원" },
 };
 
 export const PROFESSIONS = { ...CORE_PROFESSIONS, ...Object.fromEntries(PACKS.map((p) => [p.profession.domain, p.profession])) } as Record<DomainId, Profession>;

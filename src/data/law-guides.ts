@@ -1,9 +1,9 @@
-// 법령 길잡이 14분야 (2026-11-16, 11-17 관세·특허·감정평가·중개, 11-20 건축·보건·가사·복지급여 추가). 엔진: src/lib/kr-expert-guide-2026.ts.
+// 법령 길잡이 15분야 (2026-11-16, 11-17 관세·특허·감정평가·중개, 11-20 건축·보건·가사·복지급여 추가). 엔진: src/lib/kr-expert-guide-2026.ts.
 // 자격 명칭(세무사·노무사 등)을 이름에 쓰지 않아요(각 자격법의 유사명칭 금지, 개정 세무사법 제20조 제3항).
 import type { DomainId } from "../lib/kr-expert-guide-2026";
 
 export const lawGuides: { slug: string; domain?: DomainId; title: string; description: string }[] = [
-  { slug: "law-guide", title: "법령 길잡이 14분야", description: "세금·회계·노동·행정·등기·보험·관세·특허·감정평가·부동산 중개·건축·의료·이혼·복지급여 문제를 고르면 먼저 필요한 질문을 하고, 근거 조문과 신고·신청 기한(D-day), 계산기, 무료 공공 창구를 정리해 줘요." },
+  { slug: "law-guide", title: "법령 길잡이 15분야", description: "세금·회계·노동·행정·등기·보험·관세·특허·감정평가·부동산 중개·건축·의료·이혼·복지급여·소비자 환불 문제를 고르면 먼저 필요한 질문을 하고, 근거 조문과 신고·신청 기한(D-day), 계산기, 무료 공공 창구를 정리해 줘요." },
   { slug: "tax-law-guide", domain: "tax", title: "세금 법령 길잡이", description: "고지서 불복, 신고 누락·수정신고, 상속·증여, 집 팔 때 양도세의 기한과 근거 조문, 가산세 감면 구간을 질문 몇 개로 정리해요." },
   { slug: "accounting-law-guide", domain: "accounting", title: "회계·장부 법령 길잡이", description: "복식부기·간편장부·성실신고 대상, 외부감사 대상인지, 법인세 신고와 배당 한도를 기준표와 조문으로 판정해요." },
   { slug: "labor-law-guide", domain: "labor", title: "노동법 길잡이", description: "해고·임금체불·직장 내 괴롭힘·산재에서 5인 미만 여부, 구제신청 3개월 같은 기한, 근거 조문과 무료 상담 창구를 알려 줘요." },
@@ -18,6 +18,7 @@ export const lawGuides: { slug: string; domain?: DomainId; title: string; descri
   { slug: "medical-care-law-guide", domain: "health", title: "보건·의료 이용 길잡이", description: "진료기록 사본·진단서 받는 법과 보존기간(10년·5년·2년), 의료분쟁 조정 신청 3년·10년, 비급여 진료비 확인 요청을 정리해요. 진단·치료는 판단하지 않아요." },
   { slug: "divorce-family-law-guide", domain: "family", title: "가사·이혼 법령 길잡이", description: "협의이혼 숙려기간(자녀 있으면 3개월, 없으면 1개월), 이혼신고 3개월, 재산분할 2년, 양육비를 안 줄 때 이행명령·감치 순서를 날짜로 정리해요." },
   { slug: "welfare-benefit-law-guide", domain: "welfare", title: "복지급여 길잡이", description: "기초생활수급 신청과 결정 30일, 탈락·중지 이의신청 90일, 갑자기 생계가 막막할 때 긴급복지(129) 요청 순서와 가져갈 서류를 정리해요." },
+  { slug: "consumer-refund-law-guide", domain: "consumer", title: "소비자·온라인 구매 법령 길잡이", description: "온라인 구매 청약철회 7일(광고와 다르면 3개월·안 날부터 30일), 방문·전화판매 14일, 할부 7일과 항변권, 헬스장·학습지 중도 해지를 날짜로 정리해요." },
   { slug: "insurance-sales-compliance-checker", title: "보험 사은품 한도·승환 점검기", description: "월 보험료와 사은품 가액, 기존·신규 계약 날짜로 특별이익 한도(10%와 20만 원 중 적은 금액)와 승환계약 간주(1개월·6개월)를 판정해요. 설계사·대리점용." },
   { slug: "pro-competency-map", title: "전문 직업 역량 지도", description: "세무·회계·노무·행정·등기·보험·관세·특허·감정평가·중개·건축·의료·가사·복지·경영 17개 직업의 역량 134개를 7가지로 분류하고, 역량마다 계산 도구·Claude 스킬·MCP를 연결했어요. 일반인도 쓰는 역량만 골라 볼 수 있어요." },
   { slug: "fine-reduction-calculator", title: "과태료 감경·가산금 계산기", description: "의견제출 기한 안 자진납부 20% 감경, 사회적 약자 50% 감경, 늦게 내면 가산금 3%와 매월 1.2%(최대 75%)를 계산해요." },
