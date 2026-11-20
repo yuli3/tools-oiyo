@@ -38,7 +38,7 @@ GENERATED from tools-oiyo src/data/pro-competencies.ts. 기준일 2026-11-20. �
   - MCP: `value_kr_unlisted_shares`, `calculate_kr_family_business_deduction`
   - 스킬: kr-tax-advisor
 - **신고·납부 일정과 가산세 관리** [기한·절차] (일반인도 씀): 부가세·원천세·종합소득세·법인세 신고 일정을 잡고, 늦었을 때 가산세 감면 구간을 계산해요.
-  - 도구: 세무 일정 https://tools.oiyo.net/ko/tax-calendar/ · 부가세 가산세 https://tools.oiyo.net/ko/vat-penalty-calculator/ · 상속·증여 신고기한 https://tools.oiyo.net/ko/inheritance-gift-filing-deadline-calculator/
+  - 도구: 세무 일정 https://tools.oiyo.net/ko/tax-calendar/ · 가산세 계산 https://tools.oiyo.net/ko/tax-penalty-calculator/ · 부가세 가산세 https://tools.oiyo.net/ko/vat-penalty-calculator/ · 상속·증여 신고기한 https://tools.oiyo.net/ko/inheritance-gift-filing-deadline-calculator/
   - MCP: `get_kr_business_tax_calendar`, `plan_kr_inheritance_gift_filing_deadline`, `check_kr_business_day`
 - **조세불복 기한과 절차** [기한·절차] (일반인도 씀, 자격사 업무와 맞닿음: 정보만): 고지서를 받은 날부터 90일 안에 이의신청·심사청구·심판청구를 고르고, 경정청구 5년을 따져요.
   - 도구: 불복·이의신청 기한 계산 https://tools.oiyo.net/ko/appeal-deadline-calculator/ · 세금 법령 길잡이 https://tools.oiyo.net/ko/tax-law-guide/

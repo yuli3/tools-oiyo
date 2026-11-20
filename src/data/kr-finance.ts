@@ -20,6 +20,7 @@ export const krFinanceTools = [
   { slug: 'unlisted-share-valuation-calculator', title: '비상장주식 평가 계산기', description: '상증법 보충적 평가(순손익 3 : 순자산 2, 80% 하한, 할증)로 1주당 가액을 계산해요.' },
   { slug: 'family-business-inheritance-calculator', title: '가업상속공제 계산기', description: '300억·400억·600억 한도로 공제액과 상속세 절감액을 비교해요.' },
   { slug: 'dcf-valuation-calculator', title: 'DCF 기업가치 계산기', description: 'WACC·FCFF·영구성장 모형으로 기업가치와 민감도 표를 계산해요.' },
+  { slug: 'tax-penalty-calculator', title: '가산세 계산기', description: '무신고·과소신고·납부지연·원천세 가산세와 기한후·수정신고 감면 구간을 날짜로 계산해요.' },
   { slug: 'corporate-tax-adjustment-calculator', title: '법인세 계산기 2026', description: '2026년 세율로 법인세를 어림하고 업무추진비·기부금 한도, 이월결손금, 최저한세, 중간예납을 함께 봐요.' },
   { slug: 'incorporation-calculator', title: '개인사업자 vs 법인 세금 비교', description: '2026년 법인세율로 개인·법인(유보·배당) 세금을 비교해요.' },
   { slug: 'legal-interest-calculator', title: '법정이자·지연손해금 계산기', description: '민사 5%·상사 6%와 소송 후 12%를 날짜로 나눠 계산해요.' },

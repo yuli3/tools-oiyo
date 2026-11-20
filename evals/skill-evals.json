@@ -826,6 +826,30 @@
           }
         }
       ]
+    },
+    {
+      "skill": "kr-tax-advisor",
+      "id": "penalty-late-filing",
+      "ask": "종합소득세 신고를 놓쳤어요. 낼 세금 1,000만 원, 6월 21일에 기한후신고하고 바로 내면 가산세가 얼마예요?",
+      "run": [
+        "penalty",
+        {
+          "kind": "none",
+          "tax": 10000000,
+          "due": "2026-06-01",
+          "filed": "2026-06-21"
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.reduction",
+          "eq": 0.5
+        },
+        {
+          "path": "result.total",
+          "eq": 1044000
+        }
+      ]
     }
   ],
   "boundaries": {
