@@ -1137,6 +1137,89 @@
           }
         }
       ]
+    },
+    {
+      "skill": "kr-tax-advisor",
+      "id": "deemed-input-restaurant",
+      "ask": "개인 음식점이에요. 상반기 과세표준 1억 5천, 면세 식재료 6천만 원 샀으면 의제매입세액이 얼마예요?",
+      "run": [
+        "deemed-input",
+        "{\"type\": \"restaurant-individual\", \"purchases\": 60000000, \"taxBase\": 150000000}"
+      ],
+      "expect": [
+        {
+          "path": "result.rate",
+          "eq": "9/109"
+        },
+        {
+          "path": "result.credit",
+          "eq": 4954128
+        }
+      ]
+    },
+    {
+      "skill": "kr-tax-advisor",
+      "id": "card-credit-cap",
+      "ask": "카드 매출이 3억이고 작년 매출 5억이에요. 카드 발행세액공제 얼마 받아요?",
+      "run": [
+        "card-credit",
+        "{\"cardSales\": 300000000, \"priorYearSupply\": 500000000}"
+      ],
+      "expect": [
+        {
+          "path": "result.credit",
+          "eq": 3900000
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-kr-law-guide",
+      "id": "franchise-cooling",
+      "ask": "11월 1일에 정보공개서 받고 11월 10일에 가맹계약했어요. 문제 있나요?",
+      "run": [
+        "calc",
+        "franchise",
+        "{\"infoGiven\": \"2026-11-01\", \"signed\": \"2026-11-10\"}"
+      ],
+      "expect": [
+        {
+          "path": "items",
+          "has": {
+            "id": "cooling-breach"
+          }
+        },
+        {
+          "path": "items",
+          "has": {
+            "id": "refund",
+            "date": "2027-03-10"
+          }
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-kr-law-guide",
+      "id": "apartment-defect",
+      "ask": "2024년 3월 15일 사용승인 난 500세대 아파트예요. 하자보수 기간 언제까지예요?",
+      "run": [
+        "calc",
+        "apartment",
+        "{\"households\": 500, \"useApproval\": \"2024-03-15\"}",
+        "2026-11-20"
+      ],
+      "expect": [
+        {
+          "path": "mandatory.mandatory",
+          "eq": true
+        },
+        {
+          "path": "items",
+          "has": {
+            "id": "defect-common-5",
+            "date": "2029-03-15"
+          }
+        }
+      ]
     }
   ],
   "boundaries": {

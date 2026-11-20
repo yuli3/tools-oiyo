@@ -2,6 +2,7 @@
 // OIYO kr-tax-advisor skill calculator. Same formulas as tools.oiyo.net (vendored, do not edit here).
 // Usage: node scripts/calc.mjs <tool> '<json>'
 import { taxPenalty, nextReductionStep, PENALTY_NOTE, PENALTY_AS_OF } from "./kr-tax-penalty-2026.mjs";
+import { deemedInputCredit, cardSalesCredit, badDebtCredit, VAT_CREDIT_NOTE, VAT_CREDIT_AS_OF } from "./kr-vat-credits-2026.mjs";
 import { depreciation, leaseSchedule, bondSchedule, externalAuditCheck, ACCT_NOTE, ACCT_AS_OF } from "./kr-accounting-schedules-2026.mjs";
 import { corpTax, entertainmentLimit, CORP_TAX_AS_OF, CORP_TAX_NOTE } from "./kr-corp-tax-2026.mjs";
 import { valueUnlistedShares, familyBusinessInheritance, incorporationConversion, dcfValuation, dcfSensitivity, wacc, ADVISORY_AS_OF } from "./kr-advisory-2026.mjs";
@@ -14,6 +15,9 @@ const EXAMPLES = {
   "corp-tax": { size: "sme", profit: 500000000, addBack: 0, deduct: 0, months: 12, revenue: 15000000000, relatedRevenue: 0, entertainment: 80000000, cultureEntertainment: 0, entertainmentNoProof: 0, specialDonation: 0, generalDonation: 10000000, losses: 0, credits: 0, creditsOutside: 0, prepaid: 0, smallRealEstate: false },
   entertainment: { size: "sme", months: 12, revenue: 15000000000, relatedRevenue: 0, spent: 80000000, cultureSpent: 0, noProof: 0 },
   penalty: { kind: "none", tax: 10000000, fraud: false, revenue: 0, due: "2026-06-01", filed: "2026-06-21", paid: "", noticed: false },
+  "deemed-input": { type: "restaurant-individual", purchases: 60000000, taxBase: 150000000, corp: false },
+  "card-credit": { cardSales: 300000000, priorYearSupply: 500000000, corp: false, usedThisYear: 0 },
+  "bad-debt": { amount: 11000000, supplied: "2025-03-10", confirmed: "2026-11-20" },
   depreciation: { cost: 10000000, residual: 0, years: 5, method: "straight", firstMonths: 12 },
   lease: { payment: 1000000, periods: 3, rate: 0.05, advance: false, directCost: 0 },
   bond: { face: 100000000, couponRate: 0.05, marketRate: 0.06, periods: 3 },
@@ -36,6 +40,9 @@ else if (tool === "dcf") result = { ...dcfValuation(input), sensitivity: dcfSens
 else if (tool === "corp-tax") result = { ...corpTax(input), note: CORP_TAX_NOTE, corpTaxAsOf: CORP_TAX_AS_OF };
 else if (tool === "entertainment") result = { ...entertainmentLimit(input), corpTaxAsOf: CORP_TAX_AS_OF };
 else if (tool === "penalty") result = { ...taxPenalty(input, new Date().toISOString().slice(0, 10)), next: input.kind === "withholding" || !input.filed ? null : nextReductionStep(input.kind, input.due, input.filed), note: PENALTY_NOTE, penaltyAsOf: PENALTY_AS_OF };
+else if (tool === "deemed-input") result = { ...deemedInputCredit(input), note: VAT_CREDIT_NOTE, vatCreditAsOf: VAT_CREDIT_AS_OF };
+else if (tool === "card-credit") result = { ...cardSalesCredit(input), note: VAT_CREDIT_NOTE, vatCreditAsOf: VAT_CREDIT_AS_OF };
+else if (tool === "bad-debt") result = { ...badDebtCredit(input), note: VAT_CREDIT_NOTE, vatCreditAsOf: VAT_CREDIT_AS_OF };
 else if (tool === "depreciation") result = { ...depreciation(input.cost, input.residual, input.years, input.method, input.firstMonths), note: ACCT_NOTE, acctAsOf: ACCT_AS_OF };
 else if (tool === "lease") result = { ...leaseSchedule(input.payment, input.periods, input.rate, input.advance, input.directCost), note: ACCT_NOTE, acctAsOf: ACCT_AS_OF };
 else if (tool === "bond") result = { ...bondSchedule(input.face, input.couponRate, input.marketRate, input.periods), note: ACCT_NOTE, acctAsOf: ACCT_AS_OF };
