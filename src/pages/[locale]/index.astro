@@ -39,7 +39,7 @@ const cards: Card[] = [
 ];
 const groupOrder: (UtilityGroup | 'local' | 'file')[] = ['money', 'local', 'health', 'everyday', 'time', 'calc', 'units', 'screen', 'image', 'color', 'dev', 'file'];
 const filters = groupOrder.filter((g) => cards.some((c) => c.group === g)).map((g) => ({ id: g, label: g === 'local' ? HUB.local : g === 'file' ? HUB.file : utilityGroups[g][locale] }));
-const chip = 'filter-btn shrink-0 rounded-lg border min-h-11 px-3.5 py-1.5 text-xs transition';
+const chip = 'shrink-0 rounded-lg border min-h-11 px-3.5 py-1.5 text-xs transition';
 const off = 'border-border bg-card font-medium text-muted-foreground hover:border-primary/40 hover:text-foreground';
 const on = 'border-primary bg-primary font-bold text-primary-foreground';
 ---
@@ -71,7 +71,7 @@ const on = 'border-primary bg-primary font-bold text-primary-foreground';
 
     <div class="grid gap-3 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3" id="tools-grid">
       {cards.map((c) => (
-        <a href={c.href} data-group={c.group} lang={c.lang} class="tool-card group flex flex-col justify-between rounded-xl border border-border bg-card p-4 transition hover:border-primary/60 hover:shadow-sm sm:p-5">
+        <a href={c.href} data-group={c.group} lang={c.lang} class="group flex flex-col justify-between rounded-xl border border-border bg-card p-4 transition hover:border-primary/60 hover:shadow-sm sm:p-5">
           <div>
             <div class="flex items-center justify-between gap-2">
               <span class="rounded-md border border-border bg-muted px-2 py-0.5 text-xs font-semibold text-muted-foreground">{c.category}</span>
@@ -99,8 +99,8 @@ const on = 'border-primary bg-primary font-bold text-primary-foreground';
 <script>
   // 한국어 허브와 같은 동작: 검색은 모든 카드를 훑고, 둘러보기만 24개씩 보여 줘요.
   const copy = JSON.parse(document.getElementById('hub-copy')?.textContent || '{}') as { found: string; none: string; count: string; on: string; off: string };
-  const buttons = document.querySelectorAll<HTMLButtonElement>('.filter-btn');
-  const cards = document.querySelectorAll<HTMLElement>('.tool-card');
+  const buttons = document.querySelectorAll<HTMLButtonElement>('#filter-bar [data-filter]');
+  const cards = document.querySelectorAll<HTMLElement>('#tools-grid > a');
   const search = document.querySelector<HTMLInputElement>('#tool-search');
   const status = document.querySelector<HTMLElement>('#tool-search-status');
   const more = document.querySelector<HTMLButtonElement>('#tools-show-more');
