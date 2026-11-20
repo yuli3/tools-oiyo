@@ -21,6 +21,7 @@ export const krFinanceTools = [
   { slug: 'family-business-inheritance-calculator', title: '가업상속공제 계산기', description: '300억·400억·600억 한도로 공제액과 상속세 절감액을 비교해요.' },
   { slug: 'dcf-valuation-calculator', title: 'DCF 기업가치 계산기', description: 'WACC·FCFF·영구성장 모형으로 기업가치와 민감도 표를 계산해요.' },
   { slug: 'tax-penalty-calculator', title: '가산세 계산기', description: '무신고·과소신고·납부지연·원천세 가산세와 기한후·수정신고 감면 구간을 날짜로 계산해요.' },
+  { slug: 'vat-credit-calculator', title: '부가세 공제 계산기 2026', description: '의제매입세액(음식점 9/109), 신용카드 매출 발행세액공제 1.3%, 대손세액공제 10/110을 한도·기한과 함께 계산해요.' },
   { slug: 'accounting-schedule-calculator', title: '결산 상각표·외감 판정', description: '감가상각(정액·정률·연수합계), IFRS 16 리스, 사채 유효이자율 상각표를 만들고 다음 해 외부감사 대상인지 판정해요.' },
   { slug: 'corporate-tax-adjustment-calculator', title: '법인세 계산기 2026', description: '2026년 세율로 법인세를 어림하고 업무추진비·기부금 한도, 이월결손금, 최저한세, 중간예납을 함께 봐요.' },
   { slug: 'incorporation-calculator', title: '개인사업자 vs 법인 세금 비교', description: '2026년 법인세율로 개인·법인(유보·배당) 세금을 비교해요.' },

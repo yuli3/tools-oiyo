@@ -1,0 +1,31 @@
+---
+// 부가세 공제 팩 (2026-11-20, 전문 직군 전수조사 11번). 엔진: lib/kr-vat-credits-2026.ts (스킬 kr-tax-advisor calc.mjs deemed-input·card-credit·bad-debt)
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import VatCredits from "../../components/tools/advisory/VatCredits";
+
+const title = "부가세 공제 계산기 2026 — 의제매입세액(음식점 9/109), 신용카드 발행세액공제 1.3%, 대손세액";
+const description = "음식점·제조업 면세 식재료의 의제매입세액(공제율 9/109~2/102, 한도율 50~75%), 개인사업자 카드·현금영수증 매출 발행세액공제(1.3%, 연 1,000만 원), 못 받은 외상값 대손세액공제(10/110, 10년 기한)를 2026년 기준으로 계산해요.";
+const ko = {
+  introTitle: "부가세는 빼 주는 것부터 챙겨요",
+  intro: "음식점은 식재료, 카드 매출이 많은 가게는 발행세액공제, 외상값을 떼였다면 대손세액공제로 부가세를 줄일 수 있어요. 한도와 기한이 있어서 숫자로 먼저 확인해 두면 좋아요.",
+  howToTitle: "사용 방법",
+  steps: ["공제 종류를 골라요.", "과세표준·매입가액·카드 매출·못 받은 금액을 넣어요.", "한도와 기한을 확인하고 신고 때 증빙과 함께 반영해요."],
+  highlightsTitle: "주요 특징",
+  highlights: [
+    { title: "의제매입세액", body: "업종별 공제율과 과세표준 구간별 한도율(2027년까지)을 적용해요." },
+    { title: "카드매출 공제", body: "1.3%, 연 1,000만 원, 납부할 세액 한도를 함께 봐요." },
+    { title: "대손세액", body: "10/110과 공급일부터 10년 기한을 계산해요." },
+    { title: "개인정보 안전", body: "입력값은 서버로 보내지 않아요." },
+  ],
+  disclaimer: "부가세 공제 어림이에요. 의제매입세액 한도는 1년 단위로 정산하고, 증빙이 있어야 공제돼요.",
+};
+const faqs = [
+  { q: "음식점 의제매입세액 공제율은 얼마예요?", a: "개인 음식점은 반기 과세표준 2억 원 이하면 9/109(2026년 12월 31일까지), 넘으면 8/108이에요. 법인 음식점은 6/106이에요(부가가치세법 제42조, 시행령 제84조)." },
+  { q: "의제매입세액 한도는요?", a: "과세표준에 한도율을 곱한 금액까지의 매입분만 공제해요. 개인 음식점은 과세표준 1억 이하 75%, 2억 이하 70%, 초과 60%, 그 밖 개인 65%·55%, 법인 50%예요(2027년 12월 31일까지)." },
+  { q: "카드 매출 세액공제는 누가 받아요?", a: "직전 연도 공급가액이 10억 원 이하인 개인사업자가 카드·현금영수증 매출의 1.3%를 연 1,000만 원까지 납부세액에서 빼요(제46조, 2026년까지)." },
+];
+---
+<KrFinancePage slug="vat-credit-calculator" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <VatCredits client:load />
+  <p class="mt-4 text-xs text-muted-foreground">근거: 부가가치세법 제42조·제45조·제46조, 시행령 제84조·제87조. <a class="underline" href="/ko/vat-penalty-calculator/">부가세 가산세</a> · <a class="underline" href="/ko/tax-penalty-calculator/">가산세 계산</a></p>
+</KrFinancePage>

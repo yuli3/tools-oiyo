@@ -1,0 +1,31 @@
+---
+// 가맹계약 기한 점검 (2026-11-20, 전문 직군 전수조사 12번 새 직업). 엔진: lib/kr-franchise-housing-2026.ts (스킬 oiyo-kr-law-guide guide.mjs calc franchise)
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import FranchiseCheck from "../../components/tools/lawguide/FranchiseCheck";
+
+const title = "가맹계약 기한 점검 — 정보공개서 14일, 가맹금 반환 4개월, 갱신 요구 180~90일, 10년 갱신요구권";
+const description = "프랜차이즈 창업 전후 날짜를 넣으면 정보공개서 숙려 14일(자문 시 7일), 가맹계약서 14일 전 제공, 가맹금 반환 요구 4개월, 갱신 요구 기간(만료 180~90일 전), 갱신요구권 10년, 해지 절차(2개월 유예·2회 서면)를 점검해요.";
+const ko = {
+  introTitle: "가맹계약은 서명 전 14일이 가장 중요해요",
+  intro: "정보공개서와 계약서를 받고 14일을 지켜야 하고, 그 전에 돈을 냈다면 돌려받을 길이 있어요. 계약 중에도 갱신 요구 기간과 해지 절차를 날짜로 알아 두세요.",
+  howToTitle: "사용 방법",
+  steps: ["정보공개서·계약서를 받은 날과 계약일을 넣어요.", "운영 중이면 처음 시작일과 지금 계약 만료일을 넣어요.", "경고와 날짜를 보고 서면 요구·갱신 요구를 준비해요."],
+  highlightsTitle: "주요 특징",
+  highlights: [
+    { title: "숙려기간", body: "정보공개서 14일(자문 7일), 계약서 14일 전 제공을 날짜로 봐요." },
+    { title: "가맹금 반환", body: "정보공개서 미제공·숙려기간 위반이면 계약일부터 4개월 안에 서면 요구해요." },
+    { title: "갱신", body: "만료 180~90일 전 갱신 요구, 전체 10년 갱신요구권을 계산해요." },
+    { title: "해지 절차", body: "2개월 이상 유예기간과 2회 이상 서면 통지가 없으면 해지 효력이 없어요." },
+  ],
+  disclaimer: "법정 기한 점검이에요. 계약서 특약과 사실관계에 따라 달라지고, 분쟁은 한국공정거래조정원 조정을 이용할 수 있어요.",
+};
+const faqs = [
+  { q: "정보공개서를 받고 바로 계약해도 되나요?", a: "정보공개서를 받은 날부터 14일(변호사나 가맹거래사의 자문을 받으면 7일)이 지나기 전에는 가맹본부가 가맹금을 받거나 계약을 맺을 수 없어요(가맹사업법 제7조 ③)." },
+  { q: "가맹금을 돌려받을 수 있나요?", a: "정보공개서를 주지 않았거나, 숙려기간 전에 계약했거나, 허위·과장 정보를 줬다면 계약일부터 4개월 안에 서면으로 반환을 요구할 수 있어요(제10조). 본부는 요구일부터 1개월 안에 돌려줘야 해요." },
+  { q: "계약 갱신은 언제 요구해요?", a: "계약 만료 180일 전부터 90일 전까지 요구해요. 최초 계약부터 10년까지는 정당한 사유 없이 거절할 수 없어요(제13조)." },
+];
+---
+<KrFinancePage slug="franchise-contract-check" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <FranchiseCheck client:load />
+  <p class="mt-4 text-xs text-muted-foreground">근거: 가맹사업거래의 공정화에 관한 법률 제7조·제9조·제10조·제11조·제13조·제14조. <a class="underline" href="/ko/freelance-contract-check/">외주 계약서 읽기 점검</a> · <a class="underline" href="/ko/unit-economics-runway-calculator/">단위경제·런웨이</a></p>
+</KrFinancePage>

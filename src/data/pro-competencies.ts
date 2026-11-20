@@ -7,7 +7,7 @@
 import type { DomainId } from "../lib/kr-expert-guide-2026";
 
 export type CategoryId = "law" | "calc" | "deadline" | "docs" | "consult" | "ethics" | "digital";
-export type JobId = "tax" | "cpa" | "labor" | "admin" | "court" | "actuary" | "adjuster" | "agent" | "customs" | "patent" | "appraiser" | "broker" | "architect" | "medic" | "family" | "social" | "mgmt";
+export type JobId = "tax" | "cpa" | "labor" | "admin" | "court" | "actuary" | "adjuster" | "agent" | "customs" | "patent" | "appraiser" | "broker" | "architect" | "medic" | "family" | "social" | "mgmt" | "franchise" | "housing";
 export type Audience = "pro" | "public";
 
 export const COMPETENCY_AS_OF = "2026-11-20";
@@ -41,6 +41,8 @@ export const JOBS: { id: JobId; name: string; domain?: DomainId; act: string; su
   { id: "family", name: "변호사(가사)", domain: "family", act: "변호사법 제3조·제109조", summary: "이혼·양육비·재산분할 소송과 조정 대리, 가사 법률상담(서류 작성은 법무사도)" },
   { id: "social", name: "사회복지사", domain: "welfare", act: "사회복지사업법 제11조", summary: "복지 상담과 사례관리, 급여 신청 연계(신청 서류 대행은 행정사)" },
   { id: "mgmt", name: "경영지도사", act: "중소기업진흥에 관한 법률(지도사)", summary: "중소기업 경영 진단·지도: 전략·마케팅·재무·인사·생산 관리 자문(독점 업무는 아님)" },
+  { id: "franchise", name: "가맹거래사", act: "가맹사업거래의 공정화에 관한 법률 제28조", summary: "가맹사업 사업성 검토, 정보공개서·가맹계약서 작성·수정 자문, 분쟁조정 신청 대행" },
+  { id: "housing", name: "주택관리사", act: "공동주택관리법 제64조·제67조", summary: "의무관리대상 공동주택의 관리사무소장: 시설·회계·장기수선·하자 관리와 입주자대표회의 지원" },
 ];
 
 export type Competency = {
@@ -76,6 +78,7 @@ export const COMPETENCIES: Competency[] = [
   c("tax-law", "tax", "law", "세법 체계와 개정 추적", "국세기본법·소득세법·법인세법·부가가치세법·상증법의 구조, 매년 12월 개정과 시행일을 따라가요.", { tools: ["tax-law-guide", "tax-formula-explorer"], skills: [LAW, ADV], mcp: ["search_kr_statutes"], audience: ["pro", "public"] }),
   c("tax-income", "tax", "calc", "소득·양도·상속·증여 세액 계산", "과세표준 → 세율 → 공제·감면 순서로 세액을 구하고, 같은 사실에서 결론이 갈리는 지점을 찾아요.", { tools: ["comprehensive-income-tax-calculator", "freelancer-tax-calculator", "capital-gains-tax-calculator", "inheritance-tax-calculator", "gift-tax-calculator"], skills: [ADV], mcp: ["calculate_kr_freelancer_income_tax", "calculate_capital_gains_tax", "calculate_inheritance_gift_tax"], audience: ["pro", "public"] }),
   c("tax-corp", "tax", "calc", "법인세와 세무조정 한도", "업무추진비·기부금 한도 초과를 더하고 이월결손금을 빼 과세표준을 만든 뒤, 2026년 세율과 최저한세로 법인세를 어림해요.", { tools: ["corporate-tax-adjustment-calculator", "incorporation-calculator"], skills: [ADV] }),
+  c("tax-vat-credit", "tax", "calc", "부가세 공제 판정", "의제매입세액 공제율·한도율, 카드매출 발행세액공제 1.3%, 대손세액 10/110과 기한을 계산해요.", { tools: ["vat-credit-calculator"], skills: [ADV], audience: ["pro", "public"] }),
   c("tax-yearend", "tax", "calc", "연말정산·공제 판정", "부양가족·의료비·월세·카드 공제 요건을 하나씩 판정하고 환급액 차이를 비교해요.", { tools: ["year-end-settlement-calculator", "dependent-deduction-checker", "medical-expense-tax-credit-calculator", "monthly-rent-tax-credit-calculator"], skills: [BEN], mcp: ["calculate_kr_year_end_settlement", "check_kr_dependent_deduction", "calculate_kr_monthly_rent_credit", "calculate_card_tax_deduction"], audience: ["pro", "public"] }),
   c("tax-valuation", "tax", "calc", "비상장주식·가업상속 평가", "상증법 보충적 평가(순손익가치·순자산가치 가중), 가업상속공제 요건과 사후관리를 계산해요.", { tools: ["unlisted-share-valuation-calculator", "family-business-inheritance-calculator"], skills: [ADV], mcp: ["value_kr_unlisted_shares", "calculate_kr_family_business_deduction"] }),
   c("tax-calendar", "tax", "deadline", "신고·납부 일정과 가산세 관리", "부가세·원천세·종합소득세·법인세 신고 일정을 잡고, 늦었을 때 가산세 감면 구간을 계산해요.", { tools: ["tax-calendar", "tax-penalty-calculator", "vat-penalty-calculator", "inheritance-gift-filing-deadline-calculator"], mcp: ["get_kr_business_tax_calendar", "plan_kr_inheritance_gift_filing_deadline", "check_kr_business_day"], audience: ["pro", "public"] }),
@@ -249,6 +252,25 @@ export const COMPETENCIES: Competency[] = [
   c("mg-checklist", "mgmt", "docs", "사업자 필수 의무 점검", "창업·고용·신고 단계별로 반드시 할 것과 하지 말 것을 챙겨요.", { tools: ["business-must-do-checklist", "business-toolkit"], skills: [BIZ], audience: ["pro", "public"] }),
   c("mg-law", "mgmt", "law", "경영 문제의 법령 연결", "운영 문제가 세금·노무·행정·보험 중 어디에 걸리는지 찾아 해당 길잡이로 넘겨요.", { tools: ["law-guide"], skills: [LAW, BIZ], mcp: ["start_kr_law_intake"], audience: ["pro", "public"] }),
   c("mg-scope", "mgmt", "ethics", "자문 범위", "경영 지도는 독점 업무가 아니지만, 세무대리·노무 대리·법률 사무는 해당 자격사에게 넘겨요.", { tools: ["law-guide"], skills: [LAW], mcp: ["get_kr_professional_scope"] }),
+
+  // 가맹거래사 (11-20 전수조사 12번)
+  c("fr-law", "franchise", "law", "가맹사업법 구조", "정보공개서·가맹금 예치·불공정거래 금지·갱신·해지 규정을 읽어요.", { tools: ["franchise-contract-check"], skills: [LAW], mcp: ["search_kr_statutes"], audience: ["pro", "public"] }),
+  c("fr-deadline", "franchise", "deadline", "숙려·반환·갱신 기한", "정보공개서 14일(자문 7일), 가맹금 반환 요구 4개월, 갱신 요구 180~90일 전, 갱신요구권 10년을 날짜로 세요.", { tools: ["franchise-contract-check"], skills: [LAW], audience: ["pro", "public"] }),
+  c("fr-calc", "franchise", "calc", "가맹점 수익성 검토", "예상매출액 산정서와 실제 원가로 손익분기·회수 기간을 따져 봐요.", { tools: ["unit-economics-runway-calculator"], skills: [BIZ], audience: ["pro", "public"] }),
+  c("fr-docs", "franchise", "docs", "정보공개서·가맹계약서 읽기", "가맹금·인테리어 비용·영업지역·위약금 조항을 찾아 읽어요. 작성·수정 자문은 가맹거래사·변호사 업무예요.", { tools: ["pro-document-reading-guide"], skills: [LAW] }),
+  c("fr-dispute", "franchise", "consult", "가맹 분쟁 대응 순서", "서면 요구 → 한국공정거래조정원 조정 → 공정위 신고 순서로 정리하고, 해지 절차(2개월·2회 서면) 위반을 확인해요.", { tools: ["franchise-contract-check", "appeal-deadline-calculator"], skills: [LAW], audience: ["pro", "public"] }),
+  c("fr-online", "franchise", "digital", "정보공개서 열람과 등록", "공정위 가맹사업거래 누리집에서 등록된 정보공개서를 비교해요.", {}),
+  c("fr-scope", "franchise", "ethics", "가맹거래사 업무 범위", "사업성 검토, 정보공개서·계약서 자문, 분쟁조정 신청 대행이 업무예요(가맹사업법 제28조). 소송 대리는 변호사예요.", { tools: ["law-guide"], skills: [LAW] }),
+
+  // 주택관리사 (11-20 전수조사 12번)
+  c("hm-law", "housing", "law", "공동주택관리법·관리규약", "관리주체·입주자대표회의 권한, 관리비 공개, 사업자 선정 규정을 읽어요.", { tools: ["apartment-management-check"], skills: [LAW], mcp: ["search_kr_statutes"], audience: ["pro", "public"] }),
+  c("hm-defect", "housing", "deadline", "하자담보책임기간", "마감 2년·설비 3년·구조·방수 5년·내력구조부 10년을 공용·전유로 나눠 만료 전에 청구해요.", { tools: ["apartment-management-check"], skills: [LAW], audience: ["pro", "public"] }),
+  c("hm-fund", "housing", "calc", "장기수선충당금과 계획", "사용검사 1년 뒤부터 적립, 3년마다 계획 검토 시점을 관리해요.", { tools: ["apartment-management-check"], skills: [LAW] }),
+  c("hm-mandatory", "housing", "consult", "의무관리대상과 관리 방식", "300세대, 150세대 + 승강기·중앙난방·주상복합 기준으로 판정하고 위탁·자치관리를 비교해요.", { tools: ["apartment-management-check"], skills: [LAW], audience: ["pro", "public"] }),
+  c("hm-staff", "housing", "calc", "관리직원 근무표와 인원", "경비·미화 직원의 휴게·연장 한도와 상시근로자 수를 점검해요.", { tools: ["workforce-schedule-check"], skills: [LAW] }),
+  c("hm-docs", "housing", "docs", "관리비 공개와 회계 서류", "관리비 등을 다음 달 말일까지 공개하고, 장부와 증빙을 보관해요.", { tools: ["pro-document-reading-guide"] }),
+  c("hm-kapt", "housing", "digital", "공동주택관리정보시스템 공개", "관리비·입찰 정보를 공동주택관리정보시스템에 올리고 다른 단지와 비교해요.", {}),
+  c("hm-scope", "housing", "ethics", "관리사무소장 배치와 책임", "의무관리대상은 주택관리사(보)를 관리사무소장으로 둬야 하고, 손해배상 책임을 보장하는 보증을 들어야 해요(공동주택관리법 제64조·제66조).", { tools: ["apartment-management-check"], skills: [LAW] }),
 ];
 
 /** 링크한 도구의 짧은 한국어 이름. 테스트가 COMPETENCIES에 쓰인 slug와 1:1로 맞는지 봐요. */
@@ -282,6 +304,9 @@ export const TOOL_NAMES: Record<string, string> = {
   "license-points-calculator": "운전면허 벌점·과징금 환산",
   "appraisal-compensation-calculator": "수용 보상·감정평가 3방식",
   "ip-deadline-calculator": "특허·상표 기한",
+  "franchise-contract-check": "가맹계약 기한 점검",
+  "vat-credit-calculator": "부가세 공제(의제매입·카드·대손)",
+  "apartment-management-check": "공동주택 하자담보·관리 점검",
   "tax-penalty-calculator": "가산세 계산",
   "incorporation-calculator": "개인 vs 법인 세금 비교",
   "family-business-inheritance-calculator": "가업상속공제",

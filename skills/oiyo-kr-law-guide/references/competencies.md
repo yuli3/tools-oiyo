@@ -29,6 +29,9 @@ GENERATED from tools-oiyo src/data/pro-competencies.ts. 기준일 2026-11-20. �
 - **법인세와 세무조정 한도** [계산·평가]: 업무추진비·기부금 한도 초과를 더하고 이월결손금을 빼 과세표준을 만든 뒤, 2026년 세율과 최저한세로 법인세를 어림해요.
   - 도구: 법인세 어림·세무조정 한도 https://tools.oiyo.net/ko/corporate-tax-adjustment-calculator/ · 개인 vs 법인 세금 비교 https://tools.oiyo.net/ko/incorporation-calculator/
   - 스킬: kr-tax-advisor
+- **부가세 공제 판정** [계산·평가] (일반인도 씀): 의제매입세액 공제율·한도율, 카드매출 발행세액공제 1.3%, 대손세액 10/110과 기한을 계산해요.
+  - 도구: 부가세 공제(의제매입·카드·대손) https://tools.oiyo.net/ko/vat-credit-calculator/
+  - 스킬: kr-tax-advisor
 - **연말정산·공제 판정** [계산·평가] (일반인도 씀): 부양가족·의료비·월세·카드 공제 요건을 하나씩 판정하고 환급액 차이를 비교해요.
   - 도구: 연말정산 계산기 https://tools.oiyo.net/ko/year-end-settlement-calculator/ · 부양가족 공제 판정 https://tools.oiyo.net/ko/dependent-deduction-checker/ · 의료비 세액공제 https://tools.oiyo.net/ko/medical-expense-tax-credit-calculator/ · 월세 세액공제 https://tools.oiyo.net/ko/monthly-rent-tax-credit-calculator/
   - MCP: `calculate_kr_year_end_settlement`, `check_kr_dependent_deduction`, `calculate_kr_monthly_rent_credit`, `calculate_card_tax_deduction`
@@ -598,4 +601,56 @@ GENERATED from tools-oiyo src/data/pro-competencies.ts. 기준일 2026-11-20. �
 - **자문 범위** [업무 범위·윤리]: 경영 지도는 독점 업무가 아니지만, 세무대리·노무 대리·법률 사무는 해당 자격사에게 넘겨요.
   - 도구: 법령 길잡이 17분야 https://tools.oiyo.net/ko/law-guide/
   - MCP: `get_kr_professional_scope`
+  - 스킬: oiyo-kr-law-guide
+
+## 가맹거래사 (가맹사업거래의 공정화에 관한 법률 제28조)
+
+가맹사업 사업성 검토, 정보공개서·가맹계약서 작성·수정 자문, 분쟁조정 신청 대행
+
+- **가맹사업법 구조** [법령 해석] (일반인도 씀): 정보공개서·가맹금 예치·불공정거래 금지·갱신·해지 규정을 읽어요.
+  - 도구: 가맹계약 기한 점검 https://tools.oiyo.net/ko/franchise-contract-check/
+  - MCP: `search_kr_statutes`
+  - 스킬: oiyo-kr-law-guide
+- **숙려·반환·갱신 기한** [기한·절차] (일반인도 씀): 정보공개서 14일(자문 7일), 가맹금 반환 요구 4개월, 갱신 요구 180~90일 전, 갱신요구권 10년을 날짜로 세요.
+  - 도구: 가맹계약 기한 점검 https://tools.oiyo.net/ko/franchise-contract-check/
+  - 스킬: oiyo-kr-law-guide
+- **가맹점 수익성 검토** [계산·평가] (일반인도 씀): 예상매출액 산정서와 실제 원가로 손익분기·회수 기간을 따져 봐요.
+  - 도구: 단위경제·런웨이 https://tools.oiyo.net/ko/unit-economics-runway-calculator/
+  - 스킬: oiyo-business-strategist
+- **정보공개서·가맹계약서 읽기** [서류·증빙]: 가맹금·인테리어 비용·영업지역·위약금 조항을 찾아 읽어요. 작성·수정 자문은 가맹거래사·변호사 업무예요.
+  - 도구: 전문가 서류 읽는 법 https://tools.oiyo.net/ko/pro-document-reading-guide/
+  - 스킬: oiyo-kr-law-guide
+- **가맹 분쟁 대응 순서** [상담·설계] (일반인도 씀): 서면 요구 → 한국공정거래조정원 조정 → 공정위 신고 순서로 정리하고, 해지 절차(2개월·2회 서면) 위반을 확인해요.
+  - 도구: 가맹계약 기한 점검 https://tools.oiyo.net/ko/franchise-contract-check/ · 불복·이의신청 기한 계산 https://tools.oiyo.net/ko/appeal-deadline-calculator/
+  - 스킬: oiyo-kr-law-guide
+- **정보공개서 열람과 등록** [전자 업무·데이터] (준비 중): 공정위 가맹사업거래 누리집에서 등록된 정보공개서를 비교해요.
+- **가맹거래사 업무 범위** [업무 범위·윤리]: 사업성 검토, 정보공개서·계약서 자문, 분쟁조정 신청 대행이 업무예요(가맹사업법 제28조). 소송 대리는 변호사예요.
+  - 도구: 법령 길잡이 17분야 https://tools.oiyo.net/ko/law-guide/
+  - 스킬: oiyo-kr-law-guide
+
+## 주택관리사 (공동주택관리법 제64조·제67조)
+
+의무관리대상 공동주택의 관리사무소장: 시설·회계·장기수선·하자 관리와 입주자대표회의 지원
+
+- **공동주택관리법·관리규약** [법령 해석] (일반인도 씀): 관리주체·입주자대표회의 권한, 관리비 공개, 사업자 선정 규정을 읽어요.
+  - 도구: 공동주택 하자담보·관리 점검 https://tools.oiyo.net/ko/apartment-management-check/
+  - MCP: `search_kr_statutes`
+  - 스킬: oiyo-kr-law-guide
+- **하자담보책임기간** [기한·절차] (일반인도 씀): 마감 2년·설비 3년·구조·방수 5년·내력구조부 10년을 공용·전유로 나눠 만료 전에 청구해요.
+  - 도구: 공동주택 하자담보·관리 점검 https://tools.oiyo.net/ko/apartment-management-check/
+  - 스킬: oiyo-kr-law-guide
+- **장기수선충당금과 계획** [계산·평가]: 사용검사 1년 뒤부터 적립, 3년마다 계획 검토 시점을 관리해요.
+  - 도구: 공동주택 하자담보·관리 점검 https://tools.oiyo.net/ko/apartment-management-check/
+  - 스킬: oiyo-kr-law-guide
+- **의무관리대상과 관리 방식** [상담·설계] (일반인도 씀): 300세대, 150세대 + 승강기·중앙난방·주상복합 기준으로 판정하고 위탁·자치관리를 비교해요.
+  - 도구: 공동주택 하자담보·관리 점검 https://tools.oiyo.net/ko/apartment-management-check/
+  - 스킬: oiyo-kr-law-guide
+- **관리직원 근무표와 인원** [계산·평가]: 경비·미화 직원의 휴게·연장 한도와 상시근로자 수를 점검해요.
+  - 도구: 상시근로자 수·근무표 점검 https://tools.oiyo.net/ko/workforce-schedule-check/
+  - 스킬: oiyo-kr-law-guide
+- **관리비 공개와 회계 서류** [서류·증빙]: 관리비 등을 다음 달 말일까지 공개하고, 장부와 증빙을 보관해요.
+  - 도구: 전문가 서류 읽는 법 https://tools.oiyo.net/ko/pro-document-reading-guide/
+- **공동주택관리정보시스템 공개** [전자 업무·데이터] (준비 중): 관리비·입찰 정보를 공동주택관리정보시스템에 올리고 다른 단지와 비교해요.
+- **관리사무소장 배치와 책임** [업무 범위·윤리]: 의무관리대상은 주택관리사(보)를 관리사무소장으로 둬야 하고, 손해배상 책임을 보장하는 보증을 들어야 해요(공동주택관리법 제64조·제66조).
+  - 도구: 공동주택 하자담보·관리 점검 https://tools.oiyo.net/ko/apartment-management-check/
   - 스킬: oiyo-kr-law-guide

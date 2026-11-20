@@ -1,0 +1,31 @@
+---
+// 공동주택 관리 점검 (2026-11-20, 전문 직군 전수조사 12번 새 직업). 엔진: lib/kr-franchise-housing-2026.ts (스킬 oiyo-kr-law-guide guide.mjs calc apartment)
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import ApartmentCheck from "../../components/tools/lawguide/ApartmentCheck";
+
+const title = "아파트 하자담보·관리 점검 — 하자보수 기간 2·3·5·10년, 의무관리대상, 장기수선충당금";
+const description = "사용검사일과 입주일을 넣으면 공용·전유부분 하자담보책임기간(마감 2년, 설비 3년, 구조·방수 5년, 내력구조부 10년) 만료일, 장기수선충당금 적립 시작 달, 장기수선계획 검토 시점을 보여 주고, 세대 수·승강기·난방으로 의무관리대상인지 판정해요.";
+const ko = {
+  introTitle: "하자보수는 기간이 끝나기 전에 청구해야 해요",
+  intro: "새 아파트의 하자는 공사 종류마다 보수 기간이 달라요. 2년이 끝나는 마감공사부터 챙기고, 우리 단지가 의무관리대상인지도 확인하세요.",
+  howToTitle: "사용 방법",
+  steps: ["세대 수와 사용검사일, 우리 집 입주일을 넣어요.", "승강기·난방·주상복합 여부를 골라요.", "만료가 가까운 하자 항목부터 사진과 함께 서면으로 청구해요."],
+  highlightsTitle: "주요 특징",
+  highlights: [
+    { title: "하자담보기간", body: "마감 2년·설비 3년·구조·방수 5년·내력구조부 10년을 공용·전유로 나눠요." },
+    { title: "의무관리대상", body: "300세대, 150세대 + 승강기·중앙난방·주상복합 기준으로 판정해요." },
+    { title: "장기수선", body: "충당금 적립 시작 달과 3년마다 계획 검토 시점을 보여 줘요." },
+    { title: "개인정보 안전", body: "입력값은 서버로 보내지 않아요." },
+  ],
+  disclaimer: "법정 기한·요건 점검이에요. 관리규약과 분양계약이 더 유리하면 그것을 따르고, 하자 분쟁은 하자심사분쟁조정위원회를 이용할 수 있어요.",
+};
+const faqs = [
+  { q: "아파트 하자보수 기간은 얼마예요?", a: "공사 종류별로 마감공사 2년, 급배수·전기·난방 같은 설비 3년, 철근콘크리트·방수 같은 구조 5년, 기둥·내력벽 같은 내력구조부 10년이에요(공동주택관리법 제36조, 시행령 별표 4). 우리 집은 인도일, 공용부분은 사용검사일부터 세요." },
+  { q: "의무관리대상 공동주택은 무엇인가요?", a: "300세대 이상, 또는 150세대 이상이면서 승강기가 있거나 중앙집중식·지역난방이거나 주상복합인 단지예요(시행령 제2조). 관리사무소장을 주택관리사(보)로 둬야 해요." },
+  { q: "장기수선충당금은 언제부터 내요?", a: "사용검사일부터 1년이 지난 날이 속하는 달부터 매달 적립해요(시행령 제31조). 세입자가 냈다면 이사할 때 집주인에게 돌려받을 수 있어요." },
+];
+---
+<KrFinancePage slug="apartment-management-check" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <ApartmentCheck client:load />
+  <p class="mt-4 text-xs text-muted-foreground">근거: 공동주택관리법 제2조·제23조·제29조·제30조·제36조·제37조, 시행령 제2조·제31조·별표 4. <a class="underline" href="/ko/realty-brokerage-law-guide/">중개·임대차 길잡이</a> · <a class="underline" href="/ko/appeal-deadline-calculator/">불복 기한</a></p>
+</KrFinancePage>
