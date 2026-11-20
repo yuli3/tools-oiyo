@@ -805,6 +805,27 @@
           "eq": 24000000
         }
       ]
+    },
+    {
+      "skill": "oiyo-kr-law-guide",
+      "id": "appeal-tax-notice",
+      "ask": "11월 20일에 세금 고지서를 받았어요. 다투려면 언제까지예요?",
+      "run": [
+        "calc",
+        "appeal",
+        "2026-11-20",
+        "tax",
+        "2026-11-20"
+      ],
+      "expect": [
+        {
+          "path": "deadlines",
+          "has": {
+            "key": "tax-dispute:appeal-90",
+            "due": "2027-02-18"
+          }
+        }
+      ]
     }
   ],
   "boundaries": {

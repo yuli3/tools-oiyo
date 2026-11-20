@@ -11,6 +11,7 @@
 //   node scripts/guide.mjs calc breach '{"knownAt":"2026-11-20T09:00","affected":1200,"sensitive":false,"hacking":false}'
 //   node scripts/guide.mjs calc policy <처리방침.txt> '{"website":true,"outsource":true}'
 //   node scripts/guide.mjs calc contract <계약서.txt> '{"creative":true,"registered":false}' [계약 금액]
+//   node scripts/guide.mjs calc appeal 2026-11-20 [분야 id] [오늘]   (불복·이의·청구 기한 전 분야)
 //   node scripts/guide.mjs practice [<길잡이 slug> [<상황 id> '<{"기한id":"YYYY-MM-DD"}>']]
 import { readFileSync } from "node:fs";
 import { LAW_GUIDE_AS_OF, PROFESSIONS, SCOPE_MATRIX, TOPICS, findStatutes, intake, statuteUrl, suggestTopics } from "./kr-expert-guide-2026.mjs";
@@ -18,6 +19,7 @@ import { analyzeEntries, claimPlain, claimResult, csmPlain, csmResult, dutyPlain
 import { GUIDES, guideBySlug, guideDeadlines, recordCheck, recordText } from "./pro-practice-guides-2026.mjs";
 import { breachClock, checkPolicy } from "./privacy-check-2026.mjs";
 import { checkContract } from "./freelance-contract-check-2026.mjs";
+import { appealsFrom, APPEAL_NOTE } from "./kr-appeal-deadlines-2026.mjs";
 
 const CALC = {
   fine: [fineResult, finePlain],
@@ -60,6 +62,9 @@ switch (cmd) {
     } else if (a1 === "contract") {
       // a2: 계약서 텍스트 파일, a3: 상황 JSON {"creative":true,"registered":false}, a4: 계약 금액(원)
       print(checkContract(readFileSync(a2, "utf8"), a3 ? JSON.parse(a3) : {}, a4 ? Number(a4) : undefined));
+    } else if (a1 === "appeal") {
+      // a2: 통지를 받은 날 YYYY-MM-DD, a3: 분야 id(선택, 예: tax, customs, appraisal), a4: 오늘(선택)
+      print({ from: a2, deadlines: appealsFrom(a2, a4 ?? new Date().toISOString().slice(0, 10), a3 || undefined), note: APPEAL_NOTE });
     } else if (a1 === "record") {
       const i = JSON.parse(a2 ?? "{}");
       print({ check: recordCheck(i), text: recordText(i) });
@@ -67,7 +72,7 @@ switch (cmd) {
       const i = JSON.parse(a2 ?? "{}");
       print({ result: CALC[a1][0](i), plain: CALC[a1][1](i) });
     } else {
-      console.error(`calc: ${Object.keys(CALC).join(", ")}, entries, record, breach, policy, contract`);
+      console.error(`calc: ${Object.keys(CALC).join(", ")}, entries, record, breach, policy, contract, appeal`);
       process.exit(1);
     }
     break;

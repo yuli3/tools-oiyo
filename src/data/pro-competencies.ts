@@ -79,7 +79,7 @@ export const COMPETENCIES: Competency[] = [
   c("tax-yearend", "tax", "calc", "연말정산·공제 판정", "부양가족·의료비·월세·카드 공제 요건을 하나씩 판정하고 환급액 차이를 비교해요.", { tools: ["year-end-settlement-calculator", "dependent-deduction-checker", "medical-expense-tax-credit-calculator", "monthly-rent-tax-credit-calculator"], skills: [BEN], mcp: ["calculate_kr_year_end_settlement", "check_kr_dependent_deduction", "calculate_kr_monthly_rent_credit", "calculate_card_tax_deduction"], audience: ["pro", "public"] }),
   c("tax-valuation", "tax", "calc", "비상장주식·가업상속 평가", "상증법 보충적 평가(순손익가치·순자산가치 가중), 가업상속공제 요건과 사후관리를 계산해요.", { tools: ["unlisted-share-valuation-calculator", "family-business-inheritance-calculator"], skills: [ADV], mcp: ["value_kr_unlisted_shares", "calculate_kr_family_business_deduction"] }),
   c("tax-calendar", "tax", "deadline", "신고·납부 일정과 가산세 관리", "부가세·원천세·종합소득세·법인세 신고 일정을 잡고, 늦었을 때 가산세 감면 구간을 계산해요.", { tools: ["tax-calendar", "vat-penalty-calculator", "inheritance-gift-filing-deadline-calculator"], mcp: ["get_kr_business_tax_calendar", "plan_kr_inheritance_gift_filing_deadline", "check_kr_business_day"], audience: ["pro", "public"] }),
-  c("tax-appeal", "tax", "deadline", "조세불복 기한과 절차", "고지서를 받은 날부터 90일 안에 이의신청·심사청구·심판청구를 고르고, 경정청구 5년을 따져요.", { tools: ["tax-law-guide"], skills: [LAW], mcp: ["start_kr_law_intake"], audience: ["pro", "public"], exclusive: true }),
+  c("tax-appeal", "tax", "deadline", "조세불복 기한과 절차", "고지서를 받은 날부터 90일 안에 이의신청·심사청구·심판청구를 고르고, 경정청구 5년을 따져요.", { tools: ["appeal-deadline-calculator", "tax-law-guide"], skills: [LAW], mcp: ["start_kr_law_intake"], audience: ["pro", "public"], exclusive: true }),
   c("tax-books", "tax", "docs", "장부·증빙 검토", "간편장부·복식부기 대상, 업무용 승용차 운행기록, 적격증빙을 확인해요.", { tools: ["accounting-law-guide", "business-car-expense-calculator", "expense-ratio-calculator"], mcp: ["calculate_kr_business_car_expense"], exclusive: true }),
   c("tax-planning", "tax", "consult", "사업자 유형과 절세 설계", "간이·일반과세, 개인·법인, 법인전환 시점을 숫자로 비교해 선택지를 설명해요.", { tools: ["general-vs-simplified-vat-calculator", "incorporation-conversion-calculator", "tax-savings-roadmap"], skills: [ADV, BIZ], mcp: ["compare_kr_general_vs_simplified_vat", "calculate_kr_incorporation_conversion"], audience: ["pro", "public"] }),
   c("tax-program", "tax", "digital", "세무 프로그램 자료 연결", "통장·카드 내역을 분개 표로 바꿔 세무사랑·위하고·더존 등 프로그램의 엑셀 업로드 순서로 넘기고, 불공제·증빙·중복을 먼저 걸러요.", { tools: ["bookkeeping-data-bridge", "journal-entry-analytics"], skills: [ADV], mcp: ["analyze_journal_entries"], audience: ["pro", "public"] }),
@@ -101,7 +101,7 @@ export const COMPETENCIES: Competency[] = [
   c("labor-wage", "labor", "calc", "임금 계산", "통상임금 → 연장·야간·휴일수당, 주휴수당, 퇴직금을 같은 기준으로 계산해요.", { tools: ["ordinary-wage-calculator", "overtime-pay-calculator", "weekly-holiday-pay-calculator", "severance-calculator", "fixed-overtime-pay-checker"], skills: [BEN], mcp: ["calculate_kr_ordinary_wage", "calculate_overtime_pay", "calculate_weekly_allowance", "calculate_severance_pay", "check_kr_fixed_overtime_pay", "get_kr_minimum_wage"], audience: ["pro", "public"] }),
   c("labor-leave", "labor", "calc", "휴가·휴직 급여", "연차 일수, 출산전후휴가·육아휴직·육아기 단축 급여를 계산해요.", { tools: ["annual-leave-calculator", "maternity-leave-pay-calculator", "parental-leave-calculator", "reduced-hours-childcare-pay-calculator"], skills: [BEN], mcp: ["calculate_annual_leave", "calculate_kr_maternity_leave_pay", "calculate_kr_reduced_hours_childcare_pay"], audience: ["pro", "public"] }),
   c("labor-insurance", "labor", "calc", "4대보험과 인건비", "건강·연금·고용·산재보험료와 사업주 부담을 합쳐 실제 인건비를 구해요.", { tools: ["labor-cost-calculator", "health-insurance-calculator", "daily-worker-insurance-checker", "salary-calculator"], mcp: ["calculate_health_insurance", "calculate_net_salary"], audience: ["pro", "public"] }),
-  c("labor-remedy", "labor", "deadline", "해고·체불 구제 기한", "부당해고 구제신청 3개월, 해고예고수당, 체불임금 대지급금 신청 기한을 세요.", { tools: ["labor-law-guide", "dismissal-notice-pay-calculator", "unpaid-wage-guarantee-calculator", "shutdown-allowance-calculator"], skills: [LAW, BEN], mcp: ["start_kr_law_intake", "calculate_kr_dismissal_notice_pay", "calculate_kr_wage_guarantee", "calculate_kr_shutdown_allowance"], audience: ["pro", "public"], exclusive: true }),
+  c("labor-remedy", "labor", "deadline", "해고·체불 구제 기한", "부당해고 구제신청 3개월, 해고예고수당, 체불임금 대지급금 신청 기한을 세요.", { tools: ["appeal-deadline-calculator", "labor-law-guide", "dismissal-notice-pay-calculator", "unpaid-wage-guarantee-calculator", "shutdown-allowance-calculator"], skills: [LAW, BEN], mcp: ["start_kr_law_intake", "calculate_kr_dismissal_notice_pay", "calculate_kr_wage_guarantee", "calculate_kr_shutdown_allowance"], audience: ["pro", "public"], exclusive: true }),
   c("labor-docs", "labor", "docs", "근로계약·연차촉진·수습 서류", "연차 사용촉진 통보 순서, 수습 감액 요건처럼 서류로 남겨야 효력이 생기는 절차를 챙겨요.", { tools: ["annual-leave-promotion-planner", "probation-minimum-wage-checker"], skills: [BEN], mcp: ["plan_kr_annual_leave_promotion", "check_kr_probation_minimum_wage"], exclusive: true }),
   c("labor-benefit", "labor", "consult", "산재·실업급여 안내", "휴업급여, 실업급여 수급 요건, 자진퇴사 정당 사유를 사실관계로 확인해요.", { tools: ["industrial-accident-leave-pay-calculator", "unemployment-benefits-calculator", "voluntary-quit-unemployment-checker"], skills: [BEN], mcp: ["calculate_kr_injury_leave_pay", "calculate_unemployment_benefits", "check_kr_voluntary_quit_unemployment"], audience: ["pro", "public"] }),
   c("labor-scope", "labor", "ethics", "대리·서류 작성의 독점 범위", "노동 상담은 누구나 할 수 있지만, 사건 대리·서류 작성·노무관리진단은 공인노무사 업무예요(공인노무사법 제2조·제27조).", { tools: ["law-guide"], skills: [LAW], mcp: ["get_kr_professional_scope"] }),
@@ -109,7 +109,7 @@ export const COMPETENCIES: Competency[] = [
 
   // 행정사
   c("admin-law", "admin", "law", "행정절차법·행정심판법·행정기본법", "처분 사전통지·의견제출, 재량권 일탈, 행정심판 청구 요건을 읽어요.", { tools: ["administrative-law-guide"], skills: [LAW], mcp: ["search_kr_statutes"], audience: ["pro", "public"] }),
-  c("admin-deadline", "admin", "deadline", "의견제출·행정심판·소송 기한", "처분을 안 날부터 90일, 있은 날부터 180일, 영업일 기준 기한을 계산해요.", { tools: ["administrative-law-guide", "business-day-checker"], skills: [LAW], mcp: ["start_kr_law_intake", "check_kr_business_day"], audience: ["pro", "public"] }),
+  c("admin-deadline", "admin", "deadline", "의견제출·행정심판·소송 기한", "처분을 안 날부터 90일, 있은 날부터 180일, 영업일 기준 기한을 계산해요.", { tools: ["appeal-deadline-calculator", "administrative-law-guide", "business-day-checker"], skills: [LAW], mcp: ["start_kr_law_intake", "check_kr_business_day"], audience: ["pro", "public"] }),
   c("admin-permit", "admin", "docs", "인허가·민원 서류", "영업신고·허가 신청에 필요한 서류와 요건을 정리해요. 작성·제출 대행은 행정사 업무예요.", { exclusive: true, tools: ["permit-document-checklist"], skills: ["oiyo-kr-law-guide"], mcp: ["get_kr_practice_guide"], audience: ["pro", "public"] }),
   c("admin-visa", "admin", "law", "출입국·체류 자격", "체류자격 변경·연장, 사증 종류별 요건을 다뤄요.", { tools: ["visa-stay-status-guide"], skills: ["oiyo-kr-law-guide", "oiyo-korea-expat-guide"], mcp: ["get_kr_practice_guide"], audience: ["pro", "public"] }),
   c("admin-zoning", "admin", "calc", "건축·토지 규제 수치", "건폐율·용적률처럼 인허가 판단에 쓰는 수치를 계산해요.", { tools: ["building-coverage-floor-area-ratio-calculator"], audience: ["pro", "public"] }),
@@ -142,7 +142,7 @@ export const COMPETENCIES: Competency[] = [
   c("adj-law", "adjuster", "law", "상법 보험편과 약관 해석", "고지의무 위반 해지(안 날부터 1개월, 계약 후 3년), 면책 사유, 약관 설명의무를 읽어요.", { tools: ["insurance-law-guide"], skills: [LAW], mcp: ["search_kr_statutes"], audience: ["pro", "public"] }),
   c("adj-loss", "adjuster", "calc", "손해액 산정", "일실수입, 휴업손해를 소득과 기간으로 계산해요.", { tools: ["loss-of-income-calculator", "industrial-accident-leave-pay-calculator"], mcp: ["calculate_kr_injury_leave_pay"], audience: ["pro", "public"] }),
   c("adj-medical", "adjuster", "calc", "의료비·실손 보상 계산", "실손 세대별 자기부담, 본인부담상한제 환급을 계산해요.", { tools: ["silson-insurance-generation-calculator", "copay-cap-refund-calculator"], audience: ["pro", "public"] }),
-  c("adj-deadline", "adjuster", "deadline", "보험금 청구 시효와 지급 기한", "청구권 소멸시효 3년, 고지의무 해지 제한 기간을 날짜로 세요.", { tools: ["insurance-law-guide", "statute-limitations-calculator"], skills: [LAW], mcp: ["start_kr_law_intake"], audience: ["pro", "public"] }),
+  c("adj-deadline", "adjuster", "deadline", "보험금 청구 시효와 지급 기한", "청구권 소멸시효 3년, 고지의무 해지 제한 기간을 날짜로 세요.", { tools: ["appeal-deadline-calculator", "insurance-law-guide", "statute-limitations-calculator"], skills: [LAW], mcp: ["start_kr_law_intake"], audience: ["pro", "public"] }),
   c("adj-report", "adjuster", "docs", "손해사정서 작성", "사고 사실·손해액·근거를 정리한 손해사정서는 손해사정사 업무예요(보험업법 제188조).", { exclusive: true, tools: ["pro-document-reading-guide"], skills: ["oiyo-kr-law-guide"], mcp: ["get_kr_practice_guide"], audience: ["pro", "public"] }),
   c("adj-fault", "adjuster", "consult", "장해 등급·과실 비율", "장해 평가 기준과 과실 비율이 보험금에 미치는 영향을 설명하는 역량이에요.", { tools: ["disability-fault-claim-calculator"], skills: ["oiyo-kr-law-guide"], mcp: ["calculate_insurance_claim_payout"], audience: ["pro", "public"] }),
   c("adj-scope", "adjuster", "ethics", "손해사정 업무 범위와 금지 행위", "손해사정은 손해사정사 업무이고, 보험회사와 합의·소송 대리는 변호사 업무예요(보험업법 제188조·제189조, 변호사법 제109조).", { tools: ["insurance-law-guide"], skills: [LAW], mcp: ["get_kr_professional_scope"] }),
@@ -158,7 +158,7 @@ export const COMPETENCIES: Competency[] = [
   c("agent-scope", "agent", "ethics", "등록·소속 범위", "등록한 설계사·대리점·중개사만 모집할 수 있고(보험업법 제83조), 소속 회사 상품만 다뤄요.", { tools: ["insurance-law-guide"], skills: [LAW], mcp: ["get_kr_professional_scope"] }),
   // 관세사
   c("cu-law", "customs", "law", "관세법·FTA 원산지 규정", "신고납부·보정·경정, 소액 면세, FTA 원산지 결정 기준을 읽어요.", { tools: ["customs-law-guide"], skills: [LAW], mcp: ["search_kr_statutes"], audience: ["pro", "public"] }),
-  c("cu-deadline", "customs", "deadline", "납부·보정·경정·불복 기한", "수리일부터 15일 납부, 6개월 보정, 5년 경정청구, 90일 불복을 날짜로 세요.", { tools: ["customs-law-guide"], skills: [LAW], mcp: ["start_kr_law_intake", "check_kr_business_day"], audience: ["pro", "public"], exclusive: true }),
+  c("cu-deadline", "customs", "deadline", "납부·보정·경정·불복 기한", "수리일부터 15일 납부, 6개월 보정, 5년 경정청구, 90일 불복을 날짜로 세요.", { tools: ["appeal-deadline-calculator", "customs-law-guide"], skills: [LAW], mcp: ["start_kr_law_intake", "check_kr_business_day"], audience: ["pro", "public"], exclusive: true }),
   c("cu-direct", "customs", "consult", "해외직구 면세 판정", "150달러(미국발 200달러), 합산과세, 판매용 여부를 확인해요.", { tools: ["customs-law-guide"], skills: [LAW], mcp: ["start_kr_law_intake"], audience: ["pro", "public"] }),
   c("cu-fx", "customs", "calc", "과세가격·환율 환산", "물품가격과 운임을 과세환율로 원화 환산해요.", { tools: ["currency-converter", "foreign-exchange-fee-calculator"], audience: ["pro", "public"] }),
   c("cu-hs", "customs", "calc", "품목분류(HS)와 세율", "HS 코드를 정하고 기본·FTA 세율을 비교하는 역량이에요.", { exclusive: true, tools: ["import-duty-fta-calculator"], skills: ["oiyo-kr-law-guide"], mcp: ["calculate_kr_import_duty"], audience: ["pro", "public"] }),
@@ -168,7 +168,7 @@ export const COMPETENCIES: Competency[] = [
 
   // 변리사
   c("pt-law", "patent", "law", "특허법·상표법·디자인보호법", "신규성·진보성, 상표 식별력·유사 판단 기준을 읽어요.", { tools: ["ip-law-guide"], skills: [LAW], mcp: ["search_kr_statutes"], audience: ["pro", "public"] }),
-  c("pt-deadline", "patent", "deadline", "공지예외·거절 대응 기한", "공지예외 12개월, 의견서 제출기간, 거절결정 불복 3개월, 연차료 납부를 관리해요.", { tools: ["ip-law-guide"], skills: [LAW], mcp: ["start_kr_law_intake"], audience: ["pro", "public"] }),
+  c("pt-deadline", "patent", "deadline", "공지예외·거절 대응 기한", "공지예외 12개월, 의견서 제출기간, 거절결정 불복 3개월, 연차료 납부를 관리해요.", { tools: ["appeal-deadline-calculator", "ip-law-guide"], skills: [LAW], mcp: ["start_kr_law_intake"], audience: ["pro", "public"] }),
   c("pt-search", "patent", "consult", "선행기술·등록상표 조사", "출원 전에 키프리스로 같은 기술·비슷한 상표를 찾아 가능성을 가늠해요.", { tools: ["ip-law-guide"], audience: ["pro", "public"] }),
   c("pt-claims", "patent", "docs", "명세서·청구범위 작성", "권리 범위를 정하는 청구범위를 쓰는 역량이에요. 출원 대리는 변리사 업무예요.", { exclusive: true, tools: ["pro-document-reading-guide"], skills: ["oiyo-kr-law-guide"], mcp: ["get_kr_practice_guide"] }),
   c("pt-value", "patent", "calc", "지식재산 가치평가", "특허의 미래 현금흐름을 할인해 가치를 추정해요.", { tools: ["dcf-valuation-calculator", "present-value-calculator"], mcp: ["calculate_dcf_valuation"] }),
@@ -178,7 +178,7 @@ export const COMPETENCIES: Competency[] = [
 
   // 감정평가사
   c("ap-law", "appraiser", "law", "감정평가법·토지보상법·부동산공시법", "감정평가 기준, 보상 원칙, 공시가격 체계를 읽어요.", { tools: ["appraisal-law-guide"], skills: [LAW], mcp: ["search_kr_statutes"], audience: ["pro", "public"] }),
-  c("ap-deadline", "appraiser", "deadline", "보상금·공시가격 다툼 기한", "재결 이의신청 30일, 소송 90일(이의재결 뒤 60일), 공시가격 이의신청 30일을 세요.", { tools: ["appraisal-law-guide"], skills: [LAW], mcp: ["start_kr_law_intake"], audience: ["pro", "public"] }),
+  c("ap-deadline", "appraiser", "deadline", "보상금·공시가격 다툼 기한", "재결 이의신청 30일, 소송 90일(이의재결 뒤 60일), 공시가격 이의신청 30일을 세요.", { tools: ["appeal-deadline-calculator", "appraisal-law-guide"], skills: [LAW], mcp: ["start_kr_law_intake"], audience: ["pro", "public"] }),
   c("ap-income", "appraiser", "calc", "수익환원법", "임대수익과 환원율로 수익 부동산 가치를 구해요.", { tools: ["rental-yield-calculator", "present-value-calculator"], audience: ["pro", "public"] }),
   c("ap-tax", "appraiser", "calc", "감정가와 세금", "상속·증여 신고에서 감정가와 공시가격의 세금 차이를 비교해요.", { tools: ["inherited-house-appraisal-vs-official-price-calculator", "inheritance-tax-calculator"], mcp: ["compare_kr_inherited_house_valuation", "calculate_inheritance_gift_tax"], audience: ["pro", "public"] }),
   c("ap-redevelop", "appraiser", "calc", "정비사업 권리가액", "재건축·재개발 종전자산 평가와 분담금 구조를 이해해요.", { tools: ["reconstruction-profit", "redevelopment-ticket-vs-presale-tax-calculator"], mcp: ["compare_kr_ticket_vs_presale_tax"], audience: ["pro", "public"] }),
@@ -197,7 +197,7 @@ export const COMPETENCIES: Competency[] = [
   // 건축사 (11-20)
   c("ar-law", "architect", "law", "건축법·용도변경 기준", "허가·신고·용도변경(시설군)·사용승인 기준을 읽어요.", { tools: ["building-permit-law-guide"], skills: [LAW], mcp: ["search_kr_statutes"], audience: ["pro", "public"] }),
   c("ar-calc", "architect", "calc", "건폐율·용적률 계산", "대지면적과 바닥면적으로 증축 여유를 계산해요.", { tools: ["building-coverage-floor-area-ratio-calculator"], audience: ["pro", "public"] }),
-  c("ar-deadline", "architect", "deadline", "착공·불복 기한", "허가 2년·신고 1년 착공 기한, 시정명령·이행강제금 행정심판 90일을 챙겨요.", { tools: ["building-permit-law-guide"], skills: [LAW], mcp: ["start_kr_law_intake"], audience: ["pro", "public"] }),
+  c("ar-deadline", "architect", "deadline", "착공·불복 기한", "허가 2년·신고 1년 착공 기한, 시정명령·이행강제금 행정심판 90일을 챙겨요.", { tools: ["appeal-deadline-calculator", "building-permit-law-guide"], skills: [LAW], mcp: ["start_kr_law_intake"], audience: ["pro", "public"] }),
   c("ar-design", "architect", "docs", "설계도서 작성", "허가·신고 대상 건축물의 설계는 건축사 업무예요(건축법 제23조).", { exclusive: true }),
   c("ar-permit", "architect", "digital", "세움터 인허가 전자 신청", "건축물대장 열람과 인허가 신청을 세움터에서 해요.", { tools: ["permit-document-checklist", "eportal-practice-guide"], audience: ["pro", "public"] }),
   c("ar-violation", "architect", "consult", "위반건축물 상담", "무단 증축·용도변경을 원상복구나 추인으로 바로잡는 길을 정리해요.", { tools: ["building-permit-law-guide", "fine-reduction-calculator"], skills: [LAW], mcp: ["start_kr_law_intake"], audience: ["pro", "public"] }),
@@ -207,14 +207,14 @@ export const COMPETENCIES: Competency[] = [
   c("md-law", "medic", "law", "의료법·약사법 기본", "진단서·기록 열람·무면허 금지·의약품 판매 제한을 읽어요.", { tools: ["medical-care-law-guide"], skills: [LAW], mcp: ["search_kr_statutes"], audience: ["pro", "public"] }),
   c("md-care", "medic", "consult", "진료·조제", "진단·치료·조제는 의료인·약사의 면허 업무예요.", { exclusive: true }),
   c("md-records", "medic", "docs", "진료기록 관리와 사본 발급", "보존기간(진료기록부 10년·처방전 2년)과 본인·가족·대리인 발급 요건을 챙겨요.", { tools: ["medical-care-law-guide"], skills: [LAW], mcp: ["start_kr_law_intake"], audience: ["pro", "public"] }),
-  c("md-dispute", "medic", "deadline", "의료분쟁 조정 기한", "안 날부터 3년·진료 끝난 날부터 10년 안에 조정을 신청해요.", { tools: ["medical-care-law-guide"], skills: [LAW], mcp: ["start_kr_law_intake"], audience: ["pro", "public"] }),
+  c("md-dispute", "medic", "deadline", "의료분쟁 조정 기한", "안 날부터 3년·진료 끝난 날부터 10년 안에 조정을 신청해요.", { tools: ["appeal-deadline-calculator", "medical-care-law-guide"], skills: [LAW], mcp: ["start_kr_law_intake"], audience: ["pro", "public"] }),
   c("md-bill", "medic", "calc", "진료비·보험료·의료비 공제", "비급여 확인 요청, 건강보험료, 의료비 세액공제를 계산해요.", { tools: ["health-insurance-calculator", "medical-expense-tax-credit-calculator"], mcp: ["calculate_health_insurance", "calculate_kr_long_term_care_copay"], audience: ["pro", "public"] }),
   c("md-claim", "medic", "consult", "실손·장해 보험금 연결", "진단서·기록으로 보험금 청구와 장해 지급률을 확인해요.", { tools: ["disability-fault-claim-calculator", "insurance-law-guide"], mcp: ["calculate_insurance_claim_payout"], audience: ["pro", "public"] }),
   c("md-scope", "medic", "ethics", "무면허·환자 유인 금지", "의료인이 아니면 의료행위를 할 수 없고, 돈을 주고 환자를 소개·유인할 수 없어요(의료법 제27조).", { tools: ["medical-care-law-guide"], skills: [LAW], mcp: ["get_kr_professional_scope"] }),
 
   // 변호사(가사) (11-20)
   c("fm-law", "family", "law", "민법 친족편·가사소송법", "협의·재판상 이혼, 양육, 재산분할, 이행명령·감치를 읽어요.", { tools: ["divorce-family-law-guide"], skills: [LAW], mcp: ["search_kr_statutes"], audience: ["pro", "public"] }),
-  c("fm-deadline", "family", "deadline", "이혼 절차 기한", "숙려 3개월·1개월, 이혼신고 3개월, 재산분할 2년, 이혼청구 6개월·2년을 챙겨요.", { tools: ["divorce-family-law-guide"], skills: [LAW], mcp: ["start_kr_law_intake"], audience: ["pro", "public"] }),
+  c("fm-deadline", "family", "deadline", "이혼 절차 기한", "숙려 3개월·1개월, 이혼신고 3개월, 재산분할 2년, 이혼청구 6개월·2년을 챙겨요.", { tools: ["appeal-deadline-calculator", "divorce-family-law-guide"], skills: [LAW], mcp: ["start_kr_law_intake"], audience: ["pro", "public"] }),
   c("fm-support", "family", "consult", "양육비 이행 확보", "이행명령 → 감치 → 양육비이행관리원 지원 순서를 안내해요.", { tools: ["divorce-family-law-guide"], skills: [LAW], mcp: ["start_kr_law_intake"], audience: ["pro", "public"] }),
   c("fm-property", "family", "calc", "재산분할 세금", "분할로 넘기는 집의 취득세·양도세, 증여로 보는 경우를 가늠해요.", { tools: ["acquisition-tax-calculator", "capital-gains-tax-calculator", "gift-tax-calculator"], mcp: ["calculate_kr_acquisition_tax", "calculate_capital_gains_tax", "calculate_inheritance_gift_tax"], audience: ["pro", "public"] }),
   c("fm-litigate", "family", "docs", "소장·조정 신청서와 대리", "가사 소송 대리는 변호사, 가정법원 제출 서류 작성은 법무사도 해요.", { exclusive: true, tools: ["registry-court-law-guide"] }),
@@ -225,7 +225,7 @@ export const COMPETENCIES: Competency[] = [
   c("sw-law", "social", "law", "기초생활보장법·긴급복지지원법", "신청권자, 결정 30일, 이의신청 90일, 긴급지원 선지원을 읽어요.", { tools: ["welfare-benefit-law-guide"], skills: [LAW], mcp: ["search_kr_statutes"], audience: ["pro", "public"] }),
   c("sw-find", "social", "consult", "받을 수 있는 지원 찾기", "나이·소득·가구로 받을 수 있는 급여와 지원금을 찾아요.", { tools: ["benefit-finder", "benefit-rights-toolkit", "youth-monthly-rent-support-checker"], skills: [BEN], audience: ["pro", "public"] }),
   c("sw-calc", "social", "calc", "근로·자녀장려금과 실업급여", "장려금과 실업급여를 계산해 생계 계획에 넣어요.", { tools: ["work-child-incentive-calculator", "unemployment-benefits-calculator"], skills: [BEN], mcp: ["calculate_unemployment_benefits"], audience: ["pro", "public"] }),
-  c("sw-deadline", "social", "deadline", "결정·이의신청 기한", "신청일부터 30일, 통지일부터 90일을 챙겨요.", { tools: ["welfare-benefit-law-guide"], skills: [LAW], mcp: ["start_kr_law_intake"], audience: ["pro", "public"] }),
+  c("sw-deadline", "social", "deadline", "결정·이의신청 기한", "신청일부터 30일, 통지일부터 90일을 챙겨요.", { tools: ["appeal-deadline-calculator", "welfare-benefit-law-guide"], skills: [LAW], mcp: ["start_kr_law_intake"], audience: ["pro", "public"] }),
   c("sw-case", "social", "docs", "사례관리 기록", "상담·욕구 조사·서비스 연계를 기록해요.", {}),
   c("sw-portal", "social", "digital", "복지로·사회보장정보시스템", "온라인 신청과 모의계산을 안내해요.", { tools: ["welfare-benefit-law-guide"], audience: ["pro", "public"] }),
   c("sw-scope", "social", "ethics", "신청 대행의 경계", "복지 상담은 누구나 돕지만, 대가를 받고 신청 서류를 대행하는 일은 행정사 업무예요(행정사법 제3조).", { tools: ["welfare-benefit-law-guide"], skills: [LAW], mcp: ["get_kr_professional_scope"] }),
@@ -274,6 +274,7 @@ export const TOOL_NAMES: Record<string, string> = {
   "vat-penalty-calculator": "부가세 가산세",
   "after-death-checklist": "사망 후 할 일 타임라인",
   "freelance-contract-check": "프리랜서·외주 계약서 점검",
+  "appeal-deadline-calculator": "불복·이의신청 기한 계산",
   "inheritance-gift-filing-deadline-calculator": "상속·증여 신고기한",
   "accounting-law-guide": "회계·장부 법령 길잡이",
   "business-car-expense-calculator": "업무용 승용차 비용",

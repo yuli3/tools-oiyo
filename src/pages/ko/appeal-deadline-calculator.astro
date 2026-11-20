@@ -1,0 +1,31 @@
+---
+// 불복·이의·청구 기한 계산기 (2026-11-20, 전문 직군 전수조사 1번). 엔진: lib/kr-appeal-deadlines-2026.ts
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import AppealDeadlines from "../../components/tools/lawguide/AppealDeadlines";
+
+const title = "불복·이의신청 기한 계산기 — 세금·관세·행정·수용·특허·노동·복지 한 번에";
+const description = "통지를 받은 날만 넣으면 조세 이의신청·심판청구 90일, 과세전적부심사 30일, 관세 불복 90일, 행정심판 90일, 수용 재결 이의 30일, 공시가격 이의 30일, 특허 거절 불복 3개월, 부당해고 구제신청 3개월, 복지 이의신청 90일 같은 마감일을 휴일까지 따져 계산해요.";
+const ko = {
+  introTitle: "기한을 넘기면 다툴 기회가 사라져요",
+  intro: "불복·이의신청은 내용보다 기한이 먼저예요. 분야마다 흩어져 있는 기한을 한곳에 모아, 같은 날 받은 통지로 마감일을 한 번에 봐요.",
+  howToTitle: "사용 방법",
+  steps: ["처분서·결정서·고지서를 받은 날을 넣어요.", "분야를 고르면 그 분야 기한만 봐요.", "가장 가까운 마감부터 준비하고, 처분서에 적힌 안내와 맞춰 봐요."],
+  highlightsTitle: "주요 특징",
+  highlights: [
+    { title: "휴일 반영", body: "마지막 날이 토·일·공휴일이면 다음 날로 미뤄요. 국세는 근로자의 날도 반영해요." },
+    { title: "근거 조문", body: "기한마다 근거 법 조문을 함께 보여 줘요." },
+    { title: "법령 길잡이와 같은 엔진", body: "분야별 길잡이와 같은 규칙이라 결과가 서로 같아요." },
+    { title: "개인정보 안전", body: "날짜는 서버로 보내지 않아요." },
+  ],
+  disclaimer: "법령 정보와 기한 계산이에요. 불복 서류를 대신 쓰거나 대리하지 않아요. 처분서의 불복 안내가 다르면 처분서를 먼저 따르세요.",
+};
+const faqs = [
+  { q: "기한은 언제부터 세나요?", a: "처분이나 결정을 안 날(통지를 받은 날)의 다음 날부터 세요(민법 제157조, 초일 불산입). 마지막 날이 토요일·공휴일이면 그다음 날에 끝나요(민법 제161조)." },
+  { q: "세금 불복은 어디에 먼저 하나요?", a: "고지를 받은 날부터 90일 안에 세무서·지방국세청 이의신청, 국세청 심사청구, 조세심판원 심판청구 중 하나를 골라요(국세기본법 제61조·제66조·제68조). 고지 전 과세예고통지를 받았다면 30일 안에 과세전적부심사를 청구할 수 있어요." },
+  { q: "처분서에 적힌 기간이 이 표와 달라요.", a: "개별 법에 특별한 절차가 있으면 그 법을 따르고, 처분서에는 불복 방법과 기간이 적혀 있어야 해요. 처분서 안내를 먼저 따르고, 기한이 가까우면 일단 접수부터 해요." },
+];
+---
+<KrFinancePage slug="appeal-deadline-calculator" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <AppealDeadlines client:load />
+  <p class="mt-4 text-xs text-muted-foreground"><a class="underline" href="/ko/law-guide/">법령 길잡이</a> · <a class="underline" href="/ko/business-day-checker/">영업일·공휴일 계산</a> · <a class="underline" href="/ko/statute-limitations-calculator/">소멸시효 계산기</a></p>
+</KrFinancePage>
