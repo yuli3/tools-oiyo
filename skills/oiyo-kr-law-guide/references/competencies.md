@@ -1,6 +1,6 @@
 # 전문 직업 역량 지도
 
-GENERATED from tools-oiyo src/data/pro-competencies.ts. 기준일 2026-11-17. 웹: https://tools.oiyo.net/ko/pro-competency-map/
+GENERATED from tools-oiyo src/data/pro-competencies.ts. 기준일 2026-11-20. 웹: https://tools.oiyo.net/ko/pro-competency-map/
 
 질문이 어느 직업의 어떤 역량에 해당하는지 고른 뒤, 연결된 도구·MCP로 계산하고 업무 범위(ethics) 역량으로 경계를 확인한다. '준비 중'은 아직 도구가 없으니 계산하지 말고 공공 창구나 자격사로 안내한다.
 
@@ -49,7 +49,7 @@ GENERATED from tools-oiyo src/data/pro-competencies.ts. 기준일 2026-11-17. �
   - MCP: `compare_kr_general_vs_simplified_vat`, `calculate_kr_incorporation_conversion`
   - 스킬: kr-tax-advisor, oiyo-business-strategist
 - **세무대리 범위와 성실의무** [업무 범위·윤리]: 세무대리는 세무사 업무예요(세무사법 제2조). 개정 제20조 제3항(2026-06-24 시행)은 무자격자의 세무대리 암시 광고도 금지해요.
-  - 도구: 법령 길잡이 10분야 https://tools.oiyo.net/ko/law-guide/
+  - 도구: 법령 길잡이 14분야 https://tools.oiyo.net/ko/law-guide/
   - MCP: `get_kr_professional_scope`
   - 스킬: oiyo-kr-law-guide
 - **홈택스 전자신고·자료 조회** [전자 업무·데이터]: 간소화 자료, 전자세금계산서, 신고서 제출 화면을 다루는 실무 역량이에요.
@@ -81,7 +81,7 @@ GENERATED from tools-oiyo src/data/pro-competencies.ts. 기준일 2026-11-17. �
   - MCP: `calculate_unit_economics_runway`
   - 스킬: oiyo-business-strategist
 - **독립성과 감사 업무 범위** [업무 범위·윤리] (자격사 업무와 맞닿음: 정보만): 회계감사는 공인회계사 업무예요(공인회계사법 제2조). 이해관계가 있는 회사의 감사는 제한돼요(제21조).
-  - 도구: 법령 길잡이 10분야 https://tools.oiyo.net/ko/law-guide/
+  - 도구: 법령 길잡이 14분야 https://tools.oiyo.net/ko/law-guide/
   - MCP: `get_kr_professional_scope`
   - 스킬: oiyo-kr-law-guide
 - **감사 데이터 분석** [전자 업무·데이터]: 전표 전수 분석, 이상 거래 탐지 같은 데이터 기반 감사 기법이에요.
@@ -121,7 +121,7 @@ GENERATED from tools-oiyo src/data/pro-competencies.ts. 기준일 2026-11-17. �
   - MCP: `calculate_kr_injury_leave_pay`, `calculate_unemployment_benefits`, `check_kr_voluntary_quit_unemployment`
   - 스킬: oiyo-kr-benefits-navigator
 - **대리·서류 작성의 독점 범위** [업무 범위·윤리]: 노동 상담은 누구나 할 수 있지만, 사건 대리·서류 작성·노무관리진단은 공인노무사 업무예요(공인노무사법 제2조·제27조).
-  - 도구: 법령 길잡이 10분야 https://tools.oiyo.net/ko/law-guide/
+  - 도구: 법령 길잡이 14분야 https://tools.oiyo.net/ko/law-guide/
   - MCP: `get_kr_professional_scope`
   - 스킬: oiyo-kr-law-guide
 - **고용24·노동포털 전자 신고** [전자 업무·데이터]: 4대보험 취득·상실 신고, 진정 접수 같은 전자 창구 실무예요.
@@ -160,7 +160,7 @@ GENERATED from tools-oiyo src/data/pro-competencies.ts. 기준일 2026-11-17. �
   - MCP: `start_kr_law_intake`
   - 스킬: oiyo-kr-law-guide
 - **행정사 업무 범위** [업무 범위·윤리]: 행정기관 제출 서류 작성·제출 대행은 행정사 업무예요(행정사법 제2조·제3조).
-  - 도구: 법령 길잡이 10분야 https://tools.oiyo.net/ko/law-guide/
+  - 도구: 법령 길잡이 14분야 https://tools.oiyo.net/ko/law-guide/
   - MCP: `get_kr_professional_scope`
   - 스킬: oiyo-kr-law-guide
 
@@ -190,7 +190,7 @@ GENERATED from tools-oiyo src/data/pro-competencies.ts. 기준일 2026-11-17. �
 - **채무 조정 선택지** [상담·설계] (일반인도 씀): 개인회생 변제액과 기간을 계산해 선택지를 비교해요.
   - 도구: 개인회생 계산기 https://tools.oiyo.net/ko/personal-rehabilitation-calculator/
 - **법무사 업무 범위** [업무 범위·윤리]: 등기·공탁 신청 대리와 법원 제출 서류 작성은 법무사 업무예요(법무사법 제2조). 소송 대리는 변호사 업무예요(변호사법 제109조).
-  - 도구: 법령 길잡이 10분야 https://tools.oiyo.net/ko/law-guide/
+  - 도구: 법령 길잡이 14분야 https://tools.oiyo.net/ko/law-guide/
   - MCP: `get_kr_professional_scope`
   - 스킬: oiyo-kr-law-guide
 - **인터넷등기소·전자소송** [전자 업무·데이터]: 등기부 열람, 전자소송 제출 같은 전자 창구 실무예요.
@@ -322,7 +322,7 @@ GENERATED from tools-oiyo src/data/pro-competencies.ts. 기준일 2026-11-17. �
   - MCP: `get_kr_practice_guide`
   - 스킬: oiyo-kr-law-guide
 - **통관업 범위와 명칭 제한** [업무 범위·윤리]: 관세사·관세법인·통관취급법인만 남의 의뢰로 통관업을 하고(관세사법 제3조), 유사명칭을 쓸 수 없어요(제25조).
-  - 도구: 법령 길잡이 10분야 https://tools.oiyo.net/ko/law-guide/
+  - 도구: 법령 길잡이 14분야 https://tools.oiyo.net/ko/law-guide/
   - MCP: `get_kr_professional_scope`
   - 스킬: oiyo-kr-law-guide
 
@@ -355,7 +355,7 @@ GENERATED from tools-oiyo src/data/pro-competencies.ts. 기준일 2026-11-17. �
   - MCP: `get_kr_practice_guide`
   - 스킬: oiyo-kr-law-guide
 - **변리 업무 범위와 명칭 제한** [업무 범위·윤리]: 변리사가 아니면 특허 등 대리를 업으로 할 수 없고(변리사법 제21조), 유사명칭을 쓸 수 없어요(제22조).
-  - 도구: 법령 길잡이 10분야 https://tools.oiyo.net/ko/law-guide/
+  - 도구: 법령 길잡이 14분야 https://tools.oiyo.net/ko/law-guide/
   - MCP: `get_kr_professional_scope`
   - 스킬: oiyo-kr-law-guide
 
@@ -384,7 +384,7 @@ GENERATED from tools-oiyo src/data/pro-competencies.ts. 기준일 2026-11-17. �
   - MCP: `get_kr_practice_guide`
   - 스킬: oiyo-kr-law-guide
 - **감정평가 업무 범위와 명칭 제한** [업무 범위·윤리]: 감정평가는 사무소·법인 소속 감정평가사가 하고(감정평가법 제21조·제29조), 유사명칭을 쓸 수 없어요(제22조).
-  - 도구: 법령 길잡이 10분야 https://tools.oiyo.net/ko/law-guide/
+  - 도구: 법령 길잡이 14분야 https://tools.oiyo.net/ko/law-guide/
   - MCP: `get_kr_professional_scope`
   - 스킬: oiyo-kr-law-guide
 
@@ -417,6 +417,116 @@ GENERATED from tools-oiyo src/data/pro-competencies.ts. 기준일 2026-11-17. �
   - MCP: `get_kr_professional_scope`
   - 스킬: oiyo-kr-law-guide
 
+## 건축사 (건축사법 제19조, 건축법 제23조)
+
+건축물 설계·공사감리, 건축허가·사용승인 등 행정 절차 대행, 건축물 조사·감정
+
+- **건축법·용도변경 기준** [법령 해석] (일반인도 씀): 허가·신고·용도변경(시설군)·사용승인 기준을 읽어요.
+  - 도구: 건축·인허가 법령 길잡이 https://tools.oiyo.net/ko/building-permit-law-guide/
+  - MCP: `search_kr_statutes`
+  - 스킬: oiyo-kr-law-guide
+- **건폐율·용적률 계산** [계산·평가] (일반인도 씀): 대지면적과 바닥면적으로 증축 여유를 계산해요.
+  - 도구: 건폐율·용적률 https://tools.oiyo.net/ko/building-coverage-floor-area-ratio-calculator/
+- **착공·불복 기한** [기한·절차] (일반인도 씀): 허가 2년·신고 1년 착공 기한, 시정명령·이행강제금 행정심판 90일을 챙겨요.
+  - 도구: 건축·인허가 법령 길잡이 https://tools.oiyo.net/ko/building-permit-law-guide/
+  - MCP: `start_kr_law_intake`
+  - 스킬: oiyo-kr-law-guide
+- **설계도서 작성** [서류·증빙] (자격사 업무와 맞닿음: 정보만, 준비 중): 허가·신고 대상 건축물의 설계는 건축사 업무예요(건축법 제23조).
+- **세움터 인허가 전자 신청** [전자 업무·데이터] (일반인도 씀): 건축물대장 열람과 인허가 신청을 세움터에서 해요.
+  - 도구: 영업신고 서류 점검표 https://tools.oiyo.net/ko/permit-document-checklist/ · 전자 창구 실무 길잡이 https://tools.oiyo.net/ko/eportal-practice-guide/
+- **위반건축물 상담** [상담·설계] (일반인도 씀): 무단 증축·용도변경을 원상복구나 추인으로 바로잡는 길을 정리해요.
+  - 도구: 건축·인허가 법령 길잡이 https://tools.oiyo.net/ko/building-permit-law-guide/ · 과태료 감경·가산금 계산기 https://tools.oiyo.net/ko/fine-reduction-calculator/
+  - MCP: `start_kr_law_intake`
+  - 스킬: oiyo-kr-law-guide
+- **설계 독점과 감리 독립** [업무 범위·윤리]: 허가 대상 설계는 건축사만 하고, 감리는 시공자와 독립해 해요.
+  - 도구: 건축·인허가 법령 길잡이 https://tools.oiyo.net/ko/building-permit-law-guide/
+  - MCP: `get_kr_professional_scope`
+  - 스킬: oiyo-kr-law-guide
+
+## 의료인·약사 (의료법 제2조·제27조, 약사법 제44조)
+
+진료·진단서 발급, 진료기록 관리·열람 제공, 조제·의약품 판매와 복약 설명
+
+- **의료법·약사법 기본** [법령 해석] (일반인도 씀): 진단서·기록 열람·무면허 금지·의약품 판매 제한을 읽어요.
+  - 도구: 보건·의료 이용 길잡이 https://tools.oiyo.net/ko/medical-care-law-guide/
+  - MCP: `search_kr_statutes`
+  - 스킬: oiyo-kr-law-guide
+- **진료·조제** [상담·설계] (자격사 업무와 맞닿음: 정보만, 준비 중): 진단·치료·조제는 의료인·약사의 면허 업무예요.
+- **진료기록 관리와 사본 발급** [서류·증빙] (일반인도 씀): 보존기간(진료기록부 10년·처방전 2년)과 본인·가족·대리인 발급 요건을 챙겨요.
+  - 도구: 보건·의료 이용 길잡이 https://tools.oiyo.net/ko/medical-care-law-guide/
+  - MCP: `start_kr_law_intake`
+  - 스킬: oiyo-kr-law-guide
+- **의료분쟁 조정 기한** [기한·절차] (일반인도 씀): 안 날부터 3년·진료 끝난 날부터 10년 안에 조정을 신청해요.
+  - 도구: 보건·의료 이용 길잡이 https://tools.oiyo.net/ko/medical-care-law-guide/
+  - MCP: `start_kr_law_intake`
+  - 스킬: oiyo-kr-law-guide
+- **진료비·보험료·의료비 공제** [계산·평가] (일반인도 씀): 비급여 확인 요청, 건강보험료, 의료비 세액공제를 계산해요.
+  - 도구: 건강보험료 계산기 https://tools.oiyo.net/ko/health-insurance-calculator/ · 의료비 세액공제 https://tools.oiyo.net/ko/medical-expense-tax-credit-calculator/
+  - MCP: `calculate_health_insurance`, `calculate_kr_long_term_care_copay`
+- **실손·장해 보험금 연결** [상담·설계] (일반인도 씀): 진단서·기록으로 보험금 청구와 장해 지급률을 확인해요.
+  - 도구: 장해·과실 보험금 계산기 https://tools.oiyo.net/ko/disability-fault-claim-calculator/ · 보험 법령 길잡이 https://tools.oiyo.net/ko/insurance-law-guide/
+  - MCP: `calculate_insurance_claim_payout`
+- **무면허·환자 유인 금지** [업무 범위·윤리]: 의료인이 아니면 의료행위를 할 수 없고, 돈을 주고 환자를 소개·유인할 수 없어요(의료법 제27조).
+  - 도구: 보건·의료 이용 길잡이 https://tools.oiyo.net/ko/medical-care-law-guide/
+  - MCP: `get_kr_professional_scope`
+  - 스킬: oiyo-kr-law-guide
+
+## 변호사(가사) (변호사법 제3조·제109조)
+
+이혼·양육비·재산분할 소송과 조정 대리, 가사 법률상담(서류 작성은 법무사도)
+
+- **민법 친족편·가사소송법** [법령 해석] (일반인도 씀): 협의·재판상 이혼, 양육, 재산분할, 이행명령·감치를 읽어요.
+  - 도구: 가사·이혼 법령 길잡이 https://tools.oiyo.net/ko/divorce-family-law-guide/
+  - MCP: `search_kr_statutes`
+  - 스킬: oiyo-kr-law-guide
+- **이혼 절차 기한** [기한·절차] (일반인도 씀): 숙려 3개월·1개월, 이혼신고 3개월, 재산분할 2년, 이혼청구 6개월·2년을 챙겨요.
+  - 도구: 가사·이혼 법령 길잡이 https://tools.oiyo.net/ko/divorce-family-law-guide/
+  - MCP: `start_kr_law_intake`
+  - 스킬: oiyo-kr-law-guide
+- **양육비 이행 확보** [상담·설계] (일반인도 씀): 이행명령 → 감치 → 양육비이행관리원 지원 순서를 안내해요.
+  - 도구: 가사·이혼 법령 길잡이 https://tools.oiyo.net/ko/divorce-family-law-guide/
+  - MCP: `start_kr_law_intake`
+  - 스킬: oiyo-kr-law-guide
+- **재산분할 세금** [계산·평가] (일반인도 씀): 분할로 넘기는 집의 취득세·양도세, 증여로 보는 경우를 가늠해요.
+  - 도구: 취득세 계산기 https://tools.oiyo.net/ko/acquisition-tax-calculator/ · 양도소득세 계산기 https://tools.oiyo.net/ko/capital-gains-tax-calculator/ · 증여세 계산기 https://tools.oiyo.net/ko/gift-tax-calculator/
+  - MCP: `calculate_kr_acquisition_tax`, `calculate_capital_gains_tax`, `calculate_inheritance_gift_tax`
+- **소장·조정 신청서와 대리** [서류·증빙] (자격사 업무와 맞닿음: 정보만): 가사 소송 대리는 변호사, 가정법원 제출 서류 작성은 법무사도 해요.
+  - 도구: 등기·법원 서류 길잡이 https://tools.oiyo.net/ko/registry-court-law-guide/
+- **전자소송·가족관계 증명** [전자 업무·데이터] (일반인도 씀): 전자소송과 가족관계증명서 발급을 온라인으로 해요.
+  - 도구: 전자 창구 실무 길잡이 https://tools.oiyo.net/ko/eportal-practice-guide/
+  - MCP: `get_kr_practice_guide`
+- **비변호사 법률사무 금지** [업무 범위·윤리]: 대가를 받고 이혼 상담·서류 작성·대리를 하면 변호사법 위반이에요(제109조).
+  - 도구: 가사·이혼 법령 길잡이 https://tools.oiyo.net/ko/divorce-family-law-guide/
+  - MCP: `get_kr_professional_scope`
+  - 스킬: oiyo-kr-law-guide
+
+## 사회복지사 (사회복지사업법 제11조)
+
+복지 상담과 사례관리, 급여 신청 연계(신청 서류 대행은 행정사)
+
+- **기초생활보장법·긴급복지지원법** [법령 해석] (일반인도 씀): 신청권자, 결정 30일, 이의신청 90일, 긴급지원 선지원을 읽어요.
+  - 도구: 복지급여 길잡이 https://tools.oiyo.net/ko/welfare-benefit-law-guide/
+  - MCP: `search_kr_statutes`
+  - 스킬: oiyo-kr-law-guide
+- **받을 수 있는 지원 찾기** [상담·설계] (일반인도 씀): 나이·소득·가구로 받을 수 있는 급여와 지원금을 찾아요.
+  - 도구: 복지 혜택 찾기 https://tools.oiyo.net/ko/benefit-finder/ · 생활 지원금·노동권 도구 https://tools.oiyo.net/ko/benefit-rights-toolkit/ · 청년 월세 지원 확인 https://tools.oiyo.net/ko/youth-monthly-rent-support-checker/
+  - 스킬: oiyo-kr-benefits-navigator
+- **근로·자녀장려금과 실업급여** [계산·평가] (일반인도 씀): 장려금과 실업급여를 계산해 생계 계획에 넣어요.
+  - 도구: 근로·자녀장려금 계산기 https://tools.oiyo.net/ko/work-child-incentive-calculator/ · 실업급여 계산기 https://tools.oiyo.net/ko/unemployment-benefits-calculator/
+  - MCP: `calculate_unemployment_benefits`
+  - 스킬: oiyo-kr-benefits-navigator
+- **결정·이의신청 기한** [기한·절차] (일반인도 씀): 신청일부터 30일, 통지일부터 90일을 챙겨요.
+  - 도구: 복지급여 길잡이 https://tools.oiyo.net/ko/welfare-benefit-law-guide/
+  - MCP: `start_kr_law_intake`
+  - 스킬: oiyo-kr-law-guide
+- **사례관리 기록** [서류·증빙] (준비 중): 상담·욕구 조사·서비스 연계를 기록해요.
+- **복지로·사회보장정보시스템** [전자 업무·데이터] (일반인도 씀): 온라인 신청과 모의계산을 안내해요.
+  - 도구: 복지급여 길잡이 https://tools.oiyo.net/ko/welfare-benefit-law-guide/
+- **신청 대행의 경계** [업무 범위·윤리]: 복지 상담은 누구나 돕지만, 대가를 받고 신청 서류를 대행하는 일은 행정사 업무예요(행정사법 제3조).
+  - 도구: 복지급여 길잡이 https://tools.oiyo.net/ko/welfare-benefit-law-guide/
+  - MCP: `get_kr_professional_scope`
+  - 스킬: oiyo-kr-law-guide
+
 ## 경영지도사 (중소기업진흥에 관한 법률(지도사))
 
 중소기업 경영 진단·지도: 전략·마케팅·재무·인사·생산 관리 자문(독점 업무는 아님)
@@ -444,10 +554,10 @@ GENERATED from tools-oiyo src/data/pro-competencies.ts. 기준일 2026-11-17. �
   - 도구: 사업자 필수 체크리스트 https://tools.oiyo.net/ko/business-must-do-checklist/ · 경영 도구 모음 https://tools.oiyo.net/ko/business-toolkit/
   - 스킬: oiyo-business-strategist
 - **경영 문제의 법령 연결** [법령 해석] (일반인도 씀): 운영 문제가 세금·노무·행정·보험 중 어디에 걸리는지 찾아 해당 길잡이로 넘겨요.
-  - 도구: 법령 길잡이 10분야 https://tools.oiyo.net/ko/law-guide/
+  - 도구: 법령 길잡이 14분야 https://tools.oiyo.net/ko/law-guide/
   - MCP: `start_kr_law_intake`
   - 스킬: oiyo-kr-law-guide, oiyo-business-strategist
 - **자문 범위** [업무 범위·윤리]: 경영 지도는 독점 업무가 아니지만, 세무대리·노무 대리·법률 사무는 해당 자격사에게 넘겨요.
-  - 도구: 법령 길잡이 10분야 https://tools.oiyo.net/ko/law-guide/
+  - 도구: 법령 길잡이 14분야 https://tools.oiyo.net/ko/law-guide/
   - MCP: `get_kr_professional_scope`
   - 스킬: oiyo-kr-law-guide

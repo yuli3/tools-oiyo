@@ -13,7 +13,7 @@ test("자료: 주제가 가리키는 조문이 모두 있고, 다섯 분야 모�
 });
 
 test("자격 명칭을 이름으로 쓰지 않아요(유사명칭 금지)", () => {
-  for (const p of Object.values(PROFESSIONS)) assert.doesNotMatch(p.name, /세무사|회계사|노무사|행정사|법무사|계리사|손해사정사|설계사|관세사|변리사|감정평가사|중개사/);
+  for (const p of Object.values(PROFESSIONS)) assert.doesNotMatch(p.name, /세무사|회계사|노무사|행정사|법무사|계리사|손해사정사|설계사|관세사|변리사|감정평가사|중개사|건축사|의사|약사|사회복지사|변호사/);
 });
 
 test("기한: 초일 불산입, 월 단위는 같은 날, 말일 기준은 그 달 말일", () => {
@@ -158,8 +158,8 @@ test("보험 주제: 질문·기한·확인할 점", () => {
   assert.equal(statuteUrl({ law: "금융소비자 보호에 관한 법률", article: "제46조" }), "https://www.law.go.kr/법령/금융소비자보호에관한법률/제46조");
 });
 
-test("분야 팩: 관세·특허·감정평가·중개가 10분야로 붙고 기한이 맞아요", () => {
-  assert.equal(Object.keys(PROFESSIONS).length, 10);
+test("분야 팩: 관세·특허·감정평가·중개가 붙고 기한이 맞아요", () => {
+  assert.equal(Object.keys(PROFESSIONS).length, 14);
   for (const d of ["customs", "ip", "appraisal", "realty"] as const) {
     assert.ok(TOPICS.filter((t) => t.domain === d).length >= 2, d);
     assert.ok(STATUTES.some((x) => x.domain === d), d);
@@ -185,4 +185,40 @@ test("분야 팩: 관세·특허·감정평가·중개가 10분야로 붙고 기
   assert.equal(suggestTopics("해외직구 200달러 관세")[0].id, "customs-direct");
   assert.equal(suggestTopics("수용 보상금 이의신청")[0].id, "appr-expropriation");
   assert.equal(findStatutes("공지예외")[0].id, "pa-30");
+});
+
+test("분야 팩 11-20: 건축·보건·가사·복지급여 14분야, 기한과 경고", () => {
+  for (const d of ["building", "health", "family", "welfare"] as const) {
+    assert.ok(TOPICS.filter((t) => t.domain === d).length >= 2, d);
+    assert.ok(STATUTES.filter((x) => x.domain === d).length >= 5, d);
+    assert.ok(SCOPE_MATRIX.some((m) => m.who[d] === "yes"), d);
+    assert.ok(PROFESSIONS[d].exclusive.length >= 1 && PROFESSIONS[d].freeHelp.length >= 2, d);
+  }
+  const ids = new Set(STATUTES.map((x) => x.id));
+  for (const t of TOPICS) for (const id of t.statutes) assert.ok(ids.has(id), `${t.id}:${id}`);
+  // 이행강제금 행정심판 90일
+  const bld = intake("bld-violation", { stage: "fine", noticeDate: "2026-11-02", cause: "extension" }, "2026-11-20");
+  assert.equal(bld.deadlines[0].due, "2027-02-01");
+  assert.ok(bld.flags.some((f) => f.cite === "건축법 제80조"));
+  // 85㎡ 이내 증축은 신고(착공 1년), 넘으면 허가(2년)
+  assert.deepEqual(intake("bld-permit", { work: "extend", area: 30, approvedDate: "2026-03-03" }).deadlines.map((x) => x.id), ["start-report"]);
+  assert.deepEqual(intake("bld-permit", { work: "extend", area: 120, approvedDate: "2026-03-03" }).deadlines.map((x) => x.id), ["start-permit"]);
+  // 협의이혼: 자녀 있으면 숙려 3개월, 확인 후 신고 3개월, 재산분할 2년
+  const div = intake("fam-divorce", { kids: "yes", applyDate: "2026-11-02", confirmDate: "2027-02-03", divorceDate: "2027-02-10" }, "2026-11-20").deadlines;
+  assert.deepEqual(div.map((x) => x.id), ["cooling", "report", "split"]);
+  assert.equal(div.find((x) => x.id === "split")?.due, "2029-02-12"); // 2029-02-10 토요일
+  assert.equal(intake("fam-divorce", { kids: "no", applyDate: "2026-11-02" }).deadlines[0].id, "cooling-1");
+  const sup = intake("fam-support", { decided: "yes", missed: 4, monthly: 500_000, order: "yes" }).flags;
+  assert.ok(sup.some((f) => f.text.includes("2,000,000원")));
+  assert.ok(sup.some((f) => f.cite === "가사소송법 제68조"));
+  // 의료분쟁 3년·10년, 기록 보존
+  assert.deepEqual(intake("health-dispute", { issue: "injury", knewDate: "2026-05-01", treatEnd: "2026-04-01" }).deadlines.map((x) => x.id), ["mediate", "mediate-long"]);
+  assert.equal(intake("health-records", { who: "self", what: "rx", visitDate: "2026-01-05" }).deadlines[0].id, "keep-rx");
+  // 기초생활 이의신청 90일, 긴급복지 129
+  assert.equal(intake("welfare-basic", { stage: "denied", noticeDate: "2026-11-02" }, "2026-11-20").deadlines[0].due, "2027-02-01");
+  assert.equal(intake("welfare-emergency", { cause: "job", urgentNow: "yes" }).flags[0].tone, "warn");
+  assert.equal(suggestTopics("이행강제금 위반건축물")[0].id, "bld-violation");
+  assert.equal(suggestTopics("양육비 안 줘요 감치")[0].id, "fam-support");
+  assert.equal(suggestTopics("기초생활수급 탈락 이의신청")[0].id, "welfare-basic");
+  assert.equal(findStatutes("진료기록 사본")[0].id, "med-21");
 });

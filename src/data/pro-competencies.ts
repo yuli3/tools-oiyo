@@ -7,10 +7,10 @@
 import type { DomainId } from "../lib/kr-expert-guide-2026";
 
 export type CategoryId = "law" | "calc" | "deadline" | "docs" | "consult" | "ethics" | "digital";
-export type JobId = "tax" | "cpa" | "labor" | "admin" | "court" | "actuary" | "adjuster" | "agent" | "customs" | "patent" | "appraiser" | "broker" | "mgmt";
+export type JobId = "tax" | "cpa" | "labor" | "admin" | "court" | "actuary" | "adjuster" | "agent" | "customs" | "patent" | "appraiser" | "broker" | "architect" | "medic" | "family" | "social" | "mgmt";
 export type Audience = "pro" | "public";
 
-export const COMPETENCY_AS_OF = "2026-11-17";
+export const COMPETENCY_AS_OF = "2026-11-20";
 
 export const CATEGORIES: { id: CategoryId; name: string; desc: string }[] = [
   { id: "law", name: "법령 해석", desc: "근거 조문을 찾고, 개정과 시행일을 따라가며, 사실관계에 맞게 읽는 힘" },
@@ -36,6 +36,10 @@ export const JOBS: { id: JobId; name: string; domain?: DomainId; act: string; su
   { id: "patent", name: "변리사", domain: "ip", act: "변리사법 제2조·제21조", summary: "특허·상표·디자인 출원과 심판 대리, 침해 감정, 심결취소소송 대리" },
   { id: "appraiser", name: "감정평가사", domain: "appraisal", act: "감정평가법 제10조", summary: "공시지가 평가, 보상·소송·경매·담보 감정평가, 감정 상담" },
   { id: "broker", name: "공인중개사", domain: "realty", act: "공인중개사법 제9조·제25조", summary: "등록 사무소에서 매매·임대차 중개, 확인·설명, 거래계약서 작성" },
+  { id: "architect", name: "건축사", domain: "building", act: "건축사법 제19조, 건축법 제23조", summary: "건축물 설계·공사감리, 건축허가·사용승인 등 행정 절차 대행, 건축물 조사·감정" },
+  { id: "medic", name: "의료인·약사", domain: "health", act: "의료법 제2조·제27조, 약사법 제44조", summary: "진료·진단서 발급, 진료기록 관리·열람 제공, 조제·의약품 판매와 복약 설명" },
+  { id: "family", name: "변호사(가사)", domain: "family", act: "변호사법 제3조·제109조", summary: "이혼·양육비·재산분할 소송과 조정 대리, 가사 법률상담(서류 작성은 법무사도)" },
+  { id: "social", name: "사회복지사", domain: "welfare", act: "사회복지사업법 제11조", summary: "복지 상담과 사례관리, 급여 신청 연계(신청 서류 대행은 행정사)" },
   { id: "mgmt", name: "경영지도사", act: "중소기업진흥에 관한 법률(지도사)", summary: "중소기업 경영 진단·지도: 전략·마케팅·재무·인사·생산 관리 자문(독점 업무는 아님)" },
 ];
 
@@ -188,6 +192,42 @@ export const COMPETENCIES: Competency[] = [
   c("br-docs", "broker", "docs", "확인·설명서와 계약서", "등기부·건축물대장을 확인해 확인·설명서를 쓰는 역량이에요. 중개는 등록한 개업공인중개사 업무예요.", { exclusive: true, tools: ["pro-document-reading-guide"], skills: ["oiyo-kr-law-guide"], mcp: ["get_kr_practice_guide"], audience: ["pro", "public"] }),
   c("br-scope", "broker", "ethics", "등록과 금지행위", "개설등록한 사람만 중개하고(공인중개사법 제9조), 초과 보수·직접거래·쌍방대리가 금지돼요(제33조).", { tools: ["realty-brokerage-law-guide"], skills: [LAW], mcp: ["get_kr_professional_scope"] }),
 
+  // 건축사 (11-20)
+  c("ar-law", "architect", "law", "건축법·용도변경 기준", "허가·신고·용도변경(시설군)·사용승인 기준을 읽어요.", { tools: ["building-permit-law-guide"], skills: [LAW], mcp: ["search_kr_statutes"], audience: ["pro", "public"] }),
+  c("ar-calc", "architect", "calc", "건폐율·용적률 계산", "대지면적과 바닥면적으로 증축 여유를 계산해요.", { tools: ["building-coverage-floor-area-ratio-calculator"], audience: ["pro", "public"] }),
+  c("ar-deadline", "architect", "deadline", "착공·불복 기한", "허가 2년·신고 1년 착공 기한, 시정명령·이행강제금 행정심판 90일을 챙겨요.", { tools: ["building-permit-law-guide"], skills: [LAW], mcp: ["start_kr_law_intake"], audience: ["pro", "public"] }),
+  c("ar-design", "architect", "docs", "설계도서 작성", "허가·신고 대상 건축물의 설계는 건축사 업무예요(건축법 제23조).", { exclusive: true }),
+  c("ar-permit", "architect", "digital", "세움터 인허가 전자 신청", "건축물대장 열람과 인허가 신청을 세움터에서 해요.", { tools: ["permit-document-checklist", "eportal-practice-guide"], audience: ["pro", "public"] }),
+  c("ar-violation", "architect", "consult", "위반건축물 상담", "무단 증축·용도변경을 원상복구나 추인으로 바로잡는 길을 정리해요.", { tools: ["building-permit-law-guide", "fine-reduction-calculator"], skills: [LAW], mcp: ["start_kr_law_intake"], audience: ["pro", "public"] }),
+  c("ar-scope", "architect", "ethics", "설계 독점과 감리 독립", "허가 대상 설계는 건축사만 하고, 감리는 시공자와 독립해 해요.", { tools: ["building-permit-law-guide"], skills: [LAW], mcp: ["get_kr_professional_scope"] }),
+
+  // 의료인·약사 (11-20, 진료 자체는 다루지 않음)
+  c("md-law", "medic", "law", "의료법·약사법 기본", "진단서·기록 열람·무면허 금지·의약품 판매 제한을 읽어요.", { tools: ["medical-care-law-guide"], skills: [LAW], mcp: ["search_kr_statutes"], audience: ["pro", "public"] }),
+  c("md-care", "medic", "consult", "진료·조제", "진단·치료·조제는 의료인·약사의 면허 업무예요.", { exclusive: true }),
+  c("md-records", "medic", "docs", "진료기록 관리와 사본 발급", "보존기간(진료기록부 10년·처방전 2년)과 본인·가족·대리인 발급 요건을 챙겨요.", { tools: ["medical-care-law-guide"], skills: [LAW], mcp: ["start_kr_law_intake"], audience: ["pro", "public"] }),
+  c("md-dispute", "medic", "deadline", "의료분쟁 조정 기한", "안 날부터 3년·진료 끝난 날부터 10년 안에 조정을 신청해요.", { tools: ["medical-care-law-guide"], skills: [LAW], mcp: ["start_kr_law_intake"], audience: ["pro", "public"] }),
+  c("md-bill", "medic", "calc", "진료비·보험료·의료비 공제", "비급여 확인 요청, 건강보험료, 의료비 세액공제를 계산해요.", { tools: ["health-insurance-calculator", "medical-expense-tax-credit-calculator"], mcp: ["calculate_health_insurance", "calculate_kr_long_term_care_copay"], audience: ["pro", "public"] }),
+  c("md-claim", "medic", "consult", "실손·장해 보험금 연결", "진단서·기록으로 보험금 청구와 장해 지급률을 확인해요.", { tools: ["disability-fault-claim-calculator", "insurance-law-guide"], mcp: ["calculate_insurance_claim_payout"], audience: ["pro", "public"] }),
+  c("md-scope", "medic", "ethics", "무면허·환자 유인 금지", "의료인이 아니면 의료행위를 할 수 없고, 돈을 주고 환자를 소개·유인할 수 없어요(의료법 제27조).", { tools: ["medical-care-law-guide"], skills: [LAW], mcp: ["get_kr_professional_scope"] }),
+
+  // 변호사(가사) (11-20)
+  c("fm-law", "family", "law", "민법 친족편·가사소송법", "협의·재판상 이혼, 양육, 재산분할, 이행명령·감치를 읽어요.", { tools: ["divorce-family-law-guide"], skills: [LAW], mcp: ["search_kr_statutes"], audience: ["pro", "public"] }),
+  c("fm-deadline", "family", "deadline", "이혼 절차 기한", "숙려 3개월·1개월, 이혼신고 3개월, 재산분할 2년, 이혼청구 6개월·2년을 챙겨요.", { tools: ["divorce-family-law-guide"], skills: [LAW], mcp: ["start_kr_law_intake"], audience: ["pro", "public"] }),
+  c("fm-support", "family", "consult", "양육비 이행 확보", "이행명령 → 감치 → 양육비이행관리원 지원 순서를 안내해요.", { tools: ["divorce-family-law-guide"], skills: [LAW], mcp: ["start_kr_law_intake"], audience: ["pro", "public"] }),
+  c("fm-property", "family", "calc", "재산분할 세금", "분할로 넘기는 집의 취득세·양도세, 증여로 보는 경우를 가늠해요.", { tools: ["acquisition-tax-calculator", "capital-gains-tax-calculator", "gift-tax-calculator"], mcp: ["calculate_kr_acquisition_tax", "calculate_capital_gains_tax", "calculate_inheritance_gift_tax"], audience: ["pro", "public"] }),
+  c("fm-litigate", "family", "docs", "소장·조정 신청서와 대리", "가사 소송 대리는 변호사, 가정법원 제출 서류 작성은 법무사도 해요.", { exclusive: true, tools: ["registry-court-law-guide"] }),
+  c("fm-ecourt", "family", "digital", "전자소송·가족관계 증명", "전자소송과 가족관계증명서 발급을 온라인으로 해요.", { tools: ["eportal-practice-guide"], mcp: ["get_kr_practice_guide"], audience: ["pro", "public"] }),
+  c("fm-scope", "family", "ethics", "비변호사 법률사무 금지", "대가를 받고 이혼 상담·서류 작성·대리를 하면 변호사법 위반이에요(제109조).", { tools: ["divorce-family-law-guide"], skills: [LAW], mcp: ["get_kr_professional_scope"] }),
+
+  // 사회복지사 (11-20)
+  c("sw-law", "social", "law", "기초생활보장법·긴급복지지원법", "신청권자, 결정 30일, 이의신청 90일, 긴급지원 선지원을 읽어요.", { tools: ["welfare-benefit-law-guide"], skills: [LAW], mcp: ["search_kr_statutes"], audience: ["pro", "public"] }),
+  c("sw-find", "social", "consult", "받을 수 있는 지원 찾기", "나이·소득·가구로 받을 수 있는 급여와 지원금을 찾아요.", { tools: ["benefit-finder", "benefit-rights-toolkit", "youth-monthly-rent-support-checker"], skills: [BEN], audience: ["pro", "public"] }),
+  c("sw-calc", "social", "calc", "근로·자녀장려금과 실업급여", "장려금과 실업급여를 계산해 생계 계획에 넣어요.", { tools: ["work-child-incentive-calculator", "unemployment-benefits-calculator"], skills: [BEN], mcp: ["calculate_unemployment_benefits"], audience: ["pro", "public"] }),
+  c("sw-deadline", "social", "deadline", "결정·이의신청 기한", "신청일부터 30일, 통지일부터 90일을 챙겨요.", { tools: ["welfare-benefit-law-guide"], skills: [LAW], mcp: ["start_kr_law_intake"], audience: ["pro", "public"] }),
+  c("sw-case", "social", "docs", "사례관리 기록", "상담·욕구 조사·서비스 연계를 기록해요.", {}),
+  c("sw-portal", "social", "digital", "복지로·사회보장정보시스템", "온라인 신청과 모의계산을 안내해요.", { tools: ["welfare-benefit-law-guide"], audience: ["pro", "public"] }),
+  c("sw-scope", "social", "ethics", "신청 대행의 경계", "복지 상담은 누구나 돕지만, 대가를 받고 신청 서류를 대행하는 일은 행정사 업무예요(행정사법 제3조).", { tools: ["welfare-benefit-law-guide"], skills: [LAW], mcp: ["get_kr_professional_scope"] }),
+
   // 경영지도사 (법령 길잡이 밖: 경영 도구·경영 전략 참모 스킬과 연결)
   c("mg-strategy", "mgmt", "consult", "전략 진단", "SWOT·BCG·포지셔닝으로 현재 위치와 선택지를 정리해요.", { tools: ["swot-analysis", "bcg-matrix", "positioning-map"], skills: [BIZ], mcp: ["analyze_swot"], audience: ["pro", "public"] }),
   c("mg-decision", "mgmt", "calc", "의사결정 분석", "가중 의사결정표·의사결정 트리로 대안을 숫자로 비교해요.", { tools: ["priority-decision-matrix", "decision-tree-calculator"], skills: [BIZ], audience: ["pro", "public"] }),
@@ -234,7 +274,7 @@ export const TOOL_NAMES: Record<string, string> = {
   "general-vs-simplified-vat-calculator": "간이 vs 일반과세",
   "incorporation-conversion-calculator": "법인전환 계산기",
   "tax-savings-roadmap": "절세 로드맵",
-  "law-guide": "법령 길잡이 10분야",
+  "law-guide": "법령 길잡이 14분야",
   "financial-ratio-trend": "재무비율 추세",
   "cost-accounting-simulator": "원가계산 시뮬레이터",
   "dcf-valuation-calculator": "DCF 기업가치",
@@ -299,6 +339,14 @@ export const TOOL_NAMES: Record<string, string> = {
   "ip-law-guide": "특허·상표 법령 길잡이",
   "appraisal-law-guide": "감정평가·보상 법령 길잡이",
   "realty-brokerage-law-guide": "부동산 거래·중개 법령 길잡이",
+  "building-permit-law-guide": "건축·인허가 법령 길잡이",
+  "medical-care-law-guide": "보건·의료 이용 길잡이",
+  "divorce-family-law-guide": "가사·이혼 법령 길잡이",
+  "welfare-benefit-law-guide": "복지급여 길잡이",
+  "benefit-finder": "복지 혜택 찾기",
+  "benefit-rights-toolkit": "생활 지원금·노동권 도구",
+  "youth-monthly-rent-support-checker": "청년 월세 지원 확인",
+  "work-child-incentive-calculator": "근로·자녀장려금 계산기",
   "currency-converter": "환율 계산기",
   "foreign-exchange-fee-calculator": "환전 수수료 계산기",
   "rental-yield-calculator": "임대수익률 계산기",
@@ -326,7 +374,7 @@ export const TOOL_NAMES: Record<string, string> = {
 
 /** 링크할 수 있는 스킬. 소스는 tools-oiyo skills/, 공개 배포는 github.com/yuli3/oiyo-skills. */
 export const SKILLS: Record<string, { name: string; zip: string }> = {
-  "oiyo-kr-law-guide": { name: "법령 길잡이 10분야", zip: "/downloads/oiyo-kr-law-guide-skill.zip" },
+  "oiyo-kr-law-guide": { name: "법령 길잡이 14분야", zip: "/downloads/oiyo-kr-law-guide-skill.zip" },
   "kr-tax-advisor": { name: "세무·회계 실무 보조", zip: "/downloads/oiyo-kr-tax-advisor-skill.zip" },
   "oiyo-kr-benefits-navigator": { name: "생활 지원금·노동권 길잡이", zip: "/downloads/oiyo-kr-benefits-navigator-skill.zip" },
   "oiyo-business-strategist": { name: "경영 전략 참모", zip: "/downloads/oiyo-business-strategist-skill.zip" },

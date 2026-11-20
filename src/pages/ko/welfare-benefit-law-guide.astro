@@ -1,0 +1,27 @@
+---
+// 법령 길잡이 (welfare) 2026-11-20. 엔진: lib/kr-expert-guide-2026.ts + 분야 팩 lib/kr-law-packs-2026.ts. 세운 "기존 전문 자격증의 업무범위에 필요한 모든 도구와 스킬"(11-17), "스킬 위주"(11-20).
+// 자격 명칭을 이름에 쓰지 않아요. 대리·대행·진단을 하지 않아요.
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import LawGuide from "../../components/tools/lawguide/LawGuide";
+import { LAW_GUIDE_AS_OF } from "../../lib/kr-expert-guide-2026";
+
+const title = "복지급여 길잡이 2026 — 기초생활수급 신청·결정 30일, 이의신청 90일, 긴급복지 129";
+const description = "기초생활수급(생계·의료·주거급여) 신청과 결정 30일(최대 60일), 탈락·중지 이의신청 90일, 실직·질병·화재로 갑자기 생계가 어려울 때 긴급복지 요청(129) 순서와 가져갈 서류를 질문으로 정리하고 국민기초생활 보장법·긴급복지지원법 조문을 알려 줘요.";
+const ko = {
+  introTitle: "탈락 통지, 90일 안에 이의신청",
+  intro: "신청일이나 통지일을 넣으면 결정 예정일과 이의신청 마감일을 계산하고, 급하면 긴급복지로 이어 줘요. 수급 자격은 지자체 조사로 정해져요.",
+  howToTitle: "사용 방법",
+  steps: ["상황을 고르세요.", "먼저 묻는 질문에 답하세요. 모르면 건너뛰어도 돼요.", "기한 막대와 확인할 점을 보고, 결과 메모를 복사해 담당 기관이나 전문가에게 가져가세요."],
+  highlightsTitle: "주요 특징",
+  highlights: [{ title: "결정 기한", body: "신청일부터 30일(최대 60일)" }, { title: "이의신청", body: "통지 받은 날부터 90일" }, { title: "긴급복지", body: "129 요청, 먼저 지원하고 나중 조사" }],
+  disclaimer: "법령 정보와 기한 계산 도구예요. 신청을 대신 하지 않고 수급 자격을 확정하지 않아요. 조문 풀이는 쉬운 말 요약이니 원문(국가법령정보센터)을 확인하세요. 기준일 2026-11-20.",
+};
+const faqs = [
+  { q: "가족이 대신 신청할 수 있나요?", a: "네. 친족·관계인도 신청할 수 있고, 행정복지센터 공무원이 직권으로 신청할 수도 있어요(국민기초생활 보장법 제21조)." },
+  { q: "탈락했는데 당장 생활비가 없어요.", a: "이의신청과 별도로 129에 긴급지원을 요청하세요. 생계비를 먼저 지원하고 나중에 조사해요(긴급복지지원법 제7조·제9조)." },
+];
+---
+<KrFinancePage slug="welfare-benefit-law-guide" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <LawGuide client:load domain="welfare" />
+  <p class="mt-4 text-xs text-muted-foreground">기준일 {LAW_GUIDE_AS_OF}. <a class="underline" href="/ko/law-guide/">법령 길잡이 14분야</a> · <a class="underline" href="/ko/benefit-finder/">복지 혜택 찾기</a></p>
+</KrFinancePage>

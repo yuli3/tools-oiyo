@@ -1,0 +1,27 @@
+---
+// 법령 길잡이 (building) 2026-11-20. 엔진: lib/kr-expert-guide-2026.ts + 분야 팩 lib/kr-law-packs-2026.ts. 세운 "기존 전문 자격증의 업무범위에 필요한 모든 도구와 스킬"(11-17), "스킬 위주"(11-20).
+// 자격 명칭을 이름에 쓰지 않아요. 대리·대행·진단을 하지 않아요.
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import LawGuide from "../../components/tools/lawguide/LawGuide";
+import { LAW_GUIDE_AS_OF } from "../../lib/kr-expert-guide-2026";
+
+const title = "건축·인허가 법령 길잡이 2026 — 위반건축물 이행강제금, 증축 신고·허가, 용도변경";
+const description = "위반건축물 시정명령·이행강제금(1년 2회 이내 반복)을 다투는 행정심판 90일, 바닥면적 85㎡ 이내 증축 신고와 허가, 용도변경 허가·신고·건축물대장 변경, 착공 기한(허가 2년·신고 1년)을 질문으로 정리하고 건축법 조문을 알려 줘요.";
+const ko = {
+  introTitle: "위반건축물 통지, 90일 안에",
+  intro: "통지를 받은 날을 넣으면 행정심판 마감일을, 증축 면적을 넣으면 신고인지 허가인지와 착공 기한을 정리해 줘요. 설계하거나 허가를 대신 받지는 않아요.",
+  howToTitle: "사용 방법",
+  steps: ["상황을 고르세요.", "먼저 묻는 질문에 답하세요. 모르면 건너뛰어도 돼요.", "기한 막대와 확인할 점을 보고, 결과 메모를 복사해 담당 기관이나 전문가에게 가져가세요."],
+  highlightsTitle: "주요 특징",
+  highlights: [{ title: "이행강제금", body: "1년 2회 반복, 고치면 새로 안 매김" }, { title: "허가·신고 구분", body: "85㎡ 이내 증축, 용도변경 시설군" }, { title: "무료 창구", body: "세움터, 구청 건축과, 온라인 행정심판" }],
+  disclaimer: "법령 정보와 기한 계산 도구예요. 대리·대행·설계를 하지 않고 특정 전문가를 소개하지 않아요. 조문 풀이는 쉬운 말 요약이니 원문(국가법령정보센터)을 확인하세요. 기준일 2026-11-20.",
+};
+const faqs = [
+  { q: "이행강제금을 내면 위반이 해결되나요?", a: "아니에요. 시정명령을 이행(원상복구나 허가·신고로 바로잡기)할 때까지 1년에 2번 이내로 계속 매길 수 있어요(건축법 제80조)." },
+  { q: "베란다 확장도 신고해야 하나요?", a: "바닥면적이 늘거나 구조가 바뀌면 신고·허가 대상일 수 있어요. 건축물대장과 도면을 들고 구청 건축과에 먼저 물어보세요(건축법 제14조)." },
+];
+---
+<KrFinancePage slug="building-permit-law-guide" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <LawGuide client:load domain="building" />
+  <p class="mt-4 text-xs text-muted-foreground">기준일 {LAW_GUIDE_AS_OF}. <a class="underline" href="/ko/law-guide/">법령 길잡이 14분야</a> · <a class="underline" href="/ko/building-coverage-floor-area-ratio-calculator/">건폐율·용적률 계산기</a></p>
+</KrFinancePage>
