@@ -32,7 +32,7 @@ export default function DisabilityBenefit() {
             <p className="mt-1 text-foreground">일시금은 연금 약 {r.breakEvenYears}년치예요. 그보다 오래 받을 것 같으면 연금이 더 많아요.</p>
           </>
         )}
-        {r.capped && <p className="mt-1 text-amber-700 dark:text-amber-300">평균임금이 2026년 {r.capped === "max" ? `최고보상기준금액 ${won(WAGE_CAP_2026.max)}` : `최저보상기준금액 ${won(WAGE_CAP_2026.min)}`}으로 바뀌어 계산됐어요.</p>}
+        {r.capped && <p className="mt-1 text-warning">평균임금이 2026년 {r.capped === "max" ? `최고보상기준금액 ${won(WAGE_CAP_2026.max)}` : `최저보상기준금액 ${won(WAGE_CAP_2026.min)}`}으로 바뀌어 계산됐어요.</p>}
         {r.advance.length > 0 && <p className="mt-1 text-muted-foreground">연금 선급(신청 시): {r.advance.map((a) => `처음 ${a.years}년분의 1/2 ${won(a.amount)}`).join(" · ")}</p>}
         {r.claimBy && <p className="mt-1 text-foreground">청구 시효: <span className="font-mono">{r.claimBy}</span>까지(5년)</p>}
       </div>

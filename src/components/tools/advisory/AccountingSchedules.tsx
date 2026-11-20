@@ -142,7 +142,7 @@ export default function AccountingSchedules() {
           <div className={box} aria-live="polite">
             <p className="text-lg font-semibold text-foreground">전체 중요성 {won(m.overall)}원 · 수행 중요성 {won(m.performance)}원</p>
             <p className="mt-1 text-foreground">명백히 사소한 금액 {won(m.trivial)}원(전체의 5%)</p>
-            {m.outOfRange && <p className="mt-1 text-amber-700 dark:text-amber-300">이 기준치의 흔한 범위({pctTxt(m.range[0])}~{pctTxt(m.range[1])})를 벗어났어요. 근거를 감사조서에 남겨요.</p>}
+            {m.outOfRange && <p className="mt-1 text-warning">이 기준치의 흔한 범위({pctTxt(m.range[0])}~{pctTxt(m.range[1])})를 벗어났어요. 근거를 감사조서에 남겨요.</p>}
           </div>
           <div className="grid gap-3 sm:grid-cols-2">
             <NumberField label="표본 모집단 금액(계정 잔액)" suffix="억 원" step={0.1} value={mt.population} onChange={(v) => { setMt({ ...mt, population: Math.max(0, v) }); tick(); }} />
