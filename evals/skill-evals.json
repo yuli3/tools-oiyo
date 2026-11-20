@@ -625,6 +625,79 @@
           }
         }
       ]
+    },
+    {
+      "skill": "oiyo-business-strategist",
+      "id": "month-backoffice",
+      "ask": "12월에 뭐 해야 해요? 개인 일반과세, 직원 1명(11월 17일 입사), 월급날 25일",
+      "run": [
+        "month",
+        {
+          "month": "2026-12",
+          "profile": {
+            "entity": "indiv",
+            "vat": "general",
+            "employer": true,
+            "payday": 25
+          },
+          "events": {
+            "hires": [
+              "2026-11-17"
+            ]
+          },
+          "today": "2026-11-20"
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.tasks.0.due",
+          "eq": "2026-12-10"
+        },
+        {
+          "path": "result.tasks",
+          "has": {
+            "due": "2026-12-15",
+            "area": "labor"
+          }
+        },
+        {
+          "path": "result.tasks",
+          "has": {
+            "due": "2026-12-31",
+            "basis": "소득세법 제164조·제164조의3"
+          }
+        },
+        {
+          "path": "result.tasks.length",
+          "eq": 7
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-business-strategist",
+      "id": "month-holiday",
+      "ask": "2026년 5월 간이과세 개인, 직원 없음",
+      "run": [
+        "month",
+        {
+          "month": "2026-05",
+          "profile": {
+            "entity": "indiv",
+            "vat": "simple",
+            "employer": false
+          }
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.tasks.0.due",
+          "eq": "2026-06-01"
+        },
+        {
+          "path": "result.tasks.length",
+          "eq": 1
+        }
+      ]
     }
   ],
   "boundaries": {

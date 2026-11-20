@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { MUST_ITEMS, filterItems, taxCalendar, upcoming } from "./biz-checklist.ts";
+import { MUST_ITEMS, filterItems, monthlyBackoffice, taxCalendar, upcoming } from "./biz-checklist.ts";
 
 test("체크리스트: id 중복 없음, 법·세무 항목은 근거가 있음", () => {
   const ids = new Set(MUST_ITEMS.map((i) => i.id));
@@ -36,4 +36,23 @@ test("개인 간이·성실신고, 2027 근로 간이지급명세서 매월", ()
   assert.ok(!y27.find((e) => e.title.startsWith("12월 지급분 사업·일용"))!.title.includes("근로소득 포함"));
   assert.ok(!y27.some((e) => e.title === "상반기 근로소득 간이지급명세서"));
   assert.equal(upcoming(y27, "2027-12-01", 2).length, 2);
+});
+
+test("이번 달 백오피스: 정기 기한 + 입사·퇴사 기한", () => {
+  const r = monthlyBackoffice("2026-12", { entity: "indiv", vat: "general", employer: true, payday: 25 }, { hires: ["2026-11-17"], leaves: ["2026-12-04"] }, "2026-11-20");
+  assert.deepEqual(r.tasks.map((t) => t.due), ["2026-12-10", "2026-12-10", "2026-12-10", "2026-12-15", "2026-12-18", "2026-12-25", "2026-12-31", "2026-12-31"]);
+  assert.ok(r.tasks.some((t) => t.title.includes("4대보험 취득신고")));
+  assert.equal(r.tasks[0].daysLeft, 20);
+  assert.deepEqual(r.later.map((t) => t.due), ["2027-01-15"]);
+  assert.ok(r.routine.some((x) => x.tool === "/ko/bookkeeping-data-bridge/"));
+});
+
+test("이번 달 백오피스: 휴일로 밀린 기한과 직원 없는 간이과세자", () => {
+  const j = monthlyBackoffice("2027-01", { entity: "corp", vat: "general", employer: true });
+  assert.ok(j.tasks.some((t) => t.title.includes("최저임금")));
+  assert.ok(j.tasks.some((t) => t.due === "2027-02-01" && t.title.includes("간이지급명세서")));
+  const s = monthlyBackoffice("2026-05", { entity: "indiv", vat: "simple", employer: false });
+  assert.deepEqual(s.tasks.map((t) => t.title), ["2025년 종합소득세·개인지방소득세 신고·납부"]);
+  assert.equal(s.tasks[0].due, "2026-06-01");
+  assert.throws(() => monthlyBackoffice("2026-5", { entity: "indiv", vat: "simple", employer: false }));
 });
