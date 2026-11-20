@@ -44,7 +44,10 @@ export default function MoneyField({ label, value, onChange, allowNegative = fal
           value={text}
           aria-invalid={bad}
           aria-describedby={`${id}-read`}
-          onFocus={() => setFocused(true)}
+          onFocus={(e) => {
+            setFocused(true);
+            e.currentTarget.select(); // 기본값 0 뒤에 이어 써져 "035…"가 되지 않게 전체 선택
+          }}
           onBlur={() => {
             setFocused(false);
             setBad(false);

@@ -2,7 +2,7 @@
 // 쉬운 설명: 상황 고르기 → 한 번에 한 질문(왜 묻는지 함께) → 기한·조문·할 일.
 // 전문가: 질문 전체를 한 화면에, 조문 찾기와 자격사 업무 범위 표.
 // 가정 변화: "며칠 뒤에 움직이면?" 슬라이더로 어느 기한을 놓치는지 막대가 바로 바뀌어요.
-import { useMemo, useState } from "react";
+import { useMemo, useState, type KeyboardEvent } from "react";
 import { DISCLAIMER, DOMAIN_LABEL, LAW_GUIDE_AS_OF, PROFESSIONS, SCOPE_MATRIX, domainTopics, findStatutes, intake, statuteUrl, visibleQuestions, type Answers, type DomainId, type Question, type Topic } from "../../../lib/kr-expert-guide-2026";
 import { useSaved, CopyMemo } from "../biz/common";
 import ChoiceChips from "../payroll/ChoiceChips";
@@ -34,14 +34,45 @@ function show(q: Question, v: Answers[string]): string {
   return String(v);
 }
 
+// 2026-11-20: 숫자·날짜·금액은 입력 중에 답으로 넘기지 않아요. 한 자리만 쳐도 다음 질문으로 넘어가던 버그.
+// 초안을 들고 있다가 "다음" 버튼이나 Enter로 확정해요. 선택형(칩)은 누르는 순간 확정이 맞아요.
 function QuestionInput({ q, value, onAnswer }: { q: Question; value: Answers[string]; onAnswer: (v: Answers[string]) => void }) {
   const [draft, setDraft] = useState<string>(typeof value === "string" || typeof value === "number" ? String(value) : "");
+  const [money, setMoney] = useState<number | null>(typeof value === "number" ? value : null);
   if (q.kind === "choice" || q.kind === "yesno") {
     const options = q.kind === "yesno" ? [{ value: "yes", label: "예" }, { value: "no", label: "아니요" }] : (q.options ?? []);
     return <ChoiceChips legend={q.ask} value={String(value ?? "")} options={options} onChange={(v) => onAnswer(v)} />;
   }
-  if (q.kind === "number" && q.unit === "won") {
-    return <MoneyField label={q.ask} value={typeof value === "number" ? value : 0} onChange={(v) => onAnswer(v)} />;
+  const isMoney = q.kind === "number" && q.unit === "won";
+  const ready = isMoney ? money !== null : draft !== "" && (q.kind !== "number" || Number.isFinite(Number(draft)));
+  const submit = () => {
+    if (!ready) return;
+    if (isMoney) onAnswer(money as number);
+    else onAnswer(q.kind === "number" ? Number(draft) : draft);
+  };
+  const onKey = (e: KeyboardEvent) => {
+    if (e.key === "Enter" && !e.nativeEvent.isComposing) {
+      e.preventDefault();
+      submit();
+    }
+  };
+  const nextButton = (
+    <button
+      type="button"
+      onClick={submit}
+      disabled={!ready}
+      className="min-h-11 shrink-0 rounded-md bg-primary px-4 text-sm font-semibold text-primary-foreground disabled:opacity-40"
+    >
+      다음
+    </button>
+  );
+  if (isMoney) {
+    return (
+      <div className="space-y-2" onKeyDown={onKey}>
+        <MoneyField label={q.ask} value={money ?? 0} onChange={(v) => setMoney(v)} />
+        {nextButton}
+      </div>
+    );
   }
   const id = `q-${q.key}`;
   return (
@@ -53,16 +84,15 @@ function QuestionInput({ q, value, onAnswer }: { q: Question; value: Answers[str
         <input
           id={id}
           type={q.kind === "date" ? "date" : "number"}
-          inputMode={q.kind === "number" ? "numeric" : undefined}
+          inputMode={q.kind === "number" ? "decimal" : undefined}
+          enterKeyHint="next"
           value={draft}
-          onChange={(e) => {
-            setDraft(e.target.value);
-            if (e.target.value === "") return;
-            onAnswer(q.kind === "number" ? Number(e.target.value) : e.target.value);
-          }}
+          onChange={(e) => setDraft(e.target.value)}
+          onKeyDown={onKey}
           className="min-h-11 w-full min-w-0 rounded-md border border-input bg-background px-3 text-base text-foreground"
         />
         {q.unit && q.kind === "number" && <span className="self-center text-sm text-muted-foreground">{UNIT[q.unit as keyof typeof UNIT]}</span>}
+        {nextButton}
       </div>
     </div>
   );
