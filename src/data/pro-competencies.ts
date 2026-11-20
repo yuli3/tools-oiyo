@@ -118,7 +118,7 @@ export const COMPETENCIES: Competency[] = [
 
   // 법무사
   c("court-law", "court", "law", "상속·부동산등기·민사집행", "상속 순위와 포기·한정승인, 등기 원인, 지급명령·강제집행 요건을 읽어요.", { tools: ["registry-court-law-guide"], skills: [LAW], mcp: ["search_kr_statutes"], audience: ["pro", "public"] }),
-  c("court-deadline", "court", "deadline", "상속 포기·신고·등기 기한", "상속 포기·한정승인 3개월, 상속세 신고 6개월, 소유권이전등기 60일을 함께 세요.", { tools: ["registry-court-law-guide", "inheritance-gift-filing-deadline-calculator", "statute-limitations-calculator"], skills: [LAW], mcp: ["start_kr_law_intake", "plan_kr_inheritance_gift_filing_deadline"], audience: ["pro", "public"] }),
+  c("court-deadline", "court", "deadline", "상속 포기·신고·등기 기한", "상속 포기·한정승인 3개월, 상속세 신고 6개월, 소유권이전등기 60일을 함께 세요.", { tools: ["registry-court-law-guide", "after-death-checklist", "inheritance-gift-filing-deadline-calculator", "statute-limitations-calculator"], skills: [LAW], mcp: ["start_kr_law_intake", "plan_kr_inheritance_gift_filing_deadline"], audience: ["pro", "public"] }),
   c("court-cost", "court", "calc", "등기 비용·취득세", "취득세·등록면허세·국민주택채권 매입액을 계산해요.", { tools: ["acquisition-tax-calculator", "first-home-tax-calculator", "car-bond-refund-calculator"], mcp: ["calculate_kr_acquisition_tax"], audience: ["pro", "public"] }),
   c("court-interest", "court", "calc", "이자·지연손해금·소송비용", "법정이율, 소송촉진법 지연이자, 인지대·송달료를 계산해요.", { tools: ["legal-interest-calculator", "litigation-cost-calculator"], audience: ["pro", "public"] }),
   c("court-docs", "court", "docs", "지급명령·공탁·등기 신청 서류", "청구 원인과 증거를 정리해요. 신청서 작성·제출 대리는 법무사 업무예요.", { tools: ["registry-court-law-guide"], skills: [LAW], exclusive: true }),
@@ -269,6 +269,7 @@ export const TOOL_NAMES: Record<string, string> = {
   "family-business-inheritance-calculator": "가업상속공제",
   "tax-calendar": "세무 일정",
   "vat-penalty-calculator": "부가세 가산세",
+  "after-death-checklist": "사망 후 할 일 타임라인",
   "inheritance-gift-filing-deadline-calculator": "상속·증여 신고기한",
   "accounting-law-guide": "회계·장부 법령 길잡이",
   "business-car-expense-calculator": "업무용 승용차 비용",

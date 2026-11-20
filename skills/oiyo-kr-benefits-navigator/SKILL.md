@@ -1,6 +1,6 @@
 ---
 name: oiyo-kr-benefits-navigator
-description: 한국의 생활 지원금·노동권 길잡이. 상황을 듣고 받을 수 있는 제도(근로장려금·자녀장려금, 출산전후휴가·배우자 출산휴가 급여, 체불임금 대지급금, 산재 휴업급여, 월세 세액공제, 퇴직연금 DB·DC 선택, 통상임금·포괄임금 고정 연장수당, 종합부동산세, 주택임대소득세, 노인장기요양 본인부담금, 해고예고수당·휴업수당·육아기 단축 급여·수습 최저임금·연차 사용촉진, 자진퇴사 실업급여 정당 사유, 하도급대금 직접 지급, 가족 차용 적정이자·부모 집 무상 거주·가족 간 저가 양수도 증여, 상가 임대료 5% 상한, 중소기업 취업 청년 소득세 감면, 노란우산공제, 일반 vs 간이과세, 업무용 승용차 비용, 해외주식 직접 vs 해외ETF)를 골라 2026년 기준으로 계산하고, "얼마·어디서·언제까지"가 있는 안내문을 쓴다. "근로장려금", "자녀장려금", "출산휴가 급여", "배우자 출산휴가", "월급을 못 받았", "임금체불", "대지급금", "산재", "휴업급여", "월세 세액공제", "DB형", "DC형", "퇴직연금", "통상임금", "재직조건 상여", "포괄임금", "시간외수당", "종부세", "종합부동산세", "월세 소득세", "주택임대소득", "장기요양", "요양원 비용", "방문요양", "해고예고", "휴업수당", "근로시간 단축", "수습", "연차 촉진", "자진퇴사", "하도급", "차용증", "부모님께 빌린 돈", "무상 거주", "저가 양도", "가족 간 매매", "상가 월세 인상", "청년 소득세 감면", "중소기업 취업", "노란우산", "간이과세", "일반과세", "업무용 승용차", "법인차", "운행기록부", "해외ETF", "미국 주식 세금"을 물을 때 쓴다.
+description: 한국의 생활 지원금·노동권 길잡이. 상황을 듣고 받을 수 있는 제도(근로장려금·자녀장려금, 출산전후휴가·배우자 출산휴가 급여, 체불임금 대지급금, 산재 휴업급여, 월세 세액공제, 퇴직연금 DB·DC 선택, 통상임금·포괄임금 고정 연장수당, 종합부동산세, 주택임대소득세, 노인장기요양 본인부담금, 해고예고수당·휴업수당·육아기 단축 급여·수습 최저임금·연차 사용촉진, 자진퇴사 실업급여 정당 사유, 하도급대금 직접 지급, 가족 차용 적정이자·부모 집 무상 거주·가족 간 저가 양수도 증여, 상가 임대료 5% 상한, 중소기업 취업 청년 소득세 감면, 노란우산공제, 일반 vs 간이과세, 업무용 승용차 비용, 해외주식 직접 vs 해외ETF, 가족이 돌아가신 뒤 사망신고·상속포기·상속세·연금·보험 청구 기한)를 골라 2026년 기준으로 계산하고, "얼마·어디서·언제까지"가 있는 안내문을 쓴다. "근로장려금", "자녀장려금", "출산휴가 급여", "배우자 출산휴가", "월급을 못 받았", "임금체불", "대지급금", "산재", "휴업급여", "월세 세액공제", "DB형", "DC형", "퇴직연금", "통상임금", "재직조건 상여", "포괄임금", "시간외수당", "종부세", "종합부동산세", "월세 소득세", "주택임대소득", "장기요양", "요양원 비용", "방문요양", "해고예고", "휴업수당", "근로시간 단축", "수습", "연차 촉진", "자진퇴사", "하도급", "차용증", "부모님께 빌린 돈", "무상 거주", "저가 양도", "가족 간 매매", "상가 월세 인상", "청년 소득세 감면", "중소기업 취업", "노란우산", "간이과세", "일반과세", "업무용 승용차", "법인차", "운행기록부", "해외ETF", "미국 주식 세금", "사망신고", "돌아가신 뒤", "장례 후 할 일", "상속포기 기한", "유족연금", "사망보험금 청구"를 물을 때 쓴다.
 ---
 
 # 지원금·노동권 길잡이 (OIYO)
@@ -10,8 +10,8 @@ description: 한국의 생활 지원금·노동권 길잡이. 상황을 듣고 �
 ## 계산 경로 (위에서부터 쓸 수 있는 것)
 
 1. MCP 서버 `https://api.oiyo.net/mcp`(Registry 이름 `io.github.yuli3/oiyo-calculations`)가 연결돼 있으면 그 도구를 쓴다:
-   `calculate_kr_work_child_incentive`, `calculate_kr_maternity_leave_pay`, `calculate_kr_wage_guarantee`, `calculate_kr_injury_leave_pay`, `calculate_kr_monthly_rent_credit`, `compare_kr_retirement_pension`, `calculate_kr_ordinary_wage`, `check_kr_fixed_overtime_pay`, `calculate_kr_comprehensive_real_estate_tax`, `calculate_kr_housing_rental_income_tax`, `calculate_kr_long_term_care_copay`, `check_kr_dependent_deduction`, `calculate_kr_stock_major_shareholder_tax`, `calculate_kr_dismissal_notice_pay`, `calculate_kr_shutdown_allowance`, `calculate_kr_reduced_hours_childcare_pay`, `check_kr_probation_minimum_wage`, `plan_kr_annual_leave_promotion`, `check_kr_voluntary_quit_unemployment`, `check_kr_subcontract_direct_payment`, `check_kr_family_loan_interest`, `check_kr_parent_house_free_use`, `check_kr_family_low_price_sale`, `check_kr_commercial_rent_increase`, `calculate_kr_sme_youth_tax_reduction`, `calculate_kr_yellow_umbrella_deduction`, `compare_kr_general_vs_simplified_vat`, `calculate_kr_business_car_expense`, `compare_kr_overseas_stock_vs_etf_tax`, `check_kr_officetel_house_count`, `compare_kr_ticket_vs_presale_tax`, `compare_kr_inherited_house_valuation`, `plan_kr_inheritance_gift_filing_deadline`, `check_kr_youth_rent_support`, `find_kr_policy_housing_loans`, `check_kr_special_supply`
-2. 코드 실행이 되면 `node scripts/calc.mjs <도구> '<JSON>'`(Node 22 이상, 의존성 없음). 도구: `work-child-incentive`, `maternity-leave`, `wage-guarantee`, `injury-leave`, `rent-credit`, `pension-db-dc`, `ordinary-wage`, `fixed-overtime`, `comprehensive-real-estate-tax`, `rental-income-tax`, `long-term-care`, `dependents`, `stock-major-shareholder`, `dismissal-notice`, `shutdown-allowance`, `reduced-hours`, `probation-min-wage`, `leave-promotion`, `voluntary-quit`, `subcontract-direct-pay`, `family-loan`, `free-use`, `low-price-sale`, `commercial-rent`, `sme-youth`, `yellow-umbrella`, `vat-type`, `business-car`, `overseas-etf`, `officetel`, `ticket-presale`, `inherited-valuation`, `filing-deadline`, `youth-rent`, `housing-loan`, `special-supply`.
+   `calculate_kr_work_child_incentive`, `calculate_kr_maternity_leave_pay`, `calculate_kr_wage_guarantee`, `calculate_kr_injury_leave_pay`, `calculate_kr_monthly_rent_credit`, `compare_kr_retirement_pension`, `calculate_kr_ordinary_wage`, `check_kr_fixed_overtime_pay`, `calculate_kr_comprehensive_real_estate_tax`, `calculate_kr_housing_rental_income_tax`, `calculate_kr_long_term_care_copay`, `check_kr_dependent_deduction`, `calculate_kr_stock_major_shareholder_tax`, `calculate_kr_dismissal_notice_pay`, `calculate_kr_shutdown_allowance`, `calculate_kr_reduced_hours_childcare_pay`, `check_kr_probation_minimum_wage`, `plan_kr_annual_leave_promotion`, `check_kr_voluntary_quit_unemployment`, `check_kr_subcontract_direct_payment`, `check_kr_family_loan_interest`, `check_kr_parent_house_free_use`, `check_kr_family_low_price_sale`, `check_kr_commercial_rent_increase`, `calculate_kr_sme_youth_tax_reduction`, `calculate_kr_yellow_umbrella_deduction`, `compare_kr_general_vs_simplified_vat`, `calculate_kr_business_car_expense`, `compare_kr_overseas_stock_vs_etf_tax`, `check_kr_officetel_house_count`, `compare_kr_ticket_vs_presale_tax`, `compare_kr_inherited_house_valuation`, `plan_kr_inheritance_gift_filing_deadline`, `check_kr_youth_rent_support`, `find_kr_policy_housing_loans`, `check_kr_special_supply`, `plan_kr_after_death_tasks`(있으면)
+2. 코드 실행이 되면 `node scripts/calc.mjs <도구> '<JSON>'`(Node 22 이상, 의존성 없음). 도구: `work-child-incentive`, `maternity-leave`, `wage-guarantee`, `injury-leave`, `rent-credit`, `pension-db-dc`, `ordinary-wage`, `fixed-overtime`, `comprehensive-real-estate-tax`, `rental-income-tax`, `long-term-care`, `dependents`, `stock-major-shareholder`, `dismissal-notice`, `shutdown-allowance`, `reduced-hours`, `probation-min-wage`, `leave-promotion`, `voluntary-quit`, `subcontract-direct-pay`, `family-loan`, `free-use`, `low-price-sale`, `commercial-rent`, `sme-youth`, `yellow-umbrella`, `vat-type`, `business-car`, `overseas-etf`, `officetel`, `ticket-presale`, `inherited-valuation`, `filing-deadline`, `youth-rent`, `housing-loan`, `special-supply`, `after-death`.
 3. 둘 다 안 되면 계산하지 말고 아래 웹 도구 링크를 주고, 필요한 입력을 정리해 준다.
 
 ## 진행 순서
@@ -38,12 +38,22 @@ description: 한국의 생활 지원금·노동권 길잡이. 상황을 듣고 �
    - 노란우산: 개인사업자/법인 대표, 사업소득금액(또는 총급여), 1년 납입액
    - 일반 vs 간이: 업종, 1년 매출(부가세 포함), 세금계산서·카드 매입, 카드매출 비율
    - 업무용 승용차: 구입·리스·렌트, 차값(또는 연 리스·렌트료), 1년 유지비, 운행기록부 여부와 업무 비율
+   - 사망 후 할 일(`after-death`): 돌아가신 날, 사망을 안 날(다르면), 해당하는 것만 예/아니오 — 회사 다님(employed), 산재 가능성(workAccident), 사업자(business), 사업·임대 등 종합소득(otherIncome), 국민연금(pension), 사망보험(insurance), 부동산(realEstate), 자동차(car), 세 든 집에 가족이 함께 삶(renting), 빚이 더 많을 수 있음(debts), 해외 주소(abroad). 오늘 날짜(today)를 넣으면 지난 기한과 다음 기한을 나눠 준다.
    - 해외주식 vs ETF: 올해 실현 이익, 다른 이자·배당, (종합과세 시) 한계세율, ISA 서민형 여부
    - 주식 대주주: 시장(코스피·코스닥·코넥스), 작년 말(직전 사업연도 말) 그 종목 보유 시가와 지분율(최대주주면 특수관계인 합산), 올해 양도차익, 1년 이상 보유·중소기업 여부
 3. **계산**: 위 경로로 계산한다. 결과 숫자를 바꾸지 않는다.
 4. **안내문**: 아래 순서로 짧게 쓴다.
    - 받을 수 있는 금액(추정) 한 문장 → 왜 그 금액인지 2~3줄 → 가장 크게 흔드는 가정 → 어디서·언제까지 신청 → 확인할 서류 → 웹 도구 링크
 5. **경계 알리기**: 상한·기한·감액(재산 1.7억, 기한 후 95%, 대지급금 나이별 상한, 휴업급여 역전 구간, 월세 공제율 계단, 통상임금 판결 적용 시점 2024-12-19, 임금채권 3년, 종부세 세부담 상한 미반영, 임대소득 2천만 원 분리과세선, 부양가족 총급여 500만·소득금액 100만 절벽, 대주주 50억 판정은 작년 말 기준, 가족 차용 연 1천만 원·무이자 약 2.17억, 무상사용 1억(집값 약 13.2억), 저가 거래 30%·3억과 5%·3억, 상가 환산보증금 지역 기준·1년 재인상 금지)에 걸리면 꼭 말한다.
+
+## 유족을 도울 때 (사망 후 할 일)
+
+- 슬픔 속에 있는 사람이다. 첫 답은 짧게: "지금 꼭 해야 하는 건 ○○까지 사망신고 하나예요"처럼 가장 가까운 기한 하나와 그 창구만 말하고, 나머지는 날짜순 목록으로 준다.
+- 상황을 한 번에 다 묻지 않는다. 돌아가신 날 → 빚이 걱정되는지 → 부동산·자동차·사업·회사·보험 순으로 필요한 것만 묻는다.
+- 빚 걱정이 있으면 안심상속 원스톱 서비스로 재산·빚을 조회하고 3개월 안 상속포기·한정승인을 판단하라고 먼저 말한다. 결정은 가정법원 절차이며, 판단이 어렵거나 다툼이 있으면 대한법률구조공단 132를 알린다.
+- `after-death` 결과의 `due`(휴일이면 다음 영업일), `cite`, `where`, `bring`만 쓴다. 기억으로 기한을 만들지 않는다.
+- 상속세는 공제(일괄 5억 원, 배우자 있으면 최소 5억 원 더) 안이면 낼 세금이 없을 수 있다고 알려 불안을 줄인다. 세액이 궁금하면 상속세 계산기, 늦을 때 가산세는 `filing-deadline`을 쓴다.
+- 신고서·법원 서류를 대신 쓰거나 특정 전문가를 소개하지 않는다.
 
 ## 웹 도구
 
@@ -81,6 +91,7 @@ description: 한국의 생활 지원금·노동권 길잡이. 상황을 듣고 �
 | 오피스텔 주택 수 | https://tools.oiyo.net/ko/officetel-house-count-checker/ |
 | 입주권 vs 분양권 양도세 | https://tools.oiyo.net/ko/redevelopment-ticket-vs-presale-tax-calculator/ |
 | 상속주택 감정평가 vs 공시가격 | https://tools.oiyo.net/ko/inherited-house-appraisal-vs-official-price-calculator/ |
+| 사망 후 할 일 타임라인 | https://tools.oiyo.net/ko/after-death-checklist/ |
 | 상속·증여 신고기한 | https://tools.oiyo.net/ko/inheritance-gift-filing-deadline-calculator/ |
 | 청년월세 지원 | https://tools.oiyo.net/ko/youth-monthly-rent-support-checker/ |
 | 정책 주거대출 자격 | https://tools.oiyo.net/ko/policy-housing-loan-eligibility-checker/ |
