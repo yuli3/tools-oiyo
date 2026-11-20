@@ -1,0 +1,31 @@
+---
+// 보험 설명·적합성 확인 기록 도우미 (2026-11-17, 전문 직업 역량 지도의 빈칸 채우기). 데이터: lib/pro-practice-guides-2026.ts recordCheck
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import ExplanationRecord from "../../components/tools/practice/ExplanationRecord";
+import { LAW_GUIDE_AS_OF } from "../../lib/kr-expert-guide-2026";
+
+const title = "보험 설명·적합성 확인 기록 도우미 2026 — 금소법 체크리스트와 기록 문서";
+const description = "보험 모집 때 적합성 확인 5가지, 중요사항 설명 7가지, 설명서 제공 방법과 이해 확인(서명·기명날인·녹취)을 체크하면 빠진 항목을 알려 주고, 청약철회 기한과 10년 보관일이 들어간 기록 문서를 만들어 줘요.";
+const ko = {
+  introTitle: "설명했다는 걸 남겨야 지켜져요",
+  intro: "불완전판매 분쟁은 '설명했는지'를 증명하지 못해서 생겨요. 상담할 때 체크만 하면 금융소비자보호법 기준으로 빠진 항목을 알려 주고, 복사해 보관할 기록 문서를 만들어 줘요.",
+  howToTitle: "사용 방법",
+  steps: ["고객·상품·청약일을 넣어요.", "적합성 확인과 설명한 항목을 체크해요.", "빠진 항목을 보완하고 기록 문서를 복사해 보관해요."],
+  highlightsTitle: "주요 특징",
+  highlights: [
+    { title: "적합성 5가지", body: "목적·나이·소득·재산·위험 성향(제17조)." },
+    { title: "설명 7가지", body: "보장·면책·보험료·해지환급금·고지의무·철회권·비교(제19조)." },
+    { title: "기한 자동 기입", body: "청약철회 30일, 보관 10년." },
+    { title: "서버 저장 없음", body: "브라우저 안에서만 만들어요." },
+  ],
+  disclaimer: "개인 점검·메모용 도구예요. 회사 전산의 공식 확인서·녹취를 대신하지 않고, 개별 계약의 위법 여부를 판정하지 않아요. 기준일 2026-11-17.",
+};
+const faqs = [
+  { q: "변액보험은 무엇이 더 필요한가요?", a: "투자성이 있는 상품이라 위험 감수 성향 확인과 적정성 원칙(금소법 제18조)이 더 엄격해요." },
+  { q: "기록은 얼마나 보관하나요?", a: "금융상품판매업자는 계약 관련 자료를 원칙적으로 10년 보관해요(금소법 제28조)." },
+];
+---
+<KrFinancePage slug="insurance-explanation-record" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <ExplanationRecord client:load />
+  <p class="mt-4 text-xs text-muted-foreground">근거: 금융소비자보호법 제17조·제18조·제19조·제28조·제46조·제47조. 기준일 {LAW_GUIDE_AS_OF}. <a class="underline" href="/ko/insurance-law-guide/">보험 법령 길잡이</a> · <a class="underline" href="/ko/pro-competency-map/">전문 직업 역량 지도</a></p>
+</KrFinancePage>

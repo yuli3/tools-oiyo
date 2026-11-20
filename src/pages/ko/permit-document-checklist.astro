@@ -1,0 +1,31 @@
+---
+// 영업신고·허가 준비 서류 점검표 (2026-11-17, 전문 직업 역량 지도의 빈칸 채우기). 데이터: lib/pro-practice-guides-2026.ts
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import PracticeGuide from "../../components/tools/practice/PracticeGuide";
+import { LAW_GUIDE_AS_OF } from "../../lib/kr-expert-guide-2026";
+
+const title = "영업신고·허가 준비 서류 점검표 2026 — 음식점·통신판매업·미용업";
+const description = "식당·카페 영업신고, 통신판매업 신고, 미용업 신고에 필요한 서류(위생교육 수료증, 보건증, 완비증명서 등)와 건축물 용도 같은 미리 확인할 점을 체크하고, 사업자등록 20일 기한을 계산해요.";
+const ko = {
+  introTitle: "가게 열기 전, 서류 한 장 때문에 미뤄지지 않게",
+  intro: "영업신고는 서류가 하나만 빠져도 반려돼요. 업종을 고르면 준비물과 건물 요건을 체크리스트로 보여 주고, 영업 시작일로 사업자등록 기한을 계산해요.",
+  howToTitle: "사용 방법",
+  steps: ["업종을 골라요.", "준비물과 확인할 점을 하나씩 체크해요.", "영업 시작일을 넣어 사업자등록 기한을 확인하고, 정부24에서 신고해요."],
+  highlightsTitle: "주요 특징",
+  highlights: [
+    { title: "업종별 준비물", body: "음식점·통신판매·미용업." },
+    { title: "건물 요건", body: "건축물 용도, 위반건축물." },
+    { title: "기한 계산", body: "사업자등록 20일." },
+    { title: "본인 신고", body: "대행은 행정사 업무라는 점도 알려 줘요." },
+  ],
+  disclaimer: "정보 도구예요. 인허가 서류를 대신 작성하거나 제출하지 않아요(행정사법 제2조). 지자체마다 추가 서류가 있을 수 있으니 관할 구청에 확인하세요. 기준일 2026-11-17.",
+};
+const faqs = [
+  { q: "위생교육은 어디서 받나요?", a: "업종별 협회(한국외식업중앙회, 한국휴게음식업중앙회 등)에서 온라인으로 받을 수 있어요." },
+  { q: "건축물 용도가 안 맞으면요?", a: "용도변경 허가·신고가 먼저예요. 건축사와 구청 건축과에 확인하세요." },
+];
+---
+<KrFinancePage slug="permit-document-checklist" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <PracticeGuide client:load slug="permit-document-checklist" />
+  <p class="mt-4 text-xs text-muted-foreground">근거: 식품위생법 제37조·제40조·제41조, 전자상거래법 제12조, 공중위생관리법 제3조, 부가가치세법 제8조. 기준일 {LAW_GUIDE_AS_OF}. <a class="underline" href="/ko/administrative-law-guide/">행정 절차 길잡이</a> · <a class="underline" href="/ko/pro-competency-map/">전문 직업 역량 지도</a></p>
+</KrFinancePage>

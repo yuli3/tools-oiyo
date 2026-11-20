@@ -1,0 +1,31 @@
+---
+// 수입 관세·부가세 계산기 2026 (2026-11-17, 전문 직업 역량 지도의 빈칸 채우기). 엔진: lib/pro-practice-2026.ts
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import ImportDuty from "../../components/tools/practice/ImportDuty";
+import { LAW_GUIDE_AS_OF } from "../../lib/kr-expert-guide-2026";
+
+const title = "수입 관세·부가세 계산기 2026 — FTA 협정세율 비교, 직구 면세 150·200달러";
+const description = "물건값·운임·보험료와 환율로 과세가격(CIF)을 만들고, 기본세율과 FTA 협정세율로 관세와 부가가치세를 비교해요. 개인 직구 면세(150달러, 미국발 200달러)도 판정해요.";
+const ko = {
+  introTitle: "세율 하나로 세금이 크게 달라져요",
+  intro: "관세는 물건값에 운임·보험료를 더한 과세가격에 세율을 곱하고, 부가가치세는 과세가격과 관세를 합친 금액의 10%예요. 원산지증명이 있으면 FTA 협정세율로 얼마나 줄어드는지 바로 비교해요.",
+  howToTitle: "사용 방법",
+  steps: ["물건값·운임·보험료(달러)와 과세환율을 넣어요.", "품목 예시를 누르거나 기본세율과 FTA 세율을 넣어요.", "세금 합계와 FTA로 줄어드는 금액을 보고, 환율·세율을 바꿔 봐요."],
+  highlightsTitle: "주요 특징",
+  highlights: [
+    { title: "과세가격(CIF)", body: "물건값 + 운임 + 보험료(관세법 제30조)." },
+    { title: "부가세 10%", body: "(과세가격 + 관세) × 10%." },
+    { title: "FTA 비교", body: "원산지증명 있을 때만 협정세율(FTA관세특례법 제8조)." },
+    { title: "직구 면세", body: "물건값 150달러, 미국발 200달러 이하." },
+  ],
+  disclaimer: "계산 도구예요. 품목분류(HS 코드)를 정하거나 수입신고를 대리하지 않아요. 세율은 관세법령정보포털에서 HS 코드로 확인하세요. 개별소비세·주세 대상은 따로 계산해야 해요. 기준일 2026-11-17.",
+};
+const faqs = [
+  { q: "과세환율은 어디서 보나요?", a: "관세청이 매주 고시하는 과세환율을 써요. 유니패스나 관세법령정보포털에서 볼 수 있어요." },
+  { q: "원산지증명서를 나중에 받았어요.", a: "수입신고 수리일부터 1년 안에 FTA 협정세율 사후 적용을 신청하면 차액을 돌려받을 수 있어요(FTA관세특례법 제9조)." },
+];
+---
+<KrFinancePage slug="import-duty-fta-calculator" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <ImportDuty client:load />
+  <p class="mt-4 text-xs text-muted-foreground">근거: 관세법 제30조·제94조, 시행규칙 제45조, FTA관세특례법 제8조·제9조, 부가가치세법 제29조. 기준일 {LAW_GUIDE_AS_OF}. <a class="underline" href="/ko/customs-law-guide/">관세·통관 법령 길잡이</a> · <a class="underline" href="/ko/pro-competency-map/">전문 직업 역량 지도</a></p>
+</KrFinancePage>

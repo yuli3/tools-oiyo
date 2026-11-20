@@ -1,0 +1,31 @@
+---
+// 지급여력비율(K-ICS) 계산 원리 2026 (2026-11-17, 전문 직업 역량 지도의 빈칸 채우기). 엔진: lib/pro-practice-2026.ts
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import KicsRatio from "../../components/tools/practice/KicsRatio";
+import { LAW_GUIDE_AS_OF } from "../../lib/kr-expert-guide-2026";
+
+const title = "지급여력비율(K-ICS) 계산 원리 2026 — 요구자본·분산효과·적기시정조치";
+const description = "가용자본과 생명·일반손해·시장·신용·운영 위험액을 넣으면 상관계수로 합친 요구자본과 지급여력비율을 계산하고, 100%·50%·0% 적기시정조치 구간을 판정해요. 설명용 예시 상관계수를 써요.";
+const ko = {
+  introTitle: "위험을 더하면 줄어드는 이유",
+  intro: "K-ICS는 위험별로 잃을 수 있는 금액을 상관계수로 합쳐 요구자본을 만들고, 가용자본과 비교해요. 위험이 한꺼번에 터지지 않는다는 분산효과가 얼마인지, 어떤 위험이 비율을 가장 많이 움직이는지 그래프로 봐요.",
+  howToTitle: "사용 방법",
+  steps: ["가용자본을 억 원 단위로 넣어요.", "위험별 위험액과 운영위험·법인세 조정을 넣어요.", "지급여력비율과 분산효과를 보고, 시장위험이 커질 때 비율 변화를 확인해요."],
+  highlightsTitle: "주요 특징",
+  highlights: [
+    { title: "상관계수 합산", body: "√(Σ ρ·R·R)로 기본요구자본." },
+    { title: "분산효과", body: "단순 합계와의 차이." },
+    { title: "적기시정조치", body: "100%·50%·0% 구간." },
+    { title: "민감도", body: "위험별로 비율이 얼마나 움직이는지." },
+  ],
+  disclaimer: "감독 기준을 설명하는 예시 계산이에요. 상관계수와 충격 시나리오는 보험업감독규정 시행세칙의 실제 값과 달라요. 공시 비율이나 감독 판단을 대신하지 않아요. 기준일 2026-11-17.",
+};
+const faqs = [
+  { q: "감독당국 권고 수준은 몇 %인가요?", a: "법정 최소는 100%예요. 권고 수준은 감독당국이 따로 발표하니 최신 보도자료를 확인하세요." },
+  { q: "경과조치는 반영되나요?", a: "아니요. 경과조치는 회사마다 신청·승인 내용이 달라 이 계산에서 빼요." },
+];
+---
+<KrFinancePage slug="kics-solvency-ratio-calculator" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <KicsRatio client:load />
+  <p class="mt-4 text-xs text-muted-foreground">근거: 보험업법 제123조, 보험업감독규정 제7-1조 이하·적기시정조치. 기준일 {LAW_GUIDE_AS_OF}. <a class="underline" href="/ko/insurance-law-guide/">보험 법령 길잡이</a> · <a class="underline" href="/ko/pro-competency-map/">전문 직업 역량 지도</a></p>
+</KrFinancePage>
