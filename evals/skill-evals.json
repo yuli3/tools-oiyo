@@ -850,6 +850,58 @@
           "eq": 1044000
         }
       ]
+    },
+    {
+      "skill": "oiyo-kr-law-guide",
+      "id": "reserve-sibling-gift",
+      "ask": "아버지가 돌아가시면서 형에게 생전에 8억을 주고 2억만 남겼어요. 저는 유류분으로 얼마를 더 받을 수 있어요?",
+      "run": [
+        "calc",
+        "inherit",
+        "{\"family\": {\"spouse\": false, \"children\": 2, \"parents\": 0, \"siblings\": 0}, \"estate\": 200000000, \"gifts\": {\"child1\": 800000000}, \"death\": \"2026-05-10\"}"
+      ],
+      "expect": [
+        {
+          "path": "reserve.basis",
+          "eq": 1000000000
+        },
+        {
+          "path": "reserve.rows",
+          "has": {
+            "id": "child2",
+            "shortfall": 150000000
+          }
+        },
+        {
+          "path": "reserve.deadline.tenYear",
+          "eq": "2036-05-10"
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-kr-law-guide",
+      "id": "auction-small-tenant-seoul",
+      "ask": "서울 빌라가 경매로 넘어가요. 2023년 5월 근저당 1억5천, 제 보증금 1억6천, 낙찰 예상 2억이면 얼마나 돌려받아요?",
+      "run": [
+        "calc",
+        "auction",
+        "{\"sale\": 200000000, \"cost\": 3000000, \"region\": \"seoul\", \"baseDate\": \"2023-05-01\", \"tenants\": [{\"label\": \"임차인\", \"deposit\": 160000000, \"date\": \"2024-03-02\"}], \"claims\": [{\"label\": \"근저당\", \"amount\": 150000000, \"date\": \"2023-05-01\", \"kind\": \"mortgage\"}]}",
+        "2026-11-20"
+      ],
+      "expect": [
+        {
+          "path": "table.priority",
+          "eq": 55000000
+        },
+        {
+          "path": "tenants",
+          "has": {
+            "label": "임차인",
+            "paid": 55000000,
+            "unpaid": 105000000
+          }
+        }
+      ]
     }
   ],
   "boundaries": {

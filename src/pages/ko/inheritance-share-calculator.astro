@@ -1,0 +1,32 @@
+---
+// 법정상속분·유류분 계산기 (2026-11-20, 전문 직군 전수조사 4번). 엔진: lib/kr-inheritance-share-2026.ts (스킬 oiyo-kr-law-guide guide.mjs calc inherit)
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import InheritanceShare from "../../components/tools/lawguide/InheritanceShare";
+
+const title = "법정상속분·유류분 계산기 — 2026 민법 개정(형제자매 유류분 삭제) 반영";
+const description = "배우자·자녀·부모 구성으로 법정상속분(배우자 1.5배)을 나누고, 생전 증여·유증을 더해 유류분(자녀·배우자 1/2, 부모 1/3)과 부족액을 계산해요. 형제자매 유류분 삭제, 부양·기여 대가 증여 제외, 가액반환 원칙과 청구 기한 1년·10년까지 보여 줘요.";
+const ko = {
+  introTitle: "상속분은 법이 정한 비율, 유류분은 최소한 받을 몫",
+  intro: "유언이나 생전 증여로 한 사람에게 재산이 몰렸어도, 자녀·배우자·부모는 법이 보장하는 최소 몫(유류분)을 돌려 달라고 할 수 있어요. 숫자를 먼저 맞춰 보면 대화가 쉬워져요.",
+  howToTitle: "사용 방법",
+  steps: ["배우자·자녀·부모가 있는지 넣어요.", "남긴 재산과 빚, 상속인별로 미리 받은 증여를 넣어요.", "법정상속분과 유류분, 부족액을 보고 청구 기한을 확인해요."],
+  highlightsTitle: "주요 특징",
+  highlights: [
+    { title: "2026 개정 반영", body: "형제자매 유류분 삭제, 부양·기여 대가 증여 제외, 가액반환 원칙을 반영했어요." },
+    { title: "분수로 보여 줘요", body: "배우자 3/7, 자녀 2/7처럼 법정상속분을 분수로 보여 줘요." },
+    { title: "증여 합산", body: "상속인이 받은 증여는 기간 없이, 제3자 증여는 1년 안 것만 더해요." },
+    { title: "개인정보 안전", body: "입력값은 서버로 보내지 않아요." },
+  ],
+  disclaimer: "법령 정보와 어림 계산이에요. 대습상속, 상속포기, 기여분, 재산 평가 시점은 넣지 않았어요. 유류분 소송은 변호사와 상의하세요.",
+};
+const faqs = [
+  { q: "법정상속분은 어떻게 나눠요?", a: "같은 순위 상속인은 똑같이 나누고, 배우자는 자녀나 부모 몫의 1.5배를 받아요(민법 제1009조). 배우자와 자녀 2명이면 3/7, 2/7, 2/7이에요. 자녀도 부모도 없으면 배우자가 혼자 상속해요." },
+  { q: "형제자매도 유류분을 청구할 수 있나요?", a: "아니요. 헌법재판소가 2024년 4월 25일 형제자매 유류분을 위헌으로 결정했고, 2026년 3월 17일 시행된 민법 개정으로 조문도 삭제됐어요." },
+  { q: "유류분 청구 기한은요?", a: "상속이 시작된 것과 반환할 증여·유증이 있다는 것을 안 날부터 1년, 상속이 시작된 날부터 10년 안에 해야 해요(민법 제1117조)." },
+  { q: "부모님을 모신 대가로 받은 재산도 유류분 계산에 들어가요?", a: "2026년 개정 민법은 피상속인을 특별히 부양하거나 재산 형성에 특별히 기여한 대가로 받은 증여·유증을 특별수익으로 보지 않아요(제1008조). 이 계산기에서는 그런 증여를 빼고 넣으세요." },
+];
+---
+<KrFinancePage slug="inheritance-share-calculator" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <InheritanceShare client:load />
+  <p class="mt-4 text-xs text-muted-foreground">근거: 민법 제1000조·제1003조·제1008조·제1009조·제1112조~제1117조. <a class="underline" href="/ko/inheritance-tax-calculator/">상속세 계산기</a> · <a class="underline" href="/ko/after-death-checklist/">사망 후 할 일</a> · <a class="underline" href="/ko/registry-court-law-guide/">등기·법원 서류 길잡이</a></p>
+</KrFinancePage>
