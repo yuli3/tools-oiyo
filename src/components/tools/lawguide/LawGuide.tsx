@@ -141,6 +141,7 @@ export default function LawGuide({ domain: fixed }: { domain?: DomainId }) {
       "",
       "가져갈 서류",
       ...r.documents.map((d) => `- ${d}`),
+      ...(r.forms.length ? ["", "서식·신청 화면", ...r.forms.map((x) => `- ${x.what}: ${x.site} ${x.url} (${x.find})`)] : []),
       "",
       `근거: ${r.statutes.map((s) => `${s.law} ${s.article}`).join(", ")}`,
       "",
@@ -339,6 +340,21 @@ export default function LawGuide({ domain: fixed }: { domain?: DomainId }) {
           ))}
         </ul>
         <p className="text-xs text-muted-foreground">가져갈 서류: {r.documents.join(", ")}</p>
+        {r.forms.length > 0 && (
+          <div className="space-y-1">
+            <h4 className="text-xs font-semibold text-foreground">서식·신청 화면 찾는 곳</h4>
+            <ul className="space-y-1 text-xs leading-5">
+              {r.forms.map((x) => (
+                <li key={`${x.portal}-${x.what}`}>
+                  <span className="text-foreground">{x.what}</span>{" "}
+                  <a href={x.url} target="_blank" rel="noopener noreferrer" className="font-semibold text-primary underline">{x.site}</a>{" "}
+                  <span className="text-muted-foreground">({x.find})</span>
+                </li>
+              ))}
+            </ul>
+            <p className="text-xs text-muted-foreground">공식 사이트 첫 화면으로 가요. 서식은 직접 채워 내요.</p>
+          </div>
+        )}
         <div className="flex flex-wrap gap-2">
           <CopyMemo text={memo} />
           <button type="button" onClick={resetTopic} className="inline-flex min-h-11 items-center rounded-md border border-border bg-background px-4 text-sm text-muted-foreground hover:bg-muted">

@@ -11,6 +11,7 @@
 import { krTaxDeadline } from "./kr-business-day.ts";
 import { isCivilHoliday } from "./kr-legal-2026.ts";
 import { PACKS } from "./kr-law-packs-2026.ts";
+import { formsFor } from "./kr-public-forms-2026.ts";
 
 export const LAW_GUIDE_AS_OF = "2026-11-17";
 
@@ -1396,6 +1397,8 @@ export interface IntakeResult {
   tools: { label: string; href: string }[];
   handOff: string | null;
   documents: string[];
+  /** 서식·신청 화면이 있는 공공 사이트와 검색어(작성·제출은 직접) */
+  forms: ReturnType<typeof formsFor>;
   freeHelp: Profession["freeHelp"];
   disclaimer: string;
 }
@@ -1443,6 +1446,7 @@ export function intake(topicId: string, answers: Answers = {}, today: string = L
     tools: topic.tools,
     handOff: topic.handOff(a),
     documents: topic.documents,
+    forms: formsFor(topic.id),
     freeHelp: prof.freeHelp,
     disclaimer: DISCLAIMER,
   };
