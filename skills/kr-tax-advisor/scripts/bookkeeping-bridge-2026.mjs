@@ -7,7 +7,7 @@
 //   적격증빙이 없으면 비용 불인정(법인세법 제25조, 소득세법 제35조), 신용카드 매출전표 매입세액 공제(부가가치세법 제46조),
 //   기업업무추진비·비영업용 소형승용차 관련 매입세액 불공제(부가가치세법 제39조), 기한이 공휴일이면 다음 날(국세기본법 제5조).
 // 계정 추천은 거래 내용의 낱말로 고르는 출발점이에요. 회사 계정과목표와 실제 용도로 사람이 확정해요.
-import { krTaxDeadline } from "./kr-business-day.mjs";
+import { krTaxDeadlineUTC } from "./kr-business-day.mjs";
 
 export const BRIDGE_AS_OF = "2026-11-20";
 
@@ -343,7 +343,7 @@ export function upcomingTasks(today        , who                      = ["all", 
       const d = t.due(y, m);
       if (!d) continue;
       const day = Math.min(d.d, lastDay(d.y, d.m));
-      const rolled = krTaxDeadline(new Date(Date.UTC(d.y, d.m - 1, day)));
+      const rolled = krTaxDeadlineUTC(new Date(Date.UTC(d.y, d.m - 1, day)));
       const iso = rolled.toISOString().slice(0, 10);
       const left = Math.round((rolled.getTime() - t0) / 86_400_000);
       if (left < 0) continue;
