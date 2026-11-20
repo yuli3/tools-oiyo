@@ -20,6 +20,10 @@
 //   node scripts/guide.mjs calc ip '{"kind":"patent","disclosed":"2026-03-02","filed":"2026-05-15"}' [오늘]
 //   node scripts/guide.mjs calc franchise '{"infoGiven":"2026-11-01","signed":"2026-11-10"}'  |  calc apartment '{"households":320,"useApproval":"2024-03-15"}' [오늘]
 //   node scripts/guide.mjs calc workforce count '[6,6,4,4,6]'  |  calc workforce schedule '{"shifts":[{"day":"월","start":"09:00","end":"18:00","breakMin":60}]}'
+//   node scripts/guide.mjs calc disability '{"grade":7,"avgWage":150000,"healed":"2026-10-01"}'   (산재 장해급여 연금·일시금)
+//   node scripts/guide.mjs calc deposit '{"amount":30000000,"deposited":"2025-03-02","withdrawn":"2026-11-20","ground":"refused"}'   (공탁금 이자·시효)
+//   node scripts/guide.mjs calc registration '{"price":500000000,"standardPrice":350000000,"metro":true,"houses":1,"method":"efile"}'   (셀프 등기 총비용)
+//   node scripts/guide.mjs calc f27 '{"age":31,"degree":"master","korean":4,"income":45000000}'   (거주 F-2-7 점수)
 //   node scripts/guide.mjs practice [<길잡이 slug> [<상황 id> '<{"기한id":"YYYY-MM-DD"}>']]
 import { readFileSync } from "node:fs";
 import { LAW_GUIDE_AS_OF, PROFESSIONS, SCOPE_MATRIX, TOPICS, findStatutes, intake, statuteUrl, suggestTopics } from "./kr-expert-guide-2026.mjs";
@@ -35,6 +39,10 @@ import { IP_NOTE, ipDeadlines } from "./kr-ip-deadlines-2026.mjs";
 import { APPRAISAL_NOTE, businessLoss, costApproach, incomeApproach, landCompensation, reconcile, relocationAllowance, salesComparison } from "./kr-appraisal-2026.mjs";
 import { POINTS_NOTE, VIOLATIONS, licenseStatus, suspensionToSurcharge, violationPoints, accidentPoints } from "./kr-license-points-2026.mjs";
 import { WORKFORCE_NOTE, checkSchedule, headcountThresholds } from "./kr-workforce-2026.mjs";
+import { DISABILITY_NOTE, disabilityBenefit } from "./kr-injury-disability-2026.mjs";
+import { DEPOSIT_NOTE, depositCheck } from "./kr-court-deposit-2026.mjs";
+import { REG_NOTE, selfRegistrationCost } from "./kr-self-registration-2026.mjs";
+import { F27_NOTE, f27Points } from "./kr-f27-points-2026.mjs";
 import { CUSTOMS_NOTE, TRAVELER_EXTRA, directBundles, rvc, simpleRefund, travelerTax } from "./kr-customs-pack-2026.mjs";
 
 const CALC = {
@@ -129,6 +137,18 @@ switch (cmd) {
     } else if (a1 === "apartment") {
       // a2: {"households":320,"elevator":true,"centralHeating":false,"mixedUse":false,"useApproval","handover"}, a3: 오늘(선택)
       print({ ...apartmentSchedule(JSON.parse(a2 ?? "{}"), a3 ?? today()), note: FH_NOTE });
+    } else if (a1 === "disability") {
+      // a2: {"grade":1~14,"avgWage":1일 평균임금,"healed":"YYYY-MM-DD"(선택)}
+      print({ ...disabilityBenefit(JSON.parse(a2 ?? "{}")), note: DISABILITY_NOTE });
+    } else if (a1 === "deposit") {
+      // a2: {"amount","deposited","withdrawn","exercisable","ground":"refused|unable|unknown|none","criminal":false}
+      print({ ...depositCheck(JSON.parse(a2 ?? "{}")), note: DEPOSIT_NOTE });
+    } else if (a1 === "registration") {
+      // a2: {"price","standardPrice","metro","houses":1|2|3|4,"regulated","over85","method":"efile|eform|paper","bondDiscount":0.06,"other","agentFee"}
+      print({ ...selfRegistrationCost(JSON.parse(a2 ?? "{}")), note: REG_NOTE });
+    } else if (a1 === "f27") {
+      // a2: {"age","degree":"none|associate|bachelor|master|phd","stemOrDouble","korean":0~5,"income","koreanUniDegree","topUniDegree","kiip5","volunteer":0~3,"immigration":"none|low|mid|high","criminal":"none|low|mid|high"}
+      print({ ...f27Points(JSON.parse(a2 ?? "{}")), note: F27_NOTE });
     } else if (a1 === "record") {
       const i = JSON.parse(a2 ?? "{}");
       print({ check: recordCheck(i), text: recordText(i) });
@@ -136,7 +156,7 @@ switch (cmd) {
       const i = JSON.parse(a2 ?? "{}");
       print({ result: CALC[a1][0](i), plain: CALC[a1][1](i) });
     } else {
-      console.error(`calc: ${Object.keys(CALC).join(", ")}, entries, record, breach, policy, contract, appeal, inherit, auction, customs, workforce, points, surcharge, appraisal, compensation, ip, franchise, apartment`);
+      console.error(`calc: ${Object.keys(CALC).join(", ")}, entries, record, breach, policy, contract, appeal, inherit, auction, customs, workforce, points, surcharge, appraisal, compensation, ip, franchise, apartment, disability, deposit, registration, f27`);
       process.exit(1);
     }
     break;

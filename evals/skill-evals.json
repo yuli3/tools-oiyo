@@ -1220,6 +1220,167 @@
           }
         }
       ]
+    },
+    {
+      "skill": "oiyo-kr-law-guide",
+      "id": "injury-disability-7",
+      "ask": "산재 장해 7급 나왔고 평균임금이 하루 15만 원이에요. 연금이랑 일시금 얼마예요?",
+      "run": [
+        "calc",
+        "disability",
+        "{\"grade\": 7, \"avgWage\": 150000, \"healed\": \"2026-10-01\"}"
+      ],
+      "expect": [
+        {
+          "path": "form",
+          "eq": "choice"
+        },
+        {
+          "path": "pensionAnnual",
+          "eq": 20700000
+        },
+        {
+          "path": "lumpSum",
+          "eq": 92400000
+        },
+        {
+          "path": "claimBy",
+          "eq": "2031-10-01"
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-kr-law-guide",
+      "id": "court-deposit-interest",
+      "ask": "작년 3월 2일에 3천만 원 공탁했는데 오늘 찾으면 이자가 얼마예요?",
+      "run": [
+        "calc",
+        "deposit",
+        "{\"amount\": 30000000, \"deposited\": \"2025-03-02\", \"withdrawn\": \"2026-11-20\", \"ground\": \"refused\"}"
+      ],
+      "expect": [
+        {
+          "path": "days",
+          "eq": 628
+        },
+        {
+          "path": "interest",
+          "eq": 180657
+        },
+        {
+          "path": "lapseOn",
+          "eq": "2035-03-02"
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-kr-law-guide",
+      "id": "self-registration",
+      "ask": "서울 5억 아파트(공시가격 3억 5천) 첫 집인데 셀프 등기하면 얼마 들어요?",
+      "run": [
+        "calc",
+        "registration",
+        "{\"price\": 500000000, \"standardPrice\": 350000000, \"metro\": true, \"houses\": 1, \"method\": \"efile\"}"
+      ],
+      "expect": [
+        {
+          "path": "acquisition.total",
+          "eq": 5500000
+        },
+        {
+          "path": "stamp",
+          "eq": 75000
+        },
+        {
+          "path": "fee",
+          "eq": 10000
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-kr-law-guide",
+      "id": "f27-points",
+      "ask": "31살, 석사, TOPIK 4급, 연봉 4,500만 원이면 F-2-7 점수 돼요?",
+      "run": [
+        "calc",
+        "f27",
+        "{\"age\": 31, \"degree\": \"master\", \"korean\": 4, \"income\": 45000000}"
+      ],
+      "expect": [
+        {
+          "path": "pass",
+          "eq": true
+        },
+        {
+          "path": "total",
+          "gte": 80
+        }
+      ]
+    },
+    {
+      "skill": "kr-tax-advisor",
+      "id": "deferred-tax-net",
+      "ask": "차감할 일시적차이 1억, 가산할 차이 4천만, 세율 20.9%, 기초 순이연법인세자산 500만, 당기 법인세 3천만이면 법인세비용은요?",
+      "run": [
+        "deferred-tax",
+        "{\"items\": [{\"label\": \"퇴직급여충당부채\", \"amount\": 100000000}, {\"label\": \"일시상각충당금\", \"amount\": -40000000}], \"rate\": 0.209, \"openingNet\": 5000000, \"currentTax\": 30000000}"
+      ],
+      "expect": [
+        {
+          "path": "result.closingNet",
+          "eq": 12540000
+        },
+        {
+          "path": "result.deferredExpense",
+          "eq": -7540000
+        },
+        {
+          "path": "result.totalExpense",
+          "eq": 22460000
+        }
+      ]
+    },
+    {
+      "skill": "kr-tax-advisor",
+      "id": "audit-materiality",
+      "ask": "세전이익 10억 회사 감사 중요성은 얼마로 잡아요?",
+      "run": [
+        "materiality",
+        "{\"benchmark\": \"pretax\", \"base\": 1000000000}"
+      ],
+      "expect": [
+        {
+          "path": "result.overall",
+          "eq": 50000000
+        },
+        {
+          "path": "result.performance",
+          "eq": 32500000
+        },
+        {
+          "path": "result.trivial",
+          "eq": 2500000
+        }
+      ]
+    },
+    {
+      "skill": "kr-tax-advisor",
+      "id": "audit-sample-size",
+      "ask": "매출채권 50억, 허용왜곡 3,250만, 신뢰수준 95%면 표본 몇 개예요? 통제 테스트 허용이탈 5%면요?",
+      "run": [
+        "sample",
+        "{\"population\": 5000000000, \"tolerable\": 32500000, \"confidence\": 95, \"tolerableRate\": 0.05}"
+      ],
+      "expect": [
+        {
+          "path": "result.mus.size",
+          "eq": 462
+        },
+        {
+          "path": "result.attribute.size",
+          "eq": 59
+        }
+      ]
     }
   ],
   "boundaries": {

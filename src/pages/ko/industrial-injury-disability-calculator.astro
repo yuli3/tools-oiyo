@@ -1,0 +1,32 @@
+---
+// 산재 장해급여 연금·일시금 계산기 2026 (2026-11-21, 전문 직군 전수조사 남은 빈칸). 엔진: lib/kr-injury-disability-2026.ts
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import DisabilityBenefit from "../../components/tools/lawguide/DisabilityBenefit";
+import { DISABILITY_AS_OF } from "../../lib/kr-injury-disability-2026";
+
+const title = "산재 장해급여 계산기 2026 — 장해등급별 연금·일시금 비교";
+const description = "산재 장해등급(1~14급)과 1일 평균임금으로 장해보상연금과 장해보상일시금을 계산하고, 몇 년 이상 받으면 연금이 유리한지, 선급금과 5년 청구 기한을 보여 줘요.";
+const ko = {
+  introTitle: "등급별 일수 × 평균임금이에요",
+  intro: "장해급여는 장해등급마다 정해진 일수에 1일 평균임금을 곱해요. 1~3급은 연금만, 4~7급은 연금과 일시금 중 고르고, 8~14급은 일시금만 받아요. 평균임금은 2026년 최고·최저 보상기준 안으로 맞춰 계산해요.",
+  howToTitle: "사용 방법",
+  steps: ["장해등급을 넣어요(근로복지공단 결정 또는 예상 등급).", "사고 전 3개월 임금으로 구한 1일 평균임금을 넣어요.", "치유일을 넣으면 청구 기한(5년)도 계산해요."],
+  highlightsTitle: "주요 특징",
+  highlights: [
+    { title: "연금과 일시금 비교", body: "4~7급은 손익분기 햇수를 보여 줘요." },
+    { title: "최고·최저 보상기준", body: "2026년 268,299원·82,560원." },
+    { title: "선급금", body: "처음 1~2년(1~3급은 4년) 치의 절반까지." },
+    { title: "청구 기한", body: "치유일 다음 날부터 5년." },
+  ],
+  disclaimer: `장해급여 어림 계산이에요. 장해등급과 평균임금은 근로복지공단이 결정하고, 결정에 이의가 있으면 90일 안에 심사청구해요. 기준일 ${DISABILITY_AS_OF}.`,
+};
+const faqs = [
+  { q: "연금과 일시금 중 무엇이 유리한가요?", a: "4~7급은 연금 연액 × 받을 햇수가 일시금보다 커지는 시점(손익분기)을 보고 골라요. 오래 받을수록 연금이 유리하지만, 목돈이 필요하면 연금 선급금(처음 몇 년 치의 절반)도 있어요." },
+  { q: "평균임금이 너무 낮거나 높으면요?", a: "산재보험은 최고·최저 보상기준 금액 사이로 평균임금을 맞춰요. 2026년 최고 268,299원, 최저 82,560원이에요(고용노동부 고시)." },
+  { q: "장해등급에 동의하지 않아요.", a: "장해급여 결정 통지를 받은 날부터 90일 안에 근로복지공단에 심사청구, 그 뒤 산업재해보상보험재심사위원회에 재심사청구를 할 수 있어요. 행정소송도 가능해요." },
+];
+---
+<KrFinancePage slug="industrial-injury-disability-calculator" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <DisabilityBenefit client:load />
+  <p class="mt-4 text-xs text-muted-foreground">근거: 산업재해보상보험법 제36조·제57조·제103조·제112조, 시행령 별표 2(장해급여표)·제55조, 2026년 최고·최저 보상기준 금액 고시. 기준일 {DISABILITY_AS_OF}. <a class="underline" href="/ko/appeal-deadline-calculator/">불복·이의신청 기한 계산기</a> · <a class="underline" href="/ko/pro-competency-map/">전문 직업 역량 지도</a></p>
+</KrFinancePage>

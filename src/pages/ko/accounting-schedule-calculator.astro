@@ -3,8 +3,8 @@
 import KrFinancePage from "../../components/KrFinancePage.astro";
 import AccountingSchedules from "../../components/tools/advisory/AccountingSchedules";
 
-const title = "결산 상각표 계산기 — 감가상각·리스(IFRS 16)·사채 유효이자율, 외부감사 대상 판정";
-const description = "정액법·정률법·연수합계법 감가상각표(첫해 월할), K-IFRS 1116호 리스부채·사용권자산 표, 사채 유효이자율법 할인·할증차금 상각표를 만들고, 직전 사업연도 숫자로 다음 해 외부감사 대상인지 판정해요.";
+const title = "결산 상각표 계산기 — 감가상각·리스(IFRS 16)·사채, 이연법인세, 외부감사 대상·감사 중요성·표본";
+const description = "정액법·정률법·연수합계법 감가상각표(첫해 월할), K-IFRS 1116호 리스부채·사용권자산 표, 사채 유효이자율법 할인·할증차금 상각표를 만들고, 직전 사업연도 숫자로 다음 해 외부감사 대상인지 판정해요. 일시적차이로 이연법인세자산·부채와 법인세비용을, 감사 계획의 전체·수행 중요성과 표본 크기(MUS·속성표본)도 계산해요.";
 const ko = {
   introTitle: "결산 분개 전에 표부터 맞춰요",
   intro: "감가상각·리스·사채는 해마다 같은 계산을 반복해요. 표를 먼저 만들어 두면 분개와 주석 숫자가 서로 맞는지 바로 볼 수 있어요.",
@@ -16,16 +16,20 @@ const ko = {
     { title: "IFRS 16 리스", body: "리스료 현재가치로 리스부채를 잡고 해마다 이자와 원금 감소를 나눠요." },
     { title: "사채", body: "유효이자율법으로 할인·할증 발행가액과 차금 상각을 계산해요." },
     { title: "외감 판정", body: "500억 기준과 4개 중 2개(유한회사 5개 중 3개) 기준을 따져요." },
+    { title: "이연법인세", body: "일시적차이 × 소멸 시 세율로 자산·부채를 잡고, 미래 과세소득이 모자라면 인식하지 않는 금액을 보여 줘요." },
+    { title: "감사 중요성·표본", body: "기준치 × 비율로 전체·수행 중요성을 정하고, 금액단위표본 크기와 표본 간격을 구해요." },
   ],
   disclaimer: "결산 표를 맞춰 보는 어림 계산이에요. 회계정책과 세무상 상각 한도는 회사 상황에 따라 다르고, 감사 의견을 대신하지 않아요.",
 };
 const faqs = [
   { q: "외부감사 대상은 어떻게 정해져요?", a: "직전 사업연도 말 기준으로 상장(예정) 법인, 자산 또는 매출액 500억 원 이상 회사는 대상이에요. 그 밖의 주식회사는 자산 120억, 부채 70억, 매출액 100억, 종업원 100명 중 2개 이상이면 대상이에요(외부감사법 시행령 제5조). 유한회사는 사원 50명을 더한 5개 중 3개 이상이에요." },
   { q: "정률법 상각률은 어떻게 구해요?", a: "1 − (잔존가치 ÷ 취득원가)^(1/내용연수)예요. 잔존가치가 0이면 계산이 안 되니 법인세법처럼 취득원가의 5%를 잔존가치로 두고 상각률을 구해요." },
+  { q: "이연법인세자산은 언제 다 인식하지 못해요?", a: "차감할 일시적차이나 이월결손금을 쓸 만큼 미래 과세소득이 생길 가능성이 높을 때만 자산으로 잡아요(K-IFRS 1012호 문단 24·34). 가산할 일시적차이가 소멸하며 생기는 과세소득도 재원으로 봐요." },
+  { q: "수행 중요성은 몇 %로 잡아요?", a: "감사기준서 320은 비율을 정하지 않아요. 실무에서는 전체 중요성의 50~75%를 쓰고, 전기 왜곡이 많거나 위험이 높으면 낮게 잡아요." },
   { q: "리스부채 이자율은 무엇을 써요?", a: "리스의 내재이자율을 쉽게 알 수 없으면 리스이용자의 증분차입이자율을 써요(K-IFRS 1116호 문단 26)." },
 ];
 ---
 <KrFinancePage slug="accounting-schedule-calculator" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
   <AccountingSchedules client:load />
-  <p class="mt-4 text-xs text-muted-foreground">근거: K-IFRS 1016호·1116호, 외부감사법 제4조·시행령 제5조, 법인세법 시행령 제26조. <a class="underline" href="/ko/corporate-tax-adjustment-calculator/">법인세 계산기</a> · <a class="underline" href="/ko/accounting-law-guide/">회계 길잡이</a> · <a class="underline" href="/ko/journal-entry-analytics/">전표 데이터 분석</a></p>
+  <p class="mt-4 text-xs text-muted-foreground">근거: K-IFRS 1016호·1116호·1012호, 감사기준서 320·450·530, 외부감사법 제4조·시행령 제5조, 법인세법 시행령 제26조. <a class="underline" href="/ko/corporate-tax-adjustment-calculator/">법인세 계산기</a> · <a class="underline" href="/ko/accounting-law-guide/">회계 길잡이</a> · <a class="underline" href="/ko/journal-entry-analytics/">전표 데이터 분석</a></p>
 </KrFinancePage>

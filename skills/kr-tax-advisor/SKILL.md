@@ -12,7 +12,7 @@ description: 한국 세무·회계 실무 상담 보조. 비상장주식 보충�
 1. MCP 서버 `https://api.oiyo.net/mcp`(Registry 이름 `io.github.yuli3/oiyo-calculations`)가 연결돼 있으면 그 도구를 쓴다.
    - `value_kr_unlisted_shares`, `calculate_kr_family_business_deduction`, `calculate_kr_incorporation_conversion`, `calculate_dcf_valuation`
 2. 코드 실행이 되면 이 스킬의 스크립트를 쓴다: `node scripts/calc.mjs <도구> '<JSON 입력>'` (Node 22 이상, 의존성 없음).
-   - 도구: `unlisted-shares`, `family-business`, `incorporation-conversion`, `dcf`, `wacc`, `corp-tax`(법인세 어림과 세무조정 한도), `entertainment`(기업업무추진비 한도), `penalty`(무신고·과소신고·납부지연·원천세 가산세와 감면), `depreciation`·`lease`·`bond`(결산 상각표), `audit`(다음 해 외부감사 대상 판정), `deemed-input`·`card-credit`·`bad-debt`(부가세 공제). 입력 예시는 `node scripts/calc.mjs help`.
+   - 도구: `unlisted-shares`, `family-business`, `incorporation-conversion`, `dcf`, `wacc`, `corp-tax`(법인세 어림과 세무조정 한도), `entertainment`(기업업무추진비 한도), `penalty`(무신고·과소신고·납부지연·원천세 가산세와 감면), `depreciation`·`lease`·`bond`(결산 상각표), `audit`(다음 해 외부감사 대상 판정), `deferred-tax`(이연법인세), `materiality`·`sample`(감사 중요성·표본 크기), `deemed-input`·`card-credit`·`bad-debt`(부가세 공제). 입력 예시는 `node scripts/calc.mjs help`.
 3. 둘 다 안 되면 계산하지 말고, 웹 계산기 링크(아래)를 주고 필요한 입력을 정리해 준다.
 
 ## 진행 순서
@@ -55,6 +55,14 @@ description: 한국 세무·회계 실무 상담 보조. 비상장주식 보충�
 - `bond`: 유효이자율법. 할인·할증 여부와 해마다 차금 상각액.
 - `audit`: 상장이면 대상, 자산 또는 매출 500억 원 이상이면 대상, 그 밖에는 자산 120억·부채 70억·매출 100억·종업원 100명 중 2개 이상(유한회사는 사원 50명을 더해 3개 이상)이면 대상.
 - 세무상 상각 한도(법인세법 제23조)와 회계 상각은 다를 수 있다고 말하고, 감사인 선임은 회사가 직접 한다.
+
+## 이연법인세와 감사 계획 (deferred-tax · materiality · sample)
+
+결산 때 법인세비용을 맞추거나 감사 계획 숫자를 잡을 때 쓴다. 먼저 묻는다: 일시적차이 목록(차감할 차이는 +, 가산할 차이는 −, 이월결손금은 +), 차이가 소멸될 해의 예상 과세표준이나 세율, 미래 과세소득 전망, 기초 이연법인세, 당기 법인세 부담액. 감사 계획이면 기준치(세전이익·매출·자산·자본·비용)와 금액, 위험 수준, 모집단 잔액, 예상왜곡.
+
+- `deferred-tax`: 일시적차이 × 소멸 시 세율. 세율을 모르면 `expectedBase`로 2026 법인세 구간 평균세율 × 1.1(지방소득세)을 쓴다. 미래 과세소득(가산할 차이 소멸분 포함)이 모자라면 인식하지 않는 금액을 따로 보여 준다(K-IFRS 1012호).
+- `materiality`: 전체 중요성 = 기준치 × 비율(세전이익 5%, 매출 0.5~1%, 자산 1~2% 등 관행), 수행 중요성 = 50~75%, 명백히 사소한 금액 = 5%. 비율은 법정이 아니라 감사인 판단이라고 말한다(감사기준서 320·450).
+- `sample`: 금액단위표본 n = 모집단 × 신뢰계수 ÷ (허용왜곡 − 예상왜곡 × 확장계수), 통제 테스트는 예상 이탈 0개 속성표본. 감사의견과 표본 설계는 감사인이 정한다.
 
 ## 부가세 공제 (deemed-input · card-credit · bad-debt)
 

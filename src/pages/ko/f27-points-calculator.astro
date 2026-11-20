@@ -1,0 +1,32 @@
+---
+// 거주(F-2-7) 점수 계산기 2026 (2026-11-21, 전문 직군 전수조사 남은 빈칸). 엔진: lib/kr-f27-points-2026.ts
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import F27Points from "../../components/tools/lawguide/F27Points";
+import { F27_AS_OF } from "../../lib/kr-f27-points-2026";
+
+const title = "거주(F-2-7) 점수 계산기 2026 — 나이·학력·한국어·소득, 합격선 80점";
+const description = "점수제 거주 비자(F-2-7) 점수를 나이·학력·한국어 능력·연간 소득·가점·감점으로 계산하고, 합격선 80점까지 모자란 점수와 올릴 수 있는 항목을 보여 줘요.";
+const ko = {
+  introTitle: "공통 항목 + 가점 − 감점, 80점이면 돼요",
+  intro: "F-2-7은 나이·학력·한국어 능력·연간 소득 점수에 가점(국내 학위, 사회통합프로그램 5단계 이수, 봉사 등)을 더하고 감점(출입국 위반, 벌금)을 빼서 80점 이상이면 신청할 수 있어요. 소득은 최저임금 이상으로 증명돼야 점수가 붙어요.",
+  howToTitle: "사용 방법",
+  steps: ["나이, 최종 학위, 한국어 능력을 넣어요.", "연간 소득과 가점 항목을 골라요.", "합계와 모자란 점수, 올릴 수 있는 항목을 봐요."],
+  highlightsTitle: "주요 특징",
+  highlights: [
+    { title: "기본 항목", body: "나이·학력·한국어·소득." },
+    { title: "가점 최대 40점", body: "국내 학위, KIIP 5단계, 봉사 등." },
+    { title: "감점", body: "출입국 위반·벌금." },
+    { title: "모자란 점수", body: "80점까지 몇 점이 필요한지." },
+  ],
+  disclaimer: `F-2-7 점수 어림이에요. 지원 대상과 결격 사유를 먼저 확인하고, 신청은 하이코리아 방문 예약으로 해요. 고시가 바뀌면 점수가 달라져요. 기준일 ${F27_AS_OF}.`,
+};
+const faqs = [
+  { q: "누가 신청할 수 있나요?", a: "전문인력(E-1~E-7)이나 D-5~D-9 같은 정해진 체류자격으로 3년 이상 합법 체류했거나, 상장회사 전문직 등 고시에 정한 대상이에요. 5년 안 금고 이상, 3년 안 300만 원 이상 벌금 같은 결격 사유가 없어야 해요(법무부 고시 제2025-408호)." },
+  { q: "소득은 어떻게 증명하나요?", a: "세무서 소득금액증명원(직전 연도)으로 봐요. 최저임금 이상 소득이 증명되지 않으면 소득 점수가 없어요." },
+  { q: "점수가 모자라요.", a: "한국어 능력(TOPIK·사회통합프로그램) 급수를 올리거나 사회통합프로그램 5단계를 이수하면 가점이 붙어요. 소득이 오르면 점수 구간이 올라가요." },
+];
+---
+<KrFinancePage slug="f27-points-calculator" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <F27Points client:load />
+  <p class="mt-4 text-xs text-muted-foreground">근거: 출입국관리법 시행령 별표 1의2(거주 F-2), 법무부 고시 제2025-408호(점수제 거주 자격 점수표). 기준일 {F27_AS_OF}. <a class="underline" href="/ko/visa-stay-status-guide/">체류자격·외국인등록 기한 길잡이</a> · <a class="underline" href="/ko/pro-competency-map/">전문 직업 역량 지도</a></p>
+</KrFinancePage>
