@@ -33,6 +33,7 @@ export const welfareTools = [
   { slug: "officetel-house-count-checker", title: "오피스텔 주택 수 판정", description: "오피스텔이 다음 집 취득세, 양도세 중과·종부세, 1주택 비과세, 청약에서 주택 수에 들어가는지 세목별로 판정하고 늘어나는 취득세를 계산해요." },
   { slug: "redevelopment-ticket-vs-presale-tax-calculator", title: "재건축 입주권 vs 분양권 양도세", description: "조합원입주권과 분양권을 팔 때 양도세를 비교해요. 입주권은 2년 뒤 기본세율·장기보유특별공제·비과세, 분양권은 70%·60%예요." },
   { slug: "inherited-house-appraisal-vs-official-price-calculator", title: "상속주택 감정평가 vs 공시가격", description: "상속받은 집을 공시가격과 감정평가로 신고할 때 상속세와 나중 양도세 합계를 비교해 어느 쪽이 유리한지 알려 줘요." },
+  { slug: "after-death-checklist", title: "사망 후 할 일 타임라인", description: "돌아가신 날 하나로 사망신고·안심상속·상속포기·상속세·취득세·자동차 이전·연금·보험 청구 기한을 날짜순 체크리스트로 보여 줘요." },
   { slug: "inheritance-gift-filing-deadline-calculator", title: "상속세·증여세 신고기한 계산기", description: "상속 6개월·증여 3개월 신고기한과 취득세·사망신고·상속포기 기한을 날짜로 보여 주고, 늦을 때 가산세를 계산해요." },
   { slug: "youth-monthly-rent-support-checker", title: "청년월세 지원 자격·금액", description: "만 19~34세 청년월세 지원(월 20만 원 × 24개월) 자격을 청년·원가구 소득·재산과 보증금·월세 기준으로 점검하고 받을 금액을 계산해요." },
   { slug: "policy-housing-loan-eligibility-checker", title: "정책 주거대출 자격 찾기", description: "디딤돌, 신생아 특례, 청년 주택드림, 버팀목, 청년전용 버팀목, 월세대출 자격과 최대 한도·금리 범위를 한 번에 비교해요." },

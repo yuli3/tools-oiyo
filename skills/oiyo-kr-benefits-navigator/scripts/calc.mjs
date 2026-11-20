@@ -4,6 +4,7 @@
 import { WELFARE_AS_OF, workChildCredit, maternityLeavePay, spouseLeavePay, wageGuarantee, injuryLeavePay, averageDailyWage, monthlyRentCredit, dbVsDc, breakEvenReturn, ordinaryWage, fixedOvertimeCheck, longTermCareCopay, dismissalNoticePay, shutdownAllowance, reducedHoursPay, probationMinWage, leavePromotionSchedule, voluntaryQuitCheck, directPaymentCheck, youthRentSupport, housingLoanBest, specialSupplyCheck } from "./kr-welfare-2026.mjs";
 import { comprehensiveRealEstateTax, rentalIncomeTax } from "./kr-home-tax-2026.mjs";
 import { dependentsTax, majorShareholderTax, familyLoanGift, freeUseGift, lowPriceSale, commercialRentCheck, smeYouthReduction, yellowUmbrella, vatTypeCompare, businessCarExpense, overseasCompare, officetelHouseCount, ticketPresaleTax, inheritedValuation, filingDeadlines } from "./kr-household-tax-2026.mjs";
+import { afterDeathTimeline } from "./after-death-timeline-2026.mjs";
 
 const EXAMPLES = {
   "work-child-incentive": { household: "oneEarner", income: 24000000, assets: 120000000, children: 1, late: false },
@@ -41,6 +42,7 @@ const EXAMPLES = {
   "ticket-presale": { kind: "ticket", gain: 300000000, holdYears: 8, original: true, preApprovalGain: 150000000, yearsToApproval: 6, oneHouseExempt: false, salePrice: 1100000000 },
   "inherited-valuation": { official: 600000000, appraisal: 900000000, otherEstate: 200000000, spouse: false, salePrice: 1000000000, yearsAfter: 1, appraisalFee: 2000000 },
   "filing-deadline": { kind: "inheritance", date: "2026-11-01", abroad: false, tax: 50000000, lateDays: 0 },
+  "after-death": { deathDate: "2026-11-01", knownDate: "", abroad: false, employed: false, workAccident: false, business: false, otherIncome: false, pension: true, insurance: true, realEstate: true, car: false, renting: false, debts: false, today: "" },
   "rental-income-tax": { houses: 2, annualRent: 12000000, deposits: 100000000, registered: false, otherIncome: 40000000, highPriceOneHouse: false },
 };
 
@@ -96,6 +98,7 @@ switch (tool) {
   case "ticket-presale": result = ticketPresaleTax(i); break;
   case "inherited-valuation": result = inheritedValuation(i); break;
   case "filing-deadline": result = filingDeadlines(i); break;
+  case "after-death": result = afterDeathTimeline(i, i.today || undefined); break;
   case "long-term-care": result = longTermCareCopay({ ...i, homeUse: i.homeUse ?? undefined }); break;
 }
 console.log(JSON.stringify({ tool, asOf: WELFARE_AS_OF, input: i, result }, null, 2));
