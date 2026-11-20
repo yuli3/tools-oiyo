@@ -4,7 +4,7 @@ import ToolShell from '../../components/ToolShell.astro';
 import Layout from '../../components/Layout.astro';
 import UtilityArticle, { type UtilityContent } from '../../components/UtilityArticle.astro';
 import RelatedUtilities from '../../components/RelatedUtilities.astro';
-import InsurancePremiumCalculator from '../../components/tools/InsurancePremiumCalculator';
+import InsuranceWorld from '../../components/tools/world/InsuranceWorld';
 import InsurancePremiumScenario from '../../components/tools/InsurancePremiumScenario';
 import { locales } from '../../lib/i18n';
 import { utilityJsonLd } from '../../lib/utility-jsonld';
@@ -188,7 +188,7 @@ const schema = utilityJsonLd({ name: m.title, description: m.description, url, l
 ---
 <Layout title={m.title} description={m.description} locale={locale} availableLocales={[...locales]} canonicalURL={url}>
   <ToolShell title={m.title} description={m.description}>
-    {locale === 'ko' ? <InsurancePremiumScenario client:load /> : <InsurancePremiumCalculator client:load locale={locale} />}
+    {locale === 'ko' ? <InsurancePremiumScenario client:load /> : <InsuranceWorld client:load lang={locale} />}
     <UtilityArticle c={c} />
     <RelatedUtilities locale={locale} current="insurance-premium-calculator" group="money" />
   </ToolShell>
