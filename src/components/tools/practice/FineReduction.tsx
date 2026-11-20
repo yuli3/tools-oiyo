@@ -84,7 +84,7 @@ export default function FineReduction() {
               `가산금 = ${won(r.base)} × 3% = ${won(r.addOn)}, 중가산금 = ${won(r.base)} × 1.2% × ${r.months}개월 = ${won(r.heavy)} (제24조)`,
               `낼 금액 = ${won(r.pay)}`,
             ]}
-            next={[{ href: "/ko/administrative-law-guide/", label: "행정 절차 길잡이" }, { href: "/ko/law-guide/", label: "법령 길잡이 10분야" }]}
+            next={[{ href: "/ko/administrative-law-guide/", label: "행정 절차 길잡이" }, { href: "/ko/law-guide/", label: "법령 길잡이 14분야" }]}
           />
         );
       }}

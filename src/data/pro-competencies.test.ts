@@ -24,7 +24,7 @@ test("역량 지도: 연결한 도구·스킬·MCP가 모두 실제로 있어요
 });
 
 test("역량 지도: 직업 13개 모두 분류 4개 이상, 업무 범위(ethics) 역량이 있어요", () => {
-  assert.equal(JOBS.length, 13);
+  assert.equal(JOBS.length, 17);
   const ids = new Set(COMPETENCIES.map((x) => x.id));
   assert.equal(ids.size, COMPETENCIES.length, "id 중복");
   for (const j of JOBS) {

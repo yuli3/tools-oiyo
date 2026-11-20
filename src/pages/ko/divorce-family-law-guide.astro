@@ -1,0 +1,27 @@
+---
+// 법령 길잡이 (family) 2026-11-20. 엔진: lib/kr-expert-guide-2026.ts + 분야 팩 lib/kr-law-packs-2026.ts. 세운 "기존 전문 자격증의 업무범위에 필요한 모든 도구와 스킬"(11-17), "스킬 위주"(11-20).
+// 자격 명칭을 이름에 쓰지 않아요. 대리·대행·진단을 하지 않아요.
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import LawGuide from "../../components/tools/lawguide/LawGuide";
+import { LAW_GUIDE_AS_OF } from "../../lib/kr-expert-guide-2026";
+
+const title = "가사·이혼 법령 길잡이 2026 — 협의이혼 숙려기간, 이혼신고 3개월, 재산분할 2년, 양육비 이행명령";
+const description = "협의이혼 숙려기간(양육할 자녀가 있으면 3개월, 없으면 1개월), 의사확인 뒤 이혼신고 3개월, 재산분할 청구 2년, 양육비를 안 줄 때 이행명령과 감치(3기 이상) 순서를 질문으로 정리하고 민법·가사소송법 조문을 알려 줘요.";
+const ko = {
+  introTitle: "이혼 절차, 날짜로 정리",
+  intro: "신청일·확인일·이혼일을 넣으면 숙려기간 끝, 이혼신고 마감, 재산분할 청구 마감을 계산해요. 이혼 여부나 소송 결과는 판단하지 않아요.",
+  howToTitle: "사용 방법",
+  steps: ["상황을 고르세요.", "먼저 묻는 질문에 답하세요. 모르면 건너뛰어도 돼요.", "기한 막대와 확인할 점을 보고, 결과 메모를 복사해 담당 기관이나 전문가에게 가져가세요."],
+  highlightsTitle: "주요 특징",
+  highlights: [{ title: "협의이혼", body: "숙려 3개월·1개월, 신고 3개월" }, { title: "양육비", body: "이행명령 → 3기 이상이면 감치" }, { title: "무료 창구", body: "법률구조공단 132, 양육비이행관리원 1644-6621" }],
+  disclaimer: "법령 정보와 기한 계산 도구예요. 대리·서류 작성을 하지 않고 특정 변호사를 소개하지 않아요. 폭력이 있으면 112·1366에 먼저 연락하세요. 조문 풀이는 쉬운 말 요약이니 원문(국가법령정보센터)을 확인하세요. 기준일 2026-11-20.",
+};
+const faqs = [
+  { q: "이혼 확인을 받았는데 신고를 안 했어요.", a: "확인받은 날부터 3개월 안에 신고하지 않으면 확인이 효력을 잃어 다시 해야 해요(가족관계등록법 제75조)." },
+  { q: "이혼하고 1년이 지났는데 재산분할을 할 수 있나요?", a: "이혼한 날부터 2년 안이면 청구할 수 있어요(민법 제839조의2)." },
+];
+---
+<KrFinancePage slug="divorce-family-law-guide" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <LawGuide client:load domain="family" />
+  <p class="mt-4 text-xs text-muted-foreground">기준일 {LAW_GUIDE_AS_OF}. <a class="underline" href="/ko/law-guide/">법령 길잡이 14분야</a></p>
+</KrFinancePage>

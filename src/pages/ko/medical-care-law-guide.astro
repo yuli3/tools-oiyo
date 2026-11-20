@@ -1,0 +1,27 @@
+---
+// 법령 길잡이 (health) 2026-11-20. 엔진: lib/kr-expert-guide-2026.ts + 분야 팩 lib/kr-law-packs-2026.ts. 세운 "기존 전문 자격증의 업무범위에 필요한 모든 도구와 스킬"(11-17), "스킬 위주"(11-20).
+// 자격 명칭을 이름에 쓰지 않아요. 대리·대행·진단을 하지 않아요.
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import LawGuide from "../../components/tools/lawguide/LawGuide";
+import { LAW_GUIDE_AS_OF } from "../../lib/kr-expert-guide-2026";
+
+const title = "보건·의료 이용 길잡이 2026 — 진료기록 사본, 진단서, 의료분쟁 조정, 진료비 확인";
+const description = "환자 본인의 진료기록 열람·사본 발급 권리와 보존기간(진료기록부 10년, 처방전 2년), 진단서 발급, 의료사고 조정 신청 기한(안 날부터 3년·진료 끝난 날부터 10년), 비급여 진료비 확인 요청을 질문으로 정리하고 의료법·의료분쟁조정법 조문을 알려 줘요.";
+const ko = {
+  introTitle: "진료기록은 내 권리예요",
+  intro: "누가 무엇을 요청하는지 고르면 필요한 서류와 보존기간을, 의료사고가 의심되면 조정 신청 기한과 무료 창구를 정리해 줘요. 진단·치료는 판단하지 않아요.",
+  howToTitle: "사용 방법",
+  steps: ["상황을 고르세요.", "먼저 묻는 질문에 답하세요. 모르면 건너뛰어도 돼요.", "기한 막대와 확인할 점을 보고, 결과 메모를 복사해 담당 기관이나 전문가에게 가져가세요."],
+  highlightsTitle: "주요 특징",
+  highlights: [{ title: "기록 받기", body: "본인은 바로, 가족·대리인은 동의서" }, { title: "의료분쟁", body: "중재원 조정, 3년·10년" }, { title: "진료비 확인", body: "심평원 무료 확인 요청" }],
+  disclaimer: "법령 정보와 기한 계산 도구예요. 진단·치료·의료과실을 판단하지 않고 특정 병원·전문가를 소개하지 않아요. 아프면 먼저 진료를 받으세요. 조문 풀이는 쉬운 말 요약이니 원문(국가법령정보센터)을 확인하세요. 기준일 2026-11-20.",
+};
+const faqs = [
+  { q: "병원이 진료기록을 안 줘요.", a: "환자 본인의 요청은 정당한 이유 없이 거부할 수 없어요. 관할 보건소에 민원을 낼 수 있어요(의료법 제21조)." },
+  { q: "의료분쟁 조정은 비용이 드나요?", a: "상담은 무료이고, 조정 신청 수수료는 금액에 따라 적어요. 한국의료분쟁조정중재원(1670-2545)에 먼저 상담하세요." },
+];
+---
+<KrFinancePage slug="medical-care-law-guide" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <LawGuide client:load domain="health" />
+  <p class="mt-4 text-xs text-muted-foreground">기준일 {LAW_GUIDE_AS_OF}. <a class="underline" href="/ko/law-guide/">법령 길잡이 14분야</a> · <a class="underline" href="/ko/medical-expense-tax-credit-calculator/">의료비 세액공제 계산기</a></p>
+</KrFinancePage>
