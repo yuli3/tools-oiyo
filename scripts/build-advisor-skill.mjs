@@ -9,7 +9,7 @@ import { fileURLToPath } from "node:url";
 import { stripTypeScriptTypes } from "node:module";
 import { execFileSync } from "node:child_process";
 
-export const SKILL_LIBS = ["kr-vat-2026", "kr-payroll-2026", "kr-advisory-2026"];
+export const SKILL_LIBS = ["kr-vat-2026", "kr-payroll-2026", "kr-advisory-2026", "kr-business-day", "bookkeeping-bridge-2026"];
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 export const SKILL_DIR = resolve(root, "skills/kr-tax-advisor");
 
