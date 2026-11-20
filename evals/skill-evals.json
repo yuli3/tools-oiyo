@@ -984,6 +984,36 @@
           "eq": false
         }
       ]
+    },
+    {
+      "skill": "kr-tax-advisor",
+      "id": "lease-ifrs16",
+      "ask": "사무실을 3년 리스해요. 매년 말 100만 원, 증분차입이자율 5%면 리스부채는 얼마로 잡아요?",
+      "run": [
+        "lease",
+        "{\"payment\": 1000000, \"periods\": 3, \"rate\": 0.05}"
+      ],
+      "expect": [
+        {
+          "path": "result.liability",
+          "eq": 2723248
+        }
+      ]
+    },
+    {
+      "skill": "kr-tax-advisor",
+      "id": "audit-two-of-four",
+      "ask": "작년 말 자산 130억, 부채 80억, 매출 50억, 직원 20명이에요. 올해 외부감사 받아야 해요?",
+      "run": [
+        "audit",
+        "{\"assets\": 13000000000, \"liabilities\": 8000000000, \"revenue\": 5000000000, \"employees\": 20}"
+      ],
+      "expect": [
+        {
+          "path": "result.required",
+          "eq": true
+        }
+      ]
     }
   ],
   "boundaries": {

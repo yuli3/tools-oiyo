@@ -72,6 +72,9 @@ GENERATED from tools-oiyo src/data/pro-competencies.ts. 기준일 2026-11-20. �
   - 도구: 회계·장부 법령 길잡이 https://tools.oiyo.net/ko/accounting-law-guide/
   - MCP: `search_kr_statutes`, `start_kr_law_intake`
   - 스킬: oiyo-kr-law-guide
+- **결산 상각표와 외감 대상 판정** [계산·평가]: 감가상각·IFRS 16 리스·사채 유효이자율 표를 만들고, 직전 연도 숫자로 다음 해 외부감사 대상을 판정해요.
+  - 도구: 결산 상각표·외감 판정 https://tools.oiyo.net/ko/accounting-schedule-calculator/
+  - 스킬: kr-tax-advisor
 - **재무제표 분석** [계산·평가] (일반인도 씀): 수익성·안정성·활동성 비율 추세로 회사 상태를 읽어요.
   - 도구: 재무비율 추세 https://tools.oiyo.net/ko/financial-ratio-trend/ · 원가계산 시뮬레이터 https://tools.oiyo.net/ko/cost-accounting-simulator/
 - **기업가치 평가** [계산·평가]: DCF·WACC, 상증법 평가를 나란히 놓고 가정이 바뀔 때 가치가 어떻게 움직이는지 봐요.

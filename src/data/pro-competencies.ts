@@ -88,6 +88,7 @@ export const COMPETENCIES: Competency[] = [
 
   // 공인회계사
   c("cpa-law", "cpa", "law", "외부감사법과 회계기준", "외부감사 대상 판정, K-IFRS·일반기업회계기준의 인식·측정 원칙을 적용해요.", { tools: ["accounting-law-guide"], skills: [LAW], mcp: ["search_kr_statutes", "start_kr_law_intake"] }),
+  c("cpa-schedule", "cpa", "calc", "결산 상각표와 외감 대상 판정", "감가상각·IFRS 16 리스·사채 유효이자율 표를 만들고, 직전 연도 숫자로 다음 해 외부감사 대상을 판정해요.", { tools: ["accounting-schedule-calculator"], skills: [ADV] }),
   c("cpa-ratio", "cpa", "calc", "재무제표 분석", "수익성·안정성·활동성 비율 추세로 회사 상태를 읽어요.", { tools: ["financial-ratio-trend", "cost-accounting-simulator"], audience: ["pro", "public"] }),
   c("cpa-valuation", "cpa", "calc", "기업가치 평가", "DCF·WACC, 상증법 평가를 나란히 놓고 가정이 바뀔 때 가치가 어떻게 움직이는지 봐요.", { tools: ["dcf-valuation-calculator", "unlisted-share-valuation-calculator"], skills: [ADV], mcp: ["calculate_dcf_valuation", "value_kr_unlisted_shares", "calculate_cagr"] }),
   c("cpa-journal", "cpa", "docs", "분개와 계정 흐름", "거래를 차변·대변으로 나누고 T계정으로 잔액 흐름을 확인해요.", { tools: ["journal-entry-trainer", "t-account-visualizer"], audience: ["pro", "public"] }),
@@ -273,6 +274,7 @@ export const TOOL_NAMES: Record<string, string> = {
   "monthly-rent-tax-credit-calculator": "월세 세액공제",
   "unlisted-share-valuation-calculator": "비상장주식 평가",
   "corporate-tax-adjustment-calculator": "법인세 어림·세무조정 한도",
+  "accounting-schedule-calculator": "결산 상각표·외감 판정",
   "tax-penalty-calculator": "가산세 계산",
   "incorporation-calculator": "개인 vs 법인 세금 비교",
   "family-business-inheritance-calculator": "가업상속공제",
