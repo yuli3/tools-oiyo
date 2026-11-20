@@ -17,6 +17,7 @@
 //   node scripts/guide.mjs calc customs travel '{"totalUsd":1800,"fx":1400,"selfReport":true}'   (travel|direct|rvc|refund)
 //   node scripts/guide.mjs calc points '{"events":[{"date":"2026-03-15","violation":"speed40"}]}' [오늘]  |  calc surcharge '{"months":1,"perDay":1000000}'
 //   node scripts/guide.mjs calc compensation '{"land":{"officialPrice":3000000,"area":200,"landChange":0.032}}'  |  calc appraisal '<json>'
+//   node scripts/guide.mjs calc ip '{"kind":"patent","disclosed":"2026-03-02","filed":"2026-05-15"}' [오늘]
 //   node scripts/guide.mjs calc workforce count '[6,6,4,4,6]'  |  calc workforce schedule '{"shifts":[{"day":"월","start":"09:00","end":"18:00","breakMin":60}]}'
 //   node scripts/guide.mjs practice [<길잡이 slug> [<상황 id> '<{"기한id":"YYYY-MM-DD"}>']]
 import { readFileSync } from "node:fs";
@@ -28,6 +29,7 @@ import { checkContract } from "./freelance-contract-check-2026.mjs";
 import { appealsFrom, APPEAL_NOTE } from "./kr-appeal-deadlines-2026.mjs";
 import { legalHeirs, reserveShortfall, INHERIT_NOTE } from "./kr-inheritance-share-2026.mjs";
 import { auctionDistribution, AUCTION_NOTE } from "./kr-auction-distribution-2026.mjs";
+import { IP_NOTE, ipDeadlines } from "./kr-ip-deadlines-2026.mjs";
 import { APPRAISAL_NOTE, businessLoss, costApproach, incomeApproach, landCompensation, reconcile, relocationAllowance, salesComparison } from "./kr-appraisal-2026.mjs";
 import { POINTS_NOTE, VIOLATIONS, licenseStatus, suspensionToSurcharge, violationPoints, accidentPoints } from "./kr-license-points-2026.mjs";
 import { WORKFORCE_NOTE, checkSchedule, headcountThresholds } from "./kr-workforce-2026.mjs";
@@ -116,6 +118,9 @@ switch (cmd) {
       const i = JSON.parse(a2 ?? "{}");
       const land = i.land ? landCompensation(i.land) : null, biz = i.business ? businessLoss(i.business) : null, home = i.relocation ? relocationAllowance(i.relocation.monthlySpending, i.relocation.tenant) : null;
       print({ land, business: biz, relocation: home, total: (land?.value ?? 0) + (biz?.total ?? 0) + (home?.amount ?? 0), note: APPRAISAL_NOTE });
+    } else if (a1 === "ip") {
+      // a2: {"kind":"patent|utility|design|trademark","disclosed","filed","priority","noticeServed","noticeMonths","rejectionServed","decisionServed","registered"}, a3: 오늘(선택)
+      print({ deadlines: ipDeadlines(JSON.parse(a2 ?? "{}"), a3 ?? today()), note: IP_NOTE });
     } else if (a1 === "record") {
       const i = JSON.parse(a2 ?? "{}");
       print({ check: recordCheck(i), text: recordText(i) });
@@ -123,7 +128,7 @@ switch (cmd) {
       const i = JSON.parse(a2 ?? "{}");
       print({ result: CALC[a1][0](i), plain: CALC[a1][1](i) });
     } else {
-      console.error(`calc: ${Object.keys(CALC).join(", ")}, entries, record, breach, policy, contract, appeal, inherit, auction, customs, workforce, points, surcharge, appraisal, compensation`);
+      console.error(`calc: ${Object.keys(CALC).join(", ")}, entries, record, breach, policy, contract, appeal, inherit, auction, customs, workforce, points, surcharge, appraisal, compensation, ip`);
       process.exit(1);
     }
     break;

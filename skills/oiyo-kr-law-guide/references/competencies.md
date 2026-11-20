@@ -364,8 +364,11 @@ GENERATED from tools-oiyo src/data/pro-competencies.ts. 기준일 2026-11-20. �
   - MCP: `search_kr_statutes`
   - 스킬: oiyo-kr-law-guide
 - **공지예외·거절 대응 기한** [기한·절차] (일반인도 씀): 공지예외 12개월, 의견서 제출기간, 거절결정 불복 3개월, 연차료 납부를 관리해요.
-  - 도구: 불복·이의신청 기한 계산 https://tools.oiyo.net/ko/appeal-deadline-calculator/ · 특허·상표 법령 길잡이 https://tools.oiyo.net/ko/ip-law-guide/
+  - 도구: 특허·상표 기한 https://tools.oiyo.net/ko/ip-deadline-calculator/ · 불복·이의신청 기한 계산 https://tools.oiyo.net/ko/appeal-deadline-calculator/ · 특허·상표 법령 길잡이 https://tools.oiyo.net/ko/ip-law-guide/
   - MCP: `start_kr_law_intake`
+  - 스킬: oiyo-kr-law-guide
+- **우선권·PCT·연차료·갱신 기한** [기한·절차] (일반인도 씀): 조약우선권 12개월(디자인·상표 6개월), PCT 31개월, 심사청구 3년, 등록료·연차료, 상표 10년 갱신을 날짜로 관리해요.
+  - 도구: 특허·상표 기한 https://tools.oiyo.net/ko/ip-deadline-calculator/
   - 스킬: oiyo-kr-law-guide
 - **선행기술·등록상표 조사** [상담·설계] (일반인도 씀): 출원 전에 키프리스로 같은 기술·비슷한 상표를 찾아 가능성을 가늠해요.
   - 도구: 특허·상표 법령 길잡이 https://tools.oiyo.net/ko/ip-law-guide/
