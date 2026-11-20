@@ -902,6 +902,47 @@
           }
         }
       ]
+    },
+    {
+      "skill": "oiyo-kr-law-guide",
+      "id": "customs-travel-self-report",
+      "ask": "해외여행에서 1,800달러어치 샀어요. 환율 1,400원이고 자진신고하면 세금이 얼마예요?",
+      "run": [
+        "calc",
+        "customs",
+        "travel",
+        "{\"totalUsd\": 1800, \"fx\": 1400, \"selfReport\": true}"
+      ],
+      "expect": [
+        {
+          "path": "tax",
+          "eq": 280000
+        },
+        {
+          "path": "total",
+          "eq": 196000
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-kr-law-guide",
+      "id": "customs-direct-same-day",
+      "ask": "직구로 100달러, 80달러짜리를 따로 샀는데 같은 날 도착해요. 세금 나와요?",
+      "run": [
+        "calc",
+        "customs",
+        "direct",
+        "{\"orders\": [{\"label\": \"운동화\", \"priceUsd\": 100, \"shippingUsd\": 10, \"arrival\": \"2026-11-25\"}, {\"label\": \"셔츠\", \"priceUsd\": 80, \"arrival\": \"2026-11-25\"}], \"fx\": 1400, \"dutyRate\": 0.13}"
+      ],
+      "expect": [
+        {
+          "path": "bundles",
+          "has": {
+            "arrival": "2026-11-25",
+            "taxed": true
+          }
+        }
+      ]
     }
   ],
   "boundaries": {

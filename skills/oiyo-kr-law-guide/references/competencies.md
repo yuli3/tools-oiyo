@@ -318,7 +318,7 @@ GENERATED from tools-oiyo src/data/pro-competencies.ts. 기준일 2026-11-20. �
   - MCP: `start_kr_law_intake`, `check_kr_business_day`
   - 스킬: oiyo-kr-law-guide
 - **해외직구 면세 판정** [상담·설계] (일반인도 씀): 150달러(미국발 200달러), 합산과세, 판매용 여부를 확인해요.
-  - 도구: 관세·통관 법령 길잡이 https://tools.oiyo.net/ko/customs-law-guide/
+  - 도구: 관세·통관 법령 길잡이 https://tools.oiyo.net/ko/customs-law-guide/ · 관세 실무 계산(휴대품·직구 합산·RVC·환급) https://tools.oiyo.net/ko/customs-practice-calculator/
   - MCP: `start_kr_law_intake`
   - 스킬: oiyo-kr-law-guide
 - **과세가격·환율 환산** [계산·평가] (일반인도 씀): 물품가격과 운임을 과세환율로 원화 환산해요.
@@ -326,6 +326,12 @@ GENERATED from tools-oiyo src/data/pro-competencies.ts. 기준일 2026-11-20. �
 - **품목분류(HS)와 세율** [계산·평가] (일반인도 씀, 자격사 업무와 맞닿음: 정보만): HS 코드를 정하고 기본·FTA 세율을 비교하는 역량이에요.
   - 도구: 수입 관세·FTA 비교 계산기 https://tools.oiyo.net/ko/import-duty-fta-calculator/
   - MCP: `calculate_kr_import_duty`
+  - 스킬: oiyo-kr-law-guide
+- **여행자 휴대품 세금** [계산·평가] (일반인도 씀): 800달러 초과분 간이세율 20%, 자진신고 30% 감면(한도 20만 원), 미신고 가산세 40%·60%를 계산해요.
+  - 도구: 관세 실무 계산(휴대품·직구 합산·RVC·환급) https://tools.oiyo.net/ko/customs-practice-calculator/
+  - 스킬: oiyo-kr-law-guide
+- **FTA 부가가치기준과 간이정액환급** [계산·평가]: 공제법·집적법 RVC와 비원산지 재료 여유분, FOB 1만 원당 정액환급과 청구 기한 2년을 계산해요.
+  - 도구: 관세 실무 계산(휴대품·직구 합산·RVC·환급) https://tools.oiyo.net/ko/customs-practice-calculator/ · 수입 관세·FTA 비교 계산기 https://tools.oiyo.net/ko/import-duty-fta-calculator/
   - 스킬: oiyo-kr-law-guide
 - **수입신고·원산지증명 서류** [서류·증빙] (자격사 업무와 맞닿음: 정보만): 인보이스·패킹리스트·원산지증명서를 맞춰 신고해요. 신고 대리는 관세사 업무예요.
   - 도구: 전문가 서류 읽는 법 https://tools.oiyo.net/ko/pro-document-reading-guide/
