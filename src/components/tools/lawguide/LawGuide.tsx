@@ -34,14 +34,38 @@ function show(q: Question, v: Answers[string]): string {
   return String(v);
 }
 
-function QuestionInput({ q, value, onAnswer }: { q: Question; value: Answers[string]; onAnswer: (v: Answers[string]) => void }) {
+// WHY(11-20 세운 제보): 쉬운 모드에서 숫자 한 자리만 쳐도 다음 질문으로 넘어갔어요.
+//   step이면 숫자·날짜·금액은 "다음"(또는 Enter)을 눌러야 답이 확정돼요. 전문가 모드는 그대로 바로 반영해요.
+function QuestionInput({ q, value, onAnswer, step = false }: { q: Question; value: Answers[string]; onAnswer: (v: Answers[string]) => void; step?: boolean }) {
+  const [held, setHeld] = useState<Answers[string]>(value);
+  if (step && q.kind !== "choice" && q.kind !== "yesno") {
+    const ready = held !== undefined && held !== "" && !(typeof held === "number" && !Number.isFinite(held));
+    return (
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          if (ready) onAnswer(held);
+        }}
+        className="space-y-2"
+      >
+        <QuestionField q={q} value={held} onAnswer={setHeld} />
+        <button type="submit" disabled={!ready} className="min-h-11 rounded-md bg-primary px-4 text-sm font-semibold text-primary-foreground disabled:opacity-50">
+          다음
+        </button>
+      </form>
+    );
+  }
+  return <QuestionField q={q} value={value} onAnswer={onAnswer} />;
+}
+
+function QuestionField({ q, value, onAnswer }: { q: Question; value: Answers[string]; onAnswer: (v: Answers[string]) => void }) {
   const [draft, setDraft] = useState<string>(typeof value === "string" || typeof value === "number" ? String(value) : "");
   if (q.kind === "choice" || q.kind === "yesno") {
     const options = q.kind === "yesno" ? [{ value: "yes", label: "예" }, { value: "no", label: "아니요" }] : (q.options ?? []);
     return <ChoiceChips legend={q.ask} value={String(value ?? "")} options={options} onChange={(v) => onAnswer(v)} />;
   }
   if (q.kind === "number" && q.unit === "won") {
-    return <MoneyField label={q.ask} value={typeof value === "number" ? value : 0} onChange={(v) => onAnswer(v)} />;
+    return <MoneyField label={q.ask} value={typeof value === "number" ? value : NaN} onChange={(v) => onAnswer(v)} />;
   }
   const id = `q-${q.key}`;
   return (
@@ -170,7 +194,7 @@ export default function LawGuide({ domain: fixed }: { domain?: DomainId }) {
           {next ? (
             <>
               <p className="text-xs font-semibold text-primary">먼저 물어볼게요{next.required ? "" : " (선택)"}</p>
-              <QuestionInput key={topic.id + next.key} q={next} value={answers[next.key]} onAnswer={(v) => answer(next.key, v)} />
+              <QuestionInput key={topic.id + next.key} step q={next} value={answers[next.key]} onAnswer={(v) => answer(next.key, v)} />
               <p className="text-xs leading-5 text-muted-foreground">왜 묻나요? {next.why}</p>
               <button type="button" onClick={() => answer(next.key, SKIP)} className="min-h-11 text-sm text-muted-foreground underline">
                 모르겠어요, 다음 질문
