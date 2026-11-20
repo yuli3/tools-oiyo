@@ -1,6 +1,9 @@
 ---
+// WHY 2026-11-20 (세운: "Tools UIUX도 한국어 기준으로 다른 언어들도 비슷한 디자인으로"):
+// 다국어 허브는 밑줄 링크 목록(모바일 2만 px 넘음)이었어요. 한국어 허브(src/pages/index.astro)와 같은
+// 배지·제목·검색·분류 칩·카드 격자·더 보기 구조로 맞춰요. 링크는 모두 HTML에 그대로 있어요(색인용).
 import Layout from '../../components/Layout.astro';
-import {locales,shellCopy,utilityLabels,utilitySlugs,type Locale} from '../../lib/i18n';
+import {locales,utilityLabels,utilitySlugs,type Locale} from '../../lib/i18n';
 import {monitorPpiCopy} from '../../data/monitor-ppi-copy';
 import {laborToolsForLocale} from '../../data/country-labor';
 import {regionalLaborForLocale} from '../../data/regional-labor';
@@ -9,24 +12,124 @@ import {loanCopy} from '../../lib/loan-comparison-copy';
 import {usageCostCopy} from '../../data/usage-cost-copy';
 import {converterCopy} from '../../lib/fx-copy';
 import {EXCHANGE_COPY} from '../../components/tools/ForeignExchangeFeeCalculator';
-import {utilityCatalog,utilityGroups} from '../../data/utility-catalog';
+import {utilityCatalog,utilityGroups,type UtilityGroup} from '../../data/utility-catalog';
 import {toolIcon} from '../../data/tool-art';
 export function getStaticPaths(){return locales.filter(l=>l!=='ko').map(locale=>({params:{locale},props:{locale}}));}
-const {locale}=Astro.props as {locale:Locale};
-const copy=shellCopy[locale],labor=[...debtReliefForLocale(locale),...laborToolsForLocale(locale),...regionalLaborForLocale(locale)];
-const heading={ko:'도구',en:'Tools in English',ja:'日本語のツール',zh:'中文工具',fr:'Outils en français',es:'Herramientas en español'}[locale];
+const {locale}=Astro.props as {locale:Exclude<Locale,'ko'>};
+
+const HUB = {
+  en: { heading: 'Tools in English', title: 'OIYO tools — everyday calculators and utilities', description: 'Calculators and file tools that run in your browser: money, tax, health, dates, units, images, color and developer tools, plus country-specific labor and debt tools.', badge: ['100% in-browser', 'Inputs never leave your device'], lead: 'Get the number or result you need without extra scrolling. This site uses visit analytics (Google Analytics) and ads (AdSense).', search: 'Search by tool name or task (e.g. loan, BMI, PDF)', searchLabel: 'Search tools', all: 'All', local: 'Country rules', file: 'Files', langs: '6 languages', open: 'Open tool', more: 'Show more tools', found: (n: number) => `${n} tools match.`, none: 'No tool matches. Try another word.', count: (a: number, b: number) => `${a} / ${b} tools`, other: 'Other languages' },
+  ja: { heading: '日本語のツール', title: 'OIYO tools — 暮らしの計算とユーティリティ', description: 'ブラウザーで動く計算機とファイルツール。お金・税金・健康・日付・単位・画像・色・開発ツールと、国別の労働・債務ツールをまとめています。', badge: ['100% ブラウザー計算', '入力値はサーバーに送りません'], lead: '必要な計算と結果を、余計なスクロールなしで表示します。アクセス解析(Google Analytics)と広告(AdSense)を使用しています。', search: 'ツール名ややりたいことで検索 (例: ローン, BMI, PDF)', searchLabel: 'ツール検索', all: 'すべて', local: '国別の制度', file: 'ファイル', langs: '6言語', open: 'ツールを開く', more: 'もっと見る', found: (n: number) => `${n}件のツールが見つかりました。`, none: '該当するツールがありません。別の言葉で探してください。', count: (a: number, b: number) => `${a} / ${b} ツール`, other: 'ほかの言語' },
+  zh: { heading: '中文工具', title: 'OIYO tools — 生活计算与实用工具', description: '在浏览器中运行的计算器和文件工具：理财、税务、健康、日期、单位、图片、颜色和开发工具，以及各国劳动与债务工具。', badge: ['100% 浏览器内计算', '输入不会发送到服务器'], lead: '无需多余滚动，直接给出你需要的计算结果。本站使用访问统计(Google Analytics)和广告(AdSense)。', search: '按工具名称或用途搜索 (例: 贷款, BMI, PDF)', searchLabel: '搜索工具', all: '全部', local: '各国制度', file: '文件', langs: '6种语言', open: '打开工具', more: '显示更多工具', found: (n: number) => `找到 ${n} 个工具。`, none: '没有匹配的工具，请换个词试试。', count: (a: number, b: number) => `${a} / ${b} 个工具`, other: '其他语言' },
+  fr: { heading: 'Outils en français', title: 'OIYO tools — calculateurs et utilitaires du quotidien', description: 'Calculateurs et outils de fichiers qui tournent dans votre navigateur : argent, impôts, santé, dates, unités, images, couleurs, outils développeur et outils de droit du travail par pays.', badge: ['100 % dans le navigateur', 'Vos saisies ne quittent pas votre appareil'], lead: 'Le résultat dont vous avez besoin, sans défilement inutile. Ce site utilise des statistiques de visite (Google Analytics) et de la publicité (AdSense).', search: 'Chercher un outil ou une tâche (ex. prêt, IMC, PDF)', searchLabel: 'Chercher un outil', all: 'Tout', local: 'Règles par pays', file: 'Fichiers', langs: '6 langues', open: "Ouvrir l'outil", more: "Voir plus d'outils", found: (n: number) => `${n} outils correspondent.`, none: 'Aucun outil ne correspond. Essayez un autre mot.', count: (a: number, b: number) => `${a} / ${b} outils`, other: 'Autres langues' },
+  es: { heading: 'Herramientas en español', title: 'OIYO tools — calculadoras y utilidades del día a día', description: 'Calculadoras y herramientas de archivos que funcionan en tu navegador: dinero, impuestos, salud, fechas, unidades, imágenes, color, herramientas de desarrollo y herramientas laborales por país.', badge: ['100 % en el navegador', 'Tus datos no salen de tu dispositivo'], lead: 'El cálculo que necesitas, sin desplazamientos innecesarios. Este sitio usa estadísticas de visitas (Google Analytics) y publicidad (AdSense).', search: 'Busca por nombre o tarea (ej. préstamo, IMC, PDF)', searchLabel: 'Buscar herramientas', all: 'Todo', local: 'Normas por país', file: 'Archivos', langs: '6 idiomas', open: 'Abrir herramienta', more: 'Ver más herramientas', found: (n: number) => `${n} herramientas coinciden.`, none: 'Ninguna herramienta coincide. Prueba otra palabra.', count: (a: number, b: number) => `${a} / ${b} herramientas`, other: 'Otros idiomas' },
+}[locale];
+
+type Card = { href: string; title: string; desc: string; group: string; category: string; badge: string; icon?: string; lang?: string };
+const country = [...debtReliefForLocale(locale), ...laborToolsForLocale(locale), ...regionalLaborForLocale(locale)];
+const cards: Card[] = [
+  { href: `/${locale}/usage-cost-calculator/`, title: usageCostCopy[locale].title, desc: usageCostCopy[locale].description, group: 'money', category: utilityGroups.money[locale], badge: HUB.langs },
+  { href: `/${locale}/currency-converter/`, title: converterCopy[locale].title, desc: converterCopy[locale].description, group: 'money', category: utilityGroups.money[locale], badge: HUB.langs },
+  { href: `/${locale}/foreign-exchange-fee-calculator/`, title: EXCHANGE_COPY[locale][0], desc: EXCHANGE_COPY[locale][1], group: 'money', category: utilityGroups.money[locale], badge: HUB.langs },
+  { href: `/${locale}/loan-comparison-calculator/`, title: loanCopy[locale].title, desc: loanCopy[locale].description, group: 'money', category: utilityGroups.money[locale], badge: HUB.langs },
+  ...country.map((t) => ({ href: `/${t.locale}/${t.slug}/`, title: t.title, desc: t.description, group: 'local', category: HUB.local, badge: t.jurisdiction.split(/[·・,]/)[0].trim(), lang: t.languageTag })),
+  ...utilityCatalog.map((t) => ({ href: `/${locale}/${t.slug}/`, title: t.title[locale], desc: t.description[locale], group: t.group, category: utilityGroups[t.group][locale], badge: HUB.langs, icon: toolIcon(t.slug) })),
+  { href: `/${locale}/monitor-ppi-calculator/`, title: monitorPpiCopy[locale].title, desc: monitorPpiCopy[locale].description, group: 'screen', category: utilityGroups.screen[locale], badge: HUB.langs },
+  ...utilitySlugs.map((slug, i) => ({ href: `/${locale}/${slug}/`, title: utilityLabels[locale][i], desc: '', group: 'file', category: HUB.file, badge: HUB.langs, icon: toolIcon(slug) })),
+];
+const groupOrder: (UtilityGroup | 'local' | 'file')[] = ['money', 'local', 'health', 'everyday', 'time', 'calc', 'units', 'screen', 'image', 'color', 'dev', 'file'];
+const filters = groupOrder.filter((g) => cards.some((c) => c.group === g)).map((g) => ({ id: g, label: g === 'local' ? HUB.local : g === 'file' ? HUB.file : utilityGroups[g][locale] }));
+const chip = 'shrink-0 rounded-lg border min-h-11 px-3.5 py-1.5 text-xs transition';
+const off = 'border-border bg-card font-medium text-muted-foreground hover:border-primary/40 hover:text-foreground';
+const on = 'border-primary bg-primary font-bold text-primary-foreground';
 ---
-<Layout title={heading} description={heading} locale={locale} canonicalURL={`https://tools.oiyo.net/${locale}/`}>
-  <div class="mx-auto max-w-3xl space-y-5 px-4 py-6">
-    <h1 class="text-2xl font-bold tracking-tight">{heading}</h1>
-    <section class="space-y-2 border-b border-border pb-4"><h2 class="text-lg font-semibold"><a href={`/${locale}/usage-cost-calculator/`} class="inline-flex min-h-11 items-center text-primary underline underline-offset-4">{usageCostCopy[locale].title}</a></h2><p class="text-sm leading-relaxed">{usageCostCopy[locale].description}</p></section>
-    <section class="space-y-2 border-b border-border pb-4"><h2 class="text-lg font-semibold"><a href={`/${locale}/currency-converter/`} class="inline-flex min-h-11 items-center text-primary underline underline-offset-4">{converterCopy[locale].title}</a></h2><p class="text-sm leading-relaxed">{converterCopy[locale].description}</p></section>
-    <section class="space-y-2 border-b border-border pb-4"><h2 class="text-lg font-semibold"><a href={`/${locale}/foreign-exchange-fee-calculator/`} class="inline-flex min-h-11 items-center text-primary underline underline-offset-4">{EXCHANGE_COPY[locale][0]}</a></h2><p class="text-sm leading-relaxed">{EXCHANGE_COPY[locale][1]}</p></section>
-    <section class="space-y-2 border-b border-border pb-4"><h2 class="text-lg font-semibold"><a href={`/${locale}/loan-comparison-calculator/`} class="inline-flex min-h-11 items-center text-primary underline underline-offset-4">{loanCopy[locale].title}</a></h2><p class="text-sm leading-relaxed">{loanCopy[locale].description}</p></section>
-    {labor.map(t=><section class="space-y-2 border-b border-border pb-4" lang={t.languageTag} data-country-tool={t.slug}><h2 class="text-lg font-semibold"><a href={`/${t.locale}/${t.slug}/`} class="text-primary underline underline-offset-4">{t.title}</a></h2><p class="text-sm leading-relaxed">{t.description}</p><p class="text-sm text-muted-foreground">{t.jurisdiction}</p></section>)}
-    <section class="space-y-3"><h2 class="text-lg font-semibold">{copy.related}</h2><ul class="space-y-2 text-sm">{utilitySlugs.map((slug,i)=><li><a href={`/${locale}/${slug}/`} class="inline-flex min-h-11 items-center text-primary underline underline-offset-4">{utilityLabels[locale][i]}</a></li>)}<li><a class="inline-flex min-h-11 items-center text-primary underline underline-offset-4" href={`/${locale}/monitor-ppi-calculator/`}>{monitorPpiCopy[locale].title}</a></li></ul></section>
-    {(['money','health','everyday','time','calc','units','screen','image','color','dev'] as const).map(g=><section class="space-y-3 border-t border-border pt-4"><h2 class="text-lg font-semibold">{utilityGroups[g][locale]}</h2><ul class="space-y-2 text-sm">{utilityCatalog.filter(t=>t.group===g).map(t=><li><a href={`/${locale}/${t.slug}/`} class="inline-flex min-h-11 items-center gap-2 text-primary underline underline-offset-4">{toolIcon(t.slug) && <img src={toolIcon(t.slug)} alt="" width="32" height="32" loading="lazy" decoding="async" class="h-8 w-8 shrink-0" />}{t.title[locale]}</a><p class="text-muted-foreground">{t.description[locale]}</p></li>)}</ul></section>)}
-    <nav aria-label="Deutsch · Nederlands" class="flex flex-wrap gap-3 text-sm"><a href="/de/" lang="de" class="inline-flex min-h-11 items-center text-primary underline">Deutsch: Arbeitsrecht</a><a href="/nl/" lang="nl" class="inline-flex min-h-11 items-center text-primary underline">Nederlands: werk en verlof</a></nav>
-    <nav aria-label={copy.language} class="flex flex-wrap gap-3 text-sm">{locales.map(lang=><a href={lang==='ko'?'/':`/${lang}/`} lang={lang} class="inline-flex min-h-11 items-center text-primary underline underline-offset-4">{lang.toUpperCase()}</a>)}</nav>
+<Layout title={HUB.title} description={HUB.description} locale={locale} canonicalURL={`https://tools.oiyo.net/${locale}/`}>
+  <div class="mx-auto w-full max-w-5xl px-4 py-6 sm:px-8 sm:py-8">
+    <div class="mb-5 text-center sm:text-left">
+      <div class="mb-3 inline-flex flex-wrap items-center justify-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-bold text-primary">
+        <span>⚡ {HUB.badge[0]}</span><span aria-hidden="true">•</span><span>{HUB.badge[1]}</span>
+      </div>
+      <h1 class="text-3xl font-black tracking-tight text-foreground sm:text-4xl">{HUB.heading}</h1>
+      <p class="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground sm:mx-0 sm:text-base">{HUB.lead}</p>
+      <nav aria-label={HUB.other} class="mt-3 flex flex-wrap justify-center gap-x-3 text-sm sm:justify-start">
+        {locales.filter((l) => l !== locale).map((l) => <a href={l === 'ko' ? '/' : `/${l}/`} lang={l} class="inline-flex min-h-11 items-center text-primary underline underline-offset-4">{({ ko: '한국어', en: 'English', ja: '日本語', zh: '中文', fr: 'Français', es: 'Español' })[l]}</a>)}
+        <a href="/de/" lang="de" class="inline-flex min-h-11 items-center text-primary underline underline-offset-4">Deutsch</a>
+        <a href="/nl/" lang="nl" class="inline-flex min-h-11 items-center text-primary underline underline-offset-4">Nederlands</a>
+      </nav>
+    </div>
+
+    <div class="mb-4">
+      <label for="tool-search" class="sr-only">{HUB.searchLabel}</label>
+      <input id="tool-search" type="search" inputmode="search" autocomplete="off" placeholder={HUB.search} class="min-h-12 w-full rounded-xl border border-border bg-card px-4 text-base text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring" />
+      <p id="tool-search-status" class="mt-2 text-sm text-muted-foreground" aria-live="polite"></p>
+    </div>
+
+    <div class="mb-4 flex items-center gap-2 overflow-x-auto pb-2" id="filter-bar">
+      <button type="button" class={`${chip} ${on} shadow-xs`} data-filter="all" aria-pressed="true">{HUB.all}</button>
+      {filters.map((f) => <button type="button" class={`${chip} ${off}`} data-filter={f.id} aria-pressed="false">{f.label}</button>)}
+    </div>
+
+    <div class="grid gap-3 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3" id="tools-grid">
+      {cards.map((c) => (
+        <a href={c.href} data-group={c.group} lang={c.lang} class="group flex flex-col justify-between rounded-xl border border-border bg-card p-4 transition hover:border-primary/60 hover:shadow-sm sm:p-5">
+          <div>
+            <div class="flex items-center justify-between gap-2">
+              <span class="rounded-md border border-border bg-muted px-2 py-0.5 text-xs font-semibold text-muted-foreground">{c.category}</span>
+              <span class="truncate rounded-md border border-primary/20 bg-primary/10 px-2 py-0.5 text-xs font-bold text-primary">{c.badge}</span>
+            </div>
+            <h2 class="mt-2 flex items-center gap-2 text-base font-bold text-foreground transition-colors group-hover:text-primary sm:mt-3">
+              {c.icon && <img src={c.icon} alt="" width="28" height="28" loading="lazy" decoding="async" class="h-7 w-7 shrink-0" />}
+              <span>{c.title}</span>
+            </h2>
+            {c.desc && <p class="mt-1.5 line-clamp-2 text-sm leading-relaxed text-muted-foreground sm:mt-2 sm:line-clamp-none sm:text-xs">{c.desc}</p>}
+          </div>
+          <div class="mt-4 hidden items-center gap-1 text-xs font-bold text-primary sm:flex">
+            <span>{HUB.open}</span><span aria-hidden="true" class="transition-transform group-hover:translate-x-1">→</span>
+          </div>
+        </a>
+      ))}
+    </div>
+
+    <button id="tools-show-more" type="button" hidden class="mt-4 min-h-11 w-full rounded-lg border border-border bg-card px-4 py-2 text-sm font-semibold text-foreground">{HUB.more}</button>
+    <div data-tools-guide-ad-anchor></div>
+    <script is:inline type="application/json" id="hub-copy" set:html={JSON.stringify({ found: HUB.found(0).replace('0', '{n}'), none: HUB.none, count: HUB.count(0, 1).replace('0', '{a}').replace('1', '{b}'), on, off })}></script>
   </div>
 </Layout>
+
+<script>
+  // 한국어 허브와 같은 동작: 검색은 모든 카드를 훑고, 둘러보기만 24개씩 보여 줘요.
+  const copy = JSON.parse(document.getElementById('hub-copy')?.textContent || '{}') as { found: string; none: string; count: string; on: string; off: string };
+  const buttons = document.querySelectorAll<HTMLButtonElement>('#filter-bar [data-filter]');
+  const cards = document.querySelectorAll<HTMLElement>('#tools-grid > a');
+  const search = document.querySelector<HTMLInputElement>('#tool-search');
+  const status = document.querySelector<HTMLElement>('#tool-search-status');
+  const more = document.querySelector<HTMLButtonElement>('#tools-show-more');
+  let filter = 'all';
+  let limit = 24;
+  const haystack = new Map<HTMLElement, string>();
+  cards.forEach((card) => haystack.set(card, (card.textContent || '').toLowerCase().replace(/\s+/g, ' ')));
+  function apply() {
+    const q = (search?.value || '').trim().toLowerCase();
+    const terms = q.split(/\s+/).filter(Boolean);
+    let shown = 0;
+    cards.forEach((card) => {
+      const match = (filter === 'all' || card.dataset.group === filter) && terms.every((t) => (haystack.get(card) || '').includes(t));
+      if (match) shown += 1;
+      card.style.display = match && (Boolean(q) || shown <= limit) ? 'flex' : 'none';
+    });
+    if (more) more.hidden = Boolean(q) || shown <= limit;
+    if (status) status.textContent = q ? (shown ? copy.found.replace('{n}', String(shown)) : copy.none) : copy.count.replace('{a}', String(Math.min(shown, limit))).replace('{b}', String(shown));
+  }
+  more?.addEventListener('click', () => { limit += 24; apply(); });
+  let timer: number | undefined;
+  search?.addEventListener('input', () => { window.clearTimeout(timer); timer = window.setTimeout(apply, 120); });
+  buttons.forEach((btn) => btn.addEventListener('click', () => {
+    buttons.forEach((b) => { b.className = b.className.replace(copy.on, copy.off).replace(' shadow-xs', ''); b.setAttribute('aria-pressed', 'false'); });
+    btn.className = btn.className.replace(copy.off, copy.on);
+    btn.setAttribute('aria-pressed', 'true');
+    filter = btn.dataset.filter || 'all';
+    limit = 24;
+    apply();
+  }));
+  apply();
+</script>

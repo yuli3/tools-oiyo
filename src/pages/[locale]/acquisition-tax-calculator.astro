@@ -6,7 +6,7 @@ import ToolShell from '../../components/ToolShell.astro';
 import Layout from '../../components/Layout.astro';
 import UtilityArticle, { type UtilityContent } from '../../components/UtilityArticle.astro';
 import RelatedUtilities from '../../components/RelatedUtilities.astro';
-import KrAcquisitionTaxCalculator from '../../components/tools/KrAcquisitionTaxCalculator';
+import KrAcquisitionEn from '../../components/tools/world/KrAcquisitionEn';
 import KrAcquisitionScenario from '../../components/tools/KrAcquisitionScenario';
 import AcquisitionTaxCountryCalculator from '../../components/tools/AcquisitionTaxCountryCalculator';
 import type { AcquisitionCountry } from '../../lib/acquisition-tax-countries';
@@ -308,7 +308,7 @@ const schema = utilityJsonLd({ name: m.title, description: m.description, url, l
 ---
 <Layout title={m.title} description={m.description} locale={locale} availableLocales={[...locales]} canonicalURL={url}>
   <ToolShell title={m.title} description={m.description}>
-    {country ? <AcquisitionTaxCountryCalculator client:load country={country} /> : locale === 'ko' ? <KrAcquisitionScenario client:load /> : <KrAcquisitionTaxCalculator client:load locale={locale} />}
+    {country ? <AcquisitionTaxCountryCalculator client:load country={country} /> : locale === 'ko' ? <KrAcquisitionScenario client:load /> : <KrAcquisitionEn client:load />}
     {!country && <p class="mt-4 text-xs text-muted-foreground">근거: 지방세법 제11조·제13조의2·제151조, 농어촌특별세법 제5조. 기준일 {REAL_ESTATE_TAX_AS_OF}.</p>}
     <UtilityArticle c={c} />
     <RelatedUtilities locale={locale} current="acquisition-tax-calculator" group="money" />
