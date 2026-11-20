@@ -26,6 +26,9 @@ GENERATED from tools-oiyo src/data/pro-competencies.ts. 기준일 2026-11-20. �
   - 도구: 종합소득세 계산기 https://tools.oiyo.net/ko/comprehensive-income-tax-calculator/ · 프리랜서 세금 계산기 https://tools.oiyo.net/ko/freelancer-tax-calculator/ · 양도소득세 계산기 https://tools.oiyo.net/ko/capital-gains-tax-calculator/ · 상속세 계산기 https://tools.oiyo.net/ko/inheritance-tax-calculator/ · 증여세 계산기 https://tools.oiyo.net/ko/gift-tax-calculator/
   - MCP: `calculate_kr_freelancer_income_tax`, `calculate_capital_gains_tax`, `calculate_inheritance_gift_tax`
   - 스킬: kr-tax-advisor
+- **법인세와 세무조정 한도** [계산·평가]: 업무추진비·기부금 한도 초과를 더하고 이월결손금을 빼 과세표준을 만든 뒤, 2026년 세율과 최저한세로 법인세를 어림해요.
+  - 도구: 법인세 어림·세무조정 한도 https://tools.oiyo.net/ko/corporate-tax-adjustment-calculator/ · 개인 vs 법인 세금 비교 https://tools.oiyo.net/ko/incorporation-calculator/
+  - 스킬: kr-tax-advisor
 - **연말정산·공제 판정** [계산·평가] (일반인도 씀): 부양가족·의료비·월세·카드 공제 요건을 하나씩 판정하고 환급액 차이를 비교해요.
   - 도구: 연말정산 계산기 https://tools.oiyo.net/ko/year-end-settlement-calculator/ · 부양가족 공제 판정 https://tools.oiyo.net/ko/dependent-deduction-checker/ · 의료비 세액공제 https://tools.oiyo.net/ko/medical-expense-tax-credit-calculator/ · 월세 세액공제 https://tools.oiyo.net/ko/monthly-rent-tax-credit-calculator/
   - MCP: `calculate_kr_year_end_settlement`, `check_kr_dependent_deduction`, `calculate_kr_monthly_rent_credit`, `calculate_card_tax_deduction`
@@ -78,8 +81,9 @@ GENERATED from tools-oiyo src/data/pro-competencies.ts. 기준일 2026-11-20. �
 - **분개와 계정 흐름** [서류·증빙] (일반인도 씀): 거래를 차변·대변으로 나누고 T계정으로 잔액 흐름을 확인해요.
   - 도구: 분개 연습 https://tools.oiyo.net/ko/journal-entry-trainer/ · T계정 시각화 https://tools.oiyo.net/ko/t-account-visualizer/
 - **결산·감사·법인세 일정** [기한·절차]: 결산 → 감사 → 주총 → 법인세 신고(사업연도 종료 후 3개월) 순서를 맞춰요.
-  - 도구: 회계·장부 법령 길잡이 https://tools.oiyo.net/ko/accounting-law-guide/ · 세무 일정 https://tools.oiyo.net/ko/tax-calendar/
+  - 도구: 회계·장부 법령 길잡이 https://tools.oiyo.net/ko/accounting-law-guide/ · 세무 일정 https://tools.oiyo.net/ko/tax-calendar/ · 법인세 어림·세무조정 한도 https://tools.oiyo.net/ko/corporate-tax-adjustment-calculator/
   - MCP: `get_kr_business_tax_calendar`
+  - 스킬: kr-tax-advisor
 - **경영·재무 자문** [상담·설계]: 단위경제·런웨이·인수 통합을 숫자로 검토하고 결론·근거·다음 행동을 한 장으로 정리해요.
   - 도구: 단위경제·런웨이 https://tools.oiyo.net/ko/unit-economics-runway-calculator/ · 인수 통합 점검 https://tools.oiyo.net/ko/acquisition-integration-check/ · 의사결정 트리 https://tools.oiyo.net/ko/decision-tree-calculator/
   - MCP: `calculate_unit_economics_runway`
