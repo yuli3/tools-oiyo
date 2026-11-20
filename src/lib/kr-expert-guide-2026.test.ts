@@ -159,7 +159,7 @@ test("보험 주제: 질문·기한·확인할 점", () => {
 });
 
 test("분야 팩: 관세·특허·감정평가·중개가 붙고 기한이 맞아요", () => {
-  assert.equal(Object.keys(PROFESSIONS).length, 16);
+  assert.equal(Object.keys(PROFESSIONS).length, 17);
   for (const d of ["customs", "ip", "appraisal", "realty"] as const) {
     assert.ok(TOPICS.filter((t) => t.domain === d).length >= 2, d);
     assert.ok(STATUTES.some((x) => x.domain === d), d);
@@ -240,7 +240,7 @@ test("분야 팩 11-20: 소비자·온라인 구매 청약철회·해지", () =>
   assert.equal(suggestTopics("헬스장 중도 해지 위약금")[0].id, "cons-contract");
 });
 
-test("분야 팩 11-20: 개인정보 16분야, 72시간은 휴일에도 미루지 않아요", () => {
+test("분야 팩 11-20: 개인정보 17분야, 72시간은 휴일에도 미루지 않아요", () => {
   assert.ok(TOPICS.filter((t) => t.domain === "privacy").length >= 3);
   assert.ok(STATUTES.filter((x) => x.domain === "privacy").length >= 8);
   assert.ok(SCOPE_MATRIX.some((m) => m.who.privacy === "yes"));
@@ -258,4 +258,21 @@ test("분야 팩 11-20: 개인정보 16분야, 72시간은 휴일에도 미루�
   assert.equal(intake("privacy-victim", { noticeDate: "2026-11-20" }).deadlines[0].due, "2029-11-20");
   assert.equal(suggestTopics("고객 개인정보 유출 72시간 신고")[0].id, "privacy-breach");
   assert.equal(findStatutes("처리방침")[0].id, "pipa-30");
+});
+
+test("분야 팩 11-20: 교통사고 17분야, 12대 중과실·보험 특례", () => {
+  assert.ok(TOPICS.filter((t) => t.domain === "traffic").length >= 2);
+  assert.ok(STATUTES.filter((x) => x.domain === "traffic").length >= 6);
+  assert.ok(SCOPE_MATRIX.some((m) => m.who.traffic === "yes"));
+  const ok = intake("traffic-driver", { accidentDate: "2026-11-20", harm: "injury", comprehensive: "yes", gross: "no", left: "no" });
+  assert.equal(ok.flags[0].tone, "good");
+  assert.equal(ok.handOff, null);
+  const gross = intake("traffic-driver", { accidentDate: "2026-11-20", harm: "injury", comprehensive: "yes", gross: "yes" });
+  assert.equal(gross.flags[0].tone, "warn");
+  assert.ok(gross.handOff);
+  const v = intake("traffic-victim", { accidentDate: "2026-11-20", injured: "yes", other: "hitrun" }).deadlines;
+  assert.deepEqual(v.map((d) => d.id).sort(), ["claim", "gov"]);
+  assert.equal(v[0].due, "2029-11-20");
+  assert.equal(suggestTopics("교통사고 가해자 12대 중과실 신호위반")[0].id, "traffic-driver");
+  assert.equal(findStatutes("가불금")[0].id, "capa-11");
 });

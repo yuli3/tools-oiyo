@@ -277,7 +277,7 @@ export const TOOL_NAMES: Record<string, string> = {
   "general-vs-simplified-vat-calculator": "간이 vs 일반과세",
   "incorporation-conversion-calculator": "법인전환 계산기",
   "tax-savings-roadmap": "절세 로드맵",
-  "law-guide": "법령 길잡이 16분야",
+  "law-guide": "법령 길잡이 17분야",
   "financial-ratio-trend": "재무비율 추세",
   "cost-accounting-simulator": "원가계산 시뮬레이터",
   "dcf-valuation-calculator": "DCF 기업가치",
@@ -377,7 +377,7 @@ export const TOOL_NAMES: Record<string, string> = {
 
 /** 링크할 수 있는 스킬. 소스는 tools-oiyo skills/, 공개 배포는 github.com/yuli3/oiyo-skills. */
 export const SKILLS: Record<string, { name: string; zip: string }> = {
-  "oiyo-kr-law-guide": { name: "법령 길잡이 16분야", zip: "/downloads/oiyo-kr-law-guide-skill.zip" },
+  "oiyo-kr-law-guide": { name: "법령 길잡이 17분야", zip: "/downloads/oiyo-kr-law-guide-skill.zip" },
   "kr-tax-advisor": { name: "세무·회계 실무 보조", zip: "/downloads/oiyo-kr-tax-advisor-skill.zip" },
   "oiyo-kr-benefits-navigator": { name: "생활 지원금·노동권 길잡이", zip: "/downloads/oiyo-kr-benefits-navigator-skill.zip" },
   "oiyo-business-strategist": { name: "경영 전략 참모", zip: "/downloads/oiyo-business-strategist-skill.zip" },
