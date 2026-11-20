@@ -1,0 +1,28 @@
+---
+// 법령 길잡이 (traffic) 2026-11-20, 다음 10종 #4. 엔진: lib/kr-expert-guide-2026.ts + 분야 팩 lib/kr-law-packs-2026.ts.
+// 자격 명칭을 이름에 쓰지 않아요. 합의·형사 절차 대리, 과실비율·합의금 결정을 하지 않아요.
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import LawGuide from "../../components/tools/lawguide/LawGuide";
+import { LAW_GUIDE_AS_OF } from "../../lib/kr-expert-guide-2026";
+
+const title = "교통사고 법령 길잡이 2026 — 사고 직후 할 일, 12대 중과실, 보험 처리, 뺑소니·무보험 보상, 3년 기한";
+const description = "교통사고 피해자는 상대 보험사 직접 청구·가불금(10일)과 뺑소니·무보험 정부보장사업을, 가해자는 종합보험이 있어도 형사처벌되는 12대 중과실·도주·사망·중상해를 질문으로 가려요. 손해배상 3년 기한과 도로교통법·교통사고처리 특례법·자동차손해배상 보장법 조문을 알려 줘요.";
+const ko = {
+  introTitle: "멈추고, 돕고, 알리기",
+  intro: "사고 직후 할 일부터 보험 접수, 형사처벌 특례가 적용되는지, 보상 청구 기한까지 상황별로 정리해요. 과실비율이나 합의금을 정하지는 않아요.",
+  howToTitle: "사용 방법",
+  steps: ["피해자인지 가해자인지 고르세요.", "먼저 묻는 질문에 답하세요. 모르면 건너뛰어도 돼요.", "기한과 확인할 점을 보고, 결과 메모를 복사해 보험사·변호사 상담에 가져가세요."],
+  highlightsTitle: "주요 특징",
+  highlights: [{ title: "12대 중과실", body: "종합보험이 있어도 처벌 특례가 없는 경우" }, { title: "피해자 보상", body: "직접 청구, 가불금, 정부보장사업" }, { title: "무료 창구", body: "대한법률구조공단 132, 과실비율분쟁심의위원회" }],
+  disclaimer: "법령 정보와 기한 계산 도구예요. 합의·형사 절차·소송을 대리하지 않고, 과실비율·합의금을 정하지 않으며 특정 변호사나 손해사정사를 소개하지 않아요. 조문 풀이는 쉬운 말 요약이니 원문(국가법령정보센터)을 확인하세요. 기준일 2026-11-20.",
+};
+const faqs = [
+  { q: "종합보험이 있으면 처벌받지 않나요?", a: "다친 사고는 대부분 보험 처리로 끝나지만, 신호위반·중앙선 침범·제한속도 20km/h 초과·횡단보도 보행자 보호 위반·음주·무면허·어린이보호구역 위반 같은 12대 중과실, 도주, 사망, 생명이 위험하거나 장애가 남는 중상해는 예외예요(교통사고처리 특례법 제3조·제4조)." },
+  { q: "뺑소니를 당해 가해자를 몰라요.", a: "경찰에 신고한 뒤 손해보험사 창구에서 정부보장사업을 청구하면 책임보험 한도 안에서 보상받아요. 3년이 지나면 청구할 수 없어요(자동차손해배상 보장법 제30조·제41조)." },
+  { q: "치료비가 당장 필요해요.", a: "상대 보험사에 가불금을 청구하면 10일 안에 줘야 해요(자동차손해배상 보장법 제11조)." },
+];
+---
+<KrFinancePage slug="traffic-accident-law-guide" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <LawGuide client:load domain="traffic" />
+  <p class="mt-4 text-xs text-muted-foreground">기준일 {LAW_GUIDE_AS_OF}. <a class="underline" href="/ko/disability-fault-claim-calculator/">장해·과실 보험금 계산기</a> · <a class="underline" href="/ko/insurance-law-guide/">보험 법령 길잡이</a> · <a class="underline" href="/ko/law-guide/">법령 길잡이 17분야</a></p>
+</KrFinancePage>

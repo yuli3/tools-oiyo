@@ -93,7 +93,7 @@ export default function ClaimPayout() {
                 ? [`지급률 합 = ${i.rates.map(pctIn).join(" + ")} = ${pctIn(r.raw)}%`, `기존 장해 ${pctIn(i.prior)}% 차감, 100% 한도 → ${pctIn(r.total)}%`, `보험금 = ${won(i.sum)} × ${pctIn(r.total)}% = ${won(r.pay)}`]
                 : [`과실상계 = ${won(i.damage)} × ${pctIn(i.fault)}% = ${won(r.offset)}`, `자기부담금 ${won(i.deductible)} 차감`, `보험금 = ${won(r.pay)}${r.capped ? " (한도 적용)" : ""}`]
             }
-            next={[{ href: "/ko/insurance-law-guide/", label: "보험 법령 길잡이" }, { href: "/ko/law-guide/", label: "법령 길잡이 16분야" }]}
+            next={[{ href: "/ko/insurance-law-guide/", label: "보험 법령 길잡이" }, { href: "/ko/law-guide/", label: "법령 길잡이 17분야" }]}
           />
         );
       }}
