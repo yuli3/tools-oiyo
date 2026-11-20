@@ -76,7 +76,15 @@ GENERATED from tools-oiyo src/data/pro-competencies.ts. 기준일 2026-11-20. �
   - MCP: `search_kr_statutes`, `start_kr_law_intake`
   - 스킬: oiyo-kr-law-guide
 - **결산 상각표와 외감 대상 판정** [계산·평가]: 감가상각·IFRS 16 리스·사채 유효이자율 표를 만들고, 직전 연도 숫자로 다음 해 외부감사 대상을 판정해요.
-  - 도구: 결산 상각표·외감 판정 https://tools.oiyo.net/ko/accounting-schedule-calculator/
+  - 도구: 결산 상각표·이연법인세·감사 표본 https://tools.oiyo.net/ko/accounting-schedule-calculator/
+  - 스킬: kr-tax-advisor
+- **이연법인세와 유효세율** [계산·평가]: 일시적차이 × 소멸 시 세율로 이연법인세자산·부채를 구하고, 미래 과세소득으로 실현 가능성을 따져 법인세비용과 유효세율을 맞춰요.
+  - 도구: 결산 상각표·이연법인세·감사 표본 https://tools.oiyo.net/ko/accounting-schedule-calculator/
+  - MCP: `calculate_kr_deferred_tax`
+  - 스킬: kr-tax-advisor
+- **감사 중요성과 표본 크기** [계산·평가]: 기준치 × 비율로 전체·수행 중요성과 명백히 사소한 금액을 정하고, 금액단위표본·속성표본 크기를 신뢰수준별로 계산해요.
+  - 도구: 결산 상각표·이연법인세·감사 표본 https://tools.oiyo.net/ko/accounting-schedule-calculator/
+  - MCP: `plan_kr_audit_materiality_sample`
   - 스킬: kr-tax-advisor
 - **재무제표 분석** [계산·평가] (일반인도 씀): 수익성·안정성·활동성 비율 추세로 회사 상태를 읽어요.
   - 도구: 재무비율 추세 https://tools.oiyo.net/ko/financial-ratio-trend/ · 원가계산 시뮬레이터 https://tools.oiyo.net/ko/cost-accounting-simulator/
@@ -122,6 +130,10 @@ GENERATED from tools-oiyo src/data/pro-competencies.ts. 기준일 2026-11-20. �
 - **4대보험과 인건비** [계산·평가] (일반인도 씀): 건강·연금·고용·산재보험료와 사업주 부담을 합쳐 실제 인건비를 구해요.
   - 도구: 인건비 계산기 https://tools.oiyo.net/ko/labor-cost-calculator/ · 건강보험료 계산기 https://tools.oiyo.net/ko/health-insurance-calculator/ · 일용직 4대보험 https://tools.oiyo.net/ko/daily-worker-insurance-checker/ · 실수령액 계산기 https://tools.oiyo.net/ko/salary-calculator/
   - MCP: `calculate_health_insurance`, `calculate_net_salary`
+- **산재 장해급여 연금·일시금** [계산·평가] (일반인도 씀): 장해등급별 일수 × 평균임금(최고·최저 보상기준)으로 연금과 일시금을 비교하고, 선급과 5년 청구 기한을 챙겨요.
+  - 도구: 산재 장해급여 계산기 https://tools.oiyo.net/ko/industrial-injury-disability-calculator/
+  - MCP: `calculate_kr_injury_disability_benefit`
+  - 스킬: oiyo-kr-law-guide
 - **상시근로자 수와 근로시간 점검** [계산·평가] (일반인도 씀): 1개월 연인원 ÷ 가동일수와 절반 규칙으로 5인 이상을 판정하고, 근무표로 주 52시간·휴게·야간·주휴를 점검해요.
   - 도구: 상시근로자 수·근무표 점검 https://tools.oiyo.net/ko/workforce-schedule-check/ · 연장수당 계산기 https://tools.oiyo.net/ko/overtime-pay-calculator/
   - 스킬: oiyo-kr-law-guide
@@ -175,6 +187,10 @@ GENERATED from tools-oiyo src/data/pro-competencies.ts. 기준일 2026-11-20. �
 - **영업정지·과징금과 운전면허 벌점** [계산·평가] (일반인도 씀): 영업정지 일수를 1일당 과징금으로 바꾸고, 운전면허 벌점 누산(121·201·271점)과 정지 일수를 계산해요.
   - 도구: 운전면허 벌점·과징금 환산 https://tools.oiyo.net/ko/license-points-calculator/ · 과태료 감경·가산금 계산기 https://tools.oiyo.net/ko/fine-reduction-calculator/
   - 스킬: oiyo-kr-law-guide
+- **거주(F-2-7) 점수** [계산·평가] (일반인도 씀): 나이·학력·한국어·소득·가점·감점으로 점수제 거주 자격 점수를 계산하고 80점까지 모자란 항목을 보여 줘요.
+  - 도구: 거주(F-2-7) 점수 계산기 https://tools.oiyo.net/ko/f27-points-calculator/ · 체류자격·외국인등록 기한 길잡이 https://tools.oiyo.net/ko/visa-stay-status-guide/
+  - MCP: `calculate_kr_f27_points`
+  - 스킬: oiyo-kr-law-guide, oiyo-korea-expat-guide
 - **정보공개청구와 사실조사** [상담·설계] (일반인도 씀): 필요한 행정 정보를 청구하고, 비공개 결정에 이의신청하는 순서를 안내해요.
   - 도구: 행정 절차 길잡이 https://tools.oiyo.net/ko/administrative-law-guide/
   - MCP: `start_kr_law_intake`
@@ -205,6 +221,14 @@ GENERATED from tools-oiyo src/data/pro-competencies.ts. 기준일 2026-11-20. �
 - **등기 비용·취득세** [계산·평가] (일반인도 씀): 취득세·등록면허세·국민주택채권 매입액을 계산해요.
   - 도구: 취득세 계산기 https://tools.oiyo.net/ko/acquisition-tax-calculator/ · 생애최초 취득세 https://tools.oiyo.net/ko/first-home-tax-calculator/ · 국민주택채권 할인 https://tools.oiyo.net/ko/car-bond-refund-calculator/
   - MCP: `calculate_kr_acquisition_tax`
+- **셀프 등기 총비용** [계산·평가] (일반인도 씀): 취득세·국민주택채권 할인 부담·수입인지·등기신청수수료·서류 발급비를 합쳐 맡길 때와 비교해요.
+  - 도구: 셀프 등기 총비용 계산기 https://tools.oiyo.net/ko/self-registration-cost-calculator/ · 취득세 계산기 https://tools.oiyo.net/ko/acquisition-tax-calculator/
+  - MCP: `estimate_kr_self_registration_cost`
+  - 스킬: oiyo-kr-law-guide
+- **공탁금 이자와 시효** [계산·평가] (일반인도 씀): 공탁 사유를 확인하고 연 0.35% 이자와 10년 소멸시효 날짜를 계산해요.
+  - 도구: 공탁금 이자·시효 계산기 https://tools.oiyo.net/ko/court-deposit-interest-calculator/
+  - MCP: `check_kr_court_deposit`
+  - 스킬: oiyo-kr-law-guide
 - **이자·지연손해금·소송비용** [계산·평가] (일반인도 씀): 법정이율, 소송촉진법 지연이자, 인지대·송달료를 계산해요.
   - 도구: 법정이자 계산기 https://tools.oiyo.net/ko/legal-interest-calculator/ · 소송비용 계산기 https://tools.oiyo.net/ko/litigation-cost-calculator/
 - **지급명령·공탁·등기 신청 서류** [서류·증빙] (자격사 업무와 맞닿음: 정보만): 청구 원인과 증거를 정리해요. 신청서 작성·제출 대리는 법무사 업무예요.

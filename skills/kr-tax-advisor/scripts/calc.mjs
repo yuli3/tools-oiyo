@@ -4,6 +4,7 @@
 import { taxPenalty, nextReductionStep, PENALTY_NOTE, PENALTY_AS_OF } from "./kr-tax-penalty-2026.mjs";
 import { deemedInputCredit, cardSalesCredit, badDebtCredit, VAT_CREDIT_NOTE, VAT_CREDIT_AS_OF } from "./kr-vat-credits-2026.mjs";
 import { depreciation, leaseSchedule, bondSchedule, externalAuditCheck, ACCT_NOTE, ACCT_AS_OF } from "./kr-accounting-schedules-2026.mjs";
+import { deferredTax, materiality, musSample, attributeSample, AUDIT_DEFERRED_NOTE, AUDIT_DEFERRED_AS_OF } from "./kr-audit-deferred-2026.mjs";
 import { corpTax, entertainmentLimit, CORP_TAX_AS_OF, CORP_TAX_NOTE } from "./kr-corp-tax-2026.mjs";
 import { valueUnlistedShares, familyBusinessInheritance, incorporationConversion, dcfValuation, dcfSensitivity, wacc, ADVISORY_AS_OF } from "./kr-advisory-2026.mjs";
 
@@ -22,6 +23,9 @@ const EXAMPLES = {
   lease: { payment: 1000000, periods: 3, rate: 0.05, advance: false, directCost: 0 },
   bond: { face: 100000000, couponRate: 0.05, marketRate: 0.06, periods: 3 },
   audit: { listed: false, llc: false, assets: 13000000000, liabilities: 8000000000, revenue: 5000000000, employees: 20, members: 0 },
+  "deferred-tax": { items: [{ label: "퇴직급여충당부채", amount: 100000000 }, { label: "일시상각충당금", amount: -40000000 }], rate: 0.209, futureIncome: 300000000, openingNet: 5000000, currentTax: 30000000, pretaxIncome: 200000000 },
+  materiality: { benchmark: "pretax", base: 1000000000, pct: 0.05, risk: "medium", trivialPct: 0.05 },
+  sample: { population: 5000000000, tolerable: 32500000, expected: 0, confidence: 95, tolerableRate: 0.05 },
   wacc: { riskFree: 0.03, beta: 1.1, marketPremium: 0.06, sizePremium: 0.03, preTaxCostOfDebt: 0.055, taxRate: 0.22, debtWeight: 0.3 },
 };
 
@@ -46,6 +50,9 @@ else if (tool === "bad-debt") result = { ...badDebtCredit(input), note: VAT_CRED
 else if (tool === "depreciation") result = { ...depreciation(input.cost, input.residual, input.years, input.method, input.firstMonths), note: ACCT_NOTE, acctAsOf: ACCT_AS_OF };
 else if (tool === "lease") result = { ...leaseSchedule(input.payment, input.periods, input.rate, input.advance, input.directCost), note: ACCT_NOTE, acctAsOf: ACCT_AS_OF };
 else if (tool === "bond") result = { ...bondSchedule(input.face, input.couponRate, input.marketRate, input.periods), note: ACCT_NOTE, acctAsOf: ACCT_AS_OF };
+else if (tool === "deferred-tax") result = { ...deferredTax(input), note: AUDIT_DEFERRED_NOTE, asOf: AUDIT_DEFERRED_AS_OF };
+else if (tool === "materiality") result = { ...materiality(input), note: AUDIT_DEFERRED_NOTE, asOf: AUDIT_DEFERRED_AS_OF };
+else if (tool === "sample") result = { mus: musSample(input), attribute: input.tolerableRate ? attributeSample(input) : null, note: AUDIT_DEFERRED_NOTE, asOf: AUDIT_DEFERRED_AS_OF };
 else if (tool === "audit") result = { ...externalAuditCheck(input), note: ACCT_NOTE, acctAsOf: ACCT_AS_OF };
 else result = wacc(input);
 console.log(JSON.stringify({ tool, asOf: ADVISORY_AS_OF, isEstimate: true, input, result }, null, 2));

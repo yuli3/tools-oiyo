@@ -1,6 +1,7 @@
 // 결산 상각표·외부감사 대상 판정 (2026-11-20, 전수조사 8번). 계산: lib/kr-accounting-schedules-2026.ts (kr-tax-advisor 스킬 calc.mjs depreciation·lease·bond·audit와 같은 코드)
 import { useState } from "react";
 import { ACCT_AS_OF, ACCT_NOTE, bondSchedule, depreciation, externalAuditCheck, leaseSchedule, type DepMethod } from "../../../lib/kr-accounting-schedules-2026";
+import { AUDIT_DEFERRED_NOTE, BENCHMARKS, attributeSample, averageCorpRate, deferredTax, materiality, musSample, type Benchmark, type Confidence, type Risk } from "../../../lib/kr-audit-deferred-2026";
 import ChoiceChips from "../payroll/ChoiceChips";
 import NumberField from "../payroll/NumberField";
 import { track } from "../viz/track";
@@ -8,7 +9,10 @@ import { track } from "../viz/track";
 const TOOL_ID = "accounting-schedule-calculator";
 const MAN = 10_000;
 const won = (n: number) => Math.round(n).toLocaleString("ko-KR");
-type Mode = "dep" | "lease" | "bond" | "audit";
+type Mode = "dep" | "lease" | "bond" | "audit" | "deferred" | "mat";
+type ConfKey = "80" | "90" | "95" | "99";
+const CONF_KEYS: ConfKey[] = ["80", "90", "95", "99"];
+const pctTxt = (r: number) => `${Math.round(r * 10000) / 100}%`;
 
 function Table({ head, rows }: { head: string[]; rows: (string | number)[][] }) {
   return (
@@ -27,15 +31,21 @@ export default function AccountingSchedules() {
   const [ls, setLs] = useState({ payment: 1200, periods: 5, rate: 5, advance: false, directCost: 0 });
   const [bd, setBd] = useState({ face: 10000, coupon: 5, market: 6, periods: 3 });
   const [au, setAu] = useState({ listed: false, llc: false, assets: 130, liabilities: 80, revenue: 50, employees: 20, members: 0 });
+  const [df, setDf] = useState({ deductible: 10000, taxable: 4000, losses: 0, rate: 20.9, future: 0, opening: 500, current: 3000, pretax: 20000 });
+  const [mt, setMt] = useState({ benchmark: "pretax" as Benchmark, base: 10, pct: 5, risk: "medium" as Risk, population: 50, expected: 0, confidence: 95 as Confidence, deviation: 5 });
   const tick = () => track("tool_calculate", { tool_id: TOOL_ID }, true);
   const d = depreciation(dep.cost * MAN, dep.residual * MAN, dep.years, dep.method, dep.firstMonths);
   const l = leaseSchedule(ls.payment * MAN, ls.periods, ls.rate / 100, ls.advance, ls.directCost * MAN);
   const b = bondSchedule(bd.face * MAN, bd.coupon / 100, bd.market / 100, bd.periods);
   const a = externalAuditCheck({ ...au, assets: au.assets * 100_000_000, liabilities: au.liabilities * 100_000_000, revenue: au.revenue * 100_000_000 });
+  const f = deferredTax({ items: [{ label: "차감할 일시적차이", amount: df.deductible * MAN }, { label: "이월결손금", amount: df.losses * MAN }, { label: "가산할 일시적차이", amount: -df.taxable * MAN }], rate: df.rate / 100, futureIncome: df.future > 0 ? df.future * MAN : undefined, openingNet: df.opening * MAN, currentTax: df.current * MAN, pretaxIncome: df.pretax * MAN });
+  const m = materiality({ benchmark: mt.benchmark, base: mt.base * 100_000_000, pct: mt.pct / 100, risk: mt.risk });
+  const mus = musSample({ population: mt.population * 100_000_000, tolerable: m.performance, expected: mt.expected * MAN, confidence: mt.confidence });
+  const att = attributeSample({ tolerableRate: mt.deviation / 100, confidence: mt.confidence });
   const box = "rounded-md border border-border bg-card px-4 py-4 text-sm";
   return (
     <div className="space-y-5">
-      <ChoiceChips<Mode> legend="무엇을 만들까요?" value={mode} options={[{ value: "dep", label: "감가상각표" }, { value: "lease", label: "리스(IFRS 16)" }, { value: "bond", label: "사채 상각표" }, { value: "audit", label: "외감 대상 판정" }]} onChange={(v) => { setMode(v); tick(); }} />
+      <ChoiceChips<Mode> legend="무엇을 만들까요?" value={mode} options={[{ value: "dep", label: "감가상각표" }, { value: "lease", label: "리스(IFRS 16)" }, { value: "bond", label: "사채 상각표" }, { value: "audit", label: "외감 대상 판정" }, { value: "deferred", label: "이연법인세" }, { value: "mat", label: "감사 중요성·표본" }]} onChange={(v) => { setMode(v); tick(); }} />
       {mode === "dep" && (
         <>
           <ChoiceChips<DepMethod> legend="상각 방법" value={dep.method} options={[{ value: "straight", label: "정액법" }, { value: "declining", label: "정률법" }, { value: "syd", label: "연수합계법" }]} onChange={(v) => { setDep({ ...dep, method: v }); tick(); }} />
@@ -101,7 +111,54 @@ export default function AccountingSchedules() {
           </div>
         </>
       )}
-      <p className="text-xs leading-5 text-muted-foreground">{ACCT_NOTE} 기준일 {ACCT_AS_OF}. 입력값은 서버로 보내지 않아요.</p>
+      {mode === "deferred" && (
+        <>
+          <div className="grid gap-3 sm:grid-cols-2">
+            <NumberField label="차감할 일시적차이 합계(충당부채·손상 등)" suffix="만 원" value={df.deductible} onChange={(v) => { setDf({ ...df, deductible: Math.max(0, v) }); tick(); }} />
+            <NumberField label="가산할 일시적차이 합계(일시상각·미수이자 등)" suffix="만 원" value={df.taxable} onChange={(v) => { setDf({ ...df, taxable: Math.max(0, v) }); tick(); }} />
+            <NumberField label="세무상 이월결손금" suffix="만 원" value={df.losses} onChange={(v) => { setDf({ ...df, losses: Math.max(0, v) }); tick(); }} />
+            <NumberField label="소멸될 때 적용할 세율(지방세 포함)" suffix="%" step={0.1} value={df.rate} onChange={(v) => { setDf({ ...df, rate: Math.min(100, Math.max(0, v)) }); tick(); }} />
+            <NumberField label="쓸 수 있는 미래 과세소득(모르면 0)" suffix="만 원" value={df.future} onChange={(v) => { setDf({ ...df, future: Math.max(0, v) }); tick(); }} />
+            <NumberField label="기초 순이연법인세자산(부채면 −)" suffix="만 원" value={df.opening} onChange={(v) => { setDf({ ...df, opening: v }); tick(); }} />
+            <NumberField label="당기 법인세 부담액" suffix="만 원" value={df.current} onChange={(v) => { setDf({ ...df, current: Math.max(0, v) }); tick(); }} />
+            <NumberField label="법인세비용차감전순이익" suffix="만 원" value={df.pretax} onChange={(v) => { setDf({ ...df, pretax: v }); tick(); }} />
+          </div>
+          <p className="text-xs text-muted-foreground">참고: 과세표준 3억 원이면 2026 평균세율(지방세 포함)은 {pctTxt(averageCorpRate(300_000_000))}, 10억 원이면 {pctTxt(averageCorpRate(1_000_000_000))}예요.</p>
+          <div className={box} aria-live="polite">
+            <p className="text-lg font-semibold text-foreground">기말 순이연법인세{f.closingNet >= 0 ? "자산" : "부채"} {won(Math.abs(f.closingNet))}원</p>
+            <p className="mt-1 text-foreground">이연법인세자산 {won(f.dta)}원{f.unrecognized > 0 ? ` (미래 과세소득이 부족해 ${won(f.unrecognized)}원은 인식하지 않아요)` : ""} · 이연법인세부채 {won(f.dtl)}원</p>
+            <p className="mt-1 text-foreground">법인세비용 {won(f.totalExpense)}원 = 당기 {won(f.currentTax)}원 {f.deferredExpense >= 0 ? "+" : "−"} 이연 {won(Math.abs(f.deferredExpense))}원{f.effectiveRate !== null ? ` · 유효세율 ${pctTxt(f.effectiveRate)}` : ""}</p>
+          </div>
+        </>
+      )}
+      {mode === "mat" && (
+        <>
+          <ChoiceChips<Benchmark> legend="중요성 기준치" value={mt.benchmark} options={(Object.keys(BENCHMARKS) as Benchmark[]).map((k) => ({ value: k, label: BENCHMARKS[k].label }))} onChange={(v) => { setMt({ ...mt, benchmark: v, pct: BENCHMARKS[v].typical * 100 }); tick(); }} />
+          <div className="grid gap-3 sm:grid-cols-2">
+            <NumberField label="기준치 금액" suffix="억 원" step={0.1} value={mt.base} onChange={(v) => { setMt({ ...mt, base: v }); tick(); }} />
+            <NumberField label="적용 비율" suffix="%" step={0.1} value={mt.pct} onChange={(v) => { setMt({ ...mt, pct: Math.max(0, v) }); tick(); }} />
+          </div>
+          <ChoiceChips<Risk> legend="왜곡 위험(수행 중요성 비율)" value={mt.risk} options={[{ value: "low", label: "낮음 75%" }, { value: "medium", label: "보통 65%" }, { value: "high", label: "높음 50%" }]} onChange={(v) => { setMt({ ...mt, risk: v }); tick(); }} />
+          <div className={box} aria-live="polite">
+            <p className="text-lg font-semibold text-foreground">전체 중요성 {won(m.overall)}원 · 수행 중요성 {won(m.performance)}원</p>
+            <p className="mt-1 text-foreground">명백히 사소한 금액 {won(m.trivial)}원(전체의 5%)</p>
+            {m.outOfRange && <p className="mt-1 text-amber-700 dark:text-amber-300">이 기준치의 흔한 범위({pctTxt(m.range[0])}~{pctTxt(m.range[1])})를 벗어났어요. 근거를 감사조서에 남겨요.</p>}
+          </div>
+          <div className="grid gap-3 sm:grid-cols-2">
+            <NumberField label="표본 모집단 금액(계정 잔액)" suffix="억 원" step={0.1} value={mt.population} onChange={(v) => { setMt({ ...mt, population: Math.max(0, v) }); tick(); }} />
+            <NumberField label="예상왜곡" suffix="만 원" value={mt.expected} onChange={(v) => { setMt({ ...mt, expected: Math.max(0, v) }); tick(); }} />
+            <NumberField label="통제 테스트 허용이탈률" suffix="%" step={0.5} value={mt.deviation} onChange={(v) => { setMt({ ...mt, deviation: Math.min(50, Math.max(0, v)) }); tick(); }} />
+          </div>
+          <ChoiceChips<ConfKey> legend="신뢰수준" value={String(mt.confidence) as ConfKey} options={CONF_KEYS.map((c) => ({ value: c, label: `${c}%` }))} onChange={(v) => { setMt({ ...mt, confidence: Number(v) as Confidence }); tick(); }} />
+          <div className={box} aria-live="polite">
+            <p className="text-lg font-semibold text-foreground">금액단위표본 {mus.size ?? "—"}개{mus.interval ? ` · 표본 간격 ${won(mus.interval)}원` : ""}</p>
+            <p className="mt-1 text-foreground">허용왜곡은 수행 중요성({won(m.performance)}원)으로 놓았어요. 신뢰계수 {mus.factor}, 확장계수 {mus.expansion}.</p>
+            {mus.reason && <p className="mt-1 text-muted-foreground">{mus.reason}</p>}
+            <p className="mt-2 text-foreground">통제 테스트(예상 이탈 0개) 표본 {att.size ?? "—"}개</p>
+          </div>
+        </>
+      )}
+      <p className="text-xs leading-5 text-muted-foreground">{ACCT_NOTE} {(mode === "deferred" || mode === "mat") && AUDIT_DEFERRED_NOTE} 기준일 {ACCT_AS_OF}. 입력값은 서버로 보내지 않아요.</p>
     </div>
   );
 }
