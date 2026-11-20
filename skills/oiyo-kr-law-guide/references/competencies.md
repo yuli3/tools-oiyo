@@ -152,7 +152,7 @@ GENERATED from tools-oiyo src/data/pro-competencies.ts. 기준일 2026-11-20. �
 - **출입국·체류 자격** [법령 해석] (일반인도 씀): 체류자격 변경·연장, 사증 종류별 요건을 다뤄요.
   - 도구: 체류자격·외국인등록 기한 길잡이 https://tools.oiyo.net/ko/visa-stay-status-guide/
   - MCP: `get_kr_practice_guide`
-  - 스킬: oiyo-kr-law-guide
+  - 스킬: oiyo-kr-law-guide, oiyo-korea-expat-guide
 - **건축·토지 규제 수치** [계산·평가] (일반인도 씀): 건폐율·용적률처럼 인허가 판단에 쓰는 수치를 계산해요.
   - 도구: 건폐율·용적률 https://tools.oiyo.net/ko/building-coverage-floor-area-ratio-calculator/
 - **과태료·이행강제금 감경** [계산·평가] (일반인도 씀): 의견제출 기한 안 자진납부 감경과 늦게 낼 때 붙는 가산금을 계산해요. 이행강제금은 개별 법률 기준을 따라요.

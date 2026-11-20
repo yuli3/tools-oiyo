@@ -1,0 +1,33 @@
+---
+// Korea guide for foreign residents (2026-11-20, next-10 #7). Engine: lib/korea-expat-guide-2026.ts (same code as the oiyo-korea-expat-guide skill).
+import Layout from '../../components/Layout.astro';
+import ToolShell from '../../components/ToolShell.astro';
+import ExpatGuide from '../../components/tools/expat/ExpatGuide';
+import { EXPAT_AS_OF } from '../../lib/korea-expat-guide-2026';
+
+const title = 'Living in Korea: deadlines and rights for foreign residents';
+const description = 'Enter the dates you know to get your Korean deadlines: register within 90 days, report a new address within 15 days, extend your stay before it expires, final pay within 14 days of leaving a job. Plain-English guides to unpaid wages, the 2026 minimum wage, work injuries, health insurance, tax and pension refunds, with official help lines.';
+const url = 'https://tools.oiyo.net/en/korea-foreign-resident-guide/';
+const faqs = [
+  { q: 'When do I have to register as a foreign resident?', a: 'Within 90 days of entering Korea if you will stay longer than 90 days (Immigration Act Art. 31). Book a visit on HiKorea first.' },
+  { q: 'Do I need to report a new address?', a: 'Yes, within 15 days of moving (Art. 36). The report also counts as a move-in report, which helps protect your rental deposit.' },
+  { q: 'Does the minimum wage apply to foreign workers?', a: 'Yes. In 2026 it is KRW 10,320 an hour for every worker regardless of visa. Unpaid wages can be reported to the Ministry of Employment and Labor (1350) with an interpreter.' },
+  { q: 'Can I get my National Pension back when I leave?', a: 'It depends on your nationality and your country\'s agreement with Korea. Ask the National Pension Service (1355) before you leave.' },
+];
+const schema = [
+  { '@context': 'https://schema.org', '@type': 'WebApplication', name: title, url, inLanguage: 'en', description, applicationCategory: 'ReferenceApplication', operatingSystem: 'All', isAccessibleForFree: true },
+  { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) },
+];
+---
+<Layout title={title} description={description} locale="en" canonicalURL={url} keywords={['Korea foreign resident', 'alien registration 90 days', 'Korea address change 15 days', 'Korea unpaid wages foreigner', 'Korea minimum wage 2026']}>
+  <ToolShell title="Living in Korea: deadlines and rights" description={description}>
+    <p slot="meta" class="text-sm font-semibold">South Korea · checked {EXPAT_AS_OF}</p>
+    <ExpatGuide client:load />
+    <section class="space-y-3 border-t border-border pt-4">
+      <h2 class="text-lg font-semibold">Questions</h2>
+      {faqs.map((f) => (<details class="rounded-md border border-border p-3"><summary class="min-h-11 cursor-pointer text-sm font-semibold">{f.q}</summary><p class="mt-2 text-sm leading-relaxed">{f.a}</p></details>))}
+      <p class="text-xs text-muted-foreground">Sources: Immigration Act Art. 18, 20, 25, 31, 35, 36, 88-2; Labor Standards Act Art. 36, 49; Industrial Accident Compensation Insurance Act Art. 112; National Health Insurance Act Art. 109; National Pension Act Art. 77, 126; Restriction of Special Taxation Act Art. 18-2 (law.go.kr). Information only, not advice or representation. Korean version: <a class="underline" href="/ko/visa-stay-status-guide/">체류자격·외국인등록 기한 길잡이</a>.</p>
+    </section>
+  </ToolShell>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+</Layout>
