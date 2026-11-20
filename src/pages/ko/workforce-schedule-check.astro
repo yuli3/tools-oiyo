@@ -1,0 +1,31 @@
+---
+// 상시근로자 수·근무표 점검 (2026-11-20, 전문 직군 전수조사 6번). 엔진: lib/kr-workforce-2026.ts (스킬 oiyo-kr-law-guide guide.mjs calc workforce)
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import WorkforceCheck from "../../components/tools/lawguide/WorkforceCheck";
+
+const title = "상시근로자 수 계산·근무표 점검 — 5인 이상 판정, 주 52시간, 휴게시간";
+const description = "지난 1개월 날마다 일한 사람 수로 상시근로자 수를 구하고 5인·10인·30인 기준 해당 여부를 판정해요(절반 규칙 포함). 요일별 출퇴근·휴게를 넣으면 주 52시간, 휴게 30분·1시간, 야간 가산, 주휴수당, 18세 미만 한도를 점검해요.";
+const ko = {
+  introTitle: "5인 이상인지부터 정해야 규정이 정해져요",
+  intro: "연장 한도·가산수당·연차·부당해고 구제는 상시 5명 이상일 때 적용돼요. 사람 수는 직원 명단이 아니라 지난 1개월 날마다 일한 사람 수로 따져요.",
+  howToTitle: "사용 방법",
+  steps: ["지난 1개월 영업일마다 일한 사람 수를 띄어쓰기로 넣어요.", "5인·10인·30인 기준 판정을 확인해요.", "근무표 탭에서 요일별 출퇴근과 휴게를 넣고 경고를 확인해요."],
+  highlightsTitle: "주요 특징",
+  highlights: [
+    { title: "절반 규칙", body: "평균이 5명 이상이어도 5명 미만인 날이 절반 이상이면 미적용, 반대도 따져요." },
+    { title: "주 52시간", body: "1일 8시간·주 40시간을 넘는 연장과 휴일근로를 합쳐 12시간 한도를 봐요." },
+    { title: "휴게·야간", body: "4시간 30분·8시간 1시간 휴게와 밤 10시~새벽 6시 야간 시간을 셉니다." },
+    { title: "18세 미만", body: "1일 7시간·주 35시간, 연장 주 5시간 한도로 바꿔 봐요." },
+  ],
+  disclaimer: "어림 점검이에요. 탄력적·선택적 근로시간제, 특례업종, 포괄임금 약정은 따로 확인하세요.",
+};
+const faqs = [
+  { q: "상시근로자 수는 어떻게 세요?", a: "법 적용 사유가 생긴 날 전 1개월 동안 일한 사람을 날마다 더한 연인원을 그 기간 가동일수로 나눠요(근로기준법 시행령 제7조의2). 단시간·기간제·일용직은 넣고 파견근로자는 빼요." },
+  { q: "평균이 5명인데 왜 미적용이 나와요?", a: "평균이 5명 이상이어도 5명 미만인 날이 가동일수의 절반 이상이면 5인 이상 사업장으로 보지 않아요. 반대로 평균이 5명 미만이어도 5명 이상인 날이 절반 이상이면 적용돼요." },
+  { q: "휴게시간은 얼마나 줘야 하나요?", a: "4시간 일하면 30분 이상, 8시간 일하면 1시간 이상을 근로시간 도중에 줘야 해요(근로기준법 제54조). 5명 미만 사업장도 지켜야 해요." },
+];
+---
+<KrFinancePage slug="workforce-schedule-check" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <WorkforceCheck client:load />
+  <p class="mt-4 text-xs text-muted-foreground">근거: 근로기준법 제11조·제50조·제53조~제56조·제69조·제70조, 시행령 제7조의2·별표 1. <a class="underline" href="/ko/labor-law-guide/">노동법 길잡이</a> · <a class="underline" href="/ko/appeal-deadline-calculator/">부당해고 구제 기한</a></p>
+</KrFinancePage>

@@ -943,6 +943,47 @@
           }
         }
       ]
+    },
+    {
+      "skill": "oiyo-kr-law-guide",
+      "id": "workforce-half-rule",
+      "ask": "한 달 중 절반은 8명, 절반은 4명이 일했어요. 5인 이상 사업장이에요?",
+      "run": [
+        "calc",
+        "workforce",
+        "count",
+        "[8,8,8,4,4,4,4,4]"
+      ],
+      "expect": [
+        {
+          "path": "thresholds",
+          "has": {
+            "n": 5,
+            "applies": false
+          }
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-kr-law-guide",
+      "id": "workforce-52-over",
+      "ask": "평일 9시부터 22시까지, 쉬는 시간 30분이에요. 괜찮아요?",
+      "run": [
+        "calc",
+        "workforce",
+        "schedule",
+        "{\"shifts\": [{\"day\": \"월\", \"start\": \"09:00\", \"end\": \"22:00\", \"breakMin\": 30}, {\"day\": \"화\", \"start\": \"09:00\", \"end\": \"22:00\", \"breakMin\": 30}, {\"day\": \"수\", \"start\": \"09:00\", \"end\": \"22:00\", \"breakMin\": 30}, {\"day\": \"목\", \"start\": \"09:00\", \"end\": \"22:00\", \"breakMin\": 30}, {\"day\": \"금\", \"start\": \"09:00\", \"end\": \"22:00\", \"breakMin\": 30}]}"
+      ],
+      "expect": [
+        {
+          "path": "overtime",
+          "eq": 22.5
+        },
+        {
+          "path": "limitOk",
+          "eq": false
+        }
+      ]
     }
   ],
   "boundaries": {

@@ -15,6 +15,7 @@
 //   node scripts/guide.mjs calc inherit '{"family":{"spouse":true,"children":2,"parents":0,"siblings":0},"estate":300000000,"gifts":{"child1":200000000}}'
 //   node scripts/guide.mjs calc auction '{"sale":200000000,"region":"seoul","baseDate":"2023-05-01","tenants":[{"label":"임차인","deposit":150000000,"date":"2024-03-02"}],"claims":[{"label":"근저당","amount":120000000,"date":"2023-05-01","kind":"mortgage"}]}' [오늘]
 //   node scripts/guide.mjs calc customs travel '{"totalUsd":1800,"fx":1400,"selfReport":true}'   (travel|direct|rvc|refund)
+//   node scripts/guide.mjs calc workforce count '[6,6,4,4,6]'  |  calc workforce schedule '{"shifts":[{"day":"월","start":"09:00","end":"18:00","breakMin":60}]}'
 //   node scripts/guide.mjs practice [<길잡이 slug> [<상황 id> '<{"기한id":"YYYY-MM-DD"}>']]
 import { readFileSync } from "node:fs";
 import { LAW_GUIDE_AS_OF, PROFESSIONS, SCOPE_MATRIX, TOPICS, findStatutes, intake, statuteUrl, suggestTopics } from "./kr-expert-guide-2026.mjs";
@@ -25,6 +26,7 @@ import { checkContract } from "./freelance-contract-check-2026.mjs";
 import { appealsFrom, APPEAL_NOTE } from "./kr-appeal-deadlines-2026.mjs";
 import { legalHeirs, reserveShortfall, INHERIT_NOTE } from "./kr-inheritance-share-2026.mjs";
 import { auctionDistribution, AUCTION_NOTE } from "./kr-auction-distribution-2026.mjs";
+import { WORKFORCE_NOTE, checkSchedule, headcountThresholds } from "./kr-workforce-2026.mjs";
 import { CUSTOMS_NOTE, TRAVELER_EXTRA, directBundles, rvc, simpleRefund, travelerTax } from "./kr-customs-pack-2026.mjs";
 
 const CALC = {
@@ -85,6 +87,12 @@ switch (cmd) {
       const r = a2 === "travel" ? { ...travelerTax(i), extra: TRAVELER_EXTRA } : a2 === "direct" ? { bundles: directBundles(i.orders ?? [], i.fx, i.dutyRate) } : a2 === "rvc" ? rvc(i) : a2 === "refund" ? simpleRefund(i) : null;
       if (!r) { console.error("calc customs: travel, direct, rvc, refund"); process.exit(1); }
       print({ ...r, note: CUSTOMS_NOTE });
+    } else if (a1 === "workforce") {
+      // a2: count|schedule, a3: count → [6,6,4,...] (가동일별 인원), schedule → {"shifts":[{day,start,end,breakMin,holiday?}],"small":false,"minor":false}
+      const i = JSON.parse(a3 ?? "null");
+      if (a2 === "count") print({ thresholds: headcountThresholds(i ?? []), note: WORKFORCE_NOTE });
+      else if (a2 === "schedule") print({ ...checkSchedule(i ?? { shifts: [] }), note: WORKFORCE_NOTE });
+      else { console.error("calc workforce: count, schedule"); process.exit(1); }
     } else if (a1 === "record") {
       const i = JSON.parse(a2 ?? "{}");
       print({ check: recordCheck(i), text: recordText(i) });
@@ -92,7 +100,7 @@ switch (cmd) {
       const i = JSON.parse(a2 ?? "{}");
       print({ result: CALC[a1][0](i), plain: CALC[a1][1](i) });
     } else {
-      console.error(`calc: ${Object.keys(CALC).join(", ")}, entries, record, breach, policy, contract, appeal, inherit, auction, customs`);
+      console.error(`calc: ${Object.keys(CALC).join(", ")}, entries, record, breach, policy, contract, appeal, inherit, auction, customs, workforce`);
       process.exit(1);
     }
     break;

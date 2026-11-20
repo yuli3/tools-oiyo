@@ -116,6 +116,9 @@ GENERATED from tools-oiyo src/data/pro-competencies.ts. 기준일 2026-11-20. �
 - **4대보험과 인건비** [계산·평가] (일반인도 씀): 건강·연금·고용·산재보험료와 사업주 부담을 합쳐 실제 인건비를 구해요.
   - 도구: 인건비 계산기 https://tools.oiyo.net/ko/labor-cost-calculator/ · 건강보험료 계산기 https://tools.oiyo.net/ko/health-insurance-calculator/ · 일용직 4대보험 https://tools.oiyo.net/ko/daily-worker-insurance-checker/ · 실수령액 계산기 https://tools.oiyo.net/ko/salary-calculator/
   - MCP: `calculate_health_insurance`, `calculate_net_salary`
+- **상시근로자 수와 근로시간 점검** [계산·평가] (일반인도 씀): 1개월 연인원 ÷ 가동일수와 절반 규칙으로 5인 이상을 판정하고, 근무표로 주 52시간·휴게·야간·주휴를 점검해요.
+  - 도구: 상시근로자 수·근무표 점검 https://tools.oiyo.net/ko/workforce-schedule-check/ · 연장수당 계산기 https://tools.oiyo.net/ko/overtime-pay-calculator/
+  - 스킬: oiyo-kr-law-guide
 - **해고·체불 구제 기한** [기한·절차] (일반인도 씀, 자격사 업무와 맞닿음: 정보만): 부당해고 구제신청 3개월, 해고예고수당, 체불임금 대지급금 신청 기한을 세요.
   - 도구: 불복·이의신청 기한 계산 https://tools.oiyo.net/ko/appeal-deadline-calculator/ · 노동법 길잡이 https://tools.oiyo.net/ko/labor-law-guide/ · 해고예고수당 https://tools.oiyo.net/ko/dismissal-notice-pay-calculator/ · 체불 대지급금 https://tools.oiyo.net/ko/unpaid-wage-guarantee-calculator/ · 휴업수당 https://tools.oiyo.net/ko/shutdown-allowance-calculator/
   - MCP: `start_kr_law_intake`, `calculate_kr_dismissal_notice_pay`, `calculate_kr_wage_guarantee`, `calculate_kr_shutdown_allowance`
