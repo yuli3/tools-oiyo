@@ -1,0 +1,31 @@
+---
+// 경매 배당·소액임차인 최우선변제 계산기 (2026-11-20, 전문 직군 전수조사 4번). 엔진: lib/kr-auction-distribution-2026.ts (스킬 oiyo-kr-law-guide guide.mjs calc auction)
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import AuctionDistribution from "../../components/tools/lawguide/AuctionDistribution";
+
+const title = "경매 배당 계산기 — 소액임차인 최우선변제와 내 보증금 순위";
+const description = "집이 경매로 넘어갈 때 내 보증금이 얼마나 돌아오는지 어림해요. 근저당 설정일 기준 소액임차인 표(서울 1억6,500만 원 이하 5,500만 원 등)와 매각대금 1/2 한도, 임금·당해세·근저당·확정일자 순서로 배당표를 그려요.";
+const ko = {
+  introTitle: "경매에서 보증금은 순서대로 받아요",
+  intro: "경매 대금은 집행비용을 빼고 최우선변제, 당해세, 날짜가 빠른 근저당·확정일자·세금 순으로 나눠요. 내 보증금 앞에 무엇이 있는지 먼저 보세요.",
+  howToTitle: "사용 방법",
+  steps: ["집이 있는 지역과 예상 낙찰가를 넣어요.", "앞선 근저당 금액과 설정일, 내 보증금과 확정일자를 넣어요.", "최우선변제로 먼저 받는 금액과 못 받는 금액을 확인해요."],
+  highlightsTitle: "주요 특징",
+  highlights: [
+    { title: "설정일 기준 표", body: "소액임차인 범위는 첫 근저당 설정일에 맞는 표(2018·2021·2023 개정)로 골라요." },
+    { title: "1/2 한도", body: "최우선변제 합이 배당할 금액의 절반을 넘으면 나눠요." },
+    { title: "같은 날은 비율로", body: "근저당·확정일자·세금 법정기일이 같은 날이면 금액 비율로 나눠요." },
+    { title: "개인정보 안전", body: "입력값은 서버로 보내지 않아요." },
+  ],
+  disclaimer: "배당 순서를 단순화한 어림 계산이에요. 실제 배당은 법원 배당표를 따르고, 배당요구 종기까지 배당요구를 해야 받아요.",
+};
+const faqs = [
+  { q: "소액임차인 최우선변제는 얼마예요?", a: "2023년 2월 21일 이후 담보물권이 설정된 집은 서울 보증금 1억6,500만 원 이하면 5,500만 원, 과밀억제권역·세종·용인·화성·김포 1억4,500만 원 이하 4,800만 원, 광역시 등 8,500만 원 이하 2,800만 원, 그 밖 7,500만 원 이하 2,500만 원까지 먼저 받아요(주택임대차보호법 시행령 제10조·제11조)." },
+  { q: "언제 계약했는지가 아니라 근저당 설정일이 기준인가요?", a: "네. 소액임차인 범위는 그 집에 처음 설정된 담보물권(근저당 등) 날짜의 표를 따라요. 그 뒤에 계약했어도 예전 표가 적용될 수 있어요." },
+  { q: "최우선변제를 받으려면 무엇이 필요해요?", a: "경매개시결정 등기 전에 전입신고와 입주(대항요건)를 마쳐야 하고, 배당요구 종기까지 법원에 배당요구를 해야 해요. 확정일자는 나머지 보증금을 순위대로 받을 때 필요해요." },
+];
+---
+<KrFinancePage slug="auction-distribution-calculator" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <AuctionDistribution client:load />
+  <p class="mt-4 text-xs text-muted-foreground">근거: 주택임대차보호법 제3조의2·제8조, 시행령 제10조·제11조, 근로기준법 제38조, 국세기본법 제35조. <a class="underline" href="/ko/jeonse-guarantee-calculator/">전세보증보험 계산기</a> · <a class="underline" href="/ko/registry-court-law-guide/">등기·법원 서류 길잡이</a> · <a class="underline" href="/ko/realty-brokerage-law-guide/">중개·임대차 길잡이</a></p>
+</KrFinancePage>

@@ -120,10 +120,12 @@ export const COMPETENCIES: Competency[] = [
   // 법무사
   c("court-law", "court", "law", "상속·부동산등기·민사집행", "상속 순위와 포기·한정승인, 등기 원인, 지급명령·강제집행 요건을 읽어요.", { tools: ["registry-court-law-guide"], skills: [LAW], mcp: ["search_kr_statutes"], audience: ["pro", "public"] }),
   c("court-deadline", "court", "deadline", "상속 포기·신고·등기 기한", "상속 포기·한정승인 3개월, 상속세 신고 6개월, 소유권이전등기 60일을 함께 세요.", { tools: ["registry-court-law-guide", "after-death-checklist", "inheritance-gift-filing-deadline-calculator", "statute-limitations-calculator"], skills: [LAW], mcp: ["start_kr_law_intake", "plan_kr_inheritance_gift_filing_deadline"], audience: ["pro", "public"] }),
+  c("court-inherit", "court", "calc", "법정상속분·유류분 계산", "배우자 1.5배 법정상속분과 유류분 부족액을 계산하고, 2026 개정(형제자매 삭제·기여 대가 제외·가액반환)과 청구 기한을 챙겨요.", { tools: ["inheritance-share-calculator", "inheritance-tax-calculator"], skills: [LAW], audience: ["pro", "public"] }),
+  c("court-auction", "court", "calc", "경매 배당과 최우선변제", "근저당 설정일 기준 소액임차인 표, 1/2 한도, 당해세·근저당·확정일자 순서로 배당표를 미리 그려요.", { tools: ["auction-distribution-calculator", "jeonse-guarantee-calculator"], skills: [LAW], audience: ["pro", "public"] }),
   c("court-cost", "court", "calc", "등기 비용·취득세", "취득세·등록면허세·국민주택채권 매입액을 계산해요.", { tools: ["acquisition-tax-calculator", "first-home-tax-calculator", "car-bond-refund-calculator"], mcp: ["calculate_kr_acquisition_tax"], audience: ["pro", "public"] }),
   c("court-interest", "court", "calc", "이자·지연손해금·소송비용", "법정이율, 소송촉진법 지연이자, 인지대·송달료를 계산해요.", { tools: ["legal-interest-calculator", "litigation-cost-calculator"], audience: ["pro", "public"] }),
   c("court-docs", "court", "docs", "지급명령·공탁·등기 신청 서류", "청구 원인과 증거를 정리해요. 신청서 작성·제출 대리는 법무사 업무예요.", { tools: ["registry-court-law-guide"], skills: [LAW], exclusive: true }),
-  c("court-deposit", "court", "consult", "보증금 회수와 전세 보증", "임차권등기명령, 보증보험 가입 가능 여부를 사실관계로 확인해요.", { tools: ["jeonse-guarantee-calculator", "jeonse-monthly-converter"], mcp: ["diagnose_hug_guarantee"], audience: ["pro", "public"] }),
+  c("court-deposit", "court", "consult", "보증금 회수와 전세 보증", "임차권등기명령, 보증보험 가입 가능 여부를 사실관계로 확인해요.", { tools: ["auction-distribution-calculator", "jeonse-guarantee-calculator", "jeonse-monthly-converter"], mcp: ["diagnose_hug_guarantee"], audience: ["pro", "public"] }),
   c("court-debt", "court", "consult", "채무 조정 선택지", "개인회생 변제액과 기간을 계산해 선택지를 비교해요.", { tools: ["personal-rehabilitation-calculator"], audience: ["pro", "public"] }),
   c("court-scope", "court", "ethics", "법무사 업무 범위", "등기·공탁 신청 대리와 법원 제출 서류 작성은 법무사 업무예요(법무사법 제2조). 소송 대리는 변호사 업무예요(변호사법 제109조).", { tools: ["law-guide"], skills: [LAW], mcp: ["get_kr_professional_scope"] }),
   c("court-efile", "court", "digital", "인터넷등기소·전자소송", "등기부 열람, 전자소송 제출 같은 전자 창구 실무예요.", { tools: ["eportal-practice-guide"], skills: ["oiyo-kr-law-guide"], mcp: ["get_kr_practice_guide"] }),
@@ -186,7 +188,7 @@ export const COMPETENCIES: Competency[] = [
   c("ap-scope", "appraiser", "ethics", "감정평가 업무 범위와 명칭 제한", "감정평가는 사무소·법인 소속 감정평가사가 하고(감정평가법 제21조·제29조), 유사명칭을 쓸 수 없어요(제22조).", { tools: ["law-guide"], skills: [LAW], mcp: ["get_kr_professional_scope"] }),
 
   // 공인중개사
-  c("br-law", "broker", "law", "공인중개사법·주택임대차보호법", "확인·설명 의무, 금지행위, 대항력·우선변제를 읽어요.", { tools: ["realty-brokerage-law-guide", "registry-court-law-guide"], skills: [LAW], mcp: ["search_kr_statutes"], audience: ["pro", "public"] }),
+  c("br-law", "broker", "law", "공인중개사법·주택임대차보호법", "확인·설명 의무, 금지행위, 대항력·우선변제를 읽어요.", { tools: ["realty-brokerage-law-guide", "registry-court-law-guide", "auction-distribution-calculator"], skills: [LAW], mcp: ["search_kr_statutes"], audience: ["pro", "public"] }),
   c("br-fee", "broker", "calc", "중개보수 계산", "거래 종류·금액별 상한요율로 보수를 계산해요.", { tools: ["brokerage-calculator", "realty-brokerage-law-guide"], audience: ["pro", "public"] }),
   c("br-deadline", "broker", "deadline", "거래·임대차 신고 기한", "매매 거래신고와 주택 임대차 신고를 계약일부터 30일 안에 해요.", { tools: ["realty-brokerage-law-guide"], skills: [LAW], mcp: ["start_kr_law_intake"], audience: ["pro", "public"] }),
   c("br-jeonse", "broker", "consult", "전세 위험 점검", "보증금 대비 시세·선순위, 보증보험 가입 가능성을 확인해요.", { tools: ["jeonse-guarantee-calculator", "jeonse-vs-buy-calculator", "jeonse-monthly-converter"], mcp: ["diagnose_hug_guarantee"], audience: ["pro", "public"] }),
@@ -276,6 +278,8 @@ export const TOOL_NAMES: Record<string, string> = {
   "after-death-checklist": "사망 후 할 일 타임라인",
   "freelance-contract-check": "프리랜서·외주 계약서 점검",
   "appeal-deadline-calculator": "불복·이의신청 기한 계산",
+  "inheritance-share-calculator": "법정상속분·유류분 계산",
+  "auction-distribution-calculator": "경매 배당·최우선변제 계산",
   "inheritance-gift-filing-deadline-calculator": "상속·증여 신고기한",
   "accounting-law-guide": "회계·장부 법령 길잡이",
   "business-car-expense-calculator": "업무용 승용차 비용",

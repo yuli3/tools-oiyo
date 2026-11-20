@@ -12,6 +12,8 @@
 //   node scripts/guide.mjs calc policy <처리방침.txt> '{"website":true,"outsource":true}'
 //   node scripts/guide.mjs calc contract <계약서.txt> '{"creative":true,"registered":false}' [계약 금액]
 //   node scripts/guide.mjs calc appeal 2026-11-20 [분야 id] [오늘]   (불복·이의·청구 기한 전 분야)
+//   node scripts/guide.mjs calc inherit '{"family":{"spouse":true,"children":2,"parents":0,"siblings":0},"estate":300000000,"gifts":{"child1":200000000}}'
+//   node scripts/guide.mjs calc auction '{"sale":200000000,"region":"seoul","baseDate":"2023-05-01","tenants":[{"label":"임차인","deposit":150000000,"date":"2024-03-02"}],"claims":[{"label":"근저당","amount":120000000,"date":"2023-05-01","kind":"mortgage"}]}' [오늘]
 //   node scripts/guide.mjs practice [<길잡이 slug> [<상황 id> '<{"기한id":"YYYY-MM-DD"}>']]
 import { readFileSync } from "node:fs";
 import { LAW_GUIDE_AS_OF, PROFESSIONS, SCOPE_MATRIX, TOPICS, findStatutes, intake, statuteUrl, suggestTopics } from "./kr-expert-guide-2026.mjs";
@@ -20,6 +22,8 @@ import { GUIDES, guideBySlug, guideDeadlines, recordCheck, recordText } from "./
 import { breachClock, checkPolicy } from "./privacy-check-2026.mjs";
 import { checkContract } from "./freelance-contract-check-2026.mjs";
 import { appealsFrom, APPEAL_NOTE } from "./kr-appeal-deadlines-2026.mjs";
+import { legalHeirs, reserveShortfall, INHERIT_NOTE } from "./kr-inheritance-share-2026.mjs";
+import { auctionDistribution, AUCTION_NOTE } from "./kr-auction-distribution-2026.mjs";
 
 const CALC = {
   fine: [fineResult, finePlain],
@@ -65,6 +69,13 @@ switch (cmd) {
     } else if (a1 === "appeal") {
       // a2: 통지를 받은 날 YYYY-MM-DD, a3: 분야 id(선택, 예: tax, customs, appraisal), a4: 오늘(선택)
       print({ from: a2, deadlines: appealsFrom(a2, a4 ?? new Date().toISOString().slice(0, 10), a3 || undefined), note: APPEAL_NOTE });
+    } else if (a1 === "inherit") {
+      // a2: {"family":{spouse,children,parents,siblings},"estate","debts","gifts":{heirId:원},"bequests","thirdGifts","thirdBequests","death"}
+      const i = JSON.parse(a2 ?? "{}");
+      print({ heirs: legalHeirs(i.family ?? {}), reserve: reserveShortfall(i), note: INHERIT_NOTE });
+    } else if (a1 === "auction") {
+      // a2: {"sale","cost","region":"seoul|overcrowded|metro|other","baseDate","tenants":[{label,deposit,date?}],"claims":[{label,amount,date,kind}],"wagePriority","currentTax","wageOther","general"}
+      print({ ...auctionDistribution(JSON.parse(a2 ?? "{}"), a3 ?? today()), note: AUCTION_NOTE });
     } else if (a1 === "record") {
       const i = JSON.parse(a2 ?? "{}");
       print({ check: recordCheck(i), text: recordText(i) });
@@ -72,7 +83,7 @@ switch (cmd) {
       const i = JSON.parse(a2 ?? "{}");
       print({ result: CALC[a1][0](i), plain: CALC[a1][1](i) });
     } else {
-      console.error(`calc: ${Object.keys(CALC).join(", ")}, entries, record, breach, policy, contract, appeal`);
+      console.error(`calc: ${Object.keys(CALC).join(", ")}, entries, record, breach, policy, contract, appeal, inherit, auction`);
       process.exit(1);
     }
     break;

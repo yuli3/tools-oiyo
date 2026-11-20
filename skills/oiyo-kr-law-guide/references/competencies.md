@@ -184,6 +184,12 @@ GENERATED from tools-oiyo src/data/pro-competencies.ts. 기준일 2026-11-20. �
   - 도구: 등기·법원 서류 길잡이 https://tools.oiyo.net/ko/registry-court-law-guide/ · 사망 후 할 일 타임라인 https://tools.oiyo.net/ko/after-death-checklist/ · 상속·증여 신고기한 https://tools.oiyo.net/ko/inheritance-gift-filing-deadline-calculator/ · 소멸시효 계산기 https://tools.oiyo.net/ko/statute-limitations-calculator/
   - MCP: `start_kr_law_intake`, `plan_kr_inheritance_gift_filing_deadline`
   - 스킬: oiyo-kr-law-guide
+- **법정상속분·유류분 계산** [계산·평가] (일반인도 씀): 배우자 1.5배 법정상속분과 유류분 부족액을 계산하고, 2026 개정(형제자매 삭제·기여 대가 제외·가액반환)과 청구 기한을 챙겨요.
+  - 도구: 법정상속분·유류분 계산 https://tools.oiyo.net/ko/inheritance-share-calculator/ · 상속세 계산기 https://tools.oiyo.net/ko/inheritance-tax-calculator/
+  - 스킬: oiyo-kr-law-guide
+- **경매 배당과 최우선변제** [계산·평가] (일반인도 씀): 근저당 설정일 기준 소액임차인 표, 1/2 한도, 당해세·근저당·확정일자 순서로 배당표를 미리 그려요.
+  - 도구: 경매 배당·최우선변제 계산 https://tools.oiyo.net/ko/auction-distribution-calculator/ · 전세보증 진단 https://tools.oiyo.net/ko/jeonse-guarantee-calculator/
+  - 스킬: oiyo-kr-law-guide
 - **등기 비용·취득세** [계산·평가] (일반인도 씀): 취득세·등록면허세·국민주택채권 매입액을 계산해요.
   - 도구: 취득세 계산기 https://tools.oiyo.net/ko/acquisition-tax-calculator/ · 생애최초 취득세 https://tools.oiyo.net/ko/first-home-tax-calculator/ · 국민주택채권 할인 https://tools.oiyo.net/ko/car-bond-refund-calculator/
   - MCP: `calculate_kr_acquisition_tax`
@@ -193,7 +199,7 @@ GENERATED from tools-oiyo src/data/pro-competencies.ts. 기준일 2026-11-20. �
   - 도구: 등기·법원 서류 길잡이 https://tools.oiyo.net/ko/registry-court-law-guide/
   - 스킬: oiyo-kr-law-guide
 - **보증금 회수와 전세 보증** [상담·설계] (일반인도 씀): 임차권등기명령, 보증보험 가입 가능 여부를 사실관계로 확인해요.
-  - 도구: 전세보증 진단 https://tools.oiyo.net/ko/jeonse-guarantee-calculator/ · 전월세 전환 https://tools.oiyo.net/ko/jeonse-monthly-converter/
+  - 도구: 경매 배당·최우선변제 계산 https://tools.oiyo.net/ko/auction-distribution-calculator/ · 전세보증 진단 https://tools.oiyo.net/ko/jeonse-guarantee-calculator/ · 전월세 전환 https://tools.oiyo.net/ko/jeonse-monthly-converter/
   - MCP: `diagnose_hug_guarantee`
 - **채무 조정 선택지** [상담·설계] (일반인도 씀): 개인회생 변제액과 기간을 계산해 선택지를 비교해요.
   - 도구: 개인회생 계산기 https://tools.oiyo.net/ko/personal-rehabilitation-calculator/
@@ -401,7 +407,7 @@ GENERATED from tools-oiyo src/data/pro-competencies.ts. 기준일 2026-11-20. �
 등록 사무소에서 매매·임대차 중개, 확인·설명, 거래계약서 작성
 
 - **공인중개사법·주택임대차보호법** [법령 해석] (일반인도 씀): 확인·설명 의무, 금지행위, 대항력·우선변제를 읽어요.
-  - 도구: 부동산 거래·중개 법령 길잡이 https://tools.oiyo.net/ko/realty-brokerage-law-guide/ · 등기·법원 서류 길잡이 https://tools.oiyo.net/ko/registry-court-law-guide/
+  - 도구: 부동산 거래·중개 법령 길잡이 https://tools.oiyo.net/ko/realty-brokerage-law-guide/ · 등기·법원 서류 길잡이 https://tools.oiyo.net/ko/registry-court-law-guide/ · 경매 배당·최우선변제 계산 https://tools.oiyo.net/ko/auction-distribution-calculator/
   - MCP: `search_kr_statutes`
   - 스킬: oiyo-kr-law-guide
 - **중개보수 계산** [계산·평가] (일반인도 씀): 거래 종류·금액별 상한요율로 보수를 계산해요.

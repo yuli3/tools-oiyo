@@ -123,7 +123,7 @@ GENERATED from tools-oiyo src/lib/kr-expert-guide-2026.ts. 기준일 2026-11-17.
 
 근거 조문: 주택임대차보호법 제3조·제3조의2, 주택임대차보호법 제3조의3, 주택임대차보호법 제6조의3, 민사소송법 제462조·제470조
 
-계산 도구: 전세보증보험 계산기 https://tools.oiyo.net/ko/jeonse-guarantee-calculator/ · 법정이자 계산기 https://tools.oiyo.net/ko/legal-interest-calculator/
+계산 도구: 경매 배당·최우선변제 계산기 https://tools.oiyo.net/ko/auction-distribution-calculator/ · 전세보증보험 계산기 https://tools.oiyo.net/ko/jeonse-guarantee-calculator/ · 법정이자 계산기 https://tools.oiyo.net/ko/legal-interest-calculator/
 
 가져갈 서류: 임대차계약서, 확정일자·전입 확인 서류, 보증금 이체 내역, 계약 해지·만료 통지 내역
 
