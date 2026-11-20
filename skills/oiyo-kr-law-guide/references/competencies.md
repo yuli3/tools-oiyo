@@ -48,6 +48,10 @@ GENERATED from tools-oiyo src/data/pro-competencies.ts. 기준일 2026-11-20. �
   - 도구: 간이 vs 일반과세 https://tools.oiyo.net/ko/general-vs-simplified-vat-calculator/ · 법인전환 계산기 https://tools.oiyo.net/ko/incorporation-conversion-calculator/ · 절세 로드맵 https://tools.oiyo.net/ko/tax-savings-roadmap/
   - MCP: `compare_kr_general_vs_simplified_vat`, `calculate_kr_incorporation_conversion`
   - 스킬: kr-tax-advisor, oiyo-business-strategist
+- **세무 프로그램 자료 연결** [전자 업무·데이터] (일반인도 씀): 통장·카드 내역을 분개 표로 바꿔 세무사랑·위하고·더존 등 프로그램의 엑셀 업로드 순서로 넘기고, 불공제·증빙·중복을 먼저 걸러요.
+  - 도구: 장부 입력 자료 정리기 https://tools.oiyo.net/ko/bookkeeping-data-bridge/ · 전표 데이터 분석기 https://tools.oiyo.net/ko/journal-entry-analytics/
+  - MCP: `analyze_journal_entries`
+  - 스킬: kr-tax-advisor
 - **세무대리 범위와 성실의무** [업무 범위·윤리]: 세무대리는 세무사 업무예요(세무사법 제2조). 개정 제20조 제3항(2026-06-24 시행)은 무자격자의 세무대리 암시 광고도 금지해요.
   - 도구: 법령 길잡이 14분야 https://tools.oiyo.net/ko/law-guide/
   - MCP: `get_kr_professional_scope`

@@ -1,0 +1,32 @@
+---
+// 장부 입력 자료 정리기 (2026-11-20). 세운: 세무사랑·TP·위하고·더존 같은 프로그램을 스킬·도구에 넣을지 → 프로그램을 대신하지 않고 "사이를 잇는" 도구로.
+// 엔진: lib/bookkeeping-bridge-2026.ts (스킬 kr-tax-advisor의 bridge 명령과 같은 코드)
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import BookkeepingBridge from "../../components/tools/practice/BookkeepingBridge";
+
+const title = "장부 입력 자료 정리기 — 통장·카드 내역을 분개 표로, 세무 프로그램 엑셀 업로드 순서로";
+const description = "은행 거래내역과 사업용 카드 내역을 붙여 넣으면 계정과목을 추천하고 차변·대변 분개, 카드 매입세액(공급가액·부가세), 불공제 항목, 3만 원 초과 계좌이체 증빙 확인, 중복 거래를 표시해요. 세무 프로그램의 엑셀 업로드 샘플 머리글 순서대로 CSV를 만들어 줘요.";
+const ko = {
+  introTitle: "통장·카드 내역을 프로그램에 넣기 전에",
+  intro: "세무 프로그램(세무사랑·위하고·더존·TP 등)에 전표를 넣기 전, 내려받은 통장·카드 내역을 분개 표로 정리해요. 프로그램을 대신하지 않고, 프로그램이 받는 엑셀 순서에 맞춰 넘겨줘요.",
+  howToTitle: "사용 방법",
+  steps: ["통장인지 카드인지 고르고 내역을 붙여 넣어요.", "확인할 거래(계정 미정, 증빙, 불공제, 중복)를 먼저 고쳐요.", "프로그램의 엑셀 업로드 샘플 머리글을 붙여 열 순서를 맞추고 CSV를 내려받아요."],
+  highlightsTitle: "주요 특징",
+  highlights: [
+    { title: "계정 추천", body: "가맹점·적요 낱말로 계정과 매입세액 공제 여부를 골라요." },
+    { title: "증빙 신호", body: "3만 원 넘는 계좌이체 경비, 기업업무추진비, 중복." },
+    { title: "열 순서 맞추기", body: "프로그램 샘플 머리글을 붙이면 그 순서로 내보내요." },
+    { title: "개인정보 안전", body: "서버로 보내지 않아요." },
+  ],
+  disclaimer: "장부 입력 보조 도구예요. 계정과 공제 여부는 실제 용도로 확정하고, 장부 작성·신고 대리는 세무 대리인 업무예요. 특정 프로그램 회사와 관계없어요.",
+};
+const faqs = [
+  { q: "프로그램마다 엑셀 양식이 다른데요?", a: "맞아요. 그래서 열 순서를 고정하지 않았어요. 쓰는 프로그램의 엑셀 업로드 샘플 첫 줄(머리글)을 붙여 넣으면 같은 순서로 CSV를 만들어요. 계정코드가 필요한 양식이면 회사 계정과목표에서 코드를 채우세요." },
+  { q: "카드 매입세액은 다 공제되나요?", a: "아니에요. 택시·버스·철도·항공 같은 여객운송, 거래처 접대(기업업무추진비), 개별소비세 대상 승용차 관련 매입세액은 공제되지 않아요(부가가치세법 제39조·제46조). 이 도구는 이런 항목을 불공제로 표시해요." },
+  { q: "3만 원 넘는 계좌이체는 왜 표시하나요?", a: "사업자에게 3만 원 넘게 지출하면 세금계산서·계산서·카드·현금영수증 같은 적격증빙을 받아야 하고, 없으면 증빙불비가산세(2%)가 붙을 수 있어요(소득세법 제160조의2, 법인세법 제116조)." },
+];
+---
+<KrFinancePage slug="bookkeeping-data-bridge" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <BookkeepingBridge client:load />
+  <p class="mt-4 text-xs text-muted-foreground">다음 단계: 프로그램에서 마감한 전표는 <a class="underline" href="/ko/journal-entry-analytics/">전표 데이터 분석기</a>로 이상 전표를 확인하세요. · <a class="underline" href="/ko/accounting-law-guide/">회계·장부 법령 길잡이</a> · <a class="underline" href="/ko/tax-calendar/">세금 신고 달력</a></p>
+</KrFinancePage>

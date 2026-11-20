@@ -19,7 +19,7 @@ export const lawGuides: { slug: string; domain?: DomainId; title: string; descri
   { slug: "divorce-family-law-guide", domain: "family", title: "가사·이혼 법령 길잡이", description: "협의이혼 숙려기간(자녀 있으면 3개월, 없으면 1개월), 이혼신고 3개월, 재산분할 2년, 양육비를 안 줄 때 이행명령·감치 순서를 날짜로 정리해요." },
   { slug: "welfare-benefit-law-guide", domain: "welfare", title: "복지급여 길잡이", description: "기초생활수급 신청과 결정 30일, 탈락·중지 이의신청 90일, 갑자기 생계가 막막할 때 긴급복지(129) 요청 순서와 가져갈 서류를 정리해요." },
   { slug: "insurance-sales-compliance-checker", title: "보험 사은품 한도·승환 점검기", description: "월 보험료와 사은품 가액, 기존·신규 계약 날짜로 특별이익 한도(10%와 20만 원 중 적은 금액)와 승환계약 간주(1개월·6개월)를 판정해요. 설계사·대리점용." },
-  { slug: "pro-competency-map", title: "전문 직업 역량 지도", description: "세무·회계·노무·행정·등기·보험·관세·특허·감정평가·중개·건축·의료·가사·복지·경영 17개 직업의 역량 133개를 7가지로 분류하고, 역량마다 계산 도구·Claude 스킬·MCP를 연결했어요. 일반인도 쓰는 역량만 골라 볼 수 있어요." },
+  { slug: "pro-competency-map", title: "전문 직업 역량 지도", description: "세무·회계·노무·행정·등기·보험·관세·특허·감정평가·중개·건축·의료·가사·복지·경영 17개 직업의 역량 134개를 7가지로 분류하고, 역량마다 계산 도구·Claude 스킬·MCP를 연결했어요. 일반인도 쓰는 역량만 골라 볼 수 있어요." },
   { slug: "fine-reduction-calculator", title: "과태료 감경·가산금 계산기", description: "의견제출 기한 안 자진납부 20% 감경, 사회적 약자 50% 감경, 늦게 내면 가산금 3%와 매월 1.2%(최대 75%)를 계산해요." },
   { slug: "permit-document-checklist", title: "영업신고·허가 준비 서류 점검표", description: "음식점·통신판매업·미용업 신고 서류와 건축물 용도 같은 미리 확인할 점을 체크하고 사업자등록 기한을 계산해요." },
   { slug: "visa-stay-status-guide", title: "체류자격·외국인등록 기한 길잡이", description: "외국인등록 90일, 체류지 변경 15일, 연장 신청 시작일을 계산하고 체류자격별 핵심을 정리해요." },
@@ -30,6 +30,7 @@ export const lawGuides: { slug: string; domain?: DomainId; title: string; descri
   { slug: "insurance-explanation-record", title: "보험 설명·적합성 기록 도우미", description: "금소법 적합성 5가지·설명 7가지를 체크하고 청약철회 기한과 10년 보관일이 들어간 기록 문서를 만들어요." },
   { slug: "ifrs17-csm-simulator", title: "IFRS 17 보험계약마진(CSM) 원리", description: "이행현금흐름·위험조정으로 최초 CSM 또는 손실요소를 계산하고 해마다 풀리는 이익을 보여 줘요." },
   { slug: "kics-solvency-ratio-calculator", title: "지급여력비율(K-ICS) 원리", description: "위험액을 상관계수로 합친 요구자본과 지급여력비율, 적기시정조치 구간을 계산해요." },
+  { slug: "bookkeeping-data-bridge", title: "장부 입력 자료 정리기", description: "통장·카드 내역을 붙여 넣으면 계정과목 추천, 차변·대변 분개, 카드 매입세액과 불공제, 3만 원 초과 증빙 확인을 하고 세무 프로그램 엑셀 업로드 순서로 CSV를 만들어요." },
   { slug: "journal-entry-analytics", title: "전표 데이터 분석기", description: "벤포드 분포, 주말 입력, 중복, 결재 한도 바로 아래 금액을 찾아 먼저 볼 전표를 정리해요. 데이터는 브라우저 밖으로 나가지 않아요." },
   { slug: "insurance-premium-basics", title: "보험료 계산 원리", description: "나이·보험기간·보험금과 예정이율·사업비·위험률을 바꾸며 정기보험 보험료가 어떻게 만들어지는지 워터폴 그래프로 봐요." },
 ];

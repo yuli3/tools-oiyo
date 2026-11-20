@@ -81,6 +81,7 @@ export const COMPETENCIES: Competency[] = [
   c("tax-appeal", "tax", "deadline", "조세불복 기한과 절차", "고지서를 받은 날부터 90일 안에 이의신청·심사청구·심판청구를 고르고, 경정청구 5년을 따져요.", { tools: ["tax-law-guide"], skills: [LAW], mcp: ["start_kr_law_intake"], audience: ["pro", "public"], exclusive: true }),
   c("tax-books", "tax", "docs", "장부·증빙 검토", "간편장부·복식부기 대상, 업무용 승용차 운행기록, 적격증빙을 확인해요.", { tools: ["accounting-law-guide", "business-car-expense-calculator", "expense-ratio-calculator"], mcp: ["calculate_kr_business_car_expense"], exclusive: true }),
   c("tax-planning", "tax", "consult", "사업자 유형과 절세 설계", "간이·일반과세, 개인·법인, 법인전환 시점을 숫자로 비교해 선택지를 설명해요.", { tools: ["general-vs-simplified-vat-calculator", "incorporation-conversion-calculator", "tax-savings-roadmap"], skills: [ADV, BIZ], mcp: ["compare_kr_general_vs_simplified_vat", "calculate_kr_incorporation_conversion"], audience: ["pro", "public"] }),
+  c("tax-program", "tax", "digital", "세무 프로그램 자료 연결", "통장·카드 내역을 분개 표로 바꿔 세무사랑·위하고·더존 등 프로그램의 엑셀 업로드 순서로 넘기고, 불공제·증빙·중복을 먼저 걸러요.", { tools: ["bookkeeping-data-bridge", "journal-entry-analytics"], skills: [ADV], mcp: ["analyze_journal_entries"], audience: ["pro", "public"] }),
   c("tax-scope", "tax", "ethics", "세무대리 범위와 성실의무", "세무대리는 세무사 업무예요(세무사법 제2조). 개정 제20조 제3항(2026-06-24 시행)은 무자격자의 세무대리 암시 광고도 금지해요.", { tools: ["law-guide"], skills: [LAW], mcp: ["get_kr_professional_scope"] }),
   c("tax-hometax", "tax", "digital", "홈택스 전자신고·자료 조회", "간소화 자료, 전자세금계산서, 신고서 제출 화면을 다루는 실무 역량이에요.", { tools: ["eportal-practice-guide"], skills: ["oiyo-kr-law-guide"], mcp: ["get_kr_practice_guide"] }),
 
@@ -246,6 +247,7 @@ export const TOOL_NAMES: Record<string, string> = {
   "ifrs17-csm-simulator": "IFRS 17 CSM 원리",
   "kics-solvency-ratio-calculator": "지급여력비율(K-ICS) 원리",
   "disability-fault-claim-calculator": "장해·과실 보험금 계산기",
+  "bookkeeping-data-bridge": "장부 입력 자료 정리기",
   "journal-entry-analytics": "전표 데이터 분석기",
   "permit-document-checklist": "영업신고 서류 점검표",
   "visa-stay-status-guide": "체류자격·외국인등록 기한 길잡이",
