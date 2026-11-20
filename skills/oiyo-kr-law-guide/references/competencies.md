@@ -98,7 +98,7 @@ GENERATED from tools-oiyo src/data/pro-competencies.ts. 기준일 2026-11-20. �
 노동 사건 대리(구제신청 등), 노무 서류 작성, 노무관리진단, 노동 상담
 
 - **근로기준법·노조법·산재법** [법령 해석] (일반인도 씀): 5인 미만 적용 제외, 근로자성, 해고 제한처럼 결론을 바꾸는 요건을 읽어요.
-  - 도구: 노동법 길잡이 https://tools.oiyo.net/ko/labor-law-guide/ · 노동법 빠른 점검 https://tools.oiyo.net/ko/labor-law-quick-check/
+  - 도구: 노동법 길잡이 https://tools.oiyo.net/ko/labor-law-guide/ · 노동법 빠른 점검 https://tools.oiyo.net/ko/labor-law-quick-check/ · 프리랜서·외주 계약서 점검 https://tools.oiyo.net/ko/freelance-contract-check/
   - MCP: `search_kr_statutes`
   - 스킬: oiyo-kr-law-guide
 - **임금 계산** [계산·평가] (일반인도 씀): 통상임금 → 연장·야간·휴일수당, 주휴수당, 퇴직금을 같은 기준으로 계산해요.

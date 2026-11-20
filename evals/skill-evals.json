@@ -2,35 +2,644 @@
   "about": "스킬 품질 평가 세트 (2026-11-20, 다음 10종 #9). 각 시나리오는 스킬 스크립트를 그대로 실행해 답(주제 고르기)·기한·경계(넘겨야 할 때)를 확인해요. 법이 바뀌거나 코드가 바뀌면 scripts/skill-evals.test.mjs가 실패해요. 기한은 직접 손으로 검산한 값만 넣어요.",
   "today": "2026-11-20",
   "scenarios": [
-    { "skill": "oiyo-kr-law-guide", "id": "suggest-dismissal", "ask": "회사에서 문자로 해고됐어요", "run": ["suggest", "회사에서 문자로 해고됐어요"], "expect": [{ "path": "topics.0.id", "eq": "labor-dismissal" }] },
-    { "skill": "oiyo-kr-law-guide", "id": "suggest-unpaid", "ask": "월급을 석 달째 못 받았어요", "run": ["suggest", "월급을 석 달째 못 받았어요"], "expect": [{ "path": "topics.0.id", "eq": "labor-unpaid" }] },
-    { "skill": "oiyo-kr-law-guide", "id": "suggest-sanction", "ask": "영업정지 처분을 받았어요", "run": ["suggest", "영업정지 처분을 받았어요"], "expect": [{ "path": "topics.0.id", "eq": "admin-sanction" }] },
-    { "skill": "oiyo-kr-law-guide", "id": "suggest-claim", "ask": "보험금 청구했는데 거절당했어요", "run": ["suggest", "보험금 청구했는데 거절당했어요"], "expect": [{ "path": "topics.0.id", "eq": "ins-claim" }] },
-    { "skill": "oiyo-kr-law-guide", "id": "suggest-refund", "ask": "온라인 쇼핑 환불 7일", "run": ["suggest", "온라인 쇼핑 환불 7일"], "expect": [{ "path": "topics.0.id", "eq": "cons-online" }] },
-    { "skill": "oiyo-kr-law-guide", "id": "suggest-breach", "ask": "고객정보 유출 신고", "run": ["suggest", "고객정보 유출 신고"], "expect": [{ "path": "topics.0.id", "eq": "privacy-breach" }] },
-    { "skill": "oiyo-kr-law-guide", "id": "suggest-hitrun", "ask": "뺑소니 당했어요 보상", "run": ["suggest", "뺑소니 당했어요 보상"], "expect": [{ "path": "topics.0.id", "eq": "traffic-victim" }] },
-    { "skill": "oiyo-kr-law-guide", "id": "suggest-renounce", "ask": "상속 포기 기한", "run": ["suggest", "상속 포기 기한"], "expect": [{ "path": "topics.0.id", "eq": "court-renounce" }] },
-    { "skill": "oiyo-kr-law-guide", "id": "suggest-fine", "ask": "과태료 고지서를 받았어요", "run": ["suggest", "과태료 고지서를 받았어요"], "expect": [{ "path": "topics.0.id", "eq": "admin-fine" }] },
-    { "skill": "oiyo-kr-law-guide", "id": "suggest-audit", "ask": "세무조사 결과 통지를 받았어요", "run": ["suggest", "세무조사 결과 통지를 받았어요"], "expect": [{ "path": "topics.0.id", "eq": "tax-dispute" }] },
-    { "skill": "oiyo-kr-law-guide", "id": "dismissal-dates", "ask": "10월 30일 서면 없이 해고(5인 이상)", "run": ["intake", "labor-dismissal", { "size": "5plus", "dismissDate": "2026-10-30", "written": "no" }, "2026-11-20"], "expect": [{ "path": "deadlines", "has": { "id": "remedy", "due": "2027-02-01" } }, { "path": "deadlines", "has": { "id": "settle", "due": "2026-11-13" } }, { "path": "flags.0.tone", "eq": "good" }, { "path": "handOff", "truthy": true }] },
-    { "skill": "oiyo-kr-law-guide", "id": "unpaid-dates", "ask": "11월 1일 퇴직, 500만 원 못 받음", "run": ["intake", "labor-unpaid", { "status": "left", "leftDate": "2026-11-01", "unpaid": 5000000 }, "2026-11-20"], "expect": [{ "path": "deadlines", "has": { "id": "settle", "due": "2026-11-16" } }, { "path": "deadlines", "has": { "id": "wage-3y", "due": "2029-11-01" } }] },
-    { "skill": "oiyo-kr-law-guide", "id": "tax-appeal-90", "ask": "11월 2일 고지서, 불복하고 싶어요", "run": ["intake", "tax-dispute", { "stage": "notice", "noticeDate": "2026-11-02" }, "2026-11-20"], "expect": [{ "path": "deadlines", "has": { "id": "appeal-90", "due": "2027-02-01" } }] },
-    { "skill": "oiyo-kr-law-guide", "id": "renounce-3m", "ask": "9월 15일 사망 사실을 앎, 빚이 더 많음", "run": ["intake", "court-renounce", { "knownDate": "2026-09-15", "debt": "more" }, "2026-11-20"], "expect": [{ "path": "deadlines", "has": { "id": "renounce", "due": "2026-12-15" } }, { "path": "handOff", "truthy": true }] },
-    { "skill": "oiyo-kr-law-guide", "id": "ins-withdraw", "ask": "보험 단순변심 철회", "run": ["intake", "ins-undo", { "why": "mind", "applyDate": "2026-11-10", "policyDate": "2026-11-12" }, "2026-11-20"], "expect": [{ "path": "deadlines", "has": { "id": "withdraw-15", "due": "2026-11-27" } }, { "path": "deadlines", "has": { "id": "withdraw-30", "due": "2026-12-10" } }] },
-    { "skill": "oiyo-kr-law-guide", "id": "online-withdraw", "ask": "11월 14일 받은 옷, 마음이 바뀜", "run": ["intake", "cons-online", { "deliveredDate": "2026-11-14", "reason": "change" }, "2026-11-20"], "expect": [{ "path": "deadlines", "has": { "id": "withdraw", "due": "2026-11-23" } }] },
-    { "skill": "oiyo-kr-law-guide", "id": "breach-report", "ask": "5천 명 고객정보 유출", "run": ["intake", "privacy-breach", { "knownDate": "2026-11-20", "count": 5000 }, "2026-11-20"], "expect": [{ "path": "deadlines", "has": { "id": "report", "due": "2026-11-23" } }, { "path": "flags.0.tone", "eq": "warn" }] },
-    { "skill": "oiyo-kr-law-guide", "id": "breach-small", "ask": "120명, 민감정보·해킹 아님", "run": ["intake", "privacy-breach", { "knownDate": "2026-12-24", "count": 120, "sensitive": "no", "hacking": "no" }, "2026-12-24"], "expect": [{ "path": "deadlines.length", "eq": 1 }, { "path": "deadlines.0.due", "eq": "2026-12-27" }] },
-    { "skill": "oiyo-kr-law-guide", "id": "traffic-gross", "ask": "신호위반으로 사람을 다치게 함, 종합보험 있음", "run": ["intake", "traffic-driver", { "accidentDate": "2026-11-20", "harm": "injury", "comprehensive": "yes", "gross": "yes" }, "2026-11-20"], "expect": [{ "path": "flags.0.tone", "eq": "warn" }, { "path": "handOff", "truthy": true }] },
-    { "skill": "oiyo-kr-law-guide", "id": "traffic-insured", "ask": "중과실 아님, 종합보험 있음, 경상", "run": ["intake", "traffic-driver", { "accidentDate": "2026-11-20", "harm": "injury", "comprehensive": "yes", "gross": "no", "left": "no" }, "2026-11-20"], "expect": [{ "path": "flags.0.tone", "eq": "good" }, { "path": "handOff", "falsy": true }] },
-    { "skill": "oiyo-kr-law-guide", "id": "privacy-clock", "ask": "크리스마스이브 15시 30분에 해킹 알게 됨", "run": ["calc", "breach", { "knownAt": "2026-12-24T15:30", "affected": 10, "hacking": true }], "expect": [{ "path": "deadline", "eq": "2026-12-27 15:30" }, { "path": "report", "eq": true }] },
-    { "skill": "oiyo-kr-benefits-navigator", "id": "after-death-basic", "ask": "3월 10일에 아버지가 돌아가셨어요", "run": ["after-death", { "deathDate": "2026-03-10" }], "expect": [{ "path": "result.tasks", "has": { "id": "death-report", "due": "2026-04-10" } }, { "path": "result.tasks", "has": { "id": "renounce", "due": "2026-06-10" } }, { "path": "result.tasks", "has": { "id": "inheritance-tax", "due": "2026-09-30" } }, { "path": "result.tasks", "has": { "id": "one-stop", "due": "2027-03-31" } }] },
-    { "skill": "oiyo-kr-benefits-navigator", "id": "after-death-business", "ask": "가게를 하시던 어머니가 3월 10일 돌아가셨어요", "run": ["after-death", { "deathDate": "2026-03-10", "business": true, "employed": false }], "expect": [{ "path": "result.tasks", "has": { "id": "business", "due": "2026-04-27" } }, { "path": "result.tasks", "has": { "id": "income-tax", "due": "2026-09-30" } }] },
-    { "skill": "oiyo-kr-benefits-navigator", "id": "after-death-abroad", "ask": "해외에 사시던 분, 부동산 있음", "run": ["after-death", { "deathDate": "2026-03-10", "abroad": true, "realEstate": true }], "expect": [{ "path": "result.tasks", "has": { "id": "inheritance-tax", "due": "2026-12-31" } }] },
-    { "skill": "oiyo-kr-benefits-navigator", "id": "filing-deadline", "ask": "3월 15일 상속, 상속세 언제까지?", "run": ["filing-deadline", { "kind": "inheritance", "date": "2026-03-15" }], "expect": [{ "path": "result.filingDue", "eq": "2026-09-30" }] },
-    { "skill": "kr-tax-advisor", "id": "bridge-season", "ask": "이번 달 신고와 프로그램 작업 순서", "runScript": ["scripts/bridge.mjs", "season", "2026-11-20"], "expect": [{ "path": "tasks", "has": { "id": "withholding-2026-12-10", "due": "2026-12-10" } }] }
+    {
+      "skill": "oiyo-kr-law-guide",
+      "id": "suggest-dismissal",
+      "ask": "회사에서 문자로 해고됐어요",
+      "run": [
+        "suggest",
+        "회사에서 문자로 해고됐어요"
+      ],
+      "expect": [
+        {
+          "path": "topics.0.id",
+          "eq": "labor-dismissal"
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-kr-law-guide",
+      "id": "suggest-unpaid",
+      "ask": "월급을 석 달째 못 받았어요",
+      "run": [
+        "suggest",
+        "월급을 석 달째 못 받았어요"
+      ],
+      "expect": [
+        {
+          "path": "topics.0.id",
+          "eq": "labor-unpaid"
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-kr-law-guide",
+      "id": "suggest-sanction",
+      "ask": "영업정지 처분을 받았어요",
+      "run": [
+        "suggest",
+        "영업정지 처분을 받았어요"
+      ],
+      "expect": [
+        {
+          "path": "topics.0.id",
+          "eq": "admin-sanction"
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-kr-law-guide",
+      "id": "suggest-claim",
+      "ask": "보험금 청구했는데 거절당했어요",
+      "run": [
+        "suggest",
+        "보험금 청구했는데 거절당했어요"
+      ],
+      "expect": [
+        {
+          "path": "topics.0.id",
+          "eq": "ins-claim"
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-kr-law-guide",
+      "id": "suggest-refund",
+      "ask": "온라인 쇼핑 환불 7일",
+      "run": [
+        "suggest",
+        "온라인 쇼핑 환불 7일"
+      ],
+      "expect": [
+        {
+          "path": "topics.0.id",
+          "eq": "cons-online"
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-kr-law-guide",
+      "id": "suggest-breach",
+      "ask": "고객정보 유출 신고",
+      "run": [
+        "suggest",
+        "고객정보 유출 신고"
+      ],
+      "expect": [
+        {
+          "path": "topics.0.id",
+          "eq": "privacy-breach"
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-kr-law-guide",
+      "id": "suggest-hitrun",
+      "ask": "뺑소니 당했어요 보상",
+      "run": [
+        "suggest",
+        "뺑소니 당했어요 보상"
+      ],
+      "expect": [
+        {
+          "path": "topics.0.id",
+          "eq": "traffic-victim"
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-kr-law-guide",
+      "id": "suggest-renounce",
+      "ask": "상속 포기 기한",
+      "run": [
+        "suggest",
+        "상속 포기 기한"
+      ],
+      "expect": [
+        {
+          "path": "topics.0.id",
+          "eq": "court-renounce"
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-kr-law-guide",
+      "id": "suggest-fine",
+      "ask": "과태료 고지서를 받았어요",
+      "run": [
+        "suggest",
+        "과태료 고지서를 받았어요"
+      ],
+      "expect": [
+        {
+          "path": "topics.0.id",
+          "eq": "admin-fine"
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-kr-law-guide",
+      "id": "suggest-audit",
+      "ask": "세무조사 결과 통지를 받았어요",
+      "run": [
+        "suggest",
+        "세무조사 결과 통지를 받았어요"
+      ],
+      "expect": [
+        {
+          "path": "topics.0.id",
+          "eq": "tax-dispute"
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-kr-law-guide",
+      "id": "suggest-freelance",
+      "ask": "프리랜서 외주 계약서를 받았는데 저작권을 다 넘기래요",
+      "run": [
+        "suggest",
+        "프리랜서 외주 계약서를 받았는데 저작권을 다 넘기래요"
+      ],
+      "expect": [
+        {
+          "path": "topics.0.id",
+          "eq": "labor-freelance"
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-kr-law-guide",
+      "id": "dismissal-dates",
+      "ask": "10월 30일 서면 없이 해고(5인 이상)",
+      "run": [
+        "intake",
+        "labor-dismissal",
+        {
+          "size": "5plus",
+          "dismissDate": "2026-10-30",
+          "written": "no"
+        },
+        "2026-11-20"
+      ],
+      "expect": [
+        {
+          "path": "deadlines",
+          "has": {
+            "id": "remedy",
+            "due": "2027-02-01"
+          }
+        },
+        {
+          "path": "deadlines",
+          "has": {
+            "id": "settle",
+            "due": "2026-11-13"
+          }
+        },
+        {
+          "path": "flags.0.tone",
+          "eq": "good"
+        },
+        {
+          "path": "handOff",
+          "truthy": true
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-kr-law-guide",
+      "id": "unpaid-dates",
+      "ask": "11월 1일 퇴직, 500만 원 못 받음",
+      "run": [
+        "intake",
+        "labor-unpaid",
+        {
+          "status": "left",
+          "leftDate": "2026-11-01",
+          "unpaid": 5000000
+        },
+        "2026-11-20"
+      ],
+      "expect": [
+        {
+          "path": "deadlines",
+          "has": {
+            "id": "settle",
+            "due": "2026-11-16"
+          }
+        },
+        {
+          "path": "deadlines",
+          "has": {
+            "id": "wage-3y",
+            "due": "2029-11-01"
+          }
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-kr-law-guide",
+      "id": "tax-appeal-90",
+      "ask": "11월 2일 고지서, 불복하고 싶어요",
+      "run": [
+        "intake",
+        "tax-dispute",
+        {
+          "stage": "notice",
+          "noticeDate": "2026-11-02"
+        },
+        "2026-11-20"
+      ],
+      "expect": [
+        {
+          "path": "deadlines",
+          "has": {
+            "id": "appeal-90",
+            "due": "2027-02-01"
+          }
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-kr-law-guide",
+      "id": "renounce-3m",
+      "ask": "9월 15일 사망 사실을 앎, 빚이 더 많음",
+      "run": [
+        "intake",
+        "court-renounce",
+        {
+          "knownDate": "2026-09-15",
+          "debt": "more"
+        },
+        "2026-11-20"
+      ],
+      "expect": [
+        {
+          "path": "deadlines",
+          "has": {
+            "id": "renounce",
+            "due": "2026-12-15"
+          }
+        },
+        {
+          "path": "handOff",
+          "truthy": true
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-kr-law-guide",
+      "id": "ins-withdraw",
+      "ask": "보험 단순변심 철회",
+      "run": [
+        "intake",
+        "ins-undo",
+        {
+          "why": "mind",
+          "applyDate": "2026-11-10",
+          "policyDate": "2026-11-12"
+        },
+        "2026-11-20"
+      ],
+      "expect": [
+        {
+          "path": "deadlines",
+          "has": {
+            "id": "withdraw-15",
+            "due": "2026-11-27"
+          }
+        },
+        {
+          "path": "deadlines",
+          "has": {
+            "id": "withdraw-30",
+            "due": "2026-12-10"
+          }
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-kr-law-guide",
+      "id": "online-withdraw",
+      "ask": "11월 14일 받은 옷, 마음이 바뀜",
+      "run": [
+        "intake",
+        "cons-online",
+        {
+          "deliveredDate": "2026-11-14",
+          "reason": "change"
+        },
+        "2026-11-20"
+      ],
+      "expect": [
+        {
+          "path": "deadlines",
+          "has": {
+            "id": "withdraw",
+            "due": "2026-11-23"
+          }
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-kr-law-guide",
+      "id": "breach-report",
+      "ask": "5천 명 고객정보 유출",
+      "run": [
+        "intake",
+        "privacy-breach",
+        {
+          "knownDate": "2026-11-20",
+          "count": 5000
+        },
+        "2026-11-20"
+      ],
+      "expect": [
+        {
+          "path": "deadlines",
+          "has": {
+            "id": "report",
+            "due": "2026-11-23"
+          }
+        },
+        {
+          "path": "flags.0.tone",
+          "eq": "warn"
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-kr-law-guide",
+      "id": "breach-small",
+      "ask": "120명, 민감정보·해킹 아님",
+      "run": [
+        "intake",
+        "privacy-breach",
+        {
+          "knownDate": "2026-12-24",
+          "count": 120,
+          "sensitive": "no",
+          "hacking": "no"
+        },
+        "2026-12-24"
+      ],
+      "expect": [
+        {
+          "path": "deadlines.length",
+          "eq": 1
+        },
+        {
+          "path": "deadlines.0.due",
+          "eq": "2026-12-27"
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-kr-law-guide",
+      "id": "traffic-gross",
+      "ask": "신호위반으로 사람을 다치게 함, 종합보험 있음",
+      "run": [
+        "intake",
+        "traffic-driver",
+        {
+          "accidentDate": "2026-11-20",
+          "harm": "injury",
+          "comprehensive": "yes",
+          "gross": "yes"
+        },
+        "2026-11-20"
+      ],
+      "expect": [
+        {
+          "path": "flags.0.tone",
+          "eq": "warn"
+        },
+        {
+          "path": "handOff",
+          "truthy": true
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-kr-law-guide",
+      "id": "traffic-insured",
+      "ask": "중과실 아님, 종합보험 있음, 경상",
+      "run": [
+        "intake",
+        "traffic-driver",
+        {
+          "accidentDate": "2026-11-20",
+          "harm": "injury",
+          "comprehensive": "yes",
+          "gross": "no",
+          "left": "no"
+        },
+        "2026-11-20"
+      ],
+      "expect": [
+        {
+          "path": "flags.0.tone",
+          "eq": "good"
+        },
+        {
+          "path": "handOff",
+          "falsy": true
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-kr-law-guide",
+      "id": "privacy-clock",
+      "ask": "크리스마스이브 15시 30분에 해킹 알게 됨",
+      "run": [
+        "calc",
+        "breach",
+        {
+          "knownAt": "2026-12-24T15:30",
+          "affected": 10,
+          "hacking": true
+        }
+      ],
+      "expect": [
+        {
+          "path": "deadline",
+          "eq": "2026-12-27 15:30"
+        },
+        {
+          "path": "report",
+          "eq": true
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-kr-law-guide",
+      "id": "freelance-intake",
+      "ask": "300만 원 디자인 외주, 사업자 아님, 출퇴근하래요",
+      "run": [
+        "intake",
+        "labor-freelance",
+        "{\"amount\":3000000,\"registered\":\"no\",\"creative\":\"yes\",\"directed\":\"yes\"}"
+      ],
+      "expect": [
+        {
+          "path": "flags.0.text",
+          "eq": "3.3%(99,000원)를 떼고 2,901,000원을 받아요. 다음 해 5월 종합소득세 신고 때 정산해요."
+        },
+        {
+          "path": "flags",
+          "has": {
+            "cite": "근로기준법 제2조"
+          }
+        },
+        {
+          "path": "statutes.length",
+          "gte": 7
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-kr-benefits-navigator",
+      "id": "after-death-basic",
+      "ask": "3월 10일에 아버지가 돌아가셨어요",
+      "run": [
+        "after-death",
+        {
+          "deathDate": "2026-03-10"
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.tasks",
+          "has": {
+            "id": "death-report",
+            "due": "2026-04-10"
+          }
+        },
+        {
+          "path": "result.tasks",
+          "has": {
+            "id": "renounce",
+            "due": "2026-06-10"
+          }
+        },
+        {
+          "path": "result.tasks",
+          "has": {
+            "id": "inheritance-tax",
+            "due": "2026-09-30"
+          }
+        },
+        {
+          "path": "result.tasks",
+          "has": {
+            "id": "one-stop",
+            "due": "2027-03-31"
+          }
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-kr-benefits-navigator",
+      "id": "after-death-business",
+      "ask": "가게를 하시던 어머니가 3월 10일 돌아가셨어요",
+      "run": [
+        "after-death",
+        {
+          "deathDate": "2026-03-10",
+          "business": true,
+          "employed": false
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.tasks",
+          "has": {
+            "id": "business",
+            "due": "2026-04-27"
+          }
+        },
+        {
+          "path": "result.tasks",
+          "has": {
+            "id": "income-tax",
+            "due": "2026-09-30"
+          }
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-kr-benefits-navigator",
+      "id": "after-death-abroad",
+      "ask": "해외에 사시던 분, 부동산 있음",
+      "run": [
+        "after-death",
+        {
+          "deathDate": "2026-03-10",
+          "abroad": true,
+          "realEstate": true
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.tasks",
+          "has": {
+            "id": "inheritance-tax",
+            "due": "2026-12-31"
+          }
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-kr-benefits-navigator",
+      "id": "filing-deadline",
+      "ask": "3월 15일 상속, 상속세 언제까지?",
+      "run": [
+        "filing-deadline",
+        {
+          "kind": "inheritance",
+          "date": "2026-03-15"
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.filingDue",
+          "eq": "2026-09-30"
+        }
+      ]
+    },
+    {
+      "skill": "kr-tax-advisor",
+      "id": "bridge-season",
+      "ask": "이번 달 신고와 프로그램 작업 순서",
+      "runScript": [
+        "scripts/bridge.mjs",
+        "season",
+        "2026-11-20"
+      ],
+      "expect": [
+        {
+          "path": "tasks",
+          "has": {
+            "id": "withholding-2026-12-10",
+            "due": "2026-12-10"
+          }
+        }
+      ]
+    }
   ],
   "boundaries": {
-    "mustInclude": ["기준일"],
-    "forbidden": ["대신 신고해 드", "대신 작성해 드", "대리해 드려요", "승소할 수 있어요", "무조건 받을 수 있어요", "AI 세무사", "AI 노무사", "AI 변호사"]
+    "mustInclude": [
+      "기준일"
+    ],
+    "forbidden": [
+      "대신 신고해 드",
+      "대신 작성해 드",
+      "대리해 드려요",
+      "승소할 수 있어요",
+      "무조건 받을 수 있어요",
+      "AI 세무사",
+      "AI 노무사",
+      "AI 변호사"
+    ]
   }
 }

@@ -21,6 +21,7 @@ export const lawGuides: { slug: string; domain?: DomainId; title: string; descri
   { slug: "consumer-refund-law-guide", domain: "consumer", title: "소비자·온라인 구매 법령 길잡이", description: "온라인 구매 청약철회 7일(광고와 다르면 3개월·안 날부터 30일), 방문·전화판매 14일, 할부 7일과 항변권, 헬스장·학습지 중도 해지를 날짜로 정리해요." },
   { slug: "traffic-accident-law-guide", domain: "traffic", title: "교통사고 법령 길잡이", description: "사고 직후 할 일, 12대 중과실·도주·중상해처럼 종합보험이 있어도 형사처벌되는 경우, 상대 보험사 직접 청구·가불금, 뺑소니·무보험 정부보장사업, 손해배상 3년 기한을 정리해요." },
   { slug: "privacy-law-guide", domain: "privacy", title: "개인정보 법령 길잡이", description: "고객 정보 유출 72시간 통지·신고 기준(1천 명·민감정보·해킹), 내 정보가 유출됐을 때 할 일과 300만 원 법정손해배상, 처리방침 필수 항목을 질문으로 정리해요." },
+  { slug: "freelance-contract-check", title: "프리랜서·외주 계약서 읽기 점검", description: "받은 계약서를 붙여 넣으면 업무 범위·지급일·3.3%·저작권·수정 횟수·해지 정산 중 빠진 항목과, 권리 전부 양도·수정 무제한·고객사 결제 후 지급·출퇴근 같은 조심할 문장을 찾고 받을 돈을 계산해요." },
   { slug: "privacy-breach-policy-check", title: "개인정보 유출 72시간·처리방침 점검", description: "유출을 알게 된 시각부터 72시간 통지·신고 마감과 신고 대상 여부를 계산하고, 처리방침을 붙여 넣으면 빠진 필수 항목을 찾아 줘요." },
   { slug: "insurance-sales-compliance-checker", title: "보험 사은품 한도·승환 점검기", description: "월 보험료와 사은품 가액, 기존·신규 계약 날짜로 특별이익 한도(10%와 20만 원 중 적은 금액)와 승환계약 간주(1개월·6개월)를 판정해요. 설계사·대리점용." },
   { slug: "pro-competency-map", title: "전문 직업 역량 지도", description: "세무·회계·노무·행정·등기·보험·관세·특허·감정평가·중개·건축·의료·가사·복지·경영 17개 직업의 역량 134개를 7가지로 분류하고, 역량마다 계산 도구·Claude 스킬·MCP를 연결했어요. 일반인도 쓰는 역량만 골라 볼 수 있어요." },

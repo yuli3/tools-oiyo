@@ -96,7 +96,7 @@ export const COMPETENCIES: Competency[] = [
   c("cpa-data", "cpa", "digital", "감사 데이터 분석", "전표 전수 분석, 이상 거래 탐지 같은 데이터 기반 감사 기법이에요.", { tools: ["journal-entry-analytics"], skills: ["oiyo-kr-law-guide"], mcp: ["analyze_journal_entries"] }),
 
   // 공인노무사
-  c("labor-law", "labor", "law", "근로기준법·노조법·산재법", "5인 미만 적용 제외, 근로자성, 해고 제한처럼 결론을 바꾸는 요건을 읽어요.", { tools: ["labor-law-guide", "labor-law-quick-check"], skills: [LAW], mcp: ["search_kr_statutes"], audience: ["pro", "public"] }),
+  c("labor-law", "labor", "law", "근로기준법·노조법·산재법", "5인 미만 적용 제외, 근로자성, 해고 제한처럼 결론을 바꾸는 요건을 읽어요.", { tools: ["labor-law-guide", "labor-law-quick-check", "freelance-contract-check"], skills: [LAW], mcp: ["search_kr_statutes"], audience: ["pro", "public"] }),
   c("labor-wage", "labor", "calc", "임금 계산", "통상임금 → 연장·야간·휴일수당, 주휴수당, 퇴직금을 같은 기준으로 계산해요.", { tools: ["ordinary-wage-calculator", "overtime-pay-calculator", "weekly-holiday-pay-calculator", "severance-calculator", "fixed-overtime-pay-checker"], skills: [BEN], mcp: ["calculate_kr_ordinary_wage", "calculate_overtime_pay", "calculate_weekly_allowance", "calculate_severance_pay", "check_kr_fixed_overtime_pay", "get_kr_minimum_wage"], audience: ["pro", "public"] }),
   c("labor-leave", "labor", "calc", "휴가·휴직 급여", "연차 일수, 출산전후휴가·육아휴직·육아기 단축 급여를 계산해요.", { tools: ["annual-leave-calculator", "maternity-leave-pay-calculator", "parental-leave-calculator", "reduced-hours-childcare-pay-calculator"], skills: [BEN], mcp: ["calculate_annual_leave", "calculate_kr_maternity_leave_pay", "calculate_kr_reduced_hours_childcare_pay"], audience: ["pro", "public"] }),
   c("labor-insurance", "labor", "calc", "4대보험과 인건비", "건강·연금·고용·산재보험료와 사업주 부담을 합쳐 실제 인건비를 구해요.", { tools: ["labor-cost-calculator", "health-insurance-calculator", "daily-worker-insurance-checker", "salary-calculator"], mcp: ["calculate_health_insurance", "calculate_net_salary"], audience: ["pro", "public"] }),
@@ -270,6 +270,7 @@ export const TOOL_NAMES: Record<string, string> = {
   "tax-calendar": "세무 일정",
   "vat-penalty-calculator": "부가세 가산세",
   "after-death-checklist": "사망 후 할 일 타임라인",
+  "freelance-contract-check": "프리랜서·외주 계약서 점검",
   "inheritance-gift-filing-deadline-calculator": "상속·증여 신고기한",
   "accounting-law-guide": "회계·장부 법령 길잡이",
   "business-car-expense-calculator": "업무용 승용차 비용",
