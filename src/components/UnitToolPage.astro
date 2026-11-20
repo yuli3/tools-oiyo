@@ -13,12 +13,18 @@ import UniversalConverter from './tools/UniversalConverter';
 import { locales, type Locale } from '../lib/i18n';
 import { utilityJsonLd } from '../lib/utility-jsonld';
 import { unitPages, type UnitPageSlug } from '../data/unit-pages';
+import { cmToFeet, feetInches, heightSlug, heightValues, kgToPounds, weightSlug, weightValues } from '../lib/unit-value-pages';
 interface Props { slug: UnitPageSlug; locale: Locale }
 const { slug, locale } = Astro.props;
 const p = unitPages[slug][locale];
 const url = `https://tools.oiyo.net/${locale}/${slug}/`;
 const schema = utilityJsonLd({ name: p.title, description: p.description, url, locale, steps: p.c.steps, faqs: p.c.faqs });
 // Blog's UnitConverter keys: data-storage-converter reads the `data` category.
+// 2026-11-20: English per-value pages ("170 cm in feet", "70 kg in pounds") hang off these two tools.
+const valueLinks = locale !== 'en' ? null
+  : slug === 'length-converter' ? { title: 'Height in feet, cm by cm', links: heightValues().filter((n) => n % 5 === 0).map((n) => ({ href: `/en/length-converter/${heightSlug(n)}/`, label: `${n} cm = ${feetInches(cmToFeet(n))}` })) }
+  : slug === 'weight-converter' ? { title: 'Kilograms in pounds', links: weightValues().filter((n) => n % 5 === 0).map((n) => ({ href: `/en/weight-converter/${weightSlug(n)}/`, label: `${n} kg = ${kgToPounds(n).pounds} lb` })) }
+  : null;
 const category = slug === 'data-storage-converter' ? 'data' : slug.replace('-converter', '');
 ---
 <Layout title={p.title} description={p.description} locale={locale} availableLocales={[...locales]} canonicalURL={url}>
@@ -29,6 +35,14 @@ const category = slug === 'data-storage-converter' ? 'data' : slug.replace('-con
       : slug === 'angle-converter' ? <AngleConverter client:load locale={locale} />
       : slug === 'universal-converter' ? <UniversalConverter client:load locale={locale} />
       : <UnitConverter client:load locale={locale} category={category} />}
+    {valueLinks && (
+      <section class="mt-6 rounded-2xl border border-border bg-card p-4 sm:p-6">
+        <h2 class="text-lg font-bold text-foreground">{valueLinks.title}</h2>
+        <ul class="mt-3 grid grid-cols-2 gap-2 text-sm sm:grid-cols-3">
+          {valueLinks.links.map((l) => <li><a class="font-mono text-primary underline-offset-4 hover:underline" href={l.href}>{l.label}</a></li>)}
+        </ul>
+      </section>
+    )}
     <UtilityArticle c={p.c} />
     <RelatedUtilities locale={locale} current={slug} group={slug === 'universal-converter' ? 'dev' : 'units'} />
   </ToolShell>

@@ -1,0 +1,150 @@
+---
+/**
+ * One page per height: "170 cm in feet". English only (the query is asked in English).
+ * 2026-11-20: converter pages earn the family's best RPM after the puzzle games, and
+ * height-in-feet is asked one number at a time. Math lives in lib/unit-value-pages.ts.
+ */
+import Layout from "../../../components/Layout.astro";
+import RelatedUtilities from "../../../components/RelatedUtilities.astro";
+import { cmToFeet, feetInches, heightSlug, heightValues } from "../../../lib/unit-value-pages";
+
+export function getStaticPaths() {
+  return heightValues().map((cm) => ({ params: { value: heightSlug(cm) }, props: { cm } }));
+}
+
+const { cm } = Astro.props as { cm: number };
+const v = cmToFeet(cm);
+const fi = feetInches(v);
+const toolUrl = "/en/length-converter/";
+const pageUrl = `https://tools.oiyo.net/en/length-converter/${heightSlug(cm)}/`;
+const title = `${cm} cm in Feet and Inches: ${fi}`;
+const description = `${cm} cm is ${fi} (${v.feet} feet ${v.inchesExact} inches), or ${v.totalInches} inches and ${v.feetDecimal} feet in decimal. See the working and a chart of nearby heights.`;
+
+// Blog's male/female equivalent pages exist for 4'10"-6'3" (female) and 5'2"-6'8" (male).
+const total = v.feet * 12 + v.inches;
+const blog = [
+  total >= 58 && total <= 75 ? { href: `https://blog.oiyo.net/en/height-converter/female-${v.feet}-${v.inches}/`, label: `${fi} woman: equivalent male height` } : null,
+  total >= 62 && total <= 80 ? { href: `https://blog.oiyo.net/en/height-converter/male-${v.feet}-${v.inches}/`, label: `${fi} man: equivalent female height` } : null,
+].filter(Boolean) as { href: string; label: string }[];
+
+const all = heightValues();
+const i = all.indexOf(cm);
+const nearby = all.slice(Math.max(0, i - 5), i + 6);
+const steps = [
+  `${cm} cm ÷ 2.54 = ${v.totalInches} inches`,
+  `${v.totalInches} ÷ 12 = ${Math.floor(v.totalInches / 12)} feet, remainder ${v.inchesExact} inches`,
+  `Rounded to the nearest inch: ${fi}`,
+];
+const faq = [
+  { q: `How tall is ${cm} cm in feet?`, a: description },
+  { q: `Is ${cm} cm tall?`, a: `In the US, the average adult man is about 175 cm (5'9") and the average adult woman about 161 cm (5'3½"), per CDC NHANES 2015-2018. ${cm} cm is ${cm - 175 >= 0 ? `${cm - 175} cm above` : `${175 - cm} cm below`} the men's average and ${cm - 161 >= 0 ? `${cm - 161} cm above` : `${161 - cm} cm below`} the women's.` },
+  { q: "Why does an inch equal exactly 2.54 cm?", a: "Since the 1959 international yard agreement, the inch has been defined as exactly 2.54 cm, so this conversion has no rounding until you round the inches." },
+];
+const structuredData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Length Converter", item: `https://tools.oiyo.net${toolUrl}` },
+        { "@type": "ListItem", position: 2, name: `${cm} cm in feet`, item: pageUrl },
+      ],
+    },
+    { "@type": "FAQPage", mainEntity: faq.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })) },
+  ],
+};
+---
+
+<Layout title={title} description={description} locale="en" availableLocales={["en"]} canonicalURL={pageUrl}>
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(structuredData)} />
+  <div class="mx-auto max-w-3xl px-4 py-5 sm:py-8">
+    <nav class="text-sm text-muted-foreground" aria-label="Breadcrumb">
+      <a class="font-semibold text-primary underline-offset-4 hover:underline" href={toolUrl}>Length Converter</a>
+      <span aria-hidden="true"> / </span>
+      <span class="font-medium text-foreground">{cm} cm</span>
+    </nav>
+
+    <section class="mt-3 rounded-2xl border border-border bg-card p-4 sm:p-6">
+      <p class="text-sm font-semibold uppercase tracking-wide text-primary">Height conversion</p>
+      <h1 class="mt-2 text-2xl font-black tracking-tight text-foreground sm:text-3xl">{title}</h1>
+      <p class="mt-3 text-sm leading-relaxed text-muted-foreground">{description}</p>
+      <div class="mt-5 rounded-xl border border-primary bg-primary/10 p-4">
+        <p class="text-sm font-semibold text-muted-foreground">{cm} cm =</p>
+        <p class="mt-1 font-mono text-4xl font-black text-foreground">{fi}</p>
+      </div>
+      <div class="mt-3 grid grid-cols-3 gap-3">
+        <div class="rounded-xl border border-border bg-muted p-3 text-center">
+          <p class="text-xs font-semibold text-muted-foreground">Inches</p>
+          <p class="mt-1 font-mono text-xl font-bold text-foreground">{v.totalInches}</p>
+        </div>
+        <div class="rounded-xl border border-border bg-muted p-3 text-center">
+          <p class="text-xs font-semibold text-muted-foreground">Feet (decimal)</p>
+          <p class="mt-1 font-mono text-xl font-bold text-foreground">{v.feetDecimal}</p>
+        </div>
+        <div class="rounded-xl border border-border bg-muted p-3 text-center">
+          <p class="text-xs font-semibold text-muted-foreground">Meters</p>
+          <p class="mt-1 font-mono text-xl font-bold text-foreground">{v.meters}</p>
+        </div>
+      </div>
+      <a class="mt-5 inline-flex min-h-11 items-center rounded-full bg-primary px-5 text-sm font-bold text-primary-foreground" href={toolUrl}>Convert another length</a>
+    </section>
+
+    <section class="mt-5 space-y-5 rounded-2xl border border-border bg-card p-4 sm:p-6" data-manual-ad-after>
+      <div>
+        <h2 class="text-lg font-bold text-foreground">How to work it out</h2>
+        <ol class="mt-2 list-decimal space-y-1 pl-5 font-mono text-sm leading-7 text-foreground">
+          {steps.map((s) => <li>{s}</li>)}
+        </ol>
+      </div>
+      {faq.slice(1).map((f) => (
+        <div class="border-t border-border pt-4">
+          <h2 class="text-lg font-bold text-foreground">{f.q}</h2>
+          <p class="mt-2 leading-7 text-foreground">{f.a}</p>
+        </div>
+      ))}
+      {blog.length > 0 && (
+        <div class="border-t border-border pt-4">
+          <h2 class="text-lg font-bold text-foreground">Same height for the other sex</h2>
+          <ul class="mt-2 space-y-1">
+            {blog.map((l) => <li><a class="text-primary underline-offset-4 hover:underline" href={l.href}>{l.label}</a></li>)}
+          </ul>
+        </div>
+      )}
+    </section>
+
+    <section class="mt-5 rounded-2xl border border-border bg-card p-4 sm:p-6">
+      <h2 class="text-lg font-bold text-foreground">Nearby heights in feet</h2>
+      <div class="mt-4 overflow-x-auto">
+        <table class="w-full text-left text-sm">
+          <thead>
+            <tr class="border-b border-border text-xs font-semibold text-muted-foreground">
+              <th class="py-2 pr-3">cm</th>
+              <th class="py-2 pr-3">Feet &amp; inches</th>
+              <th class="py-2 pr-3">Inches</th>
+              <th class="py-2">Feet (decimal)</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-border">
+            {nearby.map((n) => {
+              const r = cmToFeet(n);
+              const current = n === cm;
+              return (
+                <tr class={current ? "bg-primary/10 font-bold" : ""}>
+                  <td class="py-2 pr-3 font-mono">{current ? `${n} cm` : <a class="text-primary underline-offset-4 hover:underline" href={`/en/length-converter/${heightSlug(n)}/`}>{n} cm</a>}</td>
+                  <td class="py-2 pr-3 font-mono">{feetInches(r)}</td>
+                  <td class="py-2 pr-3 font-mono">{r.totalInches}</td>
+                  <td class="py-2 font-mono">{r.feetDecimal}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+      <p class="mt-4 text-xs leading-6 text-muted-foreground">1 inch = 2.54 cm exactly; 1 foot = 12 inches. US averages: CDC National Health Statistics Report 122 (NHANES 2015-2018).</p>
+    </section>
+
+    <div class="mt-8">
+      <RelatedUtilities locale="en" current="length-converter" group="units" />
+    </div>
+  </div>
+</Layout>
