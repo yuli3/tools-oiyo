@@ -1,6 +1,7 @@
 import { useState, useCallback, useMemo } from "react";
 import { Button, RotateCcw, Card, CardContent, CardDescription, CardHeader, CardTitle, Field, FieldDescription, FieldGroup, FieldLabel, InputGroup, InputGroupAddon, InputGroupInput, Table, TableBody, TableCell, TableHead, TableHeader, TableRow, ToggleGroup, ToggleGroupItem } from './size-ui';
 import type { Locale } from "../../lib/i18n";
+import { LETTERS, circFromUkIndex, half, idFromJp, idFromUs, jpFromId, ukIndexFromCirc, ukLabel, usFromId } from "../../lib/ring-size-equivalent";
 
 // ── Every ring system is a function of the finger's inside measurement ───────
 // US:  inside diameter (mm) = 11.63 + 0.8128 x size.
@@ -15,32 +16,10 @@ import type { Locale } from "../../lib/i18n";
 // The systems do not land on each other's whole numbers. Published charts hide
 // that by rounding, which is why two charts can disagree by a half size for the
 // same finger. This tool shows the exact figure and the rounded one side by side.
-const US_BASE = 11.63;
-const US_STEP = 0.8128;
-const JP_BASE = 13.0;
-const JP_STEP = 1 / 3;
-const UK_BASE = 37.8;
-const UK_STEP = 1.25;
-const LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
-const idFromUs = (n: number) => US_BASE + US_STEP * n;
-const usFromId = (d: number) => (d - US_BASE) / US_STEP;
-const idFromJp = (n: number) => JP_BASE + (n - 1) * JP_STEP;
-const jpFromId = (d: number) => (d - JP_BASE) / JP_STEP + 1;
-const circFromUkIndex = (i: number) => UK_BASE + UK_STEP * i;
-const ukIndexFromCirc = (c: number) => (c - UK_BASE) / UK_STEP;
-
-const half = (n: number) => Math.round(n * 2) / 2;
+// Constants and formulas live in lib/ring-size-equivalent.ts so the per-size
+// pages under /ring-size-converter/[size]/ stay in step with this tool (2026-11-20).
 const fmt = (n: number, d = 2) =>
   Number.isFinite(n) ? n.toFixed(d).replace(/\.?0+$/, "") : "—";
-
-/** Renders a UK index snapped to a sold size, e.g. 19.5 -> "T½". */
-const ukLabel = (index: number) => {
-  const snapped = half(index);
-  const letter = Math.floor(snapped);
-  if (letter < 0 || letter > 25) return "—";
-  return LETTERS[letter] + (snapped - letter >= 0.5 ? "½" : "");
-};
 
 /**
  * Renders an unrounded UK index readably. The scale is letters, so the bare
