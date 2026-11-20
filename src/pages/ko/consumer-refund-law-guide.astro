@@ -1,0 +1,27 @@
+---
+// 법령 길잡이 (consumer) 2026-11-20. 엔진: lib/kr-expert-guide-2026.ts + 분야 팩 lib/kr-law-packs-2026.ts. 세운 "기존 전문 자격증의 업무범위에 필요한 모든 도구와 스킬"(11-17), "스킬 위주"(11-20).
+// 자격 명칭을 이름에 쓰지 않아요. 대리·대행·진단을 하지 않아요.
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import LawGuide from "../../components/tools/lawguide/LawGuide";
+import { LAW_GUIDE_AS_OF } from "../../lib/kr-expert-guide-2026";
+
+const title = "소비자·온라인 구매 법령 길잡이 2026 — 청약철회 7일, 반품비, 방문판매 14일, 할부 항변권, 헬스장 해지";
+const description = "온라인 쇼핑 청약철회 7일(광고와 다르면 받은 날부터 3개월·안 날부터 30일), 3영업일 안 환불과 반품 배송비 부담, 방문·전화권유판매 14일, 할부 7일과 20만 원 이상 항변권, 헬스장·학습지 같은 계속거래 중도 해지를 질문으로 정리하고 전자상거래법·방문판매법·할부거래법 조문을 알려 줘요.";
+const ko = {
+  introTitle: "받은 날부터 7일",
+  intro: "물건을 받은 날을 넣으면 청약철회 마감일을, 광고와 다르면 3개월·30일 기한까지 계산해요. 판매자와 대신 협상하지는 않아요.",
+  howToTitle: "사용 방법",
+  steps: ["상황을 고르세요.", "먼저 묻는 질문에 답하세요. 모르면 건너뛰어도 돼요.", "기한 막대와 확인할 점을 보고, 결과 메모를 복사해 담당 기관이나 전문가에게 가져가세요."],
+  highlightsTitle: "주요 특징",
+  highlights: [{ title: "청약철회", body: "온라인 7일, 방문·전화 14일, 할부 7일" }, { title: "반품비", body: "단순변심은 소비자, 광고와 다르면 판매자" }, { title: "무료 창구", body: "1372, 한국소비자원, 전자거래분쟁조정" }],
+  disclaimer: "법령 정보와 기한 계산 도구예요. 대리·협상·내용증명 작성을 하지 않고 특정 변호사를 소개하지 않아요. 조문 풀이는 쉬운 말 요약이니 원문(국가법령정보센터)을 확인하세요. 기준일 2026-11-20.",
+};
+const faqs = [
+  { q: "포장만 뜯어도 환불이 안 되나요?", a: "내용 확인을 위해 포장을 뜯은 것만으로는 철회가 막히지 않아요. 다만 복제 가능한 물건(소프트웨어·음반 등)의 포장을 훼손하면 철회가 제한될 수 있어요(전자상거래법 제17조)." },
+  { q: "헬스장 1년권을 중간에 해지할 수 있나요?", a: "1개월 넘게 이어지는 계속거래는 언제든 해지할 수 있고, 판매자는 지나친 위약금을 받을 수 없어요(방문판매법 제31조·제32조)." },
+];
+---
+<KrFinancePage slug="consumer-refund-law-guide" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <LawGuide client:load domain="consumer" />
+  <p class="mt-4 text-xs text-muted-foreground">기준일 {LAW_GUIDE_AS_OF}. <a class="underline" href="/ko/law-guide/">법령 길잡이 15분야</a></p>
+</KrFinancePage>

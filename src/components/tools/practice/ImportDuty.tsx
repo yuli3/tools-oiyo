@@ -87,7 +87,7 @@ export default function ImportDuty() {
               `부가가치세 = (${won(r.cif)} + ${won(c.duty)}) × 10% = ${won(c.vat)}`,
               r.exempt ? `개인 직구 ${r.limit}달러 이하 → 면세(관세법 시행규칙 제45조)` : `합계 ${won(c.total)}`,
             ]}
-            next={[{ href: "/ko/customs-law-guide/", label: "관세·통관 법령 길잡이" }, { href: "/ko/law-guide/", label: "법령 길잡이 14분야" }]}
+            next={[{ href: "/ko/customs-law-guide/", label: "관세·통관 법령 길잡이" }, { href: "/ko/law-guide/", label: "법령 길잡이 15분야" }]}
           />
         );
       }}

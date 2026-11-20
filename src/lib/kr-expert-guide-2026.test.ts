@@ -159,7 +159,7 @@ test("보험 주제: 질문·기한·확인할 점", () => {
 });
 
 test("분야 팩: 관세·특허·감정평가·중개가 붙고 기한이 맞아요", () => {
-  assert.equal(Object.keys(PROFESSIONS).length, 14);
+  assert.equal(Object.keys(PROFESSIONS).length, 15);
   for (const d of ["customs", "ip", "appraisal", "realty"] as const) {
     assert.ok(TOPICS.filter((t) => t.domain === d).length >= 2, d);
     assert.ok(STATUTES.some((x) => x.domain === d), d);
@@ -221,4 +221,21 @@ test("분야 팩 11-20: 건축·보건·가사·복지급여 14분야, 기한과
   assert.equal(suggestTopics("양육비 안 줘요 감치")[0].id, "fam-support");
   assert.equal(suggestTopics("기초생활수급 탈락 이의신청")[0].id, "welfare-basic");
   assert.equal(findStatutes("진료기록 사본")[0].id, "med-21");
+});
+
+test("분야 팩 11-20: 소비자·온라인 구매 청약철회·해지", () => {
+  const on = intake("cons-online", { deliveredDate: "2026-11-02", reason: "change" }, "2026-11-20").deadlines;
+  assert.deepEqual(on.map((x) => x.id), ["withdraw"]);
+  assert.equal(on[0].due, "2026-11-09");
+  const diff = intake("cons-online", { deliveredDate: "2026-11-02", reason: "differs", knewDate: "2026-11-10" }, "2026-11-20").deadlines;
+  assert.deepEqual(diff.map((x) => x.id), ["withdraw", "differs-knew", "differs"]); // 마감일 순
+  assert.equal(diff[1].due, "2026-12-10");
+  assert.equal(diff[2].due, "2027-02-02");
+  assert.equal(intake("cons-contract", { type: "visit", contractDate: "2026-11-02" }).deadlines[0].due, "2026-11-16");
+  const inst = intake("cons-contract", { type: "installment", contractDate: "2026-11-02", price: 300_000, months: 6, problem: "yes" });
+  assert.equal(inst.deadlines[0].due, "2026-11-09");
+  assert.ok(inst.flags.some((f) => f.cite === "할부거래법 제16조" && f.tone === "good"));
+  assert.equal(intake("cons-contract", { type: "continuing" }).flags[0].tone, "good");
+  assert.equal(suggestTopics("온라인 쇼핑 환불 반품 7일")[0].id, "cons-online");
+  assert.equal(suggestTopics("헬스장 중도 해지 위약금")[0].id, "cons-contract");
 });
