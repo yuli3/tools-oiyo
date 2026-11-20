@@ -1083,6 +1083,60 @@
           "eq": 1000000000
         }
       ]
+    },
+    {
+      "skill": "oiyo-kr-law-guide",
+      "id": "ip-grace-pct",
+      "ask": "3월 2일에 전시회에서 발명을 공개했고 5월 15일에 특허 출원했어요. 해외랑 국내 기한이 언제예요?",
+      "run": [
+        "calc",
+        "ip",
+        "{\"kind\": \"patent\", \"disclosed\": \"2026-03-02\", \"filed\": \"2026-05-15\"}",
+        "2026-11-20"
+      ],
+      "expect": [
+        {
+          "path": "deadlines",
+          "has": {
+            "id": "grace",
+            "due": "2027-03-02"
+          }
+        },
+        {
+          "path": "deadlines",
+          "has": {
+            "id": "paris",
+            "due": "2027-05-17"
+          }
+        },
+        {
+          "path": "deadlines",
+          "has": {
+            "id": "pct-national",
+            "due": "2028-12-15"
+          }
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-kr-law-guide",
+      "id": "ip-trademark-renewal",
+      "ask": "상표를 2020년 3월 10일에 등록했어요. 갱신은 언제부터 해요?",
+      "run": [
+        "calc",
+        "ip",
+        "{\"kind\": \"trademark\", \"registered\": \"2020-03-10\"}",
+        "2026-11-20"
+      ],
+      "expect": [
+        {
+          "path": "deadlines",
+          "has": {
+            "id": "renew-open",
+            "due": "2029-03-10"
+          }
+        }
+      ]
     }
   ],
   "boundaries": {

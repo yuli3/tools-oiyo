@@ -1,0 +1,31 @@
+---
+// 특허·상표 기한 계산기 (2026-11-20, 전문 직군 전수조사 10번). 엔진: lib/kr-ip-deadlines-2026.ts (스킬 oiyo-kr-law-guide guide.mjs calc ip)
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import IpDeadlines from "../../components/tools/lawguide/IpDeadlines";
+
+const title = "특허·상표 기한 계산기 — 공지예외 12개월, 우선권, PCT 31개월, 심사청구, 연차료, 상표 갱신";
+const description = "공개일·출원일·우선일·통지서 받은 날·등록일을 넣으면 공지예외 12개월, 조약우선권 12개월(디자인·상표 6개월), PCT 국내단계 31개월, 심사청구 3년, 의견서 2개월, 거절결정 불복 3개월, 등록료 3개월·추가납부 6개월, 연차료, 존속기간과 상표 갱신 기간을 휴일까지 반영해 한 장으로 보여 줘요.";
+const ko = {
+  introTitle: "지식재산은 기한을 넘기면 권리가 사라져요",
+  intro: "특허와 상표는 좋은 아이디어보다 날짜 관리가 먼저예요. 공개해 버린 발명, 해외 출원, 연차료, 상표 갱신처럼 한 번 놓치면 되돌리기 어려운 기한을 모았어요.",
+  howToTitle: "사용 방법",
+  steps: ["특허·실용신안·디자인·상표 중 하나를 골라요.", "알고 있는 날짜(공개일, 출원일, 통지서 받은 날, 등록일)를 넣어요.", "가장 가까운 기한부터 챙기고, 통지서에 적힌 기간과 대조해요."],
+  highlightsTitle: "주요 특징",
+  highlights: [
+    { title: "공지예외", body: "먼저 공개했어도 12개월 안에 출원하면 신규성을 잃지 않아요." },
+    { title: "해외 출원", body: "조약우선권 12개월(디자인·상표 6개월), PCT 국내단계 31개월이에요." },
+    { title: "유지 비용", body: "등록료 3개월, 추가납부 6개월, 다음 연차료 마감일을 보여 줘요." },
+    { title: "휴일 반영", body: "말일이 토요일·공휴일·근로자의 날이면 다음 날로 미뤄요." },
+  ],
+  disclaimer: "기한 계산이에요. 통지서에 적힌 기간이 우선이고, 출원·심판 대리는 변리사 업무예요.",
+};
+const faqs = [
+  { q: "발표나 판매로 먼저 공개했는데 특허를 낼 수 있나요?", a: "공개한 날부터 12개월 안에 공지예외를 주장해 출원하면 그 공개 때문에 신규성을 잃지 않아요(특허법 제30조). 디자인도 12개월이에요. 다른 사람이 먼저 출원하면 보호받지 못할 수 있으니 빨리 내는 게 좋아요." },
+  { q: "해외에도 내려면 언제까지예요?", a: "한국 출원일부터 12개월 안에 우선권을 주장해 해외에 내야 해요(디자인·상표는 6개월). PCT 국제출원도 12개월 안이고, 국내단계 진입은 나라마다 30~31개월이에요." },
+  { q: "상표 갱신은 언제 해요?", a: "상표권은 등록일부터 10년이고, 만료 1년 전부터 만료일까지 갱신등록을 신청해요. 만료 뒤 6개월 안에도 가산금을 내고 신청할 수 있어요(상표법 제84조)." },
+];
+---
+<KrFinancePage slug="ip-deadline-calculator" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <IpDeadlines client:load />
+  <p class="mt-4 text-xs text-muted-foreground">근거: 특허법 제14조·제30조·제54조·제55조·제59조·제79조·제81조·제88조·제203조, 상표법 제46조·제83조·제84조, 디자인보호법 제36조·제91조. <a class="underline" href="/ko/ip-law-guide/">지식재산 길잡이</a> · <a class="underline" href="/ko/appeal-deadline-calculator/">불복 기한</a></p>
+</KrFinancePage>

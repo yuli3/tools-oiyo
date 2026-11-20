@@ -175,7 +175,8 @@ export const COMPETENCIES: Competency[] = [
 
   // 변리사
   c("pt-law", "patent", "law", "특허법·상표법·디자인보호법", "신규성·진보성, 상표 식별력·유사 판단 기준을 읽어요.", { tools: ["ip-law-guide"], skills: [LAW], mcp: ["search_kr_statutes"], audience: ["pro", "public"] }),
-  c("pt-deadline", "patent", "deadline", "공지예외·거절 대응 기한", "공지예외 12개월, 의견서 제출기간, 거절결정 불복 3개월, 연차료 납부를 관리해요.", { tools: ["appeal-deadline-calculator", "ip-law-guide"], skills: [LAW], mcp: ["start_kr_law_intake"], audience: ["pro", "public"] }),
+  c("pt-deadline", "patent", "deadline", "공지예외·거절 대응 기한", "공지예외 12개월, 의견서 제출기간, 거절결정 불복 3개월, 연차료 납부를 관리해요.", { tools: ["ip-deadline-calculator", "appeal-deadline-calculator", "ip-law-guide"], skills: [LAW], mcp: ["start_kr_law_intake"], audience: ["pro", "public"] }),
+  c("pt-maintain", "patent", "deadline", "우선권·PCT·연차료·갱신 기한", "조약우선권 12개월(디자인·상표 6개월), PCT 31개월, 심사청구 3년, 등록료·연차료, 상표 10년 갱신을 날짜로 관리해요.", { tools: ["ip-deadline-calculator"], skills: [LAW], audience: ["pro", "public"] }),
   c("pt-search", "patent", "consult", "선행기술·등록상표 조사", "출원 전에 키프리스로 같은 기술·비슷한 상표를 찾아 가능성을 가늠해요.", { tools: ["ip-law-guide"], audience: ["pro", "public"] }),
   c("pt-claims", "patent", "docs", "명세서·청구범위 작성", "권리 범위를 정하는 청구범위를 쓰는 역량이에요. 출원 대리는 변리사 업무예요.", { exclusive: true, tools: ["pro-document-reading-guide"], skills: ["oiyo-kr-law-guide"], mcp: ["get_kr_practice_guide"] }),
   c("pt-value", "patent", "calc", "지식재산 가치평가", "특허의 미래 현금흐름을 할인해 가치를 추정해요.", { tools: ["dcf-valuation-calculator", "present-value-calculator"], mcp: ["calculate_dcf_valuation"] }),
@@ -280,6 +281,7 @@ export const TOOL_NAMES: Record<string, string> = {
   "accounting-schedule-calculator": "결산 상각표·외감 판정",
   "license-points-calculator": "운전면허 벌점·과징금 환산",
   "appraisal-compensation-calculator": "수용 보상·감정평가 3방식",
+  "ip-deadline-calculator": "특허·상표 기한",
   "tax-penalty-calculator": "가산세 계산",
   "incorporation-calculator": "개인 vs 법인 세금 비교",
   "family-business-inheritance-calculator": "가업상속공제",
