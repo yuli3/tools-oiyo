@@ -169,6 +169,9 @@ GENERATED from tools-oiyo src/data/pro-competencies.ts. 기준일 2026-11-20. �
   - 도구: 과태료 감경·가산금 계산기 https://tools.oiyo.net/ko/fine-reduction-calculator/
   - MCP: `calculate_kr_fine_reduction`
   - 스킬: oiyo-kr-law-guide
+- **영업정지·과징금과 운전면허 벌점** [계산·평가] (일반인도 씀): 영업정지 일수를 1일당 과징금으로 바꾸고, 운전면허 벌점 누산(121·201·271점)과 정지 일수를 계산해요.
+  - 도구: 운전면허 벌점·과징금 환산 https://tools.oiyo.net/ko/license-points-calculator/ · 과태료 감경·가산금 계산기 https://tools.oiyo.net/ko/fine-reduction-calculator/
+  - 스킬: oiyo-kr-law-guide
 - **정보공개청구와 사실조사** [상담·설계] (일반인도 씀): 필요한 행정 정보를 청구하고, 비공개 결정에 이의신청하는 순서를 안내해요.
   - 도구: 행정 절차 길잡이 https://tools.oiyo.net/ko/administrative-law-guide/
   - MCP: `start_kr_law_intake`

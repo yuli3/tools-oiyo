@@ -15,6 +15,7 @@
 //   node scripts/guide.mjs calc inherit '{"family":{"spouse":true,"children":2,"parents":0,"siblings":0},"estate":300000000,"gifts":{"child1":200000000}}'
 //   node scripts/guide.mjs calc auction '{"sale":200000000,"region":"seoul","baseDate":"2023-05-01","tenants":[{"label":"임차인","deposit":150000000,"date":"2024-03-02"}],"claims":[{"label":"근저당","amount":120000000,"date":"2023-05-01","kind":"mortgage"}]}' [오늘]
 //   node scripts/guide.mjs calc customs travel '{"totalUsd":1800,"fx":1400,"selfReport":true}'   (travel|direct|rvc|refund)
+//   node scripts/guide.mjs calc points '{"events":[{"date":"2026-03-15","violation":"speed40"}]}' [오늘]  |  calc surcharge '{"months":1,"perDay":1000000}'
 //   node scripts/guide.mjs calc workforce count '[6,6,4,4,6]'  |  calc workforce schedule '{"shifts":[{"day":"월","start":"09:00","end":"18:00","breakMin":60}]}'
 //   node scripts/guide.mjs practice [<길잡이 slug> [<상황 id> '<{"기한id":"YYYY-MM-DD"}>']]
 import { readFileSync } from "node:fs";
@@ -26,6 +27,7 @@ import { checkContract } from "./freelance-contract-check-2026.mjs";
 import { appealsFrom, APPEAL_NOTE } from "./kr-appeal-deadlines-2026.mjs";
 import { legalHeirs, reserveShortfall, INHERIT_NOTE } from "./kr-inheritance-share-2026.mjs";
 import { auctionDistribution, AUCTION_NOTE } from "./kr-auction-distribution-2026.mjs";
+import { POINTS_NOTE, VIOLATIONS, licenseStatus, suspensionToSurcharge, violationPoints, accidentPoints } from "./kr-license-points-2026.mjs";
 import { WORKFORCE_NOTE, checkSchedule, headcountThresholds } from "./kr-workforce-2026.mjs";
 import { CUSTOMS_NOTE, TRAVELER_EXTRA, directBundles, rvc, simpleRefund, travelerTax } from "./kr-customs-pack-2026.mjs";
 
@@ -93,6 +95,14 @@ switch (cmd) {
       if (a2 === "count") print({ thresholds: headcountThresholds(i ?? []), note: WORKFORCE_NOTE });
       else if (a2 === "schedule") print({ ...checkSchedule(i ?? { shifts: [] }), note: WORKFORCE_NOTE });
       else { console.error("calc workforce: count, schedule"); process.exit(1); }
+    } else if (a1 === "points") {
+      // a2: {"events":[{"date","points"} 또는 {"date","violation":"speed40","schoolZone":true} 또는 {"date","accident":{"serious":1,"minor":0,"bothFault":false}}],"education":false,"mileage":0}, a3: 오늘(선택)
+      const i = JSON.parse(a2 ?? "{}");
+      const events = (i.events ?? []).map((e) => ({ date: e.date, points: e.points ?? (e.violation ? violationPoints(e.violation, e.schoolZone) : accidentPoints(e.accident ?? {})) }));
+      print({ events, status: licenseStatus(events, a3 ?? today(), { education: i.education, mileage: i.mileage }), violations: VIOLATIONS, note: POINTS_NOTE });
+    } else if (a1 === "surcharge") {
+      // a2: {"months":1,"days":0,"perDay":1000000,"cap":1000000000}
+      print({ ...suspensionToSurcharge(JSON.parse(a2 ?? "{}")), note: POINTS_NOTE });
     } else if (a1 === "record") {
       const i = JSON.parse(a2 ?? "{}");
       print({ check: recordCheck(i), text: recordText(i) });
@@ -100,7 +110,7 @@ switch (cmd) {
       const i = JSON.parse(a2 ?? "{}");
       print({ result: CALC[a1][0](i), plain: CALC[a1][1](i) });
     } else {
-      console.error(`calc: ${Object.keys(CALC).join(", ")}, entries, record, breach, policy, contract, appeal, inherit, auction, customs, workforce`);
+      console.error(`calc: ${Object.keys(CALC).join(", ")}, entries, record, breach, policy, contract, appeal, inherit, auction, customs, workforce, points, surcharge`);
       process.exit(1);
     }
     break;

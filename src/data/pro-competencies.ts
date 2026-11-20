@@ -116,6 +116,7 @@ export const COMPETENCIES: Competency[] = [
   c("admin-visa", "admin", "law", "출입국·체류 자격", "체류자격 변경·연장, 사증 종류별 요건을 다뤄요.", { tools: ["visa-stay-status-guide"], skills: ["oiyo-kr-law-guide", "oiyo-korea-expat-guide"], mcp: ["get_kr_practice_guide"], audience: ["pro", "public"] }),
   c("admin-zoning", "admin", "calc", "건축·토지 규제 수치", "건폐율·용적률처럼 인허가 판단에 쓰는 수치를 계산해요.", { tools: ["building-coverage-floor-area-ratio-calculator"], audience: ["pro", "public"] }),
   c("admin-fine", "admin", "calc", "과태료·이행강제금 감경", "의견제출 기한 안 자진납부 감경과 늦게 낼 때 붙는 가산금을 계산해요. 이행강제금은 개별 법률 기준을 따라요.", { tools: ["fine-reduction-calculator"], skills: ["oiyo-kr-law-guide"], mcp: ["calculate_kr_fine_reduction"], audience: ["pro", "public"] }),
+  c("admin-sanction", "admin", "calc", "영업정지·과징금과 운전면허 벌점", "영업정지 일수를 1일당 과징금으로 바꾸고, 운전면허 벌점 누산(121·201·271점)과 정지 일수를 계산해요.", { tools: ["license-points-calculator", "fine-reduction-calculator"], skills: [LAW], audience: ["pro", "public"] }),
   c("admin-info", "admin", "consult", "정보공개청구와 사실조사", "필요한 행정 정보를 청구하고, 비공개 결정에 이의신청하는 순서를 안내해요.", { tools: ["administrative-law-guide"], skills: [LAW], mcp: ["start_kr_law_intake"], audience: ["pro", "public"] }),
   c("admin-scope", "admin", "ethics", "행정사 업무 범위", "행정기관 제출 서류 작성·제출 대행은 행정사 업무예요(행정사법 제2조·제3조).", { tools: ["law-guide"], skills: [LAW], mcp: ["get_kr_professional_scope"] }),
 
@@ -275,6 +276,7 @@ export const TOOL_NAMES: Record<string, string> = {
   "unlisted-share-valuation-calculator": "비상장주식 평가",
   "corporate-tax-adjustment-calculator": "법인세 어림·세무조정 한도",
   "accounting-schedule-calculator": "결산 상각표·외감 판정",
+  "license-points-calculator": "운전면허 벌점·과징금 환산",
   "tax-penalty-calculator": "가산세 계산",
   "incorporation-calculator": "개인 vs 법인 세금 비교",
   "family-business-inheritance-calculator": "가업상속공제",
