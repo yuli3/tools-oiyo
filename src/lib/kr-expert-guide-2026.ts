@@ -15,7 +15,7 @@ import { PACKS } from "./kr-law-packs-2026.ts";
 export const LAW_GUIDE_AS_OF = "2026-11-17";
 
 /** 앞의 6개는 이 파일, 뒤의 분야는 kr-law-packs-2026.ts의 팩이에요. 새 분야는 팩 하나를 더하면 돼요. */
-export type DomainId = "tax" | "accounting" | "labor" | "admin" | "court" | "insurance" | "customs" | "ip" | "appraisal" | "realty" | "building" | "health" | "family" | "welfare" | "consumer";
+export type DomainId = "tax" | "accounting" | "labor" | "admin" | "court" | "insurance" | "customs" | "ip" | "appraisal" | "realty" | "building" | "health" | "family" | "welfare" | "consumer" | "privacy";
 
 export interface Cite {
   law: string;
@@ -42,7 +42,7 @@ export interface Profession {
   freeHelp: { name: string; how: string; what: string }[];
 }
 
-const CORE_PROFESSIONS: Omit<Record<DomainId, Profession>, "customs" | "ip" | "appraisal" | "realty" | "building" | "health" | "family" | "welfare" | "consumer"> = {
+const CORE_PROFESSIONS: Omit<Record<DomainId, Profession>, "customs" | "ip" | "appraisal" | "realty" | "building" | "health" | "family" | "welfare" | "consumer" | "privacy"> = {
   tax: {
     domain: "tax",
     name: "세금 법령 길잡이",
@@ -217,6 +217,7 @@ export const DOMAIN_LABEL: Record<DomainId, { area: string; pro: string }> = {
   family: { area: "가사·이혼", pro: "변호사" },
   welfare: { area: "복지급여", pro: "사회복지사" },
   consumer: { area: "소비자·온라인 구매", pro: "변호사·소비자원" },
+  privacy: { area: "개인정보", pro: "변호사·보호위원회" },
 };
 
 export const PROFESSIONS = { ...CORE_PROFESSIONS, ...Object.fromEntries(PACKS.map((p) => [p.profession.domain, p.profession])) } as Record<DomainId, Profession>;
@@ -398,6 +399,8 @@ export interface DeadlineRule {
   days?: number;
   months?: number;
   years?: number;
+  /** 시간 단위 기한(개인정보 유출 72시간 등). 날짜만 알면 그날 0시부터 세고, 휴일에도 미루지 않아요. */
+  hours?: number;
   /** 기산일이 속한 달의 말일부터 셈 */
   fromMonthEnd?: boolean;
   /** 국세 기한(근로자의 날도 다음 날로) */
@@ -1286,10 +1289,14 @@ function addMonthsSameDay(d: Date, months: number): Date {
 }
 
 /** 기한의 마지막 날. 초일 불산입(민법 제157조), 월·년은 역에 따라(제160조), 말일이 휴일이면 다음 날(제161조, 국세기본법 제5조). */
-export function dueDate(rule: Pick<DeadlineRule, "days" | "months" | "years" | "fromMonthEnd" | "tax">, from: string): { due: string; nominal: string; shifted: boolean } | null {
+export function dueDate(rule: Pick<DeadlineRule, "days" | "months" | "years" | "hours" | "fromMonthEnd" | "tax">, from: string): { due: string; nominal: string; shifted: boolean } | null {
   const start = parseDate(from);
   if (!start) return null;
   let d = start;
+  if (rule.hours) {
+    const due = isoOf(new Date(d.getTime() + Math.ceil(rule.hours / 24) * 86_400_000));
+    return { due, nominal: due, shifted: false };
+  }
   if (rule.fromMonthEnd) d = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth() + 1, 0));
   if (rule.years) d = addMonthsSameDay(d, rule.years * 12);
   if (rule.months) {

@@ -8,11 +8,14 @@
 //   node scripts/guide.mjs scope <domain>
 //   node scripts/guide.mjs calc <fine|duty|csm|kics|claim|record> '<input json>'
 //   node scripts/guide.mjs calc entries <csv 파일> [결재 한도]
+//   node scripts/guide.mjs calc breach '{"knownAt":"2026-11-20T09:00","affected":1200,"sensitive":false,"hacking":false}'
+//   node scripts/guide.mjs calc policy <처리방침.txt> '{"website":true,"outsource":true}'
 //   node scripts/guide.mjs practice [<길잡이 slug> [<상황 id> '<{"기한id":"YYYY-MM-DD"}>']]
 import { readFileSync } from "node:fs";
 import { LAW_GUIDE_AS_OF, PROFESSIONS, SCOPE_MATRIX, TOPICS, findStatutes, intake, statuteUrl, suggestTopics } from "./kr-expert-guide-2026.mjs";
 import { analyzeEntries, claimPlain, claimResult, csmPlain, csmResult, dutyPlain, dutyResult, finePlain, fineResult, kicsPlain, kicsResult, parseEntries } from "./pro-practice-2026.mjs";
 import { GUIDES, guideBySlug, guideDeadlines, recordCheck, recordText } from "./pro-practice-guides-2026.mjs";
+import { breachClock, checkPolicy } from "./privacy-check-2026.mjs";
 
 const CALC = {
   fine: [fineResult, finePlain],
@@ -47,6 +50,11 @@ switch (cmd) {
       const { rows, skipped } = parseEntries(readFileSync(a2, "utf8"));
       const r = analyzeEntries(rows, { approvalLimit: Number(a3 ?? 0) });
       print({ ...r, skipped, flagged: r.flagged.slice(0, 50) });
+    } else if (a1 === "breach") {
+      print(breachClock(JSON.parse(a2 ?? "{}")));
+    } else if (a1 === "policy") {
+      // a2: 처리방침 텍스트 파일, a3: 상황 JSON {"website":true,"outsource":true,"thirdParty":false,"overseas":false}
+      print(checkPolicy(readFileSync(a2, "utf8"), a3 ? JSON.parse(a3) : {}));
     } else if (a1 === "record") {
       const i = JSON.parse(a2 ?? "{}");
       print({ check: recordCheck(i), text: recordText(i) });
@@ -54,7 +62,7 @@ switch (cmd) {
       const i = JSON.parse(a2 ?? "{}");
       print({ result: CALC[a1][0](i), plain: CALC[a1][1](i) });
     } else {
-      console.error(`calc: ${Object.keys(CALC).join(", ")}, entries, record`);
+      console.error(`calc: ${Object.keys(CALC).join(", ")}, entries, record, breach, policy`);
       process.exit(1);
     }
     break;

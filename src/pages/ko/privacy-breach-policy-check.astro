@@ -1,0 +1,31 @@
+---
+// 개인정보 유출 72시간·처리방침 점검 (2026-11-20, 다음 10종 #2). 엔진: lib/privacy-check-2026.ts (스킬 oiyo-kr-law-guide guide.mjs calc breach|policy와 같은 코드)
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import PrivacyCheck from "../../components/tools/lawguide/PrivacyCheck";
+
+const title = "개인정보 유출 72시간·처리방침 점검 — 통지·신고 마감, 신고 대상, 처리방침 빠진 항목";
+const description = "유출을 알게 된 날짜와 시각을 넣으면 72시간 통지·신고 마감과 남은 시간, 신고 대상인지(1천 명 이상·민감정보·해킹), 통지문 필수 다섯 가지를 보여 줘요. 처리방침을 붙여 넣으면 목적·항목·보유 기간·파기·위탁·권리·보호책임자·쿠키·안전조치·구제 방법 중 빠진 항목을 찾아요.";
+const ko = {
+  introTitle: "작은 가게도 72시간",
+  intro: "고객 정보를 다루면 규모와 관계없이 유출 통지와 처리방침 공개 의무가 있어요. 유출이 생겼을 때 마감 시각과 할 일 순서를, 평소에는 처리방침에 빠진 항목을 확인해요.",
+  howToTitle: "사용 방법",
+  steps: ["유출이 생겼는지, 처리방침 점검인지 골라요.", "알게 된 시각과 사람 수(또는 처리방침 글)를 넣어요.", "마감 시각과 빠진 항목을 보고, 메모를 복사해 담당자와 나눠요."],
+  highlightsTitle: "주요 특징",
+  highlights: [
+    { title: "시각까지 계산", body: "72시간은 시간 단위라 주말·휴일에도 미뤄지지 않아요." },
+    { title: "신고 대상 가리기", body: "1천 명 이상, 민감·고유식별정보, 해킹이면 신고해요." },
+    { title: "처리방침 점검", body: "필수 항목을 낱말로 찾아 빠진 것을 알려 줘요." },
+    { title: "개인정보 안전", body: "붙여 넣은 글은 서버로 보내지 않아요." },
+  ],
+  disclaimer: "법령 정보와 점검 보조 도구예요. 유출 신고·처리방침 작성을 대신하지 않고, 낱말이 있는지만 확인해요. 내용이 실제 처리와 맞는지는 직접 확인하세요.",
+};
+const faqs = [
+  { q: "72시간은 언제부터 세나요?", a: "유출(분실·도난 포함)을 알게 된 때부터예요. 시간 단위라 주말·공휴일에도 미뤄지지 않아요(개인정보 보호법 제34조, 시행령 제39조·제40조)." },
+  { q: "신고는 어디에 하나요?", a: "개인정보 포털(privacy.go.kr)에서 개인정보보호위원회 또는 한국인터넷진흥원에 신고해요. 상담은 118이에요." },
+  { q: "처리방침 점검은 얼마나 정확한가요?", a: "필수 항목의 낱말(목적, 보유 기간, 파기, 위탁, 보호책임자 등)이 있는지 찾는 1차 점검이에요. 실제 처리와 내용이 맞는지는 직접 확인하고, 개인정보 포털의 작성 지침을 함께 보세요." },
+];
+---
+<KrFinancePage slug="privacy-breach-policy-check" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <PrivacyCheck client:load />
+  <p class="mt-4 text-xs text-muted-foreground">근거: 개인정보 보호법 제26조·제28조의8·제29조·제30조·제31조·제34조, 시행령 제31조·제39조·제40조. <a class="underline" href="/ko/privacy-law-guide/">개인정보 법령 길잡이</a> · <a class="underline" href="/ko/law-guide/">법령 길잡이 16분야</a></p>
+</KrFinancePage>

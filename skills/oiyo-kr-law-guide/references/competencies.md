@@ -53,7 +53,7 @@ GENERATED from tools-oiyo src/data/pro-competencies.ts. 기준일 2026-11-20. �
   - MCP: `analyze_journal_entries`
   - 스킬: kr-tax-advisor
 - **세무대리 범위와 성실의무** [업무 범위·윤리]: 세무대리는 세무사 업무예요(세무사법 제2조). 개정 제20조 제3항(2026-06-24 시행)은 무자격자의 세무대리 암시 광고도 금지해요.
-  - 도구: 법령 길잡이 15분야 https://tools.oiyo.net/ko/law-guide/
+  - 도구: 법령 길잡이 16분야 https://tools.oiyo.net/ko/law-guide/
   - MCP: `get_kr_professional_scope`
   - 스킬: oiyo-kr-law-guide
 - **홈택스 전자신고·자료 조회** [전자 업무·데이터]: 간소화 자료, 전자세금계산서, 신고서 제출 화면을 다루는 실무 역량이에요.
@@ -85,7 +85,7 @@ GENERATED from tools-oiyo src/data/pro-competencies.ts. 기준일 2026-11-20. �
   - MCP: `calculate_unit_economics_runway`
   - 스킬: oiyo-business-strategist
 - **독립성과 감사 업무 범위** [업무 범위·윤리] (자격사 업무와 맞닿음: 정보만): 회계감사는 공인회계사 업무예요(공인회계사법 제2조). 이해관계가 있는 회사의 감사는 제한돼요(제21조).
-  - 도구: 법령 길잡이 15분야 https://tools.oiyo.net/ko/law-guide/
+  - 도구: 법령 길잡이 16분야 https://tools.oiyo.net/ko/law-guide/
   - MCP: `get_kr_professional_scope`
   - 스킬: oiyo-kr-law-guide
 - **감사 데이터 분석** [전자 업무·데이터]: 전표 전수 분석, 이상 거래 탐지 같은 데이터 기반 감사 기법이에요.
@@ -125,7 +125,7 @@ GENERATED from tools-oiyo src/data/pro-competencies.ts. 기준일 2026-11-20. �
   - MCP: `calculate_kr_injury_leave_pay`, `calculate_unemployment_benefits`, `check_kr_voluntary_quit_unemployment`
   - 스킬: oiyo-kr-benefits-navigator
 - **대리·서류 작성의 독점 범위** [업무 범위·윤리]: 노동 상담은 누구나 할 수 있지만, 사건 대리·서류 작성·노무관리진단은 공인노무사 업무예요(공인노무사법 제2조·제27조).
-  - 도구: 법령 길잡이 15분야 https://tools.oiyo.net/ko/law-guide/
+  - 도구: 법령 길잡이 16분야 https://tools.oiyo.net/ko/law-guide/
   - MCP: `get_kr_professional_scope`
   - 스킬: oiyo-kr-law-guide
 - **고용24·노동포털 전자 신고** [전자 업무·데이터]: 4대보험 취득·상실 신고, 진정 접수 같은 전자 창구 실무예요.
@@ -164,7 +164,7 @@ GENERATED from tools-oiyo src/data/pro-competencies.ts. 기준일 2026-11-20. �
   - MCP: `start_kr_law_intake`
   - 스킬: oiyo-kr-law-guide
 - **행정사 업무 범위** [업무 범위·윤리]: 행정기관 제출 서류 작성·제출 대행은 행정사 업무예요(행정사법 제2조·제3조).
-  - 도구: 법령 길잡이 15분야 https://tools.oiyo.net/ko/law-guide/
+  - 도구: 법령 길잡이 16분야 https://tools.oiyo.net/ko/law-guide/
   - MCP: `get_kr_professional_scope`
   - 스킬: oiyo-kr-law-guide
 
@@ -194,7 +194,7 @@ GENERATED from tools-oiyo src/data/pro-competencies.ts. 기준일 2026-11-20. �
 - **채무 조정 선택지** [상담·설계] (일반인도 씀): 개인회생 변제액과 기간을 계산해 선택지를 비교해요.
   - 도구: 개인회생 계산기 https://tools.oiyo.net/ko/personal-rehabilitation-calculator/
 - **법무사 업무 범위** [업무 범위·윤리]: 등기·공탁 신청 대리와 법원 제출 서류 작성은 법무사 업무예요(법무사법 제2조). 소송 대리는 변호사 업무예요(변호사법 제109조).
-  - 도구: 법령 길잡이 15분야 https://tools.oiyo.net/ko/law-guide/
+  - 도구: 법령 길잡이 16분야 https://tools.oiyo.net/ko/law-guide/
   - MCP: `get_kr_professional_scope`
   - 스킬: oiyo-kr-law-guide
 - **인터넷등기소·전자소송** [전자 업무·데이터]: 등기부 열람, 전자소송 제출 같은 전자 창구 실무예요.
@@ -326,7 +326,7 @@ GENERATED from tools-oiyo src/data/pro-competencies.ts. 기준일 2026-11-20. �
   - MCP: `get_kr_practice_guide`
   - 스킬: oiyo-kr-law-guide
 - **통관업 범위와 명칭 제한** [업무 범위·윤리]: 관세사·관세법인·통관취급법인만 남의 의뢰로 통관업을 하고(관세사법 제3조), 유사명칭을 쓸 수 없어요(제25조).
-  - 도구: 법령 길잡이 15분야 https://tools.oiyo.net/ko/law-guide/
+  - 도구: 법령 길잡이 16분야 https://tools.oiyo.net/ko/law-guide/
   - MCP: `get_kr_professional_scope`
   - 스킬: oiyo-kr-law-guide
 
@@ -359,7 +359,7 @@ GENERATED from tools-oiyo src/data/pro-competencies.ts. 기준일 2026-11-20. �
   - MCP: `get_kr_practice_guide`
   - 스킬: oiyo-kr-law-guide
 - **변리 업무 범위와 명칭 제한** [업무 범위·윤리]: 변리사가 아니면 특허 등 대리를 업으로 할 수 없고(변리사법 제21조), 유사명칭을 쓸 수 없어요(제22조).
-  - 도구: 법령 길잡이 15분야 https://tools.oiyo.net/ko/law-guide/
+  - 도구: 법령 길잡이 16분야 https://tools.oiyo.net/ko/law-guide/
   - MCP: `get_kr_professional_scope`
   - 스킬: oiyo-kr-law-guide
 
@@ -388,7 +388,7 @@ GENERATED from tools-oiyo src/data/pro-competencies.ts. 기준일 2026-11-20. �
   - MCP: `get_kr_practice_guide`
   - 스킬: oiyo-kr-law-guide
 - **감정평가 업무 범위와 명칭 제한** [업무 범위·윤리]: 감정평가는 사무소·법인 소속 감정평가사가 하고(감정평가법 제21조·제29조), 유사명칭을 쓸 수 없어요(제22조).
-  - 도구: 법령 길잡이 15분야 https://tools.oiyo.net/ko/law-guide/
+  - 도구: 법령 길잡이 16분야 https://tools.oiyo.net/ko/law-guide/
   - MCP: `get_kr_professional_scope`
   - 스킬: oiyo-kr-law-guide
 
@@ -558,10 +558,10 @@ GENERATED from tools-oiyo src/data/pro-competencies.ts. 기준일 2026-11-20. �
   - 도구: 사업자 필수 체크리스트 https://tools.oiyo.net/ko/business-must-do-checklist/ · 경영 도구 모음 https://tools.oiyo.net/ko/business-toolkit/
   - 스킬: oiyo-business-strategist
 - **경영 문제의 법령 연결** [법령 해석] (일반인도 씀): 운영 문제가 세금·노무·행정·보험 중 어디에 걸리는지 찾아 해당 길잡이로 넘겨요.
-  - 도구: 법령 길잡이 15분야 https://tools.oiyo.net/ko/law-guide/
+  - 도구: 법령 길잡이 16분야 https://tools.oiyo.net/ko/law-guide/
   - MCP: `start_kr_law_intake`
   - 스킬: oiyo-kr-law-guide, oiyo-business-strategist
 - **자문 범위** [업무 범위·윤리]: 경영 지도는 독점 업무가 아니지만, 세무대리·노무 대리·법률 사무는 해당 자격사에게 넘겨요.
-  - 도구: 법령 길잡이 15분야 https://tools.oiyo.net/ko/law-guide/
+  - 도구: 법령 길잡이 16분야 https://tools.oiyo.net/ko/law-guide/
   - MCP: `get_kr_professional_scope`
   - 스킬: oiyo-kr-law-guide
