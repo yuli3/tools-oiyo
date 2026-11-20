@@ -186,7 +186,9 @@ export const COMPETENCIES: Competency[] = [
   // 감정평가사
   c("ap-law", "appraiser", "law", "감정평가법·토지보상법·부동산공시법", "감정평가 기준, 보상 원칙, 공시가격 체계를 읽어요.", { tools: ["appraisal-law-guide"], skills: [LAW], mcp: ["search_kr_statutes"], audience: ["pro", "public"] }),
   c("ap-deadline", "appraiser", "deadline", "보상금·공시가격 다툼 기한", "재결 이의신청 30일, 소송 90일(이의재결 뒤 60일), 공시가격 이의신청 30일을 세요.", { tools: ["appeal-deadline-calculator", "appraisal-law-guide"], skills: [LAW], mcp: ["start_kr_law_intake"], audience: ["pro", "public"] }),
-  c("ap-income", "appraiser", "calc", "수익환원법", "임대수익과 환원율로 수익 부동산 가치를 구해요.", { tools: ["rental-yield-calculator", "present-value-calculator"], audience: ["pro", "public"] }),
+  c("ap-income", "appraiser", "calc", "수익환원법", "임대수익과 환원율로 수익 부동산 가치를 구해요.", { tools: ["appraisal-compensation-calculator", "rental-yield-calculator", "present-value-calculator"], audience: ["pro", "public"] }),
+  c("ap-three", "appraiser", "calc", "감정평가 3방식과 시산가액 조정", "원가법(재조달원가·감가), 거래사례비교법(사정·시점·요인 보정), 수익환원법(순수익 ÷ 환원율)과 가중 조정을 계산해요.", { tools: ["appraisal-compensation-calculator", "dcf-valuation-calculator"], skills: [LAW] }),
+  c("ap-compensation", "appraiser", "calc", "수용 보상 산정 구조", "공시지가기준 토지 보상, 영업손실(휴업 4개월·폐업 2년), 주거이전비를 어림해요.", { tools: ["appraisal-compensation-calculator"], skills: [LAW], audience: ["pro", "public"] }),
   c("ap-tax", "appraiser", "calc", "감정가와 세금", "상속·증여 신고에서 감정가와 공시가격의 세금 차이를 비교해요.", { tools: ["inherited-house-appraisal-vs-official-price-calculator", "inheritance-tax-calculator"], mcp: ["compare_kr_inherited_house_valuation", "calculate_inheritance_gift_tax"], audience: ["pro", "public"] }),
   c("ap-redevelop", "appraiser", "calc", "정비사업 권리가액", "재건축·재개발 종전자산 평가와 분담금 구조를 이해해요.", { tools: ["reconstruction-profit", "redevelopment-ticket-vs-presale-tax-calculator"], mcp: ["compare_kr_ticket_vs_presale_tax"], audience: ["pro", "public"] }),
   c("ap-report", "appraiser", "docs", "감정평가서 작성", "가격 결정 근거를 담은 감정평가서는 감정평가사 업무예요.", { exclusive: true, tools: ["pro-document-reading-guide"], skills: ["oiyo-kr-law-guide"], mcp: ["get_kr_practice_guide"], audience: ["pro", "public"] }),
@@ -277,6 +279,7 @@ export const TOOL_NAMES: Record<string, string> = {
   "corporate-tax-adjustment-calculator": "법인세 어림·세무조정 한도",
   "accounting-schedule-calculator": "결산 상각표·외감 판정",
   "license-points-calculator": "운전면허 벌점·과징금 환산",
+  "appraisal-compensation-calculator": "수용 보상·감정평가 3방식",
   "tax-penalty-calculator": "가산세 계산",
   "incorporation-calculator": "개인 vs 법인 세금 비교",
   "family-business-inheritance-calculator": "가업상속공제",

@@ -1047,6 +1047,42 @@
           "eq": 30000000
         }
       ]
+    },
+    {
+      "skill": "oiyo-kr-law-guide",
+      "id": "compensation-land-shop",
+      "ask": "도로 공사로 땅 200㎡와 가게가 수용돼요. 공시지가 ㎡당 300만 원, 지가 3.2% 올랐고 가게는 연 3,600만 원 벌어요. 옮기면 보상이 대략 얼마예요?",
+      "run": [
+        "calc",
+        "compensation",
+        "{\"land\": {\"officialPrice\": 3000000, \"area\": 200, \"landChange\": 0.032}, \"business\": {\"annualProfit\": 36000000, \"kind\": \"pause\", \"months\": 4}}"
+      ],
+      "expect": [
+        {
+          "path": "land.value",
+          "eq": 619200000
+        },
+        {
+          "path": "business.total",
+          "eq": 12000000
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-kr-law-guide",
+      "id": "appraisal-income-cap",
+      "ask": "연 임대료 6천만 원, 공실 5%, 경비 700만 원, 환원율 5%면 수익가액은요?",
+      "run": [
+        "calc",
+        "appraisal",
+        "{\"income\": {\"grossIncome\": 60000000, \"vacancy\": 0.05, \"expenses\": 7000000, \"capRate\": 0.05}}"
+      ],
+      "expect": [
+        {
+          "path": "income.value",
+          "eq": 1000000000
+        }
+      ]
     }
   ],
   "boundaries": {

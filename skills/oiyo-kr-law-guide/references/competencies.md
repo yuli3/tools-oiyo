@@ -401,7 +401,13 @@ GENERATED from tools-oiyo src/data/pro-competencies.ts. 기준일 2026-11-20. �
   - MCP: `start_kr_law_intake`
   - 스킬: oiyo-kr-law-guide
 - **수익환원법** [계산·평가] (일반인도 씀): 임대수익과 환원율로 수익 부동산 가치를 구해요.
-  - 도구: 임대수익률 계산기 https://tools.oiyo.net/ko/rental-yield-calculator/ · 현재가치 계산기 https://tools.oiyo.net/ko/present-value-calculator/
+  - 도구: 수용 보상·감정평가 3방식 https://tools.oiyo.net/ko/appraisal-compensation-calculator/ · 임대수익률 계산기 https://tools.oiyo.net/ko/rental-yield-calculator/ · 현재가치 계산기 https://tools.oiyo.net/ko/present-value-calculator/
+- **감정평가 3방식과 시산가액 조정** [계산·평가]: 원가법(재조달원가·감가), 거래사례비교법(사정·시점·요인 보정), 수익환원법(순수익 ÷ 환원율)과 가중 조정을 계산해요.
+  - 도구: 수용 보상·감정평가 3방식 https://tools.oiyo.net/ko/appraisal-compensation-calculator/ · DCF 기업가치 https://tools.oiyo.net/ko/dcf-valuation-calculator/
+  - 스킬: oiyo-kr-law-guide
+- **수용 보상 산정 구조** [계산·평가] (일반인도 씀): 공시지가기준 토지 보상, 영업손실(휴업 4개월·폐업 2년), 주거이전비를 어림해요.
+  - 도구: 수용 보상·감정평가 3방식 https://tools.oiyo.net/ko/appraisal-compensation-calculator/
+  - 스킬: oiyo-kr-law-guide
 - **감정가와 세금** [계산·평가] (일반인도 씀): 상속·증여 신고에서 감정가와 공시가격의 세금 차이를 비교해요.
   - 도구: 감정가 vs 공시가격 https://tools.oiyo.net/ko/inherited-house-appraisal-vs-official-price-calculator/ · 상속세 계산기 https://tools.oiyo.net/ko/inheritance-tax-calculator/
   - MCP: `compare_kr_inherited_house_valuation`, `calculate_inheritance_gift_tax`
