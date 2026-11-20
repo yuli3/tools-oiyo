@@ -7,7 +7,7 @@ import Korea2027Comparison from '../../components/tools/Korea2027Comparison';
 import Layout from '../../components/Layout.astro';
 import UtilityArticle, { type UtilityContent } from '../../components/UtilityArticle.astro';
 import RelatedUtilities from '../../components/RelatedUtilities.astro';
-import KrIncomeTaxCalculator from '../../components/tools/KrIncomeTaxCalculator';
+import KrIncomeEn from '../../components/tools/world/KrIncomeEn';
 import KrIncomeScenario from '../../components/tools/KrIncomeScenario';
 import FreelancerTaxCountryCalculator from '../../components/tools/FreelancerTaxCountryCalculator';
 import type { FreelancerCountry } from '../../lib/freelancer-tax-countries';
@@ -217,7 +217,7 @@ const schema = utilityJsonLd({ name: m.title, description: m.description, url, l
 ---
 <Layout title={m.title} description={m.description} locale={locale} availableLocales={[...locales]} canonicalURL={url}>
   <ToolShell title={m.title} description={m.description}>
-    {country ? <FreelancerTaxCountryCalculator client:load country={country} /> : locale === 'ko' ? <KrIncomeScenario client:load variant="freelancer" /> : <KrIncomeTaxCalculator client:load locale="en" variant="freelancer" />}
+    {country ? <FreelancerTaxCountryCalculator client:load country={country} /> : locale === 'ko' ? <KrIncomeScenario client:load variant="freelancer" /> : <KrIncomeEn client:load variant="freelancer" />}
     {!country && <p class="mt-4 text-xs text-muted-foreground">근거: 소득세법 제55조·제59조의4·제129조, 국세청 경비율 고시. 기준일 {INCOME_TAX_AS_OF}.</p>}
     {locale === "ko" && <Korea2027Comparison client:load mode="withholding" />}
     <UtilityArticle c={c} />
