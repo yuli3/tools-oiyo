@@ -110,7 +110,7 @@ export const COMPETENCIES: Competency[] = [
   c("admin-law", "admin", "law", "행정절차법·행정심판법·행정기본법", "처분 사전통지·의견제출, 재량권 일탈, 행정심판 청구 요건을 읽어요.", { tools: ["administrative-law-guide"], skills: [LAW], mcp: ["search_kr_statutes"], audience: ["pro", "public"] }),
   c("admin-deadline", "admin", "deadline", "의견제출·행정심판·소송 기한", "처분을 안 날부터 90일, 있은 날부터 180일, 영업일 기준 기한을 계산해요.", { tools: ["administrative-law-guide", "business-day-checker"], skills: [LAW], mcp: ["start_kr_law_intake", "check_kr_business_day"], audience: ["pro", "public"] }),
   c("admin-permit", "admin", "docs", "인허가·민원 서류", "영업신고·허가 신청에 필요한 서류와 요건을 정리해요. 작성·제출 대행은 행정사 업무예요.", { exclusive: true, tools: ["permit-document-checklist"], skills: ["oiyo-kr-law-guide"], mcp: ["get_kr_practice_guide"], audience: ["pro", "public"] }),
-  c("admin-visa", "admin", "law", "출입국·체류 자격", "체류자격 변경·연장, 사증 종류별 요건을 다뤄요.", { tools: ["visa-stay-status-guide"], skills: ["oiyo-kr-law-guide"], mcp: ["get_kr_practice_guide"], audience: ["pro", "public"] }),
+  c("admin-visa", "admin", "law", "출입국·체류 자격", "체류자격 변경·연장, 사증 종류별 요건을 다뤄요.", { tools: ["visa-stay-status-guide"], skills: ["oiyo-kr-law-guide", "oiyo-korea-expat-guide"], mcp: ["get_kr_practice_guide"], audience: ["pro", "public"] }),
   c("admin-zoning", "admin", "calc", "건축·토지 규제 수치", "건폐율·용적률처럼 인허가 판단에 쓰는 수치를 계산해요.", { tools: ["building-coverage-floor-area-ratio-calculator"], audience: ["pro", "public"] }),
   c("admin-fine", "admin", "calc", "과태료·이행강제금 감경", "의견제출 기한 안 자진납부 감경과 늦게 낼 때 붙는 가산금을 계산해요. 이행강제금은 개별 법률 기준을 따라요.", { tools: ["fine-reduction-calculator"], skills: ["oiyo-kr-law-guide"], mcp: ["calculate_kr_fine_reduction"], audience: ["pro", "public"] }),
   c("admin-info", "admin", "consult", "정보공개청구와 사실조사", "필요한 행정 정보를 청구하고, 비공개 결정에 이의신청하는 순서를 안내해요.", { tools: ["administrative-law-guide"], skills: [LAW], mcp: ["start_kr_law_intake"], audience: ["pro", "public"] }),
@@ -382,6 +382,7 @@ export const SKILLS: Record<string, { name: string; zip: string }> = {
   "kr-tax-advisor": { name: "세무·회계 실무 보조", zip: "/downloads/oiyo-kr-tax-advisor-skill.zip" },
   "oiyo-kr-benefits-navigator": { name: "생활 지원금·노동권 길잡이", zip: "/downloads/oiyo-kr-benefits-navigator-skill.zip" },
   "oiyo-business-strategist": { name: "경영 전략 참모", zip: "/downloads/oiyo-business-strategist-skill.zip" },
+  "oiyo-korea-expat-guide": { name: "외국인 생활 길잡이(영어)", zip: "/downloads/oiyo-korea-expat-guide-skill.zip" },
 };
 export const SKILLS_REPO = "https://github.com/yuli3/oiyo-skills";
 export const MCP_URL = "https://api.oiyo.net/mcp";

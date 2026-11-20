@@ -704,6 +704,55 @@
           "eq": 1
         }
       ]
+    },
+    {
+      "skill": "oiyo-korea-expat-guide",
+      "id": "expat-wages",
+      "ask": "My boss has not paid my salary for two months",
+      "run": [
+        "topics",
+        "My boss has not paid my salary for two months"
+      ],
+      "expect": [
+        {
+          "path": "topics.0.id",
+          "eq": "wages"
+        },
+        {
+          "path": "matched",
+          "truthy": true
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-korea-expat-guide",
+      "id": "expat-register",
+      "ask": "I arrived on 1 September 2026 and moved on 20 November",
+      "run": [
+        "deadlines",
+        {
+          "arrival": "2026-09-01",
+          "moved": "2026-11-20"
+        },
+        "2026-11-20"
+      ],
+      "expect": [
+        {
+          "path": "deadlines",
+          "has": {
+            "id": "register",
+            "due": "2026-11-30"
+          }
+        },
+        {
+          "path": "deadlines",
+          "has": {
+            "id": "move",
+            "due": "2026-12-07",
+            "shifted": true
+          }
+        }
+      ]
     }
   ],
   "boundaries": {
