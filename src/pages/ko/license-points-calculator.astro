@@ -1,0 +1,31 @@
+---
+// 운전면허 벌점 계산기·영업정지 과징금 환산 (2026-11-20, 전문 직군 전수조사 7번). 엔진: lib/kr-license-points-2026.ts (스킬 oiyo-kr-law-guide guide.mjs calc points·surcharge)
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import LicensePoints from "../../components/tools/lawguide/LicensePoints";
+
+const title = "운전면허 벌점 계산기 — 누산점수 취소·정지 일수, 소멸일, 영업정지 과징금 환산";
+const description = "속도위반·신호위반·음주·사고 벌점을 날짜별로 넣으면 1년 121점·2년 201점·3년 271점 취소 기준, 40점 이상 정지 일수, 40점 미만 1년 소멸일, 벌점 감경교육 20점(20일) 감경을 계산해요. 어린이보호구역 2배도 반영하고, 영업정지 일수를 과징금으로 바꿔 봐요.";
+const ko = {
+  introTitle: "벌점은 1년·2년·3년 합계와 40점이 갈라요",
+  intro: "벌점이 40점을 넘으면 1점에 하루씩 면허가 정지되고, 1년 121점이 쌓이면 취소돼요. 40점 미만은 1년만 조심하면 사라져요. 내 이력을 넣고 어디쯤인지 보세요.",
+  howToTitle: "사용 방법",
+  steps: ["위반·사고 날짜와 종류를 넣어요.", "어린이보호구역이었는지, 감경교육을 받을지 골라요.", "정지·취소까지 남은 점수와 벌점이 사라지는 날을 확인해요."],
+  highlightsTitle: "주요 특징",
+  highlights: [
+    { title: "누산점수", body: "1년 121점·2년 201점·3년 271점 취소 기준을 날짜로 셉니다." },
+    { title: "정지와 소멸", body: "40점 이상이면 1점 = 1일 정지, 40점 미만은 1년 무위반이면 소멸이에요." },
+    { title: "감경", body: "벌점 감경교육 20점(정지 중 20일), 무위반 서약 10점 특혜점수를 반영해요." },
+    { title: "과징금 환산", body: "영업정지 개월·일수에 1일당 금액을 곱하고 10억 원 한도를 적용해요." },
+  ],
+  disclaimer: "어림 계산이에요. 실제 처분은 경찰청과 행정청이 정하고, 처분을 안 날부터 90일 안에 이의신청·행정심판을 할 수 있어요.",
+};
+const faqs = [
+  { q: "벌점이 몇 점이면 면허가 정지돼요?", a: "처분벌점이 40점 이상이면 정지돼요. 1점을 1일로 계산해요(도로교통법 시행규칙 별표 28). 1년 121점, 2년 201점, 3년 271점 이상 쌓이면 취소돼요." },
+  { q: "벌점은 언제 없어져요?", a: "처분벌점이 40점 미만이면 마지막 위반·사고일부터 1년 동안 위반·사고가 없을 때 사라져요. 정지로 집행된 벌점도 취소 기준(누산점수)에는 기간 동안 남아요." },
+  { q: "벌점 감경교육은 얼마나 줄여 줘요?", a: "특별교통안전교육을 마치면 40점 미만 처분벌점은 20점을 빼 주고, 정지 처분을 받았으면 정지 기간에서 20일을 빼 줘요." },
+];
+---
+<KrFinancePage slug="license-points-calculator" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <LicensePoints client:load />
+  <p class="mt-4 text-xs text-muted-foreground">근거: 도로교통법 제93조, 시행규칙 제91조·별표 28, 식품위생법 제82조·시행령 제53조 별표 1. <a class="underline" href="/ko/traffic-accident-law-guide/">교통사고 길잡이</a> · <a class="underline" href="/ko/appeal-deadline-calculator/">이의신청 기한</a></p>
+</KrFinancePage>

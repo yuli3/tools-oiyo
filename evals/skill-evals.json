@@ -1014,6 +1014,39 @@
           "eq": true
         }
       ]
+    },
+    {
+      "skill": "oiyo-kr-law-guide",
+      "id": "points-suspension-edu",
+      "ask": "1월에 속도위반 30점, 11월에 신호위반 15점 받았어요. 감경교육 받으면 정지가 며칠이에요?",
+      "run": [
+        "calc",
+        "points",
+        "{\"events\": [{\"date\": \"2026-01-10\", \"points\": 30}, {\"date\": \"2026-11-01\", \"violation\": \"signal\"}], \"education\": true}",
+        "2026-11-20"
+      ],
+      "expect": [
+        {
+          "path": "status.suspension.days",
+          "eq": 25
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-kr-law-guide",
+      "id": "surcharge-one-month",
+      "ask": "영업정지 1개월을 과징금으로 바꾸면요? 1일당 100만 원 등급이에요.",
+      "run": [
+        "calc",
+        "surcharge",
+        "{\"months\": 1, \"perDay\": 1000000}"
+      ],
+      "expect": [
+        {
+          "path": "amount",
+          "eq": 30000000
+        }
+      ]
     }
   ],
   "boundaries": {
