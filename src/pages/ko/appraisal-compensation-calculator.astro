@@ -1,0 +1,31 @@
+---
+// 감정평가 3방식·수용 보상 어림 (2026-11-20, 전문 직군 전수조사 9번). 엔진: lib/kr-appraisal-2026.ts (스킬 oiyo-kr-law-guide guide.mjs calc appraisal·compensation)
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import AppraisalCompensation from "../../components/tools/lawguide/AppraisalCompensation";
+
+const title = "수용 보상 계산기 — 토지(공시지가기준)·영업손실·주거이전비, 감정평가 3방식 원리";
+const description = "공익사업에 땅과 가게가 들어갈 때 보상 구조를 어림해요. 표준지 공시지가 × 지가변동률 × 요인 보정 토지 보상, 휴업(4개월 영업이익 + 고정비 + 이전비)·폐업(2년 영업이익) 영업손실, 세입자 4개월·소유자 2개월 주거이전비, 원가·비교·수익 3방식과 시산가액 조정까지 보여 줘요.";
+const ko = {
+  introTitle: "보상액은 산식 구조를 알면 협의가 쉬워져요",
+  intro: "수용 보상은 감정평가사가 정하지만 어떤 숫자가 곱해지는지는 법에 정해져 있어요. 내 땅과 가게에 어떤 요인이 들어가는지 먼저 보고, 자료를 준비하세요.",
+  howToTitle: "사용 방법",
+  steps: ["토지 면적·공시지가·지가변동률을 넣어요.", "가게가 있으면 3년 평균 영업이익과 휴업·폐업을 골라요.", "합계와 항목별 구조를 보고, 다툴 자료(장부·임대차계약서)를 챙겨요."],
+  highlightsTitle: "주요 특징",
+  highlights: [
+    { title: "토지", body: "공시지가기준법: 시점수정·개별요인·그 밖의 요인을 곱해요." },
+    { title: "영업손실", body: "휴업은 영업이익 × 휴업월수 + 고정비 + 이전비, 폐업은 2년분 + 매각손실이에요." },
+    { title: "주거이전비", body: "세입자 4개월, 소유자 2개월 가계지출비예요." },
+    { title: "3방식", body: "원가·비교·수익방식 결과와 가중 조정, 방식 간 차이를 보여 줘요." },
+  ],
+  disclaimer: "산식 구조를 보여 주는 어림 계산이고 감정평가가 아니에요. 실제 보상은 감정평가사 평가로 정하고, 재결 이의신청은 재결서를 받은 날부터 30일이에요.",
+};
+const faqs = [
+  { q: "토지 보상은 시세로 주나요?", a: "공시지가를 기준으로 공시기준일부터 가격시점까지 지가변동률과 위치·모양 같은 요인을 보정해 정해요(토지보상법 제70조). 사업으로 오른 개발이익은 빼요." },
+  { q: "가게 영업손실은 얼마나 받나요?", a: "옮겨서 계속하면 휴업기간(원칙 4개월) 영업이익과 고정비, 이전비를 받고(시행규칙 제47조), 옮길 수 없어 폐업하면 2년간 영업이익과 시설 매각손실을 받아요(제46조). 영업이익은 최근 3년 평균으로 보니 장부와 신고 자료가 중요해요." },
+  { q: "세입자도 이사 비용을 받나요?", a: "사업인정고시일 등 당시 3개월 이상 살던 세입자는 가구원수별 월평균 가계지출비의 4개월분을 주거이전비로 받아요(시행규칙 제54조). 소유자는 2개월분이에요." },
+];
+---
+<KrFinancePage slug="appraisal-compensation-calculator" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <AppraisalCompensation client:load />
+  <p class="mt-4 text-xs text-muted-foreground">근거: 토지보상법 제70조·제77조·제78조, 시행규칙 제46조·제47조·제54조, 감정평가에 관한 규칙 제11조~제15조. <a class="underline" href="/ko/appraisal-law-guide/">감정평가·보상 길잡이</a> · <a class="underline" href="/ko/appeal-deadline-calculator/">재결 이의신청 기한</a></p>
+</KrFinancePage>
