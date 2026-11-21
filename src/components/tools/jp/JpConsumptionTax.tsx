@@ -5,6 +5,7 @@ import ChoiceChips from "../payroll/ChoiceChips";
 import NumberField from "../payroll/NumberField";
 import { track } from "../viz/track";
 import { Items } from "../nts/Items";
+import CurveShell from "../viz/CurveShell";
 
 const TOOL_ID = "jp-consumption-tax-check";
 const yen = (n: number) => `${Math.round(n).toLocaleString("ja-JP")}円`;
@@ -21,7 +22,19 @@ export default function JpConsumptionTax() {
   const upd = (p: Partial<typeof x>) => { setX({ ...x, ...p }); track("tool_calculate", { tool_id: TOOL_ID }, true); };
   const r = jpConsumptionTax({ year: x.year, baseSales: x.base, specSales: x.spec, specWages: x.wages, invoice: x.invoice === "y", wasExempt: x.wasExempt === "y", sales: x.sales, purchases: x.purchases, type: Number(x.type) as keyof typeof DEEMED_RATES, simpleFiled: x.filed === "y" });
   return (
-    <div className="space-y-5">
+    <CurveShell
+      toolId={TOOL_ID}
+      lang="ja"
+      currency="JPY"
+      curve={{
+        title: "今年の課税売上による納付税額（選べる方法のうち最も少ない額）", caption: "仕入れなどの額はそのまま。選択届出などの条件を満たさない方法は除いています。",
+        xLabel: "課税売上（税抜）", yLabel: "納付税額", min: 0, max: 50000000, step: 500000, current: x.sales,
+        f: (v) => { const m = jpConsumptionTax({ year: x.year, baseSales: x.base, specSales: x.spec, specWages: x.wages, invoice: x.invoice === "y", wasExempt: x.wasExempt === "y", sales: v, purchases: x.purchases, type: Number(x.type) as keyof typeof DEEMED_RATES, simpleFiled: x.filed === "y" }); return m.exempt ? 0 : Math.min(...m.methods.filter((k) => k.ok).map((k) => k.tax)); }, formatX: (v) => `${Math.round(v / 10_000)}万円`, formatY: (n: number) => `${Math.round(n).toLocaleString("ja-JP")}円`,
+        onPick: (v) => upd({ sales: v }), marks: [],
+      }}
+    >
+      {() => (
+    <>
       <div className="grid gap-3 sm:grid-cols-2">
         <NumberField label="課税期間（年）" value={x.year} onChange={(v) => upd({ year: Math.min(2030, Math.max(2025, Math.round(v) || 2026)) })} suffix="年" />
         <NumberField label="基準期間（前々年）の課税売上高（税抜）" value={x.base} onChange={(v) => upd({ base: v })} suffix="円" step={100000} />
@@ -48,6 +61,8 @@ export default function JpConsumptionTax() {
         <Items items={r.items} />
       </div>
       <p className="text-xs leading-5 text-muted-foreground">{JP_TAX_NOTE} 基準日 {JP_TAX_AS_OF}。</p>
-    </div>
+    </>
+      )}
+    </CurveShell>
   );
 }

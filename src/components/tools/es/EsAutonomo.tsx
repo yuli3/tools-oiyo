@@ -5,6 +5,7 @@ import ChoiceChips from "../payroll/ChoiceChips";
 import NumberField from "../payroll/NumberField";
 import { track } from "../viz/track";
 import { Items } from "../nts/Items";
+import CurveShell from "../viz/CurveShell";
 
 const TOOL_ID = "cuota-autonomos-tramos-irpf";
 const eur = (n: number) => `${Math.round(n).toLocaleString("es-ES")} €`;
@@ -15,7 +16,19 @@ export default function EsAutonomo() {
   const upd = (p: Partial<typeof x>) => { setX({ ...x, ...p }); track("tool_calculate", { tool_id: TOOL_ID }, true); };
   const r = esAutonomo({ netMonthly: x.net, ingresos: x.ingresos, gastos: x.gastos, nuevo: x.nuevo === "y" });
   return (
-    <div className="space-y-5">
+    <CurveShell
+      toolId={TOOL_ID}
+      lang="es"
+      currency="EUR"
+      curve={{
+        title: "Cuota mínima mensual según los rendimientos netos", caption: "Tabla de tramos 2026: la cuota sube por escalones.",
+        xLabel: "Rendimiento neto mensual", yLabel: "Cuota mínima", min: 0, max: 7000, step: 50, current: x.net,
+        f: (v) => esAutonomo({ netMonthly: v, ingresos: x.ingresos, gastos: x.gastos, nuevo: x.nuevo === "y" }).cuotaMin, formatX: (n: number) => `${Math.round(n).toLocaleString("es-ES")} €`, formatY: (n: number) => `${Math.round(n).toLocaleString("es-ES")} €`,
+        onPick: (v) => upd({ net: v }), marks: [],
+      }}
+    >
+      {() => (
+    <>
       <div className="grid gap-3 sm:grid-cols-2">
         <NumberField label="Rendimiento neto mensual previsto (Seguridad Social)" value={x.net} onChange={(v) => upd({ net: v })} suffix="€" step={50} />
         <NumberField label="Ingresos anuales sin IVA" value={x.ingresos} onChange={(v) => upd({ ingresos: v })} suffix="€" step={1000} />
@@ -29,6 +42,8 @@ export default function EsAutonomo() {
         <Items items={r.items} />
       </div>
       <p className="text-xs leading-5 text-muted-foreground">{ES_TAX_NOTE} Actualizado el {ES_TAX_AS_OF}.</p>
-    </div>
+    </>
+      )}
+    </CurveShell>
   );
 }

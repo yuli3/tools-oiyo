@@ -5,6 +5,7 @@ import ChoiceChips from "../payroll/ChoiceChips";
 import NumberField from "../payroll/NumberField";
 import { track } from "../viz/track";
 import { Items } from "../nts/Items";
+import CurveShell from "../viz/CurveShell";
 
 const TOOL_ID = "china-business-income-tax-calculator";
 const yuan = (n: number) => `${Math.round(n).toLocaleString("zh-CN")}元`;
@@ -17,7 +18,19 @@ export default function CnIncomeTax() {
   const c = cnComprehensive({ income: x.income, special: x.special, additional: x.additional });
   const s = cnSmallProfitCit({ taxable: x.taxable, employees: x.emp, assets: x.assets });
   return (
-    <div className="space-y-5">
+    <CurveShell
+      toolId={TOOL_ID}
+      lang="zh"
+      currency="CNY"
+      curve={{
+        title: x.mode === "comp" ? "综合所得年收入与应纳税额" : "应纳税所得额与应纳税额", caption: x.mode === "comp" ? "专项扣除等不变。" : x.mode === "cit" ? "小型微利企业按5%实际税负计算；不符合条件按25%。" : "经营所得减半征收后的应纳税额。",
+        xLabel: x.mode === "comp" ? "年收入" : "应纳税所得额", yLabel: "应纳税额", min: 0, max: x.mode === "comp" ? 1_000_000 : x.mode === "cit" ? 5_000_000 : 1_000_000, step: 10000, current: x.mode === "comp" ? x.income : x.taxable,
+        f: (v) => x.mode === "comp" ? cnComprehensive({ income: v, special: x.special, additional: x.additional }).tax : x.mode === "cit" ? cnSmallProfitCit({ taxable: v, employees: x.emp, assets: x.assets }).tax : cnBusinessIncome({ taxable: v }).payable, formatX: (v) => `${Math.round(v / 10_000)}万`, formatY: (n: number) => `${Math.round(n).toLocaleString("zh-CN")}元`,
+        onPick: (v) => upd(x.mode === "comp" ? { income: v } : { taxable: v }), marks: x.mode === "cit" ? [{ at: 3_000_000, label: "300万" }] : [],
+      }}
+    >
+      {() => (
+    <>
       <ChoiceChips<Mode> legend="计算什么" value={x.mode} options={[{ value: "biz", label: "个体工商户经营所得" }, { value: "comp", label: "工资等综合所得" }, { value: "cit", label: "小型微利企业所得税" }]} onChange={(v) => upd({ mode: v })} />
       {x.mode === "comp" ? (
         <div className="grid gap-3 sm:grid-cols-2">
@@ -38,6 +51,8 @@ export default function CnIncomeTax() {
         {x.mode === "cit" && <><p className="text-lg font-semibold text-foreground">企业所得税约{yuan(s.tax)}</p><progress className="mt-2 h-2 w-full accent-(--primary)" max={Math.max(1, s.general)} value={s.tax} aria-label="与25%税率相比" /><Items items={s.items} /></>}
       </div>
       <p className="text-xs leading-5 text-muted-foreground">{CN_TAX_NOTE} 更新日期：{CN_TAX_AS_OF}。</p>
-    </div>
+    </>
+      )}
+    </CurveShell>
   );
 }

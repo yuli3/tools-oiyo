@@ -5,6 +5,7 @@ import ChoiceChips from "../payroll/ChoiceChips";
 import NumberField from "../payroll/NumberField";
 import { track } from "../viz/track";
 import { Items } from "../nts/Items";
+import CurveShell, { TW_VIZ_TEXT } from "../viz/CurveShell";
 
 const TOOL_ID = "taiwan-business-tax-threshold";
 type YN = "y" | "n";
@@ -16,7 +17,20 @@ export default function TwBusinessTax() {
   const r = twBusinessTax({ goodsSales: x.goods, serviceSales: x.service, invoice: x.invoice === "y", purchases: x.purchases });
   const per = x.invoice === "y" ? "本期（兩個月）" : "每月";
   return (
-    <div className="space-y-5">
+    <CurveShell
+      toolId={TOOL_ID}
+      lang="zh"
+      currency="TWD"
+      text={TW_VIZ_TEXT}
+      curve={{
+        title: "每月銷售額與營業稅", caption: "服務類銷售額不變。小規模營業人達起徵點後按1%查定。",
+        xLabel: "買賣業等每月銷售額", yLabel: "營業稅", min: 0, max: 200000, step: 2000, current: x.goods,
+        f: (v) => twBusinessTax({ goodsSales: v, serviceSales: x.service, invoice: x.invoice === "y", purchases: x.purchases }).tax, formatX: (v) => `${Math.round(v / 1_000)}千`, formatY: (n: number) => `${Math.round(n).toLocaleString("zh-TW")}元`,
+        onPick: (v) => upd({ goods: v }), marks: [{ at: 100_000, label: "10萬" }],
+      }}
+    >
+      {() => (
+    <>
       <ChoiceChips<YN> legend="已使用統一發票？" value={x.invoice} options={[{ value: "n", label: "否（小規模營業人）" }, { value: "y", label: "是" }]} onChange={(v) => upd({ invoice: v })} />
       <div className="grid gap-3 sm:grid-cols-2">
         <NumberField label={`${per}買賣、製造、飲食等銷售額`} value={x.goods} onChange={(v) => upd({ goods: v })} suffix="元" step={5000} />
@@ -29,6 +43,8 @@ export default function TwBusinessTax() {
         <Items items={r.items} />
       </div>
       <p className="text-xs leading-5 text-muted-foreground">{TW_TAX_NOTE} 更新日期：{TW_TAX_AS_OF}。</p>
-    </div>
+    </>
+      )}
+    </CurveShell>
   );
 }

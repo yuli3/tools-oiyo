@@ -6,6 +6,7 @@ import DateField from "../payroll/DateField";
 import NumberField from "../payroll/NumberField";
 import { track } from "../viz/track";
 import { Items } from "../nts/Items";
+import CurveShell from "../viz/CurveShell";
 
 const TOOL_ID = "amortissement-lineaire-degressif";
 const eur = (n: number) => `${Math.round(n).toLocaleString("fr-FR")} €`;
@@ -17,7 +18,19 @@ export default function FrAmortissement() {
   const upd = (p: Partial<typeof x>) => { setX({ ...x, ...p }); track("tool_calculate", { tool_id: TOOL_ID }, true); };
   const r = frAmortissement({ cost: x.cost, life: x.life, start: x.start || "2026-01-01", method: x.method, toolUnder500: x.small === "y" });
   return (
-    <div className="space-y-5">
+    <CurveShell
+      toolId={TOOL_ID}
+      lang="fr"
+      currency="EUR"
+      curve={{
+        title: "Dotation de la première année selon la durée d'utilisation", caption: "Même coût et même date de mise en service.",
+        xLabel: "Durée", yLabel: "Dotation de la 1re année", min: 3, max: 10, step: 1, current: x.life,
+        f: (v) => frAmortissement({ cost: x.cost, life: v, start: x.start || "2026-01-01", method: x.method, toolUnder500: x.small === "y" }).schedule[0]?.amount ?? 0, formatX: (v) => `${v} ans`, formatY: (n: number) => `${Math.round(n).toLocaleString("fr-FR")} €`,
+        onPick: (v) => upd({ life: v }), marks: [],
+      }}
+    >
+      {() => (
+    <>
       <div className="grid gap-3 sm:grid-cols-2">
         <NumberField label="Valeur d'origine HT" value={x.cost} onChange={(v) => upd({ cost: v })} suffix="€" step={100} />
         <NumberField label="Durée d'utilisation" value={x.life} onChange={(v) => upd({ life: v })} suffix="ans" />
@@ -38,6 +51,8 @@ export default function FrAmortissement() {
         )}
       </div>
       <p className="text-xs leading-5 text-muted-foreground">{FR_TAX_NOTE} À jour au {FR_TAX_AS_OF}.</p>
-    </div>
+    </>
+      )}
+    </CurveShell>
   );
 }

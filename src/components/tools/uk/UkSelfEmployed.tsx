@@ -4,6 +4,7 @@ import { UK_TAX_AS_OF, UK_TAX_NOTE, ukSelfEmployed } from "../../../lib/uk-tax-p
 import NumberField from "../payroll/NumberField";
 import { track } from "../viz/track";
 import { Items } from "../nts/Items";
+import CurveShell from "../viz/CurveShell";
 
 const TOOL_ID = "uk-self-employed-tax-ni-calculator";
 const gbp = (n: number) => `£${Math.round(n).toLocaleString("en-GB")}`;
@@ -14,7 +15,19 @@ export default function UkSelfEmployed() {
   const r = ukSelfEmployed({ profit: x.profit, otherIncome: x.other, qi2425: x.qi2425, qi2526: x.qi2526, qi2627: x.qi2627 });
   const keep = Math.max(0, x.profit - r.total);
   return (
-    <div className="space-y-5">
+    <CurveShell
+      toolId={TOOL_ID}
+      lang="en"
+      currency="GBP"
+      curve={{
+        title: "Income Tax and Class 4 NI by profit", caption: "Same other income. The dotted lines are the personal allowance, higher-rate threshold and £100,000 taper.",
+        xLabel: "Profit", yLabel: "Tax and NI", min: 0, max: 150000, step: 1000, current: x.profit,
+        f: (v) => ukSelfEmployed({ profit: v, otherIncome: x.other, qi2425: x.qi2425, qi2526: x.qi2526, qi2627: x.qi2627 }).total, formatX: (n: number) => `£${Math.round(n).toLocaleString("en-GB")}`, formatY: (n: number) => `£${Math.round(n).toLocaleString("en-GB")}`,
+        onPick: (v) => upd({ profit: v }), marks: [{ at: 12_570, label: "£12,570" }, { at: 50_270, label: "£50,270" }, { at: 100_000, label: "£100k" }],
+      }}
+    >
+      {() => (
+    <>
       <div className="grid gap-3 sm:grid-cols-2">
         <NumberField label="Taxable profit 2026-27" value={x.profit} onChange={(v) => upd({ profit: v })} suffix="£" step={1000} />
         <NumberField label="Other income (salary, pension)" value={x.other} onChange={(v) => upd({ other: v })} suffix="£" step={1000} />
@@ -34,6 +47,8 @@ export default function UkSelfEmployed() {
         <Items items={r.items} />
       </div>
       <p className="text-xs leading-5 text-muted-foreground">{UK_TAX_NOTE} Last checked: {UK_TAX_AS_OF}.</p>
-    </div>
+    </>
+      )}
+    </CurveShell>
   );
 }

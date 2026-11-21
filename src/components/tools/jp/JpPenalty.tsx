@@ -6,6 +6,7 @@ import DateField from "../payroll/DateField";
 import NumberField from "../payroll/NumberField";
 import { track } from "../viz/track";
 import { Items } from "../nts/Items";
+import CurveShell, { plusMonths } from "../viz/CurveShell";
 
 const TOOL_ID = "jp-penalty-tax-calculator";
 const yen = (n: number) => `${Math.round(n).toLocaleString("ja-JP")}円`;
@@ -18,8 +19,22 @@ export default function JpPenalty() {
   const upd = (p: Partial<typeof x>) => { setX({ ...x, ...p }); track("tool_calculate", { tool_id: TOOL_ID }, true); };
   const r = jpPenalty({ kind: x.kind, stage: x.stage, tax: Math.max(0, x.tax), original: x.original, fraud: x.fraud === "y", deadline: x.deadline || undefined, paid: x.paid || undefined });
   const ap = x.noticed ? jpAppealDeadlines({ noticed: x.noticed }) : [];
+  const deadline = x.deadline || "2026-03-16";
+  const lateMonths = x.paid ? Math.max(0, Math.round((Date.parse(x.paid) - Date.parse(deadline)) / (30.44 * 86_400_000))) : 0;
   return (
-    <div className="space-y-5">
+    <CurveShell
+      toolId={TOOL_ID}
+      lang="ja"
+      currency="JPY"
+      curve={{
+        title: "納付が何か月遅れたかによる加算税・延滞税の合計", caption: "税額と申告の段階はそのまま。延滞税は2か月を過ぎると割合が上がります。",
+        xLabel: "法定納期限からの遅れ", yLabel: "加算税と延滞税", min: 0, max: 24, step: 1, current: lateMonths,
+        f: (m) => jpPenalty({ kind: x.kind, stage: x.stage, tax: Math.max(0, x.tax), original: x.original, fraud: x.fraud === "y", deadline: deadline, paid: plusMonths(deadline, m) }).total, formatX: (m) => `${m}か月`, formatY: (n: number) => `${Math.round(n).toLocaleString("ja-JP")}円`,
+        onPick: (m) => upd({ paid: plusMonths(deadline, m) }), marks: [{ at: 2, label: "2か月" }],
+      }}
+    >
+      {() => (
+    <>
       <ChoiceChips<Kind> legend="どちらですか？" value={x.kind} options={[{ value: "none", label: "期限後申告（無申告）" }, { value: "under", label: "修正申告（過少申告）" }]} onChange={(v) => upd({ kind: v })} />
       <ChoiceChips<Stage> legend="いつ申告しましたか？" value={x.stage} options={[{ value: "voluntary", label: "調査の通知前に自主的に" }, { value: "notice", label: "通知後・調査前" }, { value: "audit", label: "調査の後" }]} onChange={(v) => upd({ stage: v })} />
       <div className="grid gap-3 sm:grid-cols-2">
@@ -39,6 +54,8 @@ export default function JpPenalty() {
         {ap.length > 0 && <ul className="space-y-2">{ap.map((a) => <li key={a.id}><span className="font-mono font-semibold">{a.date}</span> {a.label} <span className="text-xs text-muted-foreground">({a.cite})</span></li>)}</ul>}
       </section>
       <p className="text-xs leading-5 text-muted-foreground">{JP_TAX_NOTE} 延滞税は令和8年の割合で計算しています。基準日 {JP_TAX_AS_OF}。</p>
-    </div>
+    </>
+      )}
+    </CurveShell>
   );
 }

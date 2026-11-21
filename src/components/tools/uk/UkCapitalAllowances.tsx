@@ -6,6 +6,7 @@ import DateField from "../payroll/DateField";
 import NumberField from "../payroll/NumberField";
 import { track } from "../viz/track";
 import { Items } from "../nts/Items";
+import CurveShell from "../viz/CurveShell";
 
 const TOOL_ID = "uk-capital-allowances-aia-calculator";
 type YN = "y" | "n";
@@ -19,7 +20,19 @@ export default function UkCapitalAllowances() {
   const r = ukCapitalAllowances({ cost: x.cost, pool: x.pool, company: x.company === "y", date: x.date || "2026-06-01", aiaUsed: x.aiaUsed, car: x.car === "y", cashBasis: x.company === "n" && x.cash === "y" });
   const max = Math.max(1, x.cost);
   return (
-    <div className="space-y-5">
+    <CurveShell
+      toolId={TOOL_ID}
+      lang="en"
+      currency="GBP"
+      curve={{
+        title: "Best first-year allowance by cost", caption: "The largest first-year amount among the options you can use.",
+        xLabel: "Cost", yLabel: "First-year allowance", min: 0, max: 200000, step: 2000, current: x.cost,
+        f: (v) => Math.max(0, ...ukCapitalAllowances({ cost: v, pool: x.pool, company: x.company === "y", date: x.date || "2026-06-01", aiaUsed: x.aiaUsed, car: x.car === "y", cashBasis: x.company === "n" && x.cash === "y" }).options.map((o) => o.firstYear)), formatX: (n: number) => `£${Math.round(n).toLocaleString("en-GB")}`, formatY: (n: number) => `£${Math.round(n).toLocaleString("en-GB")}`,
+        onPick: (v) => upd({ cost: v }), marks: [],
+      }}
+    >
+      {() => (
+    <>
       <ChoiceChips<YN> legend="Limited company?" value={x.company} options={[...yn]} onChange={(v) => upd({ company: v })} />
       {x.company === "n" && <ChoiceChips<YN> legend="Sole trader using the cash basis?" value={x.cash} options={[...yn]} onChange={(v) => upd({ cash: v })} />}
       <ChoiceChips<Pool> legend="Pool" value={x.pool} options={[{ value: "main", label: "Main rate (most plant and machinery)" }, { value: "special", label: "Special rate (integral features, long-life assets)" }]} onChange={(v) => upd({ pool: v })} />
@@ -54,6 +67,8 @@ export default function UkCapitalAllowances() {
         <Items items={r.items} />
       </div>
       <p className="text-xs leading-5 text-muted-foreground">{UK_TAX_NOTE} Last checked: {UK_TAX_AS_OF}.</p>
-    </div>
+    </>
+      )}
+    </CurveShell>
   );
 }

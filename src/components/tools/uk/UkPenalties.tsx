@@ -6,6 +6,7 @@ import DateField from "../payroll/DateField";
 import NumberField from "../payroll/NumberField";
 import { track } from "../viz/track";
 import { Items } from "../nts/Items";
+import CurveShell, { plusMonths } from "../viz/CurveShell";
 
 const TOOL_ID = "hmrc-late-filing-penalty-interest-calculator";
 const gbp = (n: number) => `£${Math.round(n).toLocaleString("en-GB")}`;
@@ -15,8 +16,22 @@ export default function UkPenalties() {
   const upd = (p: Partial<typeof x>) => { setX({ ...x, ...p }); track("tool_calculate", { tool_id: TOOL_ID }, true); };
   const r = ukSaPenalties({ tax: x.tax, taxYear: Number(x.year), filed: x.filed || undefined, paid: x.paid || undefined });
   const a = ukAppealDeadlines({ decision: x.decision || undefined, taxYear: Number(x.year) });
+  const due = r.due;
+  const lateMonths = x.filed ? Math.max(0, Math.round((Date.parse(x.filed) - Date.parse(due)) / (30.44 * 86_400_000))) : 0;
   return (
-    <div className="space-y-5">
+    <CurveShell
+      toolId={TOOL_ID}
+      lang="en"
+      currency="GBP"
+      curve={{
+        title: "Penalties and interest by months late (filed and paid the same day)", caption: "Same tax and tax year. Penalties step up at 3, 6 and 12 months.",
+        xLabel: "Months after 31 January", yLabel: "Penalties + interest", min: 0, max: 18, step: 1, current: lateMonths,
+        f: (m) => ukSaPenalties({ tax: x.tax, taxYear: Number(x.year), filed: plusMonths(due, m), paid: plusMonths(due, m) }).total, formatX: (m) => `${m} mo`, formatY: (n: number) => `£${Math.round(n).toLocaleString("en-GB")}`,
+        onPick: (m) => upd({ filed: plusMonths(due, m), paid: plusMonths(due, m) }), marks: [{ at: 3, label: "3" }, { at: 6, label: "6" }, { at: 12, label: "12" }],
+      }}
+    >
+      {() => (
+    <>
       <ChoiceChips<string> legend="Tax year of the return" value={x.year} options={[2023, 2024, 2025].map((y) => ({ value: String(y), label: `${y}-${String((y + 1) % 100).padStart(2, "0")} (due 31 Jan ${y + 2})` }))} onChange={(v) => upd({ year: v })} />
       <div className="grid gap-3 sm:grid-cols-3">
         <NumberField label="Tax due" value={x.tax} onChange={(v) => upd({ tax: v })} suffix="£" step={100} />
@@ -37,6 +52,8 @@ export default function UkPenalties() {
         <p className="text-muted-foreground">A reasonable excuse (for example serious illness or a bereavement) can cancel a penalty. You appeal yourself through your HMRC online account or by post.</p>
       </section>
       <p className="text-xs leading-5 text-muted-foreground">{UK_TAX_NOTE} Last checked: {UK_TAX_AS_OF}.</p>
-    </div>
+    </>
+      )}
+    </CurveShell>
   );
 }

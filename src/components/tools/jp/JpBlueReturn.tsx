@@ -4,6 +4,7 @@ import { JP_TAX_AS_OF, JP_TAX_NOTE, jpBlueReturn } from "../../../lib/jp-tax-pac
 import NumberField from "../payroll/NumberField";
 import { track } from "../viz/track";
 import { Items } from "../nts/Items";
+import CurveShell from "../viz/CurveShell";
 
 const TOOL_ID = "jp-blue-return-deduction";
 const yen = (n: number) => `${Math.round(n).toLocaleString("ja-JP")}円`;
@@ -14,7 +15,19 @@ export default function JpBlueReturn() {
   const r = jpBlueReturn({ income: Math.max(0, x.income), otherDeductions: Math.max(0, x.other) });
   const max = Math.max(1, r.rows[0].total);
   return (
-    <div className="space-y-5">
+    <CurveShell
+      toolId={TOOL_ID}
+      lang="ja"
+      currency="JPY"
+      curve={{
+        title: "事業所得による青色65万円控除の節税額", caption: "白色申告との差（所得税＋住民税所得割）。所得が高いほど税率が上がるので差も広がります。",
+        xLabel: "事業所得", yLabel: "年間の節税額", min: 0, max: 20000000, step: 250000, current: x.income,
+        f: (v) => jpBlueReturn({ income: v, otherDeductions: Math.max(0, x.other) }).rows[3].saving, formatX: (v) => `${Math.round(v / 10_000)}万円`, formatY: (n: number) => `${Math.round(n).toLocaleString("ja-JP")}円`,
+        onPick: (v) => upd({ income: v }), marks: [],
+      }}
+    >
+      {() => (
+    <>
       <div className="grid gap-3 sm:grid-cols-2">
         <NumberField label="事業所得（売上 − 経費、控除前）" value={x.income} onChange={(v) => upd({ income: v })} suffix="円" step={10000} />
         <NumberField label="社会保険料など、基礎控除以外の所得控除" value={x.other} onChange={(v) => upd({ other: v })} suffix="円" step={10000} />
@@ -33,6 +46,8 @@ export default function JpBlueReturn() {
         <Items items={r.items} />
       </div>
       <p className="text-xs leading-5 text-muted-foreground">{JP_TAX_NOTE} 所得税は令和8年分の基礎控除と復興特別所得税2.1%を含み、住民税は均等割を含みません。基準日 {JP_TAX_AS_OF}。</p>
-    </div>
+    </>
+      )}
+    </CurveShell>
   );
 }

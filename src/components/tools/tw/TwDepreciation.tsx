@@ -6,6 +6,7 @@ import DateField from "../payroll/DateField";
 import NumberField from "../payroll/NumberField";
 import { track } from "../viz/track";
 import { Items } from "../nts/Items";
+import CurveShell, { TW_VIZ_TEXT } from "../viz/CurveShell";
 
 const TOOL_ID = "taiwan-depreciation-calculator";
 
@@ -15,7 +16,20 @@ export default function TwDepreciation() {
   const r = twDepreciation({ category: x.cat, cost: x.cost, start: x.start || "2026-01-01", residual: x.residual, years: x.years });
   const max = Math.max(1, ...r.schedule.map((s) => s.amount));
   return (
-    <div className="space-y-5">
+    <CurveShell
+      toolId={TOOL_ID}
+      lang="zh"
+      currency="TWD"
+      text={TW_VIZ_TEXT}
+      curve={{
+        title: "取得成本與第一年可列費用", caption: "8萬元以下（或耐用年數未滿2年）可一次列為費用。",
+        xLabel: "取得成本", yLabel: "第一年費用", min: 0, max: 300000, step: 2000, current: x.cost,
+        f: (v) => { const d = twDepreciation({ category: x.cat, cost: v, start: x.start || "2026-01-01", residual: Math.min(x.residual, v), years: x.years }); return d.expensable ? v : d.schedule[0]?.amount ?? 0; }, formatX: (v) => `${Math.round(v / 1_000)}千`, formatY: (n: number) => `${Math.round(n).toLocaleString("zh-TW")}元`,
+        onPick: (v) => upd({ cost: v }), marks: [{ at: 80_000, label: "8萬" }],
+      }}
+    >
+      {() => (
+    <>
       <ChoiceChips<TwCategory> legend="資產類別（固定資產耐用年數表）" value={x.cat} options={(Object.keys(TW_LIFE) as TwCategory[]).map((k) => ({ value: k, label: `${TW_LIFE[k].label}（${TW_LIFE[k].years}年）` }))} onChange={(v) => upd({ cat: v, years: TW_LIFE[v].years })} />
       <div className="grid gap-3 sm:grid-cols-2">
         <NumberField label="取得成本" value={x.cost} onChange={(v) => upd({ cost: v })} suffix="元" step={1000} />
@@ -38,6 +52,8 @@ export default function TwDepreciation() {
         <Items items={r.items} />
       </div>
       <p className="text-xs leading-5 text-muted-foreground">{TW_TAX_NOTE} 更新日期：{TW_TAX_AS_OF}。</p>
-    </div>
+    </>
+      )}
+    </CurveShell>
   );
 }
