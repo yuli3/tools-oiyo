@@ -1,0 +1,27 @@
+name: Lighthouse CI
+
+# 2026-11-21 운영 20종 #14: 대표 계산기 7쪽의 속도·SEO를 PR마다, 매주 월요일 10:00 KST에 재요.
+# game·oiyo와 같은 데스크톱 preset으로 막는다(성능 0.8 미만 실패). 모바일은 첫 측정에서 /ko/salary-calculator/가
+# 러너 기준 0.76(공용 CSS 82KiB가 렌더를 막아 LCP 렌더 지연 2.9s)이라 따로 개선 과제로 둔다. 2026-11-21.
+on:
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: '0 1 * * 1'
+  workflow_dispatch:
+
+jobs:
+  lighthouse:
+    name: Lighthouse audit (representative pages)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - name: Run Lighthouse CI
+        run: npx --yes @lhci/cli@0.13 autorun
