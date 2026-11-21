@@ -1,0 +1,32 @@
+---
+// 산업재해조사표 제출 기한 계산기 2026 (2026-11-21, 산업안전 묶음). 엔진: lib/kr-industrial-safety-2026.ts
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import Tool from "../../components/tools/safety/AccidentReport";
+import { SAFETY_AS_OF } from "../../lib/kr-industrial-safety-2026";
+
+const title = "산업재해조사표 제출 기한 계산기 2026 — 1개월 마감과 과태료";
+const description = "사망 또는 3일 이상 휴업이 필요한 산업재해가 생긴 날부터 1개월 안에 내는 산업재해조사표의 마감일(휴일이면 다음 날), 남은 날, 늦었을 때 차수별 과태료와 중대재해 즉시 보고를 계산해요.";
+const ko = {
+  introTitle: "3일 이상 쉬면 1개월 안에 조사표를 내요",
+  intro: "사망자나 3일 이상 휴업이 필요한 부상·질병자가 생기면 사업주는 발생일부터 1개월 안에 산업재해조사표를 관할 지방고용노동관서에 내요. 중대재해는 기한을 세지 않고 알게 된 즉시 전화·팩스로 보고해요. 숨기면 과태료가 아니라 형벌이에요.",
+  howToTitle: "사용 방법",
+  steps: ["재해 종류와 발생일을 골라요.", "이미 냈으면 낸 날을 넣어요.", "마감일, 남은 날, 과태료를 봐요."],
+  highlightsTitle: "주요 특징",
+  highlights: [
+    { title: "마감 D-day", body: "발생일부터 1개월, 휴일이면 다음 날." },
+    { title: "과태료 차수", body: "700·1,000·1,500만 원." },
+    { title: "중대재해", body: "즉시 보고, 3,000만 원." },
+    { title: "은폐 경고", body: "1년 이하 징역 또는 1천만 원." },
+  ],
+  disclaimer: `법령 원문 기준으로 어림한 점검이에요. 실제 해당 여부·처벌·과태료는 사실관계와 처분으로 정해져요. 보고·신고는 사업주가 직접 하고, 사건 대응은 노동청·안전 전문기관·변호사와 상의해요. 기준일 ${SAFETY_AS_OF}.`,
+};
+const faqs = [
+  { q: "언제까지 내야 하나요?", a: "사망 또는 3일 이상 휴업이 필요한 부상·질병이 발생한 날부터 1개월 안이에요(산업안전보건법 제57조③, 시행규칙 제73조①). 마지막 날이 휴일이면 다음 날까지로 봐요." },
+  { q: "늦으면 과태료가 얼마인가요?", a: "보고하지 않으면 1차 700만 원, 2차 1,000만 원, 3차 1,500만 원, 거짓으로 보고하면 1,500만 원이에요. 중대재해를 보고하지 않거나 거짓으로 보고하면 3,000만 원이에요(시행령 별표 35)." },
+  { q: "숨기면 어떻게 되나요?", a: "산업재해 발생 사실을 숨기거나 숨기도록 시키면 1년 이하 징역 또는 1천만 원 이하 벌금이에요(법 제170조 3호)." },
+];
+---
+<KrFinancePage slug="industrial-accident-report-deadline" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <Tool client:load />
+  <p class="mt-4 text-xs text-muted-foreground">근거: 산업안전보건법 제54조·제57조·제170조, 시행규칙 제67조·제73조, 시행령 별표 35. 기준일 {SAFETY_AS_OF}. <a class="underline" href="/ko/labor-law-guide/">노동 길잡이</a> · <a class="underline" href="/ko/pro-competency-map/">전문 직업 역량 지도</a></p>
+</KrFinancePage>

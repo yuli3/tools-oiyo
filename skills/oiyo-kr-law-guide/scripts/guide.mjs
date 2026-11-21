@@ -24,6 +24,8 @@
 //   node scripts/guide.mjs calc deposit '{"amount":30000000,"deposited":"2025-03-02","withdrawn":"2026-11-20","ground":"refused"}'   (공탁금 이자·시효)
 //   node scripts/guide.mjs calc registration '{"price":500000000,"standardPrice":350000000,"metro":true,"houses":1,"method":"efile"}'   (셀프 등기 총비용)
 //   node scripts/guide.mjs calc f27 '{"age":31,"degree":"master","korean":4,"income":45000000}'   (거주 F-2-7 점수)
+//   node scripts/guide.mjs calc serious '{"deaths":1,"headcount":30,"date":"2026-11-02"}'  |  calc report '{"date":"2026-11-10","lostDays3":true}' [오늘]
+//   node scripts/guide.mjs calc education '{"job":"other","hire":"regular","workers":10,"supervisors":1}'  |  calc staffing '{"sector":"mfg-heavy","headcount":120}'   (산업안전)
 //   node scripts/guide.mjs practice [<길잡이 slug> [<상황 id> '<{"기한id":"YYYY-MM-DD"}>']]
 import { readFileSync } from "node:fs";
 import { LAW_GUIDE_AS_OF, PROFESSIONS, SCOPE_MATRIX, TOPICS, findStatutes, intake, statuteUrl, suggestTopics } from "./kr-expert-guide-2026.mjs";
@@ -35,6 +37,7 @@ import { appealsFrom, APPEAL_NOTE } from "./kr-appeal-deadlines-2026.mjs";
 import { legalHeirs, reserveShortfall, INHERIT_NOTE } from "./kr-inheritance-share-2026.mjs";
 import { auctionDistribution, AUCTION_NOTE } from "./kr-auction-distribution-2026.mjs";
 import { FH_NOTE, apartmentSchedule, franchiseCheck } from "./kr-franchise-housing-2026.mjs";
+import { SAFETY_NOTE, accidentReport, safetyEducation, safetyStaffing, seriousAccident } from "./kr-industrial-safety-2026.mjs";
 import { IP_NOTE, ipDeadlines } from "./kr-ip-deadlines-2026.mjs";
 import { APPRAISAL_NOTE, businessLoss, costApproach, incomeApproach, landCompensation, reconcile, relocationAllowance, salesComparison } from "./kr-appraisal-2026.mjs";
 import { POINTS_NOTE, VIOLATIONS, licenseStatus, suspensionToSurcharge, violationPoints, accidentPoints } from "./kr-license-points-2026.mjs";
@@ -149,6 +152,18 @@ switch (cmd) {
     } else if (a1 === "f27") {
       // a2: {"age","degree":"none|associate|bachelor|master|phd","stemOrDouble","korean":0~5,"income","koreanUniDegree","topUniDegree","kiip5","volunteer":0~3,"immigration":"none|low|mid|high","criminal":"none|low|mid|high"}
       print({ ...f27Points(JSON.parse(a2 ?? "{}")), note: F27_NOTE });
+    } else if (a1 === "serious") {
+      // a2: {"deaths","injured6m","injured3m","injuredTotal","illness1y","lostDays3":true,"headcount","date"}
+      print({ ...seriousAccident(JSON.parse(a2 ?? "{}")), note: SAFETY_NOTE });
+    } else if (a1 === "report") {
+      // a2: {"date","deaths","serious":false,"lostDays3":true,"reported","nth":1|2|3}, a3: 오늘(선택)
+      print({ ...accidentReport({ ...JSON.parse(a2 ?? "{}"), today: a3 ?? today() }), note: SAFETY_NOTE });
+    } else if (a1 === "education") {
+      // a2: {"job":"office|sales|other","hire":"regular|month|week|daily","workers","supervisors","half":false,"construction":false}
+      print({ ...safetyEducation(JSON.parse(a2 ?? "{}")), note: SAFETY_NOTE });
+    } else if (a1 === "staffing") {
+      // a2: {"sector":"mfg-heavy|mfg-food|transport|retail|food|it|construction","headcount","amount"(원),"civil":false}
+      print({ ...safetyStaffing(JSON.parse(a2 ?? "{}")), note: SAFETY_NOTE });
     } else if (a1 === "record") {
       const i = JSON.parse(a2 ?? "{}");
       print({ check: recordCheck(i), text: recordText(i) });
@@ -156,7 +171,7 @@ switch (cmd) {
       const i = JSON.parse(a2 ?? "{}");
       print({ result: CALC[a1][0](i), plain: CALC[a1][1](i) });
     } else {
-      console.error(`calc: ${Object.keys(CALC).join(", ")}, entries, record, breach, policy, contract, appeal, inherit, auction, customs, workforce, points, surcharge, appraisal, compensation, ip, franchise, apartment, disability, deposit, registration, f27`);
+      console.error(`calc: ${Object.keys(CALC).join(", ")}, entries, record, breach, policy, contract, appeal, inherit, auction, customs, workforce, points, surcharge, appraisal, compensation, ip, franchise, apartment, disability, deposit, registration, f27, serious, report, education, staffing`);
       process.exit(1);
     }
     break;

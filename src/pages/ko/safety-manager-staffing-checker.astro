@@ -1,0 +1,32 @@
+---
+// 안전관리자·보건관리자 선임 기준 점검 2026 (2026-11-21, 산업안전 묶음). 엔진: lib/kr-industrial-safety-2026.ts
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import Tool from "../../components/tools/safety/SafetyStaffing";
+import { SAFETY_AS_OF } from "../../lib/kr-industrial-safety-2026";
+
+const title = "안전관리자·보건관리자 선임 기준 점검 2026 — 업종·인원·공사금액";
+const description = "업종과 상시근로자 수(건설업은 공사금액)로 안전보건관리책임자, 안전관리자, 보건관리자, 안전보건관리담당자를 몇 명 두어야 하는지와 전담 여부, 위험성평가 주기를 점검해요.";
+const ko = {
+  introTitle: "업종과 인원, 건설은 공사금액으로 정해요",
+  intro: "안전관리자는 제조업 등 50명 이상, 건설업은 공사금액 50억 원 이상부터 두어요. 보건관리자는 업종별 50명 이상, 건설은 800억 원 이상부터예요. 300명 이상이면 다른 일을 겸하지 않는 전담이어야 해요. 20~49명 제조업 등은 안전보건관리담당자를 둬요.",
+  howToTitle: "사용 방법",
+  steps: ["가장 가까운 업종을 골라요.", "상시근로자 수(건설은 공사금액)를 넣어요.", "선임해야 하는 인원과 전담 여부를 봐요."],
+  highlightsTitle: "주요 특징",
+  highlights: [
+    { title: "책임자", body: "50·100·300명, 건설 20억." },
+    { title: "안전관리자", body: "별표 3 구간." },
+    { title: "보건관리자", body: "별표 5 구간." },
+    { title: "위험성평가", body: "최초·정기·수시·상시." },
+  ],
+  disclaimer: `법령 원문 기준으로 어림한 점검이에요. 실제 해당 여부·처벌·과태료는 사실관계와 처분으로 정해져요. 보고·신고는 사업주가 직접 하고, 사건 대응은 노동청·안전 전문기관·변호사와 상의해요. 기준일 ${SAFETY_AS_OF}.`,
+};
+const faqs = [
+  { q: "안전관리자는 언제부터 두나요?", a: "제조업·운수창고업 등은 상시 50명 이상 500명 미만 1명, 500명 이상 2명이에요. 도소매·숙박음식점 등은 50명 이상 1천명 미만 1명이에요. 건설업은 공사금액 50억 원 이상부터예요(시행령 별표 3)." },
+  { q: "겸직해도 되나요?", a: "상시 300명 이상(건설은 공사금액 120억 원, 토목 150억 원 이상)이면 안전관리자는 전담이어야 해요(시행령 제16조②). 보건관리자도 300명 이상이면 전담이에요(제20조②)." },
+  { q: "작은 공장은 아무도 안 두나요?", a: "상시 20명 이상 50명 미만 제조업·임업·하수폐수·폐기물·환경정화업은 안전보건관리담당자를 1명 이상 두어요(시행령 제24조①)." },
+];
+---
+<KrFinancePage slug="safety-manager-staffing-checker" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <Tool client:load />
+  <p class="mt-4 text-xs text-muted-foreground">근거: 산업안전보건법 시행령 제14조·제16조·제20조·제24조, 별표 2·3·5, 시행규칙 제37조, 고시 제2026-73호. 기준일 {SAFETY_AS_OF}. <a class="underline" href="/ko/labor-law-guide/">노동 길잡이</a> · <a class="underline" href="/ko/pro-competency-map/">전문 직업 역량 지도</a></p>
+</KrFinancePage>

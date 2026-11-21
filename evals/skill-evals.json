@@ -1480,6 +1480,91 @@
           "eq": "combined"
         }
       ]
+    },
+    {
+      "skill": "oiyo-kr-law-guide",
+      "id": "serious-accident",
+      "ask": "직원 30명 공장에서 11월 2일에 한 명이 돌아가셨어요. 중대재해처벌법 대상인가요?",
+      "run": [
+        "calc",
+        "serious",
+        "{\"deaths\": 1, \"headcount\": 30, \"date\": \"2026-11-02\"}"
+      ],
+      "expect": [
+        {
+          "path": "criSerious",
+          "eq": true
+        },
+        {
+          "path": "actApplies",
+          "eq": true
+        },
+        {
+          "path": "oshSerious",
+          "eq": true
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-kr-law-guide",
+      "id": "accident-report",
+      "ask": "11월 10일에 다친 직원이 2주 쉬어요. 산업재해조사표 언제까지 내요?",
+      "run": [
+        "calc",
+        "report",
+        "{\"date\": \"2026-11-10\", \"lostDays3\": true}",
+        "2026-11-21"
+      ],
+      "expect": [
+        {
+          "path": "due",
+          "eq": "2026-12-10"
+        },
+        {
+          "path": "must",
+          "eq": true
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-kr-law-guide",
+      "id": "safety-education",
+      "ask": "생산직 10명, 관리감독자 1명이면 안전보건교육 1년에 몇 시간 해야 해요?",
+      "run": [
+        "calc",
+        "education",
+        "{\"job\": \"other\", \"hire\": \"regular\", \"workers\": 10, \"supervisors\": 1}"
+      ],
+      "expect": [
+        {
+          "path": "yearlyTotal",
+          "eq": 256
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-kr-law-guide",
+      "id": "safety-staffing",
+      "ask": "금속가공 공장 직원 120명인데 안전관리자 꼭 둬야 해요?",
+      "run": [
+        "calc",
+        "staffing",
+        "{\"sector\": \"mfg-heavy\", \"headcount\": 120}"
+      ],
+      "expect": [
+        {
+          "path": "safety",
+          "eq": 1
+        },
+        {
+          "path": "health",
+          "eq": 1
+        },
+        {
+          "path": "chief",
+          "eq": true
+        }
+      ]
     }
   ],
   "boundaries": {
