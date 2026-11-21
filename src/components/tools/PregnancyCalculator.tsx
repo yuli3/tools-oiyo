@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ToolPanel } from './ToolPanel';
+import { localIsoDate } from "../../lib/local-date";
 
 const PregnancyCalculator: React.FC<{ locale?: 'ko' | 'en' }> = ({ locale = 'ko' }) => {
     const t = {
@@ -7,10 +8,10 @@ const PregnancyCalculator: React.FC<{ locale?: 'ko' | 'en' }> = ({ locale = 'ko'
         en: { title: "Women's Health & Pregnancy", desc: "Track ovulation, fertile window, and due date based on your LMP.", lmp: "Last Menstrual Period (LMP)", cycle: "Cycle Length (Days)", result: "Key Dates", ovulation: "Estimated Ovulation", fertility: "Fertile Window", dueDate: "Due Date", weeks: "Pregnancy Weeks", note: "* Based on statistical averages. Real cycles vary from person to person, so use these dates as a reference only." }
     }[locale === 'ko' ? 'ko' : 'en'];
 
-    const [lmp, setLmp] = useState<string>(new Date().toISOString().split('T')[0]);
+    const [lmp, setLmp] = useState<string>(localIsoDate());
     const [cycle, setCycle] = useState(28);
 
-    const lmpDate = new Date(lmp);
+    const lmpDate = new Date(lmp + "T00:00:00");
     
     // Ovulation: LMP + Cycle - 14 days
     const ovulationDate = new Date(lmpDate);
@@ -29,7 +30,7 @@ const PregnancyCalculator: React.FC<{ locale?: 'ko' | 'en' }> = ({ locale = 'ko'
     const formatDate = (d: Date) => d.toLocaleDateString(locale === 'ko' ? 'ko-KR' : 'en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
     return (
-        <ToolPanel title={t.title} subtitle="Life Cycle Management" onReset={() => { setLmp(new Date().toISOString().split('T')[0]); setCycle(28); }}>
+        <ToolPanel title={t.title} subtitle="Life Cycle Management" onReset={() => { setLmp(localIsoDate()); setCycle(28); }}>
             <div className="flex flex-col gap-6 sm:gap-10">
                 <p className="text-sm font-medium text-muted-foreground text-center max-w-md mx-auto">{t.desc}</p>
                 

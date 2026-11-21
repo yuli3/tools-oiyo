@@ -1,6 +1,7 @@
 import type React from 'react';
 import { useState, useCallback, useEffect } from "react";
 import type { Locale } from "../../lib/i18n";
+import { localIsoDate } from "../../lib/local-date";
 
 interface Props {
   locale: Locale;
@@ -503,7 +504,7 @@ const UI: Record<Locale, UIData> = {
   },
 };
 
-const TODAY_KEY = new Date().toISOString().slice(0, 10);
+const TODAY_KEY = localIsoDate();
 
 function getTodayCount(): number {
   if (typeof window === "undefined") return 0;

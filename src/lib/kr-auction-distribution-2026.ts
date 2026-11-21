@@ -81,7 +81,7 @@ function share(avail: number, items: { label: string; claim: number }[], step: s
   return { paid, used: paid.reduce((s, p) => s + p.paid, 0) };
 }
 
-export function auctionDistribution(x: AuctionInput, today = new Date().toISOString().slice(0, 10)) {
+export function auctionDistribution(x: AuctionInput, today = new Date(Date.now() + 9 * 3_600_000).toISOString().slice(0, 10) /* 한국 날짜 */) {
   const base = x.baseDate || today;
   const row = smallTenantRow(x.region, base);
   let avail = Math.max(0, pos(x.sale) - pos(x.cost));
