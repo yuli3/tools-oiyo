@@ -1,0 +1,59 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import CnScope from '../../components/tools/cn/CnScope';
+const c = {
+  "introTitle": "可以请谁帮忙处理税务",
+  "intro": "纳税人可以委托税务代理人代为办理税务事宜（征管法第89条）。涉税专业服务管理办法（试行）（国家税务总局令第58号，2025年5月1日施行）列出了纳税申报代办、税务咨询、税务顾问、涉税鉴证等业务和提供服务的机构类型。税务师是通过全国统一考试取得的水平评价类职业资格。本网站只说明规则和估算，不代办任何涉税业务。",
+  "formulaTitle": "依据",
+  "formulas": [
+    {
+      "title": "税务代理",
+      "body": "税收征收管理法第89条。"
+    },
+    {
+      "title": "涉税专业服务",
+      "body": "国家税务总局令第58号：机构类型与八类服务。"
+    },
+    {
+      "title": "税务师职业资格",
+      "body": "税务师职业资格制度暂行规定（人社部发〔2015〕90号）。"
+    }
+  ],
+  "howToTitle": "可以怎么做",
+  "steps": [
+    "一般问题可先用12366纳税服务平台的智能咨询。",
+    "申报在电子税务局或个人所得税APP办理。",
+    "委托机构前查询其登记信息。",
+    "收到税务文书时注意复议和诉讼期限。"
+  ],
+  "faqTitle": "常见问题",
+  "faqs": [
+    {
+      "question": "本网站可以帮我申报吗？",
+      "answer": "不可以。本网站只说明已公布的规则并给出估算，不代办申报，也不提供个案咨询。"
+    }
+  ],
+  "disclaimer": "根据法律法规和国家税务总局网站整理的一般信息。"
+};
+const sources: [string, string][] = [
+  [
+    "税收征收管理法",
+    "https://fgk.chinatax.gov.cn/zcfgk/c100009/c5195081/content.html"
+  ],
+  [
+    "国家税务总局令第58号（涉税专业服务管理办法（试行））",
+    "https://fgk.chinatax.gov.cn/zcfgk/c100011/c5239044/content.html"
+  ],
+  [
+    "税务师职业资格制度暂行规定",
+    "https://fgk.chinatax.gov.cn/zcfgk/c100013/c5207605/content.html"
+  ],
+  [
+    "12366纳税服务平台",
+    "https://12366.chinatax.gov.cn/"
+  ]
+];
+---
+<DebtReliefPage slug="china-tax-agent-scope" c={c} sources={sources} sourcesTitle="来源" checked="国家税务总局法规库 2026-11-21 查阅">
+  <CnScope client:load />
+</DebtReliefPage>

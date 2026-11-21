@@ -1,0 +1,71 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import CnLateFee from '../../components/tools/cn/CnLateFee';
+const c = {
+  "introTitle": "晚交税要多付多少，不服决定有多长时间",
+  "intro": "纳税人未按期缴纳税款的，从滞纳税款之日起按日加收万分之五的滞纳金。未按期申报的，可处2,000元以下罚款，情节严重的2,000元以上10,000元以下；首次发生、危害后果轻微并及时改正的，可以不予处罚。偷税的，处不缴或少缴税款50%以上5倍以下罚款。对纳税争议，须先缴纳税款和滞纳金或提供担保，再在知道之日起60日内申请行政复议；对复议决定不服的，收到决定书之日起15日内起诉。",
+  "formulaTitle": "依据",
+  "formulas": [
+    {
+      "title": "滞纳金",
+      "body": "按日万分之五（征管法第32条）。本工具从期限届满次日计至缴纳之日。"
+    },
+    {
+      "title": "罚款",
+      "body": "未按期申报2,000元以下或2,000—10,000元（第62条）；偷税、不申报不缴50%—5倍（第63、64条）；首违不罚清单（国家税务总局公告2021年第6号、第33号）。"
+    },
+    {
+      "title": "复议与诉讼",
+      "body": "纳税争议复议前置（第88条）；复议60日（行政复议法第20条）；复议后诉讼15日（行政诉讼法第45条）；直接诉讼6个月（第46条）。"
+    },
+    {
+      "title": "退税与追征",
+      "body": "多缴税款3年内可申请退还（第51条）；追征期3年、5年，偷税等不受限制（第52条）。"
+    }
+  ],
+  "howToTitle": "使用方法",
+  "steps": [
+    "输入未按期缴纳的税款、缴款期限和实际缴纳日。",
+    "查看滞纳金和可能的罚款范围。",
+    "选择争议类型，输入知道该行为的日期。",
+    "查看复议、诉讼和退税的期限。"
+  ],
+  "faqTitle": "常见问题",
+  "faqs": [
+    {
+      "question": "期限遇到节假日怎么办？",
+      "answer": "本工具只把周末顺延到周一，不计算法定节假日，请以文书载明的期限为准。"
+    },
+    {
+      "question": "输入的内容会被保存吗？",
+      "answer": "输入内容只保存在你的浏览器中，不会发送到服务器。"
+    }
+  ],
+  "disclaimer": "根据法律整理的估算，不是个案涉税咨询，也不代写复议申请。"
+};
+const sources: [string, string][] = [
+  [
+    "税收征收管理法",
+    "https://fgk.chinatax.gov.cn/zcfgk/c100009/c5195081/content.html"
+  ],
+  [
+    "行政复议法",
+    "https://fgk.chinatax.gov.cn/zcfgk/c100009/c5220333/content.html"
+  ],
+  [
+    "行政诉讼法",
+    "https://fgk.chinatax.gov.cn/zcfgk/c100009/c5211794/content.html"
+  ],
+  [
+    "首违不罚清单（国家税务总局公告2021年第6号）",
+    "https://fgk.chinatax.gov.cn/zcfgk/c100012/c5192941/content.html"
+  ],
+  [
+    "首违不罚清单（国家税务总局公告2021年第33号）",
+    "https://fgk.chinatax.gov.cn/zcfgk/c100012/c5194634/content.html"
+  ]
+];
+---
+<DebtReliefPage slug="china-late-payment-surcharge-appeal" c={c} sources={sources} sourcesTitle="来源" checked="国家税务总局法规库 2026-11-21 查阅">
+  <CnLateFee client:load />
+</DebtReliefPage>

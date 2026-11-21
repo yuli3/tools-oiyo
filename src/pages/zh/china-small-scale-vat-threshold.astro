@@ -1,0 +1,59 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import CnSmallScaleVat from '../../components/tools/cn/CnSmallScaleVat';
+const c = {
+  "introTitle": "小规模纳税人这个月要不要交增值税",
+  "intro": "增值税法自2026年1月1日起施行。根据财政部 税务总局公告2026年第10号，2027年12月31日前小规模纳税人的起征点为按月10万元、按季30万元、按次1,000元。未达到起征点的免征增值税；达到起征点的，全额计算缴纳，而不是只对超过部分征税。适用3%征收率的销售额减按1%征收，但销售、出租不动产和转让土地使用权除外。年应征增值税销售额超过500万元的，不再是小规模纳税人。",
+  "formulaTitle": "依据",
+  "formulas": [
+    {
+      "title": "起征点",
+      "body": "增值税法第23条；公告2026年第10号第一条：月10万元、季度30万元、按次1,000元，至2027年12月31日。"
+    },
+    {
+      "title": "1%征收率",
+      "body": "3%征收率减按1%（不动产销售、出租和土地使用权转让除外），公告2026年第10号第二条（三）6。"
+    },
+    {
+      "title": "一般纳税人",
+      "body": "年销售额500万元以上（增值税法第9条），税率13%、9%、6%（第10条）。"
+    }
+  ],
+  "howToTitle": "使用方法",
+  "steps": [
+    "选择按月还是按季申报。",
+    "输入本期不含税销售额。",
+    "确认是否涉及不动产。",
+    "查看是否免征以及应纳税额。"
+  ],
+  "faqTitle": "常见问题",
+  "faqs": [
+    {
+      "question": "和以前的“月销售额10万元以下免征”有什么不同？",
+    "answer": "以前是“月销售额10万元以下免征”的阶段性优惠（公告2023年第19号）；2026年起依据增值税法第23条和公告2026年第10号规定为起征点。未达到起征点的免征，达到的全额计算缴纳。"
+    },
+    {
+      "question": "输入的内容会被保存吗？",
+      "answer": "输入内容只保存在你的浏览器中，不会发送到服务器。"
+    }
+  ],
+  "disclaimer": "根据增值税法和公告整理的一般信息，不是个案涉税咨询。"
+};
+const sources: [string, string][] = [
+  [
+    "增值税法",
+    "https://fgk.chinatax.gov.cn/zcfgk/c100009/c5237365/content.html"
+  ],
+  [
+    "增值税法实施条例",
+    "https://fgk.chinatax.gov.cn/zcfgk/c100010/c5246349/content.html"
+  ],
+  [
+    "财政部 税务总局公告2026年第10号",
+    "https://fgk.chinatax.gov.cn/zcfgk/c102416/c5247434/content.html"
+  ]
+];
+---
+<DebtReliefPage slug="china-small-scale-vat-threshold" c={c} sources={sources} sourcesTitle="来源" checked="国家税务总局法规库 2026-11-21 查阅">
+  <CnSmallScaleVat client:load />
+</DebtReliefPage>

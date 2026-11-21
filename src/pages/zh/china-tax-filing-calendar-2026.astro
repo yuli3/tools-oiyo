@@ -1,0 +1,63 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import CnTaxCalendar from '../../components/tools/cn/CnTaxCalendar';
+const c = {
+  "introTitle": "2026年每月什么时候要申报",
+  "intro": "按月或按季申报的税种，一般在期满后15日内申报纳税，遇节假日顺延。2026年6、7、9、12月的征期截止日为15日，1月为20日，2月为24日，3月为16日，4月为20日，5月为22日，8月为17日，10月为26日，11月为16日。综合所得年度汇算在次年3月1日至6月30日办理，经营所得在次年3月31日前汇算清缴。本工具按你的申报方式列出相关日期并计算剩余天数。",
+  "formulaTitle": "依据",
+  "formulas": [
+    {
+      "title": "2026年征期",
+      "body": "国家税务总局办公厅关于明确2026年度申报纳税期限的通知（税总办征科函〔2025〕64号）。"
+    },
+    {
+      "title": "节假日顺延",
+      "body": "期限最后一日是法定休假日的，以休假日期满次日为最后一日；期限内有连续3日以上法定休假日的，按休假日天数顺延（征管法实施细则第109条）。"
+    },
+    {
+      "title": "个人所得税",
+      "body": "综合所得次年3月1日至6月30日汇算清缴（个人所得税法第11条）；经营所得按月或按季在期满后15日内预缴，次年3月31日前汇算清缴（第12条）。"
+    }
+  ],
+  "howToTitle": "使用方法",
+  "steps": [
+    "选择年份（只有2026年有已核实的具体日期）。",
+    "选择增值税和经营所得的申报方式。",
+    "查看日期和剩余天数。",
+    "以电子税务局和办税日历显示为准。"
+  ],
+  "faqTitle": "常见问题",
+  "faqs": [
+    {
+      "question": "为什么2027年只显示月份？",
+      "answer": "截至2026年11月21日，国家税务总局尚未发布2027年度申报纳税期限通知。发布后会更新。"
+    },
+    {
+      "question": "企业所得税的期限也有吗？",
+      "answer": "本工具目前只列出增值税、个人所得税经营所得预缴和年度汇算。"
+    },
+    {
+      "question": "输入的内容会被保存吗？",
+      "answer": "输入内容只保存在你的浏览器中，不会发送到服务器。"
+    }
+  ],
+  "disclaimer": "根据国家税务总局通知整理的一般信息，不是个案涉税咨询。"
+};
+const sources: [string, string][] = [
+  [
+    "税总办征科函〔2025〕64号（2026年度申报纳税期限）",
+    "https://fgk.chinatax.gov.cn/zcfgk/c102424/c5245729/content.html"
+  ],
+  [
+    "税收征收管理法实施细则",
+    "https://fgk.chinatax.gov.cn/zcfgk/c100010/c5195082/content.html"
+  ],
+  [
+    "个人所得税法",
+    "https://fgk.chinatax.gov.cn/zcfgk/c100009/c5193028/content.html"
+  ]
+];
+---
+<DebtReliefPage slug="china-tax-filing-calendar-2026" c={c} sources={sources} sourcesTitle="来源" checked="国家税务总局法规库 2026-11-21 查阅">
+  <CnTaxCalendar client:load />
+</DebtReliefPage>
