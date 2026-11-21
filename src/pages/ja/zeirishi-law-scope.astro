@@ -1,0 +1,28 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import JpScope from '../../components/tools/jp/JpScope';
+const c = {
+  introTitle: 'このサイトの税金ツールが「一般的な情報」に限る理由',
+  intro: '日本では、他人の求めに応じて税務代理・税務書類の作成・税務相談を業として行えるのは税理士と税理士法人だけです（税理士法第2条・第52条）。国税庁の通達では、反復継続していれば無償でも該当するとされています。そのためこのサイトは、公表された制度の説明と概算計算だけを扱い、あなたの状況に合わせた判断や申告書の作成はしません。個別の判断が必要なときは、下の無料窓口や税理士を使ってください。',
+  formulaTitle: 'このサイトが扱うこと',
+  formulas: [
+    { title: '扱うこと', body: '期限の一覧、法令の割合を使った概算、制度の要件の説明、出典へのリンク。' },
+    { title: '扱わないこと', body: '個別の税務相談への回答、申告書・届出書・不服申立書の作成や提出の代行、税理士の紹介。' },
+  ],
+  howToTitle: '個別の判断が必要なとき',
+  steps: ['まず税務署の電話相談センター（国税相談専用ダイヤル）で一般的な扱いを確認します。', '確定申告期は税務署・申告相談会場の無料相談が使えます。', '各地の税理士会が開く無料税務相談を使います。', '継続して任せたいときは税理士・税理士法人に依頼します。'],
+  faqTitle: 'よくある質問',
+  faqs: [
+    { question: 'ツールの名前に「税理士」を使わないのはなぜ？', answer: '税理士でない者は税理士や類似の名称を使えないためです（税理士法第53条）。' },
+    { question: '計算結果をそのまま申告に使えますか？', answer: '概算です。申告には国税庁の確定申告書等作成コーナーや会計ソフトで正式に計算してください。' },
+  ],
+  disclaimer: '税理士法と国税庁の通達の要旨です。法令の原文は e-Gov 法令検索で確認してください。',
+};
+const sources: [string, string][] = [
+  ['e-Gov 法令検索 税理士法', 'https://laws.e-gov.go.jp/law/326AC1000000237'],
+  ['国税庁 税理士法基本通達 第2条関係', 'https://www.nta.go.jp/law/tsutatsu/kihon/zeirishi/02.htm'],
+];
+---
+<DebtReliefPage slug="zeirishi-law-scope" c={c} sources={sources} sourcesTitle="出典" checked="e-Gov・国税庁 確認日：2026-11-21">
+  <JpScope />
+</DebtReliefPage>

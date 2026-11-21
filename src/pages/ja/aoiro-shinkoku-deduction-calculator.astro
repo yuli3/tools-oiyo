@@ -1,0 +1,33 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import JpBlueReturn from '../../components/tools/jp/JpBlueReturn';
+const c = {
+  introTitle: '青色申告にすると税金はいくら変わるか',
+  intro: '青色申告特別控除は、帳簿のつけ方と提出方法で65万円・55万円・10万円の3段階があります（租税特別措置法第25条の2）。控除が大きいほど所得税と住民税が下がります。このツールは事業所得を入れると、白色申告と3つの青色控除それぞれの所得税（令和8年分の基礎控除・復興特別所得税を含む）と住民税所得割を概算し、年にいくら違うかをグラフで比べます。',
+  formulaTitle: '使っているルール',
+  formulas: [
+    { title: '65万円', body: '複式簿記・貸借対照表と損益計算書を添付・期限内申告に加えて、e-Tax で申告するか優良な電子帳簿保存をしていること（国税庁 No.2072）。' },
+    { title: '55万円', body: '複式簿記で記帳し、貸借対照表と損益計算書を添付して期限内に申告すること。' },
+    { title: '10万円', body: '上の要件を満たさない青色申告者。簡易帳簿でも使えます。' },
+    { title: '住民税', body: '所得割10%（基礎控除43万円）で計算し、均等割は含めていません。' },
+  ],
+  howToTitle: '使い方',
+  steps: ['売上から経費を引いた事業所得（控除前）を入れます。', '社会保険料控除など、基礎控除以外の所得控除の合計を入れます。', '4つの行の税額と、白色との差を比べます。', '要件と手間を比べて、どの控除を目指すか決めます。'],
+  faqTitle: 'よくある質問',
+  faqs: [
+    { question: '個人事業税も下がりますか？', answer: '下がりません。個人事業税では青色申告特別控除は使えず、事業主控除290万円を引いて計算します。' },
+    { question: '期限後に申告したら？', answer: '65万円・55万円の控除は期限内申告が要件なので、10万円になります。' },
+    { question: '入力内容は保存されますか？', answer: '入力値は表示中のページのメモリ内だけで使い、サーバーに送りません。' },
+  ],
+  disclaimer: '公表された法令にもとづく概算です。個別の税務相談・申告書の作成は税理士の業務です（税理士法第52条）。',
+};
+const sources: [string, string][] = [
+  ['国税庁 タックスアンサー No.2072 青色申告特別控除', 'https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/2072.htm'],
+  ['国税庁 タックスアンサー No.2070 青色申告制度', 'https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/2070.htm'],
+  ['東京都主税局 個人事業税', 'https://www.tax.metro.tokyo.lg.jp/kazei/work/kojin_ji'],
+  ['東京都主税局 個人住民税', 'https://www.tax.metro.tokyo.lg.jp/kazei/life/kojin_ju'],
+];
+---
+<DebtReliefPage slug="aoiro-shinkoku-deduction-calculator" c={c} sources={sources} sourcesTitle="出典" checked="国税庁・東京都主税局 確認日：2026-11-21">
+  <JpBlueReturn client:load />
+</DebtReliefPage>

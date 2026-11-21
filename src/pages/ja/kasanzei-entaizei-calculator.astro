@@ -1,0 +1,34 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import JpPenalty from '../../components/tools/jp/JpPenalty';
+const c = {
+  introTitle: '申告が遅れた・間違えたときに増える税金',
+  intro: '期限までに申告しなかったときは無申告加算税、税額が少なかったときは過少申告加算税、仮装・隠ぺいがあったときは重加算税がかかります。割合は、税務署の調査の通知前に自主的に申告したか、通知後か、調査の後かで変わります。さらに納付が遅れた日数に応じて延滞税（令和8年は2か月まで年2.8%、その後年9.1%）がかかります。このツールはこれらを概算し、処分に納得できないときの再調査の請求・審査請求の期限も示します。',
+  formulaTitle: '使っているルール',
+  formulas: [
+    { title: '無申告加算税', body: '自主申告5%。通知後・調査前は10%（50万円超15%、300万円超25%）、調査後は15%（50万円超20%、300万円超30%）（国税庁 No.2024）。' },
+    { title: '過少申告加算税', body: '自主修正はなし。通知後5%（当初税額と50万円の多い方を超える部分10%）、調査後10%（同15%）（国税庁 No.2026）。' },
+    { title: '重加算税', body: '過少申告に代えて35%、無申告に代えて40%（国税通則法第68条）。' },
+    { title: '延滞税', body: '令和8年は納期限の翌日から2か月まで年2.8%、その後年9.1%（国税庁 No.9205）。' },
+    { title: '不服申立て', body: '処分を知った日の翌日から3か月以内、再調査決定後は1か月以内、処分から1年を過ぎると原則できません（国税通則法第77条）。' },
+  ],
+  howToTitle: '使い方',
+  steps: ['期限後申告か修正申告か、いつ申告したかを選びます。', '新たに納める本税と、修正申告なら当初の税額を入れます。', '法定納期限と納付日を入れると延滞税も計算します。', '処分の通知を受けた場合は、その日を入れて申立ての期限を確認します。'],
+  faqTitle: 'よくある質問',
+  faqs: [
+    { question: '少額でもかかりますか？', answer: '加算税は5,000円未満、延滞税は1,000円未満なら納めません。税額は1万円未満を切り捨てて計算します。' },
+    { question: '過去にも無申告があったら？', answer: '前年・前々年にも無申告加算税などがあると10%加重されることがあります。このツールは加重を含めていません。' },
+    { question: '入力内容は保存されますか？', answer: '入力値は表示中のページのメモリ内だけで使い、サーバーに送りません。' },
+  ],
+  disclaimer: '公表された法令にもとづく概算です。個別の税務相談・申告書や不服申立書の作成は税理士の業務です（税理士法第52条）。',
+};
+const sources: [string, string][] = [
+  ['国税庁 タックスアンサー No.2024 確定申告を忘れたとき', 'https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/2024.htm'],
+  ['国税庁 タックスアンサー No.2026 確定申告を間違えたとき', 'https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/2026.htm'],
+  ['国税庁 タックスアンサー No.9205 延滞税の計算方法', 'https://www.nta.go.jp/taxes/shiraberu/taxanswer/osirase/9205.htm'],
+  ['e-Gov 法令検索 国税通則法', 'https://laws.e-gov.go.jp/law/337AC0000000066'],
+];
+---
+<DebtReliefPage slug="kasanzei-entaizei-calculator" c={c} sources={sources} sourcesTitle="出典" checked="国税庁・e-Gov 確認日：2026-11-21">
+  <JpPenalty client:load />
+</DebtReliefPage>
