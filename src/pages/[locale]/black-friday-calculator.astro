@@ -1,0 +1,189 @@
+---
+/**
+ * Black Friday · Cyber Monday calculator (2026-11-21). en·es·fr·ja·zh only: Korea has no
+ * Black Friday checkout rules of its own (Korean shoppers use /ko/discount-calculator/).
+ * WHY: converters and puzzle games earn the family's best RPM from US traffic; Black Friday
+ * (Nov 27, 2026) and Cyber Monday (Nov 30) are the year's biggest shopping-search week.
+ */
+import Layout from '../../components/Layout.astro';
+import ToolShell from '../../components/ToolShell.astro';
+import UtilityArticle, { type UtilityContent } from '../../components/UtilityArticle.astro';
+import RelatedLinkList from '../../components/RelatedLinkList.astro';
+import BlackFridayCart from '../../components/tools/world/BlackFridayCart';
+import { utilityJsonLd } from '../../lib/utility-jsonld';
+import type { WL } from '../../lib/world-money-i18n';
+
+const LANGS = ['en', 'es', 'fr', 'ja', 'zh'] as const satisfies readonly WL[];
+export function getStaticPaths() {
+  // Inline list: Astro hoists getStaticPaths above module constants.
+  return (['en', 'es', 'fr', 'ja', 'zh'] as const).map((locale) => ({ params: { locale }, props: { locale } }));
+}
+const { locale } = Astro.props as { locale: WL };
+
+const P: Record<WL, { title: string; description: string; c: UtilityContent; related: [string, string][] }> = {
+  en: {
+    title: 'Black Friday Calculator 2026 — Stacked Discounts, Coupons, Tax & Shipping',
+    description: 'Add your Black Friday or Cyber Monday cart: sale % per item, an extra coupon (% or $ off, with minimum spend), sales tax and free-shipping threshold. See what you really pay and whether the deal beats the earlier low.',
+    c: {
+      introTitle: 'What you really pay on Black Friday',
+      intro: 'Black Friday 2026 is Friday, November 27, and Cyber Monday is November 30. Sale banners show the biggest number, but checkout works in steps: each item’s sale price, then a cart coupon, then sales tax on the discounted subtotal, then shipping. A 30% sale plus a 10% coupon is a 37% discount, not 40%. This calculator follows those steps for a whole cart and tells you if topping up to unlock a coupon or free shipping actually saves money.',
+      formulaTitle: 'How it is calculated',
+      formulas: [
+        { title: 'Stacked discounts', body: 'Price × (1 − sale %) × (1 − coupon %). 30% then 10% = 1 − 0.7 × 0.9 = 37% off.' },
+        { title: 'Sales tax', body: 'Charged on the subtotal after store coupons and before shipping in most states. Some states tax shipping or treat manufacturer coupons differently — check your state.' },
+        { title: 'Top-up rule', body: 'Adding $X to unlock $Y off only pays if Y > X and you would buy the extra item anyway.' },
+      ],
+      howToTitle: 'How to use it',
+      steps: [
+        'Easy mode: enter one regular price, the Black Friday discount and any extra coupon.',
+        'Expert mode: add up to 8 items, choose a % or $-off cart coupon with a minimum spend, and set shipping and the free-shipping threshold.',
+        'Enter your sales tax rate (state + local). Use 0 in states without sales tax.',
+        'Use “Is it really a deal?” with the lowest price you saw in the past 30–90 days.',
+      ],
+      faqTitle: 'Common questions',
+      faqs: [
+        { question: 'Is 30% off plus 20% off the same as 50% off?', answer: 'No. Discounts taken one after another multiply: 0.7 × 0.8 = 0.56, so you pay 56% and the real discount is 44%.' },
+        { question: 'When is Black Friday 2026?', answer: 'Friday, November 27, 2026, the day after Thanksgiving (Thursday, November 26). Cyber Monday is Monday, November 30, 2026.' },
+        { question: 'Is sales tax charged before or after the coupon?', answer: 'Store coupons usually lower the taxable price, so tax is charged after them. Many states tax the full price when a manufacturer reimburses the coupon. This tool applies tax after the coupon.' },
+        { question: 'How do I know a Black Friday price is real?', answer: 'Compare it with the lowest price you saw in the weeks before, using a price tracker or your order history. If the sale price is not below that, the “was” price is just a high anchor.' },
+        { question: 'Are my inputs saved?', answer: 'The numbers stay in this page only. The site uses analytics and advertising.' },
+      ],
+      disclaimer: 'Estimate for planning. The retailer’s checkout, coupon terms and your state’s tax rules decide the final price.',
+    },
+    related: [['/en/discount-calculator/', 'Discount calculator'], ['/en/percentage-calculator/', 'Percentage calculator'], ['/en/unit-price-calculator/', 'Unit price calculator'], ['/en/credit-card-minimum-payment-calculator/', 'Credit card minimum payment calculator']],
+  },
+  es: {
+    title: 'Calculadora Black Friday 2026 — descuentos acumulados, cupones y envío',
+    description: 'Mete tu carrito de Black Friday o Cyber Monday: rebaja de cada producto, cupón extra (% o €, con compra mínima) y envío gratis. Mira lo que pagas de verdad y si la rebaja mejora el precio más bajo anterior.',
+    c: {
+      introTitle: 'Lo que pagas de verdad en Black Friday',
+      intro: 'El Black Friday de 2026 es el viernes 27 de noviembre y el Cyber Monday, el 30. Los carteles enseñan el número más grande, pero el pago va por pasos: la rebaja de cada producto, el cupón del carrito y por último el envío. Un 30 % más un 10 % es un 37 %, no un 40 %. En España el IVA ya va incluido en el precio, así que no hace falta sumarlo.',
+      formulaTitle: 'Cómo se calcula',
+      formulas: [
+        { title: 'Descuentos encadenados', body: 'Precio × (1 − rebaja) × (1 − cupón). 30 % y luego 10 % = 1 − 0,7 × 0,9 = 37 %.' },
+        { title: 'Precio anterior', body: 'En la UE, el precio tachado debe ser el más bajo aplicado en al menos los 30 días previos a la rebaja.' },
+        { title: '¿Compensa llegar al mínimo?', body: 'Añadir X € para ahorrar Y € solo compensa si Y > X y el producto extra lo ibas a comprar igual.' },
+      ],
+      howToTitle: 'Cómo usarla',
+      steps: [
+        'Modo fácil: pon un precio habitual, la rebaja de Black Friday y el cupón extra.',
+        'Modo experto: añade hasta 8 productos, elige un cupón en % o en € con compra mínima y pon el envío.',
+        'Deja el impuesto en 0 si compras en España (IVA incluido).',
+        'Usa «¿Es una rebaja de verdad?» con el precio más bajo de los 30 días anteriores.',
+      ],
+      faqTitle: 'Preguntas frecuentes',
+      faqs: [
+        { question: '¿Un 30 % más un 20 % es un 50 %?', answer: 'No. Los descuentos seguidos se multiplican: 0,7 × 0,8 = 0,56; pagas el 56 % y el descuento real es del 44 %.' },
+        { question: '¿Cuándo es el Black Friday 2026?', answer: 'El viernes 27 de noviembre de 2026. El Cyber Monday es el lunes 30 de noviembre de 2026.' },
+        { question: '¿Qué precio anterior puede mostrar la tienda?', answer: 'En la UE, el anuncio de una rebaja debe indicar como precio anterior el más bajo aplicado durante al menos los 30 días anteriores (Directiva 98/6/CE, art. 6 bis).' },
+        { question: '¿Se guardan mis datos?', answer: 'Los números se quedan en esta página. El sitio usa estadísticas de visitas y publicidad.' },
+      ],
+      disclaimer: 'Estimación orientativa. El precio final lo deciden la tienda y las condiciones del cupón.',
+    },
+    related: [['/es/discount-calculator/', 'Calculadora de descuento'], ['/es/percentage-calculator/', 'Calculadora de porcentajes'], ['/es/unit-price-calculator/', 'Calculadora de precio unitario']],
+  },
+  fr: {
+    title: 'Calculateur Black Friday 2026 — remises cumulées, codes promo et livraison',
+    description: 'Saisissez votre panier Black Friday ou Cyber Monday : remise par article, code promo en plus (% ou €, avec minimum d’achat) et livraison offerte. Voyez le prix réellement payé et si la promo bat le prix le plus bas précédent.',
+    c: {
+      introTitle: 'Ce que vous payez vraiment au Black Friday',
+      intro: 'Le Black Friday 2026 tombe le vendredi 27 novembre et le Cyber Monday le 30. Les bannières affichent le plus gros chiffre, mais le paiement se fait par étapes : remise de chaque article, code promo du panier, puis livraison. 30 % puis 10 % font 37 %, pas 40 %. En France la TVA est déjà comprise dans le prix affiché.',
+      formulaTitle: 'Le calcul',
+      formulas: [
+        { title: 'Remises successives', body: 'Prix × (1 − remise) × (1 − code). 30 % puis 10 % = 1 − 0,7 × 0,9 = 37 %.' },
+        { title: 'Prix de référence', body: 'Dans l’UE, le prix barré d’une réduction doit être le plus bas pratiqué pendant au moins les 30 jours précédents.' },
+        { title: 'Faut-il compléter le panier ?', body: 'Ajouter X € pour gagner Y € n’est rentable que si Y > X et si vous auriez acheté l’article de toute façon.' },
+      ],
+      howToTitle: 'Mode d’emploi',
+      steps: [
+        'Mode simple : un prix habituel, la remise Black Friday et le code promo.',
+        'Mode expert : jusqu’à 8 articles, code en % ou en € avec minimum d’achat, frais et seuil de livraison offerte.',
+        'Laissez la taxe à 0 pour un achat en France (TVA incluse).',
+        'Vérifiez « Vraie promo ou pas ? » avec le prix le plus bas des 30 jours précédents.',
+      ],
+      faqTitle: 'Questions fréquentes',
+      faqs: [
+        { question: '30 % puis 20 %, est-ce 50 % ?', answer: 'Non. Les remises successives se multiplient : 0,7 × 0,8 = 0,56 ; vous payez 56 %, soit 44 % de remise réelle.' },
+        { question: 'Quelle est la date du Black Friday 2026 ?', answer: 'Le vendredi 27 novembre 2026. Le Cyber Monday a lieu le lundi 30 novembre 2026.' },
+        { question: 'Quel prix barré le vendeur peut-il afficher ?', answer: 'Dans l’UE, le prix antérieur d’une annonce de réduction doit être le plus bas pratiqué pendant au moins 30 jours avant la baisse (directive 98/6/CE, art. 6 bis, transposée en droit français).' },
+        { question: 'Mes données sont-elles enregistrées ?', answer: 'Les chiffres restent dans cette page. Le site utilise des statistiques de visite et de la publicité.' },
+      ],
+      disclaimer: 'Estimation indicative. Le prix final dépend du vendeur et des conditions du code promo.',
+    },
+    related: [['/fr/discount-calculator/', 'Calculateur de remise'], ['/fr/percentage-calculator/', 'Calculateur de pourcentage'], ['/fr/unit-price-calculator/', 'Calculateur de prix unitaire']],
+  },
+  ja: {
+    title: 'ブラックフライデー計算機 2026 — 割引の重ね掛け・クーポン・送料',
+    description: 'ブラックフライデー・サイバーマンデーのカートを入力：商品ごとの割引率、追加クーポン（％または円引き・最低購入金額つき）、送料無料ライン。実際の支払額と、これまでの最安値より本当に安いかを確かめます。',
+    c: {
+      introTitle: 'ブラックフライデーで実際に払う金額',
+      intro: '2026年のブラックフライデーは11月27日（金）、サイバーマンデーは11月30日（月）です。セール表示は一番大きな数字を見せますが、支払いは段階的に決まります。商品ごとのセール価格、カートのクーポン、最後に送料。30％オフに10％クーポンを重ねると37％引きで、40％ではありません。日本の表示価格は税込みが原則なので、税を足す必要はありません。',
+      formulaTitle: '計算のしかた',
+      formulas: [
+        { title: '割引の重ね掛け', body: '価格 ×（1 − 割引率）×（1 − クーポン）。30％のあと10％ = 1 − 0.7 × 0.9 = 37％引き。' },
+        { title: '送料無料ライン', body: 'クーポンを引いたあとの金額で判定するショップが多いです。各ショップの条件を確認しましょう。' },
+        { title: '買い足しの判断', body: 'X円足してY円得するのは、Y > X で、足す商品をもともと買うつもりのときだけです。' },
+      ],
+      howToTitle: '使い方',
+      steps: [
+        'かんたんモード：通常価格、ブラックフライデー割引、追加クーポンを入れます。',
+        '詳しいモード：最大8商品、％か円引きのクーポンと最低購入金額、送料と送料無料ラインを入れます。',
+        '日本で買うときは税率を0のままにします（税込み表示）。',
+        '「本当に安い？」に過去30〜90日の最安値を入れて比べます。',
+      ],
+      faqTitle: 'よくある質問',
+      faqs: [
+        { question: '30％オフ＋20％オフは50％オフですか？', answer: 'いいえ。順番に掛け算するので 0.7 × 0.8 = 0.56、支払いは56％で実際の割引は44％です。' },
+        { question: '2026年のブラックフライデーはいつ？', answer: '2026年11月27日（金）です。サイバーマンデーは11月30日（月）です。' },
+        { question: '本当に安いかどうかの見分け方は？', answer: '価格比較サイトや購入履歴で、セール前の数週間の最安値と比べます。それより安くなければ、大きな「通常価格」は見せ方にすぎません。' },
+        { question: '入力した数字は保存されますか？', answer: 'このページの中だけで計算します。サイトではアクセス解析と広告を使っています。' },
+      ],
+      disclaimer: '計画用の目安です。最終価格はショップの会計とクーポン条件で決まります。',
+    },
+    related: [['/ja/discount-calculator/', '割引計算機'], ['/ja/percentage-calculator/', 'パーセント計算'], ['/ja/unit-price-calculator/', '単価計算']],
+  },
+  zh: {
+    title: '黑色星期五计算器 2026 — 折扣叠加、优惠券与运费',
+    description: '输入你的黑五或网络星期一购物车：每件商品的折扣、额外优惠券（打折或立减，含最低消费）、满额包邮。算出实际要付多少，以及是否比之前的最低价更便宜。',
+    c: {
+      introTitle: '黑五实际要付多少钱',
+      intro: '2026 年黑色星期五是 11 月 27 日（周五），网络星期一是 11 月 30 日。促销广告展示最大的数字，但结账是一步步算的：先按单品折扣，再扣购物车优惠券，最后加运费。七折再九折是 6.3 折（省 37%），不是省 40%。在美国网站下单时，结账还会按所在州另加销售税。',
+      formulaTitle: '计算方法',
+      formulas: [
+        { title: '折扣叠加', body: '价格 ×（1 − 折扣）×（1 − 优惠券）。先 30% 再 10% = 1 − 0.7 × 0.9 = 省 37%。' },
+        { title: '销售税', body: '美国大多数州在扣除商家优惠券之后、加运费之前计算销售税。中国大陆标价通常已含税。' },
+        { title: '要不要凑单', body: '多买 X 元换来减 Y 元，只有 Y > X 且凑单的东西本来就要买时才划算。' },
+      ],
+      howToTitle: '使用方法',
+      steps: [
+        '简单模式：输入平时价格、黑五折扣和额外优惠券。',
+        '专家模式：最多 8 件商品，选择打折或立减的优惠券和最低消费，填写运费和包邮门槛。',
+        '在美国网站下单时填写所在州的销售税率，其他情况填 0。',
+        '在“真的便宜吗？”中输入过去 30–90 天见过的最低价进行比较。',
+      ],
+      faqTitle: '常见问题',
+      faqs: [
+        { question: '七折再八折等于五折吗？', answer: '不等于。连续折扣要相乘：0.7 × 0.8 = 0.56，相当于 5.6 折，实际省 44%。' },
+        { question: '2026 年黑色星期五是哪天？', answer: '2026 年 11 月 27 日（周五），感恩节的第二天。网络星期一是 11 月 30 日（周一）。' },
+        { question: '怎么判断黑五价格是不是真便宜？', answer: '用比价工具或订单记录，和促销前几周的最低价比较。如果没有更低，标出的高“原价”只是锚定价格。' },
+        { question: '输入的数据会被保存吗？', answer: '数字只在本页面内计算。本站使用访问统计和广告。' },
+      ],
+      disclaimer: '仅供参考。最终价格以商家结账页面和优惠券规则为准。',
+    },
+    related: [['/zh/discount-calculator/', '折扣计算器'], ['/zh/percentage-calculator/', '百分比计算器'], ['/zh/unit-price-calculator/', '单价计算器']],
+  },
+};
+
+const p = P[locale];
+const url = `https://tools.oiyo.net/${locale}/black-friday-calculator/`;
+const schema = utilityJsonLd({ name: p.title, description: p.description, url, locale, steps: p.c.steps, faqs: p.c.faqs });
+const relatedTitle = { en: 'More shopping math', es: 'Más cálculos de compras', fr: 'Autres calculs d’achat', ja: '買い物の計算', zh: '更多购物计算' }[locale];
+---
+<Layout title={p.title} description={p.description} locale={locale} availableLocales={[...LANGS]} canonicalURL={url}>
+  <ToolShell title={p.title} description={p.description}>
+    <BlackFridayCart client:load lang={locale} />
+    <UtilityArticle c={p.c} />
+    <RelatedLinkList title={relatedTitle} links={p.related.map(([href, label]) => ({ href, label }))} locale={locale} />
+  </ToolShell>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+</Layout>
