@@ -4,6 +4,7 @@ import { DEEMED_LABEL, VAT_CREDIT_AS_OF, VAT_CREDIT_NOTE, badDebtCredit, cardSal
 import ChoiceChips from "../payroll/ChoiceChips";
 import DateField from "../payroll/DateField";
 import NumberField from "../payroll/NumberField";
+import CurveShell, { krwShort } from "../viz/CurveShell";
 import { track } from "../viz/track";
 
 const TOOL_ID = "vat-credit-calculator";
@@ -17,12 +18,27 @@ export default function VatCredits() {
   const [c, setC] = useState({ cardSales: 30000, prior: 50000, used: 0, payable: 0 });
   const [b, setB] = useState({ amount: 1100, supplied: "2025-03-10", confirmed: "2026-11-20" });
   const tick = () => track("tool_calculate", { tool_id: TOOL_ID }, true);
-  const dr = deemedInputCredit({ type: d.type, purchases: d.purchases * MAN, taxBase: d.taxBase * MAN, corp: d.type === "restaurant-corp" });
-  const cr = cardSalesCredit({ cardSales: c.cardSales * MAN, priorYearSupply: c.prior * MAN, usedThisYear: c.used * MAN, payable: c.payable ? c.payable * MAN : undefined });
-  const br = badDebtCredit({ amount: b.amount * MAN, supplied: b.supplied, confirmed: b.confirmed });
+  const dc = (purchases: number) => deemedInputCredit({ type: d.type, purchases: purchases * MAN, taxBase: d.taxBase * MAN, corp: d.type === "restaurant-corp" });
+  const cc = (cardSales: number) => cardSalesCredit({ cardSales: cardSales * MAN, priorYearSupply: c.prior * MAN, usedThisYear: c.used * MAN, payable: c.payable ? c.payable * MAN : undefined });
+  const bc = (amount: number) => badDebtCredit({ amount: amount * MAN, supplied: b.supplied, confirmed: b.confirmed });
+  const dr = dc(d.purchases);
+  const cr = cc(c.cardSales);
+  const br = bc(b.amount);
+  const curve = mode === "deemed"
+    ? { title: "면세 농산물 매입액에 따라 의제매입세액이 이렇게 바뀌어요", caption: "한도(과세표준 × 한도율)를 넘으면 더 늘지 않아요.", xLabel: "매입가액", min: 0, max: Math.max(1000, d.taxBase, Math.ceil(d.purchases * 1.5)), current: d.purchases, f: (v: number) => dc(v).credit, onPick: (v: number) => setD({ ...d, purchases: v }) }
+    : mode === "card"
+      ? { title: "카드·현금영수증 매출에 따라 발행세액공제가 이렇게 바뀌어요", caption: "연간 한도와 낼 세액을 넘지 않아요.", xLabel: "카드 매출", min: 0, max: Math.max(10000, c.cardSales * 2), current: c.cardSales, f: (v: number) => cc(v).credit, onPick: (v: number) => setC({ ...c, cardSales: v }) }
+      : { title: "못 받은 금액에 따라 대손세액이 이렇게 바뀌어요", caption: "부가세 포함 금액의 10/110이에요.", xLabel: "못 받은 금액", min: 0, max: Math.max(1000, b.amount * 2), current: b.amount, f: (v: number) => bc(v).credit, onPick: (v: number) => setB({ ...b, amount: v }) };
   const box = "rounded-md border border-border bg-card px-4 py-4 text-sm";
   return (
-    <div className="space-y-5">
+    <CurveShell
+      toolId={TOOL_ID}
+      lang="ko"
+      currency="KRW"
+      curve={{ ...curve, yLabel: "공제세액", step: Math.max(10, Math.round(curve.max / 100 / 10) * 10), formatX: (n: number) => `${Math.round(n).toLocaleString("ko-KR")}만`, formatY: krwShort }}
+    >
+      {() => (
+    <>
       <ChoiceChips<Mode> legend="어떤 공제인가요?" value={mode} options={[{ value: "deemed", label: "의제매입세액" }, { value: "card", label: "카드매출 세액공제" }, { value: "bad", label: "대손세액" }]} onChange={(v) => { setMode(v); tick(); }} />
       {mode === "deemed" && (
         <>
@@ -67,6 +83,8 @@ export default function VatCredits() {
         </>
       )}
       <p className="text-xs leading-5 text-muted-foreground">{VAT_CREDIT_NOTE} 기준일 {VAT_CREDIT_AS_OF}. 입력값은 서버로 보내지 않아요. <a className="underline" href="/ko/vat-calculator/">부가세 계산기</a> · <a className="underline" href="/ko/general-vs-simplified-vat-calculator/">일반·간이 비교</a></p>
-    </div>
+    </>
+      )}
+    </CurveShell>
   );
 }

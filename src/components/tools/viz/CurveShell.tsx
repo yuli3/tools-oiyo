@@ -85,3 +85,11 @@ export default function CurveShell({ toolId, lang, currency, text, curve, childr
     </VizLangProvider>
   );
 }
+
+/** Short KRW label for Korean chart axes: 1.2억, 3,400만, 9,000원. */
+export function krwShort(n: number): string {
+  const a = Math.abs(n), s = n < 0 ? "−" : "";
+  if (a >= 1e8) return `${s}${(Math.round(a / 1e7) / 10).toLocaleString("ko-KR")}억`;
+  if (a >= 1e4) return `${s}${Math.round(a / 1e4).toLocaleString("ko-KR")}만`;
+  return `${s}${Math.round(a).toLocaleString("ko-KR")}원`;
+}

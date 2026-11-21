@@ -4,6 +4,7 @@ import { ACCT_AS_OF, ACCT_NOTE, bondSchedule, depreciation, externalAuditCheck, 
 import { AUDIT_DEFERRED_NOTE, BENCHMARKS, attributeSample, averageCorpRate, deferredTax, materiality, musSample, type Benchmark, type Confidence, type Risk } from "../../../lib/kr-audit-deferred-2026";
 import ChoiceChips from "../payroll/ChoiceChips";
 import NumberField from "../payroll/NumberField";
+import CurveShell, { krwShort } from "../viz/CurveShell";
 import { track } from "../viz/track";
 
 const TOOL_ID = "accounting-schedule-calculator";
@@ -26,7 +27,7 @@ function Table({ head, rows }: { head: string[]; rows: (string | number)[][] }) 
 }
 
 export default function AccountingSchedules() {
-  const [mode, setMode] = useState<Mode>("dep");
+  const [kind, setKind] = useState<Mode>("dep");
   const [dep, setDep] = useState({ cost: 1000, residual: 0, years: 5, method: "straight" as DepMethod, firstMonths: 12 });
   const [ls, setLs] = useState({ payment: 1200, periods: 5, rate: 5, advance: false, directCost: 0 });
   const [bd, setBd] = useState({ face: 10000, coupon: 5, market: 6, periods: 3 });
@@ -42,11 +43,31 @@ export default function AccountingSchedules() {
   const m = materiality({ benchmark: mt.benchmark, base: mt.base * 100_000_000, pct: mt.pct / 100, risk: mt.risk });
   const mus = musSample({ population: mt.population * 100_000_000, tolerable: m.performance, expected: mt.expected * MAN, confidence: mt.confidence });
   const att = attributeSample({ tolerableRate: mt.deviation / 100, confidence: mt.confidence });
+  const pctX = (n: number) => `${Math.round(n * 10) / 10}%`;
+  const auditAt = (assets: number) => externalAuditCheck({ ...au, assets: assets * 100_000_000, liabilities: au.liabilities * 100_000_000, revenue: au.revenue * 100_000_000 }).met.length;
+  const curve = kind === "dep"
+    ? { title: "내용연수에 따라 첫해 감가상각비가 이렇게 바뀌어요", caption: "같은 취득원가·방법으로 내용연수만 바꿔요.", xLabel: "내용연수", yLabel: "첫해 상각비", min: 1, max: 40, step: 1, current: dep.years, f: (v: number) => depreciation(dep.cost * MAN, dep.residual * MAN, v, dep.method, dep.firstMonths).rows[0]?.expense ?? 0, formatX: (n: number) => `${Math.round(n)}년`, formatY: krwShort, onPick: (v: number) => setDep({ ...dep, years: Math.max(1, Math.round(v)) }) }
+    : kind === "lease"
+      ? { title: "할인율에 따라 처음 잡는 리스부채가 이렇게 바뀌어요", caption: "할인율이 높을수록 현재가치가 작아져요.", xLabel: "할인율", yLabel: "리스부채", min: 0, max: 15, step: 0.1, current: ls.rate, f: (v: number) => leaseSchedule(ls.payment * MAN, ls.periods, v / 100, ls.advance, ls.directCost * MAN).liability, formatX: pctX, formatY: krwShort, onPick: (v: number) => setLs({ ...ls, rate: Math.round(v * 10) / 10 }) }
+      : kind === "bond"
+        ? { title: "시장이자율에 따라 사채 발행가액이 이렇게 바뀌어요", caption: "표시이자율보다 높으면 할인발행, 낮으면 할증발행이에요.", xLabel: "시장이자율", yLabel: "발행가액", min: 0, max: 15, step: 0.1, current: bd.market, f: (v: number) => bondSchedule(bd.face * MAN, bd.coupon / 100, v / 100, bd.periods).price, formatX: pctX, formatY: krwShort, onPick: (v: number) => setBd({ ...bd, market: Math.round(v * 10) / 10 }), marks: [{ at: bd.coupon, label: "표시이자율" }] }
+        : kind === "audit"
+          ? { title: "자산총액에 따라 해당하는 기준 수가 이렇게 바뀌어요", caption: "다른 기준은 그대로 두고 자산총액만 바꿔요. 기준 수가 정해진 개수 이상이면 외부감사 대상이에요.", xLabel: "자산총액", yLabel: "해당 기준 수", min: 0, max: Math.max(1000, au.assets * 2), step: 5, current: au.assets, f: auditAt, formatX: (n: number) => `${Math.round(n).toLocaleString("ko-KR")}억`, formatY: (n: number) => `${Math.round(n)}개`, onPick: (v: number) => setAu({ ...au, assets: v }) }
+          : kind === "deferred"
+            ? { title: "적용 세율에 따라 이연법인세자산(순액)이 이렇게 바뀌어요", caption: "일시적차이는 그대로 두고 세율만 바꿔요.", xLabel: "적용 세율", yLabel: "순 이연법인세", min: 9, max: 27, step: 0.1, current: df.rate, f: (v: number) => deferredTax({ items: [{ label: "차감할 일시적차이", amount: df.deductible * MAN }, { label: "이월결손금", amount: df.losses * MAN }, { label: "가산할 일시적차이", amount: -df.taxable * MAN }], rate: v / 100, futureIncome: df.future > 0 ? df.future * MAN : undefined, openingNet: df.opening * MAN, currentTax: df.current * MAN, pretaxIncome: df.pretax * MAN }).closingNet, formatX: pctX, formatY: krwShort, onPick: (v: number) => setDf({ ...df, rate: Math.round(v * 10) / 10 }) }
+            : { title: "적용 비율에 따라 수행중요성이 이렇게 바뀌어요", caption: "기준치 금액과 위험 수준은 그대로예요.", xLabel: "적용 비율", yLabel: "수행중요성", min: 0.5, max: 10, step: 0.1, current: mt.pct, f: (v: number) => materiality({ benchmark: mt.benchmark, base: mt.base * 100_000_000, pct: v / 100, risk: mt.risk }).performance, formatX: pctX, formatY: krwShort, onPick: (v: number) => setMt({ ...mt, pct: Math.round(v * 10) / 10 }) };
   const box = "rounded-md border border-border bg-card px-4 py-4 text-sm";
   return (
-    <div className="space-y-5">
-      <ChoiceChips<Mode> legend="무엇을 만들까요?" value={mode} options={[{ value: "dep", label: "감가상각표" }, { value: "lease", label: "리스(IFRS 16)" }, { value: "bond", label: "사채 상각표" }, { value: "audit", label: "외감 대상 판정" }, { value: "deferred", label: "이연법인세" }, { value: "mat", label: "감사 중요성·표본" }]} onChange={(v) => { setMode(v); tick(); }} />
-      {mode === "dep" && (
+    <CurveShell
+      toolId={TOOL_ID}
+      lang="ko"
+      currency="KRW"
+      curve={{ ...curve, onPick: (v: number) => { curve.onPick(v); tick(); } }}
+    >
+      {() => (
+    <>
+      <ChoiceChips<Mode> legend="무엇을 만들까요?" value={kind} options={[{ value: "dep", label: "감가상각표" }, { value: "lease", label: "리스(IFRS 16)" }, { value: "bond", label: "사채 상각표" }, { value: "audit", label: "외감 대상 판정" }, { value: "deferred", label: "이연법인세" }, { value: "mat", label: "감사 중요성·표본" }]} onChange={(v) => { setKind(v); tick(); }} />
+      {kind === "dep" && (
         <>
           <ChoiceChips<DepMethod> legend="상각 방법" value={dep.method} options={[{ value: "straight", label: "정액법" }, { value: "declining", label: "정률법" }, { value: "syd", label: "연수합계법" }]} onChange={(v) => { setDep({ ...dep, method: v }); tick(); }} />
           <div className="grid gap-3 sm:grid-cols-2">
@@ -61,7 +82,7 @@ export default function AccountingSchedules() {
           </div>
         </>
       )}
-      {mode === "lease" && (
+      {kind === "lease" && (
         <>
           <div className="grid gap-3 sm:grid-cols-2">
             <NumberField label="연 리스료" suffix="만 원" value={ls.payment} onChange={(v) => { setLs({ ...ls, payment: Math.max(0, v) }); tick(); }} />
@@ -77,7 +98,7 @@ export default function AccountingSchedules() {
           </div>
         </>
       )}
-      {mode === "bond" && (
+      {kind === "bond" && (
         <>
           <div className="grid gap-3 sm:grid-cols-2">
             <NumberField label="액면금액" suffix="만 원" value={bd.face} onChange={(v) => { setBd({ ...bd, face: Math.max(0, v) }); tick(); }} />
@@ -91,7 +112,7 @@ export default function AccountingSchedules() {
           </div>
         </>
       )}
-      {mode === "audit" && (
+      {kind === "audit" && (
         <>
           <div className="flex flex-wrap gap-3">
             <ChoiceChips<"no" | "yes"> legend="상장(예정) 법인인가요?" value={au.listed ? "yes" : "no"} options={[{ value: "no", label: "아니요" }, { value: "yes", label: "예" }]} onChange={(v) => { setAu({ ...au, listed: v === "yes" }); tick(); }} />
@@ -111,7 +132,7 @@ export default function AccountingSchedules() {
           </div>
         </>
       )}
-      {mode === "deferred" && (
+      {kind === "deferred" && (
         <>
           <div className="grid gap-3 sm:grid-cols-2">
             <NumberField label="차감할 일시적차이 합계(충당부채·손상 등)" suffix="만 원" value={df.deductible} onChange={(v) => { setDf({ ...df, deductible: Math.max(0, v) }); tick(); }} />
@@ -131,7 +152,7 @@ export default function AccountingSchedules() {
           </div>
         </>
       )}
-      {mode === "mat" && (
+      {kind === "mat" && (
         <>
           <ChoiceChips<Benchmark> legend="중요성 기준치" value={mt.benchmark} options={(Object.keys(BENCHMARKS) as Benchmark[]).map((k) => ({ value: k, label: BENCHMARKS[k].label }))} onChange={(v) => { setMt({ ...mt, benchmark: v, pct: BENCHMARKS[v].typical * 100 }); tick(); }} />
           <div className="grid gap-3 sm:grid-cols-2">
@@ -158,7 +179,9 @@ export default function AccountingSchedules() {
           </div>
         </>
       )}
-      <p className="text-xs leading-5 text-muted-foreground">{ACCT_NOTE} {(mode === "deferred" || mode === "mat") && AUDIT_DEFERRED_NOTE} 기준일 {ACCT_AS_OF}. 입력값은 서버로 보내지 않아요.</p>
-    </div>
+      <p className="text-xs leading-5 text-muted-foreground">{ACCT_NOTE} {(kind === "deferred" || kind === "mat") && AUDIT_DEFERRED_NOTE} 기준일 {ACCT_AS_OF}. 입력값은 서버로 보내지 않아요.</p>
+    </>
+      )}
+    </CurveShell>
   );
 }

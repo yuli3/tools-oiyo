@@ -5,6 +5,7 @@ import { useToday } from "../nts/Items";
 import DateField from "../payroll/DateField";
 import NumberField from "../payroll/NumberField";
 import DeadlineChart from "../viz/DeadlineChart";
+import CurveShell from "../viz/CurveShell";
 import { VizLangProvider } from "../viz/i18n";
 import { track } from "../viz/track";
 
@@ -20,7 +21,16 @@ export default function DisabilityBenefitEn() {
   const box = "rounded-md border border-border bg-card px-4 py-4 text-sm";
   const rows = r.claimBy && today ? [{ id: "claim", label: "Claim disability benefit (5-year limit)", due: r.claimBy, daysLeft: days(today, r.claimBy), cite: "IACI Act Art. 112" }] : [];
   return (
-    <div className="space-y-5">
+    <CurveShell toolId={TOOL_ID} lang="en" currency="KRW" curve={{
+        title: "How the benefit changes with your average daily wage", caption: "Pension grades show the yearly pension; grades 8–14 show the lump sum. The line is flat outside the 2026 minimum and maximum.",
+        xLabel: "Average daily wage", yLabel: "Benefit", min: 50_000, max: 320_000, step: 1_000, current: x.avgWage,
+        f: (v) => { const b = disabilityBenefit({ grade: x.grade, avgWage: v }); return b.pensionAnnual ?? b.lumpSum ?? 0; },
+        formatX: (n: number) => `KRW ${Math.round(n / 1000)}k`, formatY: (n: number) => `KRW ${(Math.round(n / 1e5) / 10).toLocaleString("en-US")}M`,
+        onPick: (v) => upd({ avgWage: v }),
+        marks: [{ at: WAGE_CAP_2026.min, label: "minimum" }, { at: WAGE_CAP_2026.max, label: "maximum" }],
+      }}>
+      {() => (
+    <>
       <div className="grid gap-3 sm:grid-cols-2">
         <NumberField label="Disability grade (1–14)" value={x.grade} onChange={(v) => upd({ grade: Math.min(14, Math.max(1, Math.round(v))) })} />
         <NumberField label="Average daily wage (3 months' pay before the accident ÷ days)" suffix="KRW" value={x.avgWage} onChange={(v) => upd({ avgWage: Math.max(0, v) })} />
@@ -48,6 +58,8 @@ export default function DisabilityBenefitEn() {
         </VizLangProvider>
       )}
       <p className="text-xs leading-5 text-muted-foreground">An estimate only. The Korea Workers' Compensation and Welfare Service (KCOMWEL, 1588-0075) sets your grade after treatment ends and works out your average wage from the 3 months before the accident. If you disagree with a decision, request a review within 90 days of learning of it. Sources: Industrial Accident Compensation Insurance Act Art. 36(7), 57 and Annex 2, 112; Ministry of Employment and Labor Notice 2025-84. Checked {DISABILITY_AS_OF}. Nothing you enter leaves your browser.</p>
-    </div>
+    </>
+      )}
+    </CurveShell>
   );
 }

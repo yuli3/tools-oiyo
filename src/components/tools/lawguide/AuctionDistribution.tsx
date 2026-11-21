@@ -4,6 +4,7 @@ import { AUCTION_AS_OF, AUCTION_NOTE, REGION_LABEL, auctionDistribution, type Re
 import ChoiceChips from "../payroll/ChoiceChips";
 import DateField from "../payroll/DateField";
 import NumberField from "../payroll/NumberField";
+import CurveShell, { krwShort } from "../viz/CurveShell";
 import { track } from "../viz/track";
 
 const TOOL_ID = "auction-distribution-calculator";
@@ -16,10 +17,9 @@ const man = (n: number) => {
 
 export default function AuctionDistribution() {
   const [s, setS] = useState({ sale: 20000, cost: 300, region: "seoul" as Region, mortgage: 12000, mortgageDate: "2023-05-01", deposit: 15000, tenantDate: "2024-03-02", hasDate: true, wage: 0, currentTax: 0, tax: 0, taxDate: "2025-03-31", general: 0 });
-  const [expert, setExpert] = useState(false);
   const upd = (p: Partial<typeof s>) => { setS({ ...s, ...p }); track("tool_calculate", { tool_id: TOOL_ID }, true); };
-  const r = auctionDistribution({
-    sale: s.sale * MAN, cost: s.cost * MAN, region: s.region, baseDate: s.mortgage > 0 ? s.mortgageDate : undefined,
+  const calc = (sale: number) => auctionDistribution({
+    sale: sale * MAN, cost: s.cost * MAN, region: s.region, baseDate: s.mortgage > 0 ? s.mortgageDate : undefined,
     tenants: [{ label: "내 보증금", deposit: s.deposit * MAN, date: s.hasDate ? s.tenantDate : undefined }],
     claims: [
       ...(s.mortgage > 0 ? [{ label: "근저당", amount: s.mortgage * MAN, date: s.mortgageDate, kind: "mortgage" as const }] : []),
@@ -27,9 +27,23 @@ export default function AuctionDistribution() {
     ],
     wagePriority: s.wage * MAN, currentTax: s.currentTax * MAN, general: s.general * MAN,
   });
+  const r = calc(s.sale);
   const me = r.tenants[0];
   return (
-    <div className="space-y-5">
+    <CurveShell
+      toolId={TOOL_ID}
+      lang="ko"
+      currency="KRW"
+      curve={{
+        title: "낙찰가에 따라 내 보증금 배당이 이렇게 바뀌어요", caption: "앞선 권리와 비용을 먼저 빼고 남는 돈으로 받아요. 다른 입력은 그대로예요.",
+        xLabel: "낙찰가", yLabel: "내 배당", min: 0, max: Math.max(s.sale * 1.5, s.deposit + s.mortgage + 5000), step: 500, current: s.sale,
+        f: (v) => calc(v).tenants[0].paid,
+        formatX: (n: number) => krwShort(n * MAN), formatY: krwShort,
+        onPick: (v) => upd({ sale: v }),
+      }}
+    >
+      {(mode) => (
+    <>
       <ChoiceChips<Region> legend="집이 있는 곳" value={s.region} options={(Object.keys(REGION_LABEL) as Region[]).map((k) => ({ value: k, label: REGION_LABEL[k] }))} onChange={(v) => upd({ region: v })} />
       <div className="grid gap-3 sm:grid-cols-2">
         <NumberField label="예상 매각가(낙찰가)" suffix="만 원" value={s.sale} onChange={(v) => upd({ sale: Math.max(0, v) })} />
@@ -39,8 +53,8 @@ export default function AuctionDistribution() {
         <ChoiceChips<"yes" | "no"> legend="확정일자와 전입신고를 했나요?" value={s.hasDate ? "yes" : "no"} options={[{ value: "yes", label: "했어요" }, { value: "no", label: "안 했어요" }]} onChange={(v) => upd({ hasDate: v === "yes" })} />
         {s.hasDate && <DateField label="확정일자·전입 다음 날 중 늦은 날" value={s.tenantDate} onChange={(v) => upd({ tenantDate: v })} />}
       </div>
-      <button type="button" className="min-h-11 text-sm underline" onClick={() => setExpert(!expert)}>{expert ? "간단히 보기" : "집행비용·임금·세금·일반 채권까지 넣기"}</button>
-      {expert && (
+      {mode === "easy" && <p className="text-xs text-muted-foreground">집행비용·임금·세금·일반 채권은 전문가 모드에서 넣어요.</p>}
+      {mode === "expert" && (
         <div className="grid gap-3 sm:grid-cols-2">
           <NumberField label="집행비용" suffix="만 원" value={s.cost} onChange={(v) => upd({ cost: Math.max(0, v) })} />
           <NumberField label="최종 3개월 임금·3년 퇴직금" suffix="만 원" value={s.wage} onChange={(v) => upd({ wage: Math.max(0, v) })} />
@@ -62,6 +76,8 @@ export default function AuctionDistribution() {
         </ol>
       </div>
       <p className="text-xs leading-5 text-muted-foreground">{AUCTION_NOTE} 기준일 {AUCTION_AS_OF}. 입력값은 서버로 보내지 않아요.</p>
-    </div>
+    </>
+      )}
+    </CurveShell>
   );
 }
