@@ -1,0 +1,59 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import UkCapitalAllowances from '../../components/tools/uk/UkCapitalAllowances';
+const c = {
+  "introTitle": "How much of an equipment purchase you can deduct",
+  "intro": "Businesses can claim the Annual Investment Allowance on up to £1 million of plant and machinery a year. Companies can also claim full expensing (100%) on main-rate assets and a 50% first year allowance on special-rate assets. A new 40% first year allowance applies to main-rate assets bought from 1 January 2026, including assets for leasing. Otherwise you claim writing down allowances: 14% a year in the main pool for periods from April 2026 (18% before) and 6% in the special rate pool. Cars do not get the AIA or full expensing. Sole traders on the cash basis usually deduct equipment as an expense instead.",
+  "formulaTitle": "Rules used",
+  "formulas": [
+    {
+      "title": "AIA and first year allowances",
+      "body": "AIA £1m a year; full expensing 100% and 50% FYA for companies from 1 April 2023; 40% FYA for main-rate assets from 1 January 2026 (gov.uk Capital allowances)."
+    },
+    {
+      "title": "Writing down allowances",
+      "body": "Main pool 14% from April 2026 (18% before); special rate pool 6%. The schedule here is on a reducing balance with no other additions or disposals."
+    },
+    {
+      "title": "Not calculated",
+      "body": "Periods that span the April 2026 rate change, small pool write-off, balancing charges and disposals."
+    }
+  ],
+  "howToTitle": "How to use",
+  "steps": [
+    "Say whether you are a company and which pool the asset goes in.",
+    "Enter the cost, date and AIA already used.",
+    "Compare the options.",
+    "Claim on your tax return; you choose which allowance to use."
+  ],
+  "faqTitle": "FAQ",
+  "faqs": [
+    {
+      "question": "Which option is best?",
+      "answer": "Usually the one that gives the biggest deduction when your profits are taxed at the highest rate. This tool shows the amounts; it does not choose for you."
+    },
+    {
+      "question": "Is what I enter saved?",
+      "answer": "It stays in your browser and is not sent to a server."
+    }
+  ],
+  "disclaimer": "Calculations from gov.uk guidance. Not personal tax or accounting advice."
+};
+const sources: [string, string][] = [
+  [
+    "Capital allowances",
+    "https://www.gov.uk/capital-allowances"
+  ],
+  [
+    "Work out capital allowances: rates and pools",
+    "https://www.gov.uk/work-out-capital-allowances/rates-and-pools"
+  ],
+  [
+    "Simpler income tax: cash basis",
+    "https://www.gov.uk/simpler-income-tax-cash-basis"
+  ]
+];
+---
+<DebtReliefPage slug="uk-capital-allowances-aia-calculator" c={c} sources={sources} sourcesTitle="Sources" checked="gov.uk and legislation.gov.uk checked: 2026-11-21">
+  <UkCapitalAllowances client:load />
+</DebtReliefPage>

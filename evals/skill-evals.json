@@ -2016,6 +2016,83 @@
           }
         }
       ]
+    },
+    {
+      "skill": "oiyo-uk-tax-guide",
+      "id": "uk-sa-deadline",
+      "ask": "When is my 2025-26 online Self Assessment return due?",
+      "run": [
+        "calendar",
+        {
+          "taxYear": 2025
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.events",
+          "has": {
+            "id": "online",
+            "date": "2027-01-31"
+          }
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-uk-tax-guide",
+      "id": "uk-class4",
+      "ask": "I made £40,000 profit as a sole trader. Tax and NI?",
+      "run": [
+        "selfemployed",
+        {
+          "profit": 40000
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.incomeTaxOnProfit",
+          "eq": 5486
+        },
+        {
+          "path": "result.class4",
+          "eq": 1645.8
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-uk-tax-guide",
+      "id": "uk-vat-90k",
+      "ask": "My turnover over the last 12 months is £91,000. Do I need to register for VAT?",
+      "run": [
+        "vat",
+        {
+          "last12": 91000
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.status",
+          "eq": "must-register"
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-uk-tax-guide",
+      "id": "uk-penalty",
+      "ask": "I filed my 2024-25 return on 15 August 2026 and owe £2,000. Penalty?",
+      "run": [
+        "penalty",
+        {
+          "tax": 2000,
+          "taxYear": 2024,
+          "filed": "2026-08-15"
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.filing",
+          "eq": 1300
+        }
+      ]
     }
   ],
   "boundaries": {
@@ -2046,7 +2123,11 @@
       "我是税务师",
       "作为您的税务师",
       "我帮你申报",
-      "AI税务师"
+      "AI税务师",
+      "as your tax adviser",
+      "I am a chartered tax adviser",
+      "I will deal with HMRC for you",
+      "AI tax adviser"
     ]
   }
 }
