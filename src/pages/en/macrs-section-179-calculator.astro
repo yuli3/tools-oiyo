@@ -1,0 +1,32 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import UsDepreciation from '../../components/tools/us/UsDepreciation';
+const c = {
+  introTitle: 'How much of a business purchase you can deduct this year',
+  intro: 'Small items up to $2,500 per invoice or item can be expensed under the de minimis safe harbor ($5,000 with audited financial statements). Larger assets can be written off with Section 179 (up to $2,560,000 in 2026, reduced above $4,090,000 of purchases) and 100% bonus depreciation, which the 2025 law restored for qualified property acquired after January 19, 2025. Anything left is depreciated over MACRS: 5 years for computers and vehicles, 7 years for furniture and most equipment. This tool shows which rule applies and the yearly deductions.',
+  formulaTitle: 'Rules used',
+  formulas: [
+    { title: 'De minimis', body: '$2,500 per invoice or item without an applicable financial statement, $5,000 with one (26 CFR 1.263(a)-1(f)). Elect it on the return each year.' },
+    { title: 'Section 179', body: '2026 limit $2,560,000, reduced dollar for dollar above $4,090,000; limited to business income (Rev. Proc. 2025-32, Pub 946).' },
+    { title: 'Bonus', body: '100% for qualified property acquired and placed in service after January 19, 2025 (Pub 946).' },
+    { title: 'MACRS', body: 'Half-year convention, Pub 946 Table A-1: 5-year 20/32/19.2/11.52/11.52/5.76%; 7-year 14.29/24.49/17.49/12.49/8.93/8.92/8.93/4.46%.' },
+  ],
+  howToTitle: 'How to use it',
+  steps: ['Pick the property class.', 'Enter the business-use cost and the date placed in service.', 'Enter any Section 179 amount you plan to elect and whether you keep bonus.', 'Read the first-year deduction and the schedule for later years.'],
+  faqTitle: 'Questions',
+  faqs: [
+    { question: 'What about cars?', answer: 'Passenger cars have yearly dollar caps and need over 50% business use for Section 179 and bonus. The 2026 caps are not published yet, so this tool does not apply them.' },
+    { question: 'What if I bought a lot near year end?', answer: 'If more than 40% of the year’s property is placed in service in the last three months, the mid-quarter convention applies. This tool uses half-year.' },
+    { question: 'Is my input saved?', answer: 'Inputs stay in your browser and are not sent to a server.' },
+  ],
+  disclaimer: 'General information from IRS publications, not tax advice. State conformity to bonus and Section 179 differs.',
+};
+const sources: [string, string][] = [
+  ['IRS Publication 946, How To Depreciate Property', 'https://www.irs.gov/pub/irs-pdf/p946.pdf'],
+  ['IRS Rev. Proc. 2025-32', 'https://www.irs.gov/pub/irs-drop/rp-25-32.pdf'],
+  ['eCFR 26 CFR 1.263(a)-1', 'https://www.ecfr.gov/current/title-26/section-1.263(a)-1'],
+];
+---
+<DebtReliefPage slug="macrs-section-179-calculator" c={c} sources={sources} sourcesTitle="Sources" checked="IRS and eCFR checked 2026-11-21">
+  <UsDepreciation client:load />
+</DebtReliefPage>

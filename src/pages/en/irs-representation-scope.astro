@@ -1,0 +1,31 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import UsScope from '../../components/tools/us/UsScope';
+const c = {
+  introTitle: 'Why these tax tools give general information, not advice',
+  intro: 'Practice before the IRS, including representing a taxpayer and giving written advice, is regulated by Circular 230 (31 CFR Part 10). Attorneys, CPAs and enrolled agents may represent anyone; other preparers in the Annual Filing Season Program may represent only for returns they prepared, and only in limited settings. This site explains published rules and does the arithmetic. It does not tell you what to put on your return, prepare or file it, or recommend a preparer. Free help is listed below.',
+  formulaTitle: 'What this site covers',
+  formulas: [
+    { title: 'Covered', body: 'Deadline lists, estimates using published rates and limits, plain explanations of requirements, links to IRS sources.' },
+    { title: 'Not covered', body: 'Advice on your specific facts, return preparation or e-filing, powers of attorney (Form 2848), negotiations with the IRS, referrals.' },
+  ],
+  howToTitle: 'When you need help with your own case',
+  steps: ['Check whether you qualify for VITA or TCE free preparation.', 'If an IRS problem is causing hardship or is stuck, contact the Taxpayer Advocate Service.', 'For a dispute with the IRS and a low income, contact a Low Income Taxpayer Clinic.', 'Otherwise hire a CPA, enrolled agent or tax attorney and check their credentials.'],
+  faqTitle: 'Questions',
+  faqs: [
+    { question: 'Why doesn’t the tool call itself a tax professional?', answer: 'Titles such as CPA and enrolled agent are licensed by state boards or granted by the IRS. This site has neither, so it does not use them.' },
+    { question: 'Can I use the numbers on my return?', answer: 'They are estimates. Use IRS forms, IRS Free File or tax software to compute your return.' },
+  ],
+  disclaimer: 'Summary of 31 CFR Part 10 and IRS pages; read the regulation on eCFR for the exact text.',
+};
+const sources: [string, string][] = [
+  ['eCFR 31 CFR 10.3, Who may practice', 'https://www.ecfr.gov/current/title-31/section-10.3'],
+  ['IRS Annual Filing Season Program', 'https://www.irs.gov/tax-professionals/annual-filing-season-program'],
+  ['IRS free tax return preparation (VITA/TCE)', 'https://www.irs.gov/individuals/free-tax-return-preparation-for-qualifying-taxpayers'],
+  ['Taxpayer Advocate Service', 'https://www.irs.gov/advocate'],
+  ['IRS Low Income Taxpayer Clinics', 'https://www.irs.gov/advocate/low-income-taxpayer-clinics'],
+];
+---
+<DebtReliefPage slug="irs-representation-scope" c={c} sources={sources} sourcesTitle="Sources" checked="eCFR and IRS checked 2026-11-21">
+  <UsScope />
+</DebtReliefPage>
