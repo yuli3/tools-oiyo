@@ -1381,6 +1381,105 @@
           "eq": 59
         }
       ]
+    },
+    {
+      "skill": "kr-tax-advisor",
+      "id": "withholding-annual-late",
+      "ask": "근로소득 지급명세서 1억 원어치를 2027년 4월 20일에 냈어요. 가산세는요?",
+      "run": [
+        "withholding-statement",
+        "{\"kind\": \"annual-wage\", \"year\": 2026, \"amount\": 100000000, \"submitted\": \"2027-04-20\"}"
+      ],
+      "expect": [
+        {
+          "path": "result.due",
+          "eq": "2027-03-10"
+        },
+        {
+          "path": "result.penalty",
+          "eq": 500000
+        }
+      ]
+    },
+    {
+      "skill": "kr-tax-advisor",
+      "id": "student-loan-salary",
+      "ask": "총급여 4천만 원, 학부 학자금이면 의무상환액은?",
+      "run": [
+        "student-loan",
+        "{\"incomeType\": \"salary\", \"amount\": 40000000, \"loan\": \"undergrad\"}"
+      ],
+      "expect": [
+        {
+          "path": "result.yearly",
+          "eq": 1638000
+        },
+        {
+          "path": "result.threshold",
+          "eq": 20560000
+        }
+      ]
+    },
+    {
+      "skill": "kr-tax-advisor",
+      "id": "book-vs-estimate-double",
+      "ask": "작년 수입 8천만 원 개인서비스업, 올해 9천만 원, 경비 3천만 원이면 장부가 나아요?",
+      "run": [
+        "book-vs-estimate",
+        "{\"group\": \"c\", \"prevRevenue\": 80000000, \"revenue\": 90000000, \"actualExpense\": 30000000, \"simpleRate\": 60, \"simpleRateOver\": 60, \"standardRate\": 20, \"majorExpense\": 20000000}"
+      ],
+      "expect": [
+        {
+          "path": "result.doubleEntry",
+          "eq": true
+        },
+        {
+          "path": "result.better",
+          "eq": "book"
+        },
+        {
+          "path": "result.estimate.penalty",
+          "gte": 1
+        }
+      ]
+    },
+    {
+      "skill": "kr-tax-advisor",
+      "id": "exempt-report-medical",
+      "ask": "병원인데 2026년 수입 1억을 사업장현황신고에서 빠뜨렸어요.",
+      "run": [
+        "exempt-report",
+        "{\"year\": 2026, \"kind\": \"medical\", \"unreported\": 100000000}"
+      ],
+      "expect": [
+        {
+          "path": "result.due",
+          "eq": "2027-02-10"
+        },
+        {
+          "path": "result.penalty",
+          "eq": 500000
+        }
+      ]
+    },
+    {
+      "skill": "kr-tax-advisor",
+      "id": "pension-income-over",
+      "ask": "연금저축에서 연 2천만 원, 국민연금 1,200만 원 받는 66세는 분리과세가 나아요?",
+      "run": [
+        "pension-income",
+        "{\"privatePension\": 20000000, \"age\": 66, \"publicPension\": 12000000}"
+      ],
+      "expect": [
+        {
+          "path": "result.over",
+          "eq": true
+        },
+        {
+          "path": "result.better",
+          "eq": "combined"
+        }
+      ]
     }
   ],
   "boundaries": {

@@ -48,6 +48,8 @@ export const ANNUAL_VALUES: AnnualValue[] = [
   { id: "vat-card-credit", label: "신용카드 매출세액공제", file: "src/lib/kr-vat-credits-2026.ts", cycle: "jan", year: 2026, next: { year: 2027, status: "proposal", note: "정부안 1.2%·연 500만 원(국회 통과 전)" }, expectMonth: 12 },
   { id: "vat-deemed-input", label: "의제매입세액공제 특례", file: "src/lib/kr-vat-credits-2026.ts", cycle: "sunset", year: 2026, next: { year: 2027, status: "proposal", note: "음식점 9/109 등 2028년까지 연장 정부안" }, until: "2026-12-31", expectMonth: 12 },
   { id: "simple-expense-rate", label: "단순경비율·기준경비율", file: "src/lib/kr-income-tax-2026.ts", cycle: "jan", year: 2025, next: { year: 2027, status: "unknown", note: "2026 귀속분은 국세청 경비율 고시(2027년 3월쯤)" }, expectMonth: 3 },
+  { id: "student-loan-threshold", label: "학자금 상환기준소득", file: "src/lib/kr-nts-pack-2026.ts", cycle: "jan", year: 2026, next: { year: 2027, status: "unknown", note: "2,056만 원(교육부고시 제2026-12호, 2026학년도 2학기). 학기마다 새 고시" }, expectMonth: 1 },
+  { id: "estimate-multiple", label: "추계 비교소득 배율(3.4·2.8)", file: "src/lib/kr-nts-pack-2026.ts", cycle: "sunset", year: 2026, next: { year: 2028, status: "unknown", note: "소득세법 시행규칙 제67조, 2027 귀속까지" }, until: "2027-12-31" },
   { id: "copay-cap", label: "본인부담상한액", file: "src/lib/kr-medical-cost-2026.ts", cycle: "jan", year: 2026, next: { year: 2027, status: "unknown", note: "전년 물가로 조정, 보통 1월 발표" }, expectMonth: 1 },
   { id: "basic-pension", label: "기초연금 기준연금액", file: "src/lib/kr-benefits-2026.ts", cycle: "jan", year: 2026, next: { year: 2027, status: "unknown", note: "물가 반영, 보통 1월 고시" }, expectMonth: 1 },
   { id: "earned-income-credit", label: "근로·자녀장려금 기준", file: "src/lib/kr-welfare-2026.ts", cycle: "irregular", year: 2026, next: { year: 2027, status: "unknown", note: "조특법 개정 여부(세제개편안) 확인" }, expectMonth: 12 },

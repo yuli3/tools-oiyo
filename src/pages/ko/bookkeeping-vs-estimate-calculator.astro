@@ -1,0 +1,32 @@
+---
+// 장부 vs 추계 신고 비교 계산기 2026 (2026-11-21, 국세청 유튜브 주제 5종). 엔진: lib/kr-nts-pack-2026.ts
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import Tool from "../../components/tools/nts/BookVsEstimate";
+import { NTS_PACK_AS_OF } from "../../lib/kr-nts-pack-2026";
+
+const title = "장부 vs 추계 신고 비교 계산기 2026 — 무기장가산세·기장세액공제·경비율";
+const description = "작년 수입금액으로 간편장부·복식부기 대상과 단순·기준경비율 대상을 판정하고, 장부로 신고할 때와 경비율(추계)로 신고할 때 소득세를 비교해요. 무기장가산세 20%와 기장세액공제(한도 100만 원)도 넣었어요.";
+const ko = {
+  introTitle: "장부를 쓸지 경비율로 낼지 숫자로 비교해요",
+  intro: "장부를 쓰지 않으면 국세청 경비율로 소득을 추정해(추계) 신고해요. 작년 수입이 크면 기준경비율을 써야 하고 무기장가산세도 붙어요. 실제 경비가 많거나 가산세 대상이면 장부가 유리해요.",
+  howToTitle: "사용 방법",
+  steps: ["업종과 작년·올해 수입금액을 넣어요.", "실제 경비와 내 업종코드 경비율을 넣어요.", "세 가지 방식의 세금과 판정 이유를 봐요."],
+  highlightsTitle: "주요 특징",
+  highlights: [
+    { title: "대상 판정", body: "간편장부 3억·1.5억·7,500만, 단순경비율 6,000·3,600·2,400만." },
+    { title: "인적용역 구분", body: "간편장부는 7,500만, 단순경비율은 3,600만 기준." },
+    { title: "무기장가산세", body: "산출세액 × 사업소득 비율 × 20%." },
+    { title: "기장세액공제", body: "간편장부대상자가 복식부기로 신고하면 20%, 한도 100만 원." },
+  ],
+  disclaimer: `법령 원문 기준으로 어림한 계산이에요. 실제 세액·가산세·상환액은 신고 내용과 고시에 따라 달라요. 신고서 작성과 제출은 직접 하거나 세무 전문가에게 맡겨요. 기준일 ${NTS_PACK_AS_OF}.`,
+};
+const faqs = [
+  { q: "무기장가산세는 누구에게 붙나요?", a: "장부 없이 신고한 사업자에게 산출세액 × (무기장 소득 ÷ 종합소득) × 20%가 붙어요. 신규사업자, 직전 수입금액 4,800만 원 미만, 연말정산하는 사업소득자는 빠져요(소득세법 제81조의5, 시행령 제147조)." },
+  { q: "기준경비율은 어떻게 계산하나요?", a: "수입금액에서 증빙 있는 매입비용·임차료·인건비와 수입금액 × 기준경비율을 빼요. 복식부기의무자는 기준경비율의 절반만 써요. 단순경비율 소득 × 3.4배(간편장부대상자 2.8배)를 넘으면 그 금액으로 할 수 있어요(시행령 제143조, 2027년 귀속까지)." },
+  { q: "프리랜서(인적용역)는 어느 기준인가요?", a: "간편장부는 7,500만 원 기준이고, 단순경비율은 3,600만 원 기준이에요(시행령 제208조⑤, 제143조④)." },
+];
+---
+<KrFinancePage slug="bookkeeping-vs-estimate-calculator" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <Tool client:load />
+  <p class="mt-4 text-xs text-muted-foreground">근거: 소득세법 제56조의2·제80조·제81조의5, 시행령 제132조·제143조·제147조·제208조. 기준일 {NTS_PACK_AS_OF}. <a class="underline" href="/ko/tax-law-guide/">세금 길잡이</a> · <a class="underline" href="/ko/pro-competency-map/">전문 직업 역량 지도</a></p>
+</KrFinancePage>
