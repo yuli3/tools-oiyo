@@ -28,3 +28,9 @@ test("us skill CLI", () => {
   assert.equal(run("depreciation", '{"cost":10000,"life":5,"placed":"2026-05-01","bonus":false}').firstYear, 2000);
   assert.ok(run("scope").some((s) => s.cite.includes("10.3")));
 });
+
+test("fr skill CLI", () => {
+  const run = (...a) => JSON.parse(execFileSync(process.execPath, [resolve(skillDir("fr"), "scripts/calc.mjs"), ...a], { encoding: "utf8" })).result;
+  assert.equal(run("tva", '{"activity":"vente","caPrev":50000,"ca":60000}').status, "franchise");
+  assert.equal(run("amortissement", '{"cost":10000,"life":5,"start":"2026-04-10","method":"degressif"}').schedule[0].amount, 2625);
+});

@@ -1,0 +1,30 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import FrAmortissement from '../../components/tools/fr/FrAmortissement';
+const c = {
+  introTitle: "Le plan d'amortissement d'un bien, année par année",
+  intro: "Un bien utilisé plusieurs années est amorti sur sa durée d'utilisation. En linéaire, l'annuité est la même chaque année et la première est calculée au prorata du temps à partir de la mise en service. En dégressif, le taux linéaire est multiplié par 1,25 (3 ou 4 ans), 1,75 (5 ou 6 ans) ou 2,25 (plus de 6 ans), le calcul part du premier jour du mois d'acquisition et on passe au linéaire quand il devient plus favorable. Le petit outillage et le matériel de bureau d'une valeur unitaire HT d'au plus 500 € peuvent être déduits immédiatement.",
+  formulaTitle: 'Règles utilisées',
+  formulas: [
+    { title: 'Linéaire', body: "Valeur d'origine ÷ durée, prorata temporis au jour près la première année (BOI-BIC-AMT-20-20-30 §210)." },
+    { title: 'Dégressif', body: 'Taux linéaire × 1,25 / 1,75 / 2,25 (CGI art. 39 A), au mois près à partir du mois d\'acquisition, passage au linéaire.' },
+    { title: 'Petits équipements', body: "Valeur unitaire HT ≤ 500 € : déduction immédiate (BOI-BIC-CHG-20-30-10)." },
+  ],
+  howToTitle: 'Utilisation',
+  steps: ["Saisissez la valeur d'origine HT et la durée d'utilisation.", "Indiquez la date d'acquisition ou de mise en service.", 'Choisissez le mode linéaire ou dégressif.', "Lisez l'annuité et la valeur nette comptable de chaque exercice."],
+  faqTitle: 'Questions fréquentes',
+  faqs: [
+    { question: 'Quelle durée retenir ?', answer: "Celle d'utilisation selon les usages de votre profession. L'outil ne propose pas de durée par défaut ; vérifiez-la avant de l'appliquer." },
+    { question: 'Le calcul suit-il le prorata sur 360 jours ?', answer: "L'outil utilise les jours réels de l'année. Si votre logiciel comptable retient 360 jours, la première annuité diffère légèrement." },
+    { question: 'Mes données sont-elles enregistrées ?', answer: 'Les données saisies restent dans votre navigateur et ne sont pas envoyées à un serveur.' },
+  ],
+  disclaimer: 'Estimation à partir du BOFiP, pas un conseil fiscal ou comptable personnalisé.',
+};
+const sources: [string, string][] = [
+  ['BOFiP — Amortissement dégressif (BOI-BIC-AMT-20-20-30)', 'https://bofip.impots.gouv.fr/bofip/4699-PGP.html/identifiant=BOI-BIC-AMT-20-20-30-20120912'],
+  ['BOFiP — Petits équipements 500 € (BOI-BIC-CHG-20-30-10)', 'https://bofip.impots.gouv.fr/bofip/2109-PGP.html/identifiant=BOI-BIC-CHG-20-30-10-20170301'],
+];
+---
+<DebtReliefPage slug="amortissement-lineaire-degressif" c={c} sources={sources} sourcesTitle="Sources" checked="BOFiP consulté le 2026-11-21">
+  <FrAmortissement client:load />
+</DebtReliefPage>

@@ -1,0 +1,30 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import FrTvaFranchise from '../../components/tools/fr/FrTvaFranchise';
+const c = {
+  introTitle: 'Rester ou non en franchise de TVA en 2026',
+  intro: "La franchise en base dispense de facturer la TVA tant que le chiffre d'affaires de l'année précédente ne dépasse pas 85 000 € pour la vente et l'hébergement, ou 37 500 € pour les prestations de services. Si le chiffre d'affaires de l'année en cours dépasse le seuil majoré de 93 500 € ou de 41 250 €, la TVA est due immédiatement. Entre les deux, la franchise est conservée jusqu'à la fin de l'année. Le projet de seuil unique de 25 000 € a été abandonné.",
+  formulaTitle: 'Règles utilisées',
+  formulas: [
+    { title: 'Vente, hébergement', body: "Seuil 85 000 € (année précédente) ; seuil majoré 93 500 € (année en cours), service-public F21746." },
+    { title: 'Services', body: 'Seuil 37 500 € ; seuil majoré 41 250 €.' },
+    { title: 'Taux', body: '20 %, 10 %, 5,5 % et 2,1 % selon les biens et services (service-public F23567).' },
+  ],
+  howToTitle: 'Utilisation',
+  steps: ['Choisissez votre activité.', "Saisissez le chiffre d'affaires HT de l'an dernier.", "Saisissez celui de l'année en cours, à date ou prévu.", 'Lisez votre situation et la marge restant avant le seuil.'],
+  faqTitle: 'Questions fréquentes',
+  faqs: [
+    { question: "Que mettre sur mes factures en franchise ?", answer: "La mention « TVA non applicable, art. 293 B du CGI »." },
+    { question: 'Et si j\'ai les deux activités ?', answer: "Des règles combinées s'appliquent ; elles ne sont pas calculées ici. Consultez la fiche F21746." },
+    { question: 'Mes données sont-elles enregistrées ?', answer: 'Les données saisies restent dans votre navigateur et ne sont pas envoyées à un serveur.' },
+  ],
+  disclaimer: 'Informations générales issues de service-public.fr, pas un conseil fiscal personnalisé.',
+};
+const sources: [string, string][] = [
+  ['service-public.fr — Franchise en base de TVA (F21746)', 'https://www.service-public.fr/professionnels-entreprises/vosdroits/F21746'],
+  ['service-public.fr — Taux de TVA (F23567)', 'https://www.service-public.fr/professionnels-entreprises/vosdroits/F23567'],
+];
+---
+<DebtReliefPage slug="franchise-tva-seuils" c={c} sources={sources} sourcesTitle="Sources" checked="service-public.fr consulté le 2026-11-21">
+  <FrTvaFranchise client:load />
+</DebtReliefPage>
