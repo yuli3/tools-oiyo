@@ -1,6 +1,6 @@
 # 전문 직업 역량 지도
 
-GENERATED from tools-oiyo src/data/pro-competencies.ts. 기준일 2026-11-20. 웹: https://tools.oiyo.net/ko/pro-competency-map/
+GENERATED from tools-oiyo src/data/pro-competencies.ts. 기준일 2026-11-21. 웹: https://tools.oiyo.net/ko/pro-competency-map/
 
 질문이 어느 직업의 어떤 역량에 해당하는지 고른 뒤, 연결된 도구·MCP로 계산하고 업무 범위(ethics) 역량으로 경계를 확인한다. '준비 중'은 아직 도구가 없으니 계산하지 말고 공공 창구나 자격사로 안내한다.
 
@@ -670,6 +670,39 @@ GENERATED from tools-oiyo src/data/pro-competencies.ts. 기준일 2026-11-20. �
 - **정보공개서 열람과 등록** [전자 업무·데이터] (준비 중): 공정위 가맹사업거래 누리집에서 등록된 정보공개서를 비교해요.
 - **가맹거래사 업무 범위** [업무 범위·윤리]: 사업성 검토, 정보공개서·계약서 자문, 분쟁조정 신청 대행이 업무예요(가맹사업법 제28조). 소송 대리는 변호사예요.
   - 도구: 법령 길잡이 17분야 https://tools.oiyo.net/ko/law-guide/
+  - 스킬: oiyo-kr-law-guide
+
+## 산업안전·보건 실무자 (산업안전보건법, 중대재해 처벌 등에 관한 법률)
+
+사업장 안전보건관리체계, 위험성평가, 안전보건교육, 재해 보고와 재발 방지(안전관리자·보건관리자·지도사 영역)
+
+- **중대재해 해당 판정** [법령 해석] (일반인도 씀): 중대재해처벌법(6개월 치료 2명·직업성 질병 1년 3명)과 산업안전보건법(3개월 요양 동시 2명·동시 10명) 기준을 따로 판정하고, 5명 미만 제외와 처벌 범위를 확인해요.
+  - 도구: 중대재해 해당 여부 점검 https://tools.oiyo.net/ko/serious-accident-checker/
+  - MCP: `check_kr_serious_accident`
+  - 스킬: oiyo-kr-law-guide
+- **재해 보고 기한** [기한·절차] (일반인도 씀): 중대재해 즉시 보고, 산업재해조사표 발생일부터 1개월(휴일이면 다음 날), 미보고 과태료 차수와 은폐 형벌을 챙겨요.
+  - 도구: 산업재해조사표 제출 기한 계산기 https://tools.oiyo.net/ko/industrial-accident-report-deadline/
+  - MCP: `calculate_kr_accident_report_deadline`
+  - 스킬: oiyo-kr-law-guide
+- **안전보건교육 시간** [계산·평가] (일반인도 씀): 정기(반기 6·12시간)·채용·작업 변경·관리감독자 16시간·건설 기초 4시간과 50명 미만 도소매·숙박음식 절반을 계산해요.
+  - 도구: 안전보건교육 시간 계산기 https://tools.oiyo.net/ko/safety-education-hours-calculator/
+  - MCP: `calculate_kr_safety_education_hours`
+  - 스킬: oiyo-kr-law-guide
+- **안전보건 인력 선임** [계산·평가] (일반인도 씀): 업종·상시근로자 수·공사금액으로 안전보건관리책임자, 안전관리자, 보건관리자, 안전보건관리담당자 인원과 전담 여부를 판정해요.
+  - 도구: 안전관리자·보건관리자 선임 기준 점검 https://tools.oiyo.net/ko/safety-manager-staffing-checker/
+  - MCP: `check_kr_safety_staffing`
+  - 스킬: oiyo-kr-law-guide
+- **위험성평가 주기와 기록** [서류·증빙]: 작업 전 최초평가, 해마다 정기평가, 변경 때 수시평가, 매월·매주 상시평가와 그 기록을 챙겨요.
+  - 도구: 안전관리자·보건관리자 선임 기준 점검 https://tools.oiyo.net/ko/safety-manager-staffing-checker/
+  - MCP: `check_kr_safety_staffing`
+  - 스킬: oiyo-kr-law-guide
+- **재해 뒤 보상 안내** [상담·설계] (일반인도 씀): 산재 휴업급여·장해급여를 계산해 근로자에게 보상 절차를 알려 주고, 사업주 보고 의무와 구분해요.
+  - 도구: 산재 휴업급여 https://tools.oiyo.net/ko/industrial-accident-leave-pay-calculator/ · 산재 장해급여 계산기 https://tools.oiyo.net/ko/industrial-injury-disability-calculator/
+  - MCP: `calculate_kr_injury_leave_pay`, `calculate_kr_injury_disability_benefit`
+  - 스킬: oiyo-kr-law-guide
+- **자문 범위** [업무 범위·윤리]: 법령 정보와 계산까지만 해요. 수사·재판 대응은 변호사, 산재 보상 청구는 근로복지공단·노무사, 보고·신고는 사업주가 직접 해요.
+  - 도구: 법령 길잡이 17분야 https://tools.oiyo.net/ko/law-guide/
+  - MCP: `get_kr_professional_scope`
   - 스킬: oiyo-kr-law-guide
 
 ## 주택관리사 (공동주택관리법 제64조·제67조)

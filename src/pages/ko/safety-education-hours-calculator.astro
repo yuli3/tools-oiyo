@@ -1,0 +1,32 @@
+---
+// 안전보건교육 시간 계산기 2026 (2026-11-21, 산업안전 묶음). 엔진: lib/kr-industrial-safety-2026.ts
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import Tool from "../../components/tools/safety/SafetyEducation";
+import { SAFETY_AS_OF } from "../../lib/kr-industrial-safety-2026";
+
+const title = "안전보건교육 시간 계산기 2026 — 정기·채용·작업 변경·관리감독자";
+const description = "사무직·판매·현장 근로자와 고용 형태(일용·기간제)별 산업안전보건교육 시간, 관리감독자 연 16시간, 50명 미만 도소매·숙박음식점 절반, 건설 기초교육 4시간을 계산해요.";
+const ko = {
+  introTitle: "근로자는 반기마다 6시간 또는 12시간이에요",
+  intro: "산업안전보건법 시행규칙 별표 4는 근로자 정기교육을 사무직·판매 업무는 반기 6시간, 그 밖의 근로자는 반기 12시간 이상으로 정해요. 채용 때와 작업내용이 바뀔 때도 교육하고, 관리감독자는 해마다 16시간 이상 받아요. 별표 4는 2025년 5월 30일에 개정됐어요.",
+  howToTitle: "사용 방법",
+  steps: ["하는 일과 고용 형태를 골라요.", "근로자·관리감독자 수를 넣어요.", "한 해 교육 시간을 봐요."],
+  highlightsTitle: "주요 특징",
+  highlights: [
+    { title: "정기교육", body: "반기 6 또는 12시간." },
+    { title: "채용·변경", body: "8·4·1시간, 2·1시간." },
+    { title: "관리감독자", body: "연 16시간." },
+    { title: "절반 적용", body: "50명 미만 도소매·숙박음식." },
+  ],
+  disclaimer: `법령 원문 기준으로 어림한 점검이에요. 실제 해당 여부·처벌·과태료는 사실관계와 처분으로 정해져요. 보고·신고는 사업주가 직접 하고, 사건 대응은 노동청·안전 전문기관·변호사와 상의해요. 기준일 ${SAFETY_AS_OF}.`,
+};
+const faqs = [
+  { q: "정기교육은 몇 시간인가요?", a: "사무직과 판매 업무 근로자는 반기마다 6시간 이상, 그 밖의 근로자는 반기마다 12시간 이상이에요(시행규칙 별표 4 제1호가목)." },
+  { q: "일용근로자는요?", a: "채용할 때 1시간, 작업내용이 바뀔 때 1시간 이상이에요. 건설 일용근로자는 기초안전보건교육 4시간을 받아요(별표 4 제1호나·다·마목)." },
+  { q: "작은 가게도 똑같이 하나요?", a: "상시 50명 미만 도매업·숙박 및 음식점업 등은 교육시간을 2분의 1 이상으로 할 수 있어요(별표 4 비고 3)." },
+];
+---
+<KrFinancePage slug="safety-education-hours-calculator" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <Tool client:load />
+  <p class="mt-4 text-xs text-muted-foreground">근거: 산업안전보건법 제29조, 시행규칙 별표 4(2025. 5. 30. 개정). 기준일 {SAFETY_AS_OF}. <a class="underline" href="/ko/labor-law-guide/">노동 길잡이</a> · <a class="underline" href="/ko/pro-competency-map/">전문 직업 역량 지도</a></p>
+</KrFinancePage>

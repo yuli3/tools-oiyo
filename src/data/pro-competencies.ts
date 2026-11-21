@@ -7,10 +7,10 @@
 import type { DomainId } from "../lib/kr-expert-guide-2026";
 
 export type CategoryId = "law" | "calc" | "deadline" | "docs" | "consult" | "ethics" | "digital";
-export type JobId = "tax" | "cpa" | "labor" | "admin" | "court" | "actuary" | "adjuster" | "agent" | "customs" | "patent" | "appraiser" | "broker" | "architect" | "medic" | "family" | "social" | "mgmt" | "franchise" | "housing";
+export type JobId = "tax" | "cpa" | "labor" | "admin" | "court" | "actuary" | "adjuster" | "agent" | "customs" | "patent" | "appraiser" | "broker" | "architect" | "medic" | "family" | "social" | "mgmt" | "franchise" | "housing" | "safety";
 export type Audience = "pro" | "public";
 
-export const COMPETENCY_AS_OF = "2026-11-20";
+export const COMPETENCY_AS_OF = "2026-11-21";
 
 export const CATEGORIES: { id: CategoryId; name: string; desc: string }[] = [
   { id: "law", name: "법령 해석", desc: "근거 조문을 찾고, 개정과 시행일을 따라가며, 사실관계에 맞게 읽는 힘" },
@@ -42,6 +42,7 @@ export const JOBS: { id: JobId; name: string; domain?: DomainId; act: string; su
   { id: "social", name: "사회복지사", domain: "welfare", act: "사회복지사업법 제11조", summary: "복지 상담과 사례관리, 급여 신청 연계(신청 서류 대행은 행정사)" },
   { id: "mgmt", name: "경영지도사", act: "중소기업진흥에 관한 법률(지도사)", summary: "중소기업 경영 진단·지도: 전략·마케팅·재무·인사·생산 관리 자문(독점 업무는 아님)" },
   { id: "franchise", name: "가맹거래사", act: "가맹사업거래의 공정화에 관한 법률 제28조", summary: "가맹사업 사업성 검토, 정보공개서·가맹계약서 작성·수정 자문, 분쟁조정 신청 대행" },
+  { id: "safety", name: "산업안전·보건 실무자", act: "산업안전보건법, 중대재해 처벌 등에 관한 법률", summary: "사업장 안전보건관리체계, 위험성평가, 안전보건교육, 재해 보고와 재발 방지(안전관리자·보건관리자·지도사 영역)" },
   { id: "housing", name: "주택관리사", act: "공동주택관리법 제64조·제67조", summary: "의무관리대상 공동주택의 관리사무소장: 시설·회계·장기수선·하자 관리와 입주자대표회의 지원" },
 ];
 
@@ -263,6 +264,13 @@ export const COMPETENCIES: Competency[] = [
   c("mg-checklist", "mgmt", "docs", "사업자 필수 의무 점검", "창업·고용·신고 단계별로 반드시 할 것과 하지 말 것을 챙겨요.", { tools: ["business-must-do-checklist", "business-toolkit"], skills: [BIZ], audience: ["pro", "public"] }),
   c("mg-law", "mgmt", "law", "경영 문제의 법령 연결", "운영 문제가 세금·노무·행정·보험 중 어디에 걸리는지 찾아 해당 길잡이로 넘겨요.", { tools: ["law-guide"], skills: [LAW, BIZ], mcp: ["start_kr_law_intake"], audience: ["pro", "public"] }),
   c("mg-scope", "mgmt", "ethics", "자문 범위", "경영 지도는 독점 업무가 아니지만, 세무대리·노무 대리·법률 사무는 해당 자격사에게 넘겨요.", { tools: ["law-guide"], skills: [LAW], mcp: ["get_kr_professional_scope"] }),
+  c("safety-serious", "safety", "law", "중대재해 해당 판정", "중대재해처벌법(6개월 치료 2명·직업성 질병 1년 3명)과 산업안전보건법(3개월 요양 동시 2명·동시 10명) 기준을 따로 판정하고, 5명 미만 제외와 처벌 범위를 확인해요.", { tools: ["serious-accident-checker"], skills: [LAW], mcp: ["check_kr_serious_accident"], audience: ["pro", "public"] }),
+  c("safety-report", "safety", "deadline", "재해 보고 기한", "중대재해 즉시 보고, 산업재해조사표 발생일부터 1개월(휴일이면 다음 날), 미보고 과태료 차수와 은폐 형벌을 챙겨요.", { tools: ["industrial-accident-report-deadline"], skills: [LAW], mcp: ["calculate_kr_accident_report_deadline"], audience: ["pro", "public"] }),
+  c("safety-education", "safety", "calc", "안전보건교육 시간", "정기(반기 6·12시간)·채용·작업 변경·관리감독자 16시간·건설 기초 4시간과 50명 미만 도소매·숙박음식 절반을 계산해요.", { tools: ["safety-education-hours-calculator"], skills: [LAW], mcp: ["calculate_kr_safety_education_hours"], audience: ["pro", "public"] }),
+  c("safety-staffing", "safety", "calc", "안전보건 인력 선임", "업종·상시근로자 수·공사금액으로 안전보건관리책임자, 안전관리자, 보건관리자, 안전보건관리담당자 인원과 전담 여부를 판정해요.", { tools: ["safety-manager-staffing-checker"], skills: [LAW], mcp: ["check_kr_safety_staffing"], audience: ["pro", "public"] }),
+  c("safety-risk", "safety", "docs", "위험성평가 주기와 기록", "작업 전 최초평가, 해마다 정기평가, 변경 때 수시평가, 매월·매주 상시평가와 그 기록을 챙겨요.", { tools: ["safety-manager-staffing-checker"], skills: [LAW], mcp: ["check_kr_safety_staffing"] }),
+  c("safety-comp", "safety", "consult", "재해 뒤 보상 안내", "산재 휴업급여·장해급여를 계산해 근로자에게 보상 절차를 알려 주고, 사업주 보고 의무와 구분해요.", { tools: ["industrial-accident-leave-pay-calculator", "industrial-injury-disability-calculator"], skills: [LAW], mcp: ["calculate_kr_injury_leave_pay", "calculate_kr_injury_disability_benefit"], audience: ["pro", "public"] }),
+  c("safety-scope", "safety", "ethics", "자문 범위", "법령 정보와 계산까지만 해요. 수사·재판 대응은 변호사, 산재 보상 청구는 근로복지공단·노무사, 보고·신고는 사업주가 직접 해요.", { tools: ["law-guide"], skills: [LAW], mcp: ["get_kr_professional_scope"] }),
 
   // 가맹거래사 (11-20 전수조사 12번)
   c("fr-law", "franchise", "law", "가맹사업법 구조", "정보공개서·가맹금 예치·불공정거래 금지·갱신·해지 규정을 읽어요.", { tools: ["franchise-contract-check"], skills: [LAW], mcp: ["search_kr_statutes"], audience: ["pro", "public"] }),
@@ -318,6 +326,10 @@ export const TOOL_NAMES: Record<string, string> = {
   "private-pension-separate-tax-calculator": "사적연금 분리 vs 종합과세 계산기",
   "student-loan-repayment-calculator": "학자금 의무상환액 계산기",
   "industrial-injury-disability-calculator": "산재 장해급여 계산기",
+  "serious-accident-checker": "중대재해 해당 여부 점검",
+  "industrial-accident-report-deadline": "산업재해조사표 제출 기한 계산기",
+  "safety-education-hours-calculator": "안전보건교육 시간 계산기",
+  "safety-manager-staffing-checker": "안전관리자·보건관리자 선임 기준 점검",
   "court-deposit-interest-calculator": "공탁금 이자·시효 계산기",
   "self-registration-cost-calculator": "셀프 등기 총비용 계산기",
   "f27-points-calculator": "거주(F-2-7) 점수 계산기",
@@ -472,6 +484,7 @@ export const MCP_TOOLS = [
   "calculate_kr_fine_reduction", "calculate_kr_import_duty", "simulate_ifrs17_csm", "calculate_kics_ratio", "calculate_insurance_claim_payout", "analyze_journal_entries", "get_kr_practice_guide", "check_insurance_explanation_record",
   "calculate_kr_deferred_tax", "plan_kr_audit_materiality_sample", "calculate_kr_injury_disability_benefit", "calculate_kr_f27_points", "estimate_kr_self_registration_cost", "check_kr_court_deposit",
   "check_kr_withholding_statement", "compare_kr_bookkeeping_vs_estimate", "check_kr_exempt_business_report", "compare_kr_private_pension_tax", "calculate_kr_student_loan_repayment",
+  "check_kr_serious_accident", "calculate_kr_accident_report_deadline", "calculate_kr_safety_education_hours", "check_kr_safety_staffing",
   "analyze_swot", "analyze_market_test", "plan_campaign_supply", "plan_quality_recovery", "compare_alternative_materials", "check_big_order_capacity", "check_sales_rebates",
 ] as const;
 

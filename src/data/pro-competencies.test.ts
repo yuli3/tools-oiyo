@@ -23,8 +23,8 @@ test("역량 지도: 연결한 도구·스킬·MCP가 모두 실제로 있어요
   assert.deepEqual(Object.keys(TOOL_NAMES).filter((k) => !used.has(k)), [], "쓰지 않는 TOOL_NAMES");
 });
 
-test("역량 지도: 직업 19개 모두 분류 4개 이상, 업무 범위(ethics) 역량이 있어요", () => {
-  assert.equal(JOBS.length, 19);
+test("역량 지도: 직업 20개 모두 분류 4개 이상, 업무 범위(ethics) 역량이 있어요", () => {
+  assert.equal(JOBS.length, 20);
   const ids = new Set(COMPETENCIES.map((x) => x.id));
   assert.equal(ids.size, COMPETENCIES.length, "id 중복");
   for (const j of JOBS) {
