@@ -1,0 +1,27 @@
+{
+  "ci": {
+    "collect": {
+      "startServerCommand": "npx --yes http-server@14 dist -p 8080 -s",
+      "startServerReadyPattern": "Available on",
+      "url": [
+        "http://localhost:8080/en/",
+        "http://localhost:8080/ko/salary-calculator/",
+        "http://localhost:8080/ko/annual-leave-calculator/",
+        "http://localhost:8080/ko/bmi-calculator/",
+        "http://localhost:8080/en/discount-calculator/",
+        "http://localhost:8080/en/black-friday-calculator/",
+        "http://localhost:8080/ko/annual-leave-combo-2027/"
+      ],
+      "numberOfRuns": 3
+    },
+    "assert": {
+      "assertions": {
+        "categories:performance": ["error", { "minScore": 0.8 }],
+        "categories:seo": ["error", { "minScore": 0.9 }],
+        "categories:accessibility": ["warn", { "minScore": 0.9 }],
+        "categories:best-practices": ["warn", { "minScore": 0.9 }]
+      }
+    },
+    "upload": { "target": "temporary-public-storage" }
+  }
+}

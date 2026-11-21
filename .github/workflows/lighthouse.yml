@@ -1,0 +1,26 @@
+name: Lighthouse CI
+
+# 2026-11-21 운영 20종 #14: 대표 계산기 7쪽의 속도·SEO를 PR마다, 매주 월요일 10:00 KST에 재요.
+# 모바일 기본값(데스크톱 preset 아님). 첫 로컬 측정: 성능 89~100, SEO 100, LCP 1.7~3.4s, CLS ≤0.015.
+on:
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: '0 1 * * 1'
+  workflow_dispatch:
+
+jobs:
+  lighthouse:
+    name: Lighthouse audit (representative pages)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - name: Run Lighthouse CI
+        run: npx --yes @lhci/cli@0.13 autorun
