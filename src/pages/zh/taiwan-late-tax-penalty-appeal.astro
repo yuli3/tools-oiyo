@@ -1,0 +1,67 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import TwLateFee from '../../components/tools/tw/TwLateFee';
+const c = {
+  "introTitle": "晚繳稅要多付多少，不服核定有多久時間",
+  "intro": "逾期繳納稅款的，每逾3日按滯納數額加徵1%滯納金；逾30日仍未繳納的，移送強制執行。所得稅已申報但漏報、短報的，處所漏稅額2倍以下罰鍰，未申報經調查發現的處3倍以下；營業稅漏稅處5倍以下罰鍰。不服核定的，有繳款書者於繳款期間屆滿次日起30日內申請復查；不服復查決定的，於送達次日起30日內提起訴願；不服訴願決定的，於送達後2個月內提起行政訴訟。溢繳稅款自繳納之日起10年內可申請退還，可歸責於政府機關者為15年。",
+  "formulaTitle": "依據",
+  "formulas": [
+    {
+      "title": "滯納金",
+      "body": "每逾3日加徵1%，逾30日移送強制執行（稅捐稽徵法第20條，2021年修正）。"
+    },
+    {
+      "title": "罰鍰",
+      "body": "所得稅法第110條（2倍、3倍以下）；營業稅法第51條（5倍以下）。實際倍數依裁罰倍數參考表，本工具只顯示上限。"
+    },
+    {
+      "title": "救濟與退稅",
+      "body": "復查30日（稅捐稽徵法第35條）；訴願30日（訴願法第14條）；行政訴訟2個月（行政訴訟法第106條）；退稅10年、政府責任15年（稅捐稽徵法第28條）。"
+    }
+  ],
+  "howToTitle": "使用方法",
+  "steps": [
+    "輸入應納稅額、繳納期限與實際繳納日。",
+    "查看滯納金與罰鍰範圍。",
+    "輸入繳款期間屆滿日或決定送達日。",
+    "查看各救濟期限。"
+  ],
+  "faqTitle": "常見問題",
+  "faqs": [
+    {
+      "question": "退稅不是5年嗎？",
+      "answer": "2021年稅捐稽徵法修正後改為10年（可歸責於政府機關者15年）。5年是修正前的規定。"
+    },
+    {
+      "question": "輸入的內容會被保存嗎？",
+      "answer": "輸入內容只保存在你的瀏覽器中，不會傳送到伺服器。"
+    }
+  ],
+  "disclaimer": "依法規整理的試算，不是個案稅務諮詢，也不代寫復查或訴願書。"
+};
+const sources: [string, string][] = [
+  [
+    "稅捐稽徵法",
+    "https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=G0340001"
+  ],
+  [
+    "所得稅法",
+    "https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=G0340003"
+  ],
+  [
+    "加值型及非加值型營業稅法",
+    "https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=G0340080"
+  ],
+  [
+    "訴願法",
+    "https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=A0030020"
+  ],
+  [
+    "行政訴訟法",
+    "https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=A0030154"
+  ]
+];
+---
+<DebtReliefPage slug="taiwan-late-tax-penalty-appeal" c={c} sources={sources} sourcesTitle="來源" checked="全國法規資料庫、財政部 2026-11-21 查閱">
+  <TwLateFee client:load />
+</DebtReliefPage>

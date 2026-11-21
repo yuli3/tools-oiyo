@@ -1,0 +1,63 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import TwTaxCalendar from '../../components/tools/tw/TwTaxCalendar';
+const c = {
+  "introTitle": "2026年什麼時候要報稅",
+  "intro": "綜合所得稅與營利事業所得稅每年5月1日至5月31日辦理結算申報；2026年因5月31日為假日，114年度申報延至6月1日，網路申報至6月1日24時。營業稅以每兩個月為一期，於次期開始15日內申報繳納，即單月15日；適用零稅率者可申請按月申報。營利事業9月1日至9月30日辦理暫繳。期限末日遇星期六延至下星期一，遇星期日延至次日。",
+  "formulaTitle": "依據",
+  "formulas": [
+    {
+      "title": "結算申報",
+      "body": "每年5月1日至5月31日（所得稅法第71條）。2026年延至6月1日（賦稅署114年度結算申報資料）。"
+    },
+    {
+      "title": "營業稅",
+      "body": "每兩個月為一期，次期開始15日內申報（營業稅法第35條）。2026年3月15日、11月15日為星期日，本工具依行政程序法第48條推算為3/16、11/16，尚未核對國稅局公告原文。"
+    },
+    {
+      "title": "暫繳與扣繳",
+      "body": "暫繳9月1日至30日（第67條）；扣繳每月10日前繳納，扣繳憑單1月底前申報、2月10日前交付（第92條）。"
+    }
+  ],
+  "howToTitle": "使用方法",
+  "steps": [
+    "選擇年份。",
+    "選擇營業稅申報方式，以及是否為公司或行號。",
+    "查看日期與剩餘天數。",
+    "以國稅局公告與電子申報繳稅服務網為準。"
+  ],
+  "faqTitle": "常見問題",
+  "faqs": [
+    {
+      "question": "國定假日會順延嗎？",
+      "answer": "會，但本工具只處理週末。遇國定假日或颱風停班，請以國稅局公告為準。"
+    },
+    {
+      "question": "輸入的內容會被保存嗎？",
+      "answer": "輸入內容只保存在你的瀏覽器中，不會傳送到伺服器。"
+    }
+  ],
+  "disclaimer": "依法規與財政部資料整理的一般資訊，不是個案稅務諮詢。"
+};
+const sources: [string, string][] = [
+  [
+    "所得稅法",
+    "https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=G0340003"
+  ],
+  [
+    "加值型及非加值型營業稅法",
+    "https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=G0340080"
+  ],
+  [
+    "行政程序法",
+    "https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=A0030055"
+  ],
+  [
+    "賦稅署 114年度綜合所得稅結算申報資料",
+    "https://www.dot.gov.tw/singlehtml/ch26?cntId=81537cf45d0c48d883c36f989a5f429b"
+  ]
+];
+---
+<DebtReliefPage slug="taiwan-tax-filing-calendar-2026" c={c} sources={sources} sourcesTitle="來源" checked="全國法規資料庫、財政部 2026-11-21 查閱">
+  <TwTaxCalendar client:load />
+</DebtReliefPage>

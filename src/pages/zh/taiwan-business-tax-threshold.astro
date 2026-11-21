@@ -1,0 +1,59 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import TwBusinessTax from '../../components/tools/tw/TwBusinessTax';
+const c = {
+  "introTitle": "小店要不要繳營業稅",
+  "intro": "小規模營業人每月銷售額未達起徵點的，免徵營業稅。自2025年1月1日起，買賣業、製造業、一般飲食業等起徵點為每月10萬元；裝潢、廣告、修理、旅宿、租賃、技術與設計業等為每月5萬元。兼營不同業別時，各業銷售額占各自起徵點的比例合計達100%即須課徵。達起徵點的小規模營業人由國稅局查定課徵，稅率1%。使用統一發票的營業人，徵收率為5%，以銷項稅額減進項稅額計算。",
+  "formulaTitle": "依據",
+  "formulas": [
+    {
+      "title": "起徵點",
+      "body": "財政部令（台財稅字第11304677940號），2025-01-01起：10萬元／5萬元，兼營按比例合計100%。"
+    },
+    {
+      "title": "稅率",
+      "body": "一般稅率5%以上10%以下，由行政院定之（營業稅法第10條），現行徵收率5%（財政部作業手冊）；小規模營業人1%（第13條），查定課徵（第23條）。"
+    },
+    {
+      "title": "未核實",
+      "body": "小規模營業人改用統一發票、不再查定課徵的銷售額標準，本工具未核實。"
+    }
+  ],
+  "howToTitle": "使用方法",
+  "steps": [
+    "選擇是否已使用統一發票。",
+    "輸入各業別的銷售額。",
+    "查看是否達起徵點與稅額。",
+    "實際稅額以國稅局查定通知或申報為準。"
+  ],
+  "faqTitle": "常見問題",
+  "faqs": [
+    {
+      "question": "未達起徵點還要辦稅籍登記嗎？",
+      "answer": "本工具只判斷營業稅是否免徵。登記義務請洽國稅局（0800-000-321）。"
+    },
+    {
+      "question": "輸入的內容會被保存嗎？",
+      "answer": "輸入內容只保存在你的瀏覽器中，不會傳送到伺服器。"
+    }
+  ],
+  "disclaimer": "依法規整理的一般資訊與試算，不是個案稅務諮詢。"
+};
+const sources: [string, string][] = [
+  [
+    "小規模營業人營業稅起徵點",
+    "https://law-out.mof.gov.tw/LawContent.aspx?id=FL006090"
+  ],
+  [
+    "加值型及非加值型營業稅法",
+    "https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=G0340080"
+  ],
+  [
+    "統一發票使用辦法",
+    "https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=G0340082"
+  ]
+];
+---
+<DebtReliefPage slug="taiwan-business-tax-threshold" c={c} sources={sources} sourcesTitle="來源" checked="全國法規資料庫、財政部 2026-11-21 查閱">
+  <TwBusinessTax client:load />
+</DebtReliefPage>

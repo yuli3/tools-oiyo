@@ -1,0 +1,67 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import TwIncomeTax from '../../components/tools/tw/TwIncomeTax';
+const c = {
+  "introTitle": "今年綜合所得稅大概多少",
+  "intro": "綜合所得稅按5%、12%、20%、30%、40%累進課稅。114年度（2026年5月申報）級距為59萬、133萬、266萬、498萬元，免稅額每人97,000元（70歲以上145,500元），標準扣除額單身131,000元、有配偶262,000元，薪資所得特別扣除額每人218,000元。115年度（2027年5月申報）級距調整為61萬、138萬、277萬、519萬元，免稅額101,000元，標準扣除額136,000元，薪資所得特別扣除額227,000元。基本生活費114年度為每人213,000元，115年度尚未公告。",
+  "formulaTitle": "依據",
+  "formulas": [
+    {
+      "title": "稅率",
+      "body": "5%、12%、20%、30%、40%（所得稅法第5條），級距依物價調整，每年公告。本工具逐級計算，與累進差額法結果相同。"
+    },
+    {
+      "title": "115年度金額",
+      "body": "財政部2025-11-27公告：級距61萬／138萬／277萬／519萬元，累進差額0／42,700／153,100／430,100／949,100元；免稅額101,000元、標準扣除額136,000元、薪資與身心障礙特別扣除額227,000元。"
+    },
+    {
+      "title": "基本生活費差額",
+      "body": "基本生活費×人數超過免稅額與扣除額合計時，可減除差額（納稅者權利保護法第4條）。本工具只比較免稅額、標準扣除額與身心障礙扣除額。"
+    }
+  ],
+  "howToTitle": "使用方法",
+  "steps": [
+    "選擇所得年度。",
+    "輸入薪資與其他所得、申報人數。",
+    "查看綜合所得淨額與應納稅額。",
+    "以財政部電子申報繳稅服務網的計算為準。"
+  ],
+  "faqTitle": "常見問題",
+  "faqs": [
+    {
+      "question": "為什麼115年度沒有基本生活費差額？",
+      "answer": "截至2026年11月21日，財政部尚未公告115年度基本生活費。公告後會更新。"
+    },
+    {
+      "question": "2026年9月所得稅法修正有算進去嗎？",
+      "answer": "所得稅法第17條於2026-09-11修正公布，本工具尚未納入其內容。"
+    },
+    {
+      "question": "輸入的內容會被保存嗎？",
+      "answer": "輸入內容只保存在你的瀏覽器中，不會傳送到伺服器。"
+    }
+  ],
+  "disclaimer": "依法規與財政部公告的試算，不是個案稅務諮詢。"
+};
+const sources: [string, string][] = [
+  [
+    "所得稅法",
+    "https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=G0340003"
+  ],
+  [
+    "財政部公告 115年度課稅級距、免稅額及扣除額",
+    "https://www.mof.gov.tw/singlehtml/384fb3077bb349ea973e7fc6f13b6974?cntId=34b463dc8f1b49f29d440d92a6fd5139"
+  ],
+  [
+    "財政部公告 114年度基本生活費",
+    "https://www.mof.gov.tw/singlehtml/384fb3077bb349ea973e7fc6f13b6974?cntId=e14d053486394dc6b28c88aba2912f83"
+  ],
+  [
+    "賦稅署 114年度綜合所得稅結算申報資料",
+    "https://www.dot.gov.tw/singlehtml/ch26?cntId=81537cf45d0c48d883c36f989a5f429b"
+  ]
+];
+---
+<DebtReliefPage slug="taiwan-income-tax-calculator" c={c} sources={sources} sourcesTitle="來源" checked="全國法規資料庫、財政部 2026-11-21 查閱">
+  <TwIncomeTax client:load />
+</DebtReliefPage>

@@ -2093,6 +2093,88 @@
           "eq": 1300
         }
       ]
+    },
+    {
+      "skill": "oiyo-tw-tax-guide",
+      "id": "tw-annual-2026",
+      "ask": "今年綜所稅結算申報到哪天？",
+      "run": [
+        "calendar",
+        {
+          "year": 2026
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.events",
+          "has": {
+            "id": "annual",
+            "date": "2026-06-01"
+          }
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-tw-tax-guide",
+      "id": "tw-pit-114",
+      "ask": "單身，114年度薪資100萬元，綜所稅多少？",
+      "run": [
+        "incometax",
+        {
+          "year": 2025,
+          "salary": 1000000
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.taxable",
+          "eq": 554000
+        },
+        {
+          "path": "result.tax",
+          "eq": 27700
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-tw-tax-guide",
+      "id": "tw-qizhengdian",
+      "ask": "我開設計工作室，每月營業額5萬元，要繳營業稅嗎？",
+      "run": [
+        "businesstax",
+        {
+          "serviceSales": 50000
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.status",
+          "eq": "small-scale"
+        },
+        {
+          "path": "result.tax",
+          "eq": 500
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-tw-tax-guide",
+      "id": "tw-latefee",
+      "ask": "10萬元稅款晚繳3天，滯納金多少？",
+      "run": [
+        "latefee",
+        {
+          "tax": 100000,
+          "due": "2026-06-01",
+          "paid": "2026-06-04"
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.fee",
+          "eq": 1000
+        }
+      ]
     }
   ],
   "boundaries": {
@@ -2127,7 +2209,12 @@
       "as your tax adviser",
       "I am a chartered tax adviser",
       "I will deal with HMRC for you",
-      "AI tax adviser"
+      "AI tax adviser",
+      "我是記帳士",
+      "作為您的會計師",
+      "我幫您申報",
+      "AI記帳士",
+      "AI會計師"
     ]
   }
 }
