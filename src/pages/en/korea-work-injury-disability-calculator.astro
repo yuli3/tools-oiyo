@@ -1,0 +1,33 @@
+---
+// Korea work-injury disability benefit calculator, English (2026-11-21, plan-20 #15). Engine: lib/kr-injury-disability-2026.ts (same as /ko/industrial-injury-disability-calculator/).
+import Layout from '../../components/Layout.astro';
+import ToolShell from '../../components/ToolShell.astro';
+import DisabilityBenefitEn from '../../components/tools/expat/DisabilityBenefitEn';
+import { DISABILITY_AS_OF } from '../../lib/kr-injury-disability-2026';
+
+const title = 'Korea work injury disability benefit calculator 2026 — pension or lump sum by grade';
+const description = 'For workers injured on the job in Korea, including foreign workers: estimate the disability pension and lump sum for grades 1 to 14 from your average daily wage, see when the pension pays more, the pension advance and the 5-year claim limit.';
+const url = 'https://tools.oiyo.net/en/korea-work-injury-disability-calculator/';
+const faqs = [
+  { q: 'Do foreign workers get Korean work injury benefits?', a: 'Yes. Industrial accident insurance covers workers regardless of nationality. Claims go to KCOMWEL (1588-0075).' },
+  { q: 'Pension or lump sum?', a: 'Grades 1 to 3 get a pension only, grades 8 to 14 a lump sum only. Grades 4 to 7 can choose: compare the lump sum with how many years of pension it equals. If you plan to leave Korea, ask KCOMWEL how the pension is paid abroad before you choose.' },
+  { q: 'What if my wage was very low or very high?', a: 'The average daily wage is kept between the 2026 minimum of KRW 82,560 and maximum of KRW 268,299 (Ministry of Employment and Labor Notice 2025-84).' },
+  { q: 'I disagree with my grade.', a: 'Request a review from KCOMWEL within 90 days of learning of the decision, then a re-examination by the Industrial Accident Compensation Insurance Review Committee. A lawsuit is also possible.' },
+];
+const schema = [
+  { '@context': 'https://schema.org', '@type': 'WebApplication', name: title, url, inLanguage: 'en', description, applicationCategory: 'FinanceApplication', operatingSystem: 'All', isAccessibleForFree: true },
+  { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) },
+];
+---
+<Layout title={title} description={description} locale="en" canonicalURL={url} keywords={['Korea work injury compensation', 'Korea industrial accident disability grade', 'KCOMWEL disability pension', 'foreign worker injury Korea', 'Korea disability lump sum']}>
+  <ToolShell title="Korea work injury disability benefit" description={description}>
+    <p slot="meta" class="text-sm font-semibold">South Korea · checked {DISABILITY_AS_OF}</p>
+    <DisabilityBenefitEn client:load />
+    <section class="space-y-3 border-t border-border pt-4">
+      <h2 class="text-lg font-semibold">Questions</h2>
+      {faqs.map((f) => (<details class="rounded-md border border-border p-3"><summary class="min-h-11 cursor-pointer text-sm font-semibold">{f.q}</summary><p class="mt-2 text-sm leading-relaxed">{f.a}</p></details>))}
+      <p class="text-xs text-muted-foreground">Sources: Industrial Accident Compensation Insurance Act Art. 36(7), 57 and Annex 2, 112 (law.go.kr); Ministry of Employment and Labor Notice 2025-84. Information only, not advice or representation. Also: <a class="underline" href="/en/korea-foreign-resident-guide/">Living in Korea: deadlines and rights</a> · Korean version: <a class="underline" href="/ko/industrial-injury-disability-calculator/">산재 장해급여 계산기</a>.</p>
+    </section>
+  </ToolShell>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+</Layout>
