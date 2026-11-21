@@ -1,0 +1,59 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import EsScope from '../../components/tools/es/EsScope';
+const c = {
+  "introTitle": "Quién puede actuar por ti ante Hacienda",
+  "intro": "Puedes hacer tus trámites tú mismo o mediante un representante, que puede ser un asesor fiscal (LGT art. 46). Los colegios y asociaciones profesionales pueden firmar acuerdos de colaboración social con la AEAT para presentar declaraciones de sus clientes (art. 92). La AEAT ofrece ayuda gratuita por teléfono y con cita previa, y servicios como Renta WEB. Esta web explica las normas y hace estimaciones con su fuente, pero no te representa ni presenta nada por ti.",
+  "formulaTitle": "Normas",
+  "formulas": [
+    {
+      "title": "Representación",
+      "body": "LGT art. 46: representante voluntario, que puede ser asesor fiscal; para recurrir o renunciar a derechos hay que acreditarlo."
+    },
+    {
+      "title": "Colaboración social",
+      "body": "LGT art. 92: acuerdos con colegios y asociaciones profesionales para la presentación electrónica en nombre de terceros."
+    }
+  ],
+  "howToTitle": "Qué hacer",
+  "steps": [
+    "Para dudas generales, llama al 91 333 5 333 o pide cita previa.",
+    "Para la Renta, usa Renta WEB con Cl@ve o tu número de referencia.",
+    "Si contratas a un profesional, comprueba su colegiación o asociación.",
+    "Si recibes una notificación, mira el plazo para recurrir."
+  ],
+  "faqTitle": "Preguntas frecuentes",
+  "faqs": [
+    {
+      "question": "¿Esta web me presenta la declaración?",
+      "answer": "No. Explica las reglas y hace estimaciones; no presenta declaraciones ni recursos y no te representa."
+    },
+    {
+      "question": "¿Me hace la Renta la AEAT por teléfono?",
+      "answer": "La página de asistencia de la AEAT indica que ese servicio de ayuda no confecciona la declaración de la Renta. Consulta en Renta WEB las opciones de ayuda de cada campaña."
+    }
+  ],
+  "disclaimer": "Información general a partir de la LGT y de la web de la AEAT."
+};
+const sources: [string, string][] = [
+  [
+    "BOE — Ley 58/2003 General Tributaria (art. 46, 92)",
+    "https://www.boe.es/buscar/act.php?id=BOE-A-2003-23186"
+  ],
+  [
+    "AEAT — Información y cita previa (GC29)",
+    "https://sede.agenciatributaria.gob.es/Sede/procedimientoini/GC29.shtml"
+  ],
+  [
+    "AEAT — Teléfonos de interés",
+    "https://sede.agenciatributaria.gob.es/Sede/contacta-nosotros/telefonos-interes.html"
+  ],
+  [
+    "AEAT — Renta 2025",
+    "https://sede.agenciatributaria.gob.es/Sede/Renta.html"
+  ]
+];
+---
+<DebtReliefPage slug="quien-puede-asesorar-impuestos" c={c} sources={sources} sourcesTitle="Fuentes" checked="BOE y AEAT consultados el 2026-11-21">
+  <EsScope client:load />
+</DebtReliefPage>

@@ -1,0 +1,51 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import EsAmortizacion from '../../components/tools/es/EsAmortizacion';
+const c = {
+  "introTitle": "Cuánto puedes amortizar cada año",
+  "intro": "La tabla oficial del artículo 12 de la Ley del Impuesto sobre Sociedades fija para cada elemento un coeficiente lineal máximo y un periodo máximo: por ejemplo, equipos para procesos de información 25 % y 8 años, elementos de transporte 16 % y 14 años, mobiliario 10 % y 20 años, edificios industriales 3 % y 68 años. Puedes aplicar cualquier coeficiente entre el máximo y el que resulta del periodo máximo. Los elementos nuevos de hasta 300 € por unidad pueden amortizarse libremente hasta 25.000 € por periodo. La misma tabla la usan los autónomos en estimación directa.",
+  "formulaTitle": "Reglas utilizadas",
+  "formulas": [
+    {
+      "title": "Tabla oficial",
+      "body": "Coeficiente lineal máximo y periodo máximo por elemento (LIS art. 12.1.a). Coeficiente mínimo = 1 / periodo máximo."
+    },
+    {
+      "title": "Primer año",
+      "body": "En proporción a los días desde la puesta en funcionamiento."
+    },
+    {
+      "title": "Libertad de amortización",
+      "body": "Elementos nuevos de valor unitario hasta 300 €, con un límite de 25.000 € por periodo (LIS art. 12.3.e). Empresas de reducida dimensión con aumento de plantilla: art. 102.1, no calculado."
+    }
+  ],
+  "howToTitle": "Cómo usarla",
+  "steps": [
+    "Elige el elemento.",
+    "Introduce el precio sin IVA y la fecha de puesta en funcionamiento.",
+    "Ajusta el coeficiente dentro del intervalo.",
+    "Revisa el cuadro año a año."
+  ],
+  "faqTitle": "Preguntas frecuentes",
+  "faqs": [
+    {
+      "question": "¿Y si mi elemento no aparece?",
+      "answer": "La herramienta incluye los elementos más comunes de la tabla. Consulta la tabla completa del artículo 12.1.a en el BOE."
+    },
+    {
+      "question": "¿Se guardan mis datos?",
+      "answer": "Los datos que introduces se quedan en tu navegador y no se envían a ningún servidor."
+    }
+  ],
+  "disclaimer": "Cálculo a partir de la tabla oficial del BOE, no es asesoramiento contable personalizado."
+};
+const sources: [string, string][] = [
+  [
+    "BOE — Ley 27/2014 del Impuesto sobre Sociedades (art. 12, 102)",
+    "https://www.boe.es/buscar/act.php?id=BOE-A-2014-12328"
+  ]
+];
+---
+<DebtReliefPage slug="amortizacion-tablas-oficiales" c={c} sources={sources} sourcesTitle="Fuentes" checked="BOE consultado el 2026-11-21">
+  <EsAmortizacion client:load />
+</DebtReliefPage>
