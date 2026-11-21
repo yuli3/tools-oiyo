@@ -4,6 +4,7 @@ import { DEPOSIT_AS_OF, DEPOSIT_NOTE, GROUNDS, depositCheck, type Ground } from 
 import ChoiceChips from "../payroll/ChoiceChips";
 import DateField from "../payroll/DateField";
 import NumberField from "../payroll/NumberField";
+import CurveShell, { krwShort, plusMonths } from "../viz/CurveShell";
 import { track } from "../viz/track";
 
 const TOOL_ID = "court-deposit-interest-calculator";
@@ -13,9 +14,23 @@ const won = (n: number) => `${Math.round(n).toLocaleString("ko-KR")}원`;
 export default function CourtDeposit() {
   const [x, setX] = useState({ amount: 3000, deposited: "2025-11-21", withdrawn: "2026-11-21", ground: "refused" as Ground, criminal: false });
   const upd = (p: Partial<typeof x>) => { setX({ ...x, ...p }); track("tool_calculate", { tool_id: TOOL_ID }, true); };
-  const r = depositCheck({ amount: x.amount * 10_000, deposited: x.deposited || undefined, withdrawn: x.withdrawn || undefined, ground: x.ground, criminal: x.criminal });
+  const calc = (withdrawn?: string) => depositCheck({ amount: x.amount * 10_000, deposited: x.deposited || undefined, withdrawn, ground: x.ground, criminal: x.criminal });
+  const r = calc(x.withdrawn || undefined);
   return (
-    <div className="space-y-5">
+    <CurveShell
+      toolId={TOOL_ID}
+      lang="ko"
+      currency="KRW"
+      curve={{
+        title: "맡겨 둔 기간에 따라 공탁금 이자가 이렇게 늘어요", caption: "공탁한 날부터 찾는 날까지, 같은 금액과 이율로 다시 계산해요.",
+        xLabel: "맡긴 기간", yLabel: "이자", min: 0, max: 120, step: 1, current: Math.round(r.days / 30.44),
+        f: (m) => (x.deposited ? calc(plusMonths(x.deposited, m)).interest : 0),
+        formatX: (n: number) => `${Math.round(n)}개월`, formatY: krwShort,
+        onPick: (m) => x.deposited && upd({ withdrawn: plusMonths(x.deposited, m) }),
+      }}
+    >
+      {(mode) => (
+    <>
       <div className="grid gap-3 sm:grid-cols-2">
         <NumberField label="공탁금" suffix="만 원" value={x.amount} onChange={(v) => upd({ amount: Math.max(0, v) })} />
         <DateField label="공탁한 날" value={x.deposited} onChange={(v) => upd({ deposited: v })} />
@@ -26,9 +41,11 @@ export default function CourtDeposit() {
       <div className="rounded-md border border-border bg-card px-4 py-4 text-sm" aria-live="polite">
         <p className="text-lg font-semibold text-foreground">공탁금 이자 약 {won(r.interest)} ({r.days}일, 연 {Math.round(r.rate * 10000) / 100}%)</p>
         {r.lapseOn && <p className="mt-1 text-foreground">찾지 않으면 <span className="font-mono">{r.lapseOn}</span>쯤 청구권이 없어져요. {r.lapseRule}</p>}
-        <ul className="mt-2 space-y-2">{r.items.map((i, k) => <li key={k} className={TONE[i.tone]}>{i.text} <span className="text-xs text-muted-foreground">({i.cite})</span></li>)}</ul>
+        <ul className="mt-2 space-y-2">{r.items.map((i, k) => <li key={k} className={TONE[i.tone]}>{i.text}{mode === "expert" && <span className="text-xs text-muted-foreground"> ({i.cite})</span>}</li>)}</ul>
       </div>
       <p className="text-xs leading-5 text-muted-foreground">{DEPOSIT_NOTE} 기준일 {DEPOSIT_AS_OF}. 입력값은 서버로 보내지 않아요.</p>
-    </div>
+    </>
+      )}
+    </CurveShell>
   );
 }

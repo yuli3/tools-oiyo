@@ -3,6 +3,7 @@ import { useState } from "react";
 import { CORP_TAX_AS_OF, CORP_TAX_NOTE, corpTax, type CorpTaxInput } from "../../../lib/kr-corp-tax-2026";
 import ChoiceChips from "../payroll/ChoiceChips";
 import NumberField from "../payroll/NumberField";
+import CurveShell, { krwShort } from "../viz/CurveShell";
 import { track } from "../viz/track";
 
 const TOOL_ID = "corporate-tax-adjustment-calculator";
@@ -27,7 +28,6 @@ const FIELDS: { key: ManKey; label: string; expert?: boolean }[] = [
 
 export default function CorpTaxAdjustment() {
   const [x, setX] = useState<CorpTaxInput>({ size: "sme", profit: 5 * 10 ** 8, revenue: 150 * 10 ** 8, entertainment: 8000 * MAN, generalDonation: 1000 * MAN, months: 12 });
-  const [expert, setExpert] = useState(false);
   const r = corpTax(x);
   const set = (k: ManKey, v: number) => {
     setX({ ...x, [k]: Math.max(0, v) * MAN });
@@ -47,16 +47,28 @@ export default function CorpTaxAdjustment() {
     ["지방소득세(어림)", r.local],
   ];
   return (
-    <div className="space-y-5">
+    <CurveShell
+      toolId={TOOL_ID}
+      lang="ko"
+      currency="KRW"
+      curve={{
+        title: "당기순이익에 따라 낼 법인세가 이렇게 바뀌어요", caption: "다른 입력은 그대로 두고 순이익만 바꿔 다시 계산해요. 지방소득세는 빼고 봐요.",
+        xLabel: "당기순이익", yLabel: "낼 법인세", min: 0, max: Math.max(100_000, Math.ceil(((x.profit ?? 0) / MAN) * 2)), step: 1000, current: (x.profit ?? 0) / MAN,
+        f: (v) => corpTax({ ...x, profit: v * MAN }).due,
+        formatX: (n: number) => krwShort(n * MAN), formatY: krwShort,
+        onPick: (v) => set("profit", v),
+      }}
+    >
+      {(mode) => (
+    <>
       <div className="flex flex-wrap gap-3">
         <ChoiceChips<"sme" | "general"> legend="회사 규모" value={x.size} options={[{ value: "sme", label: "중소기업" }, { value: "general", label: "그 밖의 법인" }]} onChange={(v) => setX({ ...x, size: v })} />
-        <ChoiceChips<"easy" | "expert"> legend="보기" value={expert ? "expert" : "easy"} options={[{ value: "easy", label: "쉽게" }, { value: "expert", label: "전문가" }]} onChange={(v) => setExpert(v === "expert")} />
       </div>
       <div className="grid gap-3 sm:grid-cols-2">
-        {FIELDS.filter((f) => expert || !f.expert).map((f) => (
+        {FIELDS.filter((f) => mode === "expert" || !f.expert).map((f) => (
           <NumberField key={f.key} label={f.label} suffix="만 원" value={Math.round((x[f.key] ?? 0) / MAN)} onChange={(v) => set(f.key, v)} />
         ))}
-        {expert && <NumberField label="사업연도 월수" suffix="개월" value={x.months ?? 12} onChange={(v) => setX({ ...x, months: Math.min(12, Math.max(1, v)) })} />}
+        {mode === "expert" && <NumberField label="사업연도 월수" suffix="개월" value={x.months ?? 12} onChange={(v) => setX({ ...x, months: Math.min(12, Math.max(1, v)) })} />}
       </div>
       <div className="rounded-md border border-border bg-card px-4 py-4" aria-live="polite">
         <p className="text-lg font-semibold text-foreground">
@@ -77,6 +89,8 @@ export default function CorpTaxAdjustment() {
         </table>
       </div>
       <p className="text-xs leading-5 text-muted-foreground">{CORP_TAX_NOTE} 기준일 {CORP_TAX_AS_OF}. 입력한 숫자는 서버로 보내지 않아요.</p>
-    </div>
+    </>
+      )}
+    </CurveShell>
   );
 }

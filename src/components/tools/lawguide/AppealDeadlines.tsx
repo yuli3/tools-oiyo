@@ -3,7 +3,10 @@ import { useState } from "react";
 import { APPEAL_AS_OF, APPEAL_NOTE, APPEAL_RULES, appealsFrom } from "../../../lib/kr-appeal-deadlines-2026";
 import type { DomainId } from "../../../lib/kr-expert-guide-2026";
 import DateField from "../payroll/DateField";
+import DeadlineChart from "../viz/DeadlineChart";
+import ModeToggle from "../viz/ModeToggle";
 import { track } from "../viz/track";
+import { useAdvisoryMode } from "../viz/useAdvisoryMode";
 
 const TOOL_ID = "appeal-deadline-calculator";
 const todayIso = () => {
@@ -17,9 +20,14 @@ export default function AppealDeadlines() {
   const today = todayIso();
   const [from, setFrom] = useState(today);
   const [domain, setDomain] = useState<DomainId | "">("");
+  const [mode, setMode] = useAdvisoryMode(TOOL_ID);
   const list = from ? appealsFrom(from, today, domain || undefined) : [];
+  const upcoming = list.filter((a) => (a.daysLeft ?? 0) >= 0);
+  const shown = mode === "easy" ? upcoming.slice(0, 6) : list;
+  const rows = upcoming.slice(0, 8).map((a) => ({ id: a.key, label: a.label, due: a.due, daysLeft: a.daysLeft ?? 0, cite: a.cite }));
   return (
     <div className="space-y-5">
+      <ModeToggle mode={mode} onChange={setMode} />
       <DateField label="처분·결정·통지를 받은 날(안 날)" value={from} onChange={(v) => { setFrom(v); track("tool_calculate", { tool_id: TOOL_ID }, true); }} />
       <fieldset>
         <legend className="text-sm font-medium text-muted-foreground">분야</legend>
@@ -38,7 +46,7 @@ export default function AppealDeadlines() {
         </div>
       </fieldset>
       <ul className="space-y-2" aria-live="polite">
-        {list.map((a) => (
+        {shown.map((a) => (
           <li key={a.key} className="rounded-md border border-border bg-background p-3 text-sm">
             <div className="flex flex-wrap items-baseline justify-between gap-x-3">
               <span className="font-semibold text-foreground">{a.label}</span>
@@ -46,10 +54,12 @@ export default function AppealDeadlines() {
                 {a.due}까지 · {left(a.daysLeft)}{a.shifted ? " · 휴일이라 다음 날로" : ""}
               </span>
             </div>
-            <p className="mt-1 text-xs text-muted-foreground">{a.area} · {a.topic} · {a.period} · {a.cite}</p>
+            <p className="mt-1 text-xs text-muted-foreground">{a.area} · {a.topic} · {a.period}{mode === "expert" ? ` · ${a.cite}` : ""}</p>
           </li>
         ))}
       </ul>
+      {mode === "easy" && list.length > shown.length && <p className="text-xs text-muted-foreground">가까운 기한 {shown.length}개만 보여요. 전문가 모드에서 지난 기한까지 {list.length}개 모두와 근거 조문을 볼 수 있어요.</p>}
+      {rows.length > 0 && <DeadlineChart title="가까운 불복 기한까지 남은 날" caption="휴일이면 다음 날로 미룬 날짜예요. 가까운 8개만 그려요." rows={rows} />}
       <p className="text-xs leading-5 text-muted-foreground">{APPEAL_NOTE} 기준일 {APPEAL_AS_OF}. 입력한 날짜는 서버로 보내지 않아요.</p>
     </div>
   );

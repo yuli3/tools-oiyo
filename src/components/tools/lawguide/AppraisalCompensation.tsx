@@ -3,6 +3,7 @@ import { useState } from "react";
 import { APPRAISAL_AS_OF, APPRAISAL_NOTE, businessLoss, costApproach, incomeApproach, landCompensation, reconcile, relocationAllowance, salesComparison } from "../../../lib/kr-appraisal-2026";
 import ChoiceChips from "../payroll/ChoiceChips";
 import NumberField from "../payroll/NumberField";
+import CurveShell, { krwShort } from "../viz/CurveShell";
 import { track } from "../viz/track";
 
 const TOOL_ID = "appraisal-compensation-calculator";
@@ -15,7 +16,7 @@ const man = (n: number) => {
 type Mode = "three" | "comp";
 
 export default function AppraisalCompensation() {
-  const [mode, setMode] = useState<Mode>("comp");
+  const [kind, setKind] = useState<Mode>("comp");
   const [cost, setCost] = useState({ rc: 50000, life: 40, age: 10, land: 30000 });
   const [cmp, setCmp] = useState({ area: 100, price: 100000, cArea: 100, time: 2, factor: 0 });
   const [inc, setInc] = useState({ gross: 6000, vacancy: 5, expenses: 700, cap: 5 });
@@ -31,20 +32,32 @@ export default function AppraisalCompensation() {
   const l = landCompensation({ officialPrice: land.official * MAN, area: land.area, landChange: land.change / 100, individual: 1 + land.individual / 100, other: 1 + land.other / 100 });
   const b = businessLoss({ annualProfit: biz.profit * MAN, kind: biz.kind, months: biz.months, fixedCosts: biz.fixed * MAN, moving: biz.moving * MAN, saleLoss: biz.saleLoss * MAN });
   const h = relocationAllowance(home.spending * MAN, home.tenant);
+  const compAt = (area: number) => landCompensation({ officialPrice: land.official * MAN, area, landChange: land.change / 100, individual: 1 + land.individual / 100, other: 1 + land.other / 100 }).value + b.total + h.amount;
+  const valueAt = (cap: number) => reconcile([{ label: "원가", value: c.value, weight: w.cost }, { label: "비교", value: s.value, weight: w.cmp }, { label: "수익", value: incomeApproach({ grossIncome: inc.gross * MAN, vacancy: inc.vacancy / 100, expenses: inc.expenses * MAN, capRate: cap / 100 }).value, weight: w.inc }]).value;
+  const curve = kind === "comp"
+    ? { title: "편입 면적에 따라 보상 합계가 이렇게 바뀌어요", caption: "영업손실·주거이전비는 그대로, 토지 면적만 바꿔요.", xLabel: "편입 면적", yLabel: "보상 합계", min: 0, max: Math.max(1000, land.area * 3), step: 10, current: land.area, f: compAt, formatX: (n: number) => `${Math.round(n).toLocaleString("ko-KR")}㎡`, onPick: (v: number) => setLand({ ...land, area: v }) }
+    : { title: "환원율에 따라 시산가액 조정 결과가 이렇게 바뀌어요", caption: "수익방식만 환원율이 바뀌고, 원가·비교방식과 가중치는 그대로예요.", xLabel: "환원율", yLabel: "조정 가액", min: 2, max: 12, step: 0.1, current: inc.cap, f: valueAt, formatX: (n: number) => `${n}%`, onPick: (v: number) => setInc({ ...inc, cap: Math.round(v * 10) / 10 }) };
   const box = "rounded-md border border-border bg-card px-4 py-4 text-sm";
   const nf = (label: string, suffix: string, value: number, on: (v: number) => void, step = 1) => <NumberField label={label} suffix={suffix} step={step} value={value} onChange={(v) => { on(v); tick(); }} />;
   return (
-    <div className="space-y-5">
-      <ChoiceChips<Mode> legend="무엇을 볼까요?" value={mode} options={[{ value: "comp", label: "수용 보상 어림" }, { value: "three", label: "감정평가 3방식 원리" }]} onChange={(v) => { setMode(v); tick(); }} />
-      {mode === "comp" ? (
+    <CurveShell
+      toolId={TOOL_ID}
+      lang="ko"
+      currency="KRW"
+      curve={{ ...curve, formatY: krwShort, onPick: (v: number) => { curve.onPick(v); tick(); } }}
+    >
+      {(mode) => (
+    <>
+      <ChoiceChips<Mode> legend="무엇을 볼까요?" value={kind} options={[{ value: "comp", label: "수용 보상 어림" }, { value: "three", label: "감정평가 3방식 원리" }]} onChange={(v) => { setKind(v); tick(); }} />
+      {kind === "comp" ? (
         <>
           <fieldset className="grid gap-3 sm:grid-cols-2">
             <legend className="mb-2 text-sm font-semibold text-foreground">토지</legend>
             {nf("비교표준지 공시지가(㎡당)", "만 원", land.official, (v) => setLand({ ...land, official: Math.max(0, v) }))}
             {nf("편입 면적", "㎡", land.area, (v) => setLand({ ...land, area: Math.max(0, v) }))}
             {nf("공시기준일 이후 지가변동률", "%", land.change, (v) => setLand({ ...land, change: v }), 0.1)}
-            {nf("개별요인 보정(모양·도로 등, ±)", "%", land.individual, (v) => setLand({ ...land, individual: v }), 1)}
-            {nf("그 밖의 요인 보정(±)", "%", land.other, (v) => setLand({ ...land, other: v }), 1)}
+            {mode === "expert" && nf("개별요인 보정(모양·도로 등, ±)", "%", land.individual, (v) => setLand({ ...land, individual: v }), 1)}
+            {mode === "expert" && nf("그 밖의 요인 보정(±)", "%", land.other, (v) => setLand({ ...land, other: v }), 1)}
           </fieldset>
           <fieldset className="grid gap-3 sm:grid-cols-2">
             <legend className="mb-2 text-sm font-semibold text-foreground">영업손실</legend>
@@ -97,11 +110,11 @@ export default function AppraisalCompensation() {
             {nf("연 운영경비", "만 원", inc.expenses, (v) => setInc({ ...inc, expenses: Math.max(0, v) }))}
             {nf("환원율", "%", inc.cap, (v) => setInc({ ...inc, cap: Math.max(0, v) }), 0.1)}
           </fieldset>
-          <div className="grid gap-3 sm:grid-cols-3">
+          {mode === "expert" && <div className="grid gap-3 sm:grid-cols-3">
             {nf("원가 가중치", "", w.cost, (v) => setW({ ...w, cost: Math.max(0, v) }))}
             {nf("비교 가중치", "", w.cmp, (v) => setW({ ...w, cmp: Math.max(0, v) }))}
             {nf("수익 가중치", "", w.inc, (v) => setW({ ...w, inc: Math.max(0, v) }))}
-          </div>
+          </div>}
           <div className={box} aria-live="polite">
             <p className="text-lg font-semibold text-foreground">시산가액 조정 {man(r.value)} (방식 간 차이 {r.spread}%)</p>
             <ul className="mt-2 space-y-1 text-foreground">
@@ -114,6 +127,8 @@ export default function AppraisalCompensation() {
         </>
       )}
       <p className="text-xs leading-5 text-muted-foreground">{APPRAISAL_NOTE} 감정평가서가 아니에요. 기준일 {APPRAISAL_AS_OF}. 입력값은 서버로 보내지 않아요.</p>
-    </div>
+    </>
+      )}
+    </CurveShell>
   );
 }

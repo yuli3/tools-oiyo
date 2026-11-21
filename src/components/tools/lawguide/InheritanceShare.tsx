@@ -4,6 +4,7 @@ import { INHERIT_AS_OF, INHERIT_NOTE, reserveShortfall, type Family } from "../.
 import ChoiceChips from "../payroll/ChoiceChips";
 import DateField from "../payroll/DateField";
 import NumberField from "../payroll/NumberField";
+import CurveShell, { krwShort } from "../viz/CurveShell";
 import { track } from "../viz/track";
 
 const TOOL_ID = "inheritance-share-calculator";
@@ -24,15 +25,28 @@ export default function InheritanceShare() {
   const [thirdGifts, setThirdGifts] = useState(0);
   const [thirdBequests, setThirdBequests] = useState(0);
   const [death, setDeath] = useState("2026-06-01");
-  const [expert, setExpert] = useState(false);
   const tick = () => track("tool_calculate", { tool_id: TOOL_ID }, true);
   const toWon = (m: Record<string, number>) => Object.fromEntries(Object.entries(m).map(([k, v]) => [k, v * MAN]));
-  const r = reserveShortfall({ family: fam, estate: estate * MAN, debts: debts * MAN, gifts: toWon(gifts), bequests: toWon(bequests), thirdGifts: thirdGifts * MAN, thirdBequests: thirdBequests * MAN, death });
+  const calc = (est: number) => reserveShortfall({ family: fam, estate: est * MAN, debts: debts * MAN, gifts: toWon(gifts), bequests: toWon(bequests), thirdGifts: thirdGifts * MAN, thirdBequests: thirdBequests * MAN, death });
+  const r = calc(estate);
   const units = r.rows.reduce((s, h) => s + (h.kind === "spouse" ? 3 : 2), 0);
   const frac = (kind: string) => { const nu = kind === "spouse" ? 3 : 2; const g = gcd(nu, units); return `${nu / g}/${units / g}`; };
   const setF = (p: Partial<Family>) => { setFam({ ...fam, ...p }); tick(); };
   return (
-    <div className="space-y-5">
+    <CurveShell
+      toolId={TOOL_ID}
+      lang="ko"
+      currency="KRW"
+      curve={{
+        title: "남긴 재산에 따라 유류분 부족액이 이렇게 바뀌어요", caption: "생전 증여는 그대로 두고 남긴 재산만 바꿔요. 재산이 늘면 부족액이 줄어요.",
+        xLabel: "남긴 재산", yLabel: "유류분 부족 합계", min: 0, max: Math.max(50000, estate * 3), step: 500, current: estate,
+        f: (v) => calc(v).totalShortfall,
+        formatX: (n: number) => krwShort(n * MAN), formatY: krwShort,
+        onPick: (v) => { setEstate(v); tick(); },
+      }}
+    >
+      {(mode) => (
+    <>
       <div className="grid gap-3 sm:grid-cols-2">
         <ChoiceChips<"yes" | "no"> legend="배우자가 있나요?" value={fam.spouse ? "yes" : "no"} options={[{ value: "yes", label: "있어요" }, { value: "no", label: "없어요" }]} onChange={(v) => setF({ spouse: v === "yes" })} />
         <NumberField label="살아 있는 자녀 수" suffix="명" value={fam.children} onChange={(v) => setF({ children: Math.max(0, Math.floor(v)) })} />
@@ -46,12 +60,12 @@ export default function InheritanceShare() {
         {r.rows.map((h) => (
           <div key={h.id} className="grid gap-2 sm:grid-cols-2">
             <NumberField label={`${h.label} 생전 증여`} suffix="만 원" value={gifts[h.id] ?? 0} onChange={(v) => { setGifts({ ...gifts, [h.id]: Math.max(0, v) }); tick(); }} />
-            {expert && <NumberField label={`${h.label} 유증`} suffix="만 원" value={bequests[h.id] ?? 0} onChange={(v) => { setBequests({ ...bequests, [h.id]: Math.max(0, v) }); tick(); }} />}
+            {mode === "expert" && <NumberField label={`${h.label} 유증`} suffix="만 원" value={bequests[h.id] ?? 0} onChange={(v) => { setBequests({ ...bequests, [h.id]: Math.max(0, v) }); tick(); }} />}
           </div>
         ))}
       </fieldset>
-      <button type="button" className="min-h-11 text-sm underline" onClick={() => setExpert(!expert)}>{expert ? "간단히 보기" : "유증·제3자 증여·사망일까지 넣기"}</button>
-      {expert && (
+      {mode === "easy" && <p className="text-xs text-muted-foreground">유증·제3자 증여·사망일은 전문가 모드에서 넣어요.</p>}
+      {mode === "expert" && (
         <div className="grid gap-3 sm:grid-cols-2">
           <NumberField label="상속인 아닌 사람에게 1년 안에 한 증여" suffix="만 원" value={thirdGifts} onChange={(v) => { setThirdGifts(Math.max(0, v)); tick(); }} />
           <NumberField label="상속인 아닌 사람에게 한 유증" suffix="만 원" value={thirdBequests} onChange={(v) => { setThirdBequests(Math.max(0, v)); tick(); }} />
@@ -86,6 +100,8 @@ export default function InheritanceShare() {
         )}
       </div>
       <p className="text-xs leading-5 text-muted-foreground">{INHERIT_NOTE} 남은 재산은 법정상속분대로 나눈다고 봤어요. 기준일 {INHERIT_AS_OF}. 입력값은 서버로 보내지 않아요.</p>
-    </div>
+    </>
+      )}
+    </CurveShell>
   );
 }

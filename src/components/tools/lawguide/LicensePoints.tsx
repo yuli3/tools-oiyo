@@ -4,6 +4,7 @@ import { POINTS_AS_OF, POINTS_NOTE, VIOLATIONS, accidentPoints, licenseStatus, s
 import ChoiceChips from "../payroll/ChoiceChips";
 import DateField from "../payroll/DateField";
 import NumberField from "../payroll/NumberField";
+import CurveShell, { krwShort, plusDays } from "../viz/CurveShell";
 import { track } from "../viz/track";
 
 const TOOL_ID = "license-points-calculator";
@@ -16,7 +17,7 @@ type Ev = { date: string; kind: ViolationId | "accident"; school: boolean; serio
 
 export default function LicensePoints() {
   const today = todayIso();
-  const [mode, setMode] = useState<Mode>("points");
+  const [kind, setKind] = useState<Mode>("points");
   const [events, setEvents] = useState<Ev[]>([
     { date: "2026-03-15", kind: "speed40", school: false, serious: 0, minor: 0, death: 0, both: false },
     { date: "2026-10-02", kind: "signal", school: true, serious: 0, minor: 0, death: 0, both: false },
@@ -28,12 +29,23 @@ export default function LicensePoints() {
   const pts = (e: Ev) => (e.kind === "accident" ? accidentPoints({ death: e.death, serious: e.serious, minor: e.minor, bothFault: e.both }) : violationPoints(e.kind, e.school));
   const st = licenseStatus(events.map((e) => ({ date: e.date, points: pts(e) })), today, { education: edu, mileage });
   const s = suspensionToSurcharge({ months: sc.months, days: sc.days, perDay: sc.perDay * 10_000 });
+  const evPts = events.map((e) => ({ date: e.date, points: pts(e) }));
+  const curve = kind === "points"
+    ? { title: "오늘부터 날이 지나면 최근 1년 누산점수가 이렇게 줄어요", caption: "새 위반이 없다고 보고, 1년이 지난 벌점은 빠져요. 121점이면 취소 기준이에요.", xLabel: "오늘부터", yLabel: "최근 1년 누산점수", min: 0, max: 730, step: 5, current: 0, f: (v: number) => licenseStatus(evPts, plusDays(today, v), { education: edu, mileage }).cumulative.y1, formatX: (n: number) => `${Math.round(n)}일 뒤`, formatY: (n: number) => `${Math.round(n)}점`, onPick: () => {}, marks: [{ at: 365, label: "1년" }] }
+    : { title: "영업정지 기간에 따라 과징금이 이렇게 바뀌어요", caption: "1개월 = 30일, 같은 1일당 금액으로 계산해요.", xLabel: "영업정지", yLabel: "과징금", min: 0, max: 12, step: 0.5, current: sc.months + sc.days / 30, f: (v: number) => suspensionToSurcharge({ months: v, days: 0, perDay: sc.perDay * 10_000 }).amount, formatX: (n: number) => `${n}개월`, formatY: krwShort, onPick: (v: number) => setSc({ ...sc, months: v, days: 0 }) };
   const setEv = (i: number, p: Partial<Ev>) => { setEvents(events.map((e, j) => (j === i ? { ...e, ...p } : e))); tick(); };
   const sel = "min-h-11 w-full rounded-md border border-border bg-background px-2 text-base text-foreground";
   return (
-    <div className="space-y-5">
-      <ChoiceChips<Mode> legend="무엇을 볼까요?" value={mode} options={[{ value: "points", label: "운전면허 벌점" }, { value: "surcharge", label: "영업정지 ↔ 과징금" }]} onChange={(v) => { setMode(v); tick(); }} />
-      {mode === "points" ? (
+    <CurveShell
+      toolId={TOOL_ID}
+      lang="ko"
+      currency="KRW"
+      curve={{ ...curve, onPick: (v: number) => { curve.onPick(v); tick(); } }}
+    >
+      {() => (
+    <>
+      <ChoiceChips<Mode> legend="무엇을 볼까요?" value={kind} options={[{ value: "points", label: "운전면허 벌점" }, { value: "surcharge", label: "영업정지 ↔ 과징금" }]} onChange={(v) => { setKind(v); tick(); }} />
+      {kind === "points" ? (
         <>
           {events.map((e, i) => (
             <div key={i} className="grid gap-2 rounded-md border border-border p-3 sm:grid-cols-2">
@@ -87,6 +99,8 @@ export default function LicensePoints() {
         </>
       )}
       <p className="text-xs leading-5 text-muted-foreground">{POINTS_NOTE} 기준일 {POINTS_AS_OF}. 입력값은 서버로 보내지 않아요. <a className="underline" href="/ko/appeal-deadline-calculator/">행정심판 기한</a></p>
-    </div>
+    </>
+      )}
+    </CurveShell>
   );
 }

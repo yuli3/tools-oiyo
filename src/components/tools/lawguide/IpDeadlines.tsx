@@ -3,7 +3,10 @@ import { useState } from "react";
 import { IP_AS_OF, IP_NOTE, ipDeadlines, type IpInput, type IpKind } from "../../../lib/kr-ip-deadlines-2026";
 import ChoiceChips from "../payroll/ChoiceChips";
 import DateField from "../payroll/DateField";
+import DeadlineChart from "../viz/DeadlineChart";
+import ModeToggle from "../viz/ModeToggle";
 import { track } from "../viz/track";
+import { useAdvisoryMode } from "../viz/useAdvisoryMode";
 
 const TOOL_ID = "ip-deadline-calculator";
 const todayIso = () => {
@@ -15,10 +18,13 @@ export default function IpDeadlines() {
   const today = todayIso();
   const [x, setX] = useState<IpInput>({ kind: "patent", disclosed: "2026-03-02", filed: "2026-05-15" });
   const upd = (p: Partial<IpInput>) => { setX({ ...x, ...p }); track("tool_calculate", { tool_id: TOOL_ID }, true); };
+  const [mode, setMode] = useAdvisoryMode(TOOL_ID);
   const list = ipDeadlines(x, today);
+  const rows = list.filter((d) => (d.daysLeft ?? -1) >= 0).map((d) => ({ id: d.id, label: d.label, due: d.due, daysLeft: d.daysLeft ?? 0, cite: d.cite }));
   const date = (label: string, key: keyof IpInput) => <DateField label={label} value={(x[key] as string) ?? ""} onChange={(v) => upd({ [key]: v || undefined } as Partial<IpInput>)} />;
   return (
     <div className="space-y-5">
+      <ModeToggle mode={mode} onChange={setMode} />
       <ChoiceChips<IpKind> legend="어떤 권리인가요?" value={x.kind} options={[{ value: "patent", label: "특허" }, { value: "utility", label: "실용신안" }, { value: "design", label: "디자인" }, { value: "trademark", label: "상표" }]} onChange={(v) => upd({ kind: v })} />
       <p className="text-sm text-muted-foreground">아는 날짜만 넣으세요. 비워 둔 항목은 건너뛰어요.</p>
       <div className="grid gap-3 sm:grid-cols-2">
@@ -38,13 +44,14 @@ export default function IpDeadlines() {
               {list.map((d) => (
                 <li key={d.id} className={(d.daysLeft ?? 0) < 0 ? "text-muted-foreground line-through" : "text-foreground"}>
                   <span className="font-mono">{d.due}</span> {d.label} {(d.daysLeft ?? 0) >= 0 ? `(D-${d.daysLeft})` : "(지남)"}{d.shifted ? " · 휴일이라 미뤄짐" : ""}
-                  <span className="block text-xs text-muted-foreground">{d.cite}{d.note ? ` · ${d.note}` : ""}</span>
+                  {(mode === "expert" || d.note) && <span className="block text-xs text-muted-foreground">{mode === "expert" ? d.cite : ""}{mode === "expert" && d.note ? " · " : ""}{d.note ?? ""}</span>}
                 </li>
               ))}
             </ul>
           </>
         )}
       </div>
+      {rows.length > 0 && <DeadlineChart title="남은 특허·상표 기한" caption="휴일이면 다음 날로 미룬 날짜예요. 1년이 넘는 기한은 막대가 잘려요." rows={rows} />}
       <p className="text-xs leading-5 text-muted-foreground">{IP_NOTE} 기준일 {IP_AS_OF}. 입력값은 서버로 보내지 않아요.</p>
     </div>
   );

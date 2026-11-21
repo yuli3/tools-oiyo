@@ -3,6 +3,7 @@ import { useState } from "react";
 import { F27_AS_OF, F27_PASS, f27Points, type Degree, type F27Input, type FineTier } from "../../../lib/kr-f27-points-2026";
 import ChoiceChips from "../payroll/ChoiceChips";
 import NumberField from "../payroll/NumberField";
+import CurveShell from "../viz/CurveShell";
 import { track } from "../viz/track";
 
 const TOOL_ID = "korea-f27-points-calculator";
@@ -24,7 +25,20 @@ export default function F27PointsEn() {
     if (r.bonus < 40) gaps.push("Bonus points (ministry recommendation, KIIP level 5, a Korean degree, volunteering) count up to 40.");
   }
   return (
-    <div className="space-y-5">
+    <CurveShell
+      toolId={TOOL_ID}
+      lang="en"
+      currency="KRW"
+      curve={{
+        title: "How your total score changes with annual income", caption: "Everything else stays the same. 80 points is the pass mark.",
+        xLabel: "Annual income", yLabel: "Total points", min: 0, max: 12000, step: 100, current: x.income / 10_000,
+        f: (v) => f27Points({ ...x, income: v * 10_000 }).total,
+        formatX: (n: number) => `KRW ${(Math.round(n / 10) / 10).toLocaleString("en-US")}M`, formatY: (n: number) => `${Math.round(n)} pts`,
+        onPick: (v) => upd({ income: v * 10_000 }),
+      }}
+    >
+      {(mode) => (
+    <>
       <div className="grid gap-3 sm:grid-cols-2">
         <NumberField label="Age (full years)" suffix="years" value={x.age} onChange={(v) => upd({ age: Math.max(0, Math.round(v)) })} />
         <NumberField label="TOPIK level or KIIP stage (higher one, 0–5)" value={x.korean} onChange={(v) => upd({ korean: Math.min(5, Math.max(0, Math.round(v))) })} />
@@ -38,16 +52,22 @@ export default function F27PointsEn() {
         <ChoiceChips<"no" | "yes"> legend="Talent from a Korean War participant country" value={yn(!!x.warCountry)} options={YN} onChange={(v) => upd({ warCountry: v === "yes" })} />
       </div>
       <ChoiceChips<Uni> legend="Degree from a Korean university (bonus)" value={x.koreanUniDegree ?? "none"} options={UNI} onChange={(v) => upd({ koreanUniDegree: v })} />
+      {mode === "expert" && (
+        <>
       <ChoiceChips<Uni> legend="Degree from a top world university (QS 500 / THE 200, bonus)" value={x.topUniDegree ?? "none"} options={UNI} onChange={(v) => upd({ topUniDegree: v })} />
       <ChoiceChips<"0" | "1" | "2" | "3"> legend="Volunteering in Korea" value={String(x.volunteer ?? 0) as "0"} options={[{ value: "0", label: "Under 1 year" }, { value: "1", label: "1–2 years" }, { value: "2", label: "2–3 years" }, { value: "3", label: "3+ years" }]} onChange={(v) => upd({ volunteer: Number(v) as 0 | 1 | 2 | 3 })} />
       <ChoiceChips<FineTier> legend="Immigration Act fines in the last 3 years" value={x.immigration ?? "none"} options={[{ value: "none", label: "None" }, { value: "low", label: "KRW 0.5–1M" }, { value: "mid", label: "KRW 1–3M" }, { value: "high", label: "KRW 3M+ or departure order" }]} onChange={(v) => upd({ immigration: v })} />
       <ChoiceChips<FineTier> legend="Criminal fines (final over 3 years ago)" value={x.criminal ?? "none"} options={[{ value: "none", label: "None" }, { value: "low", label: "Under KRW 2M" }, { value: "mid", label: "KRW 2–3M" }, { value: "high", label: "KRW 3M+" }]} onChange={(v) => upd({ criminal: v })} />
+        </>
+      )}
       <div className="rounded-md border border-border bg-card px-4 py-4 text-sm" aria-live="polite">
         <p className="text-lg font-semibold text-foreground">{r.total} points · {r.pass ? `${F27_PASS} or more, so you meet the points requirement` : `${r.need} more points needed`}</p>
         <p className="mt-1 text-foreground">Age {r.age} + education {r.education} + Korean {r.korean} + income {r.income} = {r.base}, bonus {r.bonus}{r.bonusRaw > r.bonus ? ` (of ${r.bonusRaw}, capped at 40)` : ""}, deductions −{r.penalty}</p>
         {gaps.length > 0 && <ul className="mt-2 list-disc space-y-1 pl-5 text-muted-foreground">{gaps.map((g) => <li key={g}>{g}</li>)}</ul>}
       </div>
       <p className="text-xs leading-5 text-muted-foreground">An estimate of the F-2-7 points score. First check that you are eligible (for example 3+ years of lawful stay on E-1 to E-7 or D-5 to D-9) and have no disqualifications (such as a KRW 3M+ fine in the last 3 years). Apply by booking a visit on HiKorea. Scores change when the notice changes. Source: Ministry of Justice Notice 2025-408. Checked {F27_AS_OF}. Nothing you enter leaves your browser.</p>
-    </div>
+    </>
+      )}
+    </CurveShell>
   );
 }

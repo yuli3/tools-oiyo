@@ -4,6 +4,7 @@ import { CUSTOMS_AS_OF, CUSTOMS_NOTE, TRAVELER, TRAVELER_EXTRA, directBundles, r
 import ChoiceChips from "../payroll/ChoiceChips";
 import DateField from "../payroll/DateField";
 import NumberField from "../payroll/NumberField";
+import CurveShell, { krwShort } from "../viz/CurveShell";
 import { track } from "../viz/track";
 
 const TOOL_ID = "customs-practice-calculator";
@@ -11,7 +12,7 @@ const won = (n: number) => `${Math.round(n).toLocaleString("ko-KR")}원`;
 type Mode = "travel" | "direct" | "rvc" | "refund";
 
 export default function CustomsPractice() {
-  const [mode, setMode] = useState<Mode>("travel");
+  const [kind, setKind] = useState<Mode>("travel");
   const [fx, setFx] = useState(1400);
   const [tr, setTr] = useState({ totalUsd: 1800, rate: 20, selfReport: true, caught: "no" as "no" | "once" | "repeat" });
   const [orders, setOrders] = useState([
@@ -26,12 +27,27 @@ export default function CustomsPractice() {
   const bundles = directBundles(orders, fx, dutyRate / 100);
   const rr = rvc({ ...rv, value: rv.value, nonOriginating: rv.nonOriginating, originating: rv.originating });
   const ref = simpleRefund({ fobKrw: rf.fob * 10_000, perTenThousand: rf.per, accepted: rf.accepted });
+  const usd = (n: number) => `${Math.round(n).toLocaleString("ko-KR")}달러`;
+  const curve = kind === "travel"
+    ? { title: "산 물건 합계에 따라 낼 세금이 이렇게 바뀌어요", caption: "면세 한도를 넘는 부분에만 세금이 붙어요. 신고 방법과 세율은 그대로예요.", xLabel: "산 물건 합계", yLabel: "낼 세금", min: 0, max: Math.max(3000, tr.totalUsd * 2), step: 10, current: tr.totalUsd, f: (v: number) => travelerTax({ totalUsd: v, fx, rate: tr.rate / 100, selfReport: tr.selfReport, caught: tr.caught }).total, formatX: usd, formatY: krwShort, onPick: (v: number) => setTr({ ...tr, totalUsd: v }), marks: [{ at: TRAVELER.allowanceUsd, label: "면세 한도" }] }
+    : kind === "direct"
+      ? { title: "첫 주문 가격에 따라 세금 합계가 이렇게 바뀌어요", caption: "같은 날 도착하는 주문과 합쳐 면세 기준을 넘으면 모두 과세돼요.", xLabel: "주문 1 물품가격", yLabel: "세금 합계", min: 0, max: 500, step: 5, current: orders[0]?.priceUsd ?? 0, f: (v: number) => directBundles(orders.map((o, j) => (j === 0 ? { ...o, priceUsd: v } : o)), fx, dutyRate / 100).reduce((a, b) => a + b.total, 0), formatX: usd, formatY: krwShort, onPick: (v: number) => setOrders(orders.map((o, j) => (j === 0 ? { ...o, priceUsd: v } : o))) }
+      : kind === "rvc"
+        ? { title: rv.method === "build-down" ? "비원산지 재료에 따라 부가가치 비율이 이렇게 바뀌어요" : "원산지 재료에 따라 부가가치 비율이 이렇게 바뀌어요", caption: "점선이 협정 기준 비율에 닿는 지점이에요.", xLabel: rv.method === "build-down" ? "비원산지 재료" : "원산지 재료", yLabel: "부가가치 비율", min: 0, max: Math.max(1, rv.value), step: Math.max(1, Math.round(rv.value / 100)), current: rv.method === "build-down" ? rv.nonOriginating : rv.originating, f: (v: number) => rvc({ ...rv, ...(rv.method === "build-down" ? { nonOriginating: v } : { originating: v }) }).rate, formatX: (n: number) => `${Math.round(n).toLocaleString("ko-KR")}만`, formatY: (n: number) => `${Math.round(n * 10) / 10}%`, onPick: (v: number) => setRv({ ...rv, ...(rv.method === "build-down" ? { nonOriginating: v } : { originating: v }) }) }
+        : { title: "수출금액에 따라 간이정액환급액이 이렇게 바뀌어요", caption: "1만 원당 환급액을 곱해요.", xLabel: "수출금액", yLabel: "환급액", min: 0, max: Math.max(1000, rf.fob * 2), step: 100, current: rf.fob, f: (v: number) => simpleRefund({ fobKrw: v * 10_000, perTenThousand: rf.per, accepted: rf.accepted }).amount, formatX: (n: number) => krwShort(n * 10_000), formatY: krwShort, onPick: (v: number) => setRf({ ...rf, fob: v }) };
   const setOrder = (i: number, p: Partial<(typeof orders)[number]>) => { setOrders(orders.map((o, j) => (j === i ? { ...o, ...p } : o))); tick(); };
   return (
-    <div className="space-y-5">
-      <ChoiceChips<Mode> legend="무엇을 계산할까요?" value={mode} options={[{ value: "travel", label: "여행 휴대품" }, { value: "direct", label: "직구 합산과세" }, { value: "rvc", label: "FTA 부가가치기준" }, { value: "refund", label: "간이정액환급" }]} onChange={(v) => { setMode(v); tick(); }} />
-      {(mode === "travel" || mode === "direct") && <NumberField label="과세환율(원/달러)" suffix="원" value={fx} onChange={(v) => { setFx(Math.max(0, v)); tick(); }} />}
-      {mode === "travel" && (
+    <CurveShell
+      toolId={TOOL_ID}
+      lang="ko"
+      currency="KRW"
+      curve={{ ...curve, onPick: (v: number) => { curve.onPick(v); tick(); } }}
+    >
+      {(mode) => (
+    <>
+      <ChoiceChips<Mode> legend="무엇을 계산할까요?" value={kind} options={[{ value: "travel", label: "여행 휴대품" }, { value: "direct", label: "직구 합산과세" }, { value: "rvc", label: "FTA 부가가치기준" }, { value: "refund", label: "간이정액환급" }]} onChange={(v) => { setKind(v); tick(); }} />
+      {(kind === "travel" || kind === "direct") && <NumberField label="과세환율(원/달러)" suffix="원" value={fx} onChange={(v) => { setFx(Math.max(0, v)); tick(); }} />}
+      {kind === "travel" && (
         <>
           <div className="grid gap-3 sm:grid-cols-2">
             <NumberField label="해외에서 산 물건 합계" suffix="달러" value={tr.totalUsd} onChange={(v) => { setTr({ ...tr, totalUsd: Math.max(0, v) }); tick(); }} />
@@ -45,11 +61,11 @@ export default function CustomsPractice() {
               {t.reduction > 0 && <li>자진신고 30% 감면 −{won(t.reduction)} (한도 {won(TRAVELER.selfReportCap)})</li>}
               {t.penalty > 0 && <li>미신고 가산세 +{won(t.penalty)}</li>}
             </ul>
-            <p className="mt-2 text-muted-foreground">따로 면세: {TRAVELER_EXTRA.join(" · ")}. 술과 고가 시계·보석은 세율이 달라요.</p>
+            {mode === "expert" && <p className="mt-2 text-muted-foreground">따로 면세: {TRAVELER_EXTRA.join(" · ")}. 술과 고가 시계·보석은 세율이 달라요.</p>}
           </div>
         </>
       )}
-      {mode === "direct" && (
+      {kind === "direct" && (
         <>
           {orders.map((o, i) => (
             <div key={i} className="grid gap-2 rounded-md border border-border p-3 sm:grid-cols-2">
@@ -73,7 +89,7 @@ export default function CustomsPractice() {
           </div>
         </>
       )}
-      {mode === "rvc" && (
+      {kind === "rvc" && (
         <>
           <ChoiceChips<"build-down" | "build-up"> legend="계산 방식" value={rv.method} options={[{ value: "build-down", label: "공제법(비원산지 재료 빼기)" }, { value: "build-up", label: "집적법(원산지 재료 더하기)" }]} onChange={(v) => { setRv({ ...rv, method: v }); tick(); }} />
           <div className="grid gap-3 sm:grid-cols-2">
@@ -87,7 +103,7 @@ export default function CustomsPractice() {
           </div>
         </>
       )}
-      {mode === "refund" && (
+      {kind === "refund" && (
         <>
           <div className="grid gap-3 sm:grid-cols-2">
             <NumberField label="수출금액(FOB, 원화)" suffix="만 원" value={rf.fob} onChange={(v) => { setRf({ ...rf, fob: Math.max(0, v) }); tick(); }} />
@@ -101,6 +117,8 @@ export default function CustomsPractice() {
         </>
       )}
       <p className="text-xs leading-5 text-muted-foreground">{CUSTOMS_NOTE} 기준일 {CUSTOMS_AS_OF}. 입력값은 서버로 보내지 않아요. <a className="underline" href="/ko/import-duty-fta-calculator/">수입 관세·FTA 세율 비교</a></p>
-    </div>
+    </>
+      )}
+    </CurveShell>
   );
 }
