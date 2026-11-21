@@ -5,6 +5,7 @@ import ChoiceChips from "../payroll/ChoiceChips";
 import NumberField from "../payroll/NumberField";
 import { track } from "../viz/track";
 import { Items } from "../nts/Items";
+import CurveShell from "../viz/CurveShell";
 
 const TOOL_ID = "micro-entrepreneur-cotisations-impot";
 const eur = (n: number) => `${Math.round(n).toLocaleString("fr-FR")} €`;
@@ -16,7 +17,19 @@ export default function FrMicro() {
   const r = frMicro({ activity: x.activity, ca: x.ca, rfr: x.rfr, parts: x.parts, otherIncome: x.other, vl: x.vl === "y" });
   const bars = [{ l: "Cotisations sociales", v: r.social }, { l: "Impôt sur le revenu", v: r.incomeTax }, { l: "Reste", v: Math.max(0, r.net) }];
   return (
-    <div className="space-y-5">
+    <CurveShell
+      toolId={TOOL_ID}
+      lang="fr"
+      currency="EUR"
+      curve={{
+        title: "Revenu net selon le chiffre d'affaires", caption: "Après cotisations sociales et impôt sur le revenu, mêmes paramètres. La ligne pointillée est le plafond du régime micro.",
+        xLabel: "Chiffre d'affaires", yLabel: "Revenu net", min: 0, max: r.ceiling, step: 1000, current: x.ca,
+        f: (v) => frMicro({ activity: x.activity, ca: v, rfr: x.rfr, parts: x.parts, otherIncome: x.other, vl: x.vl === "y" }).net, formatX: (n: number) => `${Math.round(n).toLocaleString("fr-FR")} €`, formatY: (n: number) => `${Math.round(n).toLocaleString("fr-FR")} €`,
+        onPick: (v) => upd({ ca: v }), marks: [],
+      }}
+    >
+      {() => (
+    <>
       <ChoiceChips<Activity> legend="Activité" value={x.activity} options={(Object.keys(MICRO_2026) as Activity[]).map((k) => ({ value: k, label: MICRO_2026[k].label }))} onChange={(v) => upd({ activity: v })} />
       <div className="grid gap-3 sm:grid-cols-2">
         <NumberField label="Chiffre d'affaires annuel encaissé" value={x.ca} onChange={(v) => upd({ ca: v })} suffix="€" step={1000} />
@@ -31,6 +44,8 @@ export default function FrMicro() {
         <Items items={r.items} />
       </div>
       <p className="text-xs leading-5 text-muted-foreground">{FR_TAX_NOTE} À jour au {FR_TAX_AS_OF}.</p>
-    </div>
+    </>
+      )}
+    </CurveShell>
   );
 }

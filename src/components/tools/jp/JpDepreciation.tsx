@@ -6,6 +6,7 @@ import DateField from "../payroll/DateField";
 import NumberField from "../payroll/NumberField";
 import { track } from "../viz/track";
 import { Items } from "../nts/Items";
+import CurveShell from "../viz/CurveShell";
 
 const TOOL_ID = "jp-depreciation-calculator";
 const yen = (n: number) => `${Math.round(n).toLocaleString("ja-JP")}円`;
@@ -19,7 +20,19 @@ export default function JpDepreciation() {
   const life = x.asset === "other" ? Math.max(2, Math.round(x.life) || 2) : USEFUL_LIFE[x.asset];
   const r = jpDepreciation({ cost: Math.max(0, x.cost), life, acquired: x.acquired || "2026-10-01", blue: x.blue === "y", sme: x.blue === "y" });
   return (
-    <div className="space-y-5">
+    <CurveShell
+      toolId={TOOL_ID}
+      lang="ja"
+      currency="JPY"
+      curve={{
+        title: "取得価額による初年度の経費", caption: "10万円・20万円・30万円で使える特例が変わります（青色申告の中小事業者）。",
+        xLabel: "取得価額", yLabel: "初年度の経費", min: 0, max: 1000000, step: 10000, current: x.cost,
+        f: (v) => jpDepreciation({ cost: v, life, acquired: x.acquired || "2026-10-01", blue: x.blue === "y", sme: x.blue === "y" }).firstYear, formatX: (v) => `${Math.round(v / 10_000)}万円`, formatY: (n: number) => `${Math.round(n).toLocaleString("ja-JP")}円`,
+        onPick: (v) => upd({ cost: v }), marks: [{ at: 100_000, label: "10万円" }, { at: 200_000, label: "20万円" }, { at: 300_000, label: "30万円" }],
+      }}
+    >
+      {() => (
+    <>
       <ChoiceChips<A> legend="資産" value={x.asset} options={[{ value: "pc", label: "パソコン（4年）" }, { value: "car", label: "普通自動車（6年）" }, { value: "kei", label: "軽自動車（4年）" }, { value: "woodHouse", label: "木造住宅・事業用（22年）" }, { value: "other", label: "その他" }]} onChange={(v) => upd({ asset: v })} />
       <div className="grid gap-3 sm:grid-cols-2">
         <NumberField label="取得価額（税込・税抜は経理方式に合わせて）" value={x.cost} onChange={(v) => upd({ cost: v })} suffix="円" step={10000} />
@@ -40,6 +53,8 @@ export default function JpDepreciation() {
         )}
       </div>
       <p className="text-xs leading-5 text-muted-foreground">{JP_TAX_NOTE} 事業専用割合（家事按分）は含めていません。基準日 {JP_TAX_AS_OF}。</p>
-    </div>
+    </>
+      )}
+    </CurveShell>
   );
 }

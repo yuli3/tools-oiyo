@@ -6,6 +6,7 @@ import DateField from "../payroll/DateField";
 import NumberField from "../payroll/NumberField";
 import { track } from "../viz/track";
 import { Items } from "../nts/Items";
+import CurveShell, { plusDays } from "../viz/CurveShell";
 
 const TOOL_ID = "china-late-payment-surcharge-appeal";
 type K = "dispute" | "penalty";
@@ -15,8 +16,21 @@ export default function CnLateFee() {
   const upd = (p: Partial<typeof x>) => { setX({ ...x, ...p }); track("tool_calculate", { tool_id: TOOL_ID }, true); };
   const r = cnLateFee({ tax: x.tax, due: x.due, paid: x.paid });
   const a = cnAppealDeadlines({ known: x.known || undefined, kind: x.kind, paid: x.paid || undefined });
+  const lateDays = Math.max(0, Math.round((Date.parse(x.paid) - Date.parse(x.due)) / 86_400_000));
   return (
-    <div className="space-y-5">
+    <CurveShell
+      toolId={TOOL_ID}
+      lang="zh"
+      currency="CNY"
+      curve={{
+        title: "滞纳天数与滞纳金", caption: "按日加收万分之五。",
+        xLabel: "滞纳天数", yLabel: "滞纳金", min: 0, max: 365, step: 5, current: lateDays,
+        f: (d) => cnLateFee({ tax: x.tax, due: x.due, paid: plusDays(x.due, d) }).fee, formatX: (d) => `${d}天`, formatY: (n: number) => `${Math.round(n).toLocaleString("zh-CN")}元`,
+        onPick: (d) => upd({ paid: plusDays(x.due, d) }), marks: [],
+      }}
+    >
+      {() => (
+    <>
       <div className="grid gap-3 sm:grid-cols-2">
         <NumberField label="未按期缴纳的税款" value={x.tax} onChange={(v) => upd({ tax: v })} suffix="元" step={1000} />
         <DateField label="缴款期限" value={x.due} onChange={(v) => upd({ due: v })} />
@@ -34,6 +48,8 @@ export default function CnLateFee() {
         <ul className="list-disc space-y-1 pl-5 text-xs text-muted-foreground">{a.notes.map((n) => <li key={n}>{n}</li>)}</ul>
       </section>
       <p className="text-xs leading-5 text-muted-foreground">{CN_TAX_NOTE} 更新日期：{CN_TAX_AS_OF}。</p>
-    </div>
+    </>
+      )}
+    </CurveShell>
   );
 }

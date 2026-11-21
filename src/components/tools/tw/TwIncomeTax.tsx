@@ -5,6 +5,7 @@ import ChoiceChips from "../payroll/ChoiceChips";
 import NumberField from "../payroll/NumberField";
 import { track } from "../viz/track";
 import { Items } from "../nts/Items";
+import CurveShell, { TW_VIZ_TEXT } from "../viz/CurveShell";
 
 const TOOL_ID = "taiwan-income-tax-calculator";
 type Y = "2025" | "2026";
@@ -17,7 +18,20 @@ export default function TwIncomeTax() {
   const r = twIncomeTax({ year: Number(x.year) as 2025 | 2026, married: x.married === "y", salary: x.salary, spouseSalary: x.married === "y" ? x.spouse : 0, otherIncome: x.other, persons: Math.max(x.married === "y" ? 2 : 1, x.persons), elderly: x.elderly, disabled: x.disabled });
   const gross = x.salary + (x.married === "y" ? x.spouse : 0) + x.other;
   return (
-    <div className="space-y-5">
+    <CurveShell
+      toolId={TOOL_ID}
+      lang="zh"
+      currency="TWD"
+      text={TW_VIZ_TEXT}
+      curve={{
+        title: "薪資所得與應納稅額", caption: "家庭人數與扣除額不變。稅率5%到40%累進，所以曲線越往右越陡。",
+        xLabel: "本人薪資所得", yLabel: "應納稅額", min: 0, max: 5000000, step: 50000, current: x.salary,
+        f: (v) => twIncomeTax({ year: Number(x.year) as 2025 | 2026, married: x.married === "y", salary: v, spouseSalary: x.married === "y" ? x.spouse : 0, otherIncome: x.other, persons: Math.max(x.married === "y" ? 2 : 1, x.persons), elderly: x.elderly, disabled: x.disabled }).tax, formatX: (v) => `${Math.round(v / 10_000)}萬`, formatY: (n: number) => `${Math.round(n).toLocaleString("zh-TW")}元`,
+        onPick: (v) => upd({ salary: v }), marks: [],
+      }}
+    >
+      {() => (
+    <>
       <ChoiceChips<Y> legend="所得年度" value={x.year} options={[{ value: "2025", label: "114年度（2026年5月申報）" }, { value: "2026", label: "115年度（2027年5月申報）" }]} onChange={(v) => upd({ year: v })} />
       <ChoiceChips<YN> legend="與配偶合併申報？" value={x.married} options={[{ value: "y", label: "是" }, { value: "n", label: "否" }]} onChange={(v) => upd({ married: v, persons: v === "y" ? Math.max(2, x.persons) : x.persons })} />
       <div className="grid gap-3 sm:grid-cols-2">
@@ -35,6 +49,8 @@ export default function TwIncomeTax() {
         <Items items={r.items} />
       </div>
       <p className="text-xs leading-5 text-muted-foreground">{TW_TAX_NOTE} 更新日期：{TW_TAX_AS_OF}。</p>
-    </div>
+    </>
+      )}
+    </CurveShell>
   );
 }

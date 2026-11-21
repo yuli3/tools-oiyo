@@ -6,6 +6,7 @@ import DateField from "../payroll/DateField";
 import NumberField from "../payroll/NumberField";
 import { track } from "../viz/track";
 import { Items } from "../nts/Items";
+import CurveShell from "../viz/CurveShell";
 
 const TOOL_ID = "china-depreciation-calculator";
 type YN = "y" | "n";
@@ -16,7 +17,19 @@ export default function CnDepreciation() {
   const r = cnDepreciation({ category: x.cat, cost: x.cost, start: x.start || "2026-01-01", years: x.years, residualRate: x.residual / 100, method: x.method, accelerated: x.acc === "y", oneOff: x.oneOff === "y" });
   const max = Math.max(1, ...r.schedule.map((s) => s.amount));
   return (
-    <div className="space-y-5">
+    <CurveShell
+      toolId={TOOL_ID}
+      lang="zh"
+      currency="CNY"
+      curve={{
+        title: "折旧年限与第一年折旧额", caption: "原值和残值率不变。不得短于最低年限。",
+        xLabel: "折旧年限", yLabel: "第一年折旧额", min: r.minYears, max: Math.max(r.minYears + 5, 10), step: 1, current: x.years,
+        f: (v) => cnDepreciation({ category: x.cat, cost: x.cost, start: x.start || "2026-01-01", years: v, residualRate: x.residual / 100, method: x.method, accelerated: x.acc === "y", oneOff: x.oneOff === "y" }).schedule[0]?.amount ?? 0, formatX: (v) => `${v}年`, formatY: (n: number) => `${Math.round(n).toLocaleString("zh-CN")}元`,
+        onPick: (v) => upd({ years: v }), marks: [],
+      }}
+    >
+      {() => (
+    <>
       <ChoiceChips<Category> legend="资产类别" value={x.cat} options={(Object.keys(MIN_YEARS) as Category[]).map((k) => ({ value: k, label: `${MIN_YEARS[k].label}（${MIN_YEARS[k].years}年）` }))} onChange={(v) => upd({ cat: v, years: MIN_YEARS[v].years })} />
       <div className="grid gap-3 sm:grid-cols-2">
         <NumberField label="计税基础（原值）" value={x.cost} onChange={(v) => upd({ cost: v })} suffix="元" step={1000} />
@@ -41,6 +54,8 @@ export default function CnDepreciation() {
         <Items items={r.items} />
       </div>
       <p className="text-xs leading-5 text-muted-foreground">{CN_TAX_NOTE} 更新日期：{CN_TAX_AS_OF}。</p>
-    </div>
+    </>
+      )}
+    </CurveShell>
   );
 }

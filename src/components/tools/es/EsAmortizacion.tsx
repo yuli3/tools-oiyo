@@ -6,6 +6,7 @@ import DateField from "../payroll/DateField";
 import NumberField from "../payroll/NumberField";
 import { track } from "../viz/track";
 import { Items } from "../nts/Items";
+import CurveShell from "../viz/CurveShell";
 
 const TOOL_ID = "amortizacion-tablas-oficiales";
 type YN = "y" | "n";
@@ -16,7 +17,19 @@ export default function EsAmortizacion() {
   const r = esAmortizacion({ elemento: x.el, coste: x.coste, inicio: x.inicio || "2026-01-01", coef: x.coef / 100, nuevo: x.nuevo === "y" });
   const max = Math.max(1, ...r.schedule.map((s) => s.amount));
   return (
-    <div className="space-y-5">
+    <CurveShell
+      toolId={TOOL_ID}
+      lang="es"
+      currency="EUR"
+      curve={{
+        title: "Amortización del primer año según el coeficiente", caption: "Entre el mínimo y el máximo de la tabla oficial para este elemento.",
+        xLabel: "Coeficiente", yLabel: "Amortización del 1.er año", min: Math.round(r.minCoef * 100), max: Math.round(r.maxCoef * 100), step: 1, current: x.coef,
+        f: (v) => esAmortizacion({ elemento: x.el, coste: x.coste, inicio: x.inicio || "2026-01-01", coef: v / 100, nuevo: x.nuevo === "y" }).schedule[0]?.amount ?? 0, formatX: (v) => `${v} %`, formatY: (n: number) => `${Math.round(n).toLocaleString("es-ES")} €`,
+        onPick: (v) => upd({ coef: v }), marks: [],
+      }}
+    >
+      {() => (
+    <>
       <ChoiceChips<Elemento> legend="Elemento" value={x.el} options={(Object.keys(TABLA_LIS) as Elemento[]).map((k) => ({ value: k, label: TABLA_LIS[k].label }))} onChange={(v) => upd({ el: v, coef: Math.round(TABLA_LIS[v].coef * 100) })} />
       <div className="grid gap-3 sm:grid-cols-2">
         <NumberField label="Precio de adquisición (sin IVA)" value={x.coste} onChange={(v) => upd({ coste: v })} suffix="€" step={100} />
@@ -38,6 +51,8 @@ export default function EsAmortizacion() {
         <Items items={r.items} />
       </div>
       <p className="text-xs leading-5 text-muted-foreground">{ES_TAX_NOTE} Actualizado el {ES_TAX_AS_OF}.</p>
-    </div>
+    </>
+      )}
+    </CurveShell>
   );
 }

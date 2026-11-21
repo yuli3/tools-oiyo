@@ -5,6 +5,7 @@ import ChoiceChips from "../payroll/ChoiceChips";
 import NumberField from "../payroll/NumberField";
 import { track } from "../viz/track";
 import { Items } from "../nts/Items";
+import CurveShell from "../viz/CurveShell";
 
 const TOOL_ID = "china-small-scale-vat-threshold";
 type P = "month" | "quarter";
@@ -15,7 +16,19 @@ export default function CnSmallScaleVat() {
   const upd = (p: Partial<typeof x>) => { setX({ ...x, ...p }); track("tool_calculate", { tool_id: TOOL_ID }, true); };
   const r = cnSmallScaleVat({ sales: x.sales, period: x.period, realEstate: x.re === "y", annualSales: x.annual });
   return (
-    <div className="space-y-5">
+    <CurveShell
+      toolId={TOOL_ID}
+      lang="zh"
+      currency="CNY"
+      curve={{
+        title: "销售额与应纳增值税", caption: "按次或按期的起征点：未达到的免征，达到后全额按1%计算。",
+        xLabel: "销售额", yLabel: "应纳增值税", min: 0, max: x.period === "month" ? 200_000 : 600_000, step: 5000, current: x.sales,
+        f: (v) => cnSmallScaleVat({ sales: v, period: x.period, realEstate: x.re === "y", annualSales: x.annual }).tax, formatX: (v) => `${Math.round(v / 10_000)}万`, formatY: (n: number) => `${Math.round(n).toLocaleString("zh-CN")}元`,
+        onPick: (v) => upd({ sales: v }), marks: [],
+      }}
+    >
+      {() => (
+    <>
       <ChoiceChips<P> legend="纳税期限" value={x.period} options={[{ value: "month", label: "按月" }, { value: "quarter", label: "按季" }]} onChange={(v) => upd({ period: v })} />
       <div className="grid gap-3 sm:grid-cols-2">
         <NumberField label="本期销售额（不含税）" value={x.sales} onChange={(v) => upd({ sales: v })} suffix="元" step={10000} />
@@ -28,6 +41,8 @@ export default function CnSmallScaleVat() {
         <Items items={r.items} />
       </div>
       <p className="text-xs leading-5 text-muted-foreground">{CN_TAX_NOTE} 更新日期：{CN_TAX_AS_OF}。</p>
-    </div>
+    </>
+      )}
+    </CurveShell>
   );
 }

@@ -5,6 +5,7 @@ import ChoiceChips from "../payroll/ChoiceChips";
 import NumberField from "../payroll/NumberField";
 import { track } from "../viz/track";
 import { Items } from "../nts/Items";
+import CurveShell from "../viz/CurveShell";
 
 const TOOL_ID = "uk-vat-registration-threshold-check";
 type YN = "y" | "n";
@@ -15,7 +16,19 @@ export default function UkVatCheck() {
   const upd = (p: Partial<typeof x>) => { setX({ ...x, ...p }); track("tool_calculate", { tool_id: TOOL_ID }, true); };
   const r = ukVatCheck({ last12: x.last12, next30: x.next30, next12: x.next12, registered: x.reg === "y" });
   return (
-    <div className="space-y-5">
+    <CurveShell
+      toolId={TOOL_ID}
+      lang="en"
+      currency="GBP"
+      curve={{
+        title: "Room before the VAT threshold by last 12 months' turnover", caption: "Below zero means you are over the £90,000 threshold.",
+        xLabel: "Taxable turnover, last 12 months", yLabel: "Room before £90,000", min: 0, max: 150000, step: 1000, current: x.last12,
+        f: (v) => ukVatCheck({ last12: v, next30: x.next30, next12: x.next12, registered: x.reg === "y" }).headroom, formatX: (n: number) => `£${Math.round(n).toLocaleString("en-GB")}`, formatY: (n: number) => `£${Math.round(n).toLocaleString("en-GB")}`,
+        onPick: (v) => upd({ last12: v }), marks: [{ at: 90_000, label: "£90,000" }],
+      }}
+    >
+      {() => (
+    <>
       <ChoiceChips<YN> legend="Already VAT registered?" value={x.reg} options={[{ value: "y", label: "Yes" }, { value: "n", label: "No" }]} onChange={(v) => upd({ reg: v })} />
       <div className="grid gap-3 sm:grid-cols-3">
         <NumberField label="Taxable turnover, last 12 months" value={x.last12} onChange={(v) => upd({ last12: v })} suffix="£" step={1000} />
@@ -29,6 +42,8 @@ export default function UkVatCheck() {
         <Items items={r.items} />
       </div>
       <p className="text-xs leading-5 text-muted-foreground">{UK_TAX_NOTE} Last checked: {UK_TAX_AS_OF}.</p>
-    </div>
+    </>
+      )}
+    </CurveShell>
   );
 }

@@ -6,6 +6,7 @@ import DateField from "../payroll/DateField";
 import NumberField from "../payroll/NumberField";
 import { track } from "../viz/track";
 import { Items } from "../nts/Items";
+import CurveShell, { plusMonths } from "../viz/CurveShell";
 
 const TOOL_ID = "recargo-extemporaneo-sanciones-plazos";
 const eur = (n: number) => `${Math.round(n).toLocaleString("es-ES")} €`;
@@ -18,8 +19,21 @@ export default function EsRecargo() {
   const r = esRecargo({ cuota: x.cuota, due: x.due, filed: x.filed, interesAnual: x.interes || undefined, pagoEnPlazo: x.pago === "y" });
   const s = esSancion({ base: x.cuota, gravedad: x.grav, acuerdo: x.ac, pronto: x.pronto === "y" });
   const p = esPlazos({ notificacion: x.notif || undefined, finPlazoVoluntario: x.fin || undefined });
+  const lateMonths = x.filed ? Math.max(0, Math.round((Date.parse(x.filed) - Date.parse(x.due)) / (30.44 * 86_400_000))) : 0;
   return (
-    <div className="space-y-5">
+    <CurveShell
+      toolId={TOOL_ID}
+      lang="es"
+      currency="EUR"
+      curve={{
+        title: "Recargo según los meses de retraso", caption: "1 % más un 1 % por mes completo hasta 12 meses; después 15 % más intereses.",
+        xLabel: "Meses de retraso", yLabel: "Recargo", min: 0, max: 24, step: 1, current: lateMonths,
+        f: (m) => esRecargo({ cuota: x.cuota, due: x.due, filed: plusMonths(x.due, m) , interesAnual: x.interes || undefined, pagoEnPlazo: x.pago === "y" }).total, formatX: (m) => `${m} meses`, formatY: (n: number) => `${Math.round(n).toLocaleString("es-ES")} €`,
+        onPick: (m) => upd({ filed: plusMonths(x.due, m) }), marks: [{ at: 12, label: "12 meses" }],
+      }}
+    >
+      {() => (
+    <>
       <section className="space-y-3">
         <h3 className="font-semibold">1. Presento tarde sin que me lo pidan (recargo)</h3>
         <div className="grid gap-3 sm:grid-cols-2">
@@ -54,6 +68,8 @@ export default function EsRecargo() {
         <p className="text-xs text-muted-foreground">{p.note}</p>
       </section>
       <p className="text-xs leading-5 text-muted-foreground">{ES_TAX_NOTE} Actualizado el {ES_TAX_AS_OF}.</p>
-    </div>
+    </>
+      )}
+    </CurveShell>
   );
 }

@@ -6,6 +6,7 @@ import DateField from "../payroll/DateField";
 import NumberField from "../payroll/NumberField";
 import { track } from "../viz/track";
 import { Items } from "../nts/Items";
+import CurveShell, { plusMonths } from "../viz/CurveShell";
 
 const TOOL_ID = "interet-de-retard-majoration";
 const eur = (n: number) => `${Math.round(n).toLocaleString("fr-FR")} €`;
@@ -16,8 +17,22 @@ export default function FrPenalty() {
   const upd = (p: Partial<typeof x>) => { setX({ ...x, ...p }); track("tool_calculate", { tool_id: TOOL_ID }, true); };
   const r = frPenalty({ tax: x.tax, fault: x.fault, due: x.due || undefined, paid: x.paid || undefined, incomeTax: x.ir === "y" });
   const c = frClaimDeadline({ eventYear: x.year, local: x.local === "y" });
+  const due = x.due || "2027-05-28";
+  const lateMonths = x.paid ? Math.max(0, Math.round((Date.parse(x.paid) - Date.parse(due)) / (30.44 * 86_400_000))) : 0;
   return (
-    <div className="space-y-5">
+    <CurveShell
+      toolId={TOOL_ID}
+      lang="fr"
+      currency="EUR"
+      curve={{
+        title: "Intérêt de retard et majoration selon le nombre de mois de retard", caption: "Même impôt et même manquement. L'intérêt de retard est de 0,20 % par mois.",
+        xLabel: "Mois de retard", yLabel: "Total", min: 0, max: 24, step: 1, current: lateMonths,
+        f: (m) => frPenalty({ tax: x.tax, fault: x.fault, due, paid: plusMonths(due, m), incomeTax: x.ir === "y" }).total, formatX: (m) => `${m} mois`, formatY: (n: number) => `${Math.round(n).toLocaleString("fr-FR")} €`,
+        onPick: (m) => upd({ paid: plusMonths(due, m) }), marks: [],
+      }}
+    >
+      {() => (
+    <>
       <ChoiceChips<Fault> legend="Situation" value={x.fault} options={(Object.keys(MAJORATIONS) as Fault[]).map((k) => ({ value: k, label: MAJORATIONS[k].label }))} onChange={(v) => upd({ fault: v })} />
       <div className="grid gap-3 sm:grid-cols-2">
         <NumberField label="Droits dus (impôt non payé à temps)" value={x.tax} onChange={(v) => upd({ tax: v })} suffix="€" step={100} />
@@ -36,6 +51,8 @@ export default function FrPenalty() {
         <ul className="space-y-2">{c.map((a) => <li key={a.id}>{a.date && <span className="font-mono font-semibold">{a.date} </span>}{a.label} <span className="text-xs text-muted-foreground">({a.cite})</span></li>)}</ul>
       </section>
       <p className="text-xs leading-5 text-muted-foreground">{FR_TAX_NOTE} À jour au {FR_TAX_AS_OF}.</p>
-    </div>
+    </>
+      )}
+    </CurveShell>
   );
 }

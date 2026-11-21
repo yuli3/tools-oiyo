@@ -5,6 +5,7 @@ import ChoiceChips from "../payroll/ChoiceChips";
 import NumberField from "../payroll/NumberField";
 import { track } from "../viz/track";
 import { Items } from "../nts/Items";
+import CurveShell from "../viz/CurveShell";
 
 const TOOL_ID = "franchise-tva-seuils";
 const eur = (n: number) => `${Math.round(n).toLocaleString("fr-FR")} €`;
@@ -16,7 +17,19 @@ export default function FrTvaFranchise() {
   const upd = (p: Partial<typeof x>) => { setX({ ...x, ...p }); track("tool_calculate", { tool_id: TOOL_ID }, true); };
   const r = frTvaFranchise(x);
   return (
-    <div className="space-y-5">
+    <CurveShell
+      toolId={TOOL_ID}
+      lang="fr"
+      currency="EUR"
+      curve={{
+        title: "Marge restante avant le seuil selon le chiffre d'affaires de l'année", caption: "Négatif : seuil dépassé. Même activité et même chiffre de l'année précédente.",
+        xLabel: "Chiffre d'affaires de l'année", yLabel: "Marge avant le seuil", min: 0, max: 60000, step: 500, current: x.ca,
+        f: (v) => frTvaFranchise({ ...x, ca: v }).headroom, formatX: (n: number) => `${Math.round(n).toLocaleString("fr-FR")} €`, formatY: (n: number) => `${Math.round(n).toLocaleString("fr-FR")} €`,
+        onPick: (v) => upd({ ca: v }), marks: [],
+      }}
+    >
+      {() => (
+    <>
       <ChoiceChips<A> legend="Activité" value={x.activity} options={[{ value: "vente", label: "Vente, hébergement" }, { value: "services", label: "Prestations de services, libéral" }]} onChange={(v) => upd({ activity: v })} />
       <div className="grid gap-3 sm:grid-cols-2">
         <NumberField label="Chiffre d'affaires HT de l'année précédente" value={x.caPrev} onChange={(v) => upd({ caPrev: v })} suffix="€" step={1000} />
@@ -30,6 +43,8 @@ export default function FrTvaFranchise() {
         <Items items={r.items} />
       </div>
       <p className="text-xs leading-5 text-muted-foreground">{FR_TAX_NOTE} À jour au {FR_TAX_AS_OF}.</p>
-    </div>
+    </>
+      )}
+    </CurveShell>
   );
 }

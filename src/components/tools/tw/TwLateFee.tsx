@@ -6,6 +6,7 @@ import DateField from "../payroll/DateField";
 import NumberField from "../payroll/NumberField";
 import { track } from "../viz/track";
 import { Items } from "../nts/Items";
+import CurveShell, { TW_VIZ_TEXT, plusDays } from "../viz/CurveShell";
 
 const TOOL_ID = "taiwan-late-tax-penalty-appeal";
 type K = "income" | "business";
@@ -15,8 +16,22 @@ export default function TwLateFee() {
   const upd = (p: Partial<typeof x>) => { setX({ ...x, ...p }); track("tool_calculate", { tool_id: TOOL_ID }, true); };
   const r = twLateFee({ tax: x.tax, due: x.due, paid: x.paid || x.due, kind: x.kind });
   const a = twAppealDeadlines({ paymentPeriodEnd: x.period || undefined, reviewDecision: x.review || undefined, petitionDecision: x.petition || undefined, paid: x.paid || undefined });
+  const lateDays = Math.max(0, Math.round((Date.parse(x.paid || x.due) - Date.parse(x.due)) / 86_400_000));
   return (
-    <div className="space-y-5">
+    <CurveShell
+      toolId={TOOL_ID}
+      lang="zh"
+      currency="TWD"
+      text={TW_VIZ_TEXT}
+      curve={{
+        title: "逾期天數與滯納金", caption: "每逾3日加徵1%，30日後移送強制執行。",
+        xLabel: "逾期天數", yLabel: "滯納金", min: 0, max: 30, step: 1, current: lateDays,
+        f: (d) => twLateFee({ tax: x.tax, due: x.due, paid: plusDays(x.due, d), kind: x.kind }).fee, formatX: (d) => `${d}日`, formatY: (n: number) => `${Math.round(n).toLocaleString("zh-TW")}元`,
+        onPick: (d) => upd({ paid: plusDays(x.due, d) }), marks: [],
+      }}
+    >
+      {() => (
+    <>
       <ChoiceChips<K> legend="稅目" value={x.kind} options={[{ value: "income", label: "所得稅" }, { value: "business", label: "營業稅" }]} onChange={(v) => upd({ kind: v })} />
       <div className="grid gap-3 sm:grid-cols-3">
         <NumberField label="應納稅額" value={x.tax} onChange={(v) => upd({ tax: v })} suffix="元" step={1000} />
@@ -41,6 +56,8 @@ export default function TwLateFee() {
         <Items items={a.items} />
       </section>
       <p className="text-xs leading-5 text-muted-foreground">{TW_TAX_NOTE} 更新日期：{TW_TAX_AS_OF}。</p>
-    </div>
+    </>
+      )}
+    </CurveShell>
   );
 }

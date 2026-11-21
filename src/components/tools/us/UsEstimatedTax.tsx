@@ -5,6 +5,7 @@ import ChoiceChips from "../payroll/ChoiceChips";
 import NumberField from "../payroll/NumberField";
 import { track } from "../viz/track";
 import { Items } from "../nts/Items";
+import CurveShell from "../viz/CurveShell";
 
 const TOOL_ID = "estimated-tax-safe-harbor-calculator";
 const usd = (n: number) => `$${Math.round(n).toLocaleString("en-US")}`;
@@ -15,7 +16,19 @@ export default function UsEstimatedTax() {
   const upd = (p: Partial<typeof x>) => { setX({ ...x, ...p }); track("tool_calculate", { tool_id: TOOL_ID }, true); };
   const r = usEstimatedTax({ priorTax: x.priorTax, priorAgi: x.priorAgi, currentTax: x.current, withholding: x.wh, mfs: x.mfs === "y", priorFullYear: x.full === "y", taxYear: 2026 });
   return (
-    <div className="space-y-5">
+    <CurveShell
+      toolId={TOOL_ID}
+      lang="en"
+      currency="USD"
+      curve={{
+        title: "Estimated tax to pay by this year's expected tax", caption: "The safe harbor uses the smaller of 90% of this year or 100%/110% of last year, so the line flattens.",
+        xLabel: "This year's expected tax", yLabel: "Estimated tax to pay", min: 0, max: 60000, step: 1000, current: x.current,
+        f: (v) => usEstimatedTax({ priorTax: x.priorTax, priorAgi: x.priorAgi, currentTax: v, withholding: x.wh, mfs: x.mfs === "y", priorFullYear: x.full === "y", taxYear: 2026 }).toPay, formatX: (n: number) => `$${Math.round(n).toLocaleString("en-US")}`, formatY: (n: number) => `$${Math.round(n).toLocaleString("en-US")}`,
+        onPick: (v) => upd({ current: v }), marks: [],
+      }}
+    >
+      {() => (
+    <>
       <div className="grid gap-3 sm:grid-cols-2">
         <NumberField label="Last year's total tax (Form 1040)" value={x.priorTax} onChange={(v) => upd({ priorTax: v })} suffix="USD" step={500} />
         <NumberField label="Last year's AGI" value={x.priorAgi} onChange={(v) => upd({ priorAgi: v })} suffix="USD" step={1000} />
@@ -30,6 +43,8 @@ export default function UsEstimatedTax() {
         <Items items={r.items} />
       </div>
       <p className="text-xs leading-5 text-muted-foreground">{US_TAX_NOTE} As of {US_TAX_AS_OF}.</p>
-    </div>
+    </>
+      )}
+    </CurveShell>
   );
 }

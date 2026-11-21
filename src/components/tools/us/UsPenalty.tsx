@@ -6,6 +6,7 @@ import DateField from "../payroll/DateField";
 import NumberField from "../payroll/NumberField";
 import { track } from "../viz/track";
 import { Items } from "../nts/Items";
+import CurveShell, { plusMonths } from "../viz/CurveShell";
 
 const TOOL_ID = "irs-penalty-interest-calculator";
 const usd = (n: number) => `$${Math.round(n).toLocaleString("en-US")}`;
@@ -17,8 +18,22 @@ export default function UsPenalty() {
   const upd = (p: Partial<typeof x>) => { setX({ ...x, ...p }); track("tool_calculate", { tool_id: TOOL_ID }, true); };
   const r = usPenalty({ tax: x.tax, due: x.due || "2027-04-15", filed: x.filed || undefined, paid: x.paid || undefined, extension: x.ext === "y", installment: x.plan === "y" });
   const ap = x.notice ? usAppealDeadlines({ notice: x.notice, kind: x.kind, abroad: x.abroad === "y" }) : [];
+  const due = x.due || "2027-04-15";
+  const lateMonths = x.filed ? Math.max(0, Math.round((Date.parse(x.filed) - Date.parse(due)) / (30.44 * 86_400_000))) : 0;
   return (
-    <div className="space-y-5">
+    <CurveShell
+      toolId={TOOL_ID}
+      lang="en"
+      currency="USD"
+      curve={{
+        title: "Penalties and interest by months late (filed and paid on the same day)", caption: "Failure-to-file is 5% a month up to 5 months; failure-to-pay and interest keep growing.",
+        xLabel: "Months late", yLabel: "Penalties + interest", min: 0, max: 24, step: 1, current: lateMonths,
+        f: (m) => usPenalty({ tax: x.tax, due, filed: plusMonths(due, m), paid: plusMonths(due, m), extension: x.ext === "y", installment: x.plan === "y" }).total, formatX: (m) => `${m} mo`, formatY: (n: number) => `$${Math.round(n).toLocaleString("en-US")}`,
+        onPick: (m) => upd({ filed: plusMonths(due, m), paid: plusMonths(due, m) }), marks: [{ at: 5, label: "5 months" }],
+      }}
+    >
+      {() => (
+    <>
       <div className="grid gap-3 sm:grid-cols-2">
         <NumberField label="Unpaid tax on the due date" value={x.tax} onChange={(v) => upd({ tax: v })} suffix="USD" step={100} />
         <DateField label="Original due date" value={x.due} onChange={(v) => upd({ due: v })} />
@@ -40,6 +55,8 @@ export default function UsPenalty() {
         <p className="text-xs text-muted-foreground">The last day printed on a notice of deficiency controls if it is later.</p>
       </section>
       <p className="text-xs leading-5 text-muted-foreground">{US_TAX_NOTE} As of {US_TAX_AS_OF}.</p>
-    </div>
+    </>
+      )}
+    </CurveShell>
   );
 }

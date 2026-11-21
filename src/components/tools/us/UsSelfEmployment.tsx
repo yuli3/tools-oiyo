@@ -5,6 +5,7 @@ import ChoiceChips from "../payroll/ChoiceChips";
 import NumberField from "../payroll/NumberField";
 import { track } from "../viz/track";
 import { Items } from "../nts/Items";
+import CurveShell from "../viz/CurveShell";
 
 const TOOL_ID = "self-employment-tax-qbi-calculator";
 const usd = (n: number) => `$${Math.round(n).toLocaleString("en-US")}`;
@@ -16,7 +17,19 @@ export default function UsSelfEmployment() {
   const parts = [{ label: "Self-employment tax", v: r.seTax }, { label: "Additional Medicare", v: r.addlMedicare }, { label: "Federal income tax", v: r.incomeTax }];
   const max = Math.max(1, ...parts.map((p) => p.v));
   return (
-    <div className="space-y-5">
+    <CurveShell
+      toolId={TOOL_ID}
+      lang="en"
+      currency="USD"
+      curve={{
+        title: "Total federal tax by net self-employment earnings", caption: "Self-employment tax plus income tax, with the same filing status and other income.",
+        xLabel: "Net earnings", yLabel: "Federal tax", min: 0, max: 300000, step: 5000, current: x.net,
+        f: (v) => usSelfEmployment({ net: v, filing: x.filing, wages: x.wages, otherIncome: x.other }).total, formatX: (n: number) => `$${Math.round(n).toLocaleString("en-US")}`, formatY: (n: number) => `$${Math.round(n).toLocaleString("en-US")}`,
+        onPick: (v) => upd({ net: v }), marks: [],
+      }}
+    >
+      {() => (
+    <>
       <div className="grid gap-3 sm:grid-cols-2">
         <NumberField label="Net self-employment profit (Schedule C)" value={x.net} onChange={(v) => upd({ net: v })} suffix="USD" step={1000} />
         <NumberField label="W-2 wages (if any)" value={x.wages} onChange={(v) => upd({ wages: v })} suffix="USD" step={1000} />
@@ -37,6 +50,8 @@ export default function UsSelfEmployment() {
         <Items items={r.items} />
       </div>
       <p className="text-xs leading-5 text-muted-foreground">{US_TAX_NOTE} As of {US_TAX_AS_OF}.</p>
-    </div>
+    </>
+      )}
+    </CurveShell>
   );
 }

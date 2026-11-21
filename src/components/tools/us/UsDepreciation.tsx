@@ -6,6 +6,7 @@ import DateField from "../payroll/DateField";
 import NumberField from "../payroll/NumberField";
 import { track } from "../viz/track";
 import { Items } from "../nts/Items";
+import CurveShell from "../viz/CurveShell";
 
 const TOOL_ID = "macrs-section-179-calculator";
 const usd = (n: number) => `$${Math.round(n).toLocaleString("en-US")}`;
@@ -17,7 +18,19 @@ export default function UsDepreciation() {
   const upd = (p: Partial<typeof x>) => { setX({ ...x, ...p }); track("tool_calculate", { tool_id: TOOL_ID }, true); };
   const r = usDepreciation({ cost: x.cost, life: Number(x.life) as 5 | 7, placed: x.placed || "2026-06-01", sec179: x.s179, bonus: x.bonus === "y", afs: x.afs === "y" });
   return (
-    <div className="space-y-5">
+    <CurveShell
+      toolId={TOOL_ID}
+      lang="en"
+      currency="USD"
+      curve={{
+        title: "First-year deduction by cost", caption: "Same recovery period and elections.",
+        xLabel: "Cost", yLabel: "First-year deduction", min: 0, max: 100000, step: 1000, current: x.cost,
+        f: (v) => usDepreciation({ cost: v, life: Number(x.life) as 5 | 7, placed: x.placed || "2026-06-01", sec179: Math.min(x.s179, v), bonus: x.bonus === "y", afs: x.afs === "y" }).firstYear, formatX: (n: number) => `$${Math.round(n).toLocaleString("en-US")}`, formatY: (n: number) => `$${Math.round(n).toLocaleString("en-US")}`,
+        onPick: (v) => upd({ cost: v }), marks: [],
+      }}
+    >
+      {() => (
+    <>
       <ChoiceChips<Life> legend="Property class" value={x.life} options={[{ value: "5", label: "5-year (computers, cars, light trucks)" }, { value: "7", label: "7-year (furniture, fixtures, most equipment)" }]} onChange={(v) => upd({ life: v })} />
       <div className="grid gap-3 sm:grid-cols-2">
         <NumberField label="Cost (business-use share)" value={x.cost} onChange={(v) => upd({ cost: v })} suffix="USD" step={500} />
@@ -39,6 +52,8 @@ export default function UsDepreciation() {
         )}
       </div>
       <p className="text-xs leading-5 text-muted-foreground">{US_TAX_NOTE} As of {US_TAX_AS_OF}.</p>
-    </div>
+    </>
+      )}
+    </CurveShell>
   );
 }
