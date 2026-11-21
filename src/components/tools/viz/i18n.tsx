@@ -133,12 +133,17 @@ export interface VizCtx {
   lang: VizLang;
   /** 금액(unit "won") 표기 통화. 한국어는 KRW(억·만 표기), 그 밖에는 Intl 통화 표기 */
   currency: string;
+  /** 2026-11-21: 틀 문구 덮어쓰기(예: 대만 zh-Hant). 없으면 lang 기본 문구 */
+  text?: Partial<VizText>;
 }
 
 const Ctx = createContext<VizCtx>({ lang: "ko", currency: "KRW" });
 export const VizLangProvider = Ctx.Provider;
 export const useVizCtx = () => useContext(Ctx);
-export const useVizText = () => VIZ_TEXT[useContext(Ctx).lang];
+export const useVizText = (): VizText => {
+  const c = useContext(Ctx);
+  return c.text ? { ...VIZ_TEXT[c.lang], ...c.text } : VIZ_TEXT[c.lang];
+};
 
 const INTL: Record<VizLang, string> = { ko: "ko-KR", en: "en-US", ja: "ja-JP", zh: "zh-CN", fr: "fr-FR", es: "es-ES" };
 export const intlOf = (lang: VizLang) => INTL[lang];
