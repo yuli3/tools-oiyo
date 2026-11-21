@@ -1,0 +1,67 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import CnIncomeTax from '../../components/tools/cn/CnIncomeTax';
+const c = {
+  "introTitle": "个体户、工资和小微企业各交多少所得税",
+  "intro": "个体工商户的经营所得按5%至35%的五级超额累进税率计算，2027年底前年应纳税所得额不超过200万元的部分减半征收。工资薪金等综合所得每年减除60,000元及专项扣除、专项附加扣除后，按3%至45%计算。小型微利企业（年应纳税所得额不超过300万元、从业人数不超过300人、资产总额不超过5,000万元）减按25%计入应纳税所得额、按20%缴纳，实际税负为5%。",
+  "formulaTitle": "依据",
+  "formulas": [
+    {
+      "title": "经营所得",
+      "body": "5%（≤3万元）、10%（≤9万元）、20%（≤30万元）、30%（≤50万元）、35%（个人所得税法税率表二）。本工具按各档逐级计算，不使用速算扣除数。"
+    },
+    {
+      "title": "个体工商户减半",
+      "body": "2023年1月1日至2027年12月31日，年应纳税所得额不超过200万元的部分减半征收（公告2023年第12号）。本工具按不超过200万元部分所占比例估算。"
+    },
+    {
+      "title": "综合所得",
+      "body": "减除费用每年60,000元（第6条），税率3%至45%（税率表一）。"
+    },
+    {
+      "title": "小型微利企业",
+      "body": "25%计入、20%税率，至2027年12月31日；一般税率25%（企业所得税法第4条）。"
+    }
+  ],
+  "howToTitle": "使用方法",
+  "steps": [
+    "选择要计算的项目。",
+    "输入全年应纳税所得额或收入及扣除。",
+    "查看税额和优惠。",
+    "在电子税务局申报时以系统计算为准。"
+  ],
+  "faqTitle": "常见问题",
+  "faqs": [
+    {
+      "question": "为什么不用速算扣除数？",
+      "answer": "个人所得税法正文的税率表没有速算扣除数。本工具逐档计算，结果与正确的速算扣除数计算相同。"
+    },
+    {
+      "question": "减半金额和申报表不一样？",
+      "answer": "正式计算还要考虑其他减免的扣减，本工具只给出估算。"
+    },
+    {
+      "question": "输入的内容会被保存吗？",
+      "answer": "输入内容只保存在你的浏览器中，不会发送到服务器。"
+    }
+  ],
+  "disclaimer": "根据法律和公告的估算，不是个案涉税咨询。"
+};
+const sources: [string, string][] = [
+  [
+    "个人所得税法",
+    "https://fgk.chinatax.gov.cn/zcfgk/c100009/c5193028/content.html"
+  ],
+  [
+    "财政部 税务总局公告2023年第12号",
+    "https://fgk.chinatax.gov.cn/zcfgk/c102416/c5210453/content.html"
+  ],
+  [
+    "企业所得税法",
+    "https://fgk.chinatax.gov.cn/zcfgk/c100009/c5193018/content.html"
+  ]
+];
+---
+<DebtReliefPage slug="china-business-income-tax-calculator" c={c} sources={sources} sourcesTitle="来源" checked="国家税务总局法规库 2026-11-21 查阅">
+  <CnIncomeTax client:load />
+</DebtReliefPage>

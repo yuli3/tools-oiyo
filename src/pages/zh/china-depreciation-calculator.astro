@@ -1,0 +1,67 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import CnDepreciation from '../../components/tools/cn/CnDepreciation';
+const c = {
+  "introTitle": "一台设备每年能扣多少折旧",
+  "intro": "企业所得税上，固定资产按直线法计算的折旧准予扣除，自投入使用月份的次月起计算。最低折旧年限为：房屋、建筑物20年；飞机、火车、轮船、机器、机械和其他生产设备10年；与生产经营有关的器具、工具、家具5年；其他运输工具4年；电子设备3年。2024年至2027年新购进、单位价值不超过500万元的设备、器具可以一次性扣除。可以加速折旧的，年限不低于最低年限的60%，或采用双倍余额递减法、年数总和法。",
+  "formulaTitle": "依据",
+  "formulas": [
+    {
+      "title": "最低年限",
+      "body": "企业所得税法实施条例第60条。"
+    },
+    {
+      "title": "计提起点和残值",
+      "body": "投入使用月份的次月起；预计净残值合理确定，一经确定不得变更（第59条）。"
+    },
+    {
+      "title": "一次性扣除",
+      "body": "2024-01-01至2027-12-31新购进设备、器具单位价值≤500万元（公告2023年第37号）。"
+    },
+    {
+      "title": "加速折旧",
+      "body": "缩短年限不低于60%，或双倍余额递减法、年数总和法（第98条）；适用于全部制造业（公告2019年第66号）。"
+    }
+  ],
+  "howToTitle": "使用方法",
+  "steps": [
+    "选择资产类别。",
+    "输入原值、投入使用日期、年限和残值率。",
+    "选择是否一次性扣除或加速折旧。",
+    "查看每个折旧年度的金额。"
+  ],
+  "faqTitle": "常见问题",
+  "faqs": [
+    {
+      "question": "表中的“第1年”是自然年吗？",
+      "answer": "不是。是从投入使用次月起每12个月为一个折旧年度。"
+    },
+    {
+      "question": "双倍余额递减法最后两年怎么算？",
+      "answer": "最后两年把剩余净值扣除残值后平均分摊。"
+    },
+    {
+      "question": "输入的内容会被保存吗？",
+      "answer": "输入内容只保存在你的浏览器中，不会发送到服务器。"
+    }
+  ],
+  "disclaimer": "根据法规整理的计算，不是个案会计或涉税咨询。"
+};
+const sources: [string, string][] = [
+  [
+    "企业所得税法实施条例",
+    "https://fgk.chinatax.gov.cn/zcfgk/c100010/c5194417/content.html"
+  ],
+  [
+    "财政部 税务总局公告2023年第37号",
+    "https://fgk.chinatax.gov.cn/zcfgk/c102416/c5212306/content.html"
+  ],
+  [
+    "财政部 税务总局公告2019年第66号",
+    "https://fgk.chinatax.gov.cn/zcfgk/c102416/c5202306/content.html"
+  ]
+];
+---
+<DebtReliefPage slug="china-depreciation-calculator" c={c} sources={sources} sourcesTitle="来源" checked="国家税务总局法规库 2026-11-21 查阅">
+  <CnDepreciation client:load />
+</DebtReliefPage>

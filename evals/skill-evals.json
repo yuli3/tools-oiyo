@@ -1933,6 +1933,89 @@
           }
         }
       ]
+    },
+    {
+      "skill": "oiyo-cn-tax-guide",
+      "id": "cn-vat-qidianzheng",
+      "ask": "小规模纳税人按季申报，这季度销售额31万元，要交增值税吗？",
+      "run": [
+        "vat",
+        {
+          "sales": 310000,
+          "period": "quarter"
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.below",
+          "eq": false
+        },
+        {
+          "path": "result.tax",
+          "eq": 3100
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-cn-tax-guide",
+      "id": "cn-geti-jianban",
+      "ask": "个体户全年应纳税所得额10万元，个税多少？",
+      "run": [
+        "business",
+        {
+          "taxable": 100000
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.tax",
+          "eq": 9500
+        },
+        {
+          "path": "result.payable",
+          "eq": 4750
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-cn-tax-guide",
+      "id": "cn-zhinajin",
+      "ask": "1万元税款晚交30天，滞纳金多少？",
+      "run": [
+        "latefee",
+        {
+          "tax": 10000,
+          "due": "2026-05-22",
+          "paid": "2026-06-21"
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.fee",
+          "eq": 150
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-cn-tax-guide",
+      "id": "cn-fuyi",
+      "ask": "3月2日收到处罚决定，复议和起诉期限？",
+      "run": [
+        "appeal",
+        {
+          "known": "2026-03-02",
+          "kind": "penalty"
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.deadlines",
+          "has": {
+            "id": "susong",
+            "date": "2026-09-02"
+          }
+        }
+      ]
     }
   ],
   "boundaries": {
@@ -1959,7 +2042,11 @@
       "votre conseiller fiscal",
       "asesor fiscal colegiado",
       "soy asesor fiscal",
-      "como gestor"
+      "como gestor",
+      "我是税务师",
+      "作为您的税务师",
+      "我帮你申报",
+      "AI税务师"
     ]
   }
 }

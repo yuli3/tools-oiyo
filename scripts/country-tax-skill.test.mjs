@@ -41,3 +41,10 @@ test("es skill CLI", () => {
   assert.equal(run("calendar", '{"year":2026,"sociedad":true}').events.find((e) => e.id === "200").date, "2026-07-27");
   assert.ok(run("scope").some((s) => s.cite.includes("art. 46")));
 });
+
+test("cn skill CLI", () => {
+  const run = (...a) => JSON.parse(execFileSync(process.execPath, [resolve(skillDir("cn"), "scripts/calc.mjs"), ...a], { encoding: "utf8" })).result;
+  assert.equal(run("vat", '{"sales":100000,"period":"month"}').tax, 1000);
+  assert.equal(run("calendar", '{"year":2026,"vat":"month"}').events.find((e) => e.id === "vat-10").date, "2026-10-26");
+  assert.ok(run("scope").some((s) => s.cite.includes("第89条")));
+});
