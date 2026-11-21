@@ -10,7 +10,7 @@ import { execFileSync } from "node:child_process";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const EVALS = JSON.parse(readFileSync(resolve(root, "evals/skill-evals.json"), "utf8"));
-const SKILL_CLI = { "oiyo-kr-law-guide": "scripts/guide.mjs", "oiyo-kr-benefits-navigator": "scripts/calc.mjs", "kr-tax-advisor": "scripts/calc.mjs", "oiyo-business-strategist": "scripts/calc.mjs", "oiyo-korea-expat-guide": "scripts/expat.mjs" };
+const SKILL_CLI = { "oiyo-kr-law-guide": "scripts/guide.mjs", "oiyo-kr-benefits-navigator": "scripts/calc.mjs", "kr-tax-advisor": "scripts/calc.mjs", "oiyo-business-strategist": "scripts/calc.mjs", "oiyo-korea-expat-guide": "scripts/expat.mjs", "oiyo-jp-tax-guide": "scripts/calc.mjs" };
 
 export function get(obj, path) {
   return path.split(".").reduce((o, k) => (o == null ? undefined : o[k]), obj);
@@ -60,7 +60,7 @@ test("경계: 스킬 문서에 대리·단정·자격 명칭 문구가 없고 �
   for (const skill of readdirSync(resolve(root, "skills"))) {
     const docs = walk(resolve(root, "skills", skill)).filter((p) => p.endsWith(".md"));
     const all = docs.map((p) => readFileSync(p, "utf8")).join("\n");
-    for (const w of mustInclude) assert.ok(all.includes(w) || readFileSync(resolve(root, "skills", skill, "SKILL.md"), "utf8").includes("기준"), `${skill}: "${w}" 없음`);
+    for (const w of mustInclude) assert.ok(all.includes(w) || /기준|基準日/.test(readFileSync(resolve(root, "skills", skill, "SKILL.md"), "utf8")), `${skill}: "${w}" 없음`);
     for (const p of docs) {
       const t = readFileSync(p, "utf8");
       for (const w of forbidden) assert.ok(!t.includes(w), `${p.replace(root + "/", "")}: 금지 문구 "${w}"`);

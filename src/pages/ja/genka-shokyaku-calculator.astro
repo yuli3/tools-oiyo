@@ -1,0 +1,30 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import JpDepreciation from '../../components/tools/jp/JpDepreciation';
+const c = {
+  introTitle: 'パソコンや車をいくらずつ経費にできるか',
+  intro: '10万円以上の備品や車は、買った年に全額を経費にせず、法定耐用年数に応じて減価償却します。10万円未満は全額をその年の経費、20万円未満は3年で均等に経費にする一括償却も選べます。青色申告の中小事業者は少額減価償却資産の特例で、令和8年4月1日以後の取得分は40万円未満（それより前は30万円未満）を年300万円まで一度に経費にできます。このツールは扱いの判定と、定額法の年ごとの償却費を示します。',
+  formulaTitle: '使っているルール',
+  formulas: [
+    { title: '少額の扱い', body: '10万円未満は全額、20万円未満は一括償却資産（3年）、中小事業者の特例は40万円未満（令和8年3月31日までの取得は30万円未満）・年300万円まで・令和11年3月31日まで（国税庁 No.2100）。' },
+    { title: '定額法', body: '取得価額 × 償却率 × 使った月数/12。償却率は耐用年数省令 別表第八（例: 4年0.250、6年0.167、22年0.046）。最後は1円を残します。' },
+    { title: '耐用年数の例', body: 'パソコン4年、普通自動車6年、軽自動車4年、木造の事業用建物22年（耐用年数省令 別表第一）。' },
+  ],
+  howToTitle: '使い方',
+  steps: ['資産の種類を選ぶか、その他なら法定耐用年数を入れます。', '取得価額と事業に使い始めた日を入れます。', '青色申告の中小事業者かを選びます。', '扱いの判定と、年ごとの償却費・未償却残高を確認します。'],
+  faqTitle: 'よくある質問',
+  faqs: [
+    { question: '中古資産は？', answer: '中古資産は簡便法で耐用年数を短くできます。このツールは新品の法定耐用年数で計算します。' },
+    { question: '家事と共用している場合は？', answer: '償却費のうち事業に使った割合だけが必要経費です。このツールは事業専用として計算します。' },
+    { question: '入力内容は保存されますか？', answer: '入力値は表示中のページのメモリ内だけで使い、サーバーに送りません。' },
+  ],
+  disclaimer: '公表された法令にもとづく概算です。個別の税務相談・申告書の作成は税理士の業務です（税理士法第52条）。',
+};
+const sources: [string, string][] = [
+  ['国税庁 タックスアンサー No.2100 減価償却のあらまし', 'https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/2100.htm'],
+  ['e-Gov 法令検索 減価償却資産の耐用年数等に関する省令', 'https://laws.e-gov.go.jp/law/340M50000040015'],
+];
+---
+<DebtReliefPage slug="genka-shokyaku-calculator" c={c} sources={sources} sourcesTitle="出典" checked="国税庁・e-Gov 確認日：2026-11-21">
+  <JpDepreciation client:load />
+</DebtReliefPage>

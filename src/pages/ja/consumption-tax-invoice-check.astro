@@ -1,0 +1,31 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import JpConsumptionTax from '../../components/tools/jp/JpConsumptionTax';
+const c = {
+  introTitle: '消費税を納める必要があるか、どの計算方法が少ないか',
+  intro: '基準期間（個人は前々年）の課税売上高が1,000万円以下なら原則として免税事業者ですが、前年1〜6月の売上と給与がどちらも1,000万円を超えたときや、インボイス（適格請求書発行事業者）に登録したときは課税事業者になります。インボイス登録で課税事業者になった人は、令和8年9月30日を含む課税期間まで「2割特例」、個人は令和9年・令和10年に「3割特例」が使えます。このツールは判定と、本則課税・簡易課税・特例の税額を並べて比べます。',
+  formulaTitle: '使っているルール',
+  formulas: [
+    { title: '納税義務', body: '基準期間の課税売上高1,000万円超、または特定期間の課税売上高と給与等支払額がどちらも1,000万円超で課税事業者（国税庁 No.6501）。' },
+    { title: '簡易課税', body: '基準期間の課税売上高5,000万円以下で、事前に届出をした場合。みなし仕入率は第1種90%〜第6種40%（国税庁 No.6505）。' },
+    { title: '2割特例・3割特例', body: '売上税額の20%（令和8年9月30日を含む課税期間まで）、個人の令和9年・令和10年は30%（国税庁 No.6498）。' },
+  ],
+  howToTitle: '使い方',
+  steps: ['課税期間（年）と、前々年・前年1〜6月の売上と給与を入れます。', 'インボイス登録の有無と、登録しなければ免税だったかを選びます。', '今年の売上・仕入れ（税抜、10%分）と事業区分を入れます。', '使える方法の中で一番少ない税額を確認します。'],
+  faqTitle: 'よくある質問',
+  faqs: [
+    { question: '軽減税率8%の売上は？', answer: 'このツールは標準税率10%だけで計算します。飲食料品などの8%分は別に計算が必要です。' },
+    { question: '令和9年4月からの飲食料品の税率引下げは？', answer: '令和9年4月1日〜令和11年3月31日の予定として国税庁が案内しています。詳細が公表されたら反映します。' },
+    { question: '入力内容は保存されますか？', answer: '入力値は表示中のページのメモリ内だけで使い、サーバーに送りません。' },
+  ],
+  disclaimer: '国税庁の公表資料にもとづく概算です。個別の税務相談・申告書の作成は税理士の業務です（税理士法第52条）。',
+};
+const sources: [string, string][] = [
+  ['国税庁 タックスアンサー No.6501 納税義務の免除', 'https://www.nta.go.jp/taxes/shiraberu/taxanswer/shohi/6501.htm'],
+  ['国税庁 タックスアンサー No.6498 2割特例', 'https://www.nta.go.jp/taxes/shiraberu/taxanswer/shohi/6498.htm'],
+  ['国税庁 タックスアンサー No.6505 簡易課税制度', 'https://www.nta.go.jp/taxes/shiraberu/taxanswer/shohi/6505.htm'],
+];
+---
+<DebtReliefPage slug="consumption-tax-invoice-check" c={c} sources={sources} sourcesTitle="出典" checked="国税庁 確認日：2026-11-21（令和8年4月1日現在法令等）">
+  <JpConsumptionTax client:load />
+</DebtReliefPage>

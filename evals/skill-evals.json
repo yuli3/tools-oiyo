@@ -1565,6 +1565,99 @@
           "eq": true
         }
       ]
+    },
+    {
+      "skill": "oiyo-jp-tax-guide",
+      "id": "jp-calendar-2027",
+      "ask": "2027年の確定申告と予定納税の期限は？",
+      "run": [
+        "calendar",
+        {
+          "year": 2027,
+          "prepaid": true
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.events",
+          "has": {
+            "id": "income",
+            "date": "2027-03-15"
+          }
+        },
+        {
+          "path": "result.events",
+          "has": {
+            "id": "prepay1",
+            "date": "2027-08-02"
+          }
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-jp-tax-guide",
+      "id": "jp-invoice-thirty",
+      "ask": "インボイス登録した個人で売上800万円、2027年の消費税は？",
+      "run": [
+        "consumption",
+        {
+          "year": 2027,
+          "baseSales": 8000000,
+          "invoice": true,
+          "wasExempt": true,
+          "sales": 8000000
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.exempt",
+          "eq": false
+        },
+        {
+          "path": "result.best",
+          "eq": "thirty"
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-jp-tax-guide",
+      "id": "jp-mushinkoku-audit",
+      "ask": "調査の後に期限後申告、本税100万円の無申告加算税は？",
+      "run": [
+        "penalty",
+        {
+          "kind": "none",
+          "stage": "audit",
+          "tax": 1000000
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.additionalTax",
+          "eq": 175000
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-jp-tax-guide",
+      "id": "jp-sme-40man",
+      "ask": "2026年5月に35万円のパソコン、青色の個人事業主は？",
+      "run": [
+        "depreciation",
+        {
+          "cost": 350000,
+          "life": 4,
+          "acquired": "2026-05-01",
+          "blue": true,
+          "sme": true
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.treatment",
+          "eq": "sme"
+        }
+      ]
     }
   ],
   "boundaries": {
@@ -1579,7 +1672,10 @@
       "무조건 받을 수 있어요",
       "AI 세무사",
       "AI 노무사",
-      "AI 변호사"
+      "AI 변호사",
+      "AI税理士",
+      "申告書を作成します",
+      "代わりに申告します"
     ]
   }
 }

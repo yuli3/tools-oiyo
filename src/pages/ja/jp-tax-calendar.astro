@@ -1,0 +1,34 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import JpTaxCalendar from '../../components/tools/jp/JpTaxCalendar';
+const c = {
+  introTitle: '個人事業主・フリーランスの税金の期限を一覧にする',
+  intro: '所得税の確定申告は翌年2月16日から3月15日まで、個人事業者の消費税は3月31日までです。前年の所得税が15万円以上の人には7月と11月に予定納税があります。期限の日が土曜日・日曜日・祝日に当たるときは、その翌日が期限になります（国税通則法第10条第2項）。このツールは、選んだ年の期限を土日の繰り下げを含めて並べ、今日から何日残っているかを示します。',
+  formulaTitle: '使っているルール',
+  formulas: [
+    { title: '所得税の確定申告', body: '前年分を2月16日〜3月15日に申告し、3月15日までに納付します（国税庁 No.2020）。還付申告は1月から出せます。' },
+    { title: '個人事業者の消費税', body: '前年分の申告・納付期限は3月31日です（国税庁 No.6601）。' },
+    { title: '予定納税', body: '予定納税基準額が15万円以上の人は、第1期7月1日〜31日、第2期11月1日〜30日に3分の1ずつ納めます（国税庁 No.2040）。' },
+    { title: '青色申告の承認申請', body: 'その年の3月15日まで。1月16日以後に開業した場合は開業日から2か月以内です（国税庁 No.2070）。' },
+  ],
+  howToTitle: '使い方',
+  steps: ['確認したい年を入れます（確定申告はその前年分です）。', 'その年に開業した場合は開業日を入れます。', '消費税の課税事業者かどうか、予定納税があるかを選びます。', '並んだ期限と残り日数を確認し、e-Tax や振替納税の準備をします。'],
+  faqTitle: 'よくある質問',
+  faqs: [
+    { question: '振替納税の引落日は？', answer: '国税庁が毎年公表します。公表前の年は表示していません。国税庁の確定申告特集ページで確認してください。' },
+    { question: '期限に間に合わなかったら？', answer: '期限後申告になり、無申告加算税と延滞税がかかることがあります。「加算税・延滞税の計算」ページで概算できます。' },
+    { question: '入力内容は保存されますか？', answer: '入力値は表示中のページのメモリ内だけで使い、サーバーに送りません。サイトはアクセス解析と広告を利用しています。' },
+  ],
+  disclaimer: '国税庁の公表資料にもとづく一般的な情報です。個別の税務相談・申告書の作成は税理士の業務です（税理士法第52条）。',
+};
+const sources: [string, string][] = [
+  ['国税庁 タックスアンサー No.2020 確定申告', 'https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/2020.htm'],
+  ['国税庁 タックスアンサー No.2040 予定納税', 'https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/2040.htm'],
+  ['国税庁 タックスアンサー No.2070 青色申告制度', 'https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/2070.htm'],
+  ['国税庁 タックスアンサー No.6601 消費税の確定申告', 'https://www.nta.go.jp/taxes/shiraberu/taxanswer/shohi/6601.htm'],
+  ['e-Gov 法令検索 国税通則法', 'https://laws.e-gov.go.jp/law/337AC0000000066'],
+];
+---
+<DebtReliefPage slug="jp-tax-calendar" c={c} sources={sources} sourcesTitle="出典" checked="国税庁・e-Gov 確認日：2026-11-21">
+  <JpTaxCalendar client:load />
+</DebtReliefPage>
