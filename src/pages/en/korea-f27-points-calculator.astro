@@ -1,0 +1,32 @@
+---
+// Korea F-2-7 residence visa points calculator, English (2026-11-21, plan-20 #15). Engine: lib/kr-f27-points-2026.ts (same as /ko/f27-points-calculator/).
+import Layout from '../../components/Layout.astro';
+import ToolShell from '../../components/ToolShell.astro';
+import F27PointsEn from '../../components/tools/expat/F27PointsEn';
+import { F27_AS_OF } from '../../lib/kr-f27-points-2026';
+
+const title = 'Korea F-2-7 points calculator 2026 — age, education, Korean, income, 80-point pass mark';
+const description = 'Score the Korean points-based residence visa (F-2-7) from your age, degree, Korean level, annual income, bonus points and deductions, and see how many points you still need to reach 80.';
+const url = 'https://tools.oiyo.net/en/korea-f27-points-calculator/';
+const faqs = [
+  { q: 'Who can apply for F-2-7?', a: 'Mainly people who have stayed lawfully for 3 years or more on set statuses such as E-1 to E-7 or D-5 to D-9, or who fit other groups in the notice. You must not have disqualifications such as a KRW 3 million or larger fine in the last 3 years (Ministry of Justice Notice 2025-408).' },
+  { q: 'How is income proven?', a: 'With an income certificate (소득금액증명) from the tax office for the previous year. Income that is not proven at or above the minimum wage scores zero.' },
+  { q: 'What if I am a few points short?', a: 'Raising your Korean level (TOPIK or KIIP) or finishing KIIP level 5 adds points. A higher income band also adds points.' },
+];
+const schema = [
+  { '@context': 'https://schema.org', '@type': 'WebApplication', name: title, url, inLanguage: 'en', description, applicationCategory: 'ReferenceApplication', operatingSystem: 'All', isAccessibleForFree: true },
+  { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) },
+];
+---
+<Layout title={title} description={description} locale="en" canonicalURL={url} keywords={['F-2-7 points calculator', 'Korea F-2-7 visa', 'Korea residence visa points', 'F-2-7 80 points', 'KIIP bonus points']}>
+  <ToolShell title="Korea F-2-7 points calculator" description={description}>
+    <p slot="meta" class="text-sm font-semibold">South Korea · checked {F27_AS_OF}</p>
+    <F27PointsEn client:load />
+    <section class="space-y-3 border-t border-border pt-4">
+      <h2 class="text-lg font-semibold">Questions</h2>
+      {faqs.map((f) => (<details class="rounded-md border border-border p-3"><summary class="min-h-11 cursor-pointer text-sm font-semibold">{f.q}</summary><p class="mt-2 text-sm leading-relaxed">{f.a}</p></details>))}
+      <p class="text-xs text-muted-foreground">Sources: Enforcement Decree of the Immigration Act Annex 1-2 (Residence F-2); Ministry of Justice Notice 2025-408 (points table). Information only, not advice or representation. Also: <a class="underline" href="/en/korea-foreign-resident-guide/">Living in Korea: deadlines and rights</a> · Korean version: <a class="underline" href="/ko/f27-points-calculator/">거주(F-2-7) 점수 계산기</a>.</p>
+    </section>
+  </ToolShell>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+</Layout>
