@@ -21,3 +21,10 @@ test("jp skill CLI", () => {
   const md = readFileSync(resolve(skillDir("jp"), "SKILL.md"), "utf8");
   assert.match(md, /^name: oiyo-jp-tax-guide$/m);
 });
+
+test("us skill CLI", () => {
+  const run = (...a) => JSON.parse(execFileSync(process.execPath, [resolve(skillDir("us"), "scripts/calc.mjs"), ...a], { encoding: "utf8" })).result;
+  assert.equal(run("calendar", '{"taxYear":2026}').events[0].date, "2027-04-15");
+  assert.equal(run("depreciation", '{"cost":10000,"life":5,"placed":"2026-05-01","bonus":false}').firstYear, 2000);
+  assert.ok(run("scope").some((s) => s.cite.includes("10.3")));
+});

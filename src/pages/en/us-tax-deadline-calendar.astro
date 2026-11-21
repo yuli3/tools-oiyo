@@ -1,0 +1,31 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import UsTaxCalendar from '../../components/tools/us/UsTaxCalendar';
+const c = {
+  introTitle: 'Every federal deadline for your 2026 taxes in one list',
+  intro: 'Your 2026 Form 1040 is due April 15, 2027. If you are self-employed, estimated tax for 2026 is paid in four parts: April 15, June 15 and September 15, 2026, and January 15, 2027. Businesses that paid contractors file Form 1099-NEC by January 31, and partnerships and S corporations file by March 15. When a deadline falls on a Saturday, Sunday or legal holiday (including Emancipation Day in Washington, D.C.), it moves to the next business day. This tool lists the dates that apply to you and counts the days left.',
+  formulaTitle: 'Rules used',
+  formulas: [
+    { title: 'Form 1040', body: 'The 15th day of the 4th month after the tax year: April 15. Form 4868 extends filing, not payment, to October 15 (IRS Pub 509).' },
+    { title: 'Estimated tax', body: 'April 15, June 15, September 15 and January 15. You can skip the January payment if you file and pay in full by the start of February (2026 Form 1040-ES).' },
+    { title: 'Information and business returns', body: 'Form 1099-NEC by January 31; Forms 1065 and 1120-S by March 15; Form 1120 by April 15 for calendar-year businesses (Pub 509).' },
+    { title: 'Weekends and holidays', body: 'A deadline on a Saturday, Sunday or legal holiday moves to the next business day (Pub 509, IRC 7503).' },
+  ],
+  howToTitle: 'How to use it',
+  steps: ['Pick the tax year.', 'Answer whether you have self-employment income, pay contractors or plan to extend.', 'Choose your business return type, if any.', 'Put the dates in your calendar and check your state dates separately.'],
+  faqTitle: 'Questions',
+  faqs: [
+    { question: 'Does an extension give me more time to pay?', answer: 'No. Form 4868 extends the filing deadline only. Tax not paid by April accrues the failure-to-pay penalty and interest.' },
+    { question: 'Are disaster extensions included?', answer: 'No. The IRS announces disaster postponements by area; check irs.gov if you live in an affected county.' },
+    { question: 'Is my input saved?', answer: 'Inputs are used only in this page in your browser and are not sent to a server. The site uses analytics and ads.' },
+  ],
+  disclaimer: 'General information from IRS publications, not tax advice. For your situation use IRS free help or a CPA, enrolled agent or tax attorney.',
+};
+const sources: [string, string][] = [
+  ['IRS Publication 509, Tax Calendars (2026)', 'https://www.irs.gov/pub/irs-pdf/p509.pdf'],
+  ['IRS 2026 Form 1040-ES', 'https://www.irs.gov/pub/irs-pdf/f1040es.pdf'],
+];
+---
+<DebtReliefPage slug="us-tax-deadline-calendar" c={c} sources={sources} sourcesTitle="Sources" checked="IRS pages checked 2026-11-21">
+  <UsTaxCalendar client:load />
+</DebtReliefPage>

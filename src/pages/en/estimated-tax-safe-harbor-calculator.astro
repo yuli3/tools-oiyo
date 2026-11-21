@@ -1,0 +1,30 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import UsEstimatedTax from '../../components/tools/us/UsEstimatedTax';
+const c = {
+  introTitle: 'How much estimated tax to pay so there is no underpayment penalty',
+  intro: 'You generally must pay estimated tax if you expect to owe $1,000 or more after withholding. You avoid the underpayment penalty if withholding and timely estimated payments cover the smaller of 90% of this year’s tax or 100% of last year’s tax (110% if last year’s AGI was over $150,000, or $75,000 if married filing separately). This tool works out that safe harbor and splits it across the four 2026 due dates.',
+  formulaTitle: 'Rules used',
+  formulas: [
+    { title: 'Who must pay', body: 'Expected tax after withholding and credits of $1,000 or more (2026 Form 1040-ES).' },
+    { title: 'Safe harbor', body: 'Smaller of 90% of this year’s tax and 100% of last year’s (110% above $150,000 AGI). Farmers and fishers use 66⅔%.' },
+    { title: 'Penalty', body: 'Computed on Form 2210 at the underpayment interest rate: 7%, 6%, 7%, 7% for the four quarters of 2026.' },
+  ],
+  howToTitle: 'How to use it',
+  steps: ['Enter last year’s total tax and AGI from your Form 1040.', 'Estimate this year’s total tax (the self-employment tax calculator helps).', 'Enter expected withholding from any job.', 'Pay each amount by its date with IRS Direct Pay or EFTPS.'],
+  faqTitle: 'Questions',
+  faqs: [
+    { question: 'My income is uneven. Do I have to pay equal parts?', answer: 'No. The annualized income installment method on Form 2210 Schedule AI can lower early payments. This tool shows equal parts.' },
+    { question: 'Does withholding count?', answer: 'Yes. Withholding is treated as paid evenly through the year, so raising withholding late in the year can fix an underpayment.' },
+    { question: 'Is my input saved?', answer: 'Inputs stay in your browser and are not sent to a server.' },
+  ],
+  disclaimer: 'General information from IRS forms, not tax advice.',
+};
+const sources: [string, string][] = [
+  ['IRS 2026 Form 1040-ES', 'https://www.irs.gov/pub/irs-pdf/f1040es.pdf'],
+  ['IRS quarterly interest rates', 'https://www.irs.gov/payments/quarterly-interest-rates'],
+];
+---
+<DebtReliefPage slug="estimated-tax-safe-harbor-calculator" c={c} sources={sources} sourcesTitle="Sources" checked="IRS pages checked 2026-11-21">
+  <UsEstimatedTax client:load />
+</DebtReliefPage>

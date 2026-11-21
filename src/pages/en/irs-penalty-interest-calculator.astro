@@ -1,0 +1,35 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import UsPenalty from '../../components/tools/us/UsPenalty';
+const c = {
+  introTitle: 'What filing or paying late costs, and how long you have to dispute a notice',
+  intro: 'The failure-to-file penalty is 5% of the unpaid tax for each month or part of a month the return is late, up to 25%. The failure-to-pay penalty is 0.5% a month, up to 25% (0.25% on an approved payment plan). In months when both apply, the filing penalty is reduced by the payment penalty. A return filed in 2027 more than 60 days late has a minimum penalty of $535 or 100% of the tax, whichever is less. Interest compounds daily at the underpayment rate. This tool estimates all three and shows the deadline to petition the Tax Court or request a collection due process hearing.',
+  formulaTitle: 'Rules used',
+  formulas: [
+    { title: 'Failure to file', body: '5% per month or part of a month, maximum 25%, minus the failure-to-pay penalty for the same month; minimum $535 for returns over 60 days late filed in 2027 (Rev. Proc. 2025-32).' },
+    { title: 'Failure to pay', body: '0.5% per month, maximum 25%; 0.25% during an approved installment agreement if you filed on time.' },
+    { title: 'Interest', body: 'Daily compounding at the underpayment rate: 7%, 6%, 7%, 7% in 2026 quarters. Later quarters reuse 7% until the IRS publishes them.' },
+    { title: 'Disputes', body: 'Tax Court petition within 90 days of a notice of deficiency (150 days if addressed outside the U.S., Pub 556); CDP hearing request within 30 days (CDP FAQ).' },
+  ],
+  howToTitle: 'How to use it',
+  steps: ['Enter the tax that was unpaid on the original due date.', 'Enter the due date, the date you filed and the date you paid.', 'Say whether you had an extension or payment plan.', 'If you received a notice, enter its date to see the response deadline.'],
+  faqTitle: 'Questions',
+  faqs: [
+    { question: 'Can penalties be removed?', answer: 'First-time abatement can remove filing and payment penalties if you had none in the prior three years, and reasonable cause relief may apply. Interest generally stays.' },
+    { question: 'Is the result exact?', answer: 'It is an estimate. The IRS notice shows the official amounts, which can include payments and credits applied on different dates.' },
+    { question: 'Is my input saved?', answer: 'Inputs stay in your browser and are not sent to a server.' },
+  ],
+  disclaimer: 'General information from IRS guidance, not tax advice or representation. Petitions and hearing requests are your own filings or your representative’s.',
+};
+const sources: [string, string][] = [
+  ['IRS failure-to-file penalty', 'https://www.irs.gov/payments/failure-to-file-penalty'],
+  ['IRS failure-to-pay penalty', 'https://www.irs.gov/payments/failure-to-pay-penalty'],
+  ['IRS quarterly interest rates', 'https://www.irs.gov/payments/quarterly-interest-rates'],
+  ['IRS first-time abate', 'https://www.irs.gov/payments/penalty-relief-due-to-first-time-abate-or-other-administrative-waiver'],
+  ['IRS Publication 556', 'https://www.irs.gov/pub/irs-pdf/p556.pdf'],
+  ['IRS Collection Due Process FAQs', 'https://www.irs.gov/appeals/collection-due-process-cdp-faqs'],
+];
+---
+<DebtReliefPage slug="irs-penalty-interest-calculator" c={c} sources={sources} sourcesTitle="Sources" checked="IRS pages checked 2026-11-21">
+  <UsPenalty client:load />
+</DebtReliefPage>

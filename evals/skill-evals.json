@@ -1658,6 +1658,102 @@
           "eq": "sme"
         }
       ]
+    },
+    {
+      "skill": "oiyo-us-tax-guide",
+      "id": "us-calendar-1099",
+      "ask": "I pay contractors. When is the 1099-NEC due for 2026?",
+      "run": [
+        "calendar",
+        {
+          "taxYear": 2026,
+          "pays1099": true
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.events",
+          "has": {
+            "id": "1099nec",
+            "date": "2027-02-01"
+          }
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-us-tax-guide",
+      "id": "us-se-tax",
+      "ask": "I made $80,000 freelancing. What's my self-employment tax?",
+      "run": [
+        "selfemployment",
+        {
+          "net": 80000
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.seTax",
+          "eq": 11304
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-us-tax-guide",
+      "id": "us-safe-harbor-110",
+      "ask": "Last year AGI $200k and tax $10k; how much estimated tax?",
+      "run": [
+        "estimated",
+        {
+          "priorTax": 10000,
+          "priorAgi": 200000,
+          "currentTax": 20000
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.required",
+          "eq": 11000
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-us-tax-guide",
+      "id": "us-penalty-min",
+      "ask": "Filed 2.5 months late owing $2,000. Penalty?",
+      "run": [
+        "penalty",
+        {
+          "tax": 2000,
+          "due": "2027-04-15",
+          "filed": "2027-07-01"
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.failureToFile",
+          "eq": 535
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-us-tax-guide",
+      "id": "us-taxcourt-90",
+      "ask": "Notice of deficiency dated May 3, 2027. Tax Court deadline?",
+      "run": [
+        "appeal",
+        {
+          "notice": "2027-05-03"
+        }
+      ],
+      "expect": [
+        {
+          "path": "result",
+          "has": {
+            "id": "taxcourt",
+            "date": "2027-08-02"
+          }
+        }
+      ]
     }
   ],
   "boundaries": {
@@ -1675,7 +1771,10 @@
       "AI 변호사",
       "AI税理士",
       "申告書を作成します",
-      "代わりに申告します"
+      "代わりに申告します",
+      "I am a CPA",
+      "as your enrolled agent",
+      "I will file your return"
     ]
   }
 }

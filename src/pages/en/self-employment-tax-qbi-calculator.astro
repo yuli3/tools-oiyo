@@ -1,0 +1,33 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import UsSelfEmployment from '../../components/tools/us/UsSelfEmployment';
+const c = {
+  introTitle: 'What a freelancer or sole proprietor owes in federal tax',
+  intro: 'Self-employed people pay both halves of Social Security and Medicare: 15.3% of 92.35% of net profit, with the 12.4% Social Security part stopping at the 2026 wage base of $184,500. Half of that tax is deducted from income. Most sole proprietors below the 2026 threshold ($201,750 single, $403,500 joint) also get a qualified business income deduction of 20%, and from 2026 at least $400 when QBI is $1,000 or more. This tool combines SE tax, Additional Medicare Tax and 2026 federal income tax with the standard deduction.',
+  formulaTitle: 'Rules used',
+  formulas: [
+    { title: 'SE tax', body: '15.3% (12.4% Social Security + 2.9% Medicare) on 92.35% of net earnings, if $400 or more. W-2 wages use up the wage base first (IRS Topic 554).' },
+    { title: 'Additional Medicare', body: '0.9% above $200,000 (single) or $250,000 (joint), counting wages first (IRS Topic 560).' },
+    { title: 'QBI', body: '20% of QBI, limited to 20% of taxable income before QBI; minimum $400 from 2026. Above the threshold, wage and property limits apply and this tool stops (IRC 199A, Rev. Proc. 2025-32).' },
+    { title: 'Income tax', body: '2026 standard deduction $16,100 single / $32,200 joint and the 2026 brackets (IR-2025-103).' },
+  ],
+  howToTitle: 'How to use it',
+  steps: ['Enter net profit from Schedule C (income minus business expenses).', 'Add W-2 wages and other taxable income if you have them.', 'Pick your filing status.', 'Use the total to plan estimated tax payments.'],
+  faqTitle: 'Questions',
+  faqs: [
+    { question: 'Why 92.35%?', answer: 'It removes the employer-equivalent half of the tax from the base, the same way an employer’s share is not wages to an employee.' },
+    { question: 'Does this include state tax?', answer: 'No. State income tax and local taxes vary and are not included.' },
+    { question: 'Is my input saved?', answer: 'Inputs stay in your browser and are not sent to a server.' },
+  ],
+  disclaimer: 'An estimate from published IRS rules, not tax advice. Credits, itemized deductions, retirement and health insurance deductions are not included.',
+};
+const sources: [string, string][] = [
+  ['IRS Topic 554, Self-employment tax', 'https://www.irs.gov/taxtopics/tc554'],
+  ['IRS Topic 560, Additional Medicare Tax', 'https://www.irs.gov/taxtopics/tc560'],
+  ['IRS Rev. Proc. 2025-32 (2026 inflation adjustments)', 'https://www.irs.gov/pub/irs-drop/rp-25-32.pdf'],
+  ['IRS IR-2025-103, tax year 2026 adjustments', 'https://www.irs.gov/newsroom/irs-releases-tax-inflation-adjustments-for-tax-year-2026-including-amendments-from-the-one-big-beautiful-bill'],
+];
+---
+<DebtReliefPage slug="self-employment-tax-qbi-calculator" c={c} sources={sources} sourcesTitle="Sources" checked="IRS pages checked 2026-11-21">
+  <UsSelfEmployment client:load />
+</DebtReliefPage>

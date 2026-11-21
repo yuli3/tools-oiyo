@@ -12,6 +12,7 @@ import { renderSkillLib } from "./build-advisor-skill.mjs";
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 export const COUNTRY_SKILLS = {
   jp: { dir: "oiyo-jp-tax-guide", libs: ["jp-tax-pack-2026", "japan-salary", "scenario"], zip: "oiyo-jp-tax-guide-skill.zip" },
+  us: { dir: "oiyo-us-tax-guide", libs: ["us-tax-pack-2026"], zip: "oiyo-us-tax-guide-skill.zip" },
 };
 export const skillDir = (c) => resolve(root, "skills", COUNTRY_SKILLS[c].dir);
 
