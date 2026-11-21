@@ -38,6 +38,7 @@ export const lawGuides: { slug: string; domain?: DomainId; title: string; descri
   { slug: "fine-reduction-calculator", title: "과태료 감경·가산금 계산기", description: "의견제출 기한 안 자진납부 20% 감경, 사회적 약자 50% 감경, 늦게 내면 가산금 3%와 매월 1.2%(최대 75%)를 계산해요." },
   { slug: "permit-document-checklist", title: "영업신고·허가 준비 서류 점검표", description: "음식점·통신판매업·미용업 신고 서류와 건축물 용도 같은 미리 확인할 점을 체크하고 사업자등록 기한을 계산해요." },
   { slug: "withholding-statement-penalty-calculator", title: "지급명세서 기한·가산세 계산기", description: "연간·일용·간이지급명세서 제출 기한과 늦게 냈을 때 가산세(1%·0.25%, 감면 구간)를 계산해요." },
+  { slug: "tax-season-checklist-2027", title: "1~3월 세무 시즌 점검표 2027", description: "근로자·사업주·개인사업자·법인별로 연말정산·부가세 확정·사업장현황신고·지급명세서·법인세 할 일을 휴일 순연한 기한 순서로 보여 줘요." },
   { slug: "national-scholarship-apply-calculator", title: "국가장학금 1차 신청·지원금액", description: "2027-1학기 1차 신청 마감(1월 7일 18시)·가구원 동의(1월 14일) D-day와 학자금 지원구간·다자녀별 연간 지원금액(2026년 기준)을 계산해요." },
   { slug: "student-loan-repayment-calculator", title: "학자금 의무상환액 계산기", description: "취업 후 상환 학자금의 연간 의무상환액(상환기준소득 2,056만 원 초과분 × 20%·25%)과 월 원천공제액을 계산해요." },
   { slug: "bookkeeping-vs-estimate-calculator", title: "장부 vs 추계 신고 비교", description: "장부 신고와 경비율(추계) 신고의 소득세를 무기장가산세·기장세액공제까지 넣어 비교해요." },

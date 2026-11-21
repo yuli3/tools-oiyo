@@ -1,0 +1,33 @@
+---
+// 1~3월 세무 시즌 점검표 2027 (2026-11-21, 20개 계획 #1). 엔진: lib/kr-season-2027.ts
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import Tool from "../../components/tools/nts/SeasonChecklist";
+import { SEASON_AS_OF } from "../../lib/kr-season-2027";
+
+const title = "1~3월 세무 시즌 점검표 2027 — 연말정산·부가세 확정·사업장현황신고·법인세 D-day";
+const description = "근로자·사업주·과세·면세 개인사업자·법인별로 2027년 1~3월에 할 일을 기한 순서로 보여 줘요. 원천세 1월 11일, 부가세 2기 확정 1월 25일, 사업장현황신고 2월 10일, 지급명세서 3월 2일·10일, 법인세 3월 31일(휴일 순연 반영).";
+const ko = {
+  introTitle: "1월부터 3월까지 할 일을 한 번에",
+  intro: "연말정산, 부가세 2기 확정신고, 사업장현황신고, 지급명세서, 법인세가 1~3월에 몰려요. 내 상황을 고르면 할 일을 기한 순서로 보여 주고, 기한이 휴일이면 다음 영업일로 미룬 날짜를 알려 줘요. 끝낸 일은 체크해 두세요.",
+  howToTitle: "사용 방법",
+  steps: ["내 상황(근로자·사업주·개인사업자·법인)을 골라요.", "가장 가까운 기한부터 확인해요.", "끝낸 일은 체크하고, 연결된 계산기로 넘어가요."],
+  highlightsTitle: "주요 특징",
+  highlights: [
+    { title: "휴일 순연", body: "주말·공휴일이면 다음 영업일로." },
+    { title: "상황별 목록", body: "근로자부터 법인까지 5가지." },
+    { title: "계산기 연결", body: "연말정산·부가세·지급명세서 도구로." },
+    { title: "체크 기억", body: "이 브라우저에 끝낸 일을 남겨요." },
+  ],
+  disclaimer: `법정 기한을 정리한 일반 정보예요. 회사 마감일과 국세청 서비스 개통일은 공지로 확인해요. 기준일 ${SEASON_AS_OF}.`,
+};
+const faqs = [
+  { q: "2027년 부가가치세 2기 확정신고 기한은 언제인가요?", a: "2026년 7~12월분은 2027년 1월 25일(월)까지 신고·납부해요(부가가치세법 제49조)." },
+  { q: "사업장현황신고는 언제까지 하나요?", a: "면세 개인사업자는 2027년 2월 10일(수)까지 해요(소득세법 제78조)." },
+  { q: "이자·배당·기타소득 지급명세서 기한이 3월 2일인 이유는요?", a: "법정 기한은 2월 말일이지만 2027년 2월 28일이 일요일, 3월 1일이 공휴일이라 다음 영업일인 3월 2일로 미뤄져요(국세기본법 제5조)." },
+  { q: "근로자는 언제까지 연말정산 서류를 내나요?", a: "회사가 정한 날까지예요. 회사는 2월분 급여를 줄 때 연말정산을 하고 3월 10일까지 원천세와 지급명세서를 내요." },
+];
+---
+<KrFinancePage slug="tax-season-checklist-2027" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <Tool client:load />
+  <p class="mt-4 text-xs text-muted-foreground">근거: 소득세법 제78조·제128조·제137조·제140조·제164조, 부가가치세법 제49조, 법인세법 제60조, 국세기본법 제5조. 기준일 {SEASON_AS_OF}. <a class="underline" href="/ko/tax-calendar/">세금 신고 캘린더</a> · <a class="underline" href="/ko/national-scholarship-apply-calculator/">국가장학금 1차 신청</a></p>
+</KrFinancePage>
