@@ -7,6 +7,7 @@ export type CrawlLink = { slug: string; label: string };
 const L = (slug: string, label: string): CrawlLink => ({ slug, label });
 
 const T = {
+  leaveCombo: L("annual-leave-combo-2027", "2027 연차 꿀조합 계산기"),
   yearEnd: L("year-end-settlement-calculator", "연말정산 계산기"),
   ordinaryWage: L("ordinary-wage-calculator", "통상임금 계산기"),
   dependent: L("dependent-deduction-checker", "부양가족 공제 점검"),
@@ -80,7 +81,7 @@ export const CRAWL_LINKS: Record<string, CrawlLink[]> = {
   "tax-savings-roadmap": [T.taxPenalty, T.vatCredit, T.corpTax, T.bookEstimate, T.advisorKit, T.lawGuide],
   "acquisition-tax-calculator": [T.selfReg, T.auction, T.inheritTax, T.jeonseBuy],
   "property-tax-calculator": [T.compRe, T.rentalIncome, T.inheritShare, T.appraisal],
-  "annual-leave-calculator": [T.leavePromo, T.workforce, T.unpaidWage, T.injury, T.ordinaryWage],
+  "annual-leave-calculator": [T.leaveCombo, T.leavePromo, T.workforce, T.unpaidWage, T.injury, T.ordinaryWage],
   "labor-law-quick-check": [T.workforce, T.unpaidWage, T.injury, T.probation, T.laborGuide],
   "jeonse-guarantee-calculator": [T.auction, T.courtDeposit, T.jeonseBuy, T.selfReg],
   "jeonse-monthly-converter": [T.youthRent, T.jeonseBuy, T.dsr],

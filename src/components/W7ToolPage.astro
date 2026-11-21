@@ -36,6 +36,8 @@ const url = `https://tools.oiyo.net/${locale}/${slug}/`;
 const schema = utilityJsonLd({ name: p.title, description: p.description, url, locale, steps: p.c.steps, faqs: p.c.faqs });
 // Blog shipped dutch-pay and word-counter UI in Korean and English only.
 const koEn = locale === 'ko' ? 'ko' : 'en';
+// 2026-11-21: Black Friday cart page (coupons, tax, shipping) for the five non-Korean locales.
+const bfLink: Record<Locale, string> = { ko: '', en: 'Black Friday cart: stacked coupons, sales tax and free shipping →', es: 'Carrito de Black Friday: cupones, envío gratis →', fr: 'Panier Black Friday : codes promo et livraison →', ja: 'ブラックフライデーのカート計算（クーポン・送料）→', zh: '黑五购物车计算（优惠券、运费）→' };
 const group = (w7TimeSlugs as readonly string[]).includes(slug) ? 'time' : slug === 'word-counter' ? 'dev' : 'calc';
 ---
 <Layout title={p.title} description={p.description} locale={locale} availableLocales={[...locales]} canonicalURL={url}>
@@ -58,6 +60,11 @@ const group = (w7TimeSlugs as readonly string[]).includes(slug) ? 'time' : slug 
       : slug === 'fuel-efficiency-calculator' ? <FuelEfficiencyCalculator client:load locale={locale} />
       : slug === 'calculator' ? <BasicCalculator client:load locale={locale} />
       : <WordCounterTool client:load locale={koEn} />}
+    {slug === 'discount-calculator' && locale !== 'ko' && (
+      <p class="rounded-xl border border-primary bg-primary/10 p-3 text-sm font-semibold">
+        <a class="text-primary underline underline-offset-4" href={`/${locale}/black-friday-calculator/`}>{bfLink[locale]}</a>
+      </p>
+    )}
     <UtilityArticle c={p.c} />
     <RelatedUtilities locale={locale} current={slug} group={group} />
   </ToolShell>
