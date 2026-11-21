@@ -8,6 +8,7 @@ import { welfareTools } from '../data/welfare-tools';
 import { lawGuides } from '../data/law-guides';
 import { krHealthTools, enHealthTools } from '../data/kr-health';
 import { utilityLabels, type Locale } from '../lib/i18n';
+import { CRAWL_LINKS } from '../data/crawl-links';
 interface Props { locale: Locale; current: string; group: UtilityGroup }
 const { locale, current, group } = Astro.props;
 const isBiz = locale === 'ko' && bizTools.some((t) => t.slug === current);
@@ -29,5 +30,11 @@ if (group === 'money' && locale === 'ko' && !isBiz && !isWelfare && !isLaw) link
 // WHY: W14 health tools outside the six-locale catalog (ko-only, or en/ko and en only like Blog had them).
 if (group === 'health' && locale === 'ko') links.push(...krHealthTools.filter((t) => t.slug !== current).map((t) => ({ href: `/ko/${t.slug}/`, label: t.title })));
 if (group === 'health' && locale === 'en') links.push(...enHealthTools.filter((t) => t.slug !== current).map((t) => ({ href: `/en/${t.slug}/`, label: t.title })));
+// WHY 2026-11-21: 색인된 페이지에서 아직 안 읽힌 관련 새 도구를 맨 앞에 걸어 발견을 앞당겨요(크롤 진단 대책 3).
+if (locale === 'ko' && CRAWL_LINKS[current]) {
+  const fresh = CRAWL_LINKS[current].map((l) => ({ href: `/ko/${l.slug}/`, label: l.label }));
+  const seen = new Set(fresh.map((l) => l.href));
+  links.splice(0, links.length, ...fresh, ...links.filter((l) => !seen.has(l.href)));
+}
 ---
 <RelatedLinkList title={isBiz ? '경영 도구' : isWelfare ? '생활 지원금·노동권 도구' : isLaw ? '법령 길잡이' : utilityGroups[group][locale]} links={links} locale={locale} />
