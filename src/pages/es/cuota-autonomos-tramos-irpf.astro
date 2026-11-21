@@ -1,0 +1,71 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import EsAutonomo from '../../components/tools/es/EsAutonomo';
+const c = {
+  "introTitle": "Cuánto cotizas como autónomo y cuánto IRPF te puede tocar",
+  "intro": "Desde 2023 los autónomos cotizan según sus rendimientos netos. Para 2026 la Orden PJC/297/2026 fija 15 tramos: tres de tabla reducida (hasta 1.166,70 € al mes) y doce de tabla general, cada uno con una base mínima y máxima, y un tipo total del 31,50 %. Esta herramienta te dice el tramo y la cuota aproximada, y estima el IRPF de una actividad en estimación directa simplificada con la deducción del 5 % de gastos de difícil justificación (máximo 2.000 €), la escala estatal y, como ejemplo, la escala de la Comunidad de Madrid de 2025.",
+  "formulaTitle": "Reglas utilizadas",
+  "formulas": [
+    {
+      "title": "Tramos y tipo",
+      "body": "Orden PJC/297/2026 art. 18: bases mínimas desde 653,59 € y máximas hasta 5.101,20 €; tipo 31,50 % (28,30 + 1,30 + 0,90 + 0,10 + 0,90 MEI). La cuota se calcula como base × 31,50 %; no es una tabla oficial de cuotas."
+    },
+    {
+      "title": "Alta inicial",
+      "body": "Cuota reducida 12 meses, prorrogable otros 12 si el rendimiento es inferior al SMI (LETA art. 38 ter). Fue de 80 €/mes en 2023-2025 (RDL 13/2022); la cuantía de 2026 la fija la Ley de Presupuestos y no se calcula."
+    },
+    {
+      "title": "IRPF",
+      "body": "Gastos de difícil justificación 5 % con máximo 2.000 € (RIRPF art. 30.2.ª); escala estatal 9,5 % a 24,5 % (LIRPF art. 63.1); mínimo personal 5.550 € (art. 57); retención 15 % o 7 % los tres primeros años (RIRPF art. 95.1)."
+    }
+  ],
+  "howToTitle": "Cómo usarla",
+  "steps": [
+    "Introduce el rendimiento neto mensual que prevés.",
+    "Añade ingresos y gastos anuales para la estimación del IRPF.",
+    "Indica si inicias la actividad.",
+    "Comunica tu previsión de rendimientos a la Seguridad Social; la regularización llega al año siguiente."
+  ],
+  "faqTitle": "Preguntas frecuentes",
+  "faqs": [
+    {
+      "question": "¿Por qué el 5 % y no el 7 %?",
+      "answer": "El texto vigente del Reglamento del IRPF dice 5 % con un máximo de 2.000 €. El 7 % solo consta en el BOE para 2023."
+    },
+    {
+      "question": "¿Vale para mi comunidad autónoma?",
+      "answer": "La parte autonómica usa la escala de Madrid de 2025 como ejemplo. Cada comunidad tiene su escala y sus deducciones."
+    },
+    {
+      "question": "¿Se guardan mis datos?",
+      "answer": "Los datos que introduces se quedan en tu navegador y no se envían a ningún servidor."
+    }
+  ],
+  "disclaimer": "Estimación a partir del BOE y la AEAT, no es asesoramiento fiscal personalizado ni sustituye a la regularización de la Seguridad Social."
+};
+const sources: [string, string][] = [
+  [
+    "BOE — Orden PJC/297/2026 (cotización 2026)",
+    "https://www.boe.es/buscar/act.php?id=BOE-A-2026-7296"
+  ],
+  [
+    "Seguridad Social — bases y tipos de autónomos",
+    "https://www.seg-social.es/wps/portal/wss/internet/Trabajadores/CotizacionRecaudacionTrabajadores/36537"
+  ],
+  [
+    "BOE — Ley 20/2007 del Estatuto del Trabajo Autónomo (art. 38 ter)",
+    "https://www.boe.es/buscar/act.php?id=BOE-A-2007-13409"
+  ],
+  [
+    "BOE — Reglamento del IRPF (art. 30, 95)",
+    "https://www.boe.es/buscar/act.php?id=BOE-A-2007-6820"
+  ],
+  [
+    "BOE — Ley 35/2006 del IRPF (art. 57, 63)",
+    "https://www.boe.es/buscar/act.php?id=BOE-A-2006-20764"
+  ]
+];
+---
+<DebtReliefPage slug="cuota-autonomos-tramos-irpf" c={c} sources={sources} sourcesTitle="Fuentes" checked="BOE y Seguridad Social consultados el 2026-11-21">
+  <EsAutonomo client:load />
+</DebtReliefPage>

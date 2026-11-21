@@ -1844,6 +1844,95 @@
           }
         }
       ]
+    },
+    {
+      "skill": "oiyo-es-tax-guide",
+      "id": "es-recargo-3m",
+      "ask": "Presento el 303 del primer trimestre con 3 meses de retraso, cuota 2.000 €",
+      "run": [
+        "recargo",
+        {
+          "cuota": 2000,
+          "due": "2026-04-20",
+          "filed": "2026-07-21"
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.months",
+          "eq": 3
+        },
+        {
+          "path": "result.recargo",
+          "eq": 80
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-es-tax-guide",
+      "id": "es-tramo-top",
+      "ask": "Autónomo con 7.000 € netos al mes, ¿qué cuota mínima?",
+      "run": [
+        "autonomo",
+        {
+          "netMonthly": 7000
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.tramo.n",
+          "eq": 15
+        },
+        {
+          "path": "result.cuotaMin",
+          "eq": 607.35
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-es-tax-guide",
+      "id": "es-iva-sin-franquicia",
+      "ask": "Factura de 1.000 € al 21 % a un minorista en recargo",
+      "run": [
+        "iva",
+        {
+          "base": 1000,
+          "tipo": 21,
+          "recargo": true
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.recargo",
+          "eq": 52
+        },
+        {
+          "path": "result.items",
+          "has": {
+            "cite": "LIVA art. 120 (texto consolidado BOE)"
+          }
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-es-tax-guide",
+      "id": "es-plazos",
+      "ask": "Notificación el 31 de enero de 2026, ¿hasta cuándo recurro?",
+      "run": [
+        "plazos",
+        {
+          "notificacion": "2026-01-31"
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.plazos",
+          "has": {
+            "id": "tear",
+            "date": "2026-03-02"
+          }
+        }
+      ]
     }
   ],
   "boundaries": {
@@ -1867,7 +1956,10 @@
       "I will file your return",
       "en tant qu'expert-comptable",
       "je dépose votre déclaration",
-      "votre conseiller fiscal"
+      "votre conseiller fiscal",
+      "asesor fiscal colegiado",
+      "soy asesor fiscal",
+      "como gestor"
     ]
   }
 }

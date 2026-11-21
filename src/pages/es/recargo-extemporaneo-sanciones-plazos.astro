@@ -1,0 +1,63 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import EsRecargo from '../../components/tools/es/EsRecargo';
+const c = {
+  "introTitle": "Qué cuesta presentar tarde y hasta cuándo puedes recurrir",
+  "intro": "Si presentas una autoliquidación fuera de plazo sin que Hacienda te lo haya pedido, pagas un recargo del 1 % más otro 1 % por cada mes completo de retraso, sin sanción; pasados 12 meses el recargo es del 15 % más intereses de demora, y se reduce un 25 % si lo pagas en plazo (LGT art. 27). Si te sancionan por dejar de ingresar, la multa es del 50 % (leve), del 50 al 100 % (grave) o del 100 al 150 % (muy grave), con reducciones del 30 % por conformidad, del 65 % por acta con acuerdo y otro 40 % si pagas sin recurrir. Para recurrir tienes 1 mes (reposición o reclamación económico-administrativa) y después 2 meses para el contencioso.",
+  "formulaTitle": "Reglas utilizadas",
+  "formulas": [
+    {
+      "title": "Recargo",
+      "body": "1 % + 1 % por mes completo; 15 % e intereses de demora pasados 12 meses; reducción del 25 % (LGT art. 27.2 y 27.5)."
+    },
+    {
+      "title": "Sanción",
+      "body": "Leve 50 %, grave 50-100 %, muy grave 100-150 % (LGT art. 191); reducciones del 65 % o 30 % y del 40 % (art. 188)."
+    },
+    {
+      "title": "Recursos",
+      "body": "Reposición 1 mes (LGT art. 223.1), reclamación económico-administrativa 1 mes (art. 235.1), contencioso-administrativo 2 meses (LJCA art. 46.1). Prescripción: 4 años (LGT art. 66)."
+    }
+  ],
+  "howToTitle": "Cómo usarla",
+  "steps": [
+    "Introduce la cuota, el fin del plazo y la fecha en que presentas.",
+    "Si han pasado 12 meses, añade el interés de demora vigente.",
+    "Si te han sancionado, elige la calificación y las reducciones.",
+    "Para recurrir, introduce la fecha de notificación y mira los plazos."
+  ],
+  "faqTitle": "Preguntas frecuentes",
+  "faqs": [
+    {
+      "question": "¿Qué interés de demora se aplica en 2026?",
+      "answer": "No lo hemos comprobado en el BOE. El último que vimos publicado es el 4,0625 % de 2023. Introduce el vigente que indique la AEAT."
+    },
+    {
+      "question": "¿Cómo se cuentan los meses del plazo de recurso?",
+      "answer": "De fecha a fecha desde la notificación. Si el último día es sábado o domingo, la herramienta pasa al lunes; no tiene en cuenta festivos."
+    },
+    {
+      "question": "¿Se guardan mis datos?",
+      "answer": "Los datos que introduces se quedan en tu navegador y no se envían a ningún servidor."
+    }
+  ],
+  "disclaimer": "Estimación a partir de la Ley General Tributaria, no es asesoramiento personalizado ni redacta recursos."
+};
+const sources: [string, string][] = [
+  [
+    "BOE — Ley 58/2003 General Tributaria (texto consolidado)",
+    "https://www.boe.es/buscar/act.php?id=BOE-A-2003-23186"
+  ],
+  [
+    "BOE — Ley 29/1998 de la Jurisdicción Contencioso-administrativa",
+    "https://www.boe.es/buscar/act.php?id=BOE-A-1998-16718"
+  ],
+  [
+    "BOE — Ley 39/2015 (art. 30, cómputo de plazos)",
+    "https://www.boe.es/buscar/act.php?id=BOE-A-2015-10565"
+  ]
+];
+---
+<DebtReliefPage slug="recargo-extemporaneo-sanciones-plazos" c={c} sources={sources} sourcesTitle="Fuentes" checked="BOE consultado el 2026-11-21">
+  <EsRecargo client:load />
+</DebtReliefPage>

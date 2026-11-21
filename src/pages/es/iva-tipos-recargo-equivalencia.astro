@@ -1,0 +1,51 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import EsIva from '../../components/tools/es/EsIva';
+const c = {
+  "introTitle": "Cuánto IVA lleva tu factura",
+  "intro": "El IVA general es del 21 %, el reducido del 10 % y el superreducido del 4 %. Si vendes a un comerciante minorista en régimen de recargo de equivalencia, además le repercutes el 5,2 %, el 1,4 % o el 0,5 % según el tipo (1,75 % en el tabaco). A diferencia de otros países de la UE, la ley española no tiene hoy una franquicia de IVA para pequeñas empresas nacionales: el autónomo repercute IVA desde la primera factura, salvo operaciones exentas.",
+  "formulaTitle": "Reglas utilizadas",
+  "formulas": [
+    {
+      "title": "Tipos",
+      "body": "21 % (LIVA art. 90), 10 % (art. 91.Uno) y 4 % (art. 91.Dos)."
+    },
+    {
+      "title": "Recargo de equivalencia",
+      "body": "5,2 %, 1,4 % y 0,5 %; tabaco 1,75 % (LIVA art. 161)."
+    },
+    {
+      "title": "Sin franquicia nacional",
+      "body": "Los regímenes especiales del art. 120 de la LIVA no incluyen una franquicia para pequeños empresarios (texto consolidado del BOE consultado el 2026-11-21)."
+    }
+  ],
+  "howToTitle": "Cómo usarla",
+  "steps": [
+    "Introduce la base imponible.",
+    "Elige el tipo de IVA.",
+    "Indica si el cliente está en recargo de equivalencia.",
+    "Comprueba el tipo aplicable a tu producto o servicio en la ley."
+  ],
+  "faqTitle": "Preguntas frecuentes",
+  "faqs": [
+    {
+      "question": "¿Qué tipo se aplica a mi servicio?",
+      "answer": "Depende del bien o servicio; la lista está en los artículos 90 y 91 de la Ley del IVA. Esta herramienta no lo decide por ti."
+    },
+    {
+      "question": "¿Se guardan mis datos?",
+      "answer": "Los datos que introduces se quedan en tu navegador y no se envían a ningún servidor."
+    }
+  ],
+  "disclaimer": "Información general a partir de la Ley del IVA, no es asesoramiento fiscal personalizado."
+};
+const sources: [string, string][] = [
+  [
+    "BOE — Ley 37/1992 del IVA (texto consolidado)",
+    "https://www.boe.es/buscar/act.php?id=BOE-A-1992-28740"
+  ]
+];
+---
+<DebtReliefPage slug="iva-tipos-recargo-equivalencia" c={c} sources={sources} sourcesTitle="Fuentes" checked="BOE consultado el 2026-11-21">
+  <EsIva client:load />
+</DebtReliefPage>

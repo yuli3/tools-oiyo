@@ -1,0 +1,71 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import EsTaxCalendar from '../../components/tools/es/EsTaxCalendar';
+const c = {
+  "introTitle": "Las fechas fiscales de tu actividad en 2026",
+  "intro": "Un autónomo o una sociedad tiene citas fijas con Hacienda: cada trimestre el IVA (modelo 303), el pago fraccionado del IRPF (130 o 131) y, si practicas retenciones o alquilas un local, los modelos 111 y 115; los días 20 de abril, julio y octubre y, para el cuarto trimestre, el 30 de enero. La Renta 2025 se presenta por internet del 8 de abril al 30 de junio de 2026 (25 de junio si domicilias el pago). Las sociedades con ejercicio igual al año natural presentan el modelo 200 hasta el 27 de julio de 2026 y los pagos fraccionados del 202 en abril, octubre y diciembre. Esta herramienta lista las fechas que te tocan y cuenta los días que faltan.",
+  "formulaTitle": "Reglas utilizadas",
+  "formulas": [
+    {
+      "title": "Trimestrales",
+      "body": "303, 130/131, 111/115: 20 de abril, 20 de julio y 20 de octubre de 2026; 4.º trimestre de 2025 y modelo 390: 30 de enero de 2026 (111/115: 20 de enero). AEAT Calendario del contribuyente 2026."
+    },
+    {
+      "title": "Renta 2025",
+      "body": "Del 8 de abril al 30 de junio de 2026; con domiciliación del pago, hasta el 25 de junio (AEAT)."
+    },
+    {
+      "title": "Impuesto sobre Sociedades",
+      "body": "Modelo 200: 25 días naturales siguientes a los 6 meses posteriores al cierre (LIS art. 124.1): 27 de julio de 2026. Modelo 202: primeros 20 días naturales de abril, octubre y diciembre (LIS art. 40.1): 20 de abril, 20 de octubre y 21 de diciembre de 2026."
+    },
+    {
+      "title": "Días inhábiles",
+      "body": "Si el último día es inhábil, el plazo pasa al primer día hábil siguiente (Ley 39/2015 art. 30.5; LGT art. 7.2)."
+    }
+  ],
+  "howToTitle": "Cómo usarla",
+  "steps": [
+    "Elige el año (solo 2026 tiene fechas exactas comprobadas).",
+    "Indica qué modelos presentas.",
+    "Mira las fechas y los días que faltan.",
+    "Confírmalas en tu sede electrónica o en el calendario del contribuyente."
+  ],
+  "faqTitle": "Preguntas frecuentes",
+  "faqs": [
+    {
+      "question": "¿Por qué en 2027 solo aparecen meses?",
+      "answer": "Solo hemos comprobado el calendario oficial de 2026. Para otros años mostramos el mes y te remitimos al calendario de la AEAT de ese año."
+    },
+    {
+      "question": "¿Incluye festivos autonómicos?",
+      "answer": "No. Las fechas de 2026 son las del calendario oficial de la AEAT; las reglas de otros años no tienen en cuenta festivos."
+    },
+    {
+      "question": "¿Se guardan mis datos?",
+      "answer": "Los datos que introduces se quedan en tu navegador y no se envían a ningún servidor."
+    }
+  ],
+  "disclaimer": "Información general del calendario de la AEAT, no es asesoramiento fiscal personalizado."
+};
+const sources: [string, string][] = [
+  [
+    "AEAT — Calendario del contribuyente 2026",
+    "https://sede.agenciatributaria.gob.es/Sede/ayuda/calendario-contribuyente/calendario-contribuyente-2026.html"
+  ],
+  [
+    "AEAT — Renta 2025",
+    "https://sede.agenciatributaria.gob.es/Sede/Renta.html"
+  ],
+  [
+    "BOE — Ley 27/2014 del Impuesto sobre Sociedades (art. 40, 124)",
+    "https://www.boe.es/buscar/act.php?id=BOE-A-2014-12328"
+  ],
+  [
+    "BOE — Ley 39/2015 (art. 30)",
+    "https://www.boe.es/buscar/act.php?id=BOE-A-2015-10565"
+  ]
+];
+---
+<DebtReliefPage slug="calendario-fiscal-autonomos-2026" c={c} sources={sources} sourcesTitle="Fuentes" checked="AEAT y BOE consultados el 2026-11-21">
+  <EsTaxCalendar client:load />
+</DebtReliefPage>

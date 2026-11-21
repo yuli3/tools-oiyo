@@ -34,3 +34,10 @@ test("fr skill CLI", () => {
   assert.equal(run("tva", '{"activity":"vente","caPrev":50000,"ca":60000}').status, "franchise");
   assert.equal(run("amortissement", '{"cost":10000,"life":5,"start":"2026-04-10","method":"degressif"}').schedule[0].amount, 2625);
 });
+
+test("es skill CLI", () => {
+  const run = (...a) => JSON.parse(execFileSync(process.execPath, [resolve(skillDir("es"), "scripts/calc.mjs"), ...a], { encoding: "utf8" })).result;
+  assert.equal(run("iva", '{"base":1000,"tipo":21,"recargo":true}').total, 1262);
+  assert.equal(run("calendar", '{"year":2026,"sociedad":true}').events.find((e) => e.id === "200").date, "2026-07-27");
+  assert.ok(run("scope").some((s) => s.cite.includes("art. 46")));
+});
