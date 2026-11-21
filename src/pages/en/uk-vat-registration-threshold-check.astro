@@ -1,0 +1,63 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import UkVatCheck from '../../components/tools/uk/UkVatCheck';
+const c = {
+  "introTitle": "Do you need to register for VAT",
+  "intro": "You must register for VAT if your taxable turnover for the last 12 months goes over £90,000, or if you expect it to go over £90,000 in the next 30 days alone. The 12 months are a rolling period, not the tax year. If you are registered and your taxable turnover falls under £88,000, you can ask to deregister. You can join the Flat Rate Scheme if you expect taxable turnover of £150,000 or less (excluding VAT) in the next 12 months, and you must leave if turnover including VAT goes over £230,000. VAT rates are 20% standard, 5% reduced and 0% zero.",
+  "formulaTitle": "Rules used",
+  "formulas": [
+    {
+      "title": "Registration",
+      "body": "£90,000 in the last 12 months, or in the next 30 days alone; deregistration £88,000 (from 1 April 2024)."
+    },
+    {
+      "title": "Flat Rate Scheme",
+      "body": "Join with expected turnover up to £150,000 excluding VAT; leave over £230,000 including VAT."
+    },
+    {
+      "title": "Rates",
+      "body": "Standard 20%, reduced 5%, zero 0% (gov.uk VAT rates)."
+    }
+  ],
+  "howToTitle": "How to use",
+  "steps": [
+    "Say whether you are already registered.",
+    "Enter taxable turnover for the last 12 months and what you expect.",
+    "Read the result and the Flat Rate Scheme note.",
+    "Register or deregister yourself through gov.uk."
+  ],
+  "faqTitle": "FAQ",
+  "faqs": [
+    {
+      "question": "What counts as taxable turnover?",
+      "answer": "Sales that are not exempt from VAT, including zero-rated sales. Exempt sales do not count."
+    },
+    {
+      "question": "Is what I enter saved?",
+      "answer": "It stays in your browser and is not sent to a server."
+    }
+  ],
+  "disclaimer": "General information from gov.uk. Not personal tax advice."
+};
+const sources: [string, string][] = [
+  [
+    "Register for VAT",
+    "https://www.gov.uk/register-for-vat"
+  ],
+  [
+    "VAT registration and deregistration thresholds",
+    "https://www.gov.uk/government/publications/vat-increasing-the-registration-and-deregistration-thresholds"
+  ],
+  [
+    "VAT Flat Rate Scheme",
+    "https://www.gov.uk/vat-flat-rate-scheme"
+  ],
+  [
+    "VAT rates",
+    "https://www.gov.uk/vat-rates"
+  ]
+];
+---
+<DebtReliefPage slug="uk-vat-registration-threshold-check" c={c} sources={sources} sourcesTitle="Sources" checked="gov.uk and legislation.gov.uk checked: 2026-11-21">
+  <UkVatCheck client:load />
+</DebtReliefPage>

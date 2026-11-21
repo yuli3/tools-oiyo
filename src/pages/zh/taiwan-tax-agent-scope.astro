@@ -1,0 +1,63 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import TwScope from '../../components/tools/tw/TwScope';
+const c = {
+  "introTitle": "報稅可以找誰幫忙",
+  "intro": "記帳士在登錄區域內，可代理營業登記、代理申報各項稅捐、提供稅務諮詢與處理商業會計事務，但不包括所得稅查核簽證申報，也不能代理訴願與行政訴訟。會計師可辦理財務報告簽證、營利事業所得稅查核簽證申報與稅務代理，並可代理這些業務的訴願與稅務行政訴訟。自己辦理的話，可撥國稅局免付費電話0800-000-321，或使用財政部電子申報繳稅服務網。",
+  "formulaTitle": "依據",
+  "formulas": [
+    {
+      "title": "記帳士",
+      "body": "記帳士法第13條。"
+    },
+    {
+      "title": "會計師",
+      "body": "會計師法第39條。"
+    },
+    {
+      "title": "免費管道",
+      "body": "國稅局免付費電話0800-000-321（上班時間）；財政部電子申報繳稅服務網 tax.nat.gov.tw。"
+    }
+  ],
+  "howToTitle": "可以怎麼做",
+  "steps": [
+    "先用電子申報繳稅服務網或撥0800-000-321。",
+    "需要代理申報時，找登錄的記帳士或會計師。",
+    "需要查核簽證或訴願時，找會計師或律師。",
+    "委任前確認對方的執業登錄。"
+  ],
+  "faqTitle": "常見問題",
+  "faqs": [
+    {
+      "question": "本網站可以幫我報稅嗎？",
+      "answer": "不行。本網站只整理已公布的規定並提供試算，不代理申報、不代寫書狀，也不推薦事務所。"
+    },
+    {
+      "question": "輸入的內容會被保存嗎？",
+      "answer": "本頁沒有輸入欄位。"
+    }
+  ],
+  "disclaimer": "依法規與國稅局網站整理的一般資訊。"
+};
+const sources: [string, string][] = [
+  [
+    "記帳士法",
+    "https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=G0340110"
+  ],
+  [
+    "會計師法",
+    "https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=G0400067"
+  ],
+  [
+    "北區國稅局",
+    "https://www.ntbna.gov.tw/"
+  ],
+  [
+    "財政部電子申報繳稅服務網",
+    "https://tax.nat.gov.tw/"
+  ]
+];
+---
+<DebtReliefPage slug="taiwan-tax-agent-scope" c={c} sources={sources} sourcesTitle="來源" checked="全國法規資料庫、財政部 2026-11-21 查閱">
+  <TwScope client:load />
+</DebtReliefPage>

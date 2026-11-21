@@ -1,0 +1,63 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import UkSelfEmployed from '../../components/tools/uk/UkSelfEmployed';
+const c = {
+  "introTitle": "How much tax and NI on your profit",
+  "intro": "For 2026-27 the personal allowance is £12,570. Income Tax is 20% on the next £37,700, 40% up to £125,140 and 45% above (England, Wales and Northern Ireland). The allowance falls by £1 for every £2 of income over £100,000. Self-employed people pay Class 4 NI at 6% on profits between £12,570 and £50,270 and 2% above. With profits of £7,105 or more, Class 2 is treated as paid; below that you can pay £3.65 a week voluntarily. Making Tax Digital starts from April 2026, 2027 or 2028 depending on your qualifying income.",
+  "formulaTitle": "Rules used",
+  "formulas": [
+    {
+      "title": "Income Tax",
+      "body": "Personal allowance £12,570; basic rate 20% up to £50,270; higher rate 40% to £125,140; additional rate 45% (gov.uk Income Tax rates and Personal Allowances)."
+    },
+    {
+      "title": "National Insurance",
+      "body": "Class 4: 6% between £12,570 and £50,270, 2% above. Class 2: treated as paid at £7,105 or more; voluntary £3.65 a week (gov.uk Self-employed National Insurance rates)."
+    },
+    {
+      "title": "Making Tax Digital",
+      "body": "Qualifying income over £50,000 in 2024-25: from 6 April 2026; over £30,000 in 2025-26: from 6 April 2027; over £20,000 in 2026-27: from 6 April 2028."
+    }
+  ],
+  "howToTitle": "How to use",
+  "steps": [
+    "Enter your taxable profit after allowable expenses.",
+    "Add any other income such as a salary.",
+    "Optionally enter your qualifying income to see your MTD start date.",
+    "Check the result against your HMRC online account."
+  ],
+  "faqTitle": "FAQ",
+  "faqs": [
+    {
+      "question": "I live in Scotland. Does this work?",
+      "answer": "The NI figures do, but Scottish Income Tax bands are different and are not calculated here."
+    },
+    {
+      "question": "Is the tax on my profit the whole bill?",
+      "answer": "If you also have a salary, PAYE may already cover the tax on it. We show the extra tax caused by your profit. Payments on account, student loans and pension relief are not included."
+    },
+    {
+      "question": "Is what I enter saved?",
+      "answer": "It stays in your browser and is not sent to a server."
+    }
+  ],
+  "disclaimer": "Estimates from gov.uk rates. Not personal tax advice."
+};
+const sources: [string, string][] = [
+  [
+    "Income Tax rates and Personal Allowances",
+    "https://www.gov.uk/income-tax-rates"
+  ],
+  [
+    "Self-employed National Insurance rates",
+    "https://www.gov.uk/self-employed-national-insurance-rates"
+  ],
+  [
+    "Find out if and when you need to use Making Tax Digital for Income Tax",
+    "https://www.gov.uk/guidance/find-out-if-and-when-you-need-to-use-making-tax-digital-for-income-tax"
+  ]
+];
+---
+<DebtReliefPage slug="uk-self-employed-tax-ni-calculator" c={c} sources={sources} sourcesTitle="Sources" checked="gov.uk and legislation.gov.uk checked: 2026-11-21">
+  <UkSelfEmployed client:load />
+</DebtReliefPage>

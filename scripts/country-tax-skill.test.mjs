@@ -48,3 +48,17 @@ test("cn skill CLI", () => {
   assert.equal(run("calendar", '{"year":2026,"vat":"month"}').events.find((e) => e.id === "vat-10").date, "2026-10-26");
   assert.ok(run("scope").some((s) => s.cite.includes("第89条")));
 });
+
+test("uk skill CLI", () => {
+  const run = (...a) => JSON.parse(execFileSync(process.execPath, [resolve(skillDir("uk"), "scripts/calc.mjs"), ...a], { encoding: "utf8" })).result;
+  assert.equal(run("vat", '{"last12":91000}').status, "must-register");
+  assert.equal(run("calendar", '{"taxYear":2025}').events.find((e) => e.id === "online").date, "2027-01-31");
+  assert.ok(run("scope").some((s) => s.body.includes("0300 200 3300")));
+});
+
+test("tw skill CLI", () => {
+  const run = (...a) => JSON.parse(execFileSync(process.execPath, [resolve(skillDir("tw"), "scripts/calc.mjs"), ...a], { encoding: "utf8" })).result;
+  assert.equal(run("businesstax", '{"goodsSales":90000}').status, "below-threshold");
+  assert.equal(run("calendar", '{"year":2026}').events.find((e) => e.id === "bt-3").date, "2026-03-16");
+  assert.ok(run("scope").some((s) => s.cite.includes("記帳士法")));
+});

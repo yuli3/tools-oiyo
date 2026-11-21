@@ -1,0 +1,71 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import UkPenalties from '../../components/tools/uk/UkPenalties';
+const c = {
+  "introTitle": "What a late return or payment costs",
+  "intro": "If your online Self Assessment return is late, the penalty is £100. After 3 months it is £10 a day for up to 90 days, and at 6 months and again at 12 months another 5% of the tax due or £300, whichever is more. If you pay late, there are penalties of 5% of the unpaid tax at 30 days, 6 months and 12 months, and HMRC charges interest at the Bank of England base rate plus 4% (7.75% from 9 January 2026 and 8.00% from 24 November 2026). You usually have 30 days to appeal a decision, and 4 years after the end of the tax year to claim back tax you overpaid.",
+  "formulaTitle": "Rules used",
+  "formulas": [
+    {
+      "title": "Late filing",
+      "body": "£100; £10 a day after 3 months (max 90 days); 5% or £300 at 6 and 12 months (gov.uk Self Assessment penalties)."
+    },
+    {
+      "title": "Late payment and interest",
+      "body": "5% at 30 days, 6 months and 12 months; daily simple interest at base rate + 4%. Interest for days before 9 January 2026 is not included because we have not checked that rate."
+    },
+    {
+      "title": "Appeals and overpayments",
+      "body": "30 days from the decision letter (gov.uk Disagree with a tax decision). Overpayment relief: 4 years after the end of the tax year (TMA 1970 Sch 1AB para 3)."
+    }
+  ],
+  "howToTitle": "How to use",
+  "steps": [
+    "Pick the tax year of the return.",
+    "Enter the tax due and the filing and payment dates.",
+    "Read the penalties, interest and time limits.",
+    "Appeal through your HMRC online account if you have a reasonable excuse."
+  ],
+  "faqTitle": "FAQ",
+  "faqs": [
+    {
+      "question": "I use Making Tax Digital. Does this apply?",
+      "answer": "No. MTD for Income Tax has a separate points-based penalty system that is not calculated here."
+    },
+    {
+      "question": "Can a penalty be cancelled?",
+      "answer": "Yes, if you had a reasonable excuse and put it right without delay. You appeal yourself; this site does not appeal for you."
+    },
+    {
+      "question": "Is what I enter saved?",
+      "answer": "It stays in your browser and is not sent to a server."
+    }
+  ],
+  "disclaimer": "Estimates from gov.uk. Not personal tax advice; we do not appeal or file for you."
+};
+const sources: [string, string][] = [
+  [
+    "Self Assessment penalties",
+    "https://www.gov.uk/self-assessment-tax-returns/penalties"
+  ],
+  [
+    "HMRC interest rates for late and early payments",
+    "https://www.gov.uk/government/publications/rates-and-allowances-hmrc-interest-rates-for-late-and-early-payments/rates-and-allowances-hmrc-interest-rates"
+  ],
+  [
+    "Disagree with a tax decision",
+    "https://www.gov.uk/tax-appeals"
+  ],
+  [
+    "Penalties for Making Tax Digital for Income Tax",
+    "https://www.gov.uk/guidance/penalties-for-making-tax-digital-for-income-tax"
+  ],
+  [
+    "TMA 1970 Schedule 1AB paragraph 3",
+    "https://www.legislation.gov.uk/ukpga/1970/9/schedule/1AB/paragraph/3"
+  ]
+];
+---
+<DebtReliefPage slug="hmrc-late-filing-penalty-interest-calculator" c={c} sources={sources} sourcesTitle="Sources" checked="gov.uk and legislation.gov.uk checked: 2026-11-21">
+  <UkPenalties client:load />
+</DebtReliefPage>

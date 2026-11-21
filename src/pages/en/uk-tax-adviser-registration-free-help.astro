@@ -1,0 +1,67 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import UkScope from '../../components/tools/uk/UkScope';
+const c = {
+  "introTitle": "Getting help with your tax",
+  "intro": "If you are paid to interact with HMRC on someone else's tax, HMRC now treats you as a tax adviser and you need to register with an agent services account. That applies even if it is a side job or you have one client, and whatever you call yourself. Free help for friends, family or a charity is outside it. You can deal with HMRC yourself online, by webchat, in the HMRC app, by phone or by post. If HMRC cannot sort it out and your income is about £380 a week or less, free independent advice is available, for example from TaxAid.",
+  "formulaTitle": "Rules used",
+  "formulas": [
+    {
+      "title": "Tax adviser registration",
+      "body": "gov.uk Check if and when you need to register as a tax adviser with HMRC (updated 17 November 2026)."
+    },
+    {
+      "title": "HMRC contact",
+      "body": "Income Tax and Self Assessment: 0300 200 3300; Relay UK: 18001 then 0300 200 3300."
+    },
+    {
+      "title": "Free help",
+      "body": "gov.uk Get help with tax; voluntary and community sector organisations such as Advice Direct Scotland and Advice NI."
+    }
+  ],
+  "howToTitle": "What you can do",
+  "steps": [
+    "Try your HMRC online account or the HMRC app first.",
+    "Call HMRC if you cannot do it online.",
+    "On a low income, contact a free tax charity.",
+    "If you pay someone, ask whether they are registered with HMRC and which professional body they belong to."
+  ],
+  "faqTitle": "FAQ",
+  "faqs": [
+    {
+      "question": "Does this site act as my tax adviser?",
+      "answer": "No. It explains published rules and gives estimates with sources. It does not deal with HMRC for you, file returns or appeals, or recommend firms."
+    },
+    {
+      "question": "Is what I enter saved?",
+      "answer": "This page has no inputs."
+    }
+  ],
+  "disclaimer": "General information from gov.uk."
+};
+const sources: [string, string][] = [
+  [
+    "Check if and when you need to register as a tax adviser with HMRC",
+    "https://www.gov.uk/guidance/check-if-and-when-you-need-to-register-as-a-tax-adviser-with-hmrc"
+  ],
+  [
+    "Get help with tax",
+    "https://www.gov.uk/tax-help"
+  ],
+  [
+    "Voluntary and community sector organisations who can give you extra support",
+    "https://www.gov.uk/guidance/voluntary-and-community-sector-organisations-who-can-give-you-extra-support"
+  ],
+  [
+    "Contact HMRC",
+    "https://www.gov.uk/contact-hmrc"
+  ],
+  [
+    "Income Tax: general enquiries",
+    "https://www.gov.uk/find-hmrc-contacts/income-tax-enquiries"
+  ]
+];
+---
+<DebtReliefPage slug="uk-tax-adviser-registration-free-help" c={c} sources={sources} sourcesTitle="Sources" checked="gov.uk and legislation.gov.uk checked: 2026-11-21">
+  <UkScope client:load />
+</DebtReliefPage>

@@ -1,0 +1,75 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import UkTaxCalendar from '../../components/tools/uk/UkTaxCalendar';
+const c = {
+  "introTitle": "When you have to file and pay",
+  "intro": "For a tax year that ends on 5 April, you must tell HMRC by 5 October if you need to file for the first time. Paper returns are due by 31 October and online returns by 31 January, which is also when the balance and the first payment on account are due; the second payment on account is due on 31 July. From 6 April 2026 sole traders and landlords with qualifying income over £50,000 must use Making Tax Digital and send quarterly updates (the first one by 7 August). Companies pay Corporation Tax 9 months and 1 day after the end of the accounting period and file the Company Tax Return within 12 months. VAT returns and payments are usually due 1 calendar month and 7 days after the period ends.",
+  "formulaTitle": "Rules used",
+  "formulas": [
+    {
+      "title": "Self Assessment",
+      "body": "Register by 5 October; paper return 31 October; online return and payment 31 January; second payment on account 31 July (gov.uk Self Assessment deadlines, Pay your Self Assessment tax bill)."
+    },
+    {
+      "title": "Making Tax Digital",
+      "body": "Quarterly update 1 by 7 August and update 2 by 7 November. The dates of updates 3 and 4 are not shown because we have not confirmed them in our sources."
+    },
+    {
+      "title": "Companies and VAT",
+      "body": "Corporation Tax: 9 months and 1 day after the accounting period (taxable profits up to £1.5m). Return: 12 months. VAT: 1 month and 7 days, and payment must reach HMRC by then."
+    }
+  ],
+  "howToTitle": "How to use",
+  "steps": [
+    "Pick the tax year.",
+    "Say whether this is your first return and whether you use MTD.",
+    "Add a company year end or VAT period end if you have one.",
+    "Check the dates in your HMRC online account as well."
+  ],
+  "faqTitle": "FAQ",
+  "faqs": [
+    {
+      "question": "What if I registered after 5 October?",
+      "answer": "Your return is due 3 months after the date of HMRC's notice to file, but the 31 January payment date does not move."
+    },
+    {
+      "question": "Does a weekend move the date?",
+      "answer": "Not for VAT: the payment must be in HMRC's account by the deadline, so pay earlier if it falls on a weekend or bank holiday."
+    },
+    {
+      "question": "Is what I enter saved?",
+      "answer": "It stays in your browser and is not sent to a server."
+    }
+  ],
+  "disclaimer": "General information from gov.uk. Not personal tax advice; we do not file anything for you."
+};
+const sources: [string, string][] = [
+  [
+    "Self Assessment deadlines",
+    "https://www.gov.uk/self-assessment-tax-returns/deadlines"
+  ],
+  [
+    "Pay your Self Assessment tax bill",
+    "https://www.gov.uk/pay-self-assessment-tax-bill"
+  ],
+  [
+    "Find out if and when you need to use Making Tax Digital for Income Tax",
+    "https://www.gov.uk/guidance/find-out-if-and-when-you-need-to-use-making-tax-digital-for-income-tax"
+  ],
+  [
+    "Pay your Corporation Tax bill",
+    "https://www.gov.uk/pay-corporation-tax"
+  ],
+  [
+    "Company Tax Returns",
+    "https://www.gov.uk/company-tax-returns"
+  ],
+  [
+    "Submit a VAT Return",
+    "https://www.gov.uk/submit-vat-return"
+  ]
+];
+---
+<DebtReliefPage slug="uk-self-assessment-deadlines-2026" c={c} sources={sources} sourcesTitle="Sources" checked="gov.uk and legislation.gov.uk checked: 2026-11-21">
+  <UkTaxCalendar client:load />
+</DebtReliefPage>

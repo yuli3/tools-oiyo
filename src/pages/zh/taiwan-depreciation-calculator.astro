@@ -1,0 +1,59 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import TwDepreciation from '../../components/tools/tw/TwDepreciation';
+const c = {
+  "introTitle": "一台設備每年可以提列多少折舊",
+  "intro": "固定資產的耐用年數依財政部固定資產耐用年數表，不得短於表定年數。例如鋼筋（骨）混凝土建造的辦公、商店、住宅用房屋50年，電子計算機及其周邊設備3年，工具、器具5年，運輸業用客貨車4年、其他業用汽車5年。不滿1年的按實際使用月數計算，不滿1個月以1個月計；有殘值的先減除殘值。耐用年數不及2年，或支出不超過8萬元的，可列為當年度費用。",
+  "formulaTitle": "依據",
+  "formulas": [
+    {
+      "title": "方法",
+      "body": "平均法、定率遞減法、年數合計法、生產數量法、工作時間法等（所得稅法第51條）。本工具只算平均法。"
+    },
+    {
+      "title": "耐用年數",
+      "body": "固定資產耐用年數表（2016-01-01以後取得者適用新表）。"
+    },
+    {
+      "title": "期間與費用化",
+      "body": "未滿1年按月數、殘值先減除（查核準則第95條）；8萬元以下或不及2年可列費用（第77-1條）。"
+    }
+  ],
+  "howToTitle": "使用方法",
+  "steps": [
+    "選擇資產類別。",
+    "輸入成本、開始使用日與殘值。",
+    "查看每年折舊。",
+    "帳務處理以會計師或記帳士意見為準。"
+  ],
+  "faqTitle": "常見問題",
+  "faqs": [
+    {
+      "question": "辦公設備是幾年？",
+      "answer": "耐用年數表中未找到名為「辦公設備」的獨立項目，請依實際品項對照表列類別。"
+    },
+    {
+      "question": "輸入的內容會被保存嗎？",
+      "answer": "輸入內容只保存在你的瀏覽器中，不會傳送到伺服器。"
+    }
+  ],
+  "disclaimer": "依法規整理的試算，不是個案會計或稅務諮詢。"
+};
+const sources: [string, string][] = [
+  [
+    "固定資產耐用年數表",
+    "https://law-out.mof.gov.tw/LawContent.aspx?id=GL010207"
+  ],
+  [
+    "所得稅法",
+    "https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=G0340003"
+  ],
+  [
+    "營利事業所得稅查核準則",
+    "https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=G0340051"
+  ]
+];
+---
+<DebtReliefPage slug="taiwan-depreciation-calculator" c={c} sources={sources} sourcesTitle="來源" checked="全國法規資料庫、財政部 2026-11-21 查閱">
+  <TwDepreciation client:load />
+</DebtReliefPage>
