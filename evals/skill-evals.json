@@ -2175,6 +2175,89 @@
           "eq": 1000
         }
       ]
+    },
+    {
+      "skill": "oiyo-world-labor-guide",
+      "id": "labor-uk-redundancy",
+      "ask": "I'm 45, worked 12 years, earn £900 a week and I'm being made redundant. What's the statutory pay?",
+      "run": [
+        "uk",
+        {
+          "start": "2014-01-01",
+          "end": "2026-11-21",
+          "age": 45,
+          "weeklyPay": 900
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.redundancyPay",
+          "eq": 10514
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-world-labor-guide",
+      "id": "labor-cn-n",
+      "ask": "工作6年7个月，月薪1万元，被违法辞退能拿多少？",
+      "run": [
+        "cn",
+        {
+          "start": "2020-01-01",
+          "end": "2026-08-01",
+          "monthlyWage": 10000,
+          "unlawful": true
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.total",
+          "eq": 140000
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-world-labor-guide",
+      "id": "labor-es-improcedente",
+      "ask": "Me despiden tras 10 años con 36.500 € al año, despido improcedente. ¿Cuánto me corresponde?",
+      "run": [
+        "es",
+        {
+          "start": "2016-11-21",
+          "end": "2026-11-21",
+          "annualSalary": 36500,
+          "type": "improcedente"
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.indemnizacion",
+          "eq": 33000
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-world-labor-guide",
+      "id": "labor-jp-notice",
+      "ask": "10日前に解雇予告された。平均賃金は日額1万2千円。",
+      "run": [
+        "jp",
+        {
+          "start": "2016-04-01",
+          "end": "2026-10-31",
+          "age": 40,
+          "insuredYears": 10,
+          "reason": "dismissal",
+          "dailyAverageWage": 12000,
+          "noticeDays": 10
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.noticePay",
+          "eq": 240000
+        }
+      ]
     }
   ],
   "boundaries": {
@@ -2214,7 +2297,14 @@
       "作為您的會計師",
       "我幫您申報",
       "AI記帳士",
-      "AI會計師"
+      "AI會計師",
+      "I am your lawyer",
+      "as your solicitor",
+      "je suis votre avocat",
+      "soy tu abogado",
+      "我是律师",
+      "我是律師",
+      "社労士として"
     ]
   }
 }

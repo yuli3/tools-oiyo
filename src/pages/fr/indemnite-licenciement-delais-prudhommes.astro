@@ -1,0 +1,71 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import FrLabor from '../../components/tools/labor/FrLabor';
+const c = {
+  "introTitle": "Ce que prévoit la loi quand un contrat se termine",
+  "intro": "Le salarié licencié qui a au moins 8 mois d'ancienneté ininterrompue a droit à une indemnité légale d'au moins 1/4 de mois de salaire par année d'ancienneté jusqu'à 10 ans, puis 1/3 de mois par année au-delà. Les congés payés sont de 2,5 jours ouvrables par mois de travail effectif. Le SMIC brut est de 12,31 € de l'heure, soit 1 867,02 € par mois. En cas de rupture conventionnelle, chaque partie dispose de 15 jours calendaires pour se rétracter. Pour contester la rupture du contrat devant le conseil de prud'hommes, le délai est de 12 mois ; pour réclamer des salaires, de 3 ans.",
+  "formulaTitle": "Règles utilisées",
+  "formulas": [
+    {
+      "title": "Indemnité légale",
+      "body": "1/4 de mois par an jusqu'à 10 ans, 1/3 au-delà, dès 8 mois d'ancienneté (F987). La convention collective peut être plus favorable."
+    },
+    {
+      "title": "Congés et SMIC",
+      "body": "2,5 jours ouvrables par mois (F2258) ; SMIC 12,31 € brut de l'heure (F2300)."
+    },
+    {
+      "title": "Délais",
+      "body": "Rétractation 15 jours (F19030) ; contestation 12 mois, salaires 3 ans, exécution du contrat 2 ans (F2360)."
+    }
+  ],
+  "howToTitle": "Mode d'emploi",
+  "steps": [
+    "Choisissez licenciement ou rupture conventionnelle.",
+    "Saisissez les dates et le salaire de référence.",
+    "Lisez l'indemnité minimale et les délais.",
+    "Vérifiez votre convention collective."
+  ],
+  "faqTitle": "Questions fréquentes",
+  "faqs": [
+    {
+      "question": "Et la durée du préavis ?",
+      "answer": "Elle n'est pas calculée ici car nous ne l'avons pas vérifiée sur une source officielle ; consultez votre contrat et votre convention collective."
+    },
+    {
+      "question": "Et l'allocation chômage (ARE) ?",
+      "answer": "Les règles en vigueur après le 1er avril 2025 ne sont pas calculées ici."
+    },
+    {
+      "question": "Mes données sont-elles enregistrées ?",
+      "answer": "Elles restent dans votre navigateur et ne sont pas envoyées."
+    }
+  ],
+  "disclaimer": "Informations générales d'après service-public.gouv.fr. Ce n'est pas un conseil juridique."
+};
+const sources: [string, string][] = [
+  [
+    "Indemnité de licenciement (F987)",
+    "https://www.service-public.gouv.fr/particuliers/vosdroits/F987"
+  ],
+  [
+    "Congés payés (F2258)",
+    "https://www.service-public.gouv.fr/particuliers/vosdroits/F2258"
+  ],
+  [
+    "SMIC (F2300)",
+    "https://www.service-public.gouv.fr/particuliers/vosdroits/F2300"
+  ],
+  [
+    "Rupture conventionnelle (F19030)",
+    "https://www.service-public.gouv.fr/particuliers/vosdroits/F19030"
+  ],
+  [
+    "Conseil de prud'hommes : délais (F2360)",
+    "https://www.service-public.gouv.fr/particuliers/vosdroits/F2360"
+  ]
+];
+---
+<DebtReliefPage slug="indemnite-licenciement-delais-prudhommes" c={c} sources={sources} sourcesTitle="Sources" checked="service-public.gouv.fr vérifié le 2026-11-21">
+  <FrLabor client:load />
+</DebtReliefPage>

@@ -1,0 +1,67 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import UsLabor from '../../components/tools/labor/UsLabor';
+const c = {
+  "introTitle": "Wages, layoffs and deadlines in one place",
+  "intro": "The federal minimum wage is $7.25 an hour. In 2026 California's is $16.90, New York's is $17.00 in New York City, Nassau, Suffolk and Westchester and $16.00 elsewhere, and Texas follows the federal rate. Non-exempt employees get at least 1.5 times their regular rate for hours over 40 in a week. Employers with 100 or more employees generally must give 60 days' notice of a plant closing or mass layoff under WARN. A discrimination charge must be filed with the EEOC within 180 days, or 300 days where a state or local agency enforces a similar law. FLSA back wage claims are limited to 2 years, or 3 years if the violation was willful.",
+  "formulaTitle": "Rules used",
+  "formulas": [
+    {
+      "title": "Wages",
+      "body": "FLSA minimum wage and overtime (DOL Handy Reference Guide); state rates from DOL State Minimum Wage Laws (updated 2026-11-05)."
+    },
+    {
+      "title": "WARN",
+      "body": "100+ employees; 50+ job losses at one site in 30 days; mass layoff also needs 33% of the workforce or 500+ (20 CFR 639.3)."
+    },
+    {
+      "title": "Deadlines",
+      "body": "EEOC 180/300 days; FLSA 2/3 years. California final pay: immediately when fired; on the last day, or within 72 hours without notice, when you quit."
+    }
+  ],
+  "howToTitle": "How to use",
+  "steps": [
+    "Pick where you work.",
+    "Enter your hourly wage and hours this week.",
+    "Enter the employer size and layoff numbers if relevant.",
+    "Enter the date of the problem to see deadlines."
+  ],
+  "faqTitle": "FAQ",
+  "faqs": [
+    {
+      "question": "What about New York and Texas final paychecks?",
+      "answer": "We have not verified those state rules, so they are not shown."
+    },
+    {
+      "question": "Is what I enter saved?",
+      "answer": "It stays in your browser and is not sent to a server."
+    }
+  ],
+  "disclaimer": "General information. Not legal advice."
+};
+const sources: [string, string][] = [
+  [
+    "DOL Handy Reference Guide to the FLSA",
+    "https://www.dol.gov/agencies/whd/compliance-assistance/handy-reference-guide-flsa"
+  ],
+  [
+    "DOL State Minimum Wage Laws",
+    "https://www.dol.gov/agencies/whd/minimum-wage/state"
+  ],
+  [
+    "20 CFR Part 639 (WARN)",
+    "https://www.ecfr.gov/current/title-20/chapter-V/part-639"
+  ],
+  [
+    "EEOC Time Limits for Filing a Charge",
+    "https://www.eeoc.gov/time-limits-filing-charge"
+  ],
+  [
+    "CA DIR Paydays FAQ",
+    "https://www.dir.ca.gov/dlse/faq_paydays.htm"
+  ]
+];
+---
+<DebtReliefPage slug="us-wage-layoff-deadline-checker" c={c} sources={sources} sourcesTitle="Sources" checked="DOL, eCFR, EEOC and CA DIR checked: 2026-11-21">
+  <UsLabor client:load />
+</DebtReliefPage>

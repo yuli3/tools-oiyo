@@ -1,0 +1,63 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import TwLabor from '../../components/tools/labor/TwLabor';
+const c = {
+  "introTitle": "被資遣時可以拿到什麼",
+  "intro": "雇主資遣勞工，應依年資預告：繼續工作3個月以上未滿1年10日，1年以上未滿3年20日，3年以上30日；未預告的應給付預告期間工資。適用勞退新制的年資，每滿1年發給0.5個月平均工資，最高6個月；舊制年資每滿1年1個月平均工資。資遣費應於終止契約後30日內發給。失業給付按平均月投保薪資60%發給，最長6個月，45歲以上或領有身心障礙證明者最長9個月。",
+  "formulaTitle": "依據",
+  "formulas": [
+    {
+      "title": "預告與資遣費",
+      "body": "勞動基準法第16、17條；勞工退休金條例第12條。"
+    },
+    {
+      "title": "特別休假",
+      "body": "6個月3日、1年7日、2年10日、3年14日、5年15日，10年以上每年加1日至30日（第38條）。"
+    },
+    {
+      "title": "失業給付與時效",
+      "body": "60%、6或9個月（就業保險法第16條）；工資請求權5年（民法第126條）。"
+    }
+  ],
+  "howToTitle": "使用方法",
+  "steps": [
+    "選擇新制或舊制年資。",
+    "輸入到職日、終止日與平均工資。",
+    "輸入年齡與投保薪資看失業給付。",
+    "向地方勞工局確認。"
+  ],
+  "faqTitle": "常見問題",
+  "faqs": [
+    {
+      "question": "2026年最低工資是多少？",
+      "answer": "最低工資法已取代基本工資，但本次未核實2026年金額，本工具不顯示。"
+    },
+    {
+      "question": "輸入的內容會被保存嗎？",
+      "answer": "只保存在你的瀏覽器中。"
+    }
+  ],
+  "disclaimer": "依法規整理的一般資訊，不是法律諮詢。"
+};
+const sources: [string, string][] = [
+  [
+    "勞動基準法",
+    "https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=N0030001"
+  ],
+  [
+    "勞工退休金條例",
+    "https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=N0030020"
+  ],
+  [
+    "就業保險法",
+    "https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=N0050021"
+  ],
+  [
+    "最低工資法",
+    "https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=N0030028"
+  ]
+];
+---
+<DebtReliefPage slug="taiwan-severance-notice-calculator" c={c} sources={sources} sourcesTitle="來源" checked="全國法規資料庫 2026-11-21 查閱">
+  <TwLabor client:load />
+</DebtReliefPage>

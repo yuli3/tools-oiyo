@@ -1,0 +1,63 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import EsLabor from '../../components/tools/labor/EsLabor';
+const c = {
+  "introTitle": "Lo que te corresponde si te despiden",
+  "intro": "El despido improcedente se indemniza con 33 días de salario por año trabajado, prorrateando por meses, hasta 24 mensualidades; en contratos anteriores al 12 de febrero de 2012, el tiempo previo se calcula a 45 días por año. El despido objetivo da 20 días por año, hasta 12 mensualidades, con preaviso de 15 días. La prestación por desempleo dura de 120 días (360 a 539 días cotizados en los últimos 6 años) a 720 días (2.160 o más). Para reclamar contra el despido tienes 20 días hábiles, y antes es obligatorio intentar la conciliación (SMAC).",
+  "formulaTitle": "Reglas usadas",
+  "formulas": [
+    {
+      "title": "Indemnización",
+      "body": "33 días/año, máx. 24 mensualidades (ET art. 56.1); 20 días/año, máx. 12 (art. 53.1); 45 días para el tiempo anterior a 2012 (DT 11ª, no calculado)."
+    },
+    {
+      "title": "Paro y SMI",
+      "body": "Escala de LGSS art. 269.1; SMI 2026 40,70 €/día o 1.221 €/mes (RD 126/2026)."
+    },
+    {
+      "title": "Plazo",
+      "body": "20 días hábiles desde el día siguiente, caducidad (LRJS art. 103.1); conciliación previa (art. 63)."
+    }
+  ],
+  "howToTitle": "Cómo se usa",
+  "steps": [
+    "Elige el tipo de despido.",
+    "Introduce fechas y salario anual.",
+    "Añade los días cotizados para ver el paro.",
+    "Revisa el plazo y acude a la conciliación."
+  ],
+  "faqTitle": "Preguntas frecuentes",
+  "faqs": [
+    {
+      "question": "¿Los festivos cuentan en los 20 días?",
+      "answer": "No. La herramienta solo excluye sábados y domingos; descuenta también los festivos de tu calendario."
+    },
+    {
+      "question": "¿Se guardan mis datos?",
+      "answer": "Se quedan en tu navegador y no se envían."
+    }
+  ],
+  "disclaimer": "Información general según el BOE. No es asesoramiento jurídico."
+};
+const sources: [string, string][] = [
+  [
+    "Estatuto de los Trabajadores",
+    "https://www.boe.es/buscar/act.php?id=BOE-A-2015-11430"
+  ],
+  [
+    "Ley General de la Seguridad Social",
+    "https://www.boe.es/buscar/act.php?id=BOE-A-2015-11724"
+  ],
+  [
+    "Ley reguladora de la jurisdicción social",
+    "https://www.boe.es/buscar/act.php?id=BOE-A-2011-15936"
+  ],
+  [
+    "Real Decreto 126/2026 (SMI)",
+    "https://www.boe.es/buscar/doc.php?id=BOE-A-2026-3815"
+  ]
+];
+---
+<DebtReliefPage slug="indemnizacion-despido-paro-plazos" c={c} sources={sources} sourcesTitle="Fuentes" checked="BOE consultado el 2026-11-21">
+  <EsLabor client:load />
+</DebtReliefPage>
