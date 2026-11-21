@@ -1,0 +1,32 @@
+---
+// 사적연금 1,500만 원 분리과세 vs 종합과세 계산기 2026 (2026-11-21, 국세청 유튜브 주제 5종). 엔진: lib/kr-nts-pack-2026.ts
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import Tool from "../../components/tools/nts/PensionChoice";
+import { NTS_PACK_AS_OF } from "../../lib/kr-nts-pack-2026";
+
+const title = "사적연금 1,500만 원 분리과세 vs 종합과세 계산기 2026";
+const description = "연금저축·IRP에서 받는 연금이 연 1,500만 원을 넘을 때 15% 분리과세와 종합과세 중 무엇이 적은지 비교해요. 나이별 원천징수세율(5·4·3%, 종신형 3%)과 연금소득공제(한도 900만 원)를 넣었어요.";
+const ko = {
+  introTitle: "연금이 1,500만 원을 넘으면 골라야 해요",
+  intro: "연금저축·IRP에서 받는 연금은 받을 때 3~5%를 떼요. 한 해 1,500만 원 이하면 그걸로 끝낼 수 있고, 넘으면 5월에 종합과세와 15% 분리과세 중 하나를 골라요. 다른 소득이 많으면 분리, 적으면 종합이 유리한 경우가 많아요.",
+  howToTitle: "사용 방법",
+  steps: ["한 해 받은 사적연금과 나이를 넣어요.", "공적연금과 다른 소득을 넣어요.", "두 방식의 세금과 갈림길 그래프를 봐요."],
+  highlightsTitle: "주요 특징",
+  highlights: [
+    { title: "원천징수세율", body: "70세 미만 5%, 80세 미만 4%, 80세 이상 3%, 종신형 3%." },
+    { title: "1,500만 원 판정", body: "퇴직금 연금분·부득이 인출은 빼요." },
+    { title: "연금소득공제", body: "표대로, 한도 900만 원." },
+    { title: "갈림길 그래프", body: "연금이 늘 때 어느 쪽이 유리한지." },
+  ],
+  disclaimer: `법령 원문 기준으로 어림한 계산이에요. 실제 세액·가산세·상환액은 신고 내용과 고시에 따라 달라요. 신고서 작성과 제출은 직접 하거나 세무 전문가에게 맡겨요. 기준일 ${NTS_PACK_AS_OF}.`,
+};
+const faqs = [
+  { q: "1,500만 원에는 무엇이 들어가나요?", a: "연금계좌에서 연금으로 받은 금액 중 세액공제 받은 납입금과 운용수익 부분이에요. 퇴직금을 연금으로 받는 부분과 부득이한 사유로 인출한 금액은 빼요(소득세법 제14조③9호다목)." },
+  { q: "1,500만 원을 넘으면 어떻게 하나요?", a: "5월 종합소득세 신고 때 종합과세 세액과, 그 연금소득 × 15%에 나머지 소득 세액을 더한 금액 중 하나를 골라요(소득세법 제64조의4). 지방소득세를 더하면 16.5%예요." },
+  { q: "받을 때 떼는 세금은 얼마인가요?", a: "받는 날 나이로 70세 미만 5%, 70~80세 미만 4%, 80세 이상 3%예요. 죽을 때까지 받고 해지할 수 없는 종신계약은 3%이고, 둘 다 해당하면 낮은 세율이에요(소득세법 제129조①5의2)." },
+];
+---
+<KrFinancePage slug="private-pension-separate-tax-calculator" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <Tool client:load />
+  <p class="mt-4 text-xs text-muted-foreground">근거: 소득세법 제14조③·제47조의2·제64조의4·제129조. 기준일 {NTS_PACK_AS_OF}. <a class="underline" href="/ko/tax-law-guide/">세금 길잡이</a> · <a class="underline" href="/ko/pro-competency-map/">전문 직업 역량 지도</a></p>
+</KrFinancePage>

@@ -5,6 +5,7 @@ import { taxPenalty, nextReductionStep, PENALTY_NOTE, PENALTY_AS_OF } from "./kr
 import { deemedInputCredit, cardSalesCredit, badDebtCredit, VAT_CREDIT_NOTE, VAT_CREDIT_AS_OF } from "./kr-vat-credits-2026.mjs";
 import { depreciation, leaseSchedule, bondSchedule, externalAuditCheck, ACCT_NOTE, ACCT_AS_OF } from "./kr-accounting-schedules-2026.mjs";
 import { deferredTax, materiality, musSample, attributeSample, AUDIT_DEFERRED_NOTE, AUDIT_DEFERRED_AS_OF } from "./kr-audit-deferred-2026.mjs";
+import { withholdingStatement, studentLoanRepayment, bookVsEstimate, exemptBusinessReport, pensionIncomeChoice, NTS_PACK_NOTE, NTS_PACK_AS_OF } from "./kr-nts-pack-2026.mjs";
 import { corpTax, entertainmentLimit, CORP_TAX_AS_OF, CORP_TAX_NOTE } from "./kr-corp-tax-2026.mjs";
 import { valueUnlistedShares, familyBusinessInheritance, incorporationConversion, dcfValuation, dcfSensitivity, wacc, ADVISORY_AS_OF } from "./kr-advisory-2026.mjs";
 
@@ -26,6 +27,11 @@ const EXAMPLES = {
   "deferred-tax": { items: [{ label: "퇴직급여충당부채", amount: 100000000 }, { label: "일시상각충당금", amount: -40000000 }], rate: 0.209, futureIncome: 300000000, openingNet: 5000000, currentTax: 30000000, pretaxIncome: 200000000 },
   materiality: { benchmark: "pretax", base: 1000000000, pct: 0.05, risk: "medium", trivialPct: 0.05 },
   sample: { population: 5000000000, tolerable: 32500000, expected: 0, confidence: 95, tolerableRate: 0.05 },
+  "withholding-statement": { kind: "simple-business", year: 2026, month: 10, amount: 20000000, submitted: "", semiAnnualPayer: false },
+  "student-loan": { incomeType: "salary", amount: 40000000, loan: "undergrad", balance: 0 },
+  "book-vs-estimate": { group: "personal", prevRevenue: 30000000, revenue: 50000000, newBusiness: false, actualExpense: 10000000, simpleRate: 64.1, simpleRateOver: 49.7, standardRate: 21.6, majorExpense: 3000000, otherIncome: 0, people: 1 },
+  "exempt-report": { year: 2026, kind: "personal", vatFiledAll: false, mixed: false, unreported: 0 },
+  "pension-income": { privatePension: 20000000, age: 66, lifelong: false, publicPension: 12000000, otherIncome: 0, people: 1 },
   wacc: { riskFree: 0.03, beta: 1.1, marketPremium: 0.06, sizePremium: 0.03, preTaxCostOfDebt: 0.055, taxRate: 0.22, debtWeight: 0.3 },
 };
 
@@ -53,6 +59,11 @@ else if (tool === "bond") result = { ...bondSchedule(input.face, input.couponRat
 else if (tool === "deferred-tax") result = { ...deferredTax(input), note: AUDIT_DEFERRED_NOTE, asOf: AUDIT_DEFERRED_AS_OF };
 else if (tool === "materiality") result = { ...materiality(input), note: AUDIT_DEFERRED_NOTE, asOf: AUDIT_DEFERRED_AS_OF };
 else if (tool === "sample") result = { mus: musSample(input), attribute: input.tolerableRate ? attributeSample(input) : null, note: AUDIT_DEFERRED_NOTE, asOf: AUDIT_DEFERRED_AS_OF };
+else if (tool === "withholding-statement") result = { ...withholdingStatement({ ...input, submitted: input.submitted || undefined, today: new Date().toISOString().slice(0, 10) }), note: NTS_PACK_NOTE, asOf: NTS_PACK_AS_OF };
+else if (tool === "student-loan") result = { ...studentLoanRepayment({ ...input, balance: input.balance || undefined }), note: NTS_PACK_NOTE, asOf: NTS_PACK_AS_OF };
+else if (tool === "book-vs-estimate") result = { ...bookVsEstimate(input), note: NTS_PACK_NOTE, asOf: NTS_PACK_AS_OF };
+else if (tool === "exempt-report") result = { ...exemptBusinessReport({ ...input, today: new Date().toISOString().slice(0, 10) }), note: NTS_PACK_NOTE, asOf: NTS_PACK_AS_OF };
+else if (tool === "pension-income") result = { ...pensionIncomeChoice(input), note: NTS_PACK_NOTE, asOf: NTS_PACK_AS_OF };
 else if (tool === "audit") result = { ...externalAuditCheck(input), note: ACCT_NOTE, acctAsOf: ACCT_AS_OF };
 else result = wacc(input);
 console.log(JSON.stringify({ tool, asOf: ADVISORY_AS_OF, isEstimate: true, input, result }, null, 2));

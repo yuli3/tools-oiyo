@@ -12,7 +12,7 @@ description: 한국 세무·회계 실무 상담 보조. 비상장주식 보충�
 1. MCP 서버 `https://api.oiyo.net/mcp`(Registry 이름 `io.github.yuli3/oiyo-calculations`)가 연결돼 있으면 그 도구를 쓴다.
    - `value_kr_unlisted_shares`, `calculate_kr_family_business_deduction`, `calculate_kr_incorporation_conversion`, `calculate_dcf_valuation`
 2. 코드 실행이 되면 이 스킬의 스크립트를 쓴다: `node scripts/calc.mjs <도구> '<JSON 입력>'` (Node 22 이상, 의존성 없음).
-   - 도구: `unlisted-shares`, `family-business`, `incorporation-conversion`, `dcf`, `wacc`, `corp-tax`(법인세 어림과 세무조정 한도), `entertainment`(기업업무추진비 한도), `penalty`(무신고·과소신고·납부지연·원천세 가산세와 감면), `depreciation`·`lease`·`bond`(결산 상각표), `audit`(다음 해 외부감사 대상 판정), `deferred-tax`(이연법인세), `materiality`·`sample`(감사 중요성·표본 크기), `deemed-input`·`card-credit`·`bad-debt`(부가세 공제). 입력 예시는 `node scripts/calc.mjs help`.
+   - 도구: `unlisted-shares`, `family-business`, `incorporation-conversion`, `dcf`, `wacc`, `corp-tax`(법인세 어림과 세무조정 한도), `entertainment`(기업업무추진비 한도), `penalty`(무신고·과소신고·납부지연·원천세 가산세와 감면), `depreciation`·`lease`·`bond`(결산 상각표), `audit`(다음 해 외부감사 대상 판정), `deferred-tax`(이연법인세), `materiality`·`sample`(감사 중요성·표본 크기), `deemed-input`·`card-credit`·`bad-debt`(부가세 공제), `withholding-statement`(지급명세서 기한·가산세), `student-loan`(학자금 의무상환), `book-vs-estimate`(장부 vs 추계), `exempt-report`(사업장현황신고), `pension-income`(사적연금 분리 vs 종합). 입력 예시는 `node scripts/calc.mjs help`.
 3. 둘 다 안 되면 계산하지 말고, 웹 계산기 링크(아래)를 주고 필요한 입력을 정리해 준다.
 
 ## 진행 순서
@@ -63,6 +63,16 @@ description: 한국 세무·회계 실무 상담 보조. 비상장주식 보충�
 - `deferred-tax`: 일시적차이 × 소멸 시 세율. 세율을 모르면 `expectedBase`로 2026 법인세 구간 평균세율 × 1.1(지방소득세)을 쓴다. 미래 과세소득(가산할 차이 소멸분 포함)이 모자라면 인식하지 않는 금액을 따로 보여 준다(K-IFRS 1012호).
 - `materiality`: 전체 중요성 = 기준치 × 비율(세전이익 5%, 매출 0.5~1%, 자산 1~2% 등 관행), 수행 중요성 = 50~75%, 명백히 사소한 금액 = 5%. 비율은 법정이 아니라 감사인 판단이라고 말한다(감사기준서 320·450).
 - `sample`: 금액단위표본 n = 모집단 × 신뢰계수 ÷ (허용왜곡 − 예상왜곡 × 확장계수), 통제 테스트는 예상 이탈 0개 속성표본. 감사의견과 표본 설계는 감사인이 정한다.
+
+## 국세청이 자주 안내하는 개인·소규모 사업자 주제 (withholding-statement · student-loan · book-vs-estimate · exempt-report · pension-income)
+
+일반인도 자주 묻는 주제다. 숫자는 법령 원문(2026-11-21 확인) 기준이고, 서식 칸 이름이나 화면 메뉴는 말하지 않는다.
+
+- `withholding-statement`: 먼저 묻는다: 어떤 지급명세서(연간 이자·배당 등 / 연간 근로·퇴직·사업 / 일용 / 간이 사업·인적용역 / 간이 근로), 지급한 해·달, 금액, 낸 날. 기한은 휴일이면 다음 영업일. 미제출 가산세 연간 1%(3개월 안 0.5%), 일용·간이 0.25%(1개월 안 0.125%). 근로 간이는 2027년 1월 지급분부터 매월이고 2027년(반기납부자는 2028년까지)은 반기 안에 내면 가산세가 없다.
+- `student-loan`: 총급여 또는 소득금액, 학부·대학원 대출. (소득금액 − 상환기준소득 2,056만 원) × 20%(대학원 25%). 상환기준소득은 학기마다 교육부 고시로 바뀐다고 말한다.
+- `book-vs-estimate`: 업종 묶음, 작년·올해 수입금액, 실제 경비, 내 업종코드 경비율(단순·자가율·기준)을 묻는다. 무기장가산세는 산출세액 × 사업소득 비율 × 20%뿐이다(수입금액 비교 없음). 복식부기의무자가 추계로 신고하면 무신고 문제가 생길 수 있다고 알린다.
+- `exempt-report`: 면세 사업자 사업장현황신고는 다음 해 2월 10일. 0.5% 가산세는 의료·수의·약국만이다. 종합소득세 신고로 대신된다고 말하지 않는다.
+- `pension-income`: 연금계좌 연금 1,500만 원 초과면 15% 분리과세와 종합과세 중 선택. 원천징수 70세 미만 5%·80세 미만 4%·80세 이상 3%, 종신계약 3%. 세액공제는 뺀 단순 비교라고 말한다.
 
 ## 부가세 공제 (deemed-input · card-credit · bad-debt)
 

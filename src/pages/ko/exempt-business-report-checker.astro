@@ -1,0 +1,32 @@
+---
+// 사업장현황신고 점검 2026 (2026-11-21, 국세청 유튜브 주제 5종). 엔진: lib/kr-nts-pack-2026.ts
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import Tool from "../../components/tools/nts/ExemptReport";
+import { NTS_PACK_AS_OF } from "../../lib/kr-nts-pack-2026";
+
+const title = "사업장현황신고 점검 2026 — 면세 사업자·프리랜서 2월 10일";
+const description = "부가세를 신고하지 않는 면세 사업자(프리랜서·강사·학원·병의원 등)가 다음 해 2월 10일까지 하는 사업장현황신고 대상인지, 기한이 며칠 남았는지, 가산세(의료·수의·약국 0.5%)가 붙는지 점검해요.";
+const ko = {
+  introTitle: "면세 사업자는 2월 10일에 수입금액을 신고해요",
+  intro: "부가가치세를 내지 않는 면세 사업자는 한 해 수입금액을 다음 해 2월 10일까지 사업장현황신고로 알려요. 3.3%를 떼고 받는 프리랜서도 사업자예요. 가산세는 의료·수의·약국에만 붙어요.",
+  howToTitle: "사용 방법",
+  steps: ["하는 일과 부가세 신고 여부를 골라요.", "수입이 생긴 해를 넣어요.", "기한, 대상 여부, 가산세를 봐요."],
+  highlightsTitle: "주요 특징",
+  highlights: [
+    { title: "대상 판정", body: "부가세 신고자·겸영은 면세분만." },
+    { title: "기한 D-day", body: "2월 10일, 휴일이면 다음 영업일." },
+    { title: "가산세 범위", body: "의료·수의·약국만 0.5%." },
+    { title: "프리랜서 안내", body: "3.3% 인적용역도 대상." },
+  ],
+  disclaimer: `법령 원문 기준으로 어림한 계산이에요. 실제 세액·가산세·상환액은 신고 내용과 고시에 따라 달라요. 신고서 작성과 제출은 직접 하거나 세무 전문가에게 맡겨요. 기준일 ${NTS_PACK_AS_OF}.`,
+};
+const faqs = [
+  { q: "사업장현황신고는 누가 하나요?", a: "부가가치세를 신고하지 않는 면세 사업자예요. 그해 폐업·휴업한 사업자도 해요. 부가세 신고를 한 사업자는 한 것으로 보고, 과세·면세를 같이 하면 면세분만 해요(소득세법 제78조)." },
+  { q: "안 하면 가산세가 있나요?", a: "의료업·수의업·약국은 신고하지 않거나 덜 신고한 수입금액의 0.5% 가산세가 붙어요(소득세법 제81조의3, 시행령 제147조의2). 그 밖의 업종에는 이 가산세가 없어요." },
+  { q: "프리랜서도 해야 하나요?", a: "3.3%를 떼고 받는 인적용역 소득도 사업소득이라 조문상 대상에서 빠지지 않아요. 5월 종합소득세 신고와는 따로 있는 신고예요." },
+];
+---
+<KrFinancePage slug="exempt-business-report-checker" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <Tool client:load />
+  <p class="mt-4 text-xs text-muted-foreground">근거: 소득세법 제78조·제81조의3, 시행령 제147조의2. 기준일 {NTS_PACK_AS_OF}. <a class="underline" href="/ko/tax-law-guide/">세금 길잡이</a> · <a class="underline" href="/ko/pro-competency-map/">전문 직업 역량 지도</a></p>
+</KrFinancePage>

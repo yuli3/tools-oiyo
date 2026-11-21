@@ -47,6 +47,26 @@ GENERATED from tools-oiyo src/data/pro-competencies.ts. 기준일 2026-11-20. �
   - 도구: 불복·이의신청 기한 계산 https://tools.oiyo.net/ko/appeal-deadline-calculator/ · 세금 법령 길잡이 https://tools.oiyo.net/ko/tax-law-guide/
   - MCP: `start_kr_law_intake`
   - 스킬: oiyo-kr-law-guide
+- **지급명세서 제출 기한과 가산세** [기한·절차] (일반인도 씀): 연간·일용·간이지급명세서 기한(휴일이면 다음 영업일)과 늦게 냈을 때 1%·0.25% 가산세, 기한 후 3개월·1개월 감면, 2027 근로 간이 매월 전환을 챙겨요.
+  - 도구: 지급명세서 기한·가산세 계산기 https://tools.oiyo.net/ko/withholding-statement-penalty-calculator/
+  - MCP: `check_kr_withholding_statement`
+  - 스킬: kr-tax-advisor
+- **장부 vs 추계 신고 선택** [계산·평가] (일반인도 씀): 간편장부·복식부기와 단순·기준경비율 대상을 판정하고, 무기장가산세 20%와 기장세액공제를 넣어 장부·추계 세금을 비교해요.
+  - 도구: 장부 vs 추계 신고 비교 https://tools.oiyo.net/ko/bookkeeping-vs-estimate-calculator/ · 경비율 계산기 https://tools.oiyo.net/ko/expense-ratio-calculator/
+  - MCP: `compare_kr_bookkeeping_vs_estimate`
+  - 스킬: kr-tax-advisor
+- **면세 사업장현황신고** [기한·절차] (일반인도 씀): 면세 사업자·프리랜서의 2월 10일 신고 대상과 기한을 확인하고, 의료·수의·약국 0.5% 가산세를 계산해요.
+  - 도구: 사업장현황신고 점검 https://tools.oiyo.net/ko/exempt-business-report-checker/
+  - MCP: `check_kr_exempt_business_report`
+  - 스킬: kr-tax-advisor
+- **사적연금 분리과세 vs 종합과세** [계산·평가] (일반인도 씀): 연금계좌 연금 1,500만 원 기준, 나이별 원천징수세율, 연금소득공제로 15% 분리과세와 종합과세를 비교해요.
+  - 도구: 사적연금 분리 vs 종합과세 계산기 https://tools.oiyo.net/ko/private-pension-separate-tax-calculator/ · 연금 수령 최적화 https://tools.oiyo.net/ko/pension-optimizer-calculator/
+  - MCP: `compare_kr_private_pension_tax`
+  - 스킬: kr-tax-advisor
+- **취업 후 학자금 의무상환액** [계산·평가] (일반인도 씀): 소득금액에서 상환기준소득(학기별 교육부 고시)을 뺀 금액의 20%·25%로 의무상환액과 원천공제 월액을 계산해요.
+  - 도구: 학자금 의무상환액 계산기 https://tools.oiyo.net/ko/student-loan-repayment-calculator/
+  - MCP: `calculate_kr_student_loan_repayment`
+  - 스킬: kr-tax-advisor
 - **장부·증빙 검토** [서류·증빙] (자격사 업무와 맞닿음: 정보만): 간편장부·복식부기 대상, 업무용 승용차 운행기록, 적격증빙을 확인해요.
   - 도구: 회계·장부 법령 길잡이 https://tools.oiyo.net/ko/accounting-law-guide/ · 업무용 승용차 비용 https://tools.oiyo.net/ko/business-car-expense-calculator/ · 경비율 계산기 https://tools.oiyo.net/ko/expense-ratio-calculator/
   - MCP: `calculate_kr_business_car_expense`
