@@ -206,7 +206,7 @@ import RelatedTools from "../../components/RelatedTools.astro";
       else if (specialType === "parents") deadlineYears = 10;
 
       const deadlineDate = new Date(newDate);
-      deadlineDate.setFullYear(deadlineDate.getFullYear() + deadlineYears);
+      deadlineDate.setUTCFullYear(deadlineDate.getUTCFullYear() + deadlineYears);
       const deadlineStr = deadlineDate.toISOString().slice(0, 10);
 
       // 3. Remaining days (D-Day)
@@ -216,7 +216,7 @@ import RelatedTools from "../../components/RelatedTools.astro";
 
       // 4. Holding & Residence check: 보유 2년은 파는 날 기준이라, 처분 기한 안에 2년이 차는지 본다.
       const twoYearDate = new Date(existingDate);
-      twoYearDate.setFullYear(twoYearDate.getFullYear() + 2);
+      twoYearDate.setUTCFullYear(twoYearDate.getUTCFullYear() + 2);
       const twoYearStr = twoYearDate.toISOString().slice(0, 10);
       const hasHeldTwoYears = twoYearDate.getTime() <= deadlineDate.getTime();
       const hasMetResidence = !isRegZone || residenceYears >= 2;

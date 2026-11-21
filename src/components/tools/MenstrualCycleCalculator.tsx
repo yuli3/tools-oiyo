@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { localIsoDate, localIsoDateOffset } from "../../lib/local-date";
 
 type Locale = 'ko' | 'en' | 'ja' | 'fr' | 'es' | 'zh';
 
@@ -206,11 +207,7 @@ export default function MenstrualCycleCalculator({ locale = 'ko' }: { locale?: L
   const t = L[locale] ?? L.ko;
 
   // Default: last period = today - 14 days
-  const defaultDate = (() => {
-    const d = new Date();
-    d.setDate(d.getDate() - 14);
-    return d.toISOString().split('T')[0];
-  })();
+  const defaultDate = localIsoDateOffset(-14);
 
   const [lastPeriodStr, setLastPeriodStr] = useState(defaultDate);
   const [cycleLength, setCycleLength] = useState(28);
@@ -222,14 +219,14 @@ export default function MenstrualCycleCalculator({ locale = 'ko' }: { locale?: L
 
   const result = useMemo(() => {
     if (!lastPeriodStr) return null;
-    const lastPeriod = new Date(lastPeriodStr);
+    const lastPeriod = new Date(lastPeriodStr + "T00:00:00");
     lastPeriod.setHours(0, 0, 0, 0);
     return calcCycle(lastPeriod, cycleLength, periodDuration, 0);
   }, [lastPeriodStr, cycleLength, periodDuration]);
 
   const futureCycles = useMemo(() => {
     if (!lastPeriodStr) return [];
-    const lastPeriod = new Date(lastPeriodStr);
+    const lastPeriod = new Date(lastPeriodStr + "T00:00:00");
     lastPeriod.setHours(0, 0, 0, 0);
     return [1, 2, 3].map(offset => calcCycle(lastPeriod, cycleLength, periodDuration, offset));
   }, [lastPeriodStr, cycleLength, periodDuration]);
@@ -263,7 +260,7 @@ export default function MenstrualCycleCalculator({ locale = 'ko' }: { locale?: L
   // Determine current cycle phase
   const currentPhase = useMemo(() => {
     if (!result || !lastPeriodStr) return null;
-    const lastPeriod = new Date(lastPeriodStr);
+    const lastPeriod = new Date(lastPeriodStr + "T00:00:00");
     lastPeriod.setHours(0, 0, 0, 0);
     const dayOfCycle = diffDays(today, lastPeriod) % cycleLength;
     const effectiveDay = ((dayOfCycle % cycleLength) + cycleLength) % cycleLength;
@@ -290,7 +287,7 @@ export default function MenstrualCycleCalculator({ locale = 'ko' }: { locale?: L
           <input
             type="date"
             value={lastPeriodStr}
-            max={new Date().toISOString().split('T')[0]}
+            max={localIsoDate()}
             onChange={e => { setLastPeriodStr(e.target.value); setCalculated(false); }}
             className="w-full border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
           />

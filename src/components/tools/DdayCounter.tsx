@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import type { Locale } from "../../lib/i18n";
+import { localIsoDate } from "../../lib/local-date";
 
 interface DdayEvent {
   id: string;
@@ -99,7 +100,7 @@ const STORAGE_KEY = "dday-counter-events";
 const MAX_EVENTS = 10;
 
 function todayStr(): string {
-  return new Date().toISOString().slice(0, 10);
+  return localIsoDate();
 }
 
 function diffDays(targetStr: string): number {
