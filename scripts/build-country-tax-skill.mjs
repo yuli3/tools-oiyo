@@ -18,6 +18,7 @@ export const COUNTRY_SKILLS = {
   cn: { dir: "oiyo-cn-tax-guide", libs: ["cn-tax-pack-2026"], zip: "oiyo-cn-tax-guide-skill.zip" },
   uk: { dir: "oiyo-uk-tax-guide", libs: ["uk-tax-pack-2026"], zip: "oiyo-uk-tax-guide-skill.zip" },
   tw: { dir: "oiyo-tw-tax-guide", libs: ["tw-tax-pack-2026"], zip: "oiyo-tw-tax-guide-skill.zip" },
+  labor: { dir: "oiyo-world-labor-guide", libs: ["world-labor-pack-2026"], zip: "oiyo-world-labor-guide-skill.zip" },
 };
 export const skillDir = (c) => resolve(root, "skills", COUNTRY_SKILLS[c].dir);
 

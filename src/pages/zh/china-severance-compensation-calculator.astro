@@ -1,0 +1,51 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import CnLabor from '../../components/tools/labor/CnLabor';
+const c = {
+  "introTitle": "被辞退时能拿多少补偿",
+  "intro": "用人单位解除劳动合同应支付经济补偿的，按劳动者在本单位工作的年限，每满一年支付一个月工资；六个月以上不满一年的按一年计算，不满六个月的支付半个月工资。月工资高于当地上年度职工月平均工资三倍的，按三倍计算，年限最多不超过十二年。违法解除或终止的，按经济补偿标准的二倍支付赔偿金。因病、不能胜任或客观情况变化解除的，应提前三十日书面通知或额外支付一个月工资。失业保险金按累计缴费时间最长领取12、18或24个月。",
+  "formulaTitle": "依据",
+  "formulas": [
+    {
+      "title": "经济补偿",
+      "body": "劳动合同法第47条；月工资为解除前12个月平均工资。"
+    },
+    {
+      "title": "赔偿金与代通知金",
+      "body": "违法解除2倍（第87条）；第40条情形提前30日书面通知或额外支付1个月工资。"
+    },
+    {
+      "title": "失业保险金",
+      "body": "累计缴费1—5年最长12个月，5—10年18个月，10年以上24个月（失业保险条例第17条），金额由省级政府确定。"
+    }
+  ],
+  "howToTitle": "使用方法",
+  "steps": [
+    "输入入职和解除日期。",
+    "输入平均月工资和当地月平均工资。",
+    "选择是否违法解除、是否未提前通知。",
+    "向当地劳动争议仲裁委员会或人社部门确认。"
+  ],
+  "faqTitle": "常见问题",
+  "faqs": [
+    {
+      "question": "年休假和仲裁时效呢？",
+      "answer": "本次未核实带薪年休假天数和劳动仲裁时效，本工具不计算。"
+    },
+    {
+      "question": "输入的内容会被保存吗？",
+      "answer": "只保存在你的浏览器中。"
+    }
+  ],
+  "disclaimer": "根据法律法规整理的一般信息，不是法律咨询。"
+};
+const sources: [string, string][] = [
+  [
+    "国家法律法规数据库（劳动合同法、失业保险条例）",
+    "https://flk.npc.gov.cn/"
+  ]
+];
+---
+<DebtReliefPage slug="china-severance-compensation-calculator" c={c} sources={sources} sourcesTitle="来源" checked="国家法律法规数据库 2026-11-21 查阅">
+  <CnLabor client:load />
+</DebtReliefPage>

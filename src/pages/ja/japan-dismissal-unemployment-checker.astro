@@ -1,0 +1,67 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import JpLabor from '../../components/tools/labor/JpLabor';
+const c = {
+  "introTitle": "会社を辞めるとき・辞めさせられるときに確認すること",
+  "intro": "解雇するには少なくとも30日前の予告が必要で、予告しない場合は30日分以上の平均賃金（解雇予告手当）を支払います。予告の日数は、平均賃金を払った日数だけ短くできます。雇用保険の基本手当は、自己都合などの離職なら被保険者期間10年未満90日、10〜20年120日、20年以上150日。倒産・解雇などによる離職は年齢と期間に応じて最大330日です。年次有給休暇は6か月勤務で10日、6年6か月以上で20日。未払い賃金は当分の間3年で時効になります。",
+  "formulaTitle": "根拠",
+  "formulas": [
+    {
+      "title": "解雇予告",
+      "body": "30日前の予告、または30日分以上の平均賃金（労働基準法第20条）。"
+    },
+    {
+      "title": "基本手当",
+      "body": "待期7日（雇用保険法第21条）、所定給付日数（第22条・第23条）、自己都合などの給付制限は1か月以上3か月以内（第33条）。現在の運用上の期間はハローワークで確認してください。"
+    },
+    {
+      "title": "有給休暇と時効",
+      "body": "6か月で10日、以後1年ごとに増えて最大20日（第39条）。賃金請求権は当分の間3年、退職手当は5年（第115条・第143条）。"
+    }
+  ],
+  "howToTitle": "使い方",
+  "steps": [
+    "離職の理由を選びます。",
+    "入社日・離職日・年齢・被保険者期間を入れます。",
+    "解雇予告の日数と平均賃金を入れます。",
+    "受給資格と日数はハローワークで確認します。"
+  ],
+  "faqTitle": "よくある質問",
+  "faqs": [
+    {
+      "question": "30歳未満で被保険者期間1〜5年の会社都合は何日？",
+      "answer": "確認した条文の範囲で数字を確かめられなかったため、表示していません。ハローワークで確認してください。"
+    },
+    {
+      "question": "相談先は？",
+      "answer": "総合労働相談コーナー（無料・予約不要、労使どちらも利用可）。"
+    },
+    {
+      "question": "入力内容は保存されますか？",
+      "answer": "ブラウザの中だけに残り、サーバーには送られません。"
+    }
+  ],
+  "disclaimer": "法令と厚生労働省の資料にもとづく一般的な情報です。個別の法律相談ではありません。"
+};
+const sources: [string, string][] = [
+  [
+    "労働基準法（e-Gov）",
+    "https://laws.e-gov.go.jp/law/322AC0000000049"
+  ],
+  [
+    "雇用保険法（e-Gov）",
+    "https://laws.e-gov.go.jp/law/349AC0000000116"
+  ],
+  [
+    "令和8年度地域別最低賃金全国一覧",
+    "https://www.mhlw.go.jp/content/11200000/001753404.pdf"
+  ],
+  [
+    "総合労働相談コーナー",
+    "https://www.mhlw.go.jp/general/seido/chihou/kaiketu/soudan.html"
+  ]
+];
+---
+<DebtReliefPage slug="japan-dismissal-unemployment-checker" c={c} sources={sources} sourcesTitle="出典" checked="e-Gov法令検索・厚生労働省 2026-11-21 確認">
+  <JpLabor client:load />
+</DebtReliefPage>

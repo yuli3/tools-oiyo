@@ -1,0 +1,67 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import UkLabor from '../../components/tools/labor/UkLabor';
+const c = {
+  "introTitle": "What you are owed when a job ends",
+  "intro": "Statutory redundancy pay is half a week's pay for each full year you were under 22, one week's pay for each full year from 22 to 40 and one and a half weeks' pay for each full year from 41, for up to 20 years. Weekly pay is capped at £751, so the maximum is £22,530 (dismissals from 6 April 2026). Statutory notice is at least one week after a month's service, one week per year from 2 to 12 years and 12 weeks after that. Holiday is 5.6 weeks a year, capped at 28 days. From April 2026 the National Living Wage is £12.71 an hour. Before an employment tribunal claim you must tell Acas, which offers free early conciliation; the time limit is 3 months, or 6 months if the problem happened on or after 1 October 2026.",
+  "formulaTitle": "Rules used",
+  "formulas": [
+    {
+      "title": "Redundancy pay and notice",
+      "body": "gov.uk Redundancy: your rights (weekly cap £751, 20 years)."
+    },
+    {
+      "title": "Holiday, minimum wage, SSP",
+      "body": "5.6 weeks capped at 28 days; NLW £12.71 (21+), £10.85 (18–20), £8 (under 18 and apprentices); SSP the lower of £123.25 or 80% of average weekly earnings, up to 28 weeks."
+    },
+    {
+      "title": "Tribunal time limit",
+      "body": "3 months, or 6 months for problems from 1 October 2026 (gov.uk Employment tribunals). Check the exact last day with Acas."
+    }
+  ],
+  "howToTitle": "How to use",
+  "steps": [
+    "Enter your start and end dates and your age.",
+    "Enter weekly pay, days a week and hourly pay.",
+    "Read redundancy pay, notice, holiday and the deadline.",
+    "Contact Acas before making a tribunal claim."
+  ],
+  "faqTitle": "FAQ",
+  "faqs": [
+    {
+      "question": "Am I eligible for redundancy pay?",
+      "answer": "Eligibility conditions apply, such as your employment status and length of service. This tool shows the statutory amount; check gov.uk for whether you qualify."
+    },
+    {
+      "question": "Is what I enter saved?",
+      "answer": "It stays in your browser and is not sent to a server."
+    }
+  ],
+  "disclaimer": "General information from gov.uk. Not legal advice."
+};
+const sources: [string, string][] = [
+  [
+    "Redundancy: your rights",
+    "https://www.gov.uk/redundancy-your-rights"
+  ],
+  [
+    "Holiday entitlement",
+    "https://www.gov.uk/holiday-entitlement-rights"
+  ],
+  [
+    "National Minimum Wage rates",
+    "https://www.gov.uk/national-minimum-wage-rates"
+  ],
+  [
+    "Statutory Sick Pay",
+    "https://www.gov.uk/statutory-sick-pay"
+  ],
+  [
+    "Employment tribunals",
+    "https://www.gov.uk/employment-tribunals"
+  ]
+];
+---
+<DebtReliefPage slug="uk-redundancy-notice-tribunal-calculator" c={c} sources={sources} sourcesTitle="Sources" checked="gov.uk checked: 2026-11-21">
+  <UkLabor client:load />
+</DebtReliefPage>

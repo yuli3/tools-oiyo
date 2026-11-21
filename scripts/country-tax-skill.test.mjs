@@ -62,3 +62,9 @@ test("tw skill CLI", () => {
   assert.equal(run("calendar", '{"year":2026}').events.find((e) => e.id === "bt-3").date, "2026-03-16");
   assert.ok(run("scope").some((s) => s.cite.includes("記帳士法")));
 });
+
+test("world labor skill CLI", () => {
+  const run = (...a) => JSON.parse(execFileSync(process.execPath, [resolve(skillDir("labor"), "scripts/calc.mjs"), ...a], { encoding: "utf8" })).result;
+  assert.equal(run("tw", '{"start":"2026-01-01","end":"2026-05-01","averageMonthlyWage":30000,"system":"old"}').noticeDays, 10);
+  assert.equal(run("es", '{"start":"2016-11-21","end":"2026-11-21","annualSalary":36500,"type":"improcedente"}').indemnizacion, 33000);
+});
