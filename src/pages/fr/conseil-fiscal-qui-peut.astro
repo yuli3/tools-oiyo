@@ -1,0 +1,31 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import FrScope from '../../components/tools/fr/FrScope';
+const c = {
+  introTitle: "Pourquoi ces outils fiscaux donnent des informations générales et non des conseils",
+  intro: "En France, tenir la comptabilité d'une entreprise pour autrui est réservé aux experts-comptables (ordonnance n° 45-2138, art. 2), et donner des consultations juridiques ou fiscales à titre habituel et rémunéré est réservé aux personnes autorisées par la loi n° 71-1130 (art. 54 et suivants). La fourniture d'informations à caractère documentaire reste libre (art. 66-1). Ce site explique donc les règles publiées et fait les calculs, sans se prononcer sur votre cas. Pour une réponse personnalisée, l'administration fiscale propose une aide gratuite.",
+  formulaTitle: 'Ce que couvre ce site',
+  formulas: [
+    { title: 'Couvert', body: "Échéances, estimations à partir des taux et seuils publiés, explication des conditions, liens vers service-public.fr et le BOFiP." },
+    { title: 'Non couvert', body: "Consultation sur votre situation, tenue de comptabilité, établissement ou dépôt de déclarations et de réclamations, recommandation d'un cabinet." },
+  ],
+  howToTitle: 'Pour votre propre dossier',
+  steps: ["Posez votre question par la messagerie sécurisée de votre espace impots.gouv ou prenez rendez-vous avec votre centre des finances publiques ou votre SIE.", 'Rendez-vous dans un espace France Services près de chez vous.', "En cas de rejet d'une réclamation, saisissez le conciliateur fiscal départemental, puis le médiateur, sans oublier que les délais de recours continuent de courir.", 'Pour la comptabilité ou un conseil suivi, adressez-vous à un expert-comptable ou à un avocat.'],
+  faqTitle: 'Questions fréquentes',
+  faqs: [
+    { question: "Pourquoi l'outil ne se présente-t-il pas comme expert-comptable ?", answer: "Ces titres sont protégés : leur usage sans droit est puni par l'article 433-17 du code pénal." },
+    { question: 'Puis-je reporter les résultats dans ma déclaration ?', answer: "Ce sont des estimations. Utilisez votre espace impots.gouv ou votre logiciel pour la déclaration." },
+  ],
+  disclaimer: "Résumé de textes et de pages officielles ; reportez-vous aux textes pour leur rédaction exacte.",
+};
+const sources: [string, string][] = [
+  ["Ordre des experts-comptables — Qu'est-ce qu'un expert-comptable ?", 'https://www.experts-comptables.fr/devenir-expert-comptable/qu-est-ce-qu-un-expert-comptable'],
+  ["CNB — Vade-mecum de l'exercice du droit (2026)", 'https://www.cnb.avocat.fr/medias/file/vademecum---l-exercice-du-droit---2026-6ad648b13fc736.93807795.pdf'],
+  ['impots.gouv.fr — Prendre rendez-vous avec mon service', 'https://www.impots.gouv.fr/particulier/questions/comment-prendre-rendez-vous-avec-mon-service'],
+  ['impots.gouv.fr — Saisir le conciliateur fiscal', 'https://www.impots.gouv.fr/particulier/questions/comment-puis-je-saisir-le-conciliateur-fiscal'],
+  ['impots.gouv.fr — Recours amiable', 'https://www.impots.gouv.fr/particulier/en-cas-de-desaccord-je-fais-un-recours-amiable'],
+];
+---
+<DebtReliefPage slug="conseil-fiscal-qui-peut" c={c} sources={sources} sourcesTitle="Sources" checked="Ordre, CNB et impots.gouv.fr consultés le 2026-11-21">
+  <FrScope />
+</DebtReliefPage>

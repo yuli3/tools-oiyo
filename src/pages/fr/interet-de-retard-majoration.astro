@@ -1,0 +1,35 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import FrPenalty from '../../components/tools/fr/FrPenalty';
+const c = {
+  introTitle: "Ce que coûte un retard de déclaration ou de paiement, et jusqu'à quand contester",
+  intro: "Un impôt payé en retard supporte l'intérêt de retard de 0,20 % par mois (article 1727 du CGI). Un dépôt tardif entraîne une majoration de 10 %, portée à 40 % si la déclaration n'est pas déposée dans les 30 jours d'une mise en demeure et à 80 % en cas d'activité occulte (article 1728). Une insuffisance délibérée est majorée de 40 %, et de 80 % en cas de manœuvres frauduleuses (article 1729). Pour contester un impôt, la réclamation est possible en général jusqu'au 31 décembre de la deuxième année qui suit la mise en recouvrement, le paiement ou l'événement.",
+  formulaTitle: 'Règles utilisées',
+  formulas: [
+    { title: 'Intérêt de retard', body: '0,20 % par mois de retard (CGI art. 1727, BOFiP ACTU-2021-00178).' },
+    { title: 'Dépôt tardif', body: "10 % sans mise en demeure ou dans les 30 jours ; 40 % au-delà ; 80 % pour activité occulte (CGI art. 1728). Pour la déclaration de revenus, l'article 1758 A s'applique à la place : 10 %, ou 20 % après mise en demeure." },
+    { title: 'Insuffisance', body: '40 % manquement délibéré, 80 % manœuvres frauduleuses (CGI art. 1729).' },
+    { title: 'Réclamation', body: '31 décembre de la 2e année suivante ; impôts directs locaux : 31 décembre de l\'année suivante (LPF R*196-1). Réponse de l\'administration en principe sous 6 mois ; en cas de rejet, 2 mois pour saisir le tribunal administratif (R*199-1).' },
+  ],
+  howToTitle: 'Utilisation',
+  steps: ['Choisissez votre situation.', 'Saisissez les droits dus, la date limite et la date de paiement.', "Lisez l'intérêt de retard et la majoration estimés.", "Pour contester, saisissez l'année de la mise en recouvrement et lisez le dernier délai."],
+  faqTitle: 'Questions fréquentes',
+  faqs: [
+    { question: 'Comment sont comptés les mois ?', answer: "L'outil compte les mois entiers écoulés entre la date limite et le paiement. L'avis de l'administration fait foi." },
+    { question: 'Puis-je demander une remise ?', answer: "Une demande gracieuse est possible auprès de votre service des impôts ; elle n'est pas calculée ici." },
+    { question: 'Mes données sont-elles enregistrées ?', answer: 'Les données saisies restent dans votre navigateur et ne sont pas envoyées à un serveur.' },
+  ],
+  disclaimer: 'Estimation à partir du BOFiP, pas un conseil fiscal personnalisé ni la rédaction d\'une réclamation.',
+};
+const sources: [string, string][] = [
+  ["BOFiP — Intérêt de retard 0,20 % (ACTU-2021-00178)", 'https://bofip.impots.gouv.fr/bofip/13078-PGP.html/ACTU-2021-00178'],
+  ['BOFiP — Majorations pour dépôt tardif (BOI-CF-INF-10-20-10)', 'https://bofip.impots.gouv.fr/bofip/2174-PGP.html/identifiant=BOI-CF-INF-10-20-10-20170308'],
+  ['BOFiP — Annexe majorations art. 1729 (BOI-ANNX-000277)', 'https://bofip.impots.gouv.fr/bofip/4344-PGP.html/identifiant=BOI-ANNX-000277-20170308'],
+  ['BOFiP — Majorations impôt sur le revenu, art. 1758 A (BOI-CF-INF-20-10-10)', 'https://bofip.impots.gouv.fr/bofip/4342-PGP.html/identifiant=BOI-CF-INF-20-10-10-20170308'],
+  ['BOFiP — Saisine du tribunal (BOI-CTX-ADM-10-20-20)', 'https://bofip.impots.gouv.fr/bofip/503-PGP.html/identifiant=BOI-CTX-ADM-10-20-20-20161227'],
+  ['BOFiP — Délais de réclamation (BOI-CTX-PREA-10-30)', 'https://bofip.impots.gouv.fr/bofip/597-PGP.html/identifiant=BOI-CTX-PREA-10-30-20260422'],
+];
+---
+<DebtReliefPage slug="interet-de-retard-majoration" c={c} sources={sources} sourcesTitle="Sources" checked="BOFiP consulté le 2026-11-21">
+  <FrPenalty client:load />
+</DebtReliefPage>

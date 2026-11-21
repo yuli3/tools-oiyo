@@ -1,0 +1,33 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import FrTaxCalendar from '../../components/tools/fr/FrTaxCalendar';
+const c = {
+  introTitle: 'Les échéances fiscales de votre entreprise sur une année',
+  intro: "Les indépendants et les sociétés ont des rendez-vous fixes : la déclaration des revenus au printemps, la cotisation foncière des entreprises (CFE) à payer en général au plus tard le 15 décembre, les quatre acomptes d'impôt sur les sociétés les 15 mars, 15 juin, 15 septembre et 15 décembre pour un exercice civil, et pour la TVA au régime simplifié une déclaration annuelle en mai avec deux acomptes en juillet et en décembre. Cet outil liste les échéances qui vous concernent et compte les jours restants. Une échéance tombant un week-end est reportée au jour ouvré suivant.",
+  formulaTitle: 'Règles utilisées',
+  formulas: [
+    { title: 'Déclaration des revenus', body: "La déclaration 2027 des revenus de 2026 débute en avril 2027 ; les dates limites en ligne par département sont publiées chaque printemps (service-public F358)." },
+    { title: 'CFE', body: 'Paiement en général au plus tard le 15 décembre (service-public F23547).' },
+    { title: "Acomptes d'IS", body: '15 mars, 15 juin, 15 septembre et 15 décembre pour un exercice clos le 31 décembre (BOFiP BOI-IS-DECLA-20-10).' },
+    { title: 'TVA', body: "Réel normal : déclaration mensuelle (trimestrielle sous 4 000 € de TVA par an). Réel simplifié : CA12 annuelle en mai, acomptes de 55 % en juillet et 40 % en décembre (service-public F23566)." },
+  ],
+  howToTitle: 'Utilisation',
+  steps: ["Choisissez l'année.", 'Indiquez votre régime de TVA.', "Précisez si vous payez la CFE et si votre société est à l'IS.", 'Reportez les dates dans votre agenda et vérifiez-les dans votre espace professionnel impots.gouv.'],
+  faqTitle: 'Questions fréquentes',
+  faqs: [
+    { question: 'Pourquoi certaines dates ne sont pas affichées au jour près ?', answer: "Les dates exactes de la déclaration annuelle de TVA et des acomptes, comme celles de la déclaration des revenus par département, sont fixées chaque année et figurent dans votre espace impots.gouv." },
+    { question: 'Le régime simplifié de TVA change-t-il ?', answer: "Service-public indique ce régime valable jusqu'au 31 décembre 2026 ; vérifiez les obligations applicables à partir de 2027." },
+    { question: 'Mes données sont-elles enregistrées ?', answer: "Les données saisies restent dans votre navigateur et ne sont pas envoyées à un serveur. Le site utilise des outils de mesure d'audience et de la publicité." },
+  ],
+  disclaimer: "Informations générales issues de service-public.fr et du BOFiP, pas un conseil fiscal personnalisé.",
+};
+const sources: [string, string][] = [
+  ['service-public.fr — Déclaration de revenus (F358)', 'https://www.service-public.fr/particuliers/vosdroits/F358'],
+  ['service-public.fr — Régimes de TVA (F23566)', 'https://www.service-public.fr/professionnels-entreprises/vosdroits/F23566'],
+  ['service-public.fr — CFE (F23547)', 'https://www.service-public.fr/professionnels-entreprises/vosdroits/F23547'],
+  ["BOFiP — Acomptes d'IS (BOI-IS-DECLA-20-10)", 'https://bofip.impots.gouv.fr/bofip/3558-PGP.html/identifiant=BOI-IS-DECLA-20-10-20200610'],
+];
+---
+<DebtReliefPage slug="calendrier-fiscal-entreprise" c={c} sources={sources} sourcesTitle="Sources" checked="service-public.fr et BOFiP consultés le 2026-11-21">
+  <FrTaxCalendar client:load />
+</DebtReliefPage>

@@ -1,0 +1,33 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import FrMicro from '../../components/tools/fr/FrMicro';
+const c = {
+  introTitle: 'Ce qui reste à un micro-entrepreneur après cotisations et impôt',
+  intro: "En micro-entreprise, les cotisations sociales sont un pourcentage du chiffre d'affaires encaissé : 12,3 % pour la vente, 21,2 % pour les prestations de services commerciales ou artisanales, 25,6 % pour les professions libérales non réglementées et 23,2 % pour celles relevant de la CIPAV en 2026. Pour l'impôt sur le revenu, un abattement forfaitaire de 71 %, 50 % ou 34 % est appliqué avant le barème, sauf option pour le versement libératoire de 1 %, 1,7 % ou 2,2 %, ouverte si le revenu fiscal de référence N-2 est inférieur à 29 579 € par part. Cet outil compare les deux et vérifie les seuils 2026 du régime : 203 100 € pour la vente et 83 600 € pour les services.",
+  formulaTitle: 'Règles utilisées',
+  formulas: [
+    { title: 'Seuils 2026', body: "203 100 € (vente, hébergement) et 83 600 € (services, BNC) de chiffre d'affaires HT ; sortie du régime après deux années consécutives de dépassement (service-public F32353)." },
+    { title: 'Cotisations 2026', body: '12,3 % / 21,2 % / 25,6 % / CIPAV 23,2 % du chiffre d\'affaires (service-public F36232).' },
+    { title: 'Impôt', body: "Abattement 71 % / 50 % / 34 %, puis barème ; ou versement libératoire 1 % / 1,7 % / 2,2 % si le RFR N-2 est sous 29 579 € par part (service-public F23267)." },
+    { title: 'Barème', body: "Le barème des revenus 2026 n'est pas encore voté : l'estimation utilise celui des revenus 2025 (0 %, 11 %, 30 %, 41 %, 45 %, service-public F1419), sans plafonnement du quotient familial." },
+  ],
+  howToTitle: 'Utilisation',
+  steps: ['Choisissez votre activité.', "Saisissez le chiffre d'affaires encaissé sur l'année.", 'Indiquez le revenu fiscal de référence N-2, le nombre de parts et les autres revenus du foyer.', 'Comparez le versement libératoire et le barème.'],
+  faqTitle: 'Questions fréquentes',
+  faqs: [
+    { question: 'La CFE est-elle incluse ?', answer: "Non. La CFE, la CSG sur les autres revenus et les crédits d'impôt ne sont pas inclus." },
+    { question: 'Quand opter pour le versement libératoire ?', answer: "L'option se demande auprès de l'Urssaf dans les délais prévus ; les conditions figurent sur la fiche F23267 de service-public." },
+    { question: 'Mes données sont-elles enregistrées ?', answer: 'Les données saisies restent dans votre navigateur et ne sont pas envoyées à un serveur.' },
+  ],
+  disclaimer: "Estimation à partir des fiches service-public.fr, pas un conseil fiscal personnalisé.",
+};
+const sources: [string, string][] = [
+  ['service-public.fr — Seuils du régime micro (F32353)', 'https://www.service-public.fr/professionnels-entreprises/vosdroits/F32353'],
+  ['service-public.fr — Impôt du micro-entrepreneur (F23267)', 'https://www.service-public.fr/professionnels-entreprises/vosdroits/F23267'],
+  ['service-public.fr — Cotisations du micro-entrepreneur (F36232)', 'https://www.service-public.fr/professionnels-entreprises/vosdroits/F36232'],
+  ["service-public.fr — Barème de l'impôt sur le revenu (F1419)", 'https://www.service-public.fr/particuliers/vosdroits/F1419'],
+];
+---
+<DebtReliefPage slug="micro-entrepreneur-cotisations-impot" c={c} sources={sources} sourcesTitle="Sources" checked="service-public.fr consulté le 2026-11-21">
+  <FrMicro client:load />
+</DebtReliefPage>

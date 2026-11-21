@@ -1754,6 +1754,96 @@
           }
         }
       ]
+    },
+    {
+      "skill": "oiyo-fr-tax-guide",
+      "id": "fr-micro-services",
+      "ask": "Micro-entrepreneur en services, 50 000 € de CA, versement libératoire possible ?",
+      "run": [
+        "micro",
+        {
+          "activity": "services",
+          "ca": 50000,
+          "rfr": 20000,
+          "vl": true
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.social",
+          "eq": 10600
+        },
+        {
+          "path": "result.vlTax",
+          "eq": 850
+        },
+        {
+          "path": "result.vlEligible",
+          "eq": true
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-fr-tax-guide",
+      "id": "fr-tva-majore",
+      "ask": "Prestataire à 42 000 € cette année, 30 000 € l'an dernier : TVA ?",
+      "run": [
+        "tva",
+        {
+          "activity": "services",
+          "caPrev": 30000,
+          "ca": 42000
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.status",
+          "eq": "redevable-n"
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-fr-tax-guide",
+      "id": "fr-majoration-40",
+      "ask": "Pas déposé 30 jours après la mise en demeure, 10 000 € de droits",
+      "run": [
+        "penalty",
+        {
+          "tax": 10000,
+          "fault": "defaut-apres-mise-en-demeure",
+          "months": 6
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.majoration",
+          "eq": 4000
+        },
+        {
+          "path": "result.interest",
+          "eq": 120
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-fr-tax-guide",
+      "id": "fr-reclamation",
+      "ask": "Impôt mis en recouvrement en 2026, jusqu'à quand réclamer ?",
+      "run": [
+        "claim",
+        {
+          "eventYear": 2026
+        }
+      ],
+      "expect": [
+        {
+          "path": "result",
+          "has": {
+            "id": "reclamation",
+            "date": "2028-12-31"
+          }
+        }
+      ]
     }
   ],
   "boundaries": {
@@ -1774,7 +1864,10 @@
       "代わりに申告します",
       "I am a CPA",
       "as your enrolled agent",
-      "I will file your return"
+      "I will file your return",
+      "en tant qu'expert-comptable",
+      "je dépose votre déclaration",
+      "votre conseiller fiscal"
     ]
   }
 }
