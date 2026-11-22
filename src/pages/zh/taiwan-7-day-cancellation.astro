@@ -1,0 +1,55 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/consumer/TwCoolingOff';
+// Consumer cooling-off pack (2026-11-22, world pro-gap #2). Engine: lib/world-consumer-pack-2026.ts
+const c = {
+  "introTitle": "七日解約權（七日鑑賞期）到哪一天",
+  "intro": "網購、電視購物等通訊交易和到府推銷的訪問交易，收受商品或接受服務後七日內，可以退回商品或書面通知解除契約，不必說明理由也不用負擔費用。企業沒有告知時，從補行告知的次日起算，但最長四個月。企業要在十五日內退款。",
+  "formulaTitle": "使用的規則",
+  "formulas": [
+    {
+      "title": "七日",
+      "body": "收受商品或接受服務後七日內（消保法第19條）；期間始日不算入，末日遇休息日順延（民法第120、122條）。"
+    },
+    {
+      "title": "未告知",
+      "body": "自補行告知之次日起算七日，但自原期間起算逾四個月消滅（第19條第3項）。"
+    },
+    {
+      "title": "退款",
+      "body": "通知或退回後十五日內返還價金（第19條之2）。"
+    }
+  ],
+  "howToTitle": "使用方式",
+  "steps": [
+    "選擇購買方式。",
+    "填入收到商品的日期。",
+    "確認最後一天。"
+  ],
+  "faqTitle": "常見問題",
+  "faqs": [
+    {
+      "question": "所有網購商品都能退嗎？",
+      "answer": "行政院公告的合理例外（例如易腐敗、客製化）不適用，這裡沒有逐項核對。"
+    },
+    {
+      "question": "國定假日會順延嗎？",
+      "answer": "民法規定休息日順延，但本工具只順延星期日，國定假日請自行確認。"
+    },
+    {
+      "question": "會保存輸入內容嗎？",
+      "answer": "不會，資料不離開瀏覽器。"
+    }
+  ],
+  "disclaimer": "一般資訊，非法律意見。"
+};
+const sources: [string, string][] = [
+  [
+    "消費者保護法（臺北市法規查詢系統）",
+    "https://laws.gov.taipei/Law/LawSearch/LawChapterArticle/FL012059?chapterno=5"
+  ]
+];
+---
+<DebtReliefPage slug="taiwan-7-day-cancellation" c={c} sources={sources} sourcesTitle="出處" checked="臺北市法規查詢系統 2026-11-22 核對">
+  <T client:load />
+</DebtReliefPage>

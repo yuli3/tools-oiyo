@@ -1,0 +1,63 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/consumer/UkCoolingOff';
+// Consumer cooling-off pack (2026-11-22, world pro-gap #2). Engine: lib/world-consumer-pack-2026.ts
+const c = {
+  "introTitle": "Your 14-day right to cancel",
+  "intro": "For goods bought online, by phone or on your doorstep, you can cancel within 14 days after the goods arrive, without giving a reason. For services the 14 days run from the day after the contract is made. If the trader never told you about this right, the period can stretch by up to 12 months.",
+  "formulaTitle": "The rules used",
+  "formulas": [
+    {
+      "title": "Goods",
+      "body": "14 days after the goods (or the last of several items) come into your possession. Regular deliveries: after the first. CCR 2013 reg 30."
+    },
+    {
+      "title": "Services",
+      "body": "14 days after the day the contract is entered into. CCR 2013 reg 30(2)."
+    },
+    {
+      "title": "Information missing",
+      "body": "Up to 12 months longer, or 14 days after you receive the information. CCR 2013 reg 31."
+    }
+  ],
+  "howToTitle": "How to use",
+  "steps": [
+    "Pick goods or a service.",
+    "Enter the delivery or contract date.",
+    "Read the last day to cancel."
+  ],
+  "faqTitle": "FAQ",
+  "faqs": [
+    {
+      "question": "Does this cover shop purchases?",
+      "answer": "No. It covers distance and off-premises contracts. In-store returns depend on the shop's policy or on faulty-goods rights."
+    },
+    {
+      "question": "Do I need a reason?",
+      "answer": "No (reg 29)."
+    },
+    {
+      "question": "Is my input stored?",
+      "answer": "No, it stays in your browser."
+    }
+  ],
+  "disclaimer": "General information, not legal advice."
+};
+const sources: [string, string][] = [
+  [
+    "CCR 2013 reg 29",
+    "https://www.legislation.gov.uk/uksi/2013/3134/regulation/29"
+  ],
+  [
+    "CCR 2013 reg 30",
+    "https://www.legislation.gov.uk/uksi/2013/3134/regulation/30"
+  ],
+  [
+    "CCR 2013 reg 31",
+    "https://www.legislation.gov.uk/uksi/2013/3134/regulation/31"
+  ]
+];
+---
+<DebtReliefPage slug="uk-consumer-cancellation-period" c={c} sources={sources} sourcesTitle="Sources" checked="legislation.gov.uk checked 2026-11-22">
+  <T client:load />
+</DebtReliefPage>

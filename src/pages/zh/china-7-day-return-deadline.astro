@@ -1,0 +1,55 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/consumer/CnCoolingOff';
+// Consumer cooling-off pack (2026-11-22, world pro-gap #2). Engine: lib/world-consumer-pack-2026.ts
+const c = {
+  "introTitle": "七日无理由退货什么时候截止",
+  "intro": "网上、电视、电话、邮购买的商品，自签收次日起七日内可以无理由退货。定作、鲜活易腐、已下载或拆封的数字商品、报纸期刊不适用；拆封影响安全健康、激活后明显贬损、临近保质期的商品，购买时经您确认后也可不适用。商家应在收到退货后七日内退款。",
+  "formulaTitle": "使用的规则",
+  "formulas": [
+    {
+      "title": "期限",
+      "body": "自签收商品的次日开始起算七日（暂行办法第10条）。"
+    },
+    {
+      "title": "不适用",
+      "body": "第6条四类；第7条三类须购买时确认。"
+    },
+    {
+      "title": "退款与运费",
+      "body": "收到退回商品之日起七日内退款；运费一般由消费者承担（第13、18条）。"
+    }
+  ],
+  "howToTitle": "怎么用",
+  "steps": [
+    "选择购买方式。",
+    "填写签收日期和商品类别。",
+    "查看截止日期。"
+  ],
+  "faqTitle": "常见问题",
+  "faqs": [
+    {
+      "question": "质量有问题也只有七天吗？",
+      "answer": "不是。质量问题的退货不受七日限制。"
+    },
+    {
+      "question": "实体店能七天无理由退货吗？",
+      "answer": "法律规定的是网络等远程购物；实体店看商家承诺。"
+    },
+    {
+      "question": "会保存我输入的内容吗？",
+      "answer": "不会，内容不离开浏览器。"
+    }
+  ],
+  "disclaimer": "一般信息，不是法律意见。"
+};
+const sources: [string, string][] = [
+  [
+    "网络购买商品七日无理由退货暂行办法（中国政府网）",
+    "https://www.gov.cn/zhengce/2020-11/03/content_5723721.htm"
+  ]
+];
+---
+<DebtReliefPage slug="china-7-day-return-deadline" c={c} sources={sources} sourcesTitle="来源" checked="中国政府网 2026-11-22 核对">
+  <T client:load />
+</DebtReliefPage>
