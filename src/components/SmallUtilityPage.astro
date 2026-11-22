@@ -19,6 +19,6 @@ const schema={'@context':'https://schema.org','@type':'WebApplication',name:meta
 <slot/>
 <UtilityArticle c={content}/>
 {slug==='pace-calculator' && speedTool && <a class="inline-flex min-h-11 items-center text-primary underline" href={`/${locale}/speed-converter/`}>{speedTool.title[locale]}</a>}
-<RelatedUtilities locale={locale} current={slug} group={isDev?'dev':slug==='anniversary-calculator'?'time':'calc'}/>
+<RelatedUtilities locale={locale} current={slug} group={isDev?'dev':slug==='anniversary-calculator'?'time':slug==='dead-pixel-test'?'screen':'calc'}/>
 </ToolShell><script type="application/ld+json" set:html={JSON.stringify(schema)}/>
 </Layout>

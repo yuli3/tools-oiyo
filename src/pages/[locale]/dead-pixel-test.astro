@@ -1,0 +1,9 @@
+---
+// 모니터 불량화소 테스트 (2026-11-22). 옛 ahoxy.com/monitor 수요(Bing)를 받는 도구. 문구: src/data/small-utilities.ts
+import SmallUtilityPage from '../../components/SmallUtilityPage.astro';
+import Tool from '../../components/tools/DeadPixelTest';
+import {locales,type Locale} from '../../lib/i18n';
+export function getStaticPaths(){return locales.map(locale=>({params:{locale},props:{locale}}));}
+const {locale}=Astro.props as {locale:Locale};
+---
+<SmallUtilityPage slug="dead-pixel-test" locale={locale}><Tool locale={locale} client:load/></SmallUtilityPage>

@@ -36,3 +36,13 @@
 @utility crop-dim {
   box-shadow: 0 0 0 9999px rgb(0 0 0 / 0.4);
 }
+
+/* 모니터 불량화소 테스트 화면색 (2026-11-22, dead-pixel-test). 테스트용 순색이라 테마 토큰이 아니라 고정값이다. */
+@utility dpt-black { background: #000000; }
+@utility dpt-white { background: #ffffff; }
+@utility dpt-red { background: #ff0000; }
+@utility dpt-green { background: #00ff00; }
+@utility dpt-blue { background: #0000ff; }
+@utility dpt-gray { background: #808080; }
+@utility dpt-gradient { background: linear-gradient(90deg, #000000 0%, #ffffff 100%); }
+@utility dpt-checker { background: repeating-conic-gradient(#000000 0% 25%, #ffffff 0% 50%) 0 0 / 2px 2px; }
