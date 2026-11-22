@@ -77,3 +77,10 @@ test("take-home pay questions route to the take-home tools", () => {
   assert.equal(intake({ country: "JP", question: "年収500万の手取りはいくら？" }).matches[0].mcp, "calculate_jp_take_home");
   assert.equal(intake({ country: "ES", question: "¿Cuánto es mi salario neto con 30.000 brutos?" }).matches[0].mcp, "calculate_es_take_home");
 });
+
+test("withholding questions route to the practitioner withholding tool", () => {
+  const r = intake({ country: "JP", question: "海外の個人に使用料を払うときの源泉徴収は？" });
+  assert.equal(r.matches[0].mcp, "check_jp_withholding");
+  assert.equal(r.matches[0].audience, "pro");
+  assert.equal(intake({ country: "US", question: "Do I need NRA withholding when paying a foreign contractor royalties?" }).matches[0].mcp, "check_us_withholding");
+});

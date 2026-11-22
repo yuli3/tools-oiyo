@@ -3163,6 +3163,46 @@
           "eq": 3720
         }
       ]
+    },
+    {
+      "skill": "oiyo-world-withholding-guide",
+      "id": "wht-jp-royalty",
+      "ask": "日本の会社が海外の個人に使用料100万円を払います。源泉徴収はいくら？",
+      "run": [
+        {
+          "country": "JP",
+          "type": "royalty",
+          "amount": 1000000
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.rate",
+          "eq": 20.42
+        },
+        {
+          "path": "result.tax",
+          "eq": 204200
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-world-withholding-guide",
+      "id": "wht-fr-interest-not-covered",
+      "ask": "Quelle retenue à la source sur des intérêts versés à un non-résident en France ?",
+      "run": [
+        {
+          "country": "FR",
+          "type": "interest",
+          "amount": 1000
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.covered",
+          "eq": false
+        }
+      ]
     }
   ],
   "boundaries": {
