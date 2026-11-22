@@ -14,6 +14,7 @@ import {
 } from "../../lib/acquisition-tax-countries";
 import ChoiceChips from "./payroll/ChoiceChips";
 import NumberField from "./payroll/NumberField";
+import CurveShell from "./viz/CurveShell";
 
 // One calculator per country's own law. The Korean rule lives in AcquisitionTaxCalculator (ko/en).
 interface Props {
@@ -47,6 +48,8 @@ function Japan() {
   const r = japanAcquisitionTax({ landValue, landArea, takuchi: takuchi === "yes", buildingValue, floorArea, kind, houseDeduction: deduction, qualifies: qualifies === "yes" });
   const yen = (n: number) => fmt("ja-JP", "JPY", n);
   return (
+    <CurveShell toolId={"acquisition-tax-ja"} lang="ja" currency="JPY" curve={{ title: "土地の評価額による税金の合計", caption: "家屋の条件はそのまま、土地の評価額だけを動かします。", xLabel: "土地の評価額", yLabel: "税金の合計", min: 0, max: 100000000, step: 1000000, current: landValue, f: (v: number) => japanAcquisitionTax({ landValue: v, landArea, takuchi: takuchi === "yes", buildingValue, floorArea, kind, houseDeduction: deduction, qualifies: qualifies === "yes" }).total, formatX: (n: number) => fmt("ja-JP", "JPY", n), formatY: (n: number) => fmt("ja-JP", "JPY", n), onPick: (v: number) => setLandValue(Math.round(v)), marks: [] }}>
+      {() => (
     <>
       <p className="text-sm text-muted-foreground">金額は売買価格ではなく、固定資産課税台帳の評価額（固定資産税の納税通知書・評価証明書に載っている額）を入れます。</p>
       <div className="mt-4 grid gap-4 sm:grid-cols-2">
@@ -98,6 +101,8 @@ function Japan() {
       </div>
       <p className="mt-3 text-sm text-muted-foreground">税率3%・宅地1/2は令和9年3月31日までの取得、土地の登録免許税1.5%は令和11年3月31日まで、住宅用家屋の軽減は令和9年3月31日までの特例です。新築の家屋の登録免許税は法務局の認定価格で計算されます。</p>
     </>
+      )}
+    </CurveShell>
   );
 }
 
@@ -108,6 +113,8 @@ function China() {
   const [localRate, setLocalRate] = useState(3);
   const r = chinaDeedTax(price, area, order, localRate / 100);
   return (
+    <CurveShell toolId={"acquisition-tax-zh"} lang="zh" currency="CNY" curve={{ title: "成交价与契税", caption: "面积、套数和本省税率不变，只改变成交价。", xLabel: "成交价", yLabel: "契税", min: 0, max: 10000000, step: 100000, current: price, f: (v: number) => chinaDeedTax(v, area, order, localRate / 100).tax, formatX: (n: number) => fmt("zh-CN", "CNY", n), formatY: (n: number) => fmt("zh-CN", "CNY", n), onPick: (v: number) => setPrice(Math.round(v)), marks: [] }}>
+      {() => (
     <>
       <div className="grid gap-4 sm:grid-cols-3">
         <NumberField label="成交价（不含增值税）" value={price} onChange={setPrice} suffix="元" step={10_000} />
@@ -132,6 +139,8 @@ function China() {
       </div>
       <p className="mt-3 text-sm text-muted-foreground">本省税率默认3%（多数省份），请按当地规定修改。印花税、登记费等不包括在内。</p>
     </>
+      )}
+    </CurveShell>
   );
 }
 
@@ -143,6 +152,8 @@ function France() {
   const r = franceTransferDuties(price, kind, Number(dept) / 100, primo === "yes");
   const eur = (n: number) => fmt("fr-FR", "EUR", n, 2);
   return (
+    <CurveShell toolId={"acquisition-tax-fr"} lang="fr" currency="EUR" curve={{ title: "Droits de mutation selon le prix", caption: "Même type de bien et même taux départemental, seul le prix change.", xLabel: "Prix", yLabel: "Droits", min: 0, max: 1000000, step: 10000, current: price, f: (v: number) => franceTransferDuties(v, kind, Number(dept) / 100, primo === "yes").total, formatX: (n: number) => fmt("fr-FR", "EUR", n), formatY: (n: number) => fmt("fr-FR", "EUR", n), onPick: (v: number) => setPrice(Math.round(v)), marks: [] }}>
+      {() => (
     <>
       <div className="grid gap-4 sm:grid-cols-2">
         <NumberField label="Prix de vente (hors mobilier)" value={price} onChange={setPrice} suffix="€" step={5_000} />
@@ -192,6 +203,8 @@ function France() {
       </div>
       <p className="mt-3 text-sm text-muted-foreground">Les « frais de notaire » ajoutent les émoluments du notaire, la contribution de sécurité immobilière et les débours, non comptés ici.</p>
     </>
+      )}
+    </CurveShell>
   );
 }
 
@@ -205,6 +218,8 @@ function Spain() {
   const eur = (n: number) => fmt("es-ES", "EUR", n, 2);
   const known = region === "otra" ? null : ES_REGIONS[region];
   return (
+    <CurveShell toolId={"acquisition-tax-es"} lang="es" currency="EUR" curve={{ title: "Impuestos según el precio", caption: "Misma comunidad y tipo de vivienda; solo cambia el precio.", xLabel: "Precio", yLabel: "Impuestos", min: 0, max: 1000000, step: 10000, current: price, f: (v: number) => spainPurchaseTax(v, region, kind, itp / 100, ajd / 100).total, formatX: (n: number) => fmt("es-ES", "EUR", n), formatY: (n: number) => fmt("es-ES", "EUR", n), onPick: (v: number) => setPrice(Math.round(v)), marks: [] }}>
+      {() => (
     <>
       <div className="grid gap-4 sm:grid-cols-2">
         <NumberField label="Precio de compra (o valor de referencia si es mayor)" value={price} onChange={setPrice} suffix="€" step={5_000} />
@@ -251,6 +266,8 @@ function Spain() {
       </div>
       <p className="mt-3 text-sm text-muted-foreground">Tipos generales 2026. No se aplican los tipos reducidos (jóvenes, familia numerosa, VPO); consulta tu comunidad. País Vasco y Navarra tienen régimen foral: usa «Otra».</p>
     </>
+      )}
+    </CurveShell>
   );
 }
 

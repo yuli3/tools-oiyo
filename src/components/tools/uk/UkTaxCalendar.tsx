@@ -4,6 +4,7 @@ import { UK_TAX_AS_OF, UK_TAX_NOTE, ukTaxCalendar } from "../../../lib/uk-tax-pa
 import ChoiceChips from "../payroll/ChoiceChips";
 import DateField from "../payroll/DateField";
 import { track } from "../viz/track";
+import CalendarShell, { forMode } from "../viz/CalendarShell";
 import { Items, useToday } from "../nts/Items";
 
 const TOOL_ID = "uk-self-assessment-deadlines-2026";
@@ -17,7 +18,9 @@ export default function UkTaxCalendar() {
   const upd = (p: Partial<typeof x>) => { setX({ ...x, ...p }); track("tool_calculate", { tool_id: TOOL_ID }, true); };
   const r = ukTaxCalendar({ taxYear: Number(x.year), newToSA: x.newToSA === "y", mtd: x.mtd === "y", companyYearEnd: x.company || undefined, vatPeriodEnd: x.vat || undefined, today });
   return (
-    <div className="space-y-5">
+    <CalendarShell toolId={TOOL_ID} lang="en" events={r.events}>
+      {(mode) => (
+    <>
       <ChoiceChips<string> legend="Tax year" value={x.year} options={years.map((y) => ({ value: String(y), label: `${y}-${String((y + 1) % 100).padStart(2, "0")}` }))} onChange={(v) => upd({ year: v })} />
       <ChoiceChips<YN> legend="First Self Assessment return (or none last year)?" value={x.newToSA} options={[...yn]} onChange={(v) => upd({ newToSA: v })} />
       <ChoiceChips<YN> legend="Signed up to Making Tax Digital for Income Tax?" value={x.mtd} options={[...yn]} onChange={(v) => upd({ mtd: v })} />
@@ -27,7 +30,7 @@ export default function UkTaxCalendar() {
       </div>
       <div className="rounded-md border border-border bg-card px-4 py-4 text-sm" aria-live="polite">
         <ol className="space-y-3">
-          {r.events.map((e) => (
+          {forMode(r.events, mode).map((e) => (
             <li key={e.id}>
               <p className="font-semibold text-foreground"><span className="font-mono">{e.date ?? "Date to check"}</span>{e.daysLeft != null && <span className="ml-2 font-normal text-muted-foreground">{e.daysLeft >= 0 ? `${e.daysLeft} days left` : `${-e.daysLeft} days ago`}</span>}</p>
               <p>{e.label} <span className="text-xs text-muted-foreground">({e.cite})</span></p>
@@ -37,6 +40,8 @@ export default function UkTaxCalendar() {
         <Items items={r.items} />
       </div>
       <p className="text-xs leading-5 text-muted-foreground">{UK_TAX_NOTE} Last checked: {UK_TAX_AS_OF}. What you enter stays in your browser.</p>
-    </div>
+    </>
+      )}
+    </CalendarShell>
   );
 }

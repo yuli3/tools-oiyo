@@ -5,6 +5,7 @@ import Layout from './Layout.astro';
 import UtilityArticle, { type UtilityContent } from './UtilityArticle.astro';
 import { debtReliefTools } from '../data/debt-relief';
 import { utilityJsonLd } from '../lib/utility-jsonld';
+import CountryToolsNav from './CountryToolsNav.astro';
 interface Props { slug: (typeof debtReliefTools)[number]['slug']; c: UtilityContent; sources: [string, string][]; sourcesTitle: string; checked: string }
 const { slug, c, sources, sourcesTitle, checked } = Astro.props;
 const t = debtReliefTools.find((x) => x.slug === slug)!;
@@ -21,6 +22,7 @@ const schema = utilityJsonLd({ name: t.title, description: t.description, url, l
       <ul class="list-disc space-y-2 pl-5 text-sm">{sources.map(([name, href]) => <li><a href={href} class="text-primary underline underline-offset-4" rel="noopener">{name}</a></li>)}</ul>
       <p class="text-xs text-muted-foreground">{checked}</p>
     </section>
+    <CountryToolsNav url={url} lang={t.languageTag} />
   </ToolShell>
   <script type="application/ld+json" set:html={JSON.stringify(schema)} />
 </Layout>

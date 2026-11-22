@@ -21,6 +21,8 @@ interface Props {
   /** 지금부터 움직이기까지 걸릴 날(가정) */
   delay?: number;
   cap?: number;
+  /** 2026-11-22: 문구 덮어쓰기(예: 대만 zh-Hant) */
+  text?: Partial<DT>;
 }
 
 type DT = { head: [string, string, string, string]; over: (n: number) => string; today: string; dueIn: (n: number) => string; yearPlus: string; miss: string; later: (n: number) => string; start: string; ymax: string };
@@ -33,8 +35,9 @@ const DL: Record<VizLang, DT> = {
   es: { head: ["Plazo", "Vence", "Días restantes", "Fuente"], over: (n) => `vencido hace ${n} días`, today: "vence hoy", dueIn: (n) => `quedan ${n} días`, yearPlus: " (más de un año)", miss: " · se pierde si espera tanto", later: (n) => `en ${n} días`, start: "Hoy", ymax: "1 año+" },
 };
 
-export default function DeadlineChart({ title, caption, rows, delay = 0, cap = 365 }: Props) {
-  const t = DL[useVizCtx().lang] ?? DL.ko;
+export default function DeadlineChart({ title, caption, rows, delay = 0, cap = 365, text }: Props) {
+  const base = DL[useVizCtx().lang] ?? DL.ko;
+  const t = text ? { ...base, ...text } : base;
   const dday = (n: number) => (n < 0 ? t.over(-n) : n === 0 ? t.today : t.dueIn(n));
   const scale = Math.max(30, Math.min(cap, Math.max(delay, ...rows.map((r) => r.daysLeft))));
   const pos = (n: number) => (Math.min(Math.max(n, 0), scale) / scale) * 100;
