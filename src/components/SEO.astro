@@ -113,6 +113,7 @@ const alternateSlug = Astro.url.pathname.split('/').filter(Boolean)[1];
     adLoader.async = true;
     adLoader.crossOrigin = 'anonymous';
     adLoader.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=' + googleAdsenseId;
+    adLoader.setAttribute('data-overlays', 'bottom');
     document.head.appendChild(adLoader);
   }
 </script>}
