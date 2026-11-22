@@ -128,6 +128,8 @@ export const debtReliefTools = [
   // 2026-11-22 take-home pay (world audience gap A1)
   { locale: 'en', languageTag: 'en-GB', ogLocale: 'en_GB', slug: "uk-take-home-pay-calculator-2026", title: "UK take-home pay calculator 2026-27 (tax, NI, student loan)", description: "Work out take-home pay for 2026-27: Income Tax for England, Wales, NI or Scotland, employee National Insurance at 8% and 2%, and student loan Plans 1, 2, 4, 5 and postgraduate.", jurisdiction: "🇬🇧 United Kingdom · HMRC rates and thresholds 2026 to 2027" },
   { locale: 'en', languageTag: 'en-US', ogLocale: 'en_US', slug: "us-take-home-pay-calculator-2026", title: "US take-home pay calculator 2026 (federal tax and FICA)", description: "Estimate 2026 take-home pay: federal income tax with the standard deduction, Social Security 6.2% up to $184,500, Medicare 1.45% and 0.9% Additional Medicare over $200,000. No state tax.", jurisdiction: "🇺🇸 United States · federal income tax and FICA 2026" },
+  // 2026-11-22 withholding on payments to non-residents (world audience gap P1)
+  { locale: 'en', languageTag: 'en', ogLocale: 'en_US', slug: "withholding-tax-non-resident-payments", title: "Withholding tax on payments to non-residents (JP, US, FR, ES, TW, DE)", description: "Domestic withholding rates on royalties, services, interest, dividends, salary and director's fees paid abroad from Japan, the US, France, Spain, Taiwan and Germany, from each tax authority's page. Treaty rates not applied.", jurisdiction: "🌐 Japan · US · France · Spain · Taiwan · Germany (domestic rates)" },
 ] as const;
 
 export const debtReliefForLocale = (locale: Locale) => debtReliefTools.filter((t) => t.locale === locale);

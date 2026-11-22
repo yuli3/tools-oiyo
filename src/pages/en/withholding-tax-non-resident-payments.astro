@@ -1,0 +1,91 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/takehome/WithholdingCheck';
+// Withholding on payments to non-residents (2026-11-22, world audience gap P1). Engine: lib/world-withholding-2026.ts
+const c = {
+  "introTitle": "How much tax do you withhold when paying someone abroad?",
+  "intro": "When a business pays royalties, service fees, interest or dividends to a non-resident, many countries make the payer withhold tax at source. This tool gives the domestic rate in Japan, the US, France, Spain, Taiwan and Germany, from each tax authority's own page. A tax treaty can lower the rate; treaty rates are not applied here.",
+  "formulaTitle": "Rates used (domestic, before treaties)",
+  "formulas": [
+    {
+      "title": "Japan",
+      "body": "Royalties, personal-service fees, salary, rent 20.42%; interest 15.315%; dividends 20.42% (listed shares 15.315%). Rates include the reconstruction surtax."
+    },
+    {
+      "title": "United States",
+      "body": "30% on US-source FDAP income that is not effectively connected (interest, dividends, royalties, rent). Wages use graduated rates and are not computed."
+    },
+    {
+      "title": "France",
+      "body": "Article 182 B: royalties and services used in France at the normal corporate tax rate (25% stated for 2024); 75% for non-cooperative states."
+    },
+    {
+      "title": "Spain",
+      "body": "IRNR: general 24% (19% for EU, Iceland and Norway residents); interest and dividends 19%."
+    },
+    {
+      "title": "Taiwan",
+      "body": "Non-resident individuals: royalties, professional services, interest, rent 20%; dividends 21%; salary 18% (6% at or below 1.5 times the basic wage)."
+    },
+    {
+      "title": "Germany",
+      "body": "§ 50a EStG: licences and rights 15%; supervisory board fees 30%."
+    }
+  ],
+  "howToTitle": "How to use it",
+  "steps": [
+    "Pick the payer's country and the type of payment.",
+    "Enter the amount paid.",
+    "Answer the extra question if one appears (for example EU residence in Spain)."
+  ],
+  "faqTitle": "FAQ",
+  "faqs": [
+    {
+      "question": "Why is my treaty rate lower?",
+      "answer": "Treaties often cut the rate, usually with forms and a residence certificate. This tool shows only the domestic rate."
+    },
+    {
+      "question": "Why is the UK, Singapore or China missing?",
+      "answer": "We could not confirm their rates from the official pages we read, so they are not computed yet."
+    },
+    {
+      "question": "Is my data saved?",
+      "answer": "No, it stays in your browser."
+    }
+  ],
+  "disclaimer": "General information only, not tax advice. Check with the tax authority or a tax professional before you pay."
+};
+const sources: [string, string][] = [
+  [
+    "NTA — No.2884 非居住者等に対する源泉徴収のしくみ",
+    "https://www.nta.go.jp/taxes/shiraberu/taxanswer/gensen/2884.htm"
+  ],
+  [
+    "IRS — Withholding on specific income",
+    "https://www.irs.gov/individuals/international-taxpayers/withholding-on-specific-income"
+  ],
+  [
+    "IRS — FDAP income",
+    "https://www.irs.gov/individuals/international-taxpayers/fixed-determinable-annual-periodical-fdap-income"
+  ],
+  [
+    "BOFiP — BOI-IR-DOMIC-10-20-20-50 (art. 182 B CGI)",
+    "https://bofip.impots.gouv.fr/bofip/2280-PGP.html"
+  ],
+  [
+    "AEAT — Tipos de gravamen IRNR sin establecimiento permanente",
+    "https://sede.agenciatributaria.gob.es/Sede/no-residentes/irnr-sin-establecimiento-permanente/tipos-gravamen-irnr-sin-establecimiento-permanente.html"
+  ],
+  [
+    "財政部 — 外僑綜合所得稅 扣繳率",
+    "https://www.etax.nat.gov.tw/etwmain/alien-tax-service/alien-individual-income-tax/vV8Z3o9"
+  ],
+  [
+    "§ 50a EStG",
+    "https://www.gesetze-im-internet.de/estg/__50a.html"
+  ]
+];
+---
+<DebtReliefPage slug="withholding-tax-non-resident-payments" c={c} sources={sources} sourcesTitle="Sources" checked="Tax authority pages checked 2026-11-22">
+  <T client:load />
+</DebtReliefPage>
