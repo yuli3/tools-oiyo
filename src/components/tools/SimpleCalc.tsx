@@ -9,7 +9,7 @@ import type { Locale } from '../../lib/i18n';
 import type { SimpleTool } from '../../data/simple-calculators';
 import { SIMPLE_UI } from '../../data/simple-calculators';
 import { splitBill, cardInstallment, type InstallmentMethod } from '../../lib/bill-split';
-import { pressKey, initialCalc, koreanUnits, parseAmount, discount, daysBetween, todayIso, type CalcState } from '../../lib/simple-calc';
+import { pressKey, initialCalc, koreanUnits, parseAmount, discount, daysBetween, todayIso, ageOn, zodiacIndex, addTime, depositInterest, convertArea, type CalcState } from '../../lib/simple-calc';
 import { convertViaKrw, validateFeed } from '../../lib/fx-feed.mjs';
 
 const INTL: Record<Locale, string> = { ko: 'ko-KR', en: 'en-US', ja: 'ja-JP', zh: 'zh-CN', fr: 'fr-FR', es: 'es-ES' };
@@ -328,6 +328,142 @@ function Installment({ locale }: { locale: Locale }) {
   );
 }
 
+// ── 2차(2026-11-22): 나이·몇 시간 뒤·예금 이자·넓이 ─────────────
+/** 예금 이자 세율: 한국 15.4%(소득세 14% + 지방세 1.4%), 일본 20.315%, 중국 0%(2008년부터 예금 이자 개인소득세 면제). 나머지는 세전. */
+const DEPOSIT_TAX: Record<Locale, number | null> = { ko: 0.154, ja: 0.20315, zh: 0, en: null, fr: null, es: null };
+const DEPOSIT_RATE: Record<Locale, string> = { ko: '3', ja: '0.4', zh: '1.5', en: '4', fr: '2.5', es: '2' };
+const AREA_PAIRS: Record<Locale, [string, string]> = { ko: ['pyeong', 'm2'], ja: ['pyeong', 'm2'], zh: ['m2', 'ft2'], en: ['ft2', 'm2'], fr: ['m2', 'ft2'], es: ['m2', 'ft2'] };
+interface W2 {
+  birth: string; age: (n: number) => string; ageSub: (days: number, zodiac: string) => string; ageToday: string; zodiac: string[] | null; pickBirth: string;
+  start: string; hoursQ: string; hoursUnit: (n: number) => string; plusMin: string; minUnit: (n: number) => string; at: (time: string, day: number) => string;
+  deposit: string; ratePct: string; term: string; termUnit: (n: number) => string; interestMain: (v: string) => string; interestSub: (gross: string, tax: string, total: string, taxPct: string | null) => string;
+  areaValue: string; unit: Record<string, string>; areaMain: (a: string, b: string) => string; reverse: string;
+}
+const ZK = ['쥐', '소', '호랑이', '토끼', '용', '뱀', '말', '양', '원숭이', '닭', '개', '돼지'];
+const ZJ = ['子（ねずみ）', '丑（うし）', '寅（とら）', '卯（うさぎ）', '辰（たつ）', '巳（へび）', '午（うま）', '未（ひつじ）', '申（さる）', '酉（とり）', '戌（いぬ）', '亥（いのしし）'];
+const ZC = ['鼠', '牛', '虎', '兔', '龙', '蛇', '马', '羊', '猴', '鸡', '狗', '猪'];
+const W2_: Record<Locale, W2> = {
+  ko: {
+    birth: '태어난 날', age: (n) => `만 ${n}세예요.`, ageSub: (d, z) => `${z}띠예요. 다음 생일까지 ${d}일 남았어요. (띠는 양력 연도 기준, 설 전에 태어났으면 앞 해 띠예요)`, ageToday: '오늘이 생신이에요. 축하드려요!', zodiac: ZK, pickBirth: '태어난 날을 고르면 만 나이를 알려 드려요.',
+    start: '시작 시각', hoursQ: '몇 시간 뒤?', hoursUnit: (n) => `${n}시간`, plusMin: '분 더하기', minUnit: (n) => `${n}분`, at: (t, d) => `${d === 0 ? '오늘' : d === 1 ? '내일' : `${d}일 뒤`} ${t}이에요.`,
+    deposit: '맡길 돈', ratePct: '연 이자율(%)', term: '기간', termUnit: (n) => (n % 12 === 0 ? `${n / 12}년` : `${n}개월`), interestMain: (v) => `만기에 이자 ${v}을 받아요.`, interestSub: (g, t, tot, p) => `세금 ${p} ${t}을 뗀 금액이에요(세전 ${g}). 만기에 모두 ${tot}을 받아요. 단리 기준이에요.`,
+    areaValue: '넓이', unit: { pyeong: '평', m2: '㎡', ft2: '제곱피트', acre: '에이커' }, areaMain: (a, b) => `${a}는 ${b}예요.`, reverse: '거꾸로 바꾸기',
+  },
+  en: {
+    birth: 'Date of birth', age: (n) => `${n} years old.`, ageSub: (d) => `${d} days until the next birthday.`, ageToday: 'Today is the birthday. Happy birthday!', zodiac: null, pickBirth: 'Pick a date of birth to see the age.',
+    start: 'Start time', hoursQ: 'How many hours later?', hoursUnit: (n) => `${n} hours`, plusMin: 'Add minutes', minUnit: (n) => `${n} min`, at: (t, d) => `${d === 0 ? 'Today' : d === 1 ? 'Tomorrow' : `In ${d} days`} at ${t}.`,
+    deposit: 'Deposit', ratePct: 'Annual rate (%)', term: 'Term', termUnit: (n) => (n % 12 === 0 ? `${n / 12} yr` : `${n} months`), interestMain: (v) => `You earn ${v} in interest.`, interestSub: (g, t, tot) => `Total at maturity: ${tot}. Simple interest, before tax.`,
+    areaValue: 'Area', unit: { pyeong: 'pyeong', m2: 'm²', ft2: 'sq ft', acre: 'acres' }, areaMain: (a, b) => `${a} is ${b}.`, reverse: 'Convert the other way',
+  },
+  ja: {
+    birth: '生年月日', age: (n) => `満${n}歳です。`, ageSub: (d, z) => `${z}年生まれです。次の誕生日まであと${d}日です。`, ageToday: '今日がお誕生日です。おめでとうございます！', zodiac: ZJ, pickBirth: '生年月日を選ぶと満年齢をお知らせします。',
+    start: '開始時刻', hoursQ: '何時間後？', hoursUnit: (n) => `${n}時間`, plusMin: '分を足す', minUnit: (n) => `${n}分`, at: (t, d) => `${d === 0 ? '今日' : d === 1 ? '明日' : `${d}日後`}の${t}です。`,
+    deposit: '預ける金額', ratePct: '年利（%）', term: '期間', termUnit: (n) => (n % 12 === 0 ? `${n / 12}年` : `${n}か月`), interestMain: (v) => `満期の利息は${v}です。`, interestSub: (g, t, tot, p) => `税金${p}（${t}）を引いた額です（税引前${g}）。満期に合計${tot}を受け取ります。単利で計算しています。`,
+    areaValue: '面積', unit: { pyeong: '坪', m2: '㎡', ft2: '平方フィート', acre: 'エーカー' }, areaMain: (a, b) => `${a}は${b}です。`, reverse: '逆に変換',
+  },
+  zh: {
+    birth: '出生日期', age: (n) => `${n}周岁。`, ageSub: (d, z) => `属${z}（按公历年份估算，春节前出生属上一年）。距离下次生日还有 ${d} 天。`, ageToday: '今天是生日，生日快乐！', zodiac: ZC, pickBirth: '选择出生日期后显示周岁。',
+    start: '开始时间', hoursQ: '几小时后？', hoursUnit: (n) => `${n}小时`, plusMin: '再加几分钟', minUnit: (n) => `${n}分`, at: (t, d) => `${d === 0 ? '今天' : d === 1 ? '明天' : `${d}天后`} ${t}。`,
+    deposit: '存款金额', ratePct: '年利率（%）', term: '期限', termUnit: (n) => (n % 12 === 0 ? `${n / 12}年` : `${n}个月`), interestMain: (v) => `到期利息 ${v}。`, interestSub: (g, t, tot) => `到期本息合计 ${tot}。按单利计算，存款利息目前免征个人所得税。`,
+    areaValue: '面积', unit: { pyeong: '坪', m2: '平方米', ft2: '平方英尺', acre: '英亩' }, areaMain: (a, b) => `${a} 等于 ${b}。`, reverse: '反向换算',
+  },
+  fr: {
+    birth: 'Date de naissance', age: (n) => `${n} ans.`, ageSub: (d) => `Prochain anniversaire dans ${d} jours.`, ageToday: 'C’est l’anniversaire aujourd’hui. Bon anniversaire !', zodiac: null, pickBirth: 'Choisissez la date de naissance pour voir l’âge.',
+    start: 'Heure de départ', hoursQ: 'Dans combien d’heures ?', hoursUnit: (n) => `${n} h`, plusMin: 'Ajouter des minutes', minUnit: (n) => `${n} min`, at: (t, d) => `${d === 0 ? 'Aujourd’hui' : d === 1 ? 'Demain' : `Dans ${d} jours`} à ${t}.`,
+    deposit: 'Montant placé', ratePct: 'Taux annuel (%)', term: 'Durée', termUnit: (n) => (n % 12 === 0 ? `${n / 12} an${n > 12 ? 's' : ''}` : `${n} mois`), interestMain: (v) => `Vous touchez ${v} d’intérêts.`, interestSub: (g, t, tot) => `Total à l’échéance : ${tot}. Intérêts simples, avant impôts.`,
+    areaValue: 'Surface', unit: { pyeong: 'pyeong', m2: 'm²', ft2: 'pieds carrés', acre: 'acres' }, areaMain: (a, b) => `${a} = ${b}.`, reverse: 'Convertir dans l’autre sens',
+  },
+  es: {
+    birth: 'Fecha de nacimiento', age: (n) => `${n} años.`, ageSub: (d) => `Faltan ${d} días para el próximo cumpleaños.`, ageToday: 'Hoy es el cumpleaños. ¡Felicidades!', zodiac: null, pickBirth: 'Elige la fecha de nacimiento para ver la edad.',
+    start: 'Hora de inicio', hoursQ: '¿Dentro de cuántas horas?', hoursUnit: (n) => `${n} h`, plusMin: 'Sumar minutos', minUnit: (n) => `${n} min`, at: (t, d) => `${d === 0 ? 'Hoy' : d === 1 ? 'Mañana' : `Dentro de ${d} días`} a las ${t}.`,
+    deposit: 'Importe', ratePct: 'Tipo anual (%)', term: 'Plazo', termUnit: (n) => (n % 12 === 0 ? `${n / 12} año${n > 12 ? 's' : ''}` : `${n} meses`), interestMain: (v) => `Recibes ${v} de intereses.`, interestSub: (g, t, tot) => `Total al vencimiento: ${tot}. Interés simple, antes de impuestos.`,
+    areaValue: 'Superficie', unit: { pyeong: 'pyeong', m2: 'm²', ft2: 'pies cuadrados', acre: 'acres' }, areaMain: (a, b) => `${a} = ${b}.`, reverse: 'Convertir al revés',
+  },
+};
+
+function Age({ locale }: { locale: Locale }) {
+  const w = W2_[locale];
+  const [birth, setBirth] = useState('');
+  const [today, setToday] = useState('');
+  useEffect(() => { setToday(todayIso()); }, []);
+  const r = birth && today ? ageOn(birth, today) : null;
+  const z = r && w.zodiac ? w.zodiac[zodiacIndex(r.birthYear)] : '';
+  const main = r ? w.age(r.age) : w.pickBirth;
+  const sub = r ? (r.toNext === 0 ? w.ageToday : w.ageSub(r.toNext, z)) : undefined;
+  return (
+    <div className="space-y-6">
+      <div className="space-y-2">
+        <label htmlFor="sc-birth" className={labelCls}>{w.birth}</label>
+        <input id="sc-birth" type="date" className={inputCls} min="1900-01-01" max={today || undefined} value={birth} onChange={(e) => setBirth(e.target.value)} />
+      </div>
+      <Answer locale={locale} main={main} sub={sub} />
+    </div>
+  );
+}
+
+function TimeAfter({ locale }: { locale: Locale }) {
+  const w = W2_[locale];
+  const [start, setStart] = useState('');
+  const [hours, setHours] = useState(8);
+  const [mins, setMins] = useState(0);
+  useEffect(() => { const d = new Date(); setStart(`${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`); }, []);
+  const r = start ? addTime(start, hours, mins) : null;
+  const time = r ? new Intl.DateTimeFormat(INTL[locale], { hour: 'numeric', minute: '2-digit', timeZone: 'UTC' }).format(new Date(Date.UTC(2026, 0, 1, r.hour, r.minute))) : '';
+  return (
+    <div className="space-y-6">
+      <div className="space-y-2">
+        <label htmlFor="sc-start" className={labelCls}>{w.start}</label>
+        <input id="sc-start" type="time" className={inputCls} value={start} onChange={(e) => setStart(e.target.value)} />
+      </div>
+      <Chips label={w.hoursQ} options={[1, 2, 4, 6, 8, 12]} value={hours} onChange={setHours} show={w.hoursUnit} />
+      <Chips label={w.plusMin} options={[0, 10, 15, 30, 45]} value={mins} onChange={setMins} show={w.minUnit} />
+      <Answer locale={locale} main={r ? w.at(time, r.dayOffset) : W_[locale].enter} />
+    </div>
+  );
+}
+
+function Interest({ locale }: { locale: Locale }) {
+  const w = W2_[locale]; const cur = HOME[locale]; const money = useMoney(locale);
+  const [amount, setAmount] = useState('');
+  const [rate, setRate] = useState(DEPOSIT_RATE[locale]);
+  const [months, setMonths] = useState(12);
+  const taxRate = DEPOSIT_TAX[locale];
+  const p = parseAmount(amount.replace(/,/g, ''));
+  const r = depositInterest(p, parseAmount(rate.replace(',', '.')), months, taxRate ?? 0);
+  const pct = taxRate ? `${new Intl.NumberFormat(INTL[locale], { maximumFractionDigits: 3 }).format(taxRate * 100)}%` : null;
+  return (
+    <div className="space-y-6">
+      <AmountInput locale={locale} id="sc-dep" label={w.deposit} value={amount} onChange={setAmount} suffix={locale === 'ko' ? '원' : cur} />
+      <div className="space-y-2">
+        <label htmlFor="sc-rate" className={labelCls}>{w.ratePct}</label>
+        <input id="sc-rate" className={inputCls} type="text" inputMode="decimal" autoComplete="off" value={rate} onChange={(e) => setRate(e.target.value.replace(/[^\d.,]/g, '').slice(0, 6))} />
+      </div>
+      <Chips label={w.term} options={[6, 12, 24, 36]} value={months} onChange={setMonths} show={w.termUnit} />
+      <Answer locale={locale} main={p > 0 ? w.interestMain(money(r.net, cur)) : W_[locale].enter} sub={p > 0 ? w.interestSub(money(r.gross, cur), money(r.tax, cur), money(r.total, cur), pct) : undefined} />
+    </div>
+  );
+}
+
+function Area({ locale }: { locale: Locale }) {
+  const w = W2_[locale];
+  const [a, b] = AREA_PAIRS[locale];
+  const [value, setValue] = useState('');
+  const [rev, setRev] = useState(false);
+  const from = rev ? b : a; const to = rev ? a : b;
+  const v = parseAmount(value.replace(/,/g, ''));
+  const out = convertArea(v, from, to);
+  const nf = new Intl.NumberFormat(INTL[locale], { maximumFractionDigits: 2 });
+  const show = (n: number, u: string) => `${nf.format(n)}${locale === 'ko' || locale === 'ja' || locale === 'zh' ? '' : ' '}${w.unit[u]}`;
+  const main = v > 0 ? (locale === 'ko' ? `${josa(show(v, from), '은', '는')} ${josa(show(out, to), '이에요', '예요')}.` : w.areaMain(show(v, from), show(out, to))) : W_[locale].enter;
+  return (
+    <div className="space-y-6">
+      <AmountInput locale={locale} id="sc-area" label={w.areaValue} value={value} onChange={setValue} suffix={w.unit[from]} />
+      <button type="button" onClick={() => setRev((x) => !x)} className={`${bigBtn} ${btnOff} w-full text-lg`}>⇅ {w.reverse}: {w.unit[to]} → {w.unit[from]}</button>
+      <Answer locale={locale} main={main} />
+    </div>
+  );
+}
+
 const KEYS = ['C', '⌫', '%', '÷', '7', '8', '9', '×', '4', '5', '6', '-', '1', '2', '3', '+', '0', '00', '.', '='];
 function DeskCalculator({ locale }: { locale: Locale }) {
   const w = W_[locale];
@@ -382,6 +518,10 @@ export default function SimpleCalc({ tool, locale }: { tool: SimpleTool; locale:
     if (tool === 'exchange-rate') return <ExchangeRate locale={locale} />;
     if (tool === 'discount') return <Discount locale={locale} />;
     if (tool === 'days-left') return <DaysLeft locale={locale} />;
+    if (tool === 'age') return <Age locale={locale} />;
+    if (tool === 'time-after') return <TimeAfter locale={locale} />;
+    if (tool === 'interest') return <Interest locale={locale} />;
+    if (tool === 'area') return <Area locale={locale} />;
     return <Installment locale={locale} />;
   }, [tool, locale]);
   return <div data-simple-calc={tool}>{body}</div>;
