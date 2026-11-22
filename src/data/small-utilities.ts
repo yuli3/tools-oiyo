@@ -1530,5 +1530,295 @@ export const smallUtilities:Record<string,Record<Locale,{meta:{title:string;desc
         "disclaimer": "Esta herramienta solo colorea la pantalla para revisarla a simple vista; no diagnostica el hardware. Para cambios o reparaciones sigue las normas del vendedor y del fabricante."
       }
     }
+  },
+  "mouse-test": {
+    "ko": {
+      "meta": {
+        "title": "마우스 테스트 — 클릭·더블클릭 불량(채터링)·휠·CPS 확인",
+        "description": "왼쪽·오른쪽·휠·사이드 버튼이 제대로 눌리는지, 한 번 눌렀는데 두 번 들어가는 더블클릭 불량(채터링)이 있는지, 휠 위아래와 초당 클릭 수(CPS)까지 브라우저에서 바로 확인해요."
+      },
+      "content": {
+        "introTitle": "마우스 테스트란?",
+        "intro": "마우스 버튼 다섯 개(왼쪽·휠 클릭·오른쪽·뒤로·앞으로)와 휠이 제대로 인식되는지 확인하는 도구예요. 오래 쓴 마우스에서 흔한 '한 번 눌렀는데 더블클릭이 되는' 고장(스위치 채터링)도 잡아내요.",
+        "formulaTitle": "무엇을 보나요",
+        "formulas": [
+          {
+            "title": "버튼 인식",
+            "body": "누르는 동안 해당 칸이 켜지고 횟수가 올라가요. 안 켜지는 버튼은 인식이 안 되는 거예요."
+          },
+          {
+            "title": "더블클릭 불량(채터링)",
+            "body": "같은 버튼을 뗀 뒤 80ms 안에 다시 눌림이 들어오면 의심 신호로 세요. 사람이 일부러 빠르게 눌러도 보통 이보다 길어요."
+          },
+          {
+            "title": "휠·CPS",
+            "body": "휠을 위아래로 굴린 횟수와 최근 1초 동안 왼쪽 버튼을 누른 횟수(CPS)를 보여 줘요."
+          }
+        ],
+        "howToTitle": "사용 방법",
+        "steps": [
+          "점선 영역 안에 마우스를 올려요.",
+          "왼쪽·오른쪽·휠·사이드 버튼을 하나씩 천천히 10번씩 눌러 봐요.",
+          "'의심' 숫자가 늘어나는 버튼이 있는지 봐요.",
+          "휠을 위아래로 굴려 한 칸씩 잘 세는지 확인해요."
+        ],
+        "faqTitle": "자주 묻는 질문",
+        "faqs": [
+          {
+            "question": "의심 신호가 한두 번 나왔어요. 고장인가요?",
+            "answer": "천천히 한 번씩 눌렀는데도 같은 버튼에서 계속 나오면 채터링일 가능성이 커요. 빠르게 연타하다 한두 번 나온 것은 정상일 수 있어요."
+          },
+          {
+            "question": "사이드 버튼이 안 잡혀요.",
+            "answer": "일부 브라우저나 마우스 소프트웨어가 뒤로·앞으로 버튼을 가로채요. 마우스 프로그램 설정을 확인하세요."
+          },
+          {
+            "question": "휴대폰에서도 되나요?",
+            "answer": "터치는 왼쪽 버튼으로 세서 CPS 측정은 돼요. 버튼·휠 테스트는 마우스를 연결해야 해요."
+          }
+        ],
+        "disclaimer": "이 도구는 브라우저가 받은 입력만 보여 줘요. 하드웨어를 진단하지 않으니 수리·교환은 제조사와 판매처 기준을 따르세요."
+      }
+    },
+    "en": {
+      "meta": {
+        "title": "Mouse Test — Check Clicks, Double-Click Fault, Wheel & CPS",
+        "description": "Check that left, right, wheel and side buttons register, catch the double-click fault (switch chattering) where one press counts twice, and see wheel scrolls and clicks per second, right in the browser."
+      },
+      "content": {
+        "introTitle": "What is the mouse test?",
+        "intro": "It checks that all five mouse buttons (left, wheel click, right, back, forward) and the wheel register. It also catches the common fault on worn mice where a single press becomes a double click (switch chattering).",
+        "formulaTitle": "What it checks",
+        "formulas": [
+          {
+            "title": "Button input",
+            "body": "A box lights up while a button is held and its count goes up. A box that never lights means that button is not registering."
+          },
+          {
+            "title": "Double-click fault",
+            "body": "A new press on the same button within 80 ms of releasing it counts as a suspect signal. Deliberate fast clicks are usually slower than that."
+          },
+          {
+            "title": "Wheel and CPS",
+            "body": "Counts wheel steps up and down and how many left clicks you made in the last second (CPS)."
+          }
+        ],
+        "howToTitle": "How to use it",
+        "steps": [
+          "Move the pointer into the dashed area.",
+          "Press each button slowly about ten times.",
+          "Watch whether the Suspect count rises on any button.",
+          "Roll the wheel up and down and check each step is counted."
+        ],
+        "faqTitle": "FAQ",
+        "faqs": [
+          {
+            "question": "I got one or two suspect signals. Is it broken?",
+            "answer": "If it keeps happening on the same button while you click slowly, the switch is probably chattering. One or two during fast clicking can be normal."
+          },
+          {
+            "question": "My side buttons do not register.",
+            "answer": "Some browsers or mouse apps take over back and forward. Check your mouse software settings."
+          },
+          {
+            "question": "Does it work on a phone?",
+            "answer": "Taps count as the left button, so CPS works. Button and wheel tests need a mouse."
+          }
+        ],
+        "disclaimer": "This tool only shows the input your browser receives. It does not diagnose hardware; follow the maker's and seller's rules for repairs or returns."
+      }
+    },
+    "ja": {
+      "meta": {
+        "title": "マウステスト — クリック・チャタリング・ホイール・CPSを確認",
+        "description": "左・右・ホイール・サイドボタンが反応するか、1回押したのに2回入るチャタリングがないか、ホイールの上下と1秒あたりのクリック数(CPS)までブラウザですぐ確認できます。"
+      },
+      "content": {
+        "introTitle": "マウステストとは？",
+        "intro": "マウスの5つのボタン(左・ホイールクリック・右・戻る・進む)とホイールが正しく認識されるかを確かめるツールです。使い込んだマウスに多い「1回押したのにダブルクリックになる」故障(チャタリング)も見つけます。",
+        "formulaTitle": "確認できること",
+        "formulas": [
+          {
+            "title": "ボタンの認識",
+            "body": "押している間そのボタンが点灯し、回数が増えます。点灯しないボタンは認識されていません。"
+          },
+          {
+            "title": "チャタリング",
+            "body": "同じボタンを離してから80ms以内に再び押された場合を疑いとして数えます。意図的な速いクリックはふつうこれより長い間隔です。"
+          },
+          {
+            "title": "ホイール・CPS",
+            "body": "ホイールの上下の回数と、直近1秒の左クリック数(CPS)を表示します。"
+          }
+        ],
+        "howToTitle": "使い方",
+        "steps": [
+          "点線のエリアにポインターを置きます。",
+          "各ボタンをゆっくり10回ずつ押します。",
+          "「疑い」の数が増えるボタンがないか見ます。",
+          "ホイールを上下に回し、1段ずつ数えられるか確かめます。"
+        ],
+        "faqTitle": "よくある質問",
+        "faqs": [
+          {
+            "question": "疑いが1〜2回出ました。故障ですか？",
+            "answer": "ゆっくり押しても同じボタンで続くならチャタリングの可能性が高いです。速い連打で1〜2回出るのは正常なこともあります。"
+          },
+          {
+            "question": "サイドボタンが反応しません。",
+            "answer": "ブラウザやマウスのソフトが戻る・進むを横取りすることがあります。マウスソフトの設定を確認してください。"
+          },
+          {
+            "question": "スマホでも使えますか？",
+            "answer": "タップは左ボタンとして数えるのでCPSは測れます。ボタンとホイールのテストにはマウスが必要です。"
+          }
+        ],
+        "disclaimer": "このツールはブラウザが受け取った入力を表示するだけで、ハードウェアを診断しません。修理・交換はメーカーと販売店の基準に従ってください。"
+      }
+    },
+    "zh": {
+      "meta": {
+        "title": "鼠标测试 — 检查按键、双击故障、滚轮和 CPS",
+        "description": "检查左键、右键、滚轮和侧键是否正常响应，找出按一下却变成双击的故障(微动抖动)，并查看滚轮上下次数和每秒点击数(CPS)，在浏览器里直接完成。"
+      },
+      "content": {
+        "introTitle": "什么是鼠标测试？",
+        "intro": "用来检查鼠标五个按键(左键、滚轮点击、右键、后退、前进)和滚轮是否被正确识别，也能发现旧鼠标常见的“按一下变双击”故障(微动抖动)。",
+        "formulaTitle": "能检查什么",
+        "formulas": [
+          {
+            "title": "按键识别",
+            "body": "按住时对应格子会亮起并计数。始终不亮的按键说明没有被识别。"
+          },
+          {
+            "title": "双击故障",
+            "body": "同一按键松开后 80 毫秒内再次按下，计为可疑信号。人刻意快速连点的间隔通常比这更长。"
+          },
+          {
+            "title": "滚轮和 CPS",
+            "body": "显示滚轮上下滚动次数，以及最近 1 秒内左键点击次数(CPS)。"
+          }
+        ],
+        "howToTitle": "使用方法",
+        "steps": [
+          "把指针移到虚线区域内。",
+          "每个按键慢慢按十次左右。",
+          "看是否有按键的“可疑”次数在增加。",
+          "上下滚动滚轮，确认每一格都被计数。"
+        ],
+        "faqTitle": "常见问题",
+        "faqs": [
+          {
+            "question": "出现了一两次可疑信号，是坏了吗？",
+            "answer": "如果慢慢按也在同一按键上反复出现，很可能是微动抖动。快速连点时偶尔出现一两次可能是正常的。"
+          },
+          {
+            "question": "侧键没有反应。",
+            "answer": "有些浏览器或鼠标驱动会接管后退和前进键，请检查鼠标软件设置。"
+          },
+          {
+            "question": "手机上能用吗？",
+            "answer": "触摸按左键计算，可以测 CPS。按键和滚轮测试需要连接鼠标。"
+          }
+        ],
+        "disclaimer": "本工具只显示浏览器收到的输入，不诊断硬件。维修或退换请以厂商和商家的规定为准。"
+      }
+    },
+    "fr": {
+      "meta": {
+        "title": "Test de souris — clics, double-clic involontaire, molette et CPS",
+        "description": "Vérifiez que les boutons gauche, droit, molette et latéraux répondent, repérez le double-clic involontaire (rebond de l'interrupteur) et comptez les crans de molette et les clics par seconde, dans le navigateur."
+      },
+      "content": {
+        "introTitle": "Qu'est-ce que le test de souris ?",
+        "intro": "Il vérifie que les cinq boutons (gauche, clic molette, droit, précédent, suivant) et la molette sont bien reconnus. Il repère aussi la panne courante des souris usées où un seul appui devient un double-clic (rebond).",
+        "formulaTitle": "Ce qu'il vérifie",
+        "formulas": [
+          {
+            "title": "Boutons",
+            "body": "La case s'allume tant que le bouton est enfoncé et le compteur augmente. Une case qui ne s'allume jamais signale un bouton non reconnu."
+          },
+          {
+            "title": "Double-clic involontaire",
+            "body": "Un nouvel appui sur le même bouton moins de 80 ms après le relâchement compte comme suspect. Un double-clic volontaire est généralement plus lent."
+          },
+          {
+            "title": "Molette et CPS",
+            "body": "Compte les crans vers le haut et le bas et vos clics gauches de la dernière seconde (CPS)."
+          }
+        ],
+        "howToTitle": "Mode d'emploi",
+        "steps": [
+          "Placez le pointeur dans la zone en pointillés.",
+          "Appuyez lentement une dizaine de fois sur chaque bouton.",
+          "Regardez si le compteur « Suspects » augmente sur un bouton.",
+          "Faites tourner la molette et vérifiez que chaque cran est compté."
+        ],
+        "faqTitle": "Questions fréquentes",
+        "faqs": [
+          {
+            "question": "J'ai un ou deux signaux suspects. Est-ce cassé ?",
+            "answer": "Si cela se répète sur le même bouton en cliquant lentement, l'interrupteur rebondit probablement. Un ou deux pendant des clics rapides peuvent être normaux."
+          },
+          {
+            "question": "Mes boutons latéraux ne répondent pas.",
+            "answer": "Certains navigateurs ou logiciels de souris interceptent précédent et suivant. Vérifiez les réglages du logiciel."
+          },
+          {
+            "question": "Ça marche sur téléphone ?",
+            "answer": "Un toucher compte comme bouton gauche, donc le CPS fonctionne. Les tests de boutons et de molette demandent une souris."
+          }
+        ],
+        "disclaimer": "Cet outil affiche seulement ce que le navigateur reçoit ; il ne diagnostique pas le matériel. Pour une réparation ou un échange, suivez les règles du fabricant et du vendeur."
+      }
+    },
+    "es": {
+      "meta": {
+        "title": "Test de ratón — clics, doble clic involuntario, rueda y CPS",
+        "description": "Comprueba que los botones izquierdo, derecho, rueda y laterales responden, detecta el doble clic involuntario (rebote del interruptor) y cuenta los pasos de rueda y los clics por segundo, en el navegador."
+      },
+      "content": {
+        "introTitle": "¿Qué es el test de ratón?",
+        "intro": "Comprueba que los cinco botones (izquierdo, clic de rueda, derecho, atrás, adelante) y la rueda se reconocen bien. También detecta la avería típica de ratones gastados en la que una pulsación se convierte en doble clic (rebote).",
+        "formulaTitle": "Qué comprueba",
+        "formulas": [
+          {
+            "title": "Botones",
+            "body": "La casilla se ilumina mientras mantienes el botón y el contador sube. Si nunca se ilumina, ese botón no se reconoce."
+          },
+          {
+            "title": "Doble clic involuntario",
+            "body": "Una nueva pulsación del mismo botón menos de 80 ms después de soltarlo cuenta como sospechosa. Un doble clic intencionado suele ser más lento."
+          },
+          {
+            "title": "Rueda y CPS",
+            "body": "Cuenta los pasos de rueda hacia arriba y abajo y tus clics izquierdos del último segundo (CPS)."
+          }
+        ],
+        "howToTitle": "Cómo usarlo",
+        "steps": [
+          "Lleva el puntero a la zona punteada.",
+          "Pulsa cada botón despacio unas diez veces.",
+          "Mira si el contador «Sospechosas» sube en algún botón.",
+          "Gira la rueda arriba y abajo y comprueba que cuenta cada paso."
+        ],
+        "faqTitle": "Preguntas frecuentes",
+        "faqs": [
+          {
+            "question": "Me salieron una o dos señales sospechosas. ¿Está roto?",
+            "answer": "Si se repite en el mismo botón pulsando despacio, probablemente el interruptor rebota. Una o dos durante clics rápidos pueden ser normales."
+          },
+          {
+            "question": "Los botones laterales no responden.",
+            "answer": "Algunos navegadores o programas del ratón capturan atrás y adelante. Revisa la configuración del programa."
+          },
+          {
+            "question": "¿Funciona en el móvil?",
+            "answer": "Los toques cuentan como botón izquierdo, así que el CPS funciona. Las pruebas de botones y rueda necesitan un ratón."
+          }
+        ],
+        "disclaimer": "Esta herramienta solo muestra la entrada que recibe el navegador; no diagnostica el hardware. Para reparaciones o cambios sigue las normas del fabricante y del vendedor."
+      }
+    }
   }
 };
