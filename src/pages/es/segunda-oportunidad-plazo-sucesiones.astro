@@ -1,0 +1,67 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/es/EsSegundaOportunidad';
+// ES second chance and ISD deadline (2026-11-22, world audience gap A5). Engine: lib/world-fresh-start-2026.ts
+const c = {
+  "introTitle": "¿Puedo acogerme a la Ley de Segunda Oportunidad? ¿Cuándo vence el Impuesto sobre Sucesiones?",
+  "intro": "Dos comprobaciones para particulares. La Ley de Segunda Oportunidad permite exonerar deudas si el deudor es de buena fe: aquí revisas las causas que lo impiden según el texto refundido de la Ley Concursal reformado por la Ley 16/2022. Y si ha fallecido un familiar, calculas el plazo de 6 meses para presentar el Impuesto sobre Sucesiones.",
+  "formulaTitle": "Reglas usadas",
+  "formulas": [
+    {
+      "title": "Buena fe (art. 487 TRLC)",
+      "body": "Impide la exoneración: condena firme a prisión en los 10 años anteriores por delitos patrimoniales, socioeconómicos, falsedad documental, contra Hacienda, la Seguridad Social o los trabajadores (pena máxima de 3 años o más); sanción firme muy grave tributaria, o de Seguridad Social u orden social, en 10 años; concurso culpable."
+    },
+    {
+      "title": "Exoneración anterior (art. 488 TRLC)",
+      "body": "Hay que esperar 2 años tras una exoneración con plan de pagos y 5 años tras una con liquidación."
+    },
+    {
+      "title": "Impuesto sobre Sucesiones",
+      "body": "6 meses desde el día del fallecimiento (Agencia Tributaria, Modelo 650, Ceuta y Melilla). En las demás comunidades, consulta su oficina."
+    }
+  ],
+  "howToTitle": "Cómo usarlo",
+  "steps": [
+    "Elige qué quieres comprobar.",
+    "Responde a las preguntas o introduce la fecha del fallecimiento.",
+    "Lee las causas que aparecen y el plazo."
+  ],
+  "faqTitle": "Preguntas frecuentes",
+  "faqs": [
+    {
+      "question": "¿Presenta la solicitud por mí?",
+      "answer": "No. Solo revisa requisitos y plazos; para el concurso necesitas abogado y procurador."
+    },
+    {
+      "question": "¿Calcula cuánto deuda con Hacienda se exonera?",
+      "answer": "No. Ese límite y la duración exacta del plan no se calculan aquí."
+    },
+    {
+      "question": "¿Se guardan mis datos?",
+      "answer": "No, se quedan en tu navegador."
+    }
+  ],
+  "disclaimer": "Información general, no es asesoramiento jurídico."
+};
+const sources: [string, string][] = [
+  [
+    "BOE — Texto refundido de la Ley Concursal (consolidado)",
+    "https://www.boe.es/buscar/pdf/2020/BOE-A-2020-4859-consolidado.pdf"
+  ],
+  [
+    "BOE — Ley 16/2022",
+    "https://www.boe.es/buscar/act.php?id=BOE-A-2022-14580"
+  ],
+  [
+    "Ayuntamiento de Zaragoza — Segunda oportunidad del consumidor (2025)",
+    "https://www.zaragoza.es/cont/paginas/catalogopublicaciones/doc/dos-segunda-oportunidad-consumidor.pdf"
+  ],
+  [
+    "Agencia Tributaria — Modelo 650: plazos de presentación",
+    "https://sede.agenciatributaria.gob.es/Sede/declaraciones-informativas-otros-impuestos-tasas/impuesto-sobre-sucesiones-donaciones/adquisiciones-mortis-causa-modelo-650/plazos-presentacion.html"
+  ]
+];
+---
+<DebtReliefPage slug="segunda-oportunidad-plazo-sucesiones" c={c} sources={sources} sourcesTitle="Fuentes" checked="Fuentes oficiales revisadas el 2026-11-22">
+  <T client:load />
+</DebtReliefPage>
