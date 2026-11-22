@@ -17,7 +17,7 @@ test("no match lists every tool for the country, with help channels and tax scop
   const r = intake({ country: "TW", question: "hello" });
   assert.equal(r.matches.length, 0);
   assert.equal(r.tools?.length, WORLD_TOOLS.filter((w) => w.country === "TW").length);
-  assert.equal(r.help.length, 4);
+  assert.equal(r.help.length, 5);
   assert.ok(r.taxScope?.length);
 });
 
@@ -37,4 +37,9 @@ test("inheritance questions route to the inheritance tools", () => {
   assert.equal(intake({ country: "JP", question: "父の遺産の相続税はいつまでに申告？" }).matches[0].mcp, "calculate_jp_inheritance_gift_tax");
   assert.equal(intake({ country: "UK", question: "Will my mum's estate pay inheritance tax?" }).matches[0].mcp, "calculate_uk_inheritance_tax");
   assert.equal(intake({ country: "TW", question: "父親過世，遺產稅什麼時候申報" }).matches[0].mcp, "check_tw_estate_tax_deadline");
+});
+
+test("time-limit and small-claims questions route to the claims tools", () => {
+  assert.equal(intake({ country: "JP", question: "貸したお金の消滅時効は何年？少額訴訟できる？" }).matches[0].mcp, "check_jp_limitation_small_claims");
+  assert.equal(intake({ country: "UK", question: "How long do I have to make a small claims money claim?" }).matches[0].mcp, "check_uk_limitation_small_claims");
 });

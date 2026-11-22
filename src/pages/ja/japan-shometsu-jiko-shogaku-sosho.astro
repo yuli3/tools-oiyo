@@ -1,0 +1,59 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/limitation/JpLimitation';
+// Limitation and small claims pack (2026-11-22, world pro-gap #4). Engine: lib/world-limitation-pack-2026.ts
+const c = {
+  "introTitle": "請求できるのはいつまでか、少額訴訟は使えるか",
+  "intro": "2020年4月施行の改正民法では、一般の債権は権利を知った時から5年、行使できる時から10年のどちらか早いほうで時効になります。けがや命の損害は5年・20年、不法行為は3年・20年です。60万円以下のお金の請求なら、原則1回の審理で終わる少額訴訟が使えます。",
+  "formulaTitle": "使っているルール",
+  "formulas": [
+    {
+      "title": "一般の債権",
+      "body": "知った時から5年／行使できる時から10年（民法166条）。"
+    },
+    {
+      "title": "不法行為・生命身体",
+      "body": "不法行為 3年／20年（724条）。生命・身体 5年／20年（167条・724条の2）。"
+    },
+    {
+      "title": "少額訴訟",
+      "body": "60万円以下の金銭の支払請求、原則1回の審理、同じ裁判所に年10回まで。"
+    }
+  ],
+  "howToTitle": "使い方",
+  "steps": [
+    "請求の種類を選びます。",
+    "知った日と行使できるようになった日を入れます。",
+    "時効の目安と少額訴訟の可否を確認します。"
+  ],
+  "faqTitle": "よくある質問",
+  "faqs": [
+    {
+      "question": "2020年3月以前の貸し借りは？",
+      "answer": "改正前のルールが使われることがあります。ここでは確認していません。"
+    },
+    {
+      "question": "少額訴訟の手数料は？",
+      "answer": "裁判所の手数料早見表で確認してください。ここでは計算していません。"
+    },
+    {
+      "question": "入力内容は保存されますか？",
+      "answer": "ブラウザの外には送りません。"
+    }
+  ],
+  "disclaimer": "一般的な情報です。法律相談・代理ではありません。"
+};
+const sources: [string, string][] = [
+  [
+    "法務省 民法（債権関係）改正の説明資料",
+    "https://www.moj.go.jp/content/001259610.pdf"
+  ],
+  [
+    "裁判所 少額訴訟",
+    "https://www.courts.go.jp/saiban/syurui/syurui_minzi/minzi_25_02/index.html"
+  ]
+];
+---
+<DebtReliefPage slug="japan-shometsu-jiko-shogaku-sosho" c={c} sources={sources} sourcesTitle="出典" checked="法務省・裁判所の資料で2026-11-22に確認">
+  <T client:load />
+</DebtReliefPage>

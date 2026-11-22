@@ -1,0 +1,63 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/limitation/FrLimitation';
+// Limitation and small claims pack (2026-11-22, world pro-gap #4). Engine: lib/world-limitation-pack-2026.ts
+const c = {
+  "introTitle": "Combien de temps pour réclamer une dette",
+  "intro": "En principe, vous avez 5 ans pour agir en justice à compter du jour où la somme est due. Un professionnel qui réclame une facture à un particulier n'a que 2 ans. L'injonction de payer n'a pas de plafond de montant, et une procédure simplifiée existe pour les petites créances jusqu'à 5 000 €.",
+  "formulaTitle": "Les règles utilisées",
+  "formulas": [
+    {
+      "title": "Principe",
+      "body": "5 ans à partir du jour où la somme est due."
+    },
+    {
+      "title": "Délais courts",
+      "body": "Professionnel contre consommateur 2 ans (L.218-2) ; assurance 2 ans ; télécom 1 an ; salaires 3 ans."
+    },
+    {
+      "title": "Recouvrement",
+      "body": "Injonction de payer sans plafond ; procédure simplifiée par commissaire de justice jusqu'à 5 000 €."
+    }
+  ],
+  "howToTitle": "Mode d'emploi",
+  "steps": [
+    "Choisissez le type de dette.",
+    "Saisissez la date où la somme était due et le montant.",
+    "Lisez la date de prescription et les voies de recouvrement."
+  ],
+  "faqTitle": "Questions fréquentes",
+  "faqs": [
+    {
+      "question": "Une relance suffit-elle à arrêter le délai ?",
+      "answer": "Une action en justice l'interrompt ; une médiation le suspend. L'outil n'en tient pas compte."
+    },
+    {
+      "question": "Quel tribunal pour l'injonction ?",
+      "answer": "Le tribunal judiciaire, ou le tribunal de commerce pour une dette commerciale."
+    },
+    {
+      "question": "Mes saisies sont-elles enregistrées ?",
+      "answer": "Non, elles restent dans votre navigateur."
+    }
+  ],
+  "disclaimer": "Information générale, pas un conseil juridique."
+};
+const sources: [string, string][] = [
+  [
+    "justice.fr — injonction de payer",
+    "https://www.justice.fr/fiche/injonction-payer-recouvrement-creances"
+  ],
+  [
+    "CIDJ — prescription",
+    "https://www.cidj.com/vie-quotidienne/consommation-argent/prescription-si-un-professionnel-vous-doit-de-l-argent"
+  ],
+  [
+    "Que Choisir — délais de recouvrement",
+    "https://www.quechoisir.org/conseils-recouvrement-amiable-de-creances-pendant-combien-de-temps-une-dette-est-elle-due-n86255/"
+  ]
+];
+---
+<DebtReliefPage slug="delai-prescription-dette-injonction" c={c} sources={sources} sourcesTitle="Sources" checked="justice.fr et CIDJ vérifiés le 2026-11-22">
+  <T client:load />
+</DebtReliefPage>

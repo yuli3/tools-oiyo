@@ -1,0 +1,59 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/limitation/TwLimitation';
+// Limitation and small claims pack (2026-11-22, world pro-gap #4). Engine: lib/world-limitation-pack-2026.ts
+const c = {
+  "introTitle": "請求權多久會消滅、能不能用小額訴訟",
+  "intro": "民法規定一般請求權15年、利息租金等定期給付5年、商品貨款與住宿餐飲、醫師律師報酬等2年，自請求權可以行使時起算。10萬元以下的金錢請求適用小額訴訟，預繳裁判費1,500元。",
+  "formulaTitle": "使用的規則",
+  "formulas": [
+    {
+      "title": "時效",
+      "body": "15年（第125條）、5年（第126條）、2年（第127條），自可行使時起算（第128條）。"
+    },
+    {
+      "title": "小額訴訟",
+      "body": "10萬元以下；50萬元以下雙方書面合意也可適用。"
+    },
+    {
+      "title": "裁判費",
+      "body": "小額訴訟預繳1,500元。"
+    }
+  ],
+  "howToTitle": "使用方式",
+  "steps": [
+    "選擇請求種類。",
+    "填入可以請求的日期與金額。",
+    "確認時效完成日與小額訴訟。"
+  ],
+  "faqTitle": "常見問題",
+  "faqs": [
+    {
+      "question": "催討會讓時效重新計算嗎？",
+      "answer": "某些情形會影響時效，這裡沒有計算。"
+    },
+    {
+      "question": "超過10萬元怎麼辦？",
+      "answer": "50萬元以下雙方合意可用小額，其餘適用其他程序。"
+    },
+    {
+      "question": "會保存輸入內容嗎？",
+      "answer": "不會，資料不離開瀏覽器。"
+    }
+  ],
+  "disclaimer": "一般資訊，非法律意見。"
+};
+const sources: [string, string][] = [
+  [
+    "司法院 小額訴訟問答",
+    "https://www.judicial.gov.tw/tw/cp-1654-4873-0557c-1.html"
+  ],
+  [
+    "法律百科 消滅時效（民法第125至128條）",
+    "https://legis-pedia.com/article/239/pdf"
+  ]
+];
+---
+<DebtReliefPage slug="taiwan-statute-limitation-small-claims" c={c} sources={sources} sourcesTitle="出處" checked="司法院問答 2026-11-22 核對">
+  <T client:load />
+</DebtReliefPage>
