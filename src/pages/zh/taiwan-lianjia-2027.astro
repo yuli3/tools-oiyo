@@ -1,0 +1,31 @@
+---
+// 2027 Taiwan leave planner (2026-11-22, think tank round 4). Engine: lib/leave-bridge.ts + lib/world-holidays-2027.ts (tw)
+import LeaveBridgePage from '../../components/LeaveBridgePage.astro';
+const c = {
+  "introTitle": "2027年（民國116年）連假與請假攻略",
+  "intro": "人事總處公布的116年辦公日曆表全年放假121天，3天以上連假9個，而且沒有補行上班日。春節從2月4日（週四）放到2月10日（週三）共7天，兒童節與清明節4月3日至6日連放4天。教師節9月28日、光復節10月25日也是放假日。本工具逐日檢查2027年，算出請幾天特休可以連休最久。",
+  "formulaTitle": "2027年請假攻略",
+  "formulas": [
+    { "title": "春節：請2天 → 連休11天", "body": "請2月11日（週四）、12日（週五），2月4日至14日連休。往前再請2月1日至3日，請5天連休16天（1月30日至2月14日）。" },
+    { "title": "清明：請1天 → 連休5天", "body": "請4月2日（週五），4月2日至6日連休。" },
+    { "title": "端午、中秋：請2天 → 連休5天", "body": "端午6月9日（週三）請7、8日；中秋9月15日（週三）請13、14日，都是週六起連休5天。" }
+  ],
+  "howToTitle": "使用方式",
+  "steps": [
+    "拉動滑桿選擇可用的特休天數，最長的連假方案馬上出現。",
+    "點選清單中的方案，在全年日曆上看請假日期。",
+    "如果公司週六上班或另有放假日，勾選或加入日期即可。"
+  ],
+  "faqTitle": "常見問題",
+  "faqs": [
+    { "question": "2027年有補班嗎？", "answer": "沒有。2025年6月修正補假及調整放假的處理要點後，不再為了湊連假調移上班日，116年辦公日曆表沒有補行上班日。" },
+    { "question": "民間企業也照這個放假嗎？", "answer": "辦公日曆表適用政府機關。民間企業依《勞動基準法》放國定假日；假日遇到例假或休息日時，補假日期可能由勞資雙方約定，請以公司公告為準。" },
+    { "question": "特休有幾天？", "answer": "依《勞動基準法》第38條，滿6個月3天、滿1年7天、滿2年10天、滿3年14天、滿5年15天，滿10年起每年加1天，最多30天。" }
+  ],
+  "disclaimer": "放假日期依行政院人事行政總處116年政府行政機關辦公日曆表（2026年5月21日公布）。民間企業的補假安排可能不同。"
+};
+---
+<LeaveBridgePage country="tw" path="/zh/taiwan-lianjia-2027/" locale="zh" languageTag="zh-Hant-TW" ogLocale="zh_TW"
+  title={"2027連假請假攻略 — 116年行事曆、補假與特休怎麼請最划算"} description={"2027年（民國116年）連假一覽與請假攻略：春節請2天連休11天、清明請1天連休5天，全年0補班。選特休天數，看全年最佳請假日期。"} c={c}
+  sources={[["行政院核定116年政府行政機關辦公日曆表（人事總處新聞稿）", "https://www.dgpa.gov.tw/information?pid=12983&uid=82"], ["中央社：116年行事曆出爐 連假有9個、春節放7天", "https://www.cna.com.tw/news/aipl/202605210216.aspx"], ["勞動基準法第38條（特別休假）", "https://law.moj.gov.tw/LawClass/LawSingle.aspx?pcode=N0030001&flno=38"]]} sourcesTitle="資料來源"
+  related={[["/zh/pinjia-2027/", "2027年拼假攻略（中国大陆）"], ["/ja/yukyu-renkyu-2027/", "2027年 有給で連休カレンダー（日本）"], ["/ko/annual-leave-combo-2027/", "2027 연차 꿀조합 (한국)"], ["/en/us-pto-planner-2027/", "2027 PTO planner (US)"], ["/zh/taiwan-annual-leave-calculator/", "台灣特休天數計算"]]} relatedTitle={"其他國家和地區的2027年假期"} />
