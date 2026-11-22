@@ -81,3 +81,11 @@ test("Taiwan", () => {
   assert.equal(r.unemploymentMonths, 9);
   assert.equal(twLaborExit({ start: "2026-01-01", end: "2026-05-01", averageMonthlyWage: 30_000, system: "old" }).noticeDays, 10);
 });
+
+test("TW minimum wage 2026/2027 shown, low wage warned", () => {
+  const ok = twLaborExit({ start: "2024-01-01", end: "2026-07-01", averageMonthlyWage: 40_000, system: "new" });
+  assert.ok(ok.items.some((i) => i.text.includes("29,500") && i.text.includes("30,900")));
+  assert.ok(!ok.items.some((i) => i.tone === "warn"));
+  const low = twLaborExit({ start: "2024-01-01", end: "2026-07-01", averageMonthlyWage: 20_000, system: "new" });
+  assert.ok(low.items.some((i) => i.tone === "warn" && i.text.includes("196")));
+});
