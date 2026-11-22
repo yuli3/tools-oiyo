@@ -1,0 +1,67 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/takehome/LaborPractice';
+// Overtime caps (JP) and irregular-hours holiday accrual (UK) (2026-11-22, world audience gap P5). Engine: lib/world-labor-practice-2026.ts
+const c = {
+  "introTitle": "Is this overtime within the legal cap, and how much holiday has this worker earned?",
+  "intro": "Two checks HR teams and 社会保険労務士 run every month: Japan's overtime caps under a 36協定 (労働基準法第36条), month by month and on the 2–6 month average, and the UK's 12.07% holiday accrual for irregular-hours and part-year workers.",
+  "formulaTitle": "Rules used",
+  "formulas": [
+    {
+      "title": "Japan: principle",
+      "body": "Overtime (not counting holiday work) up to 45 hours a month and 360 hours a year; 42 and 320 hours under a one-year variable working-hours system."
+    },
+    {
+      "title": "Japan: special clause (特別条項)",
+      "body": "Overtime up to 720 hours a year; overtime plus holiday work under 100 hours in any month and at most 80 hours on average over every 2 to 6 months; more than 45 hours in at most 6 months a year. From April 2024: drivers 960 hours a year without the 100/80/6 rules; construction disaster recovery without the 100/80 rules; doctors 960 hours (A, 連携B) or 1,860 hours (B, C) including holiday work. Penalty: up to 6 months' imprisonment or a ¥300,000 fine."
+    },
+    {
+      "title": "UK: irregular-hours and part-year workers",
+      "body": "For leave years beginning on or after 1 April 2024, holiday accrues at 12.07% of the hours worked in each pay period. Regular workers get 5.6 weeks, capped at 28 days."
+    }
+  ],
+  "howToTitle": "How to use it",
+  "steps": [
+    "Pick the country.",
+    "Japan: enter normal and busy-month overtime, the number of busy months and holiday work, and whether you have a special clause.",
+    "UK: enter the hours worked per pay period and the number of pay periods."
+  ],
+  "faqTitle": "FAQ",
+  "faqs": [
+    {
+      "question": "Does it check the 36協定 form itself?",
+      "answer": "No. It checks the hours against the caps; the agreement's content and filing are not checked."
+    },
+    {
+      "question": "Does it work out rolled-up holiday pay?",
+      "answer": "No. Only the hours accrued; holiday pay is not computed."
+    },
+    {
+      "question": "Is my data saved?",
+      "answer": "No, it stays in your browser."
+    }
+  ],
+  "disclaimer": "General information only, not legal advice."
+};
+const sources: [string, string][] = [
+  [
+    "厚生労働省 — 時間外労働の上限規制 わかりやすい解説",
+    "https://www.mhlw.go.jp/hatarakikata/pdf/000463185.pdf"
+  ],
+  [
+    "厚生労働省 — 建設業・ドライバー・医師等の時間外労働の上限規制",
+    "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/roudoukijun/gyosyu/topics/01.html"
+  ],
+  [
+    "GOV.UK — Holiday entitlement: calculate leave entitlement",
+    "https://www.gov.uk/holiday-entitlement-rights/calculate-leave-entitlement"
+  ],
+  [
+    "GOV.UK — Holiday pay and entitlement reforms from 1 January 2024",
+    "https://www.gov.uk/government/publications/simplifying-holiday-entitlement-and-holiday-pay-calculations/holiday-pay-and-entitlement-reforms-from-1-january-2024"
+  ]
+];
+---
+<DebtReliefPage slug="overtime-cap-holiday-accrual-check" c={c} sources={sources} sourcesTitle="Sources" checked="Official pages checked 2026-11-22">
+  <T client:load />
+</DebtReliefPage>

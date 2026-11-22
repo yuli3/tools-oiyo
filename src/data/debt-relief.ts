@@ -140,6 +140,8 @@ export const debtReliefTools = [
   { locale: 'en', languageTag: 'en', ogLocale: 'en_US', slug: "parental-pay-calculator-2026", title: "Parental pay and child benefit calculator 2026 (UK, Japan, Germany)", description: "Statutory Maternity Pay and Child Benefit with the £60,000 charge, Japan's 育児休業給付金 with the August 2026 caps, and German Elterngeld and Kindergeld from § 2 BEEG.", jurisdiction: "🌐 UK · Japan · Germany (parental leave pay)" },
   // 2026-11-22 small business VAT/GST registration (world audience gap P6)
   { locale: 'en', languageTag: 'en', ogLocale: 'en_US', slug: "small-business-vat-registration-check", title: "Kleinunternehmer and GST registration check (Germany, Singapore)", description: "Germany's § 19 UStG small business limits from 2025 (€25,000 / €100,000 net) and Singapore's S$1 million GST registration test with the dates to apply and register.", jurisdiction: "🌐 Germany · Singapore (VAT/GST registration)" },
+  // 2026-11-22 overtime caps and holiday accrual (world audience gap P5)
+  { locale: 'en', languageTag: 'en', ogLocale: 'en_US', slug: "overtime-cap-holiday-accrual-check", title: "36協定 overtime cap check and UK 12.07% holiday accrual", description: "Check monthly overtime against Japan's 45/360, 720, under-100 and 80-hour average caps (with driver, construction and doctor rules), and work out UK irregular-hours holiday at 12.07%.", jurisdiction: "🌐 Japan · UK (HR practice)" },
 ] as const;
 
 export const debtReliefForLocale = (locale: Locale) => debtReliefTools.filter((t) => t.locale === locale);
