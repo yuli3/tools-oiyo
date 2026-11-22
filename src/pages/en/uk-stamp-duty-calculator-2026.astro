@@ -1,0 +1,63 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/takehome/UkStampDuty';
+// England & Northern Ireland SDLT (2026-11-22, world audience gap A2). Engine: lib/world-home-purchase-2026.ts
+const c = {
+  "introTitle": "How much Stamp Duty will you pay on a home in England or Northern Ireland?",
+  "intro": "Enter the price and see Stamp Duty Land Tax band by band, with first-time buyer relief, the 5% higher rates for an additional property and the 2% surcharge for non-UK residents. Rates come from GOV.UK.",
+  "formulaTitle": "Rates used (from 1 April 2025)",
+  "formulas": [
+    {
+      "title": "Standard bands",
+      "body": "0% up to £125,000; 2% to £250,000; 5% to £925,000; 10% to £1.5 million; 12% above. Each rate applies only to the part of the price in that band."
+    },
+    {
+      "title": "First-time buyers",
+      "body": "0% up to £300,000 and 5% on £300,001 to £500,000. If the price is over £500,000 you cannot claim the relief."
+    },
+    {
+      "title": "Additional property",
+      "body": "Usually 5% on top of each band if you will own another residential property (5%, 7%, 10%, 15%, 17%)."
+    },
+    {
+      "title": "Non-UK residents",
+      "body": "Usually a 2% surcharge on top of all other residential rates."
+    }
+  ],
+  "howToTitle": "How to use it",
+  "steps": [
+    "Enter the purchase price.",
+    "Say whether you are a first-time buyer, will own another property, or are not UK resident.",
+    "Read the tax band by band."
+  ],
+  "faqTitle": "FAQ",
+  "faqs": [
+    {
+      "question": "Does this work for Scotland or Wales?",
+      "answer": "No. Scotland has Land and Buildings Transaction Tax and Wales has Land Transaction Tax, with their own rates."
+    },
+    {
+      "question": "Are solicitor and survey fees included?",
+      "answer": "No. Only Stamp Duty Land Tax is calculated."
+    },
+    {
+      "question": "Is my data saved?",
+      "answer": "No, it stays in your browser."
+    }
+  ],
+  "disclaimer": "General information only, not tax or legal advice. Check GOV.UK or a conveyancer before you complete."
+};
+const sources: [string, string][] = [
+  [
+    "GOV.UK — Stamp Duty Land Tax: residential property rates",
+    "https://www.gov.uk/stamp-duty-land-tax/residential-property-rates"
+  ],
+  [
+    "GOV.UK — Higher rates of Stamp Duty Land Tax",
+    "https://www.gov.uk/guidance/stamp-duty-land-tax-buying-an-additional-residential-property"
+  ]
+];
+---
+<DebtReliefPage slug="uk-stamp-duty-calculator-2026" c={c} sources={sources} sourcesTitle="Sources" checked="GOV.UK checked 2026-11-22">
+  <T client:load />
+</DebtReliefPage>

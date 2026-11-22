@@ -132,6 +132,8 @@ export const debtReliefTools = [
   { locale: 'en', languageTag: 'en', ogLocale: 'en_US', slug: "withholding-tax-non-resident-payments", title: "Withholding tax on payments to non-residents (JP, US, FR, ES, TW, DE)", description: "Domestic withholding rates on royalties, services, interest, dividends, salary and director's fees paid abroad from Japan, the US, France, Spain, Taiwan and Germany, from each tax authority's page. Treaty rates not applied.", jurisdiction: "🌐 Japan · US · France · Spain · Taiwan · Germany (domestic rates)" },
   // 2026-11-22 national corporate income tax (world audience gap P2)
   { locale: 'en', languageTag: 'en', ogLocale: 'en_US', slug: "corporate-tax-calculator-2026", title: "Corporate tax calculator 2026 (JP, UK, US, FR, ES, DE)", description: "National corporate income tax on taxable profit at 2026 statutory rates in Japan, the UK (with marginal relief), the US, France, Spain and Germany, with each small-company band. Local taxes not read are left out.", jurisdiction: "🌐 Japan · UK · US · France · Spain · Germany (national rates)" },
+  // 2026-11-22 UK Stamp Duty Land Tax (world audience gap A2)
+  { locale: 'en', languageTag: 'en', ogLocale: 'en_GB', slug: "uk-stamp-duty-calculator-2026", title: "Stamp Duty calculator 2026 (England & Northern Ireland)", description: "Stamp Duty Land Tax on a home purchase band by band, with first-time buyer relief, the 5% higher rates for additional properties and the 2% non-resident surcharge, from GOV.UK.", jurisdiction: "🇬🇧 England & Northern Ireland (SDLT)" },
 ] as const;
 
 export const debtReliefForLocale = (locale: Locale) => debtReliefTools.filter((t) => t.locale === locale);

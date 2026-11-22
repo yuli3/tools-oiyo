@@ -3238,6 +3238,42 @@
           "eq": 20750
         }
       ]
+    },
+    {
+      "skill": "oiyo-world-home-purchase-guide",
+      "id": "home-uk-ftb",
+      "ask": "I'm a first-time buyer purchasing a £450,000 flat in Manchester. How much stamp duty?",
+      "run": [
+        {
+          "country": "UK",
+          "price": 450000,
+          "firstTime": true
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.total",
+          "eq": 7500
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-world-home-purchase-guide",
+      "id": "home-uk-additional",
+      "ask": "Buying a £300,000 buy-to-let while I already own my home. Stamp duty?",
+      "run": [
+        {
+          "country": "UK",
+          "price": 300000,
+          "additional": true
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.total",
+          "eq": 20000
+        }
+      ]
     }
   ],
   "boundaries": {
