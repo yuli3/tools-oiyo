@@ -3384,6 +3384,42 @@
           "eq": 50
         }
       ]
+    },
+    {
+      "skill": "oiyo-small-business-vat-guide",
+      "id": "smallvat-de-over-100k",
+      "ask": "Letztes Jahr 20.000 €, dieses Jahr wohl 120.000 € netto. Bleibe ich Kleinunternehmer?",
+      "run": [
+        {
+          "country": "DE",
+          "priorYear": 20000,
+          "currentYear": 120000
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.status",
+          "eq": "wechsel_unterjaehrig"
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-small-business-vat-guide",
+      "id": "smallvat-sg-prospective",
+      "ask": "On 2 Sept 2026 we forecast S$1.2m for the next 12 months. When must we register for GST?",
+      "run": [
+        {
+          "country": "SG",
+          "forecastNext12": 1200000,
+          "forecastDate": "2026-09-02"
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.registeredFrom",
+          "eq": "2026-11-02"
+        }
+      ]
     }
   ],
   "boundaries": {

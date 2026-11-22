@@ -126,3 +126,10 @@ test("parental pay questions route to the lay parental pay tool", () => {
   assert.equal(intake({ country: "UK", question: "How much statutory maternity pay will I get?" }).matches[0].mcp, "calculate_uk_maternity_pay");
   assert.equal(intake({ country: "UK", question: "Do I have to pay the high income child benefit charge on 70k?" }).matches[0].mcp, "calculate_uk_child_benefit");
 });
+
+test("small business VAT questions route to the practitioner registration check", () => {
+  const r = intake({ country: "DE", question: "Bin ich noch Kleinunternehmer, wenn mein Umsatz dieses Jahr 110.000 Euro erreicht?" });
+  assert.equal(r.matches[0].mcp, "calculate_de_kleinunternehmer_vat");
+  assert.equal(r.matches[0].audience, "pro");
+  assert.equal(intake({ country: "SG", question: "When do I need to register for GST if sales will pass S$1 million?" }).matches[0].mcp, "calculate_sg_gst_registration");
+});

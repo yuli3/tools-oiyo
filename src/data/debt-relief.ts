@@ -138,6 +138,8 @@ export const debtReliefTools = [
   { locale: 'en', languageTag: 'en', ogLocale: 'en_US', slug: "b2b-late-payment-interest-calculator", title: "Late payment interest between businesses (DE, FR, ES, UK)", description: "Statutory interest and fixed compensation on a late B2B invoice: Germany 10.52%, France ECB + 10 points, Spain 10.40%, UK 8% + base rate, with the €40 / £40-£100 sums.", jurisdiction: "🌐 Germany · France · Spain · UK (B2B late payment)" },
   // 2026-11-22 parental pay and child benefit (world audience gap A3)
   { locale: 'en', languageTag: 'en', ogLocale: 'en_US', slug: "parental-pay-calculator-2026", title: "Parental pay and child benefit calculator 2026 (UK, Japan, Germany)", description: "Statutory Maternity Pay and Child Benefit with the £60,000 charge, Japan's 育児休業給付金 with the August 2026 caps, and German Elterngeld and Kindergeld from § 2 BEEG.", jurisdiction: "🌐 UK · Japan · Germany (parental leave pay)" },
+  // 2026-11-22 small business VAT/GST registration (world audience gap P6)
+  { locale: 'en', languageTag: 'en', ogLocale: 'en_US', slug: "small-business-vat-registration-check", title: "Kleinunternehmer and GST registration check (Germany, Singapore)", description: "Germany's § 19 UStG small business limits from 2025 (€25,000 / €100,000 net) and Singapore's S$1 million GST registration test with the dates to apply and register.", jurisdiction: "🌐 Germany · Singapore (VAT/GST registration)" },
 ] as const;
 
 export const debtReliefForLocale = (locale: Locale) => debtReliefTools.filter((t) => t.locale === locale);
