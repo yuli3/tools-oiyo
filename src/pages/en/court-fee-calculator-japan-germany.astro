@@ -1,0 +1,71 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/takehome/CourtFees';
+// Court fees JP/DE (2026-11-22, world audience gap P4). Engine: lib/world-court-fees-2026.ts
+const c = {
+  "introTitle": "How much is the court fee to sue?",
+  "intro": "The fee you pay the court when you file a civil claim, from the statutory tables: Japan's 民事訴訟費用等に関する法律 別表第一 (paid in 収入印紙) and Germany's Gerichtskostengesetz (§ 34 GKG and the Kostenverzeichnis). For the UK, use the small claims page, which already shows the money claim fee.",
+  "formulaTitle": "Tables used",
+  "formulas": [
+    {
+      "title": "Japan",
+      "body": "訴えの提起: up to ¥1m, ¥1,000 per ¥100,000; to ¥5m, ¥1,000 per ¥200,000; to ¥10m, ¥2,000 per ¥500,000; to ¥1bn, ¥3,000 per ¥1m; to ¥5bn, ¥10,000 per ¥5m; above, ¥10,000 per ¥10m, added band by band. 控訴 1.5 times, 上告 2 times, 支払督促 half; 民事調停・労働審判 has its own lower table. Non-property claims count as ¥1.6m. For cases first filed on or after 21 May 2026 the new-law amounts (paper or electronic filing) differ and are not computed here."
+    },
+    {
+      "title": "Germany",
+      "body": "One fee under § 34 GKG: €40 up to €500, then rising per started step (e.g. +€21 per €500 to €2,000, +€22.50 per €1,000 to €10,000). First-instance claim: 3.0 fees (KV 1210), reduced to 1.0 on a timely withdrawal, acknowledgment, waiver or court settlement (KV 1211). Mahnbescheid: 0.5 fees, at least €38 (KV 1100)."
+    }
+  ],
+  "howToTitle": "How to use it",
+  "steps": [
+    "Pick the country and the procedure.",
+    "Enter the value of the claim.",
+    "Japan: enter the date the original claim was filed."
+  ],
+  "faqTitle": "FAQ",
+  "faqs": [
+    {
+      "question": "Are lawyers' fees included?",
+      "answer": "No. Only the court fee; lawyers' fees, postage and other costs are extra."
+    },
+    {
+      "question": "Does it file the claim?",
+      "answer": "No. It only computes the fee."
+    },
+    {
+      "question": "Is my data saved?",
+      "answer": "No, it stays in your browser."
+    }
+  ],
+  "disclaimer": "General information only, not legal advice."
+};
+const sources: [string, string][] = [
+  [
+    "裁判所 — 民事訴訟費用等に関する法律 別表第一",
+    "https://www.courts.go.jp/vc-files/courts/file2/20161001minsohiyouhoubeppyou1.pdf"
+  ],
+  [
+    "裁判所 — 手数料",
+    "https://www.courts.go.jp/saiban/tetuzuki/tesuuryou/index.html"
+  ],
+  [
+    "裁判所 — 手数料額早見表 (R8.9.15改訂)",
+    "https://www.courts.go.jp/assets/tesuuryo_hayami.pdf"
+  ],
+  [
+    "§ 34 GKG — Wertgebühren",
+    "https://www.gesetze-im-internet.de/gkg_2004/__34.html"
+  ],
+  [
+    "GKG Anlage 2 — Gebührentabelle",
+    "https://www.gesetze-im-internet.de/gkg_2004/anlage_2.html"
+  ],
+  [
+    "GKG Anlage 1 — Kostenverzeichnis",
+    "https://www.gesetze-im-internet.de/gkg_2004/anlage_1.html"
+  ]
+];
+---
+<DebtReliefPage slug="court-fee-calculator-japan-germany" c={c} sources={sources} sourcesTitle="Sources" checked="Official tables checked 2026-11-22">
+  <T client:load />
+</DebtReliefPage>

@@ -19,7 +19,7 @@ export type Area = "tax" | "labor" | "tenancy" | "consumer" | "claims";
  *  pro: running a business or advising one (filing calendars, penalties, appeals, depreciation, VAT, payroll cost, e-invoicing). */
 export type Audience = "person" | "pro";
 export type IntakeTool = { country: Country; area: Area; audience: Audience; mcp: string; page: string; title: string; keywords: string[] };
-const PRO = /corporate_tax|overtime_cap|irregular_hours|gst_registration|kleinunternehmer|withholding|depreciation|capital_allowances|penalty|late_fee|late_payment|late_filing|tax_sanction|appeal|claim_deadline|calendar|employer_cost|einvoic|invoice_transition|verifactu|vat|business_tax|business_income_tax|small_profit|consumption_tax|blue_return|micro_entrepreneur|autonomo|self_employ|estimated_tax/;
+const PRO = /corporate_tax|court_fee|overtime_cap|irregular_hours|gst_registration|kleinunternehmer|withholding|depreciation|capital_allowances|penalty|late_fee|late_payment|late_filing|tax_sanction|appeal|claim_deadline|calendar|employer_cost|einvoic|invoice_transition|verifactu|vat|business_tax|business_income_tax|small_profit|consumption_tax|blue_return|micro_entrepreneur|autonomo|self_employ|estimated_tax/;
 export const audienceOf = (mcp: string): Audience => (PRO.test(mcp) ? "pro" : "person");
 
 const T = "https://tools.oiyo.net/";
@@ -140,6 +140,8 @@ export const WORLD_TOOLS: IntakeTool[] = [
   t("ES", "claims", "calculate_es_late_payment_b2b", "en/b2b-late-payment-interest-calculator", "Intereses de demora en operaciones comerciales", ["intereses de demora", "morosidad", "factura impagada", "ley 3/2004", "retraso en el pago"]),
   t("UK", "claims", "calculate_uk_late_payment_b2b", "en/b2b-late-payment-interest-calculator", "Statutory interest on late commercial payments", ["late commercial payment", "statutory interest", "unpaid invoice", "late payment of commercial debts", "debt recovery costs", "8% plus base rate"]),
   t("DE", "tax", "calculate_de_inheritance_tax", "de/erbschaftsteuer-rechner-2026", "Erbschaftsteuer: Freibeträge und Steuersätze", ["erbschaftsteuer", "erbe", "erben", "freibetrag erbschaft", "schenkungsteuer", "steuerklasse erbschaft", "inheritance tax"]),
+  t("JP", "claims", "calculate_jp_court_fee", "en/court-fee-calculator-japan-germany", "訴訟の手数料 (収入印紙)", ["手数料", "収入印紙", "印紙代", "訴訟費用", "訴額", "貼用印紙", "裁判費用"]),
+  t("DE", "claims", "calculate_de_court_fee", "en/court-fee-calculator-japan-germany", "Gerichtskosten (GKG)", ["gerichtskosten", "gerichtsgebühr", "gerichtskostenvorschuss", "streitwert", "gkg", "kosten einer klage", "mahnbescheid kosten"]),
   t("DE", "claims", "calculate_de_garnishment", "de/pfaendungsfreigrenze-rechner-2026", "Pfändungsfreigrenze für Arbeitseinkommen", ["pfändung", "lohnpfändung", "pfändungsfreigrenze", "pfändungstabelle", "pfändbar", "gehaltspfändung"]),
   t("DE", "consumer", "check_de_withdrawal_deadline", "de/widerruf-kaution-verjaehrung-rechner", "Widerrufsfrist (14 Tage)", ["widerruf", "widerrufsfrist", "online gekauft", "zurückschicken", "haustürgeschäft", "fernabsatz"]),
   t("DE", "tenancy", "check_de_rent_deposit", "de/widerruf-kaution-verjaehrung-rechner", "Mietkaution: Höchstbetrag und Raten", ["kaution", "mietkaution", "drei monatsmieten", "kaution raten", "mietsicherheit"]),

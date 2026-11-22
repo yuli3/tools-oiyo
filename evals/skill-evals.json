@@ -3462,6 +3462,42 @@
           "eq": 12.07
         }
       ]
+    },
+    {
+      "skill": "oiyo-court-fee-guide",
+      "id": "courtfee-de-5000",
+      "ask": "Was kostet eine Klage über 5.000 € an Gerichtskosten?",
+      "run": [
+        {
+          "country": "DE",
+          "value": 5000
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.fee",
+          "eq": 511.5
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-court-fee-guide",
+      "id": "courtfee-jp-500man",
+      "ask": "500万円を請求する訴えの印紙代は？ (2026年1月に提起)",
+      "run": [
+        {
+          "country": "JP",
+          "value": 5000000,
+          "kind": "suit",
+          "firstFiled": "2026-01-15"
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.fee",
+          "eq": 30000
+        }
+      ]
     }
   ],
   "boundaries": {
