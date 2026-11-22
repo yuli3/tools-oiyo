@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { deTarif, deSoli, deIncomeTax, deNoticePeriod, deMinimumWage, deEInvoice, sgCpf, sgNotice } from "./world-de-sg-pack-2026.ts";
+import { deTarif, deSoli, deIncomeTax, deNoticePeriod, deMinimumWage, deEInvoice, sgCpf, sgNotice, sgResidentTax, sgIncomeTax } from "./world-de-sg-pack-2026.ts";
 
 test("de tarif zones", () => {
   assert.equal(deTarif(12_348), 0);
@@ -39,4 +39,11 @@ test("de soli", () => {
   assert.equal(deSoli(100_000), 5_500);
   assert.equal(deSoli(40_000, true), 0);
   assert.equal(deIncomeTax({ zvE: 300_000 }).soli, Math.floor(deTarif(300_000) * 0.055 * 100) / 100);
+});
+test("sg income tax (IRAS cumulative)", () => {
+  for (const [c, t] of [[20_000, 0], [30_000, 200], [40_000, 550], [80_000, 3_350], [120_000, 7_950], [160_000, 13_950], [200_000, 21_150], [240_000, 28_750], [280_000, 36_550], [320_000, 44_550], [500_000, 84_150], [1_000_000, 199_150]] as const) assert.equal(sgResidentTax(c), t);
+  assert.equal(sgIncomeTax({ chargeableIncome: 80_000, resident: true, ya: 2025 }).payable, 3_150);
+  assert.equal(sgIncomeTax({ chargeableIncome: 80_000, resident: true, ya: 2026 }).rebate, 0);
+  assert.equal(sgIncomeTax({ chargeableIncome: 0, resident: false, employmentIncome: 50_000 }).tax, 7_500);
+  assert.equal(sgIncomeTax({ chargeableIncome: 0, resident: false, employmentIncome: 600_000 }).tax, sgResidentTax(600_000));
 });

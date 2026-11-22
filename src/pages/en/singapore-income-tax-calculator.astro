@@ -1,0 +1,55 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/desg/SgIncomeTax';
+// Singapore income tax (2026-11-22, world pro-gap #9 follow-up). Engine: lib/world-de-sg-pack-2026.ts
+const c = {
+  "introTitle": "How much income tax do you pay in Singapore?",
+  "intro": "Tax residents pay progressive rates from YA 2024: nothing on the first $20,000, then 2% rising to 24% on income above $1,000,000. Non-residents pay 15% on employment income or the resident rates, whichever gives more tax, and 24% on other income such as director's fees.",
+  "formulaTitle": "The rules used",
+  "formulas": [
+    {
+      "title": "Resident rates (cumulative tax)",
+      "body": "$20,000 0; $30,000 $200; $40,000 $550; $80,000 $3,350; $120,000 $7,950; $160,000 $13,950; $200,000 $21,150; $240,000 $28,750; $280,000 $36,550; $320,000 $44,550; $500,000 $84,150; $1,000,000 $199,150; 24% above."
+    },
+    {
+      "title": "Rebate",
+      "body": "YA 2024 50% and YA 2025 60%, each capped at $200. No YA 2026 rebate is on the IRAS page we checked."
+    },
+    {
+      "title": "Non-residents",
+      "body": "Employment income: 15% or resident rates, whichever is higher. Other income: 24%."
+    }
+  ],
+  "howToTitle": "How to use it",
+  "steps": [
+    "Choose resident or non-resident.",
+    "Enter chargeable income (or employment income for non-residents).",
+    "Read the tax payable."
+  ],
+  "faqTitle": "FAQ",
+  "faqs": [
+    {
+      "question": "Is chargeable income my salary?",
+      "answer": "No. It is income after expenses, donations and personal reliefs."
+    },
+    {
+      "question": "Am I a tax resident?",
+      "answer": "That depends on your days in Singapore and other facts; it is not worked out here."
+    },
+    {
+      "question": "Is my data saved?",
+      "answer": "No, it stays in your browser."
+    }
+  ],
+  "disclaimer": "General information only, not tax advice."
+};
+const sources: [string, string][] = [
+  [
+    "IRAS — Individual income tax rates",
+    "https://www.iras.gov.sg/taxes/individual-income-tax/basics-of-individual-income-tax/tax-residency-and-tax-rates/individual-income-tax-rates"
+  ]
+];
+---
+<DebtReliefPage slug="singapore-income-tax-calculator" c={c} sources={sources} sourcesTitle="Sources" checked="IRAS page (last updated 27 April 2026) checked 2026-11-22">
+  <T client:load />
+</DebtReliefPage>

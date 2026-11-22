@@ -3044,6 +3044,44 @@
           "eq": 2852.52
         }
       ]
+    },
+    {
+      "skill": "oiyo-sg-guide",
+      "id": "sg-tax-80k-ya2025",
+      "ask": "I'm a Singapore tax resident with chargeable income of S$80,000 for YA 2025. How much tax do I pay?",
+      "run": [
+        "tax",
+        {
+          "chargeableIncome": 80000,
+          "resident": true,
+          "ya": 2025
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.payable",
+          "eq": 3150
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-sg-guide",
+      "id": "sg-tax-nonresident",
+      "ask": "I'm a non-resident and earned S$50,000 of employment income in Singapore. What's my tax?",
+      "run": [
+        "tax",
+        {
+          "chargeableIncome": 0,
+          "resident": false,
+          "employmentIncome": 50000
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.tax",
+          "eq": 7500
+        }
+      ]
     }
   ],
   "boundaries": {
