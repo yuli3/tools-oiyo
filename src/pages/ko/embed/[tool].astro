@@ -1,0 +1,38 @@
+---
+// 다른 사이트가 iframe으로 넣는 계산기(머리·꼬리 없음). 항상 noindex, canonical은 원래 도구 페이지.
+import "../../../styles/global.css";
+import KrSalaryScenario from "../../../components/tools/KrSalaryScenario";
+import KrUnemploymentScenario from "../../../components/tools/KrUnemploymentScenario";
+import LoanScenario from "../../../components/tools/LoanScenario";
+import KrAnnualLeaveCalculator from "../../../components/tools/KrAnnualLeaveCalculator";
+import BmiScenario from "../../../components/tools/BmiScenario";
+import { EMBEDDABLE_TOOLS, toolPageUrl, type EmbeddableTool } from "../../../data/embeddable-tools";
+
+export function getStaticPaths() {
+  return EMBEDDABLE_TOOLS.map((t) => ({ params: { tool: t.slug }, props: { t } }));
+}
+const { t } = Astro.props as { t: EmbeddableTool };
+const full = toolPageUrl(t.slug);
+---
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="canonical" href={full} />
+    <title>{t.name} — OIYO</title>
+  </head>
+  <body class="bg-background text-foreground">
+    <main class="mx-auto max-w-3xl p-3">
+      {t.slug === "salary-calculator" && <KrSalaryScenario client:load />}
+      {t.slug === "unemployment-benefits-calculator" && <KrUnemploymentScenario client:load />}
+      {t.slug === "loan-calculator" && <LoanScenario client:load />}
+      {t.slug === "annual-leave-calculator" && <KrAnnualLeaveCalculator client:load locale="ko" />}
+      {t.slug === "bmi-calculator" && <BmiScenario client:load />}
+      <p class="mt-3 text-center text-xs text-muted-foreground">
+        <a href={`${full}?utm_source=embed&utm_medium=widget`} target="_blank" rel="noopener" class="font-semibold text-primary underline underline-offset-4">{t.name} · 자세한 설명과 전체 버전 보기 ↗</a>
+      </p>
+    </main>
+  </body>
+</html>

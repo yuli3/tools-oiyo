@@ -1,0 +1,79 @@
+---
+// 블로그·카페용 계산기 위젯 모음 (2026-11-22, 창의 제안 #3). 코드를 복사해 붙이면 계산기가 그대로 작동해요.
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import { EMBEDDABLE_TOOLS, toolEmbedSnippet, toolEmbedUrl, toolPageUrl } from "../../data/embeddable-tools";
+
+const title = "블로그에 붙이는 무료 계산기 위젯 — 연봉 실수령액·실업급여·대출 이자";
+const description = "티스토리·워드프레스·노션 같은 블로그나 홈페이지에 코드 한 줄로 계산기를 넣으세요. 연봉 실수령액, 실업급여, 대출 이자, 연차, BMI 계산기를 무료로 쓸 수 있어요.";
+const shell = {
+  introTitle: "글 옆에 바로 계산해 볼 수 있게",
+  intro: "연봉·실업급여·대출 글을 쓸 때 독자가 자기 숫자로 바로 계산해 볼 수 있으면 글이 훨씬 쓸모 있어져요. 아래 코드를 복사해 글의 HTML 편집 화면에 붙이면 계산기가 그대로 작동해요. 요율이 바뀌면 우리가 고치니 글을 다시 고칠 필요가 없어요.",
+  howToTitle: "붙이는 방법",
+  steps: [
+    "넣고 싶은 계산기의 '코드 복사'를 눌러요.",
+    "티스토리: 글쓰기 → 오른쪽 위 '기본모드'를 'HTML'로 바꾸고 붙여 넣어요. 워드프레스: '사용자 정의 HTML' 블록에 붙여 넣어요.",
+    "코드 아래의 출처 링크는 지우지 말아 주세요. 무료로 쓰는 조건은 그것 하나예요.",
+  ],
+  highlightsTitle: "알아 두면 좋아요",
+  highlights: [
+    { title: "무료, 가입 없음", body: "코드만 붙이면 돼요. 광고 수익을 나누거나 가입을 요구하지 않아요." },
+    { title: "자동 업데이트", body: "최저임금·4대보험 요율이 바뀌면 위젯 안의 계산도 같이 바뀌어요." },
+    { title: "네이버 블로그는 안 돼요", body: "네이버 블로그는 외부 iframe을 막아요. 대신 계산기 주소를 링크로 넣어 주세요." },
+    { title: "높이 조절", body: "코드의 height 숫자를 바꾸면 위젯 높이가 바뀌어요. 내용이 넘치면 위젯 안에서 스크롤돼요." },
+  ],
+  disclaimer: "위젯의 계산 결과는 추정치예요. 위젯 안에는 원래 도구와 같은 방문 통계가 있을 수 있어요.",
+};
+const faqs = [
+  { q: "돈을 내야 하나요?", a: "아니요. 개인 블로그·회사 홈페이지 모두 무료예요. 출처 링크만 남겨 주세요." },
+  { q: "우리 회사 로고로 바꿀 수 있나요?", a: "지금은 안 돼요. 세무·노무 사무소용 맞춤 위젯이 필요하면 사이트 아래 연락처로 알려 주세요." },
+  { q: "다른 계산기도 넣고 싶어요", a: "많이 요청되는 계산기부터 더할게요. 지금은 다섯 가지예요." },
+];
+const tools = EMBEDDABLE_TOOLS.map((t) => ({ ...t, snippet: toolEmbedSnippet(t), embed: toolEmbedUrl(t.slug), page: toolPageUrl(t.slug) }));
+const btn = "inline-flex min-h-11 items-center justify-center rounded-md border border-border px-3 text-sm font-medium text-foreground hover:bg-muted focus-visible:outline-2 focus-visible:outline-ring";
+---
+<KrFinancePage slug="widgets" locale="ko" title={title} description={description} shell={shell} faqs={faqs} koOnly group="money">
+  <ul class="space-y-6">
+    {tools.map((t) => (
+      <li class="rounded-lg border border-border p-4">
+        <h2 class="text-lg font-semibold"><a class="underline underline-offset-4" href={`/ko/${t.slug}/`}>{t.name}</a></h2>
+        <p class="mt-1 text-sm text-muted-foreground">{t.blurb}</p>
+        <label class="mt-3 block text-xs font-semibold text-foreground" for={`code-${t.slug}`}>붙여 넣을 코드</label>
+        <textarea id={`code-${t.slug}`} readonly rows="4" class="mt-1 w-full rounded-md border border-input bg-muted/40 p-2 font-mono text-xs text-foreground break-all">{t.snippet}</textarea>
+        <div class="mt-2 flex flex-wrap gap-2">
+          <button type="button" class={btn} data-copy-for={`code-${t.slug}`} data-widget={t.slug}>코드 복사</button>
+          <details class="w-full">
+            <summary class={`${btn} cursor-pointer list-none`}>미리 보기</summary>
+            <iframe data-src={t.embed} title={`${t.name} 미리 보기`} width="100%" height={t.height} class="mt-2 rounded-lg border border-border" loading="lazy"></iframe>
+          </details>
+        </div>
+      </li>
+    ))}
+  </ul>
+  <p aria-live="polite" id="widget-status" class="mt-3 text-sm text-foreground"></p>
+  <p class="mt-4 text-xs text-muted-foreground">함께 보기: <a class="underline" href="/ko/calendar-subscribe/">공휴일·세금 마감 구독형 달력</a></p>
+  <script>
+    const status = document.getElementById("widget-status");
+    document.querySelectorAll<HTMLButtonElement>("[data-copy-for]").forEach((b) => {
+      b.addEventListener("click", async () => {
+        const ta = document.getElementById(b.dataset.copyFor!) as HTMLTextAreaElement | null;
+        if (!ta) return;
+        const w = window as unknown as { gtag?: (...a: unknown[]) => void };
+        w.gtag?.("event", "widget_code_copy", { tool: b.dataset.widget });
+        try {
+          await navigator.clipboard.writeText(ta.value);
+          if (status) status.textContent = "코드를 복사했어요. 블로그 글의 HTML 편집 화면에 붙여 넣으세요.";
+        } catch {
+          ta.select();
+          if (status) status.textContent = "코드가 선택됐어요. 복사(Ctrl+C 또는 길게 눌러 복사)하세요.";
+        }
+      });
+    });
+    // 미리 보기를 열 때만 iframe을 불러요
+    document.querySelectorAll<HTMLDetailsElement>("details").forEach((d) => {
+      d.addEventListener("toggle", () => {
+        const f = d.querySelector<HTMLIFrameElement>("iframe[data-src]");
+        if (d.open && f && !f.src) f.src = f.dataset.src!;
+      });
+    });
+  </script>
+</KrFinancePage>
