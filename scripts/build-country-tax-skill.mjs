@@ -30,6 +30,7 @@ export const COUNTRY_SKILLS = {
   residency: { dir: "oiyo-world-tax-residency-guide", libs: ["world-tax-residency-2026"], zip: "oiyo-world-tax-residency-guide-skill.zip" },
   de: { dir: "oiyo-de-guide", libs: ["world-de-sg-pack-2026"], zip: "oiyo-de-guide-skill.zip" },
   sg: { dir: "oiyo-sg-guide", libs: ["world-de-sg-pack-2026"], zip: "oiyo-sg-guide-skill.zip" },
+  parental: { dir: "oiyo-world-parental-pay-guide", libs: ["world-parental-pay-2026"], zip: "oiyo-world-parental-pay-guide-skill.zip" },
   late: { dir: "oiyo-world-late-payment-guide", libs: ["world-late-payment-2026"], zip: "oiyo-world-late-payment-guide-skill.zip" },
   delife: { dir: "oiyo-de-everyday-law-guide", libs: ["de-life-law-2026"], zip: "oiyo-de-everyday-law-guide-skill.zip" },
   home: { dir: "oiyo-world-home-purchase-guide", libs: ["world-home-purchase-2026", "acquisition-tax-countries"], zip: "oiyo-world-home-purchase-guide-skill.zip" },

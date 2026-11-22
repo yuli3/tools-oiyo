@@ -3348,6 +3348,42 @@
           "eq": false
         }
       ]
+    },
+    {
+      "skill": "oiyo-world-parental-pay-guide",
+      "id": "parental-de-elterngeld",
+      "ask": "Ich verdiene 2.000 € netto. Wie viel Elterngeld bekomme ich?",
+      "run": [
+        {
+          "country": "DE",
+          "netBefore": 2000
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.elterngeld.basic",
+          "eq": 1300
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-world-parental-pay-guide",
+      "id": "parental-uk-hicbc",
+      "ask": "Two kids, I earn £70k. How much Child Benefit do we lose?",
+      "run": [
+        {
+          "country": "UK",
+          "children": 2,
+          "adjustedNetIncome": 70000,
+          "weeklyEarnings": 1300
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.childBenefit.chargePercent",
+          "eq": 50
+        }
+      ]
     }
   ],
   "boundaries": {

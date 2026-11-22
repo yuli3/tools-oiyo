@@ -117,3 +117,12 @@ test("B2B late payment questions route to the practitioner late payment tool", (
   assert.equal(intake({ country: "UK", question: "Can I add statutory interest to an unpaid invoice from another business?" }).matches[0].mcp, "calculate_uk_late_payment_b2b");
   assert.equal(intake({ country: "FR", question: "Quelles pénalités de retard pour une facture impayée entre professionnels ?" }).matches[0].mcp, "calculate_fr_late_payment_b2b");
 });
+
+test("parental pay questions route to the lay parental pay tool", () => {
+  const r = intake({ country: "DE", question: "Wie viel Elterngeld bekomme ich mit 2.000 Euro netto?" });
+  assert.equal(r.matches[0].mcp, "calculate_de_elterngeld");
+  assert.equal(r.matches[0].audience, "person");
+  assert.equal(intake({ country: "JP", question: "育休中の育児休業給付金はいくらもらえますか" }).matches[0].mcp, "calculate_jp_childcare_leave_benefit");
+  assert.equal(intake({ country: "UK", question: "How much statutory maternity pay will I get?" }).matches[0].mcp, "calculate_uk_maternity_pay");
+  assert.equal(intake({ country: "UK", question: "Do I have to pay the high income child benefit charge on 70k?" }).matches[0].mcp, "calculate_uk_child_benefit");
+});
