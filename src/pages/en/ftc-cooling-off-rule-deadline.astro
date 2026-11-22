@@ -1,0 +1,59 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/consumer/UsCoolingOff';
+// Consumer cooling-off pack (2026-11-22, world pro-gap #2). Engine: lib/world-consumer-pack-2026.ts
+const c = {
+  "introTitle": "The FTC's three-day Cooling-Off Rule",
+  "intro": "If you buy something for $25 or more at your home, or $130 or more at a temporary location such as a hotel or fair, you can cancel until midnight of the third business day after the sale. Saturdays count as business days; Sundays and federal holidays don't. Online, mail and phone sales are not covered.",
+  "formulaTitle": "The rules used",
+  "formulas": [
+    {
+      "title": "Deadline",
+      "body": "Midnight of the third business day after the sale (16 CFR 429)."
+    },
+    {
+      "title": "Thresholds",
+      "body": "Home sales $25+, temporary locations $130+."
+    },
+    {
+      "title": "Refund",
+      "body": "Seller refunds within 10 days of your cancellation and picks up the goods or pays shipping within 20 days."
+    }
+  ],
+  "howToTitle": "How to use",
+  "steps": [
+    "Pick where you bought it.",
+    "Enter the price and sale date.",
+    "Read the last day to cancel."
+  ],
+  "faqTitle": "FAQ",
+  "faqs": [
+    {
+      "question": "Does this apply to online orders?",
+      "answer": "No. Sales made entirely online, by mail or by phone are not covered; check the seller's policy and your state's law."
+    },
+    {
+      "question": "What about federal holidays?",
+      "answer": "They don't count as business days, but this tool doesn't check the holiday calendar."
+    },
+    {
+      "question": "Is my input stored?",
+      "answer": "No, it stays in your browser."
+    }
+  ],
+  "disclaimer": "General information, not legal advice."
+};
+const sources: [string, string][] = [
+  [
+    "FTC — Buyer's remorse: the FTC's Cooling-Off Rule",
+    "https://consumer.ftc.gov/articles/buyers-remorse-ftcs-cooling-rule-may-help"
+  ],
+  [
+    "16 CFR Part 429",
+    "https://www.ftc.gov/legal-library/browse/rules/cooling-period-sales-made-home-or-other-locations"
+  ]
+];
+---
+<DebtReliefPage slug="ftc-cooling-off-rule-deadline" c={c} sources={sources} sourcesTitle="Sources" checked="consumer.ftc.gov checked 2026-11-22">
+  <T client:load />
+</DebtReliefPage>

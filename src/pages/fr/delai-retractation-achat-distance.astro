@@ -1,0 +1,59 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/consumer/FrCoolingOff';
+// Consumer cooling-off pack (2026-11-22, world pro-gap #2). Engine: lib/world-consumer-pack-2026.ts
+const c = {
+  "introTitle": "Le délai de rétractation de 14 jours",
+  "intro": "Pour un achat à distance (internet, téléphone) ou hors établissement, vous avez 14 jours calendaires pour vous rétracter sans motif : à partir du lendemain de la réception du bien, ou du lendemain de la conclusion du contrat pour un service. Un délai qui finit un samedi, un dimanche ou un jour férié est prolongé au premier jour ouvrable.",
+  "formulaTitle": "Les règles utilisées",
+  "formulas": [
+    {
+      "title": "Point de départ",
+      "body": "Bien : lendemain de la réception (du dernier bien). Service : lendemain de la conclusion (L221-18)."
+    },
+    {
+      "title": "Information omise",
+      "body": "Prolongé de 12 mois après la fin du délai initial, ou 14 jours après réception de l'information (L221-20)."
+    },
+    {
+      "title": "Remboursement",
+      "body": "Au plus tard 14 jours après que le vendeur a été informé (L221-24). Retour du bien sous 14 jours (L221-23)."
+    }
+  ],
+  "howToTitle": "Mode d'emploi",
+  "steps": [
+    "Choisissez bien ou service.",
+    "Saisissez la date de réception ou de conclusion.",
+    "Lisez la date limite et les exclusions."
+  ],
+  "faqTitle": "Questions fréquentes",
+  "faqs": [
+    {
+      "question": "Faut-il une lettre recommandée ?",
+      "answer": "Non, aucune forme n'est imposée, mais gardez une preuve. Renvoyer le colis sans déclaration ne suffit pas."
+    },
+    {
+      "question": "Les jours fériés sont-ils pris en compte ?",
+      "answer": "La règle les reporte, mais l'outil ne connaît pas le calendrier des jours fériés : seuls samedi et dimanche sont reportés."
+    },
+    {
+      "question": "Mes saisies sont-elles enregistrées ?",
+      "answer": "Non, elles restent dans votre navigateur."
+    }
+  ],
+  "disclaimer": "Information générale, pas un conseil juridique."
+};
+const sources: [string, string][] = [
+  [
+    "Service-Public.fr F10485",
+    "https://www.service-public.gouv.fr/particuliers/vosdroits/F10485"
+  ],
+  [
+    "Justice.fr — délai de rétractation",
+    "https://www.justice.fr/fiche/vente-distance-delai-retractation-consommateur"
+  ]
+];
+---
+<DebtReliefPage slug="delai-retractation-achat-distance" c={c} sources={sources} sourcesTitle="Sources" checked="service-public.gouv.fr vérifié le 2026-11-22">
+  <T client:load />
+</DebtReliefPage>

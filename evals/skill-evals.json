@@ -2464,6 +2464,87 @@
           "truthy": true
         }
       ]
+    },
+    {
+      "skill": "oiyo-world-consumer-guide",
+      "id": "consumer-jp-visit",
+      "ask": "11月20日に訪問販売で浄水器を契約して、その日に契約書をもらいました。クーリング・オフはいつまでですか？",
+      "run": [
+        "jp",
+        {
+          "kind": "visit",
+          "documentReceived": "2026-11-20"
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.lastDay",
+          "eq": "2026-11-27"
+        },
+        {
+          "path": "result.days",
+          "eq": 8
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-world-consumer-guide",
+      "id": "consumer-fr-weekend",
+      "ask": "J'ai reçu ma commande en ligne le 7 novembre 2026. Jusqu'à quand puis-je me rétracter ?",
+      "run": [
+        "fr",
+        {
+          "kind": "biens",
+          "delivered": "2026-11-07"
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.lastDay",
+          "eq": "2026-11-23"
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-world-consumer-guide",
+      "id": "consumer-cn-7day",
+      "ask": "我11月11日签收了网购的衣服，七天无理由退货最晚哪天？",
+      "run": [
+        "cn",
+        {
+          "online": true,
+          "signedFor": "2026-11-11"
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.lastDay",
+          "eq": "2026-11-18"
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-world-consumer-guide",
+      "id": "consumer-us-home",
+      "ask": "A salesman sold me a $500 vacuum at my house on Friday Nov 20, 2026. When is the last day to cancel?",
+      "run": [
+        "us",
+        {
+          "place": "home",
+          "price": 500,
+          "saleDate": "2026-11-20"
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.lastDay",
+          "eq": "2026-11-24"
+        },
+        {
+          "path": "result.covered",
+          "eq": true
+        }
+      ]
     }
   ],
   "boundaries": {

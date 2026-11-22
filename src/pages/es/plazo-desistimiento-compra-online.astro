@@ -1,0 +1,55 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/consumer/EsCoolingOff';
+// Consumer cooling-off pack (2026-11-22, world pro-gap #2). Engine: lib/world-consumer-pack-2026.ts
+const c = {
+  "introTitle": "El derecho de desistimiento de 14 días",
+  "intro": "En compras a distancia o fuera del establecimiento tiene al menos 14 días naturales para desistir sin dar motivos: desde que recibe el producto, o desde que se celebra el contrato si es un servicio. Si no le informaron de este derecho, el plazo se alarga hasta 12 meses. La empresa debe devolverle el dinero en 14 días naturales.",
+  "formulaTitle": "Las reglas usadas",
+  "formulas": [
+    {
+      "title": "Plazo",
+      "body": "14 días naturales desde la recepción del bien o la celebración del contrato de servicios."
+    },
+    {
+      "title": "Sin información",
+      "body": "Termina 12 meses después del plazo inicial; si le informan antes, 14 días desde entonces."
+    },
+    {
+      "title": "Reembolso",
+      "body": "Antes de 14 días naturales desde que la empresa conoce el desistimiento; si se retrasa, puede reclamar el doble."
+    }
+  ],
+  "howToTitle": "Cómo usarlo",
+  "steps": [
+    "Elija producto o servicio.",
+    "Ponga la fecha de recepción o de contrato.",
+    "Mire la fecha límite."
+  ],
+  "faqTitle": "Preguntas frecuentes",
+  "faqs": [
+    {
+      "question": "¿Tengo que explicar por qué?",
+      "answer": "No. Tampoco hace falta una forma concreta; cuenta la fecha de envío."
+    },
+    {
+      "question": "¿Y si el último día es festivo?",
+      "answer": "No está comprobado aquí; envíelo antes."
+    },
+    {
+      "question": "¿Se guardan mis datos?",
+      "answer": "No, se quedan en su navegador."
+    }
+  ],
+  "disclaimer": "Información general, no asesoramiento jurídico."
+};
+const sources: [string, string][] = [
+  [
+    "Consumo Responde — derecho de desistimiento",
+    "https://www.consumoresponde.es/art%C3%ADculos/derecho_de_desistimiento"
+  ]
+];
+---
+<DebtReliefPage slug="plazo-desistimiento-compra-online" c={c} sources={sources} sourcesTitle="Fuentes" checked="Consumo Responde comprobado el 2026-11-22">
+  <T client:load />
+</DebtReliefPage>

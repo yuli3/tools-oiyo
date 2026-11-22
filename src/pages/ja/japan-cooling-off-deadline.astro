@@ -1,0 +1,63 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/consumer/JpCoolingOff';
+// Consumer cooling-off pack (2026-11-22, world pro-gap #2). Engine: lib/world-consumer-pack-2026.ts
+const c = {
+  "introTitle": "クーリング・オフはいつまでできるか",
+  "intro": "訪問販売・電話勧誘販売・エステや語学教室などの特定継続的役務提供・訪問購入は8日間、マルチ商法と内職・モニター商法は20日間、書面を受け取った日から数えて無条件で契約をやめられます。期間内に発信すれば届くのが後でも有効です。ネット通販にはクーリング・オフはありません。",
+  "formulaTitle": "使っているルール",
+  "formulas": [
+    {
+      "title": "8日間",
+      "body": "訪問販売（特商法9条）、電話勧誘販売（24条）、特定継続的役務提供（48条）、訪問購入（58条の14）。"
+    },
+    {
+      "title": "20日間",
+      "body": "連鎖販売取引（40条）、業務提供誘引販売取引（58条）。"
+    },
+    {
+      "title": "数え方と通知",
+      "body": "申込書面か契約書面の早いほうを受け取った日が1日目。書面（はがき可）または電磁的記録で発信。発信主義。"
+    }
+  ],
+  "howToTitle": "使い方",
+  "steps": [
+    "契約の種類を選びます。",
+    "書面を受け取った日を入れます。",
+    "最終日と注意点を確認します。"
+  ],
+  "faqTitle": "よくある質問",
+  "faqs": [
+    {
+      "question": "ネットで買ったものは？",
+      "answer": "通信販売にはクーリング・オフ制度はありません。事業者の返品特約を確認してください。"
+    },
+    {
+      "question": "書面をもらっていません",
+      "answer": "法定の書面を受け取っていないと期間が始まっていないことがあります。消費者ホットライン188に相談してください。"
+    },
+    {
+      "question": "入力内容は保存されますか？",
+      "answer": "ブラウザの外には送りません。"
+    }
+  ],
+  "disclaimer": "一般的な情報です。法律相談・代理ではありません。"
+};
+const sources: [string, string][] = [
+  [
+    "広島県 クーリング・オフ制度",
+    "https://www.pref.hiroshima.lg.jp/soshiki/41/coolingoffseido.html"
+  ],
+  [
+    "熊本県 クーリング・オフ",
+    "https://www.pref.kumamoto.jp/soshiki/55/254382.html"
+  ],
+  [
+    "京都府 クーリング・オフ",
+    "https://www.pref.kyoto.jp/shohise/1291861110978.html"
+  ]
+];
+---
+<DebtReliefPage slug="japan-cooling-off-deadline" c={c} sources={sources} sourcesTitle="出典" checked="都道府県の消費生活センターの案内で2026-11-22に確認">
+  <T client:load />
+</DebtReliefPage>
