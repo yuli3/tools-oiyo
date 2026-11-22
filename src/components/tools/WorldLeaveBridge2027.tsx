@@ -70,6 +70,13 @@ const C: Record<Country, Copy> = {
     stripTitle: "2027年全年一览", legend: ["法定假日", "周末", "年假", "选中的连休"], workday: "调休上班", bestTitle: "请几天年假最长能休几天？", bestRow: (n) => `请${n}天`,
     options: {}, satWork: "周六也上班（大小周）", extra: "添加公司额外放假日", add: "添加",
   },
+  tw: {
+    wd: ["週日", "週一", "週二", "週三", "週四", "週五", "週六"], month: (m) => `${m}月`, leaveLabel: "可用特休天數", unit: (n) => `${n}天`,
+    summary: (l, d, r, n) => `請${l}天特休（${d}），${r}連休${n}天。`, none: "沒有符合條件的請假方案。",
+    listTitle: (n) => `特休${n}天以內的請假攻略（依效率挑選、依日期排列）`, row: (l, n) => `請${l}天 → 連休${n}天`, leaveDates: "請假",
+    stripTitle: "2027年全年一覽", legend: ["國定假日・補假", "週末", "特休", "選中的連假"], bestTitle: "請幾天特休最長能放幾天？", bestRow: (n) => `請${n}天`,
+    options: {}, satWork: "週六也要上班", extra: "加入公司額外放假日", add: "加入",
+  },
   es: {
     wd: ["dom", "lun", "mar", "mié", "jue", "vie", "sáb"], month: (m) => ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"][m - 1], leaveLabel: "Días de vacaciones que puedes usar", unit: (n) => `${n} día${n > 1 ? "s" : ""}`,
     summary: (l, d, r, n) => `Pidiendo ${l} día${l > 1 ? "s" : ""} (${d}) libras ${r}: ${n} días seguidos.`, none: "No hay puentes con estos ajustes.",
@@ -95,7 +102,7 @@ export default function WorldLeaveBridge2027({ country }: { country: Country }) 
   const md = (d: string) => {
     const x = new Date(`${d}T00:00:00Z`);
     return country === "jp" ? `${x.getUTCMonth() + 1}/${x.getUTCDate()}(${t.wd[x.getUTCDay()]})`
-      : country === "cn" ? `${x.getUTCMonth() + 1}月${x.getUTCDate()}日(${t.wd[x.getUTCDay()]})`
+      : country === "cn" || country === "tw" ? `${x.getUTCMonth() + 1}月${x.getUTCDate()}日(${t.wd[x.getUTCDay()]})`
       : country === "us" ? `${t.wd[x.getUTCDay()]} ${t.month(x.getUTCMonth() + 1)} ${x.getUTCDate()}`
       : `${t.wd[x.getUTCDay()]} ${x.getUTCDate()} ${t.month(x.getUTCMonth() + 1)}`;
   };
