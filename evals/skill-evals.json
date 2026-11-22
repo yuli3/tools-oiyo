@@ -2545,6 +2545,104 @@
           "eq": true
         }
       ]
+    },
+    {
+      "skill": "oiyo-world-inheritance-guide",
+      "id": "inherit-jp-basic",
+      "ask": "父が2026年1月15日に亡くなり、遺産は1億円、相続人は母と私の2人です。相続税はかかりますか？期限は？",
+      "run": [
+        "jp",
+        {
+          "estate": 100000000,
+          "heirs": 2,
+          "death": "2026-01-15"
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.basicDeduction",
+          "eq": 42000000
+        },
+        {
+          "path": "result.dates",
+          "has": {
+            "id": "file",
+            "date": "2026-11-15"
+          }
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-world-inheritance-guide",
+      "id": "inherit-jp-gift",
+      "ask": "祖父から500万円もらいました（私は25歳）。贈与税はいくらですか？",
+      "run": [
+        "jp-gift",
+        {
+          "amount": 5000000,
+          "special": true,
+          "year": 2026
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.tax",
+          "eq": 485000
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-world-inheritance-guide",
+      "id": "inherit-uk-rnrb",
+      "ask": "Mum died on 10 March 2026 leaving £600,000 including a £300,000 house to us kids. How much IHT and when is it due?",
+      "run": [
+        "uk",
+        {
+          "estate": 600000,
+          "homeToDescendants": true,
+          "homeValue": 300000,
+          "death": "2026-03-10"
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.tax",
+          "eq": 40000
+        },
+        {
+          "path": "result.dates",
+          "has": {
+            "id": "pay",
+            "date": "2026-09-30"
+          }
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-world-inheritance-guide",
+      "id": "inherit-fr-enfant",
+      "ask": "Je reçois 200 000 € de la succession de mon père, décédé le 31 mai 2026. Combien de droits et quel délai ?",
+      "run": [
+        "fr",
+        {
+          "part": 200000,
+          "relation": "enfant",
+          "death": "2026-05-31"
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.droits",
+          "eq": 18194
+        },
+        {
+          "path": "result.dates",
+          "has": {
+            "id": "file",
+            "date": "2026-11-30"
+          }
+        }
+      ]
     }
   ],
   "boundaries": {

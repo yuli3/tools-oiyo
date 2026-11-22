@@ -1,0 +1,59 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/inheritance/FrSuccession';
+// Inheritance and gift pack (2026-11-22, world pro-gap #3). Engine: lib/world-inheritance-pack-2026.ts
+const c = {
+  "introTitle": "Droits de succession : abattement, barème et délai",
+  "intro": "Le conjoint et le partenaire de PACS ne paient pas de droits. Chaque enfant a un abattement de 100 000 € ; au-delà, le barème en ligne directe va de 5 % à 45 %. Frères et sœurs, neveux et autres héritiers ont des abattements plus faibles et des taux de 35 % à 60 %. La déclaration se dépose dans les 6 mois du décès (12 mois hors de France).",
+  "formulaTitle": "Les règles utilisées",
+  "formulas": [
+    {
+      "title": "Abattements",
+      "body": "Enfant 100 000 €, frère/sœur 15 932 €, neveu/nièce 7 967 €, autres 1 594 €, handicap +159 325 €."
+    },
+    {
+      "title": "Barème ligne directe",
+      "body": "5 % jusqu'à 8 072 € ; 10 % ; 15 % ; 20 % jusqu'à 552 324 € ; 30 % ; 40 % ; 45 % au-delà de 1 805 677 €."
+    },
+    {
+      "title": "Délai",
+      "body": "6 mois (décès en France), 12 mois (autres cas). Pas de déclaration sous 50 000 € d'actif brut en ligne directe."
+    }
+  ],
+  "howToTitle": "Mode d'emploi",
+  "steps": [
+    "Choisissez votre lien avec le défunt.",
+    "Saisissez votre part et la date du décès.",
+    "Lisez les droits estimés et le délai."
+  ],
+  "faqTitle": "Questions fréquentes",
+  "faqs": [
+    {
+      "question": "Les donations passées comptent-elles ?",
+      "answer": "Oui, celles des 15 dernières années réduisent l'abattement ; ce rappel n'est pas calculé ici."
+    },
+    {
+      "question": "Faut-il un notaire ?",
+      "answer": "Il est souvent nécessaire (immeubles notamment) ; cet outil ne remplace pas la déclaration."
+    },
+    {
+      "question": "Mes saisies sont-elles enregistrées ?",
+      "answer": "Non, elles restent dans votre navigateur."
+    }
+  ],
+  "disclaimer": "Information générale et estimation, pas un conseil fiscal."
+};
+const sources: [string, string][] = [
+  [
+    "Service-Public.fr F35794",
+    "https://www.service-public.gouv.fr/particuliers/vosdroits/F35794"
+  ],
+  [
+    "impots.gouv.fr — déclaration de succession",
+    "https://www.impots.gouv.fr/particulier/questions/dois-je-faire-une-declaration-de-succession-en-cas-de-deces-dun-proche"
+  ]
+];
+---
+<DebtReliefPage slug="droits-succession-abattement-delai" c={c} sources={sources} sourcesTitle="Sources" checked="service-public.gouv.fr vérifié le 2026-11-22">
+  <T client:load />
+</DebtReliefPage>

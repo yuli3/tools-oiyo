@@ -1,0 +1,67 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/inheritance/UkInheritance';
+// Inheritance and gift pack (2026-11-22, world pro-gap #3). Engine: lib/world-inheritance-pack-2026.ts
+const c = {
+  "introTitle": "Inheritance Tax: threshold, rate and when to pay",
+  "intro": "No Inheritance Tax is due on an estate up to £325,000, or up to £500,000 when a home goes to children or grandchildren. Above that, the rate is 40% (36% if 10% or more goes to charity). The tax must be paid by the end of the sixth month after the death.",
+  "formulaTitle": "The rules used",
+  "formulas": [
+    {
+      "title": "Thresholds",
+      "body": "Nil rate band £325,000 (to April 2031) plus residence nil rate band up to £175,000 (to April 2030)."
+    },
+    {
+      "title": "Rate",
+      "body": "40%, or 36% if 10%+ of the net value is left to charity."
+    },
+    {
+      "title": "Gifts",
+      "body": "No tax if the giver lives 7 years; within 3 years 40%, then 32%, 24%, 16%, 8%."
+    }
+  ],
+  "howToTitle": "How to use",
+  "steps": [
+    "Enter the estate value after gifts to a spouse or charity.",
+    "Say whether the home goes to children or grandchildren.",
+    "Read the estimate and the payment date."
+  ],
+  "faqTitle": "FAQ",
+  "faqs": [
+    {
+      "question": "Is everything left to my spouse taxed?",
+      "answer": "No. Gifts to a spouse or civil partner are exempt."
+    },
+    {
+      "question": "Does the residence band shrink for large estates?",
+      "answer": "It can; that reduction is not checked here."
+    },
+    {
+      "question": "Is my input stored?",
+      "answer": "No, it stays in your browser."
+    }
+  ],
+  "disclaimer": "General information and estimates, not tax advice."
+};
+const sources: [string, string][] = [
+  [
+    "gov.uk — Inheritance Tax",
+    "https://www.gov.uk/inheritance-tax"
+  ],
+  [
+    "gov.uk — thresholds and interest rates",
+    "https://www.gov.uk/government/publications/rates-and-allowances-inheritance-tax-thresholds-and-interest-rates/inheritance-tax-thresholds-and-interest-rates"
+  ],
+  [
+    "gov.uk — Paying Inheritance Tax",
+    "https://www.gov.uk/paying-inheritance-tax"
+  ],
+  [
+    "gov.uk — Gifts",
+    "https://www.gov.uk/inheritance-tax/gifts"
+  ]
+];
+---
+<DebtReliefPage slug="uk-inheritance-tax-threshold-deadline" c={c} sources={sources} sourcesTitle="Sources" checked="gov.uk checked 2026-11-22">
+  <T client:load />
+</DebtReliefPage>
