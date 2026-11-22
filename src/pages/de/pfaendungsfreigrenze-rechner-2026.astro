@@ -1,0 +1,59 @@
+---
+import DeToolPage from '../../components/DeToolPage.astro';
+import T from '../../components/tools/desg/DePfaendung';
+// German everyday law pack (2026-11-22, world audience gap A4). Engine: lib/de-life-law-2026.ts
+const c = {
+  "introTitle": "Wie viel vom Lohn darf gepfändet werden?",
+  "intro": "Bei einer Lohnpfändung bleibt ein Grundbetrag immer frei. Er steigt mit jeder Person, der Sie Unterhalt zahlen. Vom Einkommen darüber bleibt ein Teil frei, und Einkommen über der Obergrenze ist voll pfändbar. Die Beträge gelten ab 1. Juli 2026.",
+  "formulaTitle": "Die verwendeten Beträge (monatlich)",
+  "formulas": [
+    {
+      "title": "Grundfreibetrag",
+      "body": "1.587,40 € (§ 850c Abs. 1 ZPO)."
+    },
+    {
+      "title": "Unterhaltspflichten",
+      "body": "+597,42 € für die erste Person, +332,83 € für die zweite bis fünfte Person (Abs. 2)."
+    },
+    {
+      "title": "Mehrbetrag",
+      "body": "3/10 bleiben frei, plus 2/10 für die erste und je 1/10 für weitere Personen. Einkommen über 4.866,30 € bleibt bei der Berechnung unberücksichtigt (Abs. 3)."
+    }
+  ],
+  "howToTitle": "So funktioniert es",
+  "steps": [
+    "Geben Sie Ihr monatliches Nettoeinkommen ein.",
+    "Wählen Sie die Zahl der Personen, denen Sie Unterhalt zahlen.",
+    "Lesen Sie ab, wie viel gepfändet werden darf."
+  ],
+  "faqTitle": "Häufige Fragen",
+  "faqs": [
+    {
+      "question": "Gilt das auch für mein P-Konto?",
+      "answer": "Das P-Konto hat eigene Regeln; hier wird nur die Pfändung von Arbeitseinkommen berechnet."
+    },
+    {
+      "question": "Warum weicht die Tabelle um Cent ab?",
+      "answer": "Die amtliche Tabelle rechnet in 10-€-Stufen; der Rechner rundet das Nettoeinkommen auf volle 10 € ab."
+    },
+    {
+      "question": "Werden meine Daten gespeichert?",
+      "answer": "Nein, die Berechnung läuft nur in Ihrem Browser."
+    }
+  ],
+  "disclaimer": "Allgemeine Information, keine Rechtsberatung. Bei Schulden helfen Schuldnerberatungsstellen kostenlos."
+};
+const sources: [string, string][] = [
+  [
+    "§ 850c ZPO",
+    "https://www.gesetze-im-internet.de/zpo/__850c.html"
+  ],
+  [
+    "Pfändungsfreigrenzenbekanntmachung 2026",
+    "https://www.gesetze-im-internet.de/pf_ndfreigrbek_2026/BJNR0500A0026.html"
+  ]
+];
+---
+<DeToolPage slug="pfaendungsfreigrenze-rechner-2026" c={c} sources={sources} checked="§ 850c ZPO und Pfändungsfreigrenzenbekanntmachung 2026 am 2026-11-22 geprüft">
+  <T client:load />
+</DeToolPage>
