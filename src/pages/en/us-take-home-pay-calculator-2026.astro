@@ -1,0 +1,59 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/takehome/UsTakeHome';
+// Take-home pay (2026-11-22, world audience gap A1). Engine: lib/world-take-home-2026.ts
+const c = {
+  "introTitle": "How much of your wages do you take home in 2026?",
+  "intro": "This estimate takes federal income tax (with the 2026 standard deduction) and the employee share of FICA from your wages: Social Security 6.2% up to $184,500, Medicare 1.45%, and 0.9% Additional Medicare withheld above $200,000. State and local income tax are not included.",
+  "formulaTitle": "The rules used",
+  "formulas": [
+    {
+      "title": "Federal income tax",
+      "body": "2026 brackets from 10% to 37% after the standard deduction ($16,100 single, $32,200 married filing jointly)."
+    },
+    {
+      "title": "Social Security",
+      "body": "6.2% of wages up to the 2026 wage base of $184,500."
+    },
+    {
+      "title": "Medicare",
+      "body": "1.45% of all wages, plus 0.9% Additional Medicare withheld on wages over $200,000 in the year."
+    }
+  ],
+  "howToTitle": "How to use it",
+  "steps": [
+    "Enter your annual wages before tax.",
+    "Choose single or married filing jointly.",
+    "Read the yearly and monthly take-home."
+  ],
+  "faqTitle": "FAQ",
+  "faqs": [
+    {
+      "question": "Does it include state tax?",
+      "answer": "No. State and local income tax are not included, so take-home in most states is lower."
+    },
+    {
+      "question": "Is this my paycheck withholding?",
+      "answer": "No. It is the year's tax with the standard deduction, not the W-4 withholding tables."
+    },
+    {
+      "question": "Is my data saved?",
+      "answer": "No, it stays in your browser."
+    }
+  ],
+  "disclaimer": "General information only, not tax advice."
+};
+const sources: [string, string][] = [
+  [
+    "IRS — Topic no. 751, Social Security and Medicare withholding rates",
+    "https://www.irs.gov/taxtopics/tc751"
+  ],
+  [
+    "IRS — IR-2025-103, tax inflation adjustments for 2026",
+    "https://www.irs.gov/newsroom/irs-releases-tax-inflation-adjustments-for-tax-year-2026-including-amendments-from-the-one-big-beautiful-bill"
+  ]
+];
+---
+<DebtReliefPage slug="us-take-home-pay-calculator-2026" c={c} sources={sources} sourcesTitle="Sources" checked="IRS Topic 751 (updated 9 November 2026) and IR-2025-103 checked 2026-11-22">
+  <T client:load />
+</DebtReliefPage>
