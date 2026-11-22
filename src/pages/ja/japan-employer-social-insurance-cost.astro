@@ -1,0 +1,63 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/employer/JpEmployerCost';
+// Employer payroll cost pack (2026-11-22, world pro-gap #5). Engine: lib/world-employer-cost-pack-2026.ts
+const c = {
+  "introTitle": "1人雇うと会社の負担はいくらか",
+  "intro": "会社は給与のほかに、健康保険・介護保険・厚生年金の半分、子ども・子育て拠出金の全額、雇用保険の事業主分を負担します。令和8年度の料率で、月給から会社負担の目安を出します。",
+  "formulaTitle": "使っている料率（令和8年度）",
+  "formulas": [
+    {
+      "title": "健康保険・介護保険",
+      "body": "協会けんぽ 東京9.85%（都道府県で9.21〜10.55%）、介護1.62%（40〜64歳）。どちらも半分を会社が負担。"
+    },
+    {
+      "title": "厚生年金・拠出金",
+      "body": "厚生年金18.3%を労使で半分ずつ（標準報酬65万円まで）。子ども・子育て拠出金0.36%は会社のみ。"
+    },
+    {
+      "title": "雇用保険",
+      "body": "事業主負担 一般8.5/1000、農林水産・清酒9.5/1000、建設10.5/1000。"
+    }
+  ],
+  "howToTitle": "使い方",
+  "steps": [
+    "事業の種類を選びます。",
+    "月給と従業員の年齢を入れます。",
+    "会社負担の合計と内訳を確認します。"
+  ],
+  "faqTitle": "よくある質問",
+  "faqs": [
+    {
+      "question": "労災保険は入っていますか？",
+      "answer": "業種別の料率を確認していないので含めていません。"
+    },
+    {
+      "question": "子ども・子育て支援金は？",
+      "answer": "0.23%が令和8年4月分から加わりますが、労使の分け方を確認していないので含めていません。"
+    },
+    {
+      "question": "入力内容は保存されますか？",
+      "answer": "ブラウザの外には送りません。"
+    }
+  ],
+  "disclaimer": "一般的な情報です。給与計算・社会保険手続の代行ではありません。"
+};
+const sources: [string, string][] = [
+  [
+    "協会けんぽ 令和8年度保険料率",
+    "https://www.kyoukaikenpo.or.jp/about/business/insurance_rate/rate_prefectures/r08/index.html"
+  ],
+  [
+    "日本年金機構 厚生年金保険の保険料",
+    "https://www.nenkin.go.jp/service/kounen/hokenryo/hoshu/20150515-01.html"
+  ],
+  [
+    "厚生労働省 令和8年度 雇用保険料率",
+    "https://www.mhlw.go.jp/content/001692566.pdf"
+  ]
+];
+---
+<DebtReliefPage slug="japan-employer-social-insurance-cost" c={c} sources={sources} sourcesTitle="出典" checked="協会けんぽ・日本年金機構・厚生労働省の資料で2026-11-22に確認">
+  <T client:load />
+</DebtReliefPage>

@@ -1,0 +1,55 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/employer/UkEmployerCost';
+// Employer payroll cost pack (2026-11-22, world pro-gap #5). Engine: lib/world-employer-cost-pack-2026.ts
+const c = {
+  "introTitle": "What an employee really costs in NICs",
+  "intro": "From 6 April 2026 employers pay 15% National Insurance on pay above £5,000 a year. For employees under 21 and apprentices under 25 the rate is 0% up to £50,270. The Employment Allowance can cut up to £10,500 a year off your bill, and larger employers pay the 0.5% Apprenticeship Levy.",
+  "formulaTitle": "The rates used (2026 to 2027)",
+  "formulas": [
+    {
+      "title": "Class 1 secondary",
+      "body": "15% above the secondary threshold of £5,000 a year (£96 a week, £417 a month)."
+    },
+    {
+      "title": "Under 21 and apprentices",
+      "body": "0% up to the upper secondary threshold of £50,270, 15% above."
+    },
+    {
+      "title": "Allowance and levy",
+      "body": "Employment Allowance £10,500. Apprenticeship Levy 0.5% of the pay bill minus a £15,000 allowance."
+    }
+  ],
+  "howToTitle": "How to use",
+  "steps": [
+    "Pick the employee type.",
+    "Enter the salary and how many employees earn it.",
+    "Read the yearly employer cost and breakdown."
+  ],
+  "faqTitle": "FAQ",
+  "faqs": [
+    {
+      "question": "Can every business claim the Employment Allowance?",
+      "answer": "No. There are eligibility rules that this page does not check."
+    },
+    {
+      "question": "Are pension contributions included?",
+      "answer": "No. Workplace pension and Class 1A on benefits are not included."
+    },
+    {
+      "question": "Is my input stored?",
+      "answer": "No, it stays in your browser."
+    }
+  ],
+  "disclaimer": "General information, not payroll or tax advice."
+};
+const sources: [string, string][] = [
+  [
+    "HMRC — rates and thresholds for employers 2026 to 2027",
+    "https://www.gov.uk/guidance/rates-and-thresholds-for-employers-2026-to-2027"
+  ]
+];
+---
+<DebtReliefPage slug="uk-employer-national-insurance-2026" c={c} sources={sources} sourcesTitle="Sources" checked="HMRC rates and thresholds 2026 to 2027 checked 2026-11-22">
+  <T client:load />
+</DebtReliefPage>

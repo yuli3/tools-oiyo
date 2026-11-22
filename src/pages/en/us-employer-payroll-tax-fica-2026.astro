@@ -1,0 +1,58 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/employer/UsEmployerCost';
+// Employer payroll cost pack (2026-11-22, world pro-gap #5). Engine: lib/world-employer-cost-pack-2026.ts
+const c = {
+  "introTitle": "Employer FICA on each paycheck",
+  "intro": "US employers match the employee's Social Security tax (6.2% up to the 2026 wage base of $184,500) and Medicare tax (1.45% with no cap). The 0.9% Additional Medicare Tax is the employee's alone.",
+  "formulaTitle": "The rates used (2026)",
+  "formulas": [
+    {
+      "title": "Social Security",
+      "body": "6.2% of wages up to $184,500 (2027: $192,300)."
+    },
+    {
+      "title": "Medicare",
+      "body": "1.45% of all wages; no employer match on the 0.9% Additional Medicare Tax."
+    },
+    {
+      "title": "Not included",
+      "body": "FUTA, state unemployment insurance and workers' compensation."
+    }
+  ],
+  "howToTitle": "How to use",
+  "steps": [
+    "Enter one employee's annual wages.",
+    "Read the employer FICA and the share of wages."
+  ],
+  "faqTitle": "FAQ",
+  "faqs": [
+    {
+      "question": "Why does the line flatten?",
+      "answer": "Social Security stops at the wage base; only Medicare continues."
+    },
+    {
+      "question": "What about state taxes?",
+      "answer": "They vary by state and are not included."
+    },
+    {
+      "question": "Is my input stored?",
+      "answer": "No, it stays in your browser."
+    }
+  ],
+  "disclaimer": "General information, not payroll or tax advice."
+};
+const sources: [string, string][] = [
+  [
+    "IRS Topic 751 — Social Security and Medicare withholding rates",
+    "https://www.irs.gov/taxtopics/tc751"
+  ],
+  [
+    "SSA — contribution and benefit base",
+    "https://www.ssa.gov/oact/COLA/cbb.html"
+  ]
+];
+---
+<DebtReliefPage slug="us-employer-payroll-tax-fica-2026" c={c} sources={sources} sourcesTitle="Sources" checked="IRS Topic 751 and SSA checked 2026-11-22">
+  <T client:load />
+</DebtReliefPage>
