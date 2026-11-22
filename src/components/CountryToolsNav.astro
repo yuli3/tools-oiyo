@@ -1,0 +1,43 @@
+---
+// Same-country tools split into "my own life" and "business and advisers" (2026-11-22, country UI/UX pass).
+// Data: WORLD_TOOLS in lib/world-law-intake-2026.ts (the same list as the intake page, skill and MCP). Local titles come from the page data files.
+import { WORLD_TOOLS, type Country } from '../lib/world-law-intake-2026';
+import { debtReliefTools } from '../data/debt-relief';
+import { deTools } from '../data/de-tools';
+interface Props { url: string; lang: string }
+const { url, lang } = Astro.props;
+const local = new Map<string, string>([
+  ...debtReliefTools.map((t) => [`https://tools.oiyo.net/${t.locale}/${t.slug}/`, t.title] as [string, string]),
+  ...deTools.map((t) => [`https://tools.oiyo.net/de/${t.slug}/`, t.title] as [string, string]),
+]);
+const here = WORLD_TOOLS.filter((w) => w.page === url);
+const country: Country | undefined = here[0]?.country;
+const key = lang.startsWith('zh-Hant') || lang === 'zh-TW' ? 'tw' : lang.slice(0, 2);
+const L: Record<string, [string, string, string, string]> = {
+  en: ['More tools for this country', 'My own life', 'Business and advisers', 'Not sure which one? Ask in your own words'],
+  ja: ['同じ国のほかのツール', '暮らしのこと', '事業者・専門家向け', 'どれか分からないときは、言葉で探す'],
+  zh: ['同一国家的其他工具', '个人生活', '企业与专业人士', '不确定用哪个？直接输入问题'],
+  tw: ['同一地區的其他工具', '個人生活', '企業與專業人士', '不確定用哪個？直接輸入問題'],
+  fr: ['Autres outils pour ce pays', 'Vie quotidienne', 'Entreprises et conseils', 'Vous ne savez pas lequel ? Posez votre question'],
+  es: ['Más herramientas para este país', 'Vida personal', 'Empresas y asesores', '¿No sabe cuál? Pregunte con sus palabras'],
+  de: ['Weitere Werkzeuge für dieses Land', 'Privatleben', 'Unternehmen und Berater', 'Unsicher, welches? Frage in eigenen Worten stellen'],
+};
+const t = L[key] ?? L.en;
+const seen = new Set<string>([url]);
+const others = country ? WORLD_TOOLS.filter((w) => w.country === country && !seen.has(w.page) && (seen.add(w.page), true)) : [];
+const name = (w: (typeof WORLD_TOOLS)[number]) => (local.get(w.page) ?? w.title).split(/ — | – /)[0];
+const groups = (['person', 'pro'] as const).map((a, i) => ({ head: t[i + 1], items: others.filter((w) => w.audience === a) })).filter((g) => g.items.length);
+---
+{groups.length > 0 && (
+  <nav aria-label={t[0]} class="space-y-3 border-t border-border pt-6">
+    <h2 class="text-lg font-bold">{t[0]}</h2>
+    <div class="grid gap-4 sm:grid-cols-2">
+      {groups.map((g) => (
+        <section class="rounded-md border border-border px-4 py-3">
+          <h3 class="text-sm font-semibold">{g.head}</h3>
+          <ul class="mt-2 space-y-1 text-sm">{g.items.map((w) => <li><a href={w.page.replace('https://tools.oiyo.net', '')} class="inline-block py-1 text-primary underline underline-offset-4">{name(w)}</a></li>)}</ul>
+        </section>
+      ))}
+    </div>
+  </nav>
+)}
