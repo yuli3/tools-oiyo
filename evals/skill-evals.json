@@ -3420,6 +3420,48 @@
           "eq": "2026-11-02"
         }
       ]
+    },
+    {
+      "skill": "oiyo-labor-practice-guide",
+      "id": "labor-jp-100h",
+      "ask": "特別条項ありで、今月は残業95時間・休日労働5時間でした。問題ありますか？",
+      "run": [
+        {
+          "country": "JP",
+          "special": true,
+          "months": [
+            {
+              "overtime": 95,
+              "holiday": 5
+            }
+          ]
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.compliant",
+          "eq": false
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-labor-practice-guide",
+      "id": "labor-uk-accrual",
+      "ask": "A zero-hours worker did 100 hours this month. How much holiday did they accrue?",
+      "run": [
+        {
+          "country": "UK",
+          "hours": [
+            100
+          ]
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.totalHours",
+          "eq": 12.07
+        }
+      ]
     }
   ],
   "boundaries": {

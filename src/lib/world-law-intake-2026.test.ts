@@ -133,3 +133,10 @@ test("small business VAT questions route to the practitioner registration check"
   assert.equal(r.matches[0].audience, "pro");
   assert.equal(intake({ country: "SG", question: "When do I need to register for GST if sales will pass S$1 million?" }).matches[0].mcp, "calculate_sg_gst_registration");
 });
+
+test("overtime cap and irregular-hours holiday questions route to the HR practice tool", () => {
+  const r = intake({ country: "JP", question: "特別条項付きの36協定で月80時間の残業は上限を超えますか" });
+  assert.equal(r.matches[0].mcp, "calculate_jp_overtime_cap_check");
+  assert.equal(r.matches[0].audience, "pro");
+  assert.equal(intake({ country: "UK", question: "How much holiday does a zero hours worker accrue at 12.07%?" }).matches[0].mcp, "calculate_uk_irregular_hours_holiday");
+});
