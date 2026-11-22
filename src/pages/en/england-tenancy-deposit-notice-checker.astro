@@ -1,0 +1,71 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/tenancy/UkTenancy';
+// Tenancy pack (2026-11-22, plan-20 #17). Engine: lib/world-tenancy-pack-2026.ts
+const c = {
+  "introTitle": "What the law says about your deposit and notice",
+  "intro": "Since 1 May 2026 private tenancies in England are periodic and section 21 no-fault evictions have ended. A deposit is capped at 5 weeks' rent (6 weeks if annual rent is £50,000 or more) and must be protected in a government-approved scheme within 30 days. Tenants give 2 months' notice; landlords need a ground and usually give 4 months.",
+  "formulaTitle": "Rules used",
+  "formulas": [
+    {
+      "title": "Deposit cap",
+      "body": "5 weeks' rent under £50k a year, 6 weeks at £50k or more (Tenant Fees Act 2019 Sch. 1)."
+    },
+    {
+      "title": "Protection",
+      "body": "Within 30 days, or a court orders 1–3 times the deposit (Housing Act 2004 s.213–214)."
+    },
+    {
+      "title": "Notice and rent",
+      "body": "Tenant 2 months; landlord usually 4 months with a ground; rent rises once a year with Form 4A and 2 months' notice."
+    }
+  ],
+  "howToTitle": "How to use",
+  "steps": [
+    "Enter your monthly rent and deposit.",
+    "Add the date the deposit was paid and the notice date.",
+    "Check the cap and the key dates."
+  ],
+  "faqTitle": "Questions",
+  "faqs": [
+    {
+      "question": "Can my landlord still use section 21?",
+      "answer": "No. From 1 May 2026 the landlord needs a possession ground, and cannot use the selling or moving-in grounds in the first 12 months."
+    },
+    {
+      "question": "Is there a cap on rent increases?",
+      "answer": "No percentage cap, but only once a year with Form 4A and 2 months' notice. You can challenge an above-market rise at the First-tier Tribunal."
+    },
+    {
+      "question": "Does this cover Scotland or Wales?",
+      "answer": "No, England only."
+    }
+  ],
+  "disclaimer": "General information, not legal advice."
+};
+const sources: [string, string][] = [
+  [
+    "Tenant Fees Act 2019, Schedule 1",
+    "https://www.legislation.gov.uk/ukpga/2019/4/schedule/1"
+  ],
+  [
+    "Housing Act 2004 s.213",
+    "https://www.legislation.gov.uk/ukpga/2004/34/section/213"
+  ],
+  [
+    "Housing Act 2004 s.214",
+    "https://www.legislation.gov.uk/ukpga/2004/34/section/214"
+  ],
+  [
+    "Tenancy deposit protection (gov.uk)",
+    "https://www.gov.uk/tenancy-deposit-protection"
+  ],
+  [
+    "Renters' Rights Act overview for tenants (gov.uk)",
+    "https://www.gov.uk/guidance/renters-rights-act-overview-for-tenants"
+  ]
+];
+---
+<DebtReliefPage slug="england-tenancy-deposit-notice-checker" c={c} sources={sources} sourcesTitle="Sources" checked="Checked on legislation.gov.uk and gov.uk on 2026-11-21">
+  <T client:load />
+</DebtReliefPage>

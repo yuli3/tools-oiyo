@@ -1,0 +1,55 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/tenancy/TwTenancy';
+// Tenancy pack (2026-11-22, plan-20 #17). Engine: lib/world-tenancy-pack-2026.ts
+const c = {
+  "introTitle": "租屋前後要知道的押金與終止規定",
+  "intro": "押金不得超過2個月租金。租期屆滿、返還房屋並清償債務後，出租人應返還押金或抵充後的餘額。出租人或承租人依法定事由提前終止，應於30日前以書面通知；出租人因重建終止要3個月前通知。",
+  "formulaTitle": "使用的規定",
+  "formulas": [
+    {
+      "title": "押金",
+      "body": "最多2個月租金，返還房屋後返還（第7條）。"
+    },
+    {
+      "title": "提前終止",
+      "body": "出租人30日、重建3個月（第10條）；承租人30日（第11條）。"
+    },
+    {
+      "title": "租金",
+      "body": "法律沒有調漲上限，依約定（第6條）。"
+    }
+  ],
+  "howToTitle": "使用方式",
+  "steps": [
+    "輸入月租金與押金。",
+    "專業模式可填書面通知日。",
+    "查看上限與日期。"
+  ],
+  "faqTitle": "常見問題",
+  "faqs": [
+    {
+      "question": "押金幾天內要退？",
+      "answer": "法律沒有天數規定；返還房屋並清償債務後應返還。"
+    },
+    {
+      "question": "發生糾紛找誰？",
+      "answer": "可向直轄市、縣（市）政府不動產糾紛調處委員會申請免費調處。"
+    },
+    {
+      "question": "資料會被保存嗎？",
+      "answer": "不會，只在瀏覽器內計算。"
+    }
+  ],
+  "disclaimer": "一般資訊，非法律意見。"
+};
+const sources: [string, string][] = [
+  [
+    "租賃住宅市場發展及管理條例（全國法規資料庫）",
+    "https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=D0060125"
+  ]
+];
+---
+<DebtReliefPage slug="taiwan-rental-deposit-termination" c={c} sources={sources} sourcesTitle="來源" checked="2026-11-21 於全國法規資料庫確認">
+  <T client:load />
+</DebtReliefPage>

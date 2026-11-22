@@ -1,0 +1,75 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/tenancy/UsTenancy';
+// Tenancy pack (2026-11-22, plan-20 #17). Engine: lib/world-tenancy-pack-2026.ts
+const c = {
+  "introTitle": "Your deposit and notice rights in California and New York",
+  "intro": "California caps security deposits at 1 month's rent (2 months for small landlords) and requires the return within 21 days of move-out. New York caps them at 1 month and requires the return within 14 days, or the landlord forfeits the right to keep any of it. Both states require longer landlord notice the longer you have lived there.",
+  "formulaTitle": "Rules used",
+  "formulas": [
+    {
+      "title": "California",
+      "body": "Deposit 1 month (AB 12); return 21 days; landlord notice 30/60/90 days (§1946.1); AB 1482 cap 5% + CPI, max 10%."
+    },
+    {
+      "title": "New York",
+      "body": "Deposit 1 month; return 14 days or forfeit (GOL §7-108); notice 30/60/90 days (RPL §226-c)."
+    },
+    {
+      "title": "NYC rent stabilization",
+      "body": "Renewals starting 10/1/2026–9/30/2027: 0% for 1- and 2-year leases (RGB Order #58)."
+    }
+  ],
+  "howToTitle": "How to use",
+  "steps": [
+    "Pick California or New York.",
+    "Enter rent, deposit and how long you have lived there.",
+    "Check the cap, return deadline and notice days."
+  ],
+  "faqTitle": "Questions",
+  "faqs": [
+    {
+      "question": "Does the AB 1482 cap apply to my home?",
+      "answer": "It covers most housing over 15 years old, but not most single-family homes or condos unless owned by a corporation. Check oag.ca.gov/rentcaps."
+    },
+    {
+      "question": "What if my city has rent control?",
+      "answer": "Local rent control can be stricter. This tool shows state rules only."
+    },
+    {
+      "question": "Is my data saved?",
+      "answer": "No, it stays in your browser."
+    }
+  ],
+  "disclaimer": "General information, not legal advice."
+};
+const sources: [string, string][] = [
+  [
+    "California AG: rent caps",
+    "https://oag.ca.gov/rentcaps"
+  ],
+  [
+    "California AG: security deposits (PDF)",
+    "https://oag.ca.gov/system/files/media/Know-Your-Rights-Security-Deposits-English.pdf"
+  ],
+  [
+    "California Courts: security deposits",
+    "https://selfhelp.courts.ca.gov/guide-security-deposits-california"
+  ],
+  [
+    "NY GOL §7-108",
+    "https://www.nysenate.gov/legislation/laws/GOB/7-108"
+  ],
+  [
+    "NY RPL §226-c",
+    "https://www.nysenate.gov/legislation/laws/RPP/226-C"
+  ],
+  [
+    "NY Attorney General: tenants",
+    "https://ag.ny.gov/resources/individuals/tenants-homeowners/tenants"
+  ]
+];
+---
+<DebtReliefPage slug="california-new-york-security-deposit-notice" c={c} sources={sources} sourcesTitle="Sources" checked="Checked on official California and New York pages on 2026-11-21">
+  <T client:load />
+</DebtReliefPage>

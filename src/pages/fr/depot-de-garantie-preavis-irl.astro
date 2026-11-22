@@ -1,0 +1,75 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/tenancy/FrTenancy';
+// Tenancy pack (2026-11-22, plan-20 #17). Engine: lib/world-tenancy-pack-2026.ts
+const c = {
+  "introTitle": "Ce que prévoit la loi pour le dépôt et le préavis",
+  "intro": "Le dépôt de garantie est limité à 1 mois de loyer hors charges en location vide et 2 mois en meublé. Il doit être rendu dans le mois suivant la remise des clés si l'état des lieux est conforme, 2 mois sinon ; chaque mois de retard commencé ajoute 10 % du loyer mensuel. Le locataire donne 3 mois de préavis (1 mois en zone tendue ou en meublé).",
+  "formulaTitle": "Règles utilisées",
+  "formulas": [
+    {
+      "title": "Dépôt de garantie",
+      "body": "1 mois (vide, art. 22), 2 mois (meublé, art. 25-6), restitution 1 ou 2 mois, majoration 10 % par mois commencé."
+    },
+    {
+      "title": "Préavis",
+      "body": "Locataire 3 ou 1 mois (art. 15), 1 mois en meublé (art. 25-8) ; bailleur 6 mois (vide) ou 3 mois (meublé) avant l'échéance."
+    },
+    {
+      "title": "Révision",
+      "body": "Une fois par an si le bail le prévoit, plafonnée par l'IRL (art. 17-1) ; aucune hausse pour un logement F ou G."
+    }
+  ],
+  "howToTitle": "Mode d'emploi",
+  "steps": [
+    "Choisissez location vide ou meublée.",
+    "Saisissez le loyer, le dépôt et les dates.",
+    "Lisez le délai de restitution et la majoration éventuelle."
+  ],
+  "faqTitle": "Questions fréquentes",
+  "faqs": [
+    {
+      "question": "Et l'encadrement des loyers ?",
+      "answer": "Il dépend de la ville (Paris, Lyon, Lille…). Vérifiez le loyer de référence de votre commune ; les dates pour Paris, Est Ensemble et Plaine Commune après le 24 novembre 2026 restent à confirmer."
+    },
+    {
+      "question": "Où obtenir un conseil gratuit ?",
+      "answer": "Auprès de l'ADIL de votre département (anil.org)."
+    },
+    {
+      "question": "Mes données sont-elles enregistrées ?",
+      "answer": "Non, elles restent dans votre navigateur."
+    }
+  ],
+  "disclaimer": "Informations générales, pas un conseil juridique."
+};
+const sources: [string, string][] = [
+  [
+    "Dépôt de garantie (F31269)",
+    "https://www.service-public.gouv.fr/particuliers/vosdroits/F31269"
+  ],
+  [
+    "Préavis du locataire (F1168)",
+    "https://www.service-public.gouv.fr/particuliers/vosdroits/F1168"
+  ],
+  [
+    "Congé du bailleur (F929)",
+    "https://www.service-public.gouv.fr/particuliers/vosdroits/F929"
+  ],
+  [
+    "Révision du loyer (F1311)",
+    "https://www.service-public.gouv.fr/particuliers/vosdroits/F1311"
+  ],
+  [
+    "IRL (INSEE)",
+    "https://www.insee.fr/en/statistiques/9081855"
+  ],
+  [
+    "ANIL / ADIL",
+    "https://www.anil.org/"
+  ]
+];
+---
+<DebtReliefPage slug="depot-de-garantie-preavis-irl" c={c} sources={sources} sourcesTitle="Sources" checked="Vérifié sur service-public.gouv.fr, Légifrance et l'INSEE le 2026-11-21">
+  <T client:load />
+</DebtReliefPage>

@@ -1,0 +1,63 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/tenancy/EsTenancy';
+// Tenancy pack (2026-11-22, plan-20 #17). Engine: lib/world-tenancy-pack-2026.ts
+const c = {
+  "introTitle": "Lo que dice la ley sobre la fianza y el preaviso",
+  "intro": "En un alquiler de vivienda la fianza en metálico es de 1 mensualidad y la garantía adicional no puede superar 2. Si la fianza no se devuelve en 1 mes desde la entrega de llaves, devenga interés legal. El contrato se prorroga hasta 5 años (7 si el arrendador es una empresa) y el inquilino puede irse tras 6 meses avisando con 30 días.",
+  "formulaTitle": "Reglas usadas",
+  "formulas": [
+    {
+      "title": "Fianza",
+      "body": "1 mensualidad (art. 36.1), garantía adicional máx. 2 (art. 36.5), devolución en 1 mes (art. 36.4)."
+    },
+    {
+      "title": "Duración y preaviso",
+      "body": "5 o 7 años (art. 9); arrendador avisa 4 meses y el inquilino 2 (art. 10); desistimiento tras 6 meses con 30 días (art. 11)."
+    },
+    {
+      "title": "Actualización",
+      "body": "Máximo el IRAV del INE (art. 18); del 8-10-2026 al 31-12-2027, sin nuevo acuerdo máximo 2 % (RDL 29/2026)."
+    }
+  ],
+  "howToTitle": "Cómo se usa",
+  "steps": [
+    "Introduzca la renta, la fianza y el inicio del contrato.",
+    "Añada la fecha en que avisa.",
+    "Consulte fechas y límites de actualización."
+  ],
+  "faqTitle": "Preguntas frecuentes",
+  "faqs": [
+    {
+      "question": "¿Tengo que depositar la fianza en mi comunidad autónoma?",
+      "answer": "Depende de la normativa autonómica; no se calcula aquí porque no lo hemos verificado."
+    },
+    {
+      "question": "¿El límite del 2 % se aplica a mi contrato?",
+      "answer": "El RDL 29/2026 lo fija sin nuevo acuerdo hasta el 31-12-2027; confirme en el BOE si su contrato está incluido."
+    },
+    {
+      "question": "¿Se guardan mis datos?",
+      "answer": "No, se quedan en su navegador."
+    }
+  ],
+  "disclaimer": "Información general, no es asesoramiento jurídico."
+};
+const sources: [string, string][] = [
+  [
+    "Ley 29/1994 de Arrendamientos Urbanos (BOE)",
+    "https://www.boe.es/buscar/act.php?id=BOE-A-1994-26003"
+  ],
+  [
+    "Real Decreto-ley 29/2026 (BOE)",
+    "https://www.boe.es/buscar/act.php?id=BOE-A-2026-20823"
+  ],
+  [
+    "INE: índice IRAV",
+    "https://www.ine.es/dyngs/INEbase/en/operacion.htm?c=Estadistica_C&cid=1254736177110&idp=1254735976607"
+  ]
+];
+---
+<DebtReliefPage slug="fianza-alquiler-preaviso-actualizacion" c={c} sources={sources} sourcesTitle="Fuentes" checked="Verificado en el BOE y el INE el 2026-11-21">
+  <T client:load />
+</DebtReliefPage>
