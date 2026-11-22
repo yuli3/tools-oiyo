@@ -92,3 +92,11 @@ test("corporate tax questions route to the practitioner corporate tax tool", () 
   assert.equal(intake({ country: "UK", question: "How much corporation tax with marginal relief on £90,000?" }).matches[0].mcp, "calculate_uk_corporate_tax");
   assert.equal(intake({ country: "DE", question: "Körperschaftsteuer und Gewerbesteuer für meine GmbH?" }).matches[0].mcp, "calculate_de_corporate_tax");
 });
+
+test("home purchase questions route to the layperson home purchase tools", () => {
+  const r = intake({ country: "UK", question: "How much stamp duty as a first-time buyer on a £295,000 flat?" });
+  assert.equal(r.matches[0].mcp, "calculate_uk_home_purchase_tax");
+  assert.equal(r.matches[0].audience, "person");
+  assert.equal(intake({ country: "JP", question: "マイホームを買うと不動産取得税と登録免許税はいくら？" }).matches[0].mcp, "calculate_jp_home_purchase_tax");
+  assert.equal(intake({ country: "FR", question: "Combien de frais de notaire pour un achat immobilier ?" }).matches[0].mcp, "calculate_fr_home_purchase_tax");
+});
