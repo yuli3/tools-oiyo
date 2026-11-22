@@ -1,7 +1,7 @@
 ---
 // 블로그·카페용 계산기 위젯 모음 (2026-11-22, 창의 제안 #3). 코드를 복사해 붙이면 계산기가 그대로 작동해요.
-import KrFinancePage from "../../components/KrFinancePage.astro";
-import { EMBEDDABLE_TOOLS, toolEmbedSnippet, toolEmbedUrl, toolPageUrl } from "../../data/embeddable-tools";
+import KrFinancePage from "../../../components/KrFinancePage.astro";
+import { EMBEDDABLE_TOOLS, toolEmbedSnippet, toolEmbedUrl, toolPageUrl } from "../../../data/embeddable-tools";
 
 const title = "블로그에 붙이는 무료 계산기 위젯 — 연봉 실수령액·실업급여·대출 이자";
 const description = "티스토리·워드프레스·노션 같은 블로그나 홈페이지에 코드 한 줄로 계산기를 넣으세요. 연봉 실수령액, 실업급여, 대출 이자, 연차, BMI 계산기를 무료로 쓸 수 있어요.";
@@ -50,6 +50,7 @@ const btn = "inline-flex min-h-11 items-center justify-center rounded-md border 
     ))}
   </ul>
   <p aria-live="polite" id="widget-status" class="mt-3 text-sm text-foreground"></p>
+  <p class="mt-4 text-sm text-foreground">세무·노무 사무소라면 <a class="underline" href="/ko/widgets/office/">우리 사무소 이름과 전화번호를 넣은 위젯</a>을 만들 수 있어요.</p>
   <p class="mt-4 text-xs text-muted-foreground">함께 보기: <a class="underline" href="/ko/calendar-subscribe/">공휴일·세금 마감 구독형 달력</a></p>
   <script>
     const status = document.getElementById("widget-status");
