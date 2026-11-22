@@ -109,3 +109,11 @@ test("German everyday law questions route to the DE life-law tools", () => {
   assert.equal(w.matches[0].mcp, "check_de_withdrawal_deadline");
   assert.equal(w.matches[0].audience, "person");
 });
+
+test("B2B late payment questions route to the practitioner late payment tool", () => {
+  const r = intake({ country: "DE", question: "Kunde zahlt Rechnung nicht bezahlt seit 2 Monaten: wie hoch sind Verzugszinsen und die 40 Euro Pauschale?" });
+  assert.equal(r.matches[0].mcp, "calculate_de_late_payment_b2b");
+  assert.equal(r.matches[0].audience, "pro");
+  assert.equal(intake({ country: "UK", question: "Can I add statutory interest to an unpaid invoice from another business?" }).matches[0].mcp, "calculate_uk_late_payment_b2b");
+  assert.equal(intake({ country: "FR", question: "Quelles pénalités de retard pour une facture impayée entre professionnels ?" }).matches[0].mcp, "calculate_fr_late_payment_b2b");
+});

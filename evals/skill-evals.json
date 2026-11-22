@@ -3309,6 +3309,45 @@
           "eq": 90000
         }
       ]
+    },
+    {
+      "skill": "oiyo-world-late-payment-guide",
+      "id": "late-uk-fixed-sum",
+      "ask": "A client owes us £5,000, due 1 Sept, still unpaid on 10 Dec. Base rate 3.75%. What can we add?",
+      "run": [
+        {
+          "country": "UK",
+          "amount": 5000,
+          "due": "2026-09-01",
+          "paid": "2026-12-10",
+          "baseRate": 3.75
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.compensation",
+          "eq": 70
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-world-late-payment-guide",
+      "id": "late-uk-needs-base-rate",
+      "ask": "How much statutory interest on a £5,000 invoice 100 days late?",
+      "run": [
+        {
+          "country": "UK",
+          "amount": 5000,
+          "due": "2026-09-01",
+          "paid": "2026-12-10"
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.ok",
+          "eq": false
+        }
+      ]
     }
   ],
   "boundaries": {
