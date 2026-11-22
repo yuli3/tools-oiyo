@@ -1,0 +1,67 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/company/UkCompanyCalendar';
+// Company annual calendar (2026-11-22, world pro-gap #6). Engine: lib/world-company-calendar-2026.ts
+const c = {
+  "introTitle": "Every deadline after your company's year end",
+  "intro": "A private limited company files annual accounts with Companies House 9 months after its financial year end (first accounts: 21 months after registration), pays Corporation Tax 9 months and 1 day after the accounting period ends, and files the Company Tax Return (CT600) within 12 months.",
+  "formulaTitle": "The rules used",
+  "formulas": [
+    {
+      "title": "Companies House",
+      "body": "Annual accounts 9 months after the year end; first accounts 21 months after registration."
+    },
+    {
+      "title": "Corporation Tax",
+      "body": "Pay 9 months and 1 day after the accounting period ends; CT600 due 12 months after it ends."
+    },
+    {
+      "title": "Penalties",
+      "body": "Accounts £150 to £1,500 depending on lateness (doubled two years running); CT600 £200, then more."
+    }
+  ],
+  "howToTitle": "How to use",
+  "steps": [
+    "Enter the financial year end.",
+    "Say whether these are the first accounts.",
+    "Read the dates in order and the next one due."
+  ],
+  "faqTitle": "FAQ",
+  "faqs": [
+    {
+      "question": "Is the CT accounting period always the financial year?",
+      "answer": "Usually, but not always; this page assumes it is."
+    },
+    {
+      "question": "Does this cover public companies?",
+      "answer": "No. This page covers private limited companies only."
+    },
+    {
+      "question": "Is my input stored?",
+      "answer": "No, it stays in your browser."
+    }
+  ],
+  "disclaimer": "General information, not tax or company-law advice."
+};
+const sources: [string, string][] = [
+  [
+    "gov.uk — accounts and tax returns: deadlines",
+    "https://www.gov.uk/prepare-file-annual-accounts-for-limited-company/deadlines"
+  ],
+  [
+    "gov.uk — Company Tax Returns",
+    "https://www.gov.uk/company-tax-returns"
+  ],
+  [
+    "gov.uk — late filing penalties (accounts)",
+    "https://www.gov.uk/annual-accounts/penalties-for-late-filing"
+  ],
+  [
+    "gov.uk — late filing penalties (CT600)",
+    "https://www.gov.uk/company-tax-returns/penalties-for-late-filing"
+  ]
+];
+---
+<DebtReliefPage slug="uk-company-accounts-ct600-deadlines" c={c} sources={sources} sourcesTitle="Sources" checked="gov.uk checked 2026-11-22">
+  <T client:load />
+</DebtReliefPage>

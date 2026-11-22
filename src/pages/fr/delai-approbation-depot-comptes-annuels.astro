@@ -1,0 +1,59 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/company/FrCompanyCalendar';
+// Company annual calendar (2026-11-22, world pro-gap #6). Engine: lib/world-company-calendar-2026.ts
+const c = {
+  "introTitle": "Approuver puis déposer les comptes annuels",
+  "intro": "Les comptes annuels sont en principe approuvés par l'assemblée dans les 6 mois après la clôture, puis déposés au greffe dans le mois qui suit l'approbation (2 mois en ligne). Pour une clôture au 31 décembre 2024 : approbation au 30 juin 2025, dépôt au 31 juillet 2025.",
+  "formulaTitle": "Les règles utilisées",
+  "formulas": [
+    {
+      "title": "Approbation",
+      "body": "Dans les 6 mois suivant la clôture (délai le plus pratiqué)."
+    },
+    {
+      "title": "Dépôt au greffe",
+      "body": "1 mois après l'approbation sur papier, 2 mois par voie électronique."
+    },
+    {
+      "title": "Sanction",
+      "body": "Amende de 1 500 € (3 000 € en récidive), injonction sous astreinte."
+    }
+  ],
+  "howToTitle": "Mode d'emploi",
+  "steps": [
+    "Saisissez la date de clôture.",
+    "Ajoutez la date d'approbation si elle a eu lieu.",
+    "Lisez les échéances et la prochaine."
+  ],
+  "faqTitle": "Questions fréquentes",
+  "faqs": [
+    {
+      "question": "Et la liasse fiscale ?",
+      "answer": "Sa date n'est pas calculée ici."
+    },
+    {
+      "question": "Les statuts peuvent-ils prévoir un autre délai ?",
+      "answer": "Le délai peut être fixé par les associés ; 6 mois est le plus courant."
+    },
+    {
+      "question": "Mes saisies sont-elles enregistrées ?",
+      "answer": "Non, elles restent dans votre navigateur."
+    }
+  ],
+  "disclaimer": "Information générale, pas un conseil juridique ou comptable."
+};
+const sources: [string, string][] = [
+  [
+    "entreprendre.service-public.gouv.fr — dépôt des comptes annuels",
+    "https://entreprendre.service-public.gouv.fr/actualites/A18358?lang=fr"
+  ],
+  [
+    "justice.fr — dépôt des comptes annuels d'une société",
+    "https://www.justice.fr/fiche/depot-comptes-annuels-societe"
+  ]
+];
+---
+<DebtReliefPage slug="delai-approbation-depot-comptes-annuels" c={c} sources={sources} sourcesTitle="Sources" checked="service-public et justice.fr vérifiés le 2026-11-22">
+  <T client:load />
+</DebtReliefPage>

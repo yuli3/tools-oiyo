@@ -1,0 +1,63 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/company/JpCompanyCalendar';
+// Company annual calendar (2026-11-22, world pro-gap #6). Engine: lib/world-company-calendar-2026.ts
+const c = {
+  "introTitle": "決算日から法人税・消費税の期限を並べる",
+  "intro": "法人税の確定申告と納付は、事業年度終了の日の翌日から2か月以内です。事業年度が6か月を超える会社は、期首から6か月を過ぎた日から2か月以内に中間申告をします。消費税も課税期間の終了後2か月以内で、届出をすれば1か月延ばせる場合があります。",
+  "formulaTitle": "使っているルール",
+  "formulas": [
+    {
+      "title": "法人税 確定申告",
+      "body": "事業年度終了の日の翌日から2か月以内に申告・納付。土日・祝日は翌日。"
+    },
+    {
+      "title": "中間申告",
+      "body": "事業年度が6か月超なら、6か月を過ぎた日から2か月以内。予定申告額が10万円以下なら不要。"
+    },
+    {
+      "title": "消費税",
+      "body": "課税期間終了後2か月以内。法人税の延長特例と消費税申告期限延長届出書で1か月延長（利子税あり）。"
+    }
+  ],
+  "howToTitle": "使い方",
+  "steps": [
+    "決算日を入れます。",
+    "消費税の課税事業者かを選びます。",
+    "期限の一覧と次の期限を確認します。"
+  ],
+  "faqTitle": "よくある質問",
+  "faqs": [
+    {
+      "question": "祝日は考えていますか？",
+      "answer": "土日だけ翌月曜日にずらしています。祝日・年末年始は暦で確認してください。"
+    },
+    {
+      "question": "法人税の申告期限を延ばせますか？",
+      "answer": "定款の定め等による延長特例があり、事業年度終了の日までに申請します。延長月数はここでは計算していません。"
+    },
+    {
+      "question": "入力内容は保存されますか？",
+      "answer": "ブラウザの外には送りません。"
+    }
+  ],
+  "disclaimer": "一般的な情報です。申告の代行・税務の助言ではありません。"
+};
+const sources: [string, string][] = [
+  [
+    "国税庁 法人税の申告",
+    "https://www.nta.go.jp/taxes/tetsuzuki/shinsei/annai/hojin/shinkoku/01.htm"
+  ],
+  [
+    "国税庁 法人税のあらまし（令和8年版）",
+    "https://www.nta.go.jp/publication/pamph/hojin/aramashi2026/pdf/01-03.pdf"
+  ],
+  [
+    "タックスアンサー No.6610 消費税の申告期限",
+    "https://www.nta.go.jp/taxes/shiraberu/taxanswer/shohi/6610.htm"
+  ]
+];
+---
+<DebtReliefPage slug="japan-hojin-shinkoku-kigen-calendar" c={c} sources={sources} sourcesTitle="出典" checked="国税庁の案内で2026-11-22に確認">
+  <T client:load />
+</DebtReliefPage>
