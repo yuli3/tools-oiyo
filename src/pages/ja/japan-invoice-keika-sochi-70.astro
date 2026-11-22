@@ -1,0 +1,59 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/einvoice/JpInvoiceTransition';
+// E-invoicing timelines (2026-11-22, world pro-gap #7). Engine: lib/world-einvoice-pack-2026.ts
+const c = {
+  "introTitle": "免税事業者からの仕入れ、いま何%控除できるか",
+  "intro": "インボイスのない免税事業者などからの仕入れは、経過措置で仕入税額相当額の一部を控除できます。令和8年9月30日までは80%、令和8年10月1日から令和10年9月30日までは70%、その後50%、30%と下がり、令和13年10月以降はなくなります。",
+  "formulaTitle": "使っているルール",
+  "formulas": [
+    {
+      "title": "経過措置の割合",
+      "body": "R5.10.1〜R8.9.30 80%、R8.10.1〜R10.9.30 70%、R10.10.1〜R12.9.30 50%、R12.10.1〜R13.9.30 30%。"
+    },
+    {
+      "title": "時期の判定",
+      "body": "物品は引渡しの日、役務は提供が完了した日で判定します。"
+    },
+    {
+      "title": "計算",
+      "body": "控除できる額 ＝ 仕入税額相当額 × 割合（1円未満切り捨て）。"
+    }
+  ],
+  "howToTitle": "使い方",
+  "steps": [
+    "仕入れの日を入れます。",
+    "その仕入れに含まれる消費税相当額を入れます。",
+    "控除できる割合と金額を確認します。"
+  ],
+  "faqTitle": "よくある質問",
+  "faqs": [
+    {
+      "question": "2割特例とは違いますか？",
+      "answer": "はい。2割特例は売る側の納税額の特例で、令和8年9月30日を含む課税期間までです。"
+    },
+    {
+      "question": "少額特例は？",
+      "answer": "ここでは判定していません。"
+    },
+    {
+      "question": "入力内容は保存されますか？",
+      "answer": "ブラウザの外には送りません。"
+    }
+  ],
+  "disclaimer": "一般的な情報です。税務の助言・申告の代行ではありません。"
+};
+const sources: [string, string][] = [
+  [
+    "国税庁 インボイスQ&A 問113-3",
+    "https://www.nta.go.jp/taxes/shiraberu/zeimokubetsu/shohi/keigenzeiritsu/pdf/qa/113-3.pdf"
+  ],
+  [
+    "国税庁 2割特例のご案内",
+    "https://www.nta.go.jp/publication/pamph/shohi/kaisei/202304/01.htm"
+  ]
+];
+---
+<DebtReliefPage slug="japan-invoice-keika-sochi-70" c={c} sources={sources} sourcesTitle="出典" checked="国税庁 Q&A 問113-3（令和8年4月追加）で2026-11-22に確認">
+  <T client:load />
+</DebtReliefPage>

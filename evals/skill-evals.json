@@ -2812,6 +2812,58 @@
           "eq": "2026-07-31"
         }
       ]
+    },
+    {
+      "skill": "oiyo-world-einvoice-guide",
+      "id": "einvoice-jp-70",
+      "ask": "免税事業者から2026年11月に仕入れました。消費税相当額は1万円です。いくら控除できますか？",
+      "run": [
+        "jp",
+        {
+          "purchaseDate": "2026-11-22",
+          "taxAmount": 10000
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.deductible",
+          "eq": 7000
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-world-einvoice-guide",
+      "id": "einvoice-fr-pme",
+      "ask": "Je dirige une PME. À partir de quand dois-je émettre des factures électroniques ?",
+      "run": [
+        "fr",
+        {
+          "size": "pme"
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.dates.1.date",
+          "eq": "2027-09-01"
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-world-einvoice-guide",
+      "id": "einvoice-es-autonomo",
+      "ask": "Soy autónomo y facturo con un programa. ¿Cuándo tengo que cumplir VERI*FACTU?",
+      "run": [
+        "es",
+        {
+          "sociedades": false
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.due",
+          "eq": "2027-07-01"
+        }
+      ]
     }
   ],
   "boundaries": {
