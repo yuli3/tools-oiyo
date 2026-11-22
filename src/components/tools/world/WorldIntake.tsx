@@ -13,13 +13,13 @@ export default function WorldIntake() {
   const tools = WORLD_TOOLS.filter((w) => w.country === country);
   return (
     <div className="space-y-5">
-      <div className="grid gap-3 sm:grid-cols-[14rem_1fr]">
+      <div className="grid gap-3 sm:grid-cols-3">
         <label className="text-sm font-medium">Country
           <select value={country} onChange={(e) => setCountry(e.target.value as Country)} className="mt-1 h-11 w-full rounded-md border border-border bg-background px-3 text-base">
             {COUNTRIES.map(([v, l]) => <option key={v} value={v}>{l}</option>)}
           </select>
         </label>
-        <label className="text-sm font-medium">Your question, in any language
+        <label className="text-sm font-medium sm:col-span-2">Your question, in any language
           <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="敷金が返ってこない / my landlord kept my deposit / me han despedido" className="mt-1 h-11 w-full rounded-md border border-border bg-background px-3 text-base" />
         </label>
       </div>
