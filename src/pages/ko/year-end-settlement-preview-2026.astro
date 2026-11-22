@@ -1,0 +1,33 @@
+---
+// 2026 귀속 연말정산 미리보기·간소화 시즌 안내 (2026-11-22, 전 분야 작업 1번). 엔진: lib/kr-year-end-preview-2026.ts
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import Tool from "../../components/tools/nts/YearEndPreview2026";
+import { NTS_CARD, YE_PREVIEW_AS_OF } from "../../lib/kr-year-end-preview-2026";
+
+const title = "2026 연말정산 미리보기·간소화 일정 — 12월 18일 마감, 1월 간소화, 바뀐 공제";
+const description = "홈택스 연말정산 미리보기(2026.10.28~12.18), 12월 31일까지 챙길 카드·연금저축·기부, 2027년 1월 간소화 자료 조회부터 3월 지급명세서·5월 정정 신고까지 D-day로 보여 주고, 2026년 달라진 공제를 계산기로 이어 줘요.";
+const ko = {
+  introTitle: "13월의 월급, 지금 준비할 수 있는 것",
+  intro: "국세청 홈택스 연말정산 미리보기는 1~9월 카드 사용액과 지난해 신고 내용으로 2027년 1월 연말정산 결과를 미리 계산해 줘요. 12월 18일까지 열려 있어요. 올해 공제는 12월 31일까지 쓰고 낸 돈으로 정해지니, 남은 기간에 바꿀 수 있는 것부터 챙겨요. 간소화 자료는 2027년 1월에 열려요.",
+  howToTitle: "사용 방법",
+  steps: ["가장 가까운 기한과 남은 날을 확인해요.", "내 상황(혼자·부양가족·월세)을 골라 12월에 챙길 것만 봐요.", "연결된 계산기로 카드·의료비·월세·부양가족 공제를 계산해요."],
+  highlightsTitle: "2026년 바뀐 공제",
+  highlights: [
+    { title: "카드 한도", body: "자녀 수에 따라 300만·350만·400만 원(총급여 7천만 원 이하)." },
+    { title: "교육비", body: "9세 미만 자녀 예체능 학원, 아르바이트 대학생 자녀 등록금." },
+    { title: "월세", body: "요건을 갖춘 맞벌이 부부 일부, 다자녀 면적 요건 완화." },
+    { title: "고향사랑기부금", body: "10만 원 초과 20만 원 이하 40%." },
+  ],
+  disclaimer: `국세청 안내를 정리한 일반 정보예요. 세무 상담이나 신고 대행이 아니에요. 출처: ${NTS_CARD}. 기준일 ${YE_PREVIEW_AS_OF}.`,
+};
+const faqs = [
+  { q: "연말정산 미리보기는 언제까지 쓸 수 있나요?", a: "2026년 10월 28일(수)부터 12월 18일(금)까지예요. 홈택스 → 장려금·연말정산·기부금 → 편리한 연말정산 → 연말정산 미리보기에서 써요." },
+  { q: "미리보기 결과가 실제 환급액인가요?", a: "아니에요. 올해 예상 소득과 지출로 계산한 추정치라 실제 소득·지출에 따라 달라져요(국세청)." },
+  { q: "간소화 자료는 언제 나오나요?", a: "국세청은 2027년 1월 개통 예정이라고 안내했어요. 정확한 날짜는 국세청 공지로 확인해요. 미리보기에 없던 카드 사용액도 간소화에서 제공돼요." },
+  { q: "공제를 빠뜨리면 어떻게 하나요?", a: "5월 종합소득세 신고 기간(2027년 5월 31일까지)에 근로소득 신고로 추가할 수 있어요. 월세·교육비·기부금·혼인 세액공제가 자주 빠지는 항목이에요." },
+];
+---
+<KrFinancePage slug="year-end-settlement-preview-2026" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <Tool client:load />
+  <p class="mt-4 text-xs text-muted-foreground">근거: {NTS_CARD}, 소득세법 제5조·제70조·제128조·제137조·제140조·제164조. <a class="underline" href="/ko/year-end-settlement-calculator/">연말정산 계산기</a> · <a class="underline" href="/ko/dependent-deduction-checker/">부양가족 공제 체크</a> · <a class="underline" href="/ko/medical-expense-tax-credit-calculator/">의료비 세액공제</a> · <a class="underline" href="/ko/monthly-rent-tax-credit-calculator/">월세 세액공제</a> · <a class="underline" href="/ko/tax-season-checklist-2027/">1~3월 세무 시즌 점검표</a></p>
+</KrFinancePage>
