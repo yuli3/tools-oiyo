@@ -61,3 +61,8 @@
 - 허브 `/{locale}/simple-calculators/`, 개별 6종 `/{locale}/simple-calculators/{calculator,split-bill,exchange-rate,discount,days-left,card-installment}/`. 문구는 `src/data/simple-calculators.ts`, 화면은 `SimpleShell.astro` + `tools/SimpleCalc.tsx`, 계산은 `lib/simple-calc.ts`·`lib/bill-split.ts`.
 - 겉은 입력 2~3개, 결과는 크게 한 문장(aria-live), "소리로 듣기", 버튼 56px 이상. 수수료율·송금 단위 같은 설정은 나라별 기본값으로 숨기고 "자세한 설정" 링크로 기존 계산기에 보내요. 기존 계산기 주소는 옮기지 않아요.
 - 허브는 전용 PWA manifest(`public/simple-calculators/{locale}.webmanifest`, Layout `manifest` prop)를 써요.
+
+## 구독형 달력·블로그 위젯 (2026-11-22)
+
+- 구독형 달력: `/cal/<slug>.ics`(공휴일·24절기·세금 마감 7종)는 `src/pages/cal/[feed].ics.ts`가 `lib/calendar-feeds.ts`로 빌드해요. 세금 마감은 `biz-checklist`의 `taxCalendar`를 그대로 쓰고, 24절기는 astronomy-engine으로 계산해요. UID는 slug+날짜+제목 해시라 제목을 바꾸면 구독자 달력에 새 일정으로 보여요. 다음 해 공휴일을 `kr-calendar.mjs`·`kr-business-day.ts`에 넣으면 `FEED_YEARS`도 늘려요. 안내 페이지 `/ko/calendar-subscribe/`.
+- 블로그 위젯: `/ko/embed/<slug>/`(noindex, 사이트맵 제외, `_headers`에서 `/ko/embed/*`만 X-Frame-Options 해제). 목록은 `src/data/embeddable-tools.ts`, 코드 복사 페이지 `/ko/widgets/`. 붙여 넣는 코드의 iframe 바깥 출처 링크를 지우지 않아요.
