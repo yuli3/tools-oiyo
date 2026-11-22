@@ -71,3 +71,9 @@ test("Germany and Singapore are routed with help channels from the statutes", ()
   assert.match(sg.help.find((h) => h.area === "labor")!.channel, /TADM/);
   assert.ok(intake({ country: "DE", question: "Einkommensteuer" }).taxScope?.some((x) => x.cite === "§ 4 StBerG"));
 });
+
+test("take-home pay questions route to the take-home tools", () => {
+  assert.equal(intake({ country: "UK", question: "What is my take-home pay on £40,000?" }).matches[0].mcp, "calculate_uk_take_home");
+  assert.equal(intake({ country: "JP", question: "年収500万の手取りはいくら？" }).matches[0].mcp, "calculate_jp_take_home");
+  assert.equal(intake({ country: "ES", question: "¿Cuánto es mi salario neto con 30.000 brutos?" }).matches[0].mcp, "calculate_es_take_home");
+});

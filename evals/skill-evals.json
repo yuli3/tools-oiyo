@@ -3121,6 +3121,48 @@
           "eq": 0
         }
       ]
+    },
+    {
+      "skill": "oiyo-world-take-home-guide",
+      "id": "takehome-uk-35k",
+      "ask": "I earn £35,000 in England. What's my take-home pay?",
+      "run": [
+        "uk",
+        {
+          "annual": 35000
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.incomeTax",
+          "eq": 4486
+        },
+        {
+          "path": "result.ni",
+          "eq": 1794.4
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-world-take-home-guide",
+      "id": "takehome-us-60k",
+      "ask": "I'm single and make $60,000. How much do I take home after federal tax and FICA?",
+      "run": [
+        "us",
+        {
+          "annual": 60000
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.federalTax",
+          "eq": 5020
+        },
+        {
+          "path": "result.socialSecurity",
+          "eq": 3720
+        }
+      ]
     }
   ],
   "boundaries": {
