@@ -2415,6 +2415,55 @@
           "eq": 40000
         }
       ]
+    },
+    {
+      "skill": "oiyo-world-law-intake",
+      "id": "intake-uk-deposit",
+      "ask": "My landlord in England won't protect my deposit, which tool?",
+      "run": [
+        "UK",
+        "My landlord in England won't protect my deposit"
+      ],
+      "expect": [
+        {
+          "path": "result.matches.0.mcp",
+          "eq": "check_uk_tenancy_deposit_notice"
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-world-law-intake",
+      "id": "intake-fr-micro",
+      "ask": "Je suis auto-entrepreneur, combien de cotisations URSSAF ?",
+      "run": [
+        "FR",
+        "Je suis auto-entrepreneur, combien de cotisations URSSAF ?"
+      ],
+      "expect": [
+        {
+          "path": "result.matches.0.mcp",
+          "eq": "calculate_fr_micro_entrepreneur"
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-world-law-intake",
+      "id": "intake-tw-none",
+      "ask": "你好",
+      "run": [
+        "TW",
+        "你好"
+      ],
+      "expect": [
+        {
+          "path": "result.tools",
+          "truthy": true
+        },
+        {
+          "path": "result.taxScope",
+          "truthy": true
+        }
+      ]
     }
   ],
   "boundaries": {

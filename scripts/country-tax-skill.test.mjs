@@ -76,3 +76,9 @@ test("world tenancy skill CLI", () => {
   const md = readFileSync(resolve(skillDir("tenancy"), "SKILL.md"), "utf8");
   assert.match(md, /^name: oiyo-world-tenancy-guide$/m);
 });
+
+test("world law intake skill CLI", () => {
+  const run = (...a) => JSON.parse(execFileSync(process.execPath, [resolve(skillDir("intake"), "scripts/calc.mjs"), ...a], { encoding: "utf8" })).result;
+  assert.equal(run("JP", "敷金が返ってこない").matches[0].mcp, "check_jp_rental_deposit_notice");
+  assert.equal(run("es", "me han despedido").matches[0].mcp, "calculate_es_labor_exit");
+});
