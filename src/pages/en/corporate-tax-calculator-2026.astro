@@ -1,0 +1,103 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/takehome/CorporateTax';
+// National corporate income tax 2026 (2026-11-22, world audience gap P2). Engine: lib/world-corporate-tax-2026.ts
+const c = {
+  "introTitle": "How much corporate tax does a company pay on its profit?",
+  "intro": "Enter taxable profit and see the national corporate income tax in Japan, the UK, the US, France, Spain and Germany at 2026 statutory rates, with each country's reduced band for small companies. Rates come from each tax authority's own page. Local taxes that we have not read are left out and named in the result.",
+  "formulaTitle": "Rates used (2026)",
+  "formulas": [
+    {
+      "title": "Japan",
+      "body": "23.2%. Capital of ¥100 million or less: 15% on the first ¥8 million (17% in a year with income over ¥1 billion; 19% for 適用除外事業者). Local corporate taxes not included."
+    },
+    {
+      "title": "United Kingdom",
+      "body": "19% up to £50,000, 25% above £250,000; in between, 25% less marginal relief of 3/200 × (£250,000 − augmented profits) × (taxable profits ÷ augmented profits). Limits are divided by the number of associated companies plus one."
+    },
+    {
+      "title": "United States",
+      "body": "Federal 21% of taxable income, including qualified personal service corporations. State tax not included."
+    },
+    {
+      "title": "France",
+      "body": "25%. 15% on the first €42,500 if turnover is at most €10 million and at least 75% of the paid-up capital is held by individuals."
+    },
+    {
+      "title": "Spain",
+      "body": "25%. Tax periods starting in 2026: micro-companies 19% on the first €50,000 and 21% above; reduced-size companies 23%; newly created companies 15%."
+    },
+    {
+      "title": "Germany",
+      "body": "Körperschaftsteuer 15% (falling one point a year from 2028 to 10% in 2032). Optional Gewerbesteuer: 3.5% × the municipality's Hebesatz. Solidarity surcharge not included."
+    }
+  ],
+  "howToTitle": "How to use it",
+  "steps": [
+    "Pick the country.",
+    "Enter taxable profit after your adjustments.",
+    "Answer the small-company question for that country, if one appears."
+  ],
+  "faqTitle": "FAQ",
+  "faqs": [
+    {
+      "question": "Why is my real bill higher?",
+      "answer": "Local and surcharge taxes are not included: Japanese local corporate taxes, the French social contribution, the German solidarity surcharge and US state taxes."
+    },
+    {
+      "question": "Does it work out taxable profit for me?",
+      "answer": "No. Enter profit after tax adjustments, losses and reliefs; credits are not applied."
+    },
+    {
+      "question": "Is my data saved?",
+      "answer": "No, it stays in your browser."
+    }
+  ],
+  "disclaimer": "General information on statutory rates only, not tax advice. Check with the tax authority or a tax professional."
+};
+const sources: [string, string][] = [
+  [
+    "NTA — No.5759 法人税の税率",
+    "https://www.nta.go.jp/taxes/shiraberu/taxanswer/hojin/5759.htm"
+  ],
+  [
+    "財務省 — 法人課税に関する基本的な資料",
+    "https://www.mof.go.jp/tax_policy/summary/corporation/c01.htm"
+  ],
+  [
+    "GOV.UK — Corporation Tax rates and allowances",
+    "https://www.gov.uk/government/publications/rates-and-allowances-corporation-tax/rates-and-allowances-corporation-tax"
+  ],
+  [
+    "GOV.UK — Marginal Relief for Corporation Tax",
+    "https://www.gov.uk/guidance/corporation-tax-marginal-relief"
+  ],
+  [
+    "HMRC — CTM03925 marginal relief",
+    "https://www.gov.uk/hmrc-internal-manuals/company-taxation-manual/ctm03925"
+  ],
+  [
+    "IRS — Publication 542, Corporations",
+    "https://www.irs.gov/publications/p542"
+  ],
+  [
+    "Service-public — Impôt sur les sociétés (F23575)",
+    "https://entreprendre.service-public.gouv.fr/vosdroits/F23575?lang=fr"
+  ],
+  [
+    "AEAT — Tipos de gravamen IS 2025",
+    "https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/manual-sociedades-2025/principales-novedades-impuesto-sobre-sociedades-2025/tipos-gravamen.html"
+  ],
+  [
+    "§ 23 KStG",
+    "https://www.gesetze-im-internet.de/kstg_1977/__23.html"
+  ],
+  [
+    "§ 11 GewStG",
+    "https://www.gesetze-im-internet.de/gewstg/__11.html"
+  ]
+];
+---
+<DebtReliefPage slug="corporate-tax-calculator-2026" c={c} sources={sources} sourcesTitle="Sources" checked="Tax authority pages checked 2026-11-22">
+  <T client:load />
+</DebtReliefPage>

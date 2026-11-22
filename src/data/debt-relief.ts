@@ -130,6 +130,8 @@ export const debtReliefTools = [
   { locale: 'en', languageTag: 'en-US', ogLocale: 'en_US', slug: "us-take-home-pay-calculator-2026", title: "US take-home pay calculator 2026 (federal tax and FICA)", description: "Estimate 2026 take-home pay: federal income tax with the standard deduction, Social Security 6.2% up to $184,500, Medicare 1.45% and 0.9% Additional Medicare over $200,000. No state tax.", jurisdiction: "🇺🇸 United States · federal income tax and FICA 2026" },
   // 2026-11-22 withholding on payments to non-residents (world audience gap P1)
   { locale: 'en', languageTag: 'en', ogLocale: 'en_US', slug: "withholding-tax-non-resident-payments", title: "Withholding tax on payments to non-residents (JP, US, FR, ES, TW, DE)", description: "Domestic withholding rates on royalties, services, interest, dividends, salary and director's fees paid abroad from Japan, the US, France, Spain, Taiwan and Germany, from each tax authority's page. Treaty rates not applied.", jurisdiction: "🌐 Japan · US · France · Spain · Taiwan · Germany (domestic rates)" },
+  // 2026-11-22 national corporate income tax (world audience gap P2)
+  { locale: 'en', languageTag: 'en', ogLocale: 'en_US', slug: "corporate-tax-calculator-2026", title: "Corporate tax calculator 2026 (JP, UK, US, FR, ES, DE)", description: "National corporate income tax on taxable profit at 2026 statutory rates in Japan, the UK (with marginal relief), the US, France, Spain and Germany, with each small-company band. Local taxes not read are left out.", jurisdiction: "🌐 Japan · UK · US · France · Spain · Germany (national rates)" },
 ] as const;
 
 export const debtReliefForLocale = (locale: Locale) => debtReliefTools.filter((t) => t.locale === locale);
