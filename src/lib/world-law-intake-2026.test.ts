@@ -84,3 +84,11 @@ test("withholding questions route to the practitioner withholding tool", () => {
   assert.equal(r.matches[0].audience, "pro");
   assert.equal(intake({ country: "US", question: "Do I need NRA withholding when paying a foreign contractor royalties?" }).matches[0].mcp, "check_us_withholding");
 });
+
+test("corporate tax questions route to the practitioner corporate tax tool", () => {
+  const r = intake({ country: "JP", question: "資本金1億円以下の中小法人の法人税率と法人税額を知りたい" });
+  assert.equal(r.matches[0].mcp, "calculate_jp_corporate_tax");
+  assert.equal(r.matches[0].audience, "pro");
+  assert.equal(intake({ country: "UK", question: "How much corporation tax with marginal relief on £90,000?" }).matches[0].mcp, "calculate_uk_corporate_tax");
+  assert.equal(intake({ country: "DE", question: "Körperschaftsteuer und Gewerbesteuer für meine GmbH?" }).matches[0].mcp, "calculate_de_corporate_tax");
+});

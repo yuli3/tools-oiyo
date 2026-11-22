@@ -3203,6 +3203,41 @@
           "eq": false
         }
       ]
+    },
+    {
+      "skill": "oiyo-world-corporate-tax-guide",
+      "id": "cit-us-flat",
+      "ask": "How much federal corporate tax does a C corp pay on $100,000 of taxable income?",
+      "run": [
+        {
+          "country": "US",
+          "profit": 100000
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.tax",
+          "eq": 21000
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-world-corporate-tax-guide",
+      "id": "cit-fr-pme",
+      "ask": "Combien d'IS pour une PME avec 100 000 € de bénéfice, CA 2 M€, capital détenu par des personnes physiques ?",
+      "run": [
+        {
+          "country": "FR",
+          "profit": 100000,
+          "frSme": true
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.tax",
+          "eq": 20750
+        }
+      ]
     }
   ],
   "boundaries": {
