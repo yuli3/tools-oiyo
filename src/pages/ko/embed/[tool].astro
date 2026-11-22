@@ -25,14 +25,50 @@ const full = toolPageUrl(t.slug);
   </head>
   <body class="bg-background text-foreground">
     <main class="mx-auto max-w-3xl p-3">
+      <!-- 사무소용 화이트라벨(2026-11-22 시제품): ?office=&tel=&site=&color=#RRGGBB 이 있을 때만 보여요 -->
+      <p data-office-band hidden class="mb-3 rounded-md bg-primary px-3 py-2 text-sm font-semibold text-primary-foreground"></p>
       {t.slug === "salary-calculator" && <KrSalaryScenario client:load />}
       {t.slug === "unemployment-benefits-calculator" && <KrUnemploymentScenario client:load />}
       {t.slug === "loan-calculator" && <LoanScenario client:load />}
       {t.slug === "annual-leave-calculator" && <KrAnnualLeaveCalculator client:load locale="ko" />}
       {t.slug === "bmi-calculator" && <BmiScenario client:load />}
+      <div data-office-cta hidden class="mt-4 rounded-md border border-border p-3 text-center text-sm">
+        <p class="text-foreground" data-office-cta-text></p>
+        <div class="mt-2 flex flex-wrap justify-center gap-2">
+          <a data-office-tel hidden class="inline-flex min-h-11 items-center rounded-md bg-primary px-4 font-semibold text-primary-foreground"></a>
+          <a data-office-site hidden target="_blank" rel="noopener" class="inline-flex min-h-11 items-center rounded-md border border-border px-4 font-semibold text-foreground"></a>
+        </div>
+      </div>
       <p class="mt-3 text-center text-xs text-muted-foreground">
         <a href={`${full}?utm_source=embed&utm_medium=widget`} target="_blank" rel="noopener" class="font-semibold text-primary underline underline-offset-4">{t.name} · 자세한 설명과 전체 버전 보기 ↗</a>
       </p>
     </main>
+    <script>
+      // 화이트라벨 값은 모두 textContent·검증된 href로만 넣어요(HTML 주입 금지).
+      const q = new URLSearchParams(location.search);
+      const office = (q.get("office") ?? "").trim().slice(0, 40);
+      if (office) {
+        const tel = (q.get("tel") ?? "").replace(/[^0-9+-]/g, "").slice(0, 20);
+        const siteRaw = (q.get("site") ?? "").trim();
+        let site = "";
+        try { const u = new URL(siteRaw); if (u.protocol === "https:" || u.protocol === "http:") site = u.href; } catch { /* 무시 */ }
+        const color = q.get("color") ?? "";
+        if (/^#[0-9a-fA-F]{6}$/.test(color)) document.documentElement.style.setProperty("--color-primary", color);
+        const band = document.querySelector<HTMLElement>("[data-office-band]");
+        if (band) { band.textContent = `${office}에서 제공하는 계산기예요`; band.hidden = false; }
+        const cta = document.querySelector<HTMLElement>("[data-office-cta]");
+        const text = document.querySelector<HTMLElement>("[data-office-cta-text]");
+        if (cta && text && (tel || site)) {
+          text.textContent = `결과가 궁금하면 ${office}에 물어보세요.`;
+          cta.hidden = false;
+          const t = document.querySelector<HTMLAnchorElement>("[data-office-tel]");
+          if (t && tel) { t.href = `tel:${tel}`; t.textContent = `전화 ${tel}`; t.hidden = false; }
+          const w = document.querySelector<HTMLAnchorElement>("[data-office-site]");
+          if (w && site) { w.href = site; w.textContent = "홈페이지"; w.hidden = false; }
+        }
+        const w = window as unknown as { gtag?: (...a: unknown[]) => void };
+        w.gtag?.("event", "office_widget_view", { tool: location.pathname });
+      }
+    </script>
   </body>
 </html>

@@ -66,3 +66,5 @@
 
 - 구독형 달력: `/cal/<slug>.ics`(공휴일·24절기·세금 마감 7종)는 `src/pages/cal/[feed].ics.ts`가 `lib/calendar-feeds.ts`로 빌드해요. 세금 마감은 `biz-checklist`의 `taxCalendar`를 그대로 쓰고, 24절기는 astronomy-engine으로 계산해요. UID는 slug+날짜+제목 해시라 제목을 바꾸면 구독자 달력에 새 일정으로 보여요. 다음 해 공휴일을 `kr-calendar.mjs`·`kr-business-day.ts`에 넣으면 `FEED_YEARS`도 늘려요. 안내 페이지 `/ko/calendar-subscribe/`.
 - 블로그 위젯: `/ko/embed/<slug>/`(noindex, 사이트맵 제외, `_headers`에서 `/ko/embed/*`만 X-Frame-Options 해제). 목록은 `src/data/embeddable-tools.ts`, 코드 복사 페이지 `/ko/widgets/`. 붙여 넣는 코드의 iframe 바깥 출처 링크를 지우지 않아요.
+- 사무소용 화이트라벨 위젯(시제품): `/ko/widgets/office/`가 `/ko/embed/<tool>/?office=&tel=&site=&color=` 코드를 만들어요. 값은 주소에만 있고 embed 페이지가 textContent·검증된 href로만 넣어요. GA4 `office_widget_build`.
+- 낮 길이 포스터: `/ko/daylight-poster/`, 계산 `lib/daylight.ts`(NOAA 근사, 테스트로 astronomy-engine 대비 2분 안).

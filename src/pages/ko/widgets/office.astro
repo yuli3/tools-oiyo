@@ -1,0 +1,101 @@
+---
+// 세무·노무 사무소용 화이트라벨 위젯 만들기 (2026-11-22 시제품, 창의 제안 #8). 첫 B2B 상품 실험.
+// 위젯은 /ko/embed/<tool>/?office=&tel=&site=&color= 로 그려요. 관심은 GA4 office_widget_build / office_widget_view로 재요.
+import KrFinancePage from "../../../components/KrFinancePage.astro";
+import { EMBEDDABLE_TOOLS } from "../../../data/embeddable-tools";
+
+const title = "사무소 홈페이지용 계산기 위젯 — 세무·노무 사무소 이름과 전화번호를 넣어서";
+const description = "세무회계·노무 사무소 홈페이지나 블로그에 사무소 이름, 전화번호, 색을 넣은 연봉 실수령액·실업급여·대출 계산기를 붙이세요. 계산을 마친 방문자에게 바로 상담 전화 버튼이 보여요. 베타 기간 무료예요.";
+const shell = {
+  introTitle: "계산해 본 사람이 바로 연락하게",
+  intro: "사무소 홈페이지를 찾는 사람은 대개 '내 경우엔 얼마지?'가 궁금해서 와요. 그 자리에서 계산해 보고, 결과 바로 아래 사무소 전화 버튼을 보게 하면 문의로 이어지기 쉬워요. 사무소 이름과 전화번호, 대표 색을 넣고 코드를 복사하면 끝이에요.",
+  howToTitle: "만드는 방법",
+  steps: [
+    "계산기를 고르고 사무소 이름, 전화번호, 홈페이지 주소, 대표 색을 넣어요.",
+    "오른쪽(모바일은 아래) 미리 보기로 확인해요.",
+    "코드를 복사해 홈페이지·블로그의 HTML 편집 화면에 붙여 넣어요.",
+  ],
+  highlightsTitle: "시제품 안내",
+  highlights: [
+    { title: "베타 기간 무료", body: "지금은 무료예요. 정식 출시 때 요금이 생기면 미리 알려 드리고, 그 전까지 붙인 위젯은 그대로 작동해요." },
+    { title: "요율 자동 반영", body: "최저임금·4대보험 요율이 바뀌면 위젯 계산도 같이 바뀌어요. 사무소가 고칠 일이 없어요." },
+    { title: "정보는 주소에만", body: "입력한 이름·전화번호는 위젯 주소에만 들어가요. 우리 서버에 따로 저장하지 않아요." },
+    { title: "작은 출처 표시", body: "위젯 아래에 작은 출처 링크가 남아요. 계산 엔진을 무료로 쓰는 조건이에요." },
+  ],
+  disclaimer: "위젯 계산 결과는 추정치예요. 사무소 이름으로 보여도 계산 엔진은 OIYO이고, 개별 상담 내용의 책임은 사무소에 있어요.",
+};
+const faqs = [
+  { q: "계산기를 더 넣을 수 있나요?", a: "지금은 다섯 가지예요. 많이 쓰이는 순서대로 더할게요." },
+  { q: "출처 링크를 없앨 수 있나요?", a: "시제품에서는 안 돼요. 정식 상품에서 유료 선택지로 검토하고 있어요." },
+  { q: "방문자 입력이 사무소에 전달되나요?", a: "아니요. 계산은 방문자의 브라우저 안에서만 해요. 연락은 방문자가 전화 버튼을 눌러야 이어져요." },
+];
+const input = "mt-1 min-h-11 w-full rounded-md border border-input bg-background px-3 text-base text-foreground";
+const btn = "inline-flex min-h-11 items-center justify-center rounded-md border border-border px-3 text-sm font-medium text-foreground hover:bg-muted focus-visible:outline-2 focus-visible:outline-ring";
+---
+<KrFinancePage slug="widgets/office" locale="ko" title={title} description={description} shell={shell} faqs={faqs} koOnly group="money">
+  <form id="office-form" class="grid gap-4 sm:grid-cols-2">
+    <label class="text-sm font-semibold">계산기
+      <select name="tool" class={input}>
+        {EMBEDDABLE_TOOLS.map((t) => <option value={t.slug} data-height={t.height}>{t.name}</option>)}
+      </select>
+    </label>
+    <label class="text-sm font-semibold">사무소 이름
+      <input name="office" maxlength="40" value="한빛 세무회계" class={input} />
+    </label>
+    <label class="text-sm font-semibold">전화번호
+      <input name="tel" inputmode="tel" maxlength="20" value="02-000-0000" class={input} />
+    </label>
+    <label class="text-sm font-semibold">홈페이지(선택)
+      <input name="site" type="url" placeholder="https://" class={input} />
+    </label>
+    <label class="text-sm font-semibold">대표 색
+      <input name="color" type="color" value="#1d4ed8" class={`${input} p-1`} />
+    </label>
+  </form>
+  <label class="mt-4 block text-sm font-semibold" for="office-code">붙여 넣을 코드</label>
+  <textarea id="office-code" readonly rows="4" class="mt-1 w-full break-all rounded-md border border-input bg-muted/40 p-2 font-mono text-xs text-foreground"></textarea>
+  <div class="mt-2 flex flex-wrap gap-2">
+    <button type="button" id="office-copy" class={btn}>코드 복사</button>
+  </div>
+  <p aria-live="polite" id="office-status" class="mt-2 text-sm text-foreground"></p>
+  <iframe id="office-preview" title="위젯 미리 보기" width="100%" height="900" class="mt-4 rounded-lg border border-border"></iframe>
+  <p class="mt-4 text-xs text-muted-foreground">함께 보기: <a class="underline" href="/ko/widgets/">블로그용 무료 위젯</a> · <a class="underline" href="/ko/tax-advisor-toolkit/">세무·회계 실무 도구 모음</a></p>
+  <script>
+    const form = document.getElementById("office-form") as HTMLFormElement;
+    const code = document.getElementById("office-code") as HTMLTextAreaElement;
+    const preview = document.getElementById("office-preview") as HTMLIFrameElement;
+    const status = document.getElementById("office-status");
+    const esc = (s: string) => s.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
+    let timer = 0;
+    function build() {
+      const f = new FormData(form);
+      const tool = String(f.get("tool"));
+      const sel = form.querySelector<HTMLSelectElement>("select[name=tool]")!;
+      const height = sel.selectedOptions[0]?.dataset.height ?? "900";
+      const name = sel.selectedOptions[0]?.textContent ?? "";
+      const q = new URLSearchParams();
+      for (const k of ["office", "tel", "site", "color"]) {
+        const v = String(f.get(k) ?? "").trim();
+        if (v) q.set(k, v);
+      }
+      const path = `/ko/embed/${tool}/?${q.toString()}`;
+      const src = `https://tools.oiyo.net${path}`;
+      code.value = `<iframe src="${esc(src)}" width="100%" height="${height}" style="border:0;border-radius:12px;max-width:720px" loading="lazy" title="${esc(name)}"></iframe>\n<p style="font-size:12px">계산 엔진: <a href="https://tools.oiyo.net/ko/${tool}/">${esc(name)}</a> · OIYO</p>`;
+      window.clearTimeout(timer);
+      timer = window.setTimeout(() => { preview.src = path; preview.height = height; }, 400);
+    }
+    form.addEventListener("input", build);
+    build();
+    document.getElementById("office-copy")?.addEventListener("click", async () => {
+      const w = window as unknown as { gtag?: (...a: unknown[]) => void };
+      w.gtag?.("event", "office_widget_build", { tool: new FormData(form).get("tool") });
+      try {
+        await navigator.clipboard.writeText(code.value);
+        if (status) status.textContent = "코드를 복사했어요. 홈페이지의 HTML 편집 화면에 붙여 넣으세요.";
+      } catch {
+        code.select();
+        if (status) status.textContent = "코드가 선택됐어요. 복사하세요.";
+      }
+    });
+  </script>
+</KrFinancePage>
