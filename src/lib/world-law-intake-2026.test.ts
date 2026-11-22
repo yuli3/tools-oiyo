@@ -140,3 +140,10 @@ test("overtime cap and irregular-hours holiday questions route to the HR practic
   assert.equal(r.matches[0].audience, "pro");
   assert.equal(intake({ country: "UK", question: "How much holiday does a zero hours worker accrue at 12.07%?" }).matches[0].mcp, "calculate_uk_irregular_hours_holiday");
 });
+
+test("court fee questions route to the court fee tool", () => {
+  const r = intake({ country: "DE", question: "Wie hoch sind die Gerichtskosten bei einem Streitwert von 5.000 Euro?" });
+  assert.equal(r.matches[0].mcp, "calculate_de_court_fee");
+  assert.equal(r.matches[0].audience, "pro");
+  assert.equal(intake({ country: "JP", question: "訴額300万円の訴訟の収入印紙はいくらですか" }).matches[0].mcp, "calculate_jp_court_fee");
+});

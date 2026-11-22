@@ -142,6 +142,8 @@ export const debtReliefTools = [
   { locale: 'en', languageTag: 'en', ogLocale: 'en_US', slug: "small-business-vat-registration-check", title: "Kleinunternehmer and GST registration check (Germany, Singapore)", description: "Germany's § 19 UStG small business limits from 2025 (€25,000 / €100,000 net) and Singapore's S$1 million GST registration test with the dates to apply and register.", jurisdiction: "🌐 Germany · Singapore (VAT/GST registration)" },
   // 2026-11-22 overtime caps and holiday accrual (world audience gap P5)
   { locale: 'en', languageTag: 'en', ogLocale: 'en_US', slug: "overtime-cap-holiday-accrual-check", title: "36協定 overtime cap check and UK 12.07% holiday accrual", description: "Check monthly overtime against Japan's 45/360, 720, under-100 and 80-hour average caps (with driver, construction and doctor rules), and work out UK irregular-hours holiday at 12.07%.", jurisdiction: "🌐 Japan · UK (HR practice)" },
+  // 2026-11-22 court fees (world audience gap P4)
+  { locale: 'en', languageTag: 'en', ogLocale: 'en_US', slug: "court-fee-calculator-japan-germany", title: "Court fee calculator: Japan (訴訟手数料) and Germany (GKG)", description: "Court fee to file a civil claim from the statutory tables: Japan's 民訴費用法 別表第一 for suits, appeals, 支払督促 and 調停, and Germany's § 34 GKG with the 3.0, 1.0 and Mahnbescheid rates.", jurisdiction: "🌐 Japan · Germany (court fees)" },
 ] as const;
 
 export const debtReliefForLocale = (locale: Locale) => debtReliefTools.filter((t) => t.locale === locale);
