@@ -53,7 +53,7 @@ export default function WorldIntake() {
           </section>
         ))}
       </div>
-      <p className="text-sm">Use it in Claude: <a href="/downloads/oiyo-world-law-intake-skill.zip" className="text-primary underline underline-offset-4">world law intake skill (zip)</a>, or <code>start_world_law_intake</code> on the MCP server <span className="break-all font-mono">https://api.oiyo.net/mcp</span>.</p>
+      <p className="text-sm">Use it in Claude: <a href="/downloads/oiyo-world-law-intake-skill.zip" className="text-primary underline underline-offset-4">world law intake skill (zip)</a>, or <code>start_world_law_intake</code> on the MCP server for these countries <span className="break-all font-mono">https://api-oiyo.861106.workers.dev/mcp/world</span>.</p>
     </div>
   );
 }
