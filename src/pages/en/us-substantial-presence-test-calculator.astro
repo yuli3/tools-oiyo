@@ -1,0 +1,55 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/residency/UsResidency';
+// Tax residency tests (2026-11-22, world pro-gap #8). Engine: lib/world-tax-residency-2026.ts
+const c = {
+  "introTitle": "Are you a US tax resident under the substantial presence test?",
+  "intro": "A non-US citizen without a green card is treated as a US resident for tax if they were in the US at least 31 days this year and at least 183 days over three years, counting all days this year, one third of last year's days and one sixth of the days the year before.",
+  "formulaTitle": "The rule used",
+  "formulas": [
+    {
+      "title": "Two thresholds",
+      "body": "At least 31 days this year AND at least 183 weighted days."
+    },
+    {
+      "title": "Weighted days",
+      "body": "Days this year + 1/3 of last year + 1/6 of the year before."
+    },
+    {
+      "title": "Days not counted",
+      "body": "Exempt individuals (for example F, J, M, Q students), regular commuting from Canada or Mexico, transit under 24 hours and some medical days."
+    }
+  ],
+  "howToTitle": "How to use it",
+  "steps": [
+    "Enter days in the US this year and in each of the two previous years.",
+    "Enter any days you can exclude as an exempt individual.",
+    "Read the weighted total and the result."
+  ],
+  "faqTitle": "FAQ",
+  "faqs": [
+    {
+      "question": "120 days each year: am I resident?",
+      "answer": "No. 120 + 40 + 20 = 180, under 183."
+    },
+    {
+      "question": "What about the closer connection exception or a treaty?",
+      "answer": "They can make you a nonresident even if you meet the test. They are not checked here."
+    },
+    {
+      "question": "Is my data saved?",
+      "answer": "No, it stays in your browser."
+    }
+  ],
+  "disclaimer": "General information only, not tax advice."
+};
+const sources: [string, string][] = [
+  [
+    "IRS — Substantial presence test",
+    "https://www.irs.gov/individuals/international-taxpayers/substantial-presence-test"
+  ]
+];
+---
+<DebtReliefPage slug="us-substantial-presence-test-calculator" c={c} sources={sources} sourcesTitle="Sources" checked="IRS substantial presence test page checked 2026-11-22">
+  <T client:load />
+</DebtReliefPage>

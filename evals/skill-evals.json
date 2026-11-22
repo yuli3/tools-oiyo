@@ -2864,6 +2864,62 @@
           "eq": "2027-07-01"
         }
       ]
+    },
+    {
+      "skill": "oiyo-world-tax-residency-guide",
+      "id": "residency-us-120x3",
+      "ask": "I was in the US 120 days in each of the last three years. Am I a US tax resident?",
+      "run": [
+        "us",
+        {
+          "current": 120,
+          "prior1": 120,
+          "prior2": 120
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.verdict",
+          "eq": "nonresident"
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-world-tax-residency-guide",
+      "id": "residency-uk-ties",
+      "ask": "I spent 100 days in the UK this tax year, was UK resident last year, and have 2 ties. Am I UK resident?",
+      "run": [
+        "uk",
+        {
+          "days": 100,
+          "residentInPrior3": true,
+          "ties": 2
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.verdict",
+          "eq": "resident"
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-world-tax-residency-guide",
+      "id": "residency-tw-31",
+      "ask": "我有戶籍，今年在臺灣住了40天，是居住者嗎？",
+      "run": [
+        "tw",
+        {
+          "days": 40,
+          "householdRegistration": true
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.verdict",
+          "eq": "resident"
+        }
+      ]
     }
   ],
   "boundaries": {

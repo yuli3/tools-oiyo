@@ -1,0 +1,55 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/residency/TwResidency';
+// Tax residency tests (2026-11-22, world pro-gap #8). Engine: lib/world-tax-residency-2026.ts
+const c = {
+  "introTitle": "我是不是臺灣的稅務居住者？",
+  "intro": "在中華民國境內有住所（設有戶籍）並經常居住者，一課稅年度內在境內居住合計滿31天，或居住1至30天且生活及經濟重心在境內，為居住者。無住所者，一課稅年度內居留合計滿183天，為居住者。",
+  "formulaTitle": "使用的規則",
+  "formulas": [
+    {
+      "title": "有戶籍",
+      "body": "一課稅年度內居住合計滿31天；或1至30天且生活及經濟重心在境內。"
+    },
+    {
+      "title": "無住所",
+      "body": "一課稅年度內居留合計滿183天。"
+    },
+    {
+      "title": "生活及經濟重心",
+      "body": "可參考加入全民健保、配偶或未成年子女在境內、在境內經營事業或工作等。"
+    }
+  ],
+  "howToTitle": "使用方式",
+  "steps": [
+    "選擇是否設有戶籍。",
+    "輸入一課稅年度內在境內的天數。",
+    "查看判定結果。"
+  ],
+  "faqTitle": "常見問題",
+  "faqs": [
+    {
+      "question": "課稅年度是什麼期間？",
+      "answer": "1月1日至12月31日。"
+    },
+    {
+      "question": "非居住者怎麼扣繳？",
+      "answer": "這裡不計算。"
+    },
+    {
+      "question": "輸入的資料會被儲存嗎？",
+      "answer": "不會，只在您的瀏覽器中計算。"
+    }
+  ],
+  "disclaimer": "一般資訊，非稅務建議。"
+};
+const sources: [string, string][] = [
+  [
+    "財政部稅務入口網 — 居住者與非居住者的判定",
+    "https://www.etax.nat.gov.tw/etwmain/tax-info/understanding/tax-q-and-a/national/individual-income-tax/alien-tax-question/taxation-scope/Qr67g2B"
+  ]
+];
+---
+<DebtReliefPage slug="taiwan-tax-resident-183-31-days" c={c} sources={sources} sourcesTitle="出處" checked="財政部稅務入口網 2026-11-22 核對">
+  <T client:load />
+</DebtReliefPage>

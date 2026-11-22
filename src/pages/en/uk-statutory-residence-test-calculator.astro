@@ -1,0 +1,59 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/residency/UkResidency';
+// Tax residency tests (2026-11-22, world pro-gap #8). Engine: lib/world-tax-residency-2026.ts
+const c = {
+  "introTitle": "Are you UK resident for tax under the statutory residence test?",
+  "intro": "For each tax year (6 April to 5 April) you are UK resident if you meet an automatic UK test or the sufficient ties test, and you do not meet an automatic overseas test. The number of UK ties you need goes down as your UK days go up.",
+  "formulaTitle": "The rules used",
+  "formulas": [
+    {
+      "title": "Automatic overseas tests",
+      "body": "Fewer than 16 days (if UK resident in one of the 3 previous years), fewer than 46 days (if not), or full-time work abroad with fewer than 91 UK days and fewer than 31 UK work days."
+    },
+    {
+      "title": "Automatic UK tests",
+      "body": "183 days or more, your only home is in the UK, or full-time work in the UK."
+    },
+    {
+      "title": "Sufficient ties",
+      "body": "Resident before: 16–45 days 4 ties, 46–90 days 3, 91–120 days 2, over 120 days 1. Not resident before: 46–90 days 4, 91–120 days 3, over 120 days 2."
+    }
+  ],
+  "howToTitle": "How to use it",
+  "steps": [
+    "Enter UK days in the tax year.",
+    "Say whether you were UK resident in any of the last 3 tax years.",
+    "Answer the full-time work and home questions, then count your ties."
+  ],
+  "faqTitle": "FAQ",
+  "faqs": [
+    {
+      "question": "Which ties count?",
+      "answer": "Family, accommodation, work and 90-day ties, plus the country tie if you were UK resident in one of the last 3 tax years."
+    },
+    {
+      "question": "Are split-year and the deeming rule applied?",
+      "answer": "No. Day-counting details, the deeming rule and split-year treatment are not applied here."
+    },
+    {
+      "question": "Is my data saved?",
+      "answer": "No, it stays in your browser."
+    }
+  ],
+  "disclaimer": "General information only, not tax advice."
+};
+const sources: [string, string][] = [
+  [
+    "gov.uk — Tax on foreign income: residence",
+    "https://gov.uk/tax-foreign-income/residence"
+  ],
+  [
+    "HMRC RDR3 — Statutory residence test guidance",
+    "https://www.gov.uk/government/publications/rdr3-statutory-residence-test-srt/guidance-note-for-statutory-residence-test-srt-rdr3"
+  ]
+];
+---
+<DebtReliefPage slug="uk-statutory-residence-test-calculator" c={c} sources={sources} sourcesTitle="Sources" checked="gov.uk residence page and HMRC RDR3 checked 2026-11-22">
+  <T client:load />
+</DebtReliefPage>

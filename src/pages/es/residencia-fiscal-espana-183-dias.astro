@@ -1,0 +1,55 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/residency/EsResidency';
+// Tax residency tests (2026-11-22, world pro-gap #8). Engine: lib/world-tax-residency-2026.ts
+const c = {
+  "introTitle": "¿Es usted residente fiscal en España?",
+  "intro": "Una persona es residente fiscal en España si permanece más de 183 días en el año natural o si tiene en España el núcleo principal o la base de sus actividades o intereses económicos. Se presume residente si el cónyuge no separado y los hijos menores dependientes residen en España.",
+  "formulaTitle": "Las reglas usadas",
+  "formulas": [
+    {
+      "title": "Permanencia",
+      "body": "Más de 183 días en el año natural. Las ausencias esporádicas cuentan salvo que se acredite la residencia fiscal en otro país."
+    },
+    {
+      "title": "Intereses económicos",
+      "body": "Núcleo principal o base de actividades o intereses económicos en España."
+    },
+    {
+      "title": "Presunción familiar",
+      "body": "Cónyuge no separado e hijos menores dependientes residentes en España (admite prueba en contrario)."
+    }
+  ],
+  "howToTitle": "Cómo se usa",
+  "steps": [
+    "Indique los días en España en el año natural.",
+    "Diga si su centro económico o su familia están en España.",
+    "Lea el resultado."
+  ],
+  "faqTitle": "Preguntas frecuentes",
+  "faqs": [
+    {
+      "question": "¿183 días exactos bastan?",
+      "answer": "No, deben ser más de 183."
+    },
+    {
+      "question": "¿Y si otro país también me considera residente?",
+      "answer": "Un convenio de doble imposición decide. No se calcula aquí."
+    },
+    {
+      "question": "¿Se guardan mis datos?",
+      "answer": "No, se quedan en su navegador."
+    }
+  ],
+  "disclaimer": "Información general, no es asesoramiento fiscal."
+};
+const sources: [string, string][] = [
+  [
+    "Agencia Tributaria — Persona física residente en España",
+    "https://sede.agenciatributaria.gob.es/Sede/no-residentes/residencia-personas-fisicas-juridicas/persona-fisica-residente-espana.html"
+  ]
+];
+---
+<DebtReliefPage slug="residencia-fiscal-espana-183-dias" c={c} sources={sources} sourcesTitle="Fuentes" checked="AEAT comprobada el 2026-11-22">
+  <T client:load />
+</DebtReliefPage>
