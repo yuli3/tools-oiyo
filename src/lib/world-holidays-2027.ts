@@ -11,8 +11,13 @@
  *   (Juneteenth 6/19 Sat → 6/18, July 4 Sun → 7/5, Christmas Sat → 12/24, New Year 2028 Sat → 2027-12-31).
  * - FR: Code du travail L3133-1 jours fériés; Easter Monday 3/29, Ascension 5/6, Pentecost Monday 5/17.
  * - DE: Feiertagsgesetze der Länder; bundesweit 9 Tage, Landes-Feiertage per Bundesland.
+ * - CN (round 3): 国务院办公厅关于2027年部分节假日安排的通知（国办发明电〔2026〕10号，2026-11-05）, incl. 调休 workdays.
+ * - ES (round 3): BOE-A-2026-21254, Resolución de 8 de octubre de 2026 (fiestas laborales 2027), per comunidad autónoma.
  */
-export type Country = "jp" | "us" | "uk" | "fr" | "de";
+export type Country = "jp" | "us" | "uk" | "fr" | "de" | "cn" | "es";
+
+export const ES_REGIONS = ["AN", "AR", "AS", "IB", "CN", "CB", "CM", "CL", "CT", "EX", "GA", "MD", "MC", "NC", "PV", "RI", "VC", "CE", "ML"] as const;
+export type EsRegion = (typeof ES_REGIONS)[number];
 
 export const DE_STATES = ["BW", "BY", "BE", "BB", "HB", "HH", "HE", "MV", "NI", "NW", "RP", "SL", "SN", "ST", "SH", "TH"] as const;
 export type DeState = (typeof DE_STATES)[number];
@@ -56,7 +61,56 @@ export const HOLIDAYS_2027: Record<Country, Day[]> = {
     { date: "2027-05-01", name: "Tag der Arbeit" }, { date: "2027-05-06", name: "Christi Himmelfahrt" }, { date: "2027-05-17", name: "Pfingstmontag" },
     { date: "2027-10-03", name: "Tag der Deutschen Einheit" }, { date: "2027-12-25", name: "1. Weihnachtstag" }, { date: "2027-12-26", name: "2. Weihnachtstag" },
   ],
+  cn: [
+    ...["01", "02", "03"].map((d) => ({ date: `2027-01-${d}`, name: "元旦" })),
+    ...["05", "06", "07", "08", "09", "10", "11", "12", "13"].map((d) => ({ date: `2027-02-${d}`, name: "春节" })),
+    ...["03", "04", "05"].map((d) => ({ date: `2027-04-${d}`, name: "清明节" })),
+    ...["01", "02", "03", "04", "05"].map((d) => ({ date: `2027-05-${d}`, name: "劳动节" })),
+    { date: "2027-06-09", name: "端午节" }, { date: "2027-09-15", name: "中秋节" },
+    ...["01", "02", "03", "04", "05", "06", "07"].map((d) => ({ date: `2027-10-${d}`, name: "国庆节" })),
+  ],
+  // Fiestas comunes a toda España (las 9 que tienen todas las comunidades); el resto va en ES_REGION_2027.
+  es: [
+    { date: "2026-12-25", name: "Natividad del Señor" }, { date: "2027-01-01", name: "Año Nuevo" }, { date: "2027-01-06", name: "Epifanía del Señor" },
+    { date: "2027-03-26", name: "Viernes Santo" }, { date: "2027-05-01", name: "Fiesta del Trabajo" }, { date: "2027-10-12", name: "Fiesta Nacional de España" },
+    { date: "2027-11-01", name: "Todos los Santos" }, { date: "2027-12-06", name: "Día de la Constitución" }, { date: "2027-12-08", name: "Inmaculada Concepción" },
+    { date: "2027-12-25", name: "Natividad del Señor" },
+  ],
 };
+
+/** 调休: weekend days that are working days in 2027 (same notice). */
+export const WORKDAYS_2027: Partial<Record<Country, string[]>> = {
+  cn: ["2027-01-31", "2027-02-14", "2027-05-08", "2027-09-26", "2027-10-09"],
+};
+
+/** Fiestas autonómicas 2027 (BOE-A-2026-21254 anexo). Island days in Canarias and Arán are not modelled. */
+export const ES_REGION_2027: { date: string; name: string; regions: EsRegion[] }[] = [
+  { date: "2027-03-01", name: "Día de Andalucía", regions: ["AN"] },
+  { date: "2027-03-01", name: "Día de les Illes Balears", regions: ["IB"] },
+  { date: "2027-03-10", name: "Fiesta del Eid Fitr", regions: ["ML"] },
+  { date: "2027-03-19", name: "San José", regions: ["GA", "MD", "MC", "NC", "VC"] },
+  { date: "2027-03-25", name: "Jueves Santo", regions: ["AN", "AR", "AS", "IB", "CN", "CB", "CM", "CL", "EX", "GA", "MD", "MC", "NC", "PV", "RI", "CE", "ML"] },
+  { date: "2027-03-29", name: "Lunes de Pascua", regions: ["IB", "CT", "NC", "PV", "RI", "VC"] },
+  { date: "2027-04-23", name: "San Jorge / Día de Aragón", regions: ["AR"] },
+  { date: "2027-04-23", name: "Fiesta de Castilla y León", regions: ["CL"] },
+  { date: "2027-05-17", name: "Día de las Letras Gallegas", regions: ["GA"] },
+  { date: "2027-05-17", name: "Fiesta del Sacrificio (Eid al-Adha)", regions: ["CE", "ML"] },
+  { date: "2027-05-27", name: "Corpus Christi", regions: ["CM"] },
+  { date: "2027-05-31", name: "Día de Castilla-La Mancha", regions: ["CM"] },
+  { date: "2027-06-09", name: "Día de la Región de Murcia", regions: ["MC"] },
+  { date: "2027-06-09", name: "Día de La Rioja", regions: ["RI"] },
+  { date: "2027-06-24", name: "Sant Joan", regions: ["CT"] },
+  { date: "2027-07-28", name: "Día de las Instituciones de Cantabria", regions: ["CB"] },
+  { date: "2027-08-05", name: "Nuestra Señora de África", regions: ["CE"] },
+  { date: "2027-08-16", name: "Lunes siguiente a la Asunción", regions: ["AN", "AR", "AS", "CN", "CL", "MD"] },
+  { date: "2027-09-08", name: "Día de Asturias", regions: ["AS"] },
+  { date: "2027-09-08", name: "Día de Extremadura", regions: ["EX"] },
+  { date: "2027-09-11", name: "Diada Nacional de Catalunya", regions: ["CT"] },
+  { date: "2027-09-15", name: "La Bien Aparecida", regions: ["CB"] },
+  { date: "2027-10-07", name: "Aniversario del primer Gobierno Vasco", regions: ["PV"] },
+  { date: "2027-10-09", name: "Día de la Comunitat Valenciana", regions: ["VC"] },
+  { date: "2027-10-11", name: "Lunes (traslado del 15 de agosto)", regions: ["EX"] },
+];
 
 /** Landes-Feiertage 2027, nur die auf Werktage fallen oder Brücken bilden (Sonntage wie 15.8. und 31.10. bewirken nichts). */
 export const DE_STATE_2027: { date: string; name: string; states: DeState[] }[] = [
@@ -78,11 +132,14 @@ export const OPTIONAL_2027: Record<Country, { id: string; dates: string[]; defau
   uk: [],
   fr: [{ id: "solidarite", dates: [], defaultOn: false }, { id: "alsace", dates: ["2027-03-26", "2027-12-26"], defaultOn: false }],
   de: [{ id: "heiligabend", dates: ["2027-12-24", "2027-12-31"], defaultOn: false }],
+  cn: [],
+  es: [{ id: "nochebuena", dates: ["2027-12-24", "2027-12-31"], defaultOn: false }],
 };
 
-export function holidays2027(country: Country, opts: { state?: DeState; options?: string[] } = {}): Set<string> {
+export function holidays2027(country: Country, opts: { state?: DeState; region?: EsRegion; options?: string[] } = {}): Set<string> {
   const set = new Set(HOLIDAYS_2027[country].map((d) => d.date));
   if (country === "de" && opts.state) for (const h of DE_STATE_2027) if (h.states.includes(opts.state)) set.add(h.date);
+  if (country === "es" && opts.region) for (const h of ES_REGION_2027) if (h.regions.includes(opts.region)) set.add(h.date);
   for (const o of OPTIONAL_2027[country]) {
     if (!(opts.options ?? OPTIONAL_2027[country].filter((x) => x.defaultOn).map((x) => x.id)).includes(o.id)) continue;
     for (const d of o.dates) set.add(d);
@@ -92,6 +149,14 @@ export function holidays2027(country: Country, opts: { state?: DeState; options?
   return set;
 }
 
-export function holidayName(country: Country, date: string): string | null {
-  return HOLIDAYS_2027[country].find((d) => d.date === date)?.name ?? (country === "de" ? DE_STATE_2027.find((d) => d.date === date)?.name ?? null : null);
+export function holidayName(country: Country, date: string, region?: EsRegion): string | null {
+  const base = HOLIDAYS_2027[country].find((d) => d.date === date)?.name;
+  if (base) return base;
+  if (country === "de") return DE_STATE_2027.find((d) => d.date === date)?.name ?? null;
+  if (country === "es") return ES_REGION_2027.find((d) => d.date === date && (!region || d.regions.includes(region)))?.name ?? null;
+  return null;
+}
+
+export function workdays2027(country: Country): Set<string> {
+  return new Set(WORKDAYS_2027[country] ?? []);
 }
