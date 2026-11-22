@@ -14,10 +14,16 @@ import { TW_SCOPE } from "./tw-tax-pack-2026.ts";
 export const INTAKE_AS_OF = "2026-11-22";
 export type Country = "JP" | "US" | "FR" | "ES" | "CN" | "UK" | "TW";
 export type Area = "tax" | "labor" | "tenancy" | "consumer" | "claims";
-export type IntakeTool = { country: Country; area: Area; mcp: string; page: string; title: string; keywords: string[] };
+/** Who the tool is mainly for (2026-11-22, CHOSEUN: split topics people care about from topics practitioners care about).
+ *  person: everyday life (job ending, renting, cancelling a purchase, suing, inheritance, residency, personal income tax).
+ *  pro: running a business or advising one (filing calendars, penalties, appeals, depreciation, VAT, payroll cost, e-invoicing). */
+export type Audience = "person" | "pro";
+export type IntakeTool = { country: Country; area: Area; audience: Audience; mcp: string; page: string; title: string; keywords: string[] };
+const PRO = /depreciation|capital_allowances|penalty|late_fee|late_payment|late_filing|tax_sanction|appeal|claim_deadline|calendar|employer_cost|einvoic|invoice_transition|verifactu|vat|business_tax|business_income_tax|small_profit|consumption_tax|blue_return|micro_entrepreneur|autonomo|self_employ|estimated_tax/;
+export const audienceOf = (mcp: string): Audience => (PRO.test(mcp) ? "pro" : "person");
 
 const T = "https://tools.oiyo.net/";
-const t = (country: Country, area: Area, mcp: string, path: string, title: string, keywords: string[]): IntakeTool => ({ country, area, mcp, page: `${T}${path}/`, title, keywords });
+const t = (country: Country, area: Area, mcp: string, path: string, title: string, keywords: string[]): IntakeTool => ({ country, area, audience: audienceOf(mcp), mcp, page: `${T}${path}/`, title, keywords });
 
 export const WORLD_TOOLS: IntakeTool[] = [
   t("JP", "tax", "get_jp_tax_calendar", "ja/jp-tax-calendar", "個人事業主の申告・納付期限", ["期限", "いつまで", "確定申告", "予定納税", "納付", "calendar", "deadline"]),
@@ -144,9 +150,10 @@ const AREA_WORDS: Record<Area, string[]> = {
 
 const norm = (s: string) => s.toLowerCase().normalize("NFKC");
 
-export function intake(x: { country: Country; question: string; limit?: number }) {
+export function intake(x: { country: Country; question: string; limit?: number; audience?: Audience }) {
   const q = norm(x.question ?? "");
-  const pool = WORLD_TOOLS.filter((w) => w.country === x.country);
+  const aud = x.audience === "person" || x.audience === "pro" ? x.audience : undefined;
+  const pool = WORLD_TOOLS.filter((w) => w.country === x.country && (!aud || w.audience === aud));
   const scored = pool
     .map((w) => {
       const hits = w.keywords.filter((k) => q.includes(norm(k)));
@@ -160,8 +167,9 @@ export function intake(x: { country: Country; question: string; limit?: number }
   return {
     asOf: INTAKE_AS_OF,
     country: x.country,
+    ...(aud ? { audience: aud } : {}),
     matches,
-    ...(matches.length ? {} : { tools: pool.map(({ area, mcp, page, title }) => ({ area, mcp, page, title })) }),
+    ...(matches.length ? {} : { tools: pool.map(({ area, audience, mcp, page, title }) => ({ area, audience, mcp, page, title })) }),
     help: (areas.length ? areas : (["tax", "labor", "tenancy", "consumer", "claims"] as Area[])).map((a) => ({ area: a, channel: HELP[x.country][a] })),
     taxScope: areas.includes("tax") || !areas.length ? TAX_SCOPE[x.country] : undefined,
     note: "Routing only: general information, no legal or tax advice, no representation, no filing. Areas not covered yet: inheritance in Spain and mainland China, limitation periods in Spain and mainland China, employer payroll in France, Taiwan and mainland China, company filing calendars in Spain, Taiwan and mainland China, tax residency in mainland China. Germany and Singapore are not routed here yet: use the oiyo-de-guide and oiyo-sg-guide skills (de_* and sg_* MCP tools).",

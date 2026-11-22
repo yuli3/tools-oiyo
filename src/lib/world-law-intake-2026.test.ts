@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { intake, WORLD_TOOLS } from "./world-law-intake-2026.ts";
+import { intake, WORLD_TOOLS, audienceOf } from "./world-law-intake-2026.ts";
 
 test("routes local-language questions to the local tool", () => {
   assert.equal(intake({ country: "JP", question: "退去したのに敷金が返ってきません" }).matches[0].mcp, "check_jp_rental_deposit_notice");
@@ -42,4 +42,22 @@ test("inheritance questions route to the inheritance tools", () => {
 test("time-limit and small-claims questions route to the claims tools", () => {
   assert.equal(intake({ country: "JP", question: "貸したお金の消滅時効は何年？少額訴訟できる？" }).matches[0].mcp, "check_jp_limitation_small_claims");
   assert.equal(intake({ country: "UK", question: "How long do I have to make a small claims money claim?" }).matches[0].mcp, "check_uk_limitation_small_claims");
+});
+
+test("audience: everyday topics vs practitioner topics", () => {
+  assert.equal(audienceOf("check_jp_rental_deposit_notice"), "person");
+  assert.equal(audienceOf("calculate_uk_labor_exit"), "person");
+  assert.equal(audienceOf("calculate_jp_inheritance_gift_tax"), "person");
+  assert.equal(audienceOf("calculate_jp_depreciation"), "pro");
+  assert.equal(audienceOf("get_fr_tax_calendar"), "pro");
+  assert.equal(audienceOf("check_uk_vat_registration"), "pro");
+  assert.equal(audienceOf("calculate_es_employer_cost"), "pro");
+  for (const c of ["JP", "US", "FR", "ES", "CN", "UK", "TW"] as const) {
+    const pool = WORLD_TOOLS.filter((w) => w.country === c);
+    assert.ok(pool.some((w) => w.audience === "person") && pool.some((w) => w.audience === "pro"), c);
+  }
+  const r = intake({ country: "JP", question: "hello", audience: "person" });
+  assert.equal(r.audience, "person");
+  assert.ok(r.tools?.every((t) => t.audience === "person"));
+  assert.equal(intake({ country: "JP", question: "減価償却の耐用年数", audience: "person" }).matches.length, 0);
 });

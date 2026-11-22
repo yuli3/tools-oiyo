@@ -3082,6 +3082,26 @@
           "eq": 7500
         }
       ]
+    },
+    {
+      "skill": "oiyo-world-law-intake",
+      "id": "intake-jp-pro-audience",
+      "ask": "税理士です。顧客の減価償却の耐用年数を確認したい",
+      "run": [
+        "JP",
+        "減価償却の耐用年数",
+        "--audience=pro"
+      ],
+      "expect": [
+        {
+          "path": "result.matches.0.mcp",
+          "eq": "calculate_jp_depreciation"
+        },
+        {
+          "path": "result.matches.0.audience",
+          "eq": "pro"
+        }
+      ]
     }
   ],
   "boundaries": {
