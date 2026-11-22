@@ -124,7 +124,7 @@ const TipCalculator: React.FC<{ locale?: Locale }> = ({ locale = 'en' }) => {
             <p className="text-2xl sm:text-3xl wrap-anywhere font-black">{currency}{fmt(total, locale)}</p>
           </div>
           <div className="p-4 sm:p-6 rounded-3xl bg-primary/10 border-2 border-primary/30 text-center space-y-1">
-            <p className="text-xs font-black uppercase tracking-widest text-primary/70">{t.each}</p>
+            <p className="text-xs font-black uppercase tracking-widest text-primary">{t.each}</p>
             <p className="text-2xl sm:text-3xl wrap-anywhere font-black text-primary">{currency}{fmt(totalPerPerson, locale)}</p>
           </div>
           <div className="p-4 rounded-2xl bg-muted/20 border border-border text-center space-y-1">
