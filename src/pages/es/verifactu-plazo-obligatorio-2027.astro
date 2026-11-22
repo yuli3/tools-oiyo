@@ -1,0 +1,55 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/einvoice/EsVerifactu';
+// E-invoicing timelines (2026-11-22, world pro-gap #7). Engine: lib/world-einvoice-pack-2026.ts
+const c = {
+  "introTitle": "Cuándo debe estar adaptado su programa de facturación",
+  "intro": "Las empresas y autónomos que facturan con un programa informático deben usar un sistema que cumpla el reglamento: los contribuyentes del Impuesto sobre Sociedades antes del 1 de enero de 2027 y el resto antes del 1 de julio de 2027. Quien ya está en el SII no tiene que cambiar.",
+  "formulaTitle": "Las reglas usadas",
+  "formulas": [
+    {
+      "title": "Sociedades",
+      "body": "Antes del 1 de enero de 2027."
+    },
+    {
+      "title": "Autónomos y resto",
+      "body": "Antes del 1 de julio de 2027."
+    },
+    {
+      "title": "Excluidos",
+      "body": "Quien usa el SII. País Vasco y Navarra: normativa foral."
+    }
+  ],
+  "howToTitle": "Cómo se usa",
+  "steps": [
+    "Indique si tributa por Sociedades.",
+    "Diga si factura con programa y si está en el SII.",
+    "Lea el plazo."
+  ],
+  "faqTitle": "Preguntas frecuentes",
+  "faqs": [
+    {
+      "question": "¿Es obligatorio enviar las facturas a Hacienda?",
+      "answer": "VERI*FACTU (envío a la AEAT) es una de las dos modalidades y elegirla es voluntario."
+    },
+    {
+      "question": "¿Y la factura electrónica entre empresas?",
+      "answer": "No se calcula aquí."
+    },
+    {
+      "question": "¿Se guardan mis datos?",
+      "answer": "No, se quedan en su navegador."
+    }
+  ],
+  "disclaimer": "Información general, no es asesoramiento fiscal."
+};
+const sources: [string, string][] = [
+  [
+    "Agencia Tributaria — folleto VERI*FACTU",
+    "https://sede.agenciatributaria.gob.es/static_files/Sede/Biblioteca/Folleto/VERIFACTU/Folleto_VERIFACTU_en_gb.pdf"
+  ]
+];
+---
+<DebtReliefPage slug="verifactu-plazo-obligatorio-2027" c={c} sources={sources} sourcesTitle="Fuentes" checked="folleto VERI*FACTU de la AEAT comprobado el 2026-11-22">
+  <T client:load />
+</DebtReliefPage>

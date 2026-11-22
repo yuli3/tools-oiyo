@@ -1,0 +1,58 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/einvoice/FrEInvoice';
+// E-invoicing timelines (2026-11-22, world pro-gap #7). Engine: lib/world-einvoice-pack-2026.ts
+const c = {
+  "introTitle": "Quand votre entreprise doit recevoir et émettre des factures électroniques",
+  "intro": "Depuis le 1er septembre 2026, toutes les entreprises doivent pouvoir recevoir des factures électroniques. L'émission et l'e-reporting sont obligatoires dès le 1er septembre 2026 pour les grandes entreprises et les ETI, et au plus tard le 1er septembre 2027 pour les PME et micro-entreprises.",
+  "formulaTitle": "Les règles utilisées",
+  "formulas": [
+    {
+      "title": "Réception",
+      "body": "Toutes les entreprises depuis le 1er septembre 2026, via une plateforme agréée."
+    },
+    {
+      "title": "Émission et e-reporting",
+      "body": "GE et ETI : 1er septembre 2026. PME et micro : 1er septembre 2027 (anticipation possible)."
+    },
+    {
+      "title": "Champ",
+      "body": "Opérations entre assujettis à la TVA établis en France ; B2C et international en e-reporting."
+    }
+  ],
+  "howToTitle": "Mode d'emploi",
+  "steps": [
+    "Choisissez la taille de l'entreprise.",
+    "Lisez les dates et ce qui s'applique aujourd'hui."
+  ],
+  "faqTitle": "Questions fréquentes",
+  "faqs": [
+    {
+      "question": "Comment connaître ma catégorie ?",
+      "answer": "Elle dépend des effectifs, du chiffre d'affaires et du bilan ; un dépassement ne compte qu'après 2 exercices. Les seuils ne sont pas calculés ici."
+    },
+    {
+      "question": "Et les sanctions ?",
+      "answer": "Elles ne sont pas affichées ici."
+    },
+    {
+      "question": "Mes saisies sont-elles enregistrées ?",
+      "answer": "Non, elles restent dans votre navigateur."
+    }
+  ],
+  "disclaimer": "Information générale, pas un conseil fiscal."
+};
+const sources: [string, string][] = [
+  [
+    "entreprendre.service-public.gouv.fr — facturation électronique",
+    "https://entreprendre.service-public.gouv.fr/actualites/A18953?lang=fr"
+  ],
+  [
+    "impots.gouv.fr — FAQ facturation électronique",
+    "https://www.impots.gouv.fr/foire-aux-questions-je-decouvre-la-facturation-electronique"
+  ]
+];
+---
+<DebtReliefPage slug="facturation-electronique-calendrier-entreprise" c={c} sources={sources} sourcesTitle="Sources" checked="service-public et impots.gouv vérifiés le 2026-11-22">
+  <T client:load />
+</DebtReliefPage>
