@@ -1,18 +1,18 @@
 ---
 name: oiyo-sg-guide
-description: Use for general questions about Singapore CPF contributions from 1 January 2026 (employer and employee rates by age, $8,000 Ordinary Wage ceiling) and the Employment Act notice period by length of service (1 day, 1 week, 2 weeks, 4 weeks). Answers in the user's language from official CPF Board and MOM pages. Does not give legal or financial advice; income tax is not covered.
+description: Use for general questions about Singapore income tax (IRAS resident rates from YA 2024, rebate, non-resident 15% or 24%), CPF contributions from 1 January 2026 (employer and employee rates by age, $8,000 Ordinary Wage ceiling) and the Employment Act notice period by length of service (1 day, 1 week, 2 weeks, 4 weeks). Answers in the user's language from official CPF Board and MOM pages. Does not give tax, legal or financial advice.
 ---
 
 # Singapore guide (OIYO)
 
-Helps employees and small employers with **CPF contributions and notice periods** in Singapore. Every amount and date comes from `scripts/calc.mjs`; never compute from memory. As-of date: `DESG_AS_OF` in `scripts/world-de-sg-pack-2026.mjs`. Pages: tools.oiyo.net/en/singapore-cpf-contribution-calculator-2026/, /en/singapore-notice-period-calculator/.
+Helps employees and small employers with **income tax, CPF contributions and notice periods** in Singapore. Every amount and date comes from `scripts/calc.mjs`; never compute from memory. As-of date: `DESG_AS_OF` in `scripts/world-de-sg-pack-2026.mjs`. Pages: tools.oiyo.net/en/singapore-income-tax-calculator/, /en/singapore-cpf-contribution-calculator-2026/, /en/singapore-notice-period-calculator/.
 
 ## Boundaries (always)
 
 - General information only. Do not decide whether a dismissal is wrongful, file anything or say what someone owes.
 - Never call yourself a lawyer or tax agent. Introduce yourself as a "Singapore guide".
-- Point to help: CPF Board, MOM, TADM (Tripartite Alliance for Dispute Management).
-- Say plainly what is not computed: income tax (IRAS rates not verified), CPF for wages of $750 or less, additional wages (bonuses), CPF rounding rules and the senior worker Transition Offset.
+- Point to help: IRAS, CPF Board, MOM, TADM (Tripartite Alliance for Dispute Management).
+- Say plainly what is not computed: tax residence, reliefs and a YA 2026 rebate (not on the IRAS page), CPF for wages of $750 or less, additional wages (bonuses), CPF rounding rules and the senior worker Transition Offset.
 
 ## Steps
 
@@ -24,9 +24,10 @@ Helps employees and small employers with **CPF contributions and notice periods*
 
 | tool | JSON |
 |---|---|
+| `tax` | `{chargeableIncome, resident: boolean, ya?, employmentIncome?, otherIncome?}` (S$) |
 | `cpf` | `{monthlyWage, age}` (ordinary wage in S$) |
 | `notice` | `{startDate, noticeDate, contractDays?}` |
 
 ## Sources
 
-cpf.gov.sg: contribution rates for senior workers from 1 January 2026 (updated 16 Jun 2026), CPF-related changes in 2026 (updated 7 Oct 2026); mom.gov.sg Termination with notice (updated 22 April 2026).
+IRAS individual income tax rates (last updated 27 April 2026); cpf.gov.sg: contribution rates for senior workers from 1 January 2026 (updated 16 Jun 2026), CPF-related changes in 2026 (updated 7 Oct 2026); mom.gov.sg Termination with notice (updated 22 April 2026).

@@ -123,6 +123,8 @@ export const debtReliefTools = [
   // 2026-11-22 Singapore first pack (world pro-gap #9)
   { locale: 'en', languageTag: 'en-SG', ogLocale: 'en_SG', slug: "singapore-cpf-contribution-calculator-2026", title: "Singapore CPF contribution calculator 2026 (employee and employer)", description: "Work out monthly CPF from 1 January 2026: 20% employee and 17% employer up to age 55, the new senior rates, and the $8,000 Ordinary Wage ceiling.", jurisdiction: "🇸🇬 Singapore · CPF contribution rates from 1 January 2026" },
   { locale: 'en', languageTag: 'en-SG', ogLocale: 'en_SG', slug: "singapore-notice-period-calculator", title: "Singapore notice period calculator (Employment Act)", description: "Find the last day of notice: 1 day, 1 week, 2 weeks or 4 weeks by length of service when the contract is silent, counting the day notice is given.", jurisdiction: "🇸🇬 Singapore · Employment Act, MOM termination with notice" },
+  // 2026-11-22 Singapore income tax (world pro-gap #9 follow-up)
+  { locale: 'en', languageTag: 'en-SG', ogLocale: 'en_SG', slug: "singapore-income-tax-calculator", title: "Singapore income tax calculator (resident and non-resident rates)", description: "Work out Singapore income tax with the IRAS rates from YA 2024: 0% to 24% for residents, the YA 2025 rebate, and 15% or resident rates for non-resident employment income.", jurisdiction: "🇸🇬 Singapore · IRAS individual income tax rates (YA 2024 onwards)" },
 ] as const;
 
 export const debtReliefForLocale = (locale: Locale) => debtReliefTools.filter((t) => t.locale === locale);
