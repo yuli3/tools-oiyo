@@ -2705,6 +2705,60 @@
           "eq": "2027-03-01"
         }
       ]
+    },
+    {
+      "skill": "oiyo-world-employer-cost-guide",
+      "id": "employer-jp-300k",
+      "ask": "東京で月給30万円・30歳の社員を1人雇うと、会社の社会保険料負担は月いくらですか？",
+      "run": [
+        "jp",
+        {
+          "monthly": 300000,
+          "age": 30
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.employer",
+          "eq": 45855
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-world-employer-cost-guide",
+      "id": "employer-uk-allowance",
+      "ask": "I have 4 staff on £30,000 each. What's my employer NI bill for 2026/27 if I claim the Employment Allowance?",
+      "run": [
+        "uk",
+        {
+          "annual": 30000,
+          "employees": 4,
+          "allowance": true
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.employer",
+          "eq": 4500
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-world-employer-cost-guide",
+      "id": "employer-us-100k",
+      "ask": "How much employer FICA do I pay on a $100,000 salary in 2026?",
+      "run": [
+        "us",
+        {
+          "annual": 100000
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.employer",
+          "eq": 7650
+        }
+      ]
     }
   ],
   "boundaries": {

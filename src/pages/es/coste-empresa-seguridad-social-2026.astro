@@ -1,0 +1,55 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/employer/EsEmployerCost';
+// Employer payroll cost pack (2026-11-22, world pro-gap #5). Engine: lib/world-employer-cost-pack-2026.ts
+const c = {
+  "introTitle": "Cuánto paga la empresa a la Seguridad Social por un trabajador",
+  "intro": "En el Régimen General la empresa paga el 23,60 % de la base por contingencias comunes en 2026. La base va de la mínima de cada grupo de cotización a la máxima de 5.101,20 € al mes. Este cálculo solo incluye esa parte.",
+  "formulaTitle": "Tipos y bases usados (2026)",
+  "formulas": [
+    {
+      "title": "Contingencias comunes",
+      "body": "28,30 % en total: 23,60 % empresa y 4,70 % trabajador (Orden PJC/297/2026, art. 4)."
+    },
+    {
+      "title": "Bases mensuales",
+      "body": "Máxima 5.101,20 €. Mínimas: grupo 1 1.989,30 €, grupo 2 1.649,70 €, grupo 3 1.435,20 €, grupos 4 a 7 1.424,40 €."
+    },
+    {
+      "title": "No incluido",
+      "body": "Desempleo, FOGASA, formación profesional, MEI y accidentes de trabajo."
+    }
+  ],
+  "howToTitle": "Cómo se usa",
+  "steps": [
+    "Elija el grupo de cotización.",
+    "Escriba el salario bruto mensual con prorrata de pagas.",
+    "Lea la cuota de empresa y la base usada."
+  ],
+  "faqTitle": "Preguntas frecuentes",
+  "faqs": [
+    {
+      "question": "¿Por qué el coste real es mayor?",
+      "answer": "Faltan desempleo, FOGASA, formación profesional, MEI y accidentes de trabajo, que no hemos verificado."
+    },
+    {
+      "question": "¿Sirve para autónomos?",
+      "answer": "No. Solo Régimen General, grupos 1 a 7."
+    },
+    {
+      "question": "¿Se guardan mis datos?",
+      "answer": "No, se quedan en su navegador."
+    }
+  ],
+  "disclaimer": "Información general, no es asesoramiento laboral."
+};
+const sources: [string, string][] = [
+  [
+    "BOE — Orden PJC/297/2026 de cotización",
+    "https://boe.es/buscar/pdf/2026/BOE-A-2026-7296-consolidado.pdf"
+  ]
+];
+---
+<DebtReliefPage slug="coste-empresa-seguridad-social-2026" c={c} sources={sources} sourcesTitle="Fuentes" checked="BOE Orden PJC/297/2026 comprobada el 2026-11-22">
+  <T client:load />
+</DebtReliefPage>
