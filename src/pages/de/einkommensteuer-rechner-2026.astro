@@ -4,7 +4,7 @@ import T from '../../components/tools/desg/DeIncomeTax';
 // Germany first pack (2026-11-22, world pro-gap #9). Engine: lib/world-de-sg-pack-2026.ts
 const c = {
   "introTitle": "Wie viel Einkommensteuer fällt 2026 an?",
-  "intro": "Der Tarif nach § 32a EStG gilt ab dem Veranlagungszeitraum 2026: Bis 12.348 € (Grundfreibetrag) fällt keine Steuer an. Danach steigt der Steuersatz in zwei Zonen bis 42 % ab 69.879 € und 45 % ab 277.826 €. Bei Zusammenveranlagung gilt das Splitting.",
+  "intro": "Der Tarif nach § 32a EStG gilt ab dem Veranlagungszeitraum 2026: Bis 12.348 € (Grundfreibetrag) fällt keine Steuer an. Danach steigt der Steuersatz in zwei Zonen bis 42 % ab 69.879 € und 45 % ab 277.826 €. Bei Zusammenveranlagung gilt das Splitting. Der Solidaritätszuschlag fällt erst an, wenn die Einkommensteuer 20.350 € (Splitting 40.700 €) übersteigt.",
   "formulaTitle": "Die verwendeten Regeln",
   "formulas": [
     {
@@ -16,7 +16,11 @@ const c = {
       "body": "y = ein Zehntausendstel des Teils über 12.348 €, z = ein Zehntausendstel des Teils über 17.799 €. Ergebnis auf volle Euro abrunden."
     },
     {
-      "title": "Splitting",
+      "title": "Solidaritätszuschlag",
+        "body": "5,5 % der Einkommensteuer, höchstens 11,9 % des Betrags über der Freigrenze von 20.350 € (Splitting 40.700 €); § 6 Abs. 27 SolZG: ab VZ 2026."
+      },
+      {
+        "title": "Splitting",
       "body": "Zweifacher Steuerbetrag für die Hälfte des gemeinsamen zu versteuernden Einkommens."
     }
   ],
@@ -34,7 +38,7 @@ const c = {
     },
     {
       "question": "Sind Solidaritätszuschlag und Kirchensteuer enthalten?",
-      "answer": "Nein, sie werden hier nicht berechnet."
+      "answer": "Der Solidaritätszuschlag ja (ohne Wirkung von Kinderfreibeträgen), die Kirchensteuer nicht."
     },
     {
       "question": "Werden meine Daten gespeichert?",
@@ -47,6 +51,10 @@ const sources: [string, string][] = [
   [
     "§ 32a EStG Einkommensteuertarif (gesetze-im-internet.de)",
     "https://www.gesetze-im-internet.de/estg/__32a.html"
+  ],
+  [
+    "§§ 3, 4, 6 SolZG 1995 (gesetze-im-internet.de)",
+    "https://www.gesetze-im-internet.de/solzg_1995/__4.html"
   ]
 ];
 ---
