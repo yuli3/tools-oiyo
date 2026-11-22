@@ -54,3 +54,10 @@
 - 세운 요청 "AI 세무사·회계사·노무사·행정사·법무사"는 `/ko/law-guide/` + 분야 5페이지, 엔진 `src/lib/kr-expert-guide-2026.ts`, 스킬 `skills/oiyo-kr-law-guide`(`node scripts/build-law-guide-skill.mjs`)로 만들어요.
 - 자격 명칭이나 비슷한 이름을 도구·스킬·광고 문구에 쓰지 않아요(세무사법 제20조②③, 공인회계사법 제11조, 공인노무사법 제8조③·제27조②, 행정사법 제3조②, 법무사법 제3조②). 대리·서류 작성 대행·소개·알선 기능을 넣지 않아요.
 - 조문을 더하거나 고칠 때는 `STATUTES`에 쉬운 말 풀이로 넣고 원문은 law.go.kr 링크로 보내요. 기한은 `dueDate()`(초일 불산입·말일 휴일 이월)로만 계산해요.
+
+## 간단계산기 (2026-11-22)
+
+- 세운 결정: 생활 계산기 모음 브랜드는 "간단계산기"(en Simple Calculators, ja かんたん計算機, zh 简单计算器, fr Calculatrices simples, es Calculadoras sencillas). 대상은 어르신·저시력·시각장애인이에요.
+- 허브 `/{locale}/simple-calculators/`, 개별 6종 `/{locale}/simple-calculators/{calculator,split-bill,exchange-rate,discount,days-left,card-installment}/`. 문구는 `src/data/simple-calculators.ts`, 화면은 `SimpleShell.astro` + `tools/SimpleCalc.tsx`, 계산은 `lib/simple-calc.ts`·`lib/bill-split.ts`.
+- 겉은 입력 2~3개, 결과는 크게 한 문장(aria-live), "소리로 듣기", 버튼 56px 이상. 수수료율·송금 단위 같은 설정은 나라별 기본값으로 숨기고 "자세한 설정" 링크로 기존 계산기에 보내요. 기존 계산기 주소는 옮기지 않아요.
+- 허브는 전용 PWA manifest(`public/simple-calculators/{locale}.webmanifest`, Layout `manifest` prop)를 써요.

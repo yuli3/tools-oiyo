@@ -1,0 +1,26 @@
+{
+  "name": "简单计算器 · OIYO",
+  "short_name": "简单计算器",
+  "description": "大字体生活计算器",
+  "lang": "zh",
+  "id": "/zh/simple-calculators/",
+  "start_url": "/zh/simple-calculators/",
+  "scope": "/zh/simple-calculators/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#65a30d",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

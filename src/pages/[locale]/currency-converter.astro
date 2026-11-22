@@ -1,5 +1,6 @@
 ---
 import ToolShell from '../../components/ToolShell.astro';
+import { SIMPLE_UI, simpleHref } from '../../data/simple-calculators';
 import Layout from '../../components/Layout.astro';
 import CurrencyConverter from '../../components/tools/CurrencyConverter';
 import { converterCopy } from '../../lib/fx-copy';
@@ -15,6 +16,7 @@ const schema = {'@context':'https://schema.org','@type':'WebApplication',name:c.
 ---
 <Layout title={c.title} description={c.description} locale={locale} availableLocales={[...locales]} canonicalURL={url}>
   <ToolShell title={c.title} description={c.description}>
+    <a slot="meta" href={simpleHref(locale, 'exchange-rate')} class="inline-flex min-h-11 items-center text-sm font-semibold text-primary underline underline-offset-4">🔍 {SIMPLE_UI[locale].brand}</a>
     
     <CurrencyConverter locale={locale} client:load/>
     <section class="mt-6 border-t border-border pt-4">

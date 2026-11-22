@@ -46,3 +46,8 @@
 @utility dpt-gray { background: #808080; }
 @utility dpt-gradient { background: linear-gradient(90deg, #000000 0%, #ffffff 100%); }
 @utility dpt-checker { background: repeating-conic-gradient(#000000 0% 25%, #ffffff 0% 50%) 0 0 / 2px 2px; }
+
+/* 2026-11-22 간단계산기 "글씨 크게": rem 기준 전체를 125%로 키워요(SimpleShell). */
+html.simple-xl {
+  font-size: 125%;
+}

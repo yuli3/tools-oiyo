@@ -3029,7 +3029,7 @@ export const w7Pages: Record<W7Slug, Record<Locale, W7Page>> = {
    "description": "총 금액과 인원을 입력해 더치페이를 계산합니다. 균등, 비율, 개별 고정금액 방식을 모두 지원합니다.",
    "c": {
     "introTitle": "n빵을 균등·비율·개별 금액으로 나누기",
-    "intro": "총 금액을 참가자 수로 똑같이 나누거나, 비율(예: 2:1:1)이나 사람별 고정 금액으로 나눠요. 1인당 금액은 원 단위로 반올림해요.",
+    "intro": "총 금액을 참가자 수로 똑같이 나누거나, 비율(예: 2:1:1)이나 사람별 고정 금액으로 나눠요. 카드로 한 사람이 결제했다면 결제한 사람을 고르세요. 송금 단위(1·10·100·1000원)로 내림하고 남는 돈은 결제한 사람이 떠안아서, 합계가 결제 금액과 정확히 같아요. 정산 문구를 복사해 단톡방에 바로 붙여 넣을 수 있어요.",
     "formulaTitle": "주요 특징",
     "formulas": [
      {
@@ -3055,7 +3055,7 @@ export const w7Pages: Record<W7Slug, Record<Locale, W7Page>> = {
     "faqs": [
      {
       "question": "나누어떨어지지 않으면?",
-      "answer": "1인당 금액을 원 단위로 반올림하므로 합계가 총액과 몇 원 다를 수 있어요. 그 차이는 한 사람이 맞춰 내면 됩니다."
+      "answer": "다른 사람 몫은 송금 단위로 내림하고, 남는 몇 원은 카드로 결제한 사람이 떠안아요. 그래서 합계가 결제 금액과 언제나 같아요. 예: 87,000원을 3명이 100원 단위로 나누면 29,000원씩이에요."
      },
      {
       "question": "술 안 마신 사람은 덜 내게 할 수 있나요?",
@@ -3074,7 +3074,7 @@ export const w7Pages: Record<W7Slug, Record<Locale, W7Page>> = {
    "description": "Calculate how to split a bill equally, by ratio, or with custom fixed amounts for each person.",
    "c": {
     "introTitle": "Split a bill equally, by ratio, or with fixed amounts",
-    "intro": "Divide a total equally among people, by a ratio (for example 2:1:1), or with a fixed amount for some people. The calculator works in Korean won and rounds each share to a whole won.",
+    "intro": "Divide a total equally among people, by a ratio (for example 2:1:1), or with a fixed amount for some people. Pick who paid by card and a rounding step: transfers are rounded down and the payer absorbs the leftover, so the shares always add up to the bill. Works in USD, EUR, GBP, JPY, CNY or KRW, and copies a ready-to-send summary.",
     "formulaTitle": "Highlights",
     "formulas": [
      {
@@ -3100,7 +3100,7 @@ export const w7Pages: Record<W7Slug, Record<Locale, W7Page>> = {
     "faqs": [
      {
       "question": "What if it does not divide evenly?",
-      "answer": "Each share is rounded to a whole won, so the shares can add up to a few won more or less than the total. One person can cover that gap."
+      "answer": "Everyone else’s share is rounded down to your rounding step and the person who paid covers the leftover, so the shares always add up exactly to the bill."
      },
      {
       "question": "Can someone who did not drink pay less?",
@@ -3119,7 +3119,7 @@ export const w7Pages: Record<W7Slug, Record<Locale, W7Page>> = {
    "description": "合計金額と人数を入力して割り勘を計算します。均等、比率、個別固定額の分割に対応しています。",
    "c": {
     "introTitle": "割り勘を均等・比率・個別金額で計算",
-    "intro": "合計金額を人数で均等に割るほか、比率（例：2:1:1）や人ごとの固定額で分けられます。計算は韓国ウォン単位で、1人あたりの金額を1ウォン単位に丸めます。",
+    "intro": "合計金額を人数で均等に割るほか、比率（例：2:1:1）や人ごとの固定額で分けられます。カードで払った人を選び、送金単位（1・10・100・1000円）を決めると、端数は支払った人が負担し、合計が支払額とぴったり一致します。円・ドル・ユーロ・人民元などに対応し、精算メッセージをコピーできます。",
     "formulaTitle": "主な特徴",
     "formulas": [
      {
@@ -3145,7 +3145,7 @@ export const w7Pages: Record<W7Slug, Record<Locale, W7Page>> = {
     "faqs": [
      {
       "question": "割り切れないときは？",
-      "answer": "1人あたりを1ウォン単位に丸めるため、合計が総額と数ウォン違うことがあります。差額は誰か1人が調整してください。"
+      "answer": "支払った人以外の金額を送金単位で切り捨て、端数は支払った人が負担します。合計は必ず支払額と一致します。"
      },
      {
       "question": "飲まなかった人の負担を減らせますか？",
@@ -3164,7 +3164,7 @@ export const w7Pages: Record<W7Slug, Record<Locale, W7Page>> = {
    "description": "输入总金额和人数，计算AA制分摊金额，支援均等、比例和个别固定金额模式。",
    "c": {
     "introTitle": "按均分、比例或固定金额分摊账单",
-    "intro": "把总金额平均分给每个人，或按比例（如2:1:1）、按个人固定金额分摊。计算以韩元为单位，每人金额取整到1韩元。",
+    "intro": "把总金额平均分给每个人，或按比例（如2:1:1）、按个人固定金额分摊。选择刷卡付款的人和转账单位，金额向下取整，零头由付款人承担，合计始终等于账单金额。支持人民币、美元、欧元、日元等，可一键复制结算文字。",
     "formulaTitle": "主要特点",
     "formulas": [
      {
@@ -3190,7 +3190,7 @@ export const w7Pages: Record<W7Slug, Record<Locale, W7Page>> = {
     "faqs": [
      {
       "question": "除不尽怎么办？",
-      "answer": "每人金额取整到1韩元，合计可能与总额相差几韩元，由一人补齐即可。"
+      "answer": "除付款人外，每人金额按转账单位向下取整，零头由付款人承担，合计始终等于账单金额。"
      },
      {
       "question": "没喝酒的人能少付吗？",
@@ -3209,7 +3209,7 @@ export const w7Pages: Record<W7Slug, Record<Locale, W7Page>> = {
    "description": "Calculez comment partager une note de façon égale, par ratio ou avec des montants fixes personnalisés.",
    "c": {
     "introTitle": "Partager une note à parts égales, par ratio ou par montant fixe",
-    "intro": "Divisez un total à parts égales, selon un ratio (par exemple 2:1:1) ou avec un montant fixe pour certains. Le calcul se fait en wons coréens et chaque part est arrondie au won.",
+    "intro": "Divisez un total à parts égales, selon un ratio (par exemple 2:1:1) ou avec un montant fixe pour certains. Choisissez qui a payé par carte et l’arrondi des virements : les parts sont arrondies vers le bas et le payeur garde l’écart, donc le total tombe toujours juste. Fonctionne en EUR, USD, GBP, JPY, CNY ou KRW, avec un récapitulatif à copier.",
     "formulaTitle": "Points clés",
     "formulas": [
      {
@@ -3235,7 +3235,7 @@ export const w7Pages: Record<W7Slug, Record<Locale, W7Page>> = {
     "faqs": [
      {
       "question": "Et si la division ne tombe pas juste ?",
-      "answer": "Chaque part est arrondie au won : la somme peut différer du total de quelques wons, qu’une personne peut compléter."
+      "answer": "Les parts des autres sont arrondies vers le bas et le payeur garde l’écart : la somme est toujours égale à la note."
      },
      {
       "question": "Quelqu’un qui n’a pas bu peut-il payer moins ?",
@@ -3254,7 +3254,7 @@ export const w7Pages: Record<W7Slug, Record<Locale, W7Page>> = {
    "description": "Calcula cómo dividir una cuenta de forma igual, por ratio o con montos fijos personalizados.",
    "c": {
     "introTitle": "Dividir una cuenta a partes iguales, por proporción o con importes fijos",
-    "intro": "Divide un total a partes iguales, según una proporción (por ejemplo 2:1:1) o con un importe fijo para algunas personas. El cálculo se hace en wones coreanos y cada parte se redondea al won.",
+    "intro": "Divide un total a partes iguales, según una proporción (por ejemplo 2:1:1) o con un importe fijo para algunas personas. Elige quién pagó con tarjeta y el redondeo de las transferencias: las partes se redondean a la baja y quien pagó asume la diferencia, así el total siempre cuadra. Funciona en EUR, USD, GBP, JPY, CNY o KRW y copia un resumen listo para enviar.",
     "formulaTitle": "Puntos clave",
     "formulas": [
      {
@@ -3280,7 +3280,7 @@ export const w7Pages: Record<W7Slug, Record<Locale, W7Page>> = {
     "faqs": [
      {
       "question": "¿Y si no sale exacto?",
-      "answer": "Cada parte se redondea al won, así que la suma puede diferir del total en unos wones; una persona puede cubrir esa diferencia."
+      "answer": "Las partes de los demás se redondean a la baja y quien pagó asume la diferencia, así la suma siempre coincide con el total."
      },
      {
       "question": "¿Puede pagar menos quien no bebió?",

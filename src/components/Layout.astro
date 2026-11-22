@@ -19,9 +19,11 @@ interface Props {
   homeURL?: string;
   licenseURL?: string;
   familyTitle?: string;
+  /** 2026-11-22 간단계산기: 허브 전용 PWA manifest(시작 주소가 허브). 없으면 /manifest.json. */
+  manifest?: string;
 }
 
-const { title, description, keywords, canonicalURL, noindex, locale = 'ko', availableLocales = [], languageTag = locale, ogLocale, shellOverride, homeURL, licenseURL, familyTitle } = Astro.props;
+const { title, description, keywords, canonicalURL, noindex, locale = 'ko', availableLocales = [], languageTag = locale, ogLocale, shellOverride, homeURL, licenseURL, familyTitle, manifest } = Astro.props;
 const copy = shellOverride ?? ((languageTag==='zh-Hant-TW'||languageTag==='zh-Hant-HK')?{all:'所有工具',related:'檔案工具',language:'語言',license:'授權',note:'輸入內容在瀏覽器內計算。本站使用訪問統計與廣告。'}:shellCopy[locale]);
 const home=homeURL ?? (locale==='ko'?'/':`/${locale}/`);
 const pageSlug = Astro.url.pathname.split('/').filter(Boolean)[1];
@@ -40,7 +42,7 @@ const FAMILY = [
 <!doctype html>
 <html lang={languageTag}>
   <head>
-    <SEO title={title} description={description} keywords={keywords} canonicalURL={canonicalURL} noindex={noindex} locale={locale} availableLocales={availableLocales} ogLocale={ogLocale} />
+    <SEO title={title} description={description} keywords={keywords} canonicalURL={canonicalURL} noindex={noindex} locale={locale} availableLocales={availableLocales} ogLocale={ogLocale} manifest={manifest} />
   </head>
   <body class="min-h-screen flex flex-col bg-background text-foreground selection:bg-primary/20">
     <!-- Header -->

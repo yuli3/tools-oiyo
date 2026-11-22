@@ -1,0 +1,132 @@
+/**
+ * 간단계산기 브랜드 (2026-11-22, 세운 결정: 이름 "간단계산기").
+ * 대상: 어르신·저시력·시각장애인. 겉은 큰 글씨·큰 버튼·입력 2~3개·한 문장 결과, 복잡한 설정은 숨겨요.
+ * 자세한 설정이 필요한 사람은 detail 링크로 기존 계산기(주소 그대로)에 가요.
+ */
+import type { Locale } from '../lib/i18n';
+
+export const SIMPLE_LOCALES = ['ko', 'en', 'ja', 'zh', 'fr', 'es'] as const satisfies readonly Locale[];
+export type SimpleTool = 'calculator' | 'split-bill' | 'exchange-rate' | 'discount' | 'days-left' | 'card-installment';
+export const SIMPLE_TOOLS: SimpleTool[] = ['calculator', 'split-bill', 'exchange-rate', 'discount', 'days-left', 'card-installment'];
+export const SIMPLE_ICON: Record<SimpleTool, string> = { calculator: '🧮', 'split-bill': '👥', 'exchange-rate': '💱', discount: '🏷️', 'days-left': '📅', 'card-installment': '💳' };
+export const SIMPLE_DETAIL: Record<SimpleTool, string> = {
+  calculator: 'calculator', 'split-bill': 'dutch-pay-calculator', 'exchange-rate': 'currency-converter',
+  discount: 'discount-calculator', 'days-left': 'dday-counter', 'card-installment': 'card-installment-calculator',
+};
+
+export const simpleHref = (locale: Locale, tool?: SimpleTool) => `/${locale}/simple-calculators/${tool ? `${tool}/` : ''}`;
+
+export interface SimpleToolCopy { name: string; short: string; title: string; description: string; help: string }
+export interface SimpleUi {
+  brand: string; hubTitle: string; hubDescription: string; hubLead: string; listen: string; stop: string; again: string; bigger: string; smaller: string;
+  detail: string; home: string; allTools: string; install: string; installHow: string; howTitle: string; how: string[]; noSpeech: string; seniorNote: string;
+  langName: string; speechLang: string;
+}
+
+export const SIMPLE_UI: Record<Locale, SimpleUi> = {
+  ko: {
+    brand: '간단계산기', hubTitle: '간단계산기 — 큰 글씨로 쉽게 쓰는 생활 계산기', hubDescription: '어르신도 쉽게 쓰는 큰 글씨 계산기 모음이에요. 기본 계산기, N분의 1 나누기, 환율, 할인, 며칠 남았나, 카드 할부를 숫자 두세 개만 넣어 바로 계산하고 소리로 들을 수 있어요.',
+    hubLead: '숫자 두세 개만 넣으면 답을 크게 한 줄로 알려 드려요. 결과는 소리로도 들을 수 있어요.',
+    listen: '소리로 듣기', stop: '그만 듣기', again: '처음부터', bigger: '글씨 크게', smaller: '글씨 보통', detail: '자세한 설정으로 계산하기', home: '간단계산기 처음으로', allTools: '다른 간단계산기',
+    install: '휴대폰 첫 화면에 두기', installHow: '휴대폰 브라우저 메뉴(⋮ 또는 공유 버튼)에서 "홈 화면에 추가"를 누르면 앱처럼 바로 열 수 있어요.',
+    howTitle: '이렇게 쓰세요', how: ['쓰고 싶은 계산기를 누르세요.', '큰 칸에 숫자를 넣으세요. 쉼표는 저절로 찍혀요.', '아래에 답이 크게 나와요. "소리로 듣기"를 누르면 읽어 드려요.'],
+    noSpeech: '이 브라우저는 소리 읽기를 지원하지 않아요.', seniorNote: '글씨가 작으면 위의 "글씨 크게"를 누르세요. 화면 읽기 프로그램(톡백·보이스오버)으로도 쓸 수 있어요.',
+    langName: '한국어', speechLang: 'ko-KR',
+  },
+  en: {
+    brand: 'Simple Calculators', hubTitle: 'Simple Calculators — large-print everyday calculators', hubDescription: 'Large-print, easy calculators for seniors and low-vision users: a basic calculator, bill splitting, currency, discounts, days until a date and card installments. Type two or three numbers, get one clear answer, and hear it read aloud.',
+    hubLead: 'Type two or three numbers and get one big, clear answer. You can also hear the answer read aloud.',
+    listen: 'Read aloud', stop: 'Stop', again: 'Start over', bigger: 'Bigger text', smaller: 'Normal text', detail: 'Open the detailed calculator', home: 'All simple calculators', allTools: 'More simple calculators',
+    install: 'Put it on your home screen', installHow: 'In your phone’s browser menu (⋮ or the Share button), choose “Add to Home Screen” to open it like an app.',
+    howTitle: 'How to use', how: ['Tap the calculator you need.', 'Type numbers in the big box. Commas appear by themselves.', 'The answer appears in large print below. Tap “Read aloud” to hear it.'],
+    noSpeech: 'This browser cannot read text aloud.', seniorNote: 'If the text is small, tap “Bigger text” at the top. Works with screen readers (TalkBack, VoiceOver).',
+    langName: 'English', speechLang: 'en-US',
+  },
+  ja: {
+    brand: 'かんたん計算機', hubTitle: 'かんたん計算機 — 大きな文字で使える暮らしの計算', hubDescription: '高齢の方や目の不自由な方にも使いやすい、大きな文字の計算機です。電卓、割り勘、為替、割引、あと何日、カード分割払いを、数字を2〜3個入れるだけで計算し、音声で聞けます。',
+    hubLead: '数字を2〜3個入れると、答えを大きく1行でお知らせします。音声でも聞けます。',
+    listen: '読み上げる', stop: '止める', again: '最初から', bigger: '文字を大きく', smaller: '文字を普通に', detail: '詳しい設定で計算する', home: 'かんたん計算機のトップへ', allTools: 'ほかのかんたん計算機',
+    install: 'スマホのホーム画面に置く', installHow: 'ブラウザのメニュー（⋮ または共有ボタン）で「ホーム画面に追加」を選ぶと、アプリのようにすぐ開けます。',
+    howTitle: '使い方', how: ['使いたい計算機を押します。', '大きな枠に数字を入れます。カンマは自動で入ります。', '下に答えが大きく出ます。「読み上げる」で音声で聞けます。'],
+    noSpeech: 'このブラウザは読み上げに対応していません。', seniorNote: '文字が小さいときは上の「文字を大きく」を押してください。スクリーンリーダー（TalkBack・VoiceOver）でも使えます。',
+    langName: '日本語', speechLang: 'ja-JP',
+  },
+  zh: {
+    brand: '简单计算器', hubTitle: '简单计算器 — 大字体生活计算器', hubDescription: '为老年人和视力不好的用户设计的大字体计算器：基础计算器、AA分摊、汇率、折扣、还有几天、信用卡分期。只需输入两三个数字，就能看到一句清楚的答案，还可以语音朗读。',
+    hubLead: '输入两三个数字，答案用大字一句话显示，还能语音朗读。',
+    listen: '朗读结果', stop: '停止', again: '重新开始', bigger: '字体放大', smaller: '字体正常', detail: '打开详细计算器', home: '回到简单计算器首页', allTools: '其他简单计算器',
+    install: '放到手机主屏幕', installHow: '在手机浏览器菜单（⋮ 或分享按钮）中选择“添加到主屏幕”，就能像应用一样直接打开。',
+    howTitle: '使用方法', how: ['点击需要的计算器。', '在大输入框里输入数字，会自动加上千位分隔符。', '答案会用大字显示在下方，点“朗读结果”即可听到。'],
+    noSpeech: '此浏览器不支持语音朗读。', seniorNote: '字太小时，点上方的“字体放大”。也支持读屏软件（TalkBack、VoiceOver）。',
+    langName: '中文', speechLang: 'zh-CN',
+  },
+  fr: {
+    brand: 'Calculatrices simples', hubTitle: 'Calculatrices simples — en gros caractères pour le quotidien', hubDescription: 'Des calculatrices en gros caractères, faciles pour les seniors et les personnes malvoyantes : calculatrice, partage d’addition, devises, remises, jours restants et paiement en plusieurs fois. Deux ou trois chiffres, une réponse claire, lue à voix haute.',
+    hubLead: 'Entrez deux ou trois chiffres : la réponse s’affiche en grand, en une phrase, et peut être lue à voix haute.',
+    listen: 'Écouter', stop: 'Arrêter', again: 'Recommencer', bigger: 'Texte plus grand', smaller: 'Texte normal', detail: 'Ouvrir le calculateur détaillé', home: 'Toutes les calculatrices simples', allTools: 'Autres calculatrices simples',
+    install: 'Mettre sur l’écran d’accueil', installHow: 'Dans le menu du navigateur (⋮ ou bouton Partager), choisissez « Ajouter à l’écran d’accueil » pour l’ouvrir comme une application.',
+    howTitle: 'Mode d’emploi', how: ['Touchez la calculatrice voulue.', 'Tapez les chiffres dans la grande case. Les séparateurs s’ajoutent seuls.', 'La réponse s’affiche en grand. Touchez « Écouter » pour l’entendre.'],
+    noSpeech: 'Ce navigateur ne peut pas lire le texte à voix haute.', seniorNote: 'Si le texte est petit, touchez « Texte plus grand » en haut. Compatible avec les lecteurs d’écran (TalkBack, VoiceOver).',
+    langName: 'Français', speechLang: 'fr-FR',
+  },
+  es: {
+    brand: 'Calculadoras sencillas', hubTitle: 'Calculadoras sencillas — con letra grande para el día a día', hubDescription: 'Calculadoras con letra grande, fáciles para personas mayores y con baja visión: calculadora, dividir la cuenta, divisas, descuentos, días que faltan y pago a plazos. Dos o tres números, una respuesta clara y lectura en voz alta.',
+    hubLead: 'Escribe dos o tres números y verás la respuesta en grande, en una frase. También puedes escucharla.',
+    listen: 'Escuchar', stop: 'Parar', again: 'Empezar de nuevo', bigger: 'Letra más grande', smaller: 'Letra normal', detail: 'Abrir la calculadora detallada', home: 'Todas las calculadoras sencillas', allTools: 'Otras calculadoras sencillas',
+    install: 'Ponerla en la pantalla de inicio', installHow: 'En el menú del navegador (⋮ o el botón Compartir), elige «Añadir a pantalla de inicio» para abrirla como una app.',
+    howTitle: 'Cómo se usa', how: ['Toca la calculadora que necesitas.', 'Escribe los números en la casilla grande. Los separadores se ponen solos.', 'La respuesta aparece en grande abajo. Toca «Escuchar» para oírla.'],
+    noSpeech: 'Este navegador no puede leer en voz alta.', seniorNote: 'Si la letra es pequeña, toca «Letra más grande» arriba. Funciona con lectores de pantalla (TalkBack, VoiceOver).',
+    langName: 'Español', speechLang: 'es-ES',
+  },
+};
+
+export const SIMPLE_COPY: Record<Locale, Record<SimpleTool, SimpleToolCopy>> = {
+  ko: {
+    calculator: { name: '계산기', short: '더하기·빼기·곱하기·나누기', title: '큰 글씨 계산기 — 어르신도 쉬운 간단계산기', description: '버튼이 크고 글씨가 큰 기본 계산기예요. 누른 순서대로 계산하고, 답을 소리로 읽어 줘요. 키보드로도 쓸 수 있어요.', help: '숫자와 기호를 차례로 누르고 = 을 누르세요.' },
+    'split-bill': { name: 'N분의 1', short: '여럿이 똑같이 나누기', title: 'N분의 1 계산기 — 카드값 똑같이 나누기 (간단계산기)', description: '낸 돈과 사람 수만 넣으면 한 사람당 얼마씩 보내면 되는지 크게 알려 줘요. 남는 몇 원은 결제한 사람이 내도록 맞춰 줘요.', help: '모두 낸 돈과 사람 수를 넣으세요.' },
+    'exchange-rate': { name: '환율', short: '외국 돈을 원으로', title: '쉬운 환율 계산기 — 달러·엔·유로를 원으로 (간단계산기)', description: '외국 돈 금액만 넣으면 우리 돈으로 얼마인지 크게 알려 줘요. 달러, 엔, 유로, 위안 등 자주 쓰는 돈을 골라요.', help: '돈 종류를 고르고 금액을 넣으세요.' },
+    discount: { name: '할인', short: '몇 % 할인하면 얼마?', title: '할인 계산기 — 몇 % 할인이면 얼마? (간단계산기)', description: '원래 가격과 할인율만 넣으면 내야 할 돈과 아끼는 돈을 크게 알려 줘요.', help: '원래 가격을 넣고 할인율을 누르세요.' },
+    'days-left': { name: '며칠 남았나', short: '그날까지 며칠?', title: '며칠 남았나 계산기 — 그날까지 남은 날 (간단계산기)', description: '날짜 하나만 고르면 오늘부터 며칠 남았는지, 며칠 지났는지 크게 알려 줘요. 생신, 병원 예약, 약속 날짜에 써요.', help: '날짜를 고르세요.' },
+    'card-installment': { name: '카드 할부', short: '할부하면 한 달에 얼마?', title: '카드 할부 계산기 — 한 달에 얼마씩? (간단계산기)', description: '물건값과 할부 개월만 넣으면 한 달에 얼마씩 나가는지, 수수료가 모두 얼마인지 크게 알려 줘요.', help: '물건값을 넣고 몇 개월로 나눌지 고르세요.' },
+  },
+  en: {
+    calculator: { name: 'Calculator', short: 'Add, subtract, multiply, divide', title: 'Large Print Calculator — Big Buttons, Read Aloud', description: 'A basic calculator with big buttons and large numbers. It works in the order you press, reads the answer aloud and works with a keyboard.', help: 'Press numbers and signs in order, then press =.' },
+    'split-bill': { name: 'Split the bill', short: 'Share a bill equally', title: 'Split the Bill — Simple Large Print Calculator', description: 'Enter the bill and the number of people to see how much each person sends, in large print. Leftover cents go to the person who paid.', help: 'Enter the bill total and how many people.' },
+    'exchange-rate': { name: 'Currency', short: 'Foreign money to dollars', title: 'Simple Currency Converter — Large Print', description: 'Enter an amount of foreign money and see what it is worth in your currency, in large print. Choose euros, pounds, yen and more.', help: 'Choose the currency and enter the amount.' },
+    discount: { name: 'Discount', short: 'Price after % off', title: 'Discount Calculator — Price After % Off (Large Print)', description: 'Enter the price and the discount to see what you pay and how much you save, in large print.', help: 'Enter the price, then tap the discount.' },
+    'days-left': { name: 'Days until', short: 'How many days left?', title: 'Days Until a Date — Simple Large Print Countdown', description: 'Pick one date to see how many days are left, or how many have passed, in large print. For birthdays, appointments and trips.', help: 'Pick a date.' },
+    'card-installment': { name: 'Card installments', short: 'Monthly payment', title: 'Installment Payment Calculator — Monthly Amount (Large Print)', description: 'Enter the price and the number of months to see the monthly payment and total interest, in large print.', help: 'Enter the price and choose the months.' },
+  },
+  ja: {
+    calculator: { name: '電卓', short: '足し算・引き算・掛け算・割り算', title: '大きい文字の電卓 — 読み上げ付き（かんたん計算機）', description: 'ボタンも数字も大きい電卓です。押した順に計算し、答えを読み上げます。キーボードでも使えます。', help: '数字と記号を順に押して、= を押します。' },
+    'split-bill': { name: '割り勘', short: 'みんなで同じ額に分ける', title: '割り勘計算 — かんたん計算機（大きい文字）', description: '支払った金額と人数を入れるだけで、1人いくら送ればよいかを大きく表示します。端数は支払った人が負担します。', help: '合計金額と人数を入れてください。' },
+    'exchange-rate': { name: '為替', short: '外国のお金を円に', title: 'かんたん為替計算 — ドル・ユーロ・ウォンを円に', description: '外国のお金の金額を入れると、円でいくらかを大きく表示します。ドル、ユーロ、ウォンなどから選べます。', help: '通貨を選び、金額を入れてください。' },
+    discount: { name: '割引', short: '何％引きでいくら？', title: '割引計算 — 何％引きでいくら？（かんたん計算機）', description: '元の値段と割引率を入れると、支払う金額と安くなる金額を大きく表示します。', help: '元の値段を入れ、割引率を押してください。' },
+    'days-left': { name: 'あと何日', short: 'その日まで何日？', title: 'あと何日 — 日数計算（かんたん計算機）', description: '日付を1つ選ぶだけで、今日からあと何日か、何日たったかを大きく表示します。誕生日や通院の予定に。', help: '日付を選んでください。' },
+    'card-installment': { name: 'カード分割払い', short: '毎月いくら？', title: 'カード分割払い計算 — 毎月いくら？（かんたん計算機）', description: '値段と支払回数を入れると、毎月の支払額と手数料の合計を大きく表示します。', help: '値段を入れ、支払回数を選んでください。' },
+  },
+  zh: {
+    calculator: { name: '计算器', short: '加减乘除', title: '大字体计算器 — 大按键、可语音朗读', description: '按键大、数字大的基础计算器，按顺序计算，可朗读答案，也能用键盘操作。', help: '依次按数字和符号，再按 =。' },
+    'split-bill': { name: 'AA分摊', short: '大家平均分', title: 'AA分摊计算 — 简单计算器（大字体）', description: '输入总金额和人数，大字显示每人应转多少钱，零头由付款人承担。', help: '输入总金额和人数。' },
+    'exchange-rate': { name: '汇率', short: '外币换人民币', title: '简单汇率换算 — 美元、日元、欧元换人民币', description: '输入外币金额，大字显示折合多少人民币，可选择美元、欧元、日元、韩元等。', help: '选择币种并输入金额。' },
+    discount: { name: '折扣', short: '打几折是多少？', title: '折扣计算 — 优惠后多少钱（简单计算器）', description: '输入原价和折扣比例，大字显示应付金额和省下的钱。', help: '输入原价，再点折扣比例。' },
+    'days-left': { name: '还有几天', short: '离那天还有几天？', title: '还有几天 — 倒数日计算（简单计算器）', description: '选一个日期，大字显示从今天起还有几天或已过几天，适合生日、看病预约等。', help: '请选择日期。' },
+    'card-installment': { name: '信用卡分期', short: '每月还多少？', title: '信用卡分期计算 — 每月还多少（简单计算器）', description: '输入金额和期数，大字显示每月还款额和手续费合计。', help: '输入金额并选择期数。' },
+  },
+  fr: {
+    calculator: { name: 'Calculatrice', short: 'Additions, soustractions…', title: 'Calculatrice en gros caractères — grosses touches, lecture à voix haute', description: 'Une calculatrice avec de grosses touches et de grands chiffres. Elle calcule dans l’ordre des touches, lit le résultat à voix haute et fonctionne au clavier.', help: 'Tapez les chiffres et les signes dans l’ordre, puis =.' },
+    'split-bill': { name: 'Partager l’addition', short: 'Diviser à parts égales', title: 'Partager l’addition — calculatrice simple en gros caractères', description: 'Entrez le montant et le nombre de personnes pour voir, en grand, combien chacun doit envoyer. Les centimes restants sont pour celui qui a payé.', help: 'Entrez le total et le nombre de personnes.' },
+    'exchange-rate': { name: 'Devises', short: 'Convertir en euros', title: 'Convertisseur de devises simple — gros caractères', description: 'Entrez un montant en devise étrangère et voyez, en grand, sa valeur en euros. Dollars, livres, yens et plus.', help: 'Choisissez la devise et entrez le montant.' },
+    discount: { name: 'Remise', short: 'Prix après réduction', title: 'Calcul de remise — prix après réduction (gros caractères)', description: 'Entrez le prix et le pourcentage de remise pour voir, en grand, ce que vous payez et économisez.', help: 'Entrez le prix, puis touchez la remise.' },
+    'days-left': { name: 'Jours restants', short: 'Combien de jours avant ?', title: 'Combien de jours avant une date — compte à rebours simple', description: 'Choisissez une date pour voir, en grand, combien de jours il reste ou sont passés. Anniversaires, rendez-vous, voyages.', help: 'Choisissez une date.' },
+    'card-installment': { name: 'Paiement en plusieurs fois', short: 'Combien par mois ?', title: 'Paiement en plusieurs fois — combien par mois ? (gros caractères)', description: 'Entrez le prix et le nombre de mois pour voir, en grand, la mensualité et le total des frais.', help: 'Entrez le prix et choisissez le nombre de mois.' },
+  },
+  es: {
+    calculator: { name: 'Calculadora', short: 'Sumar, restar, multiplicar…', title: 'Calculadora de letra grande — botones grandes y voz', description: 'Una calculadora con botones y números grandes. Calcula en el orden en que pulsas, lee el resultado en voz alta y funciona con teclado.', help: 'Pulsa números y signos en orden y después =.' },
+    'split-bill': { name: 'Dividir la cuenta', short: 'Pagar a partes iguales', title: 'Dividir la cuenta — calculadora sencilla de letra grande', description: 'Escribe el total y el número de personas para ver, en grande, cuánto envía cada uno. Los céntimos sobrantes los pone quien pagó.', help: 'Escribe el total y cuántas personas sois.' },
+    'exchange-rate': { name: 'Divisas', short: 'Pasar a euros', title: 'Conversor de divisas sencillo — letra grande', description: 'Escribe una cantidad en moneda extranjera y verás, en grande, cuánto es en euros. Dólares, libras, yenes y más.', help: 'Elige la moneda y escribe la cantidad.' },
+    discount: { name: 'Descuento', short: 'Precio con % de descuento', title: 'Calcular descuento — precio final (letra grande)', description: 'Escribe el precio y el descuento para ver, en grande, lo que pagas y lo que ahorras.', help: 'Escribe el precio y toca el descuento.' },
+    'days-left': { name: 'Días que faltan', short: '¿Cuántos días faltan?', title: 'Cuántos días faltan para una fecha — cuenta atrás sencilla', description: 'Elige una fecha para ver, en grande, cuántos días faltan o cuántos han pasado. Cumpleaños, citas médicas y viajes.', help: 'Elige una fecha.' },
+    'card-installment': { name: 'Pago a plazos', short: '¿Cuánto al mes?', title: 'Pago a plazos con tarjeta — cuánto al mes (letra grande)', description: 'Escribe el precio y el número de meses para ver, en grande, la cuota mensual y el total de intereses.', help: 'Escribe el precio y elige los meses.' },
+  },
+};

@@ -28,6 +28,7 @@ import BasicCalculator from './tools/BasicCalculator';
 import WordCounterTool from './tools/WordCounterTool';
 import { locales, type Locale } from '../lib/i18n';
 import { utilityJsonLd } from '../lib/utility-jsonld';
+import { SIMPLE_DETAIL, SIMPLE_TOOLS, SIMPLE_UI, SIMPLE_COPY, simpleHref } from '../data/simple-calculators';
 import { w7Pages, w7TimeSlugs, type W7Slug } from '../data/w7-pages';
 interface Props { slug: W7Slug; locale: Locale }
 const { slug, locale } = Astro.props;
@@ -38,10 +39,13 @@ const schema = utilityJsonLd({ name: p.title, description: p.description, url, l
 const koEn = locale === 'ko' ? 'ko' : 'en';
 // 2026-11-21: Black Friday cart page (coupons, tax, shipping) for the five non-Korean locales.
 const bfLink: Record<Locale, string> = { ko: '', en: 'Black Friday cart: stacked coupons, sales tax and free shipping →', es: 'Carrito de Black Friday: cupones, envío gratis →', fr: 'Panier Black Friday : codes promo et livraison →', ja: 'ブラックフライデーのカート計算（クーポン・送料）→', zh: '黑五购物车计算（优惠券、运费）→' };
+// 2026-11-22 간단계산기: 같은 일을 하는 큰 글씨 버전이 있으면 제목 아래에 이어 줘요.
+const simple = SIMPLE_TOOLS.find((t) => SIMPLE_DETAIL[t] === slug);
 const group = (w7TimeSlugs as readonly string[]).includes(slug) ? 'time' : slug === 'word-counter' ? 'dev' : 'calc';
 ---
 <Layout title={p.title} description={p.description} locale={locale} availableLocales={[...locales]} canonicalURL={url}>
   <ToolShell title={p.title} description={p.description}>
+    {simple && <a slot="meta" href={simpleHref(locale, simple)} class="inline-flex min-h-11 items-center text-sm font-semibold text-primary underline underline-offset-4">🔍 {SIMPLE_UI[locale].brand}: {SIMPLE_COPY[locale][simple].name}</a>}
     {slug === 'date-calculator' ? <DateCalculator client:load locale={locale} />
       : slug === 'dday-counter' ? <DdayCounter client:load locale={locale} />
       : slug === 'hours-calculator' ? <HoursCalculator client:load locale={locale} />
@@ -53,7 +57,7 @@ const group = (w7TimeSlugs as readonly string[]).includes(slug) ? 'time' : slug 
       : slug === 'ratio-calculator' ? <RatioCalculator client:load locale={locale} />
       : slug === 'discount-calculator' ? (locale === 'ko' ? <DiscountScenario client:load /> : <DiscountWorld client:load lang={locale} />)
       : slug === 'tip-calculator' ? (locale === 'ko' ? <TipScenario client:load /> : <TipWorld client:load lang={locale} />)
-      : slug === 'dutch-pay-calculator' ? <DutchPayCalculator client:load locale={koEn} />
+      : slug === 'dutch-pay-calculator' ? <DutchPayCalculator client:load locale={locale} />
       : slug === 'unit-price-calculator' ? <UnitPriceCalculator client:load locale={locale} />
       : slug === 'travel-budget-calculator' ? (locale === 'ko' ? <TravelBudgetScenario client:load /> : <TravelBudgetWorld client:load lang={locale} />)
       : slug === 'fuel-cost-calculator' ? (locale === 'ko' ? <FuelCostScenario client:load /> : <FuelCostWorld client:load lang={locale} />)
