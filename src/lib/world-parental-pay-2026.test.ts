@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { ukMaternityPay, ukChildBenefit, jpChildcareLeave, deElterngeld, elterngeldRate } from "./world-parental-pay-2026.ts";
+import { ukMaternityPay, ukChildBenefit, jpChildcareLeave, deElterngeld, elterngeldRate, jpChildAllowance } from "./world-parental-pay-2026.ts";
 
 test("parental pay and child benefit", () => {
   const smp = ukMaternityPay({ weeklyEarnings: 600 });
@@ -23,4 +23,12 @@ test("parental pay and child benefit", () => {
   assert.equal(deElterngeld({ netBefore: 5_000 }).basic, 1_800);
   assert.equal(deElterngeld({ netBefore: 200 }).basic, 300);
   assert.equal(deElterngeld({ netBefore: 3_000, taxableIncome: 180_000 }).eligible, false);
+});
+
+test("jp child allowance", () => {
+  assert.equal(jpChildAllowance({ under3: 1 }).monthly, 15_000);
+  assert.equal(jpChildAllowance({ from3: 2, under3: 1 }).monthly, 10_000 + 10_000 + 30_000);
+  assert.equal(jpChildAllowance({ supported19to22: 2, from3: 1 }).monthly, 30_000);
+  assert.equal(jpChildAllowance({ supported19to22: 1, under3: 2 }).monthly, 15_000 + 30_000);
+  assert.equal(jpChildAllowance({}).monthly, 0);
 });
