@@ -1,0 +1,49 @@
+---
+// 2027 leave-bridge planner (2026-11-22, think tank round 2). Engine: lib/leave-bridge.ts + lib/world-holidays-2027.ts
+import LeaveBridgePage from '../../components/LeaveBridgePage.astro';
+const c = {
+  "introTitle": "Les ponts de 2027",
+  "intro": "En 2027, Pâques tombe le 28 mars : le lundi de Pâques est le 29 mars, l’Ascension le jeudi 6 mai et le lundi de Pentecôte le 17 mai. Le 1er et le 8 mai tombent un samedi, le 15 août un dimanche, mais le 14 juillet (mercredi) et le 11 novembre (jeudi) font de beaux ponts. Cet outil passe en revue chaque jour ouvré de 2027 et indique combien de jours poser pour le plus long congé.",
+  "formulaTitle": "Les meilleurs ponts 2027",
+  "formulas": [
+    {
+      "title": "Ascension : 1 jour → 4",
+      "body": "Posez le vendredi 7 mai : du jeudi 6 au dimanche 9 mai."
+    },
+    {
+      "title": "11 novembre : 1 jour → 4",
+      "body": "Posez le vendredi 12 novembre : du jeudi 11 au dimanche 14."
+    },
+    {
+      "title": "14 juillet : 2 jours → 5",
+      "body": "Posez le lundi 12 et le mardi 13 juillet : du samedi 10 au mercredi 14."
+    }
+  ],
+  "howToTitle": "Mode d’emploi",
+  "steps": [
+    "Choisissez le nombre de jours de CP ou RTT disponibles ; le plus long congé s’affiche.",
+    "Touchez un pont dans la liste pour le voir sur le calendrier.",
+    "Cochez la journée de solidarité ou l’Alsace-Moselle, ajoutez les fermetures de votre entreprise."
+  ],
+  "faqTitle": "Questions fréquentes",
+  "faqs": [
+    {
+      "question": "Quels sont les jours fériés 2027 ?",
+      "answer": "1er janvier, lundi 29 mars (Pâques), 1er mai, jeudi 6 mai (Ascension), 8 mai, lundi 17 mai (Pentecôte), 14 juillet, 15 août, 1er novembre, 11 novembre et 25 décembre."
+    },
+    {
+      "question": "Le lundi de Pentecôte est-il chômé ?",
+      "answer": "Il peut servir de journée de solidarité : beaucoup d’employeurs le font travailler. Cochez la case si c’est votre cas."
+    },
+    {
+      "question": "Et l’Alsace-Moselle ?",
+      "answer": "Le Vendredi saint (26 mars) et le 26 décembre y sont fériés en plus. Cochez l’option."
+    }
+  ],
+  "disclaimer": "Jours fériés de l’article L3133-1 du Code du travail. Seul le 1er mai est obligatoirement chômé : votre convention collective ou votre employeur fixe les autres."
+};
+---
+<LeaveBridgePage country="fr" path="/fr/ponts-2027/" locale="fr" languageTag="fr-FR" ogLocale="fr_FR"
+  title={"Ponts 2027 — calendrier des ponts et jours à poser pour partir plus longtemps"} description={"Les ponts 2027 en France : Ascension, 11 novembre, 14 juillet. Voyez combien de jours de congé ou RTT poser pour le plus long repos, de 1 à 10 jours."} c={c}
+  sources={[["Code du travail, article L3133-1", "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000033020517"], ["Service-Public.fr — jours fériés", "https://www.service-public.fr/particuliers/vosdroits/F2405"]]} sourcesTitle="Sources"
+  related={[["/ja/yukyu-renkyu-2027/", "2027年 有給で連休カレンダー（日本）"], ["/en/us-pto-planner-2027/", "2027 PTO planner (US)"], ["/en/uk-annual-leave-planner-2027/", "2027 annual leave planner (UK)"], ["/de/brueckentage-2027/", "Brückentage 2027 (Deutschland)"], ["/ko/annual-leave-combo-2027/", "2027 연차 꿀조합 (한국)"]]} relatedTitle={"Calendriers 2027 d’autres pays"} />
