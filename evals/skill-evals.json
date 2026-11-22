@@ -3102,6 +3102,25 @@
           "eq": "pro"
         }
       ]
+    },
+    {
+      "skill": "oiyo-world-law-intake",
+      "id": "intake-sg-salary-claim",
+      "ask": "My employer in Singapore hasn't paid my salary for two months. Where do I go?",
+      "run": [
+        "SG",
+        "my employer has not paid my salary"
+      ],
+      "expect": [
+        {
+          "path": "result.help.1.area",
+          "eq": "labor"
+        },
+        {
+          "path": "result.matches.length",
+          "eq": 0
+        }
+      ]
     }
   ],
   "boundaries": {

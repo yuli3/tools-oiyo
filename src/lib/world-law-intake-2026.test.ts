@@ -24,7 +24,7 @@ test("no match lists every tool for the country, with help channels and tax scop
 test("every tool has a unique MCP name and a tools.oiyo.net page", () => {
   const names = WORLD_TOOLS.map((w) => w.mcp);
   assert.equal(new Set(names).size, names.length);
-  for (const w of WORLD_TOOLS) assert.match(w.page, /^https:\/\/tools\.oiyo\.net\/(ja|en|fr|es|zh)\/[a-z0-9-]+\/$/);
+  for (const w of WORLD_TOOLS) assert.match(w.page, /^https:\/\/tools\.oiyo\.net\/(ja|en|fr|es|zh|de)\/[a-z0-9-]+\/$/);
 });
 
 test("cooling-off questions route to the consumer tools", () => {
@@ -52,7 +52,7 @@ test("audience: everyday topics vs practitioner topics", () => {
   assert.equal(audienceOf("get_fr_tax_calendar"), "pro");
   assert.equal(audienceOf("check_uk_vat_registration"), "pro");
   assert.equal(audienceOf("calculate_es_employer_cost"), "pro");
-  for (const c of ["JP", "US", "FR", "ES", "CN", "UK", "TW"] as const) {
+  for (const c of ["JP", "US", "FR", "ES", "CN", "UK", "TW", "DE"] as const) {
     const pool = WORLD_TOOLS.filter((w) => w.country === c);
     assert.ok(pool.some((w) => w.audience === "person") && pool.some((w) => w.audience === "pro"), c);
   }
@@ -60,4 +60,14 @@ test("audience: everyday topics vs practitioner topics", () => {
   assert.equal(r.audience, "person");
   assert.ok(r.tools?.every((t) => t.audience === "person"));
   assert.equal(intake({ country: "JP", question: "減価償却の耐用年数", audience: "person" }).matches.length, 0);
+});
+
+test("Germany and Singapore are routed with help channels from the statutes", () => {
+  assert.equal(intake({ country: "DE", question: "Mir wurde gekündigt, wann ist mein letzter Arbeitstag?" }).matches[0].mcp, "calculate_de_notice_period");
+  assert.equal(intake({ country: "DE", question: "Ab wann muss ich E-Rechnungen ausstellen?" }).matches[0].mcp, "check_de_einvoicing");
+  assert.equal(intake({ country: "SG", question: "How much CPF does my employer pay?" }).matches[0].mcp, "calculate_sg_cpf");
+  assert.equal(intake({ country: "SG", question: "What is my income tax on S$80,000 chargeable income?" }).matches[0].mcp, "calculate_sg_income_tax");
+  const sg = intake({ country: "SG", question: "hello" });
+  assert.match(sg.help.find((h) => h.area === "labor")!.channel, /TADM/);
+  assert.ok(intake({ country: "DE", question: "Einkommensteuer" }).taxScope?.some((x) => x.cite === "§ 4 StBerG"));
 });

@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { intake, WORLD_TOOLS, HELP, type Audience, type Country } from "../../../lib/world-law-intake-2026";
 import ChoiceChips from "../payroll/ChoiceChips";
 
-const COUNTRIES: [Country, string][] = [["JP", "🇯🇵 Japan"], ["US", "🇺🇸 United States (CA, NY)"], ["FR", "🇫🇷 France"], ["ES", "🇪🇸 Spain"], ["CN", "🇨🇳 China mainland"], ["UK", "🇬🇧 United Kingdom (England)"], ["TW", "🇹🇼 Taiwan"]];
+const COUNTRIES: [Country, string][] = [["JP", "🇯🇵 Japan"], ["US", "🇺🇸 United States (CA, NY)"], ["FR", "🇫🇷 France"], ["ES", "🇪🇸 Spain"], ["CN", "🇨🇳 China mainland"], ["UK", "🇬🇧 United Kingdom (England)"], ["TW", "🇹🇼 Taiwan"], ["DE", "🇩🇪 Germany"], ["SG", "🇸🇬 Singapore"]];
 type Who = "all" | Audience;
 const WHO: { value: Who; label: string }[] = [{ value: "all", label: "Everyone" }, { value: "person", label: "My own life" }, { value: "pro", label: "Business and advisers" }];
 const WHO_TAG: Record<Audience, string> = { person: "everyday", pro: "business" };
