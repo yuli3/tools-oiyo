@@ -1,0 +1,30 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import WorldIntake from '../../components/tools/world/WorldIntake';
+const c = {
+  introTitle: 'One front door for tax, job and rental questions in seven places',
+  intro: 'Type a question in your own words and pick the country. The guide points you to the local tool built on that country’s own law and language: Japan, the United States (California and New York for renting), France, Spain, mainland China, the United Kingdom (England for renting) and Taiwan. It also shows the free official help channel. It does not give legal or tax advice, act for you or file anything.',
+  formulaTitle: 'What is covered',
+  formulas: [
+    { title: 'Tax', body: 'Deadlines, self-employed tax, VAT or consumption tax thresholds, penalties and interest, appeal deadlines and depreciation, 6 to 8 tools per country.' },
+    { title: 'Job ending', body: 'Notice, statutory severance or redundancy pay, paid leave, unemployment benefit length, minimum wage and claim deadlines.' },
+    { title: 'Renting', body: 'Deposit cap and return deadline, notice periods and rent increase limits.' },
+    { title: 'Not covered yet', body: 'Inheritance, consumer refunds, limitation periods, employer payroll, company filings and tax residency.' },
+  ],
+  howToTitle: 'How to use it',
+  steps: ['Pick the country.', 'Type the question as you would ask a friend.', 'Open the best match; every tool shows its legal source and date checked.', 'For your own case, use the free help channel shown, or a licensed professional.'],
+  faqTitle: 'Questions',
+  faqs: [
+    { question: 'Why separate tools per country instead of one translated tool?', answer: 'Deadlines, amounts and who may give advice differ by country, so each tool follows that country’s own statutes and official pages.' },
+    { question: 'Is what I type saved?', answer: 'No. Matching runs in your browser.' },
+  ],
+  disclaimer: 'Routing and general information only. Each linked tool lists its sources and the date they were checked.',
+};
+const sources: [string, string][] = [
+  ['OIYO MCP server (api.oiyo.net)', 'https://api.oiyo.net/mcp'],
+  ['oiyo-skills on GitHub', 'https://github.com/yuli3/oiyo-skills'],
+];
+---
+<DebtReliefPage slug="world-law-guide" c={c} sources={sources} sourcesTitle="Links" checked="Tool list checked 2026-11-22">
+  <WorldIntake client:load />
+</DebtReliefPage>
