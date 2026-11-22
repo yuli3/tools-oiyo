@@ -1,0 +1,55 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/limitation/CnSmallClaims';
+// Limitation and small claims pack (2026-11-22, world pro-gap #4). Engine: lib/world-limitation-pack-2026.ts
+const c = {
+  "introTitle": "我的案子能不能走小额诉讼",
+  "intro": "2021年修改的民事诉讼法规定，简单金钱给付案件，标的额在本省上年度就业人员年平均工资50%以下的，适用小额诉讼程序，一审终审；在50%到2倍之间，双方可以约定适用。",
+  "formulaTitle": "使用的规则",
+  "formulas": [
+    {
+      "title": "上限",
+      "body": "本省上年度就业人员年平均工资 × 50%（第165条）。"
+    },
+    {
+      "title": "约定适用",
+      "body": "超过50%但在2倍以下，双方约定可以适用。"
+    },
+    {
+      "title": "审级",
+      "body": "一审终审。"
+    }
+  ],
+  "howToTitle": "怎么用",
+  "steps": [
+    "填写请求金额。",
+    "填写本省公布的上年度年平均工资。",
+    "查看是否适用小额诉讼。"
+  ],
+  "faqTitle": "常见问题",
+  "faqs": [
+    {
+      "question": "诉讼时效是几年？",
+      "answer": "民法典的诉讼时效这里没有核对，不计算期限。"
+    },
+    {
+      "question": "年平均工资在哪里查？",
+      "answer": "以本省统计部门公布的上年度就业人员年平均工资为准。"
+    },
+    {
+      "question": "会保存我输入的内容吗？",
+      "answer": "不会，内容不离开浏览器。"
+    }
+  ],
+  "disclaimer": "一般信息，不是法律意见。"
+};
+const sources: [string, string][] = [
+  [
+    "全国人大常委会关于修改《中华人民共和国民事诉讼法》的决定（中国政府网）",
+    "https://www.gov.cn/xinwen/2021-12/25/content_5664493.htm"
+  ]
+];
+---
+<DebtReliefPage slug="china-small-claims-threshold" c={c} sources={sources} sourcesTitle="来源" checked="中国政府网 2026-11-22 核对">
+  <T client:load />
+</DebtReliefPage>

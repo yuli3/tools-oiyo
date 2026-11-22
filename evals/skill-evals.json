@@ -2643,6 +2643,68 @@
           }
         }
       ]
+    },
+    {
+      "skill": "oiyo-world-claims-guide",
+      "id": "claims-jp-general",
+      "ask": "2022年4月1日に返す約束で友人に30万円貸しました。いつまで請求できますか？少額訴訟は使えますか？",
+      "run": [
+        "jp",
+        {
+          "claim": "general",
+          "knew": "2022-04-01",
+          "couldExercise": "2022-04-01",
+          "amount": 300000
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.deadline",
+          "eq": "2027-04-01"
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-world-claims-guide",
+      "id": "claims-uk-contract",
+      "ask": "A customer owes me £2,500 for work invoiced as due on 1 June 2021. How long do I have to sue in England and what's the court fee?",
+      "run": [
+        "uk",
+        {
+          "claim": "contract",
+          "accrued": "2021-06-01",
+          "amount": 2500
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.deadline",
+          "eq": "2027-06-01"
+        },
+        {
+          "path": "result.fee",
+          "eq": 115
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-world-claims-guide",
+      "id": "claims-tw-goods",
+      "ask": "客戶2025年3月1日該付的貨款8萬元一直沒付，時效到什麼時候？能用小額訴訟嗎？",
+      "run": [
+        "tw",
+        {
+          "claim": "shortTwoYear",
+          "start": "2025-03-01",
+          "amount": 80000
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.deadline",
+          "eq": "2027-03-01"
+        }
+      ]
     }
   ],
   "boundaries": {

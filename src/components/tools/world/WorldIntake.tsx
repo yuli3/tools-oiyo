@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { intake, WORLD_TOOLS, HELP, type Country } from "../../../lib/world-law-intake-2026";
 
 const COUNTRIES: [Country, string][] = [["JP", "🇯🇵 Japan"], ["US", "🇺🇸 United States (CA, NY)"], ["FR", "🇫🇷 France"], ["ES", "🇪🇸 Spain"], ["CN", "🇨🇳 China mainland"], ["UK", "🇬🇧 United Kingdom (England)"], ["TW", "🇹🇼 Taiwan"]];
-const AREA: Record<string, string> = { tax: "Tax", labor: "Job ending", tenancy: "Renting", consumer: "Cancelling a purchase" };
+const AREA: Record<string, string> = { tax: "Tax", labor: "Job ending", tenancy: "Renting", consumer: "Cancelling a purchase", claims: "Suing / time limits" };
 
 export default function WorldIntake() {
   const [country, setCountry] = useState<Country>("JP");
@@ -35,7 +35,7 @@ export default function WorldIntake() {
         </div>
       )}
       <div className="grid gap-4 sm:grid-cols-3">
-        {(["tax", "labor", "tenancy", "consumer"] as const).map((a) => (
+        {(["tax", "labor", "tenancy", "consumer", "claims"] as const).map((a) => (
           <section key={a} className="rounded-md border border-border px-4 py-3 text-sm">
             <h3 className="font-semibold">{AREA[a]}</h3>
             <ul className="mt-2 space-y-1">

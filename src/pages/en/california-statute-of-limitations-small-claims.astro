@@ -1,0 +1,59 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/limitation/CaLimitation';
+// Limitation and small claims pack (2026-11-22, world pro-gap #4). Engine: lib/world-limitation-pack-2026.ts
+const c = {
+  "introTitle": "Deadlines to sue in California, and small claims limits",
+  "intro": "California gives 4 years for a written contract, 2 years for an oral contract, 2 years for personal injury, 3 years for property damage and 1 year for libel or slander. Individuals can sue for up to $12,500 in small claims court ($6,250 for businesses).",
+  "formulaTitle": "The rules used",
+  "formulas": [
+    {
+      "title": "Contracts",
+      "body": "Written 4 years (CCP 337), oral 2 years (CCP 339) from the breach."
+    },
+    {
+      "title": "Injury and damage",
+      "body": "Personal injury 2 years (CCP 335.1), property damage 3 years (CCP 338), defamation 1 year (CCP 340(c))."
+    },
+    {
+      "title": "Small claims",
+      "body": "$12,500 for individuals, $6,250 for businesses; only two claims over $2,500 per year."
+    }
+  ],
+  "howToTitle": "How to use",
+  "steps": [
+    "Pick the type of claim.",
+    "Enter the start date and amount.",
+    "Read the filing deadline and whether small claims fits."
+  ],
+  "faqTitle": "FAQ",
+  "faqs": [
+    {
+      "question": "Does the clock always start on the date of the event?",
+      "answer": "Not always; some deadlines start on discovery, and some pause. Not applied here."
+    },
+    {
+      "question": "Other states?",
+      "answer": "Only California is covered."
+    },
+    {
+      "question": "Is my input stored?",
+      "answer": "No, it stays in your browser."
+    }
+  ],
+  "disclaimer": "General information, not legal advice."
+};
+const sources: [string, string][] = [
+  [
+    "California Courts Self-Help — deadlines to sue",
+    "https://selfhelp.courts.ca.gov/civil-lawsuit/statute-limitations"
+  ],
+  [
+    "Contra Costa Superior Court — small claims FAQ",
+    "https://contracosta.courts.ca.gov/divisions/small-claims/small-claims-faqs"
+  ]
+];
+---
+<DebtReliefPage slug="california-statute-of-limitations-small-claims" c={c} sources={sources} sourcesTitle="Sources" checked="California Courts Self-Help checked 2026-11-22">
+  <T client:load />
+</DebtReliefPage>
