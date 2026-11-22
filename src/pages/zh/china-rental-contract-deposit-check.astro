@@ -1,0 +1,63 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/tenancy/CnTenancy';
+// Tenancy pack (2026-11-22, plan-20 #17). Engine: lib/world-tenancy-pack-2026.ts
+const c = {
+  "introTitle": "签租房合同前要看清的几件事",
+  "intro": "国家层面没有押金上限，也没有规定押金返还天数，所以合同里一定要写明押金数额、返还时间和扣减条件；出租人无正当理由不得扣减押金。租期最长20年，6个月以上要签书面合同。",
+  "formulaTitle": "使用的规则",
+  "formulas": [
+    {
+      "title": "押金",
+      "body": "合同写明数额、返还时间和扣减条件，无正当理由不得扣减（住房租赁条例第10条）。"
+    },
+    {
+      "title": "租期",
+      "body": "不超过20年（民法典第705条），6个月以上书面形式（第707条）。"
+    },
+    {
+      "title": "解除",
+      "body": "不定期租赁可随时解除但应合理期限前通知（第730条）；出租人不得以暴力、威胁迫使搬离（条例第12条）。"
+    }
+  ],
+  "howToTitle": "使用方法",
+  "steps": [
+    "输入租期、租金和押金。",
+    "选择是否有书面合同。",
+    "查看提醒事项。"
+  ],
+  "faqTitle": "常见问题",
+  "faqs": [
+    {
+      "question": "押金多久必须退？",
+      "answer": "全国没有统一天数，以合同约定为准；签约时写清楚。"
+    },
+    {
+      "question": "房东可以随意涨租吗？",
+      "answer": "全国没有涨幅上限，租期内按合同执行；城市政府会公布租金水平。"
+    },
+    {
+      "question": "我的数据会被保存吗？",
+      "answer": "不会，只在您的浏览器里计算。"
+    }
+  ],
+  "disclaimer": "一般信息，不构成法律意见。"
+};
+const sources: [string, string][] = [
+  [
+    "住房租赁条例（北京市住建委转载）",
+    "https://zjw.beijing.gov.cn/bjjs/xxgk/543346069/543346067/743719442/index.shtml"
+  ],
+  [
+    "住房租赁条例（湖南省政府）",
+    "https://www.hunan.gov.cn/zqt/zcsd/202507/t20250722_33746078.html"
+  ],
+  [
+    "民法典合同编（政府网站转载）",
+    "https://gzw.ganzhou.gov.cn/gzsgyzcjdgl/c103208/202012/6d41437d4c6a491897a8a33f3b255f08.shtml"
+  ]
+];
+---
+<DebtReliefPage slug="china-rental-contract-deposit-check" c={c} sources={sources} sourcesTitle="来源" checked="2026-11-21 核对政府网站">
+  <T client:load />
+</DebtReliefPage>

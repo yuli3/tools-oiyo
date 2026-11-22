@@ -1,0 +1,71 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/tenancy/JpTenancy';
+// Tenancy pack (2026-11-22, plan-20 #17). Engine: lib/world-tenancy-pack-2026.ts
+const c = {
+  "introTitle": "賃貸住宅を出るときに法律が決めていること",
+  "intro": "敷金に法律上の上限はなく、部屋を明け渡したときに未払い家賃などを差し引いた残りが返ってきます。通常の損耗や経年変化は借主の負担ではありません。期間の定めのない賃貸借は、借主が申し入れると3か月後、貸主が申し入れると6か月後に終わり、貸主には正当事由が必要です。",
+  "formulaTitle": "使っているルール",
+  "formulas": [
+    {
+      "title": "敷金",
+      "body": "上限なし。明け渡し後に未払い分を差し引いて返還（民法622条の2）。原状回復は通常損耗を除く（621条）。"
+    },
+    {
+      "title": "解約予告",
+      "body": "借主3か月（民法617条）、貸主6か月＋正当事由（借地借家法27・28条）。定期借家は200㎡未満でやむを得ない事情なら1か月（38条）。"
+    },
+    {
+      "title": "家賃の増額",
+      "body": "上限率なし。裁判で増額が確定したら不足分に年1割の利息（借地借家法32条）。"
+    }
+  ],
+  "howToTitle": "使い方",
+  "steps": [
+    "契約の種類（普通借家・定期借家）を選びます。",
+    "家賃・敷金・解約を申し入れる日を入れます。",
+    "終了日と注意点を確認します。"
+  ],
+  "faqTitle": "よくある質問",
+  "faqs": [
+    {
+      "question": "敷金は何日以内に返してもらえますか？",
+      "answer": "法律に日数の定めはありません。明け渡したときに返還を求められます。契約書の定めも確認してください。"
+    },
+    {
+      "question": "敷引きや更新料は？",
+      "answer": "契約上の慣行で、ここでは計算していません。"
+    },
+    {
+      "question": "入力内容は保存されますか？",
+      "answer": "ブラウザの外には送りません。"
+    }
+  ],
+  "disclaimer": "一般的な情報です。法律相談・代理ではありません。"
+};
+const sources: [string, string][] = [
+  [
+    "民法622条の2（敷金）",
+    "https://laws.e-gov.go.jp/api/1/articles;lawNum=明治二十九年法律第八十九号;article=622の2"
+  ],
+  [
+    "民法617条（解約の申入れ）",
+    "https://laws.e-gov.go.jp/api/1/articles;lawNum=明治二十九年法律第八十九号;article=617"
+  ],
+  [
+    "借地借家法27条（解約による終了）",
+    "https://laws.e-gov.go.jp/api/1/articles;lawNum=平成三年法律第九十号;article=27"
+  ],
+  [
+    "借地借家法32条（借賃増減請求）",
+    "https://laws.e-gov.go.jp/api/1/articles;lawNum=平成三年法律第九十号;article=32"
+  ],
+  [
+    "消費者ホットライン188",
+    "https://www.caa.go.jp/policies/policy/local_cooperation/local_consumer_administration/hotline/"
+  ]
+];
+---
+<DebtReliefPage slug="japan-rental-deposit-notice-checker" c={c} sources={sources} sourcesTitle="出典" checked="e-Gov法令検索で2026-11-21に確認">
+  <T client:load />
+</DebtReliefPage>
