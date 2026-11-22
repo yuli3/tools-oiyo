@@ -3027,6 +3027,23 @@
           "eq": "2026-11-29"
         }
       ]
+    },
+    {
+      "skill": "oiyo-de-guide",
+      "id": "de-soli-150k",
+      "ask": "Wie hoch ist der Solidaritätszuschlag bei 150.000 € zu versteuerndem Einkommen (ledig)?",
+      "run": [
+        "tax",
+        {
+          "zvE": 150000
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.soli",
+          "eq": 2852.52
+        }
+      ]
     }
   ],
   "boundaries": {

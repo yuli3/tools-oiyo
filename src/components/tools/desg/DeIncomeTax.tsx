@@ -24,7 +24,7 @@ export default function DeIncomeTax() {
         <>
           <ChoiceChips<J> legend="Veranlagung" value={x.j} options={[{ value: "single", label: "Einzeln" }, { value: "joint", label: "Zusammen (Splitting)" }]} onChange={(v) => upd({ j: v })} />
           <NumberField label="Zu versteuerndes Einkommen im Jahr (€)" value={x.zvE} onChange={(v) => upd({ zvE: v })} step={1000} />
-          <LaborResult mode={mode} headline={`Einkommensteuer: ${eur(r.tax)}`} sub={`Durchschnittssteuersatz ${r.average.toLocaleString("de-DE")} %, Grenzsteuersatz ${r.marginal.toLocaleString("de-DE")} %`} items={r.items} dates={[]} datesTitle="" note={`Nach § 32a EStG (Tarif ab 2026). Keine Steuerberatung. Stand ${DESG_AS_OF}. Ihre Eingaben bleiben im Browser.`} />
+          <LaborResult mode={mode} headline={`Einkommensteuer: ${eur(r.tax)}${r.soli ? ` + Soli ${r.soli.toLocaleString("de-DE", { minimumFractionDigits: 2 })} €` : ""}`} sub={`Durchschnittssteuersatz ${r.average.toLocaleString("de-DE")} %, Grenzsteuersatz ${r.marginal.toLocaleString("de-DE")} %`} items={r.items} dates={[]} datesTitle="" note={`Nach § 32a EStG (Tarif ab 2026) und §§ 3, 4 SolZG. Keine Steuerberatung. Stand ${DESG_AS_OF}. Ihre Eingaben bleiben im Browser.`} />
         </>
       )}
     </CurveShell>

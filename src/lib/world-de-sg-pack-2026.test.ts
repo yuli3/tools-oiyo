@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { deTarif, deIncomeTax, deNoticePeriod, deMinimumWage, deEInvoice, sgCpf, sgNotice } from "./world-de-sg-pack-2026.ts";
+import { deTarif, deSoli, deIncomeTax, deNoticePeriod, deMinimumWage, deEInvoice, sgCpf, sgNotice } from "./world-de-sg-pack-2026.ts";
 
 test("de tarif zones", () => {
   assert.equal(deTarif(12_348), 0);
@@ -32,4 +32,11 @@ test("sg cpf and notice", () => {
   assert.equal(sgNotice({ startDate: "2020-01-01", noticeDate: "2026-11-02" }).lastDay, "2026-11-29");
   assert.equal(sgNotice({ startDate: "2026-09-01", noticeDate: "2026-11-02" }).lastDay, "2026-11-02");
   assert.equal(sgNotice({ startDate: "2025-01-01", noticeDate: "2026-11-02" }).days, 7);
+});
+test("de soli", () => {
+  assert.equal(deSoli(20_350), 0);
+  assert.equal(deSoli(21_000), Math.floor(650 * 0.119 * 100) / 100);
+  assert.equal(deSoli(100_000), 5_500);
+  assert.equal(deSoli(40_000, true), 0);
+  assert.equal(deIncomeTax({ zvE: 300_000 }).soli, Math.floor(deTarif(300_000) * 0.055 * 100) / 100);
 });
