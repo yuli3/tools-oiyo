@@ -1,0 +1,31 @@
+---
+// 2027 puentes planner (2026-11-22, think tank round 3). Engine: lib/leave-bridge.ts + lib/world-holidays-2027.ts (BOE-A-2026-21254)
+import LeaveBridgePage from '../../components/LeaveBridgePage.astro';
+const c = {
+  "introTitle": "Los puentes de 2027",
+  "intro": "El BOE del 13 de octubre de 2026 fija nueve festivos comunes a toda España en 2027: 1 y 6 de enero, Viernes Santo (26 de marzo), 1 de mayo, 12 de octubre, 1 de noviembre y 6, 8 y 25 de diciembre. Cada comunidad añade los suyos: Jueves Santo en casi todas, San José (viernes 19 de marzo) en Madrid, Galicia, Murcia, Navarra y Valencia, Lunes de Pascua en Cataluña, Baleares, Navarra, País Vasco, La Rioja y Valencia. Elige tu comunidad y la herramienta revisa cada día laborable de 2027 para decirte cuántos días pedir.",
+  "formulaTitle": "Los mejores puentes de 2027",
+  "formulas": [
+    { "title": "Reyes: 2 días → 5", "body": "Pide el jueves 7 y el viernes 8 de enero: libras del miércoles 6 al domingo 10." },
+    { "title": "Constitución: 1 día → 5", "body": "Pide el martes 7 de diciembre: libras del sábado 4 al miércoles 8." },
+    { "title": "Semana Santa en Madrid: 3 días → 10", "body": "Con San José el viernes 19 de marzo, pide del 22 al 24 de marzo: libras del 19 al 28. En otras comunidades cambia: elige la tuya." }
+  ],
+  "howToTitle": "Cómo se usa",
+  "steps": [
+    "Elige tu comunidad autónoma y los días de vacaciones que te quedan; aparece el descanso más largo.",
+    "Toca un puente de la lista para verlo en el calendario.",
+    "Añade los dos festivos locales de tu municipio o los días de cierre de tu empresa."
+  ],
+  "faqTitle": "Preguntas frecuentes",
+  "faqs": [
+    { "question": "¿Cuántos festivos hay en 2027?", "answer": "Doce en casi todas las comunidades (once en Canarias, más el día de cada isla): los nueve comunes y los autonómicos que publica el BOE. A eso se suman dos fiestas locales que fija cada ayuntamiento." },
+    { "question": "¿El 15 de agosto es festivo?", "answer": "Cae en domingo. Andalucía, Aragón, Asturias, Canarias, Castilla y León y Madrid lo pasan al lunes 16 de agosto; Extremadura, al lunes 11 de octubre." },
+    { "question": "¿Y las fiestas locales?", "answer": "No están en el BOE estatal: las publica tu comunidad. Añádelas con el campo de fechas y el cálculo se actualiza." }
+  ],
+  "disclaimer": "Festivos de la Resolución de 8 de octubre de 2026 de la Dirección General de Trabajo (BOE-A-2026-21254). Los días de cada isla canaria y del Valle de Arán no están incluidos: añádelos a mano."
+};
+---
+<LeaveBridgePage country="es" path="/es/puentes-2027/" locale="es" languageTag="es-ES" ogLocale="es_ES"
+  title={"Puentes 2027 — calendario laboral por comunidad y días que pedir"} description={"Puentes 2027 en España según el BOE: Reyes, Semana Santa, 12 de octubre, Constitución. Elige tu comunidad y ve cuántos días de vacaciones pedir para el descanso más largo."} c={c}
+  sources={[["BOE-A-2026-21254 — fiestas laborales 2027", "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-21254"], ["Estatuto de los Trabajadores, art. 37.2", "https://www.boe.es/buscar/act.php?id=BOE-A-2015-11430#a37"]]} sourcesTitle="Fuentes"
+  related={[["/fr/ponts-2027/", "Ponts 2027 (France)"], ["/de/brueckentage-2027/", "Brückentage 2027 (Deutschland)"], ["/en/uk-annual-leave-planner-2027/", "2027 annual leave planner (UK)"], ["/en/us-pto-planner-2027/", "2027 PTO planner (US)"], ["/zh/pinjia-2027/", "2027年拼假攻略（中国）"]]} relatedTitle={"Calendarios 2027 de otros países"} />

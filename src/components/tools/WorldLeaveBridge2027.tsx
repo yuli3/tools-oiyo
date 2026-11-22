@@ -1,8 +1,8 @@
-// 2027 leave-bridge planner for JP · US · UK · FR · DE (2026-11-22, think tank round 2).
+// 2027 leave-bridge planner for JP · US · UK · FR · DE (2026-11-22, think tank round 2) + CN · ES (round 3).
 // Engine: lib/leave-bridge.ts with opts.holidays; holiday tables: lib/world-holidays-2027.ts
 import { useMemo, useState } from "react";
 import { bestByLeave, isOff, topEfficient, type BridgeWindow } from "../../lib/leave-bridge";
-import { DE_STATES, OPTIONAL_2027, holidayName, holidays2027, type Country, type DeState } from "../../lib/world-holidays-2027";
+import { DE_STATES, ES_REGIONS, OPTIONAL_2027, holidayName, holidays2027, workdays2027, type Country, type DeState, type EsRegion } from "../../lib/world-holidays-2027";
 import { track } from "./viz/track";
 import CompareBars from "./viz/CompareBars";
 
@@ -12,11 +12,17 @@ const DE_NAMES: Record<DeState, string> = {
   NI: "Niedersachsen", NW: "Nordrhein-Westfalen", RP: "Rheinland-Pfalz", SL: "Saarland", SN: "Sachsen", ST: "Sachsen-Anhalt", SH: "Schleswig-Holstein", TH: "Thüringen",
 };
 
+const ES_NAMES: Record<EsRegion, string> = {
+  AN: "Andalucía", AR: "Aragón", AS: "Asturias", IB: "Illes Balears", CN: "Canarias", CB: "Cantabria", CM: "Castilla-La Mancha", CL: "Castilla y León",
+  CT: "Cataluña", EX: "Extremadura", GA: "Galicia", MD: "Comunidad de Madrid", MC: "Región de Murcia", NC: "Navarra", PV: "País Vasco", RI: "La Rioja",
+  VC: "Comunitat Valenciana", CE: "Ceuta", ML: "Melilla",
+};
+
 interface Copy {
   wd: string[]; month: (m: number) => string; leaveLabel: string; unit: (n: number) => string;
   summary: (leave: number, dates: string, range: string, days: number) => string; none: string;
   listTitle: (n: number) => string; row: (leave: number, days: number) => string; leaveDates: string;
-  stripTitle: string; legend: [string, string, string, string]; bestTitle: string; bestRow: (n: number) => string;
+  stripTitle: string; legend: [string, string, string, string]; workday?: string; bestTitle: string; bestRow: (n: number) => string;
   state?: string; stateAll?: string; options: Record<string, string>; satWork: string; extra: string; add: string;
 }
 
@@ -57,12 +63,29 @@ const C: Record<Country, Copy> = {
     state: "Bundesland", stateAll: "Nur bundesweite Feiertage",
     options: { heiligabend: "Heiligabend und Silvester sind bei uns frei" }, satWork: "Ich arbeite samstags", extra: "Betriebsfreien Tag hinzufügen", add: "Hinzufügen",
   },
+  cn: {
+    wd: ["周日", "周一", "周二", "周三", "周四", "周五", "周六"], month: (m) => `${m}月`, leaveLabel: "可用年假天数", unit: (n) => `${n}天`,
+    summary: (l, d, r, n) => `请${l}天年假（${d}），${r}连休${n}天。`, none: "没有符合条件的拼假方案。",
+    listTitle: (n) => `年假${n}天以内的拼假方案（按性价比挑选，按日期排列）`, row: (l, n) => `请${l}天 → 连休${n}天`, leaveDates: "请假",
+    stripTitle: "2027年全年一览", legend: ["法定假日", "周末", "年假", "选中的连休"], workday: "调休上班", bestTitle: "请几天年假最长能休几天？", bestRow: (n) => `请${n}天`,
+    options: {}, satWork: "周六也上班（大小周）", extra: "添加公司额外放假日", add: "添加",
+  },
+  es: {
+    wd: ["dom", "lun", "mar", "mié", "jue", "vie", "sáb"], month: (m) => ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"][m - 1], leaveLabel: "Días de vacaciones que puedes usar", unit: (n) => `${n} día${n > 1 ? "s" : ""}`,
+    summary: (l, d, r, n) => `Pidiendo ${l} día${l > 1 ? "s" : ""} (${d}) libras ${r}: ${n} días seguidos.`, none: "No hay puentes con estos ajustes.",
+    listTitle: (n) => `Mejores puentes con ${n} día${n > 1 ? "s" : ""} como máximo (los más rentables, por fecha)`, row: (l, n) => `${l} día${l > 1 ? "s" : ""} → ${n} libres`, leaveDates: "Pedir",
+    stripTitle: "2027 de un vistazo", legend: ["Festivo", "Fin de semana", "Vacaciones", "Puente elegido"], bestTitle: "El descanso más largo según los días que pidas", bestRow: (n) => `${n} día${n > 1 ? "s" : ""}`,
+    state: "Comunidad autónoma", stateAll: "Solo festivos comunes a toda España",
+    options: { nochebuena: "Libro el 24 y el 31 de diciembre (por convenio)" }, satWork: "Trabajo los sábados", extra: "Añadir un festivo local o de empresa", add: "Añadir",
+  },
 };
 
 export default function WorldLeaveBridge2027({ country }: { country: Country }) {
   const t = C[country];
   const [budget, setBudget] = useState(3);
-  const [state, setState] = useState<DeState | "">(country === "de" ? "BY" : "");
+  const [state, setState] = useState<string>(country === "de" ? "BY" : country === "es" ? "MD" : "");
+  const work = useMemo(() => workdays2027(country), [country]);
+  const regions: [string, string][] = country === "de" ? DE_STATES.map((s) => [s, DE_NAMES[s]]) : country === "es" ? ES_REGIONS.map((r) => [r, ES_NAMES[r]]) : [];
   const [options, setOptions] = useState<string[]>(OPTIONAL_2027[country].filter((o) => o.defaultOn).map((o) => o.id));
   const [saturdayWork, setSaturdayWork] = useState(false);
   const [extra, setExtra] = useState<string[]>([]);
@@ -72,17 +95,18 @@ export default function WorldLeaveBridge2027({ country }: { country: Country }) 
   const md = (d: string) => {
     const x = new Date(`${d}T00:00:00Z`);
     return country === "jp" ? `${x.getUTCMonth() + 1}/${x.getUTCDate()}(${t.wd[x.getUTCDay()]})`
+      : country === "cn" ? `${x.getUTCMonth() + 1}月${x.getUTCDate()}日(${t.wd[x.getUTCDay()]})`
       : country === "us" ? `${t.wd[x.getUTCDay()]} ${t.month(x.getUTCMonth() + 1)} ${x.getUTCDate()}`
       : `${t.wd[x.getUTCDay()]} ${x.getUTCDate()} ${t.month(x.getUTCMonth() + 1)}`;
   };
   const range = (w: BridgeWindow) => `${md(w.start)} – ${md(w.end)}`;
 
   const hol = useMemo(() => {
-    const s = holidays2027(country, { state: state || undefined, options });
+    const s = holidays2027(country, { state: country === "de" ? (state || undefined) as DeState | undefined : undefined, region: country === "es" ? (state || undefined) as EsRegion | undefined : undefined, options });
     for (const d of extra) s.add(d);
     return s;
   }, [country, state, options.join(), extra.join()]);
-  const opts = useMemo(() => ({ holidays: hol, saturdayWork, fromDate: "2027-01-01", requireHoliday: true }), [hol, saturdayWork]);
+  const opts = useMemo(() => ({ holidays: hol, saturdayWork, workdays: work, fromDate: "2027-01-01", requireHoliday: true }), [hol, saturdayWork, work]);
   const best = useMemo(() => bestByLeave(YEAR, 10, opts), [opts]);
   const combos = useMemo(() => topEfficient(YEAR, budget, 12, opts), [budget, opts]);
   const top = best[budget - 1]?.best ?? null;
@@ -106,11 +130,11 @@ export default function WorldLeaveBridge2027({ country }: { country: Country }) 
       </label>
 
       <div className="space-y-2 rounded-xl border border-border bg-card p-4">
-        {country === "de" && (
+        {regions.length > 0 && (
           <label className="block text-sm font-medium text-muted-foreground">{t.state}
-            <select className="mt-1 min-h-11 w-full rounded-md border border-border bg-background px-3 text-base text-foreground" value={state} onChange={(e) => { setState(e.target.value as DeState | ""); touch(); }}>
+            <select className="mt-1 min-h-11 w-full rounded-md border border-border bg-background px-3 text-base text-foreground" value={state} onChange={(e) => { setState(e.target.value); touch(); }}>
               <option value="">{t.stateAll}</option>
-              {DE_STATES.map((s) => <option key={s} value={s}>{DE_NAMES[s]}</option>)}
+              {regions.map(([code, name]) => <option key={code} value={code}>{name}</option>)}
             </select>
           </label>
         )}
@@ -150,7 +174,7 @@ export default function WorldLeaveBridge2027({ country }: { country: Country }) 
             const named = (() => {
               const out: string[] = [];
               for (let x = Date.parse(`${w.start}T00:00:00Z`); x <= Date.parse(`${w.end}T00:00:00Z`); x += 86_400_000) {
-                const n = holidayName(country, new Date(x).toISOString().slice(0, 10));
+                const n = holidayName(country, new Date(x).toISOString().slice(0, 10), country === "es" ? (state || undefined) as EsRegion | undefined : undefined);
                 if (n && !out.includes(n)) out.push(n);
               }
               return out.join(" · ");
@@ -178,7 +202,7 @@ export default function WorldLeaveBridge2027({ country }: { country: Country }) 
               <div className="grid flex-1 grid-cols-31 gap-px">
                 {days.map((d) => {
                   const inPick = !!pick && d >= pick.start && d <= pick.end;
-                  const tone = leaveSet.has(d) ? "bg-primary" : inPick ? "bg-primary/50" : hol.has(d) ? "bg-destructive/60" : isOff(d, hol, saturdayWork) ? "bg-muted-foreground/30" : "bg-muted";
+                  const tone = leaveSet.has(d) ? "bg-primary" : inPick ? "bg-primary/50" : hol.has(d) ? "bg-destructive/60" : work.has(d) ? "bg-muted ring-1 ring-destructive" : isOff(d, hol, saturdayWork) ? "bg-muted-foreground/30" : "bg-muted";
                   return <span key={d} title={md(d)} className={`h-3 rounded-sm ${tone}`} />;
                 })}
               </div>
@@ -189,6 +213,7 @@ export default function WorldLeaveBridge2027({ country }: { country: Country }) 
           {(["bg-destructive/60", "bg-muted-foreground/30", "bg-primary", "bg-primary/50"] as const).map((c, i) => (
             <li key={c} className="flex items-center gap-1"><span className={`h-3 w-3 rounded-sm ${c}`} />{t.legend[i]}</li>
           ))}
+          {t.workday && <li className="flex items-center gap-1"><span className="h-3 w-3 rounded-sm bg-muted ring-1 ring-destructive" />{t.workday}</li>}
         </ul>
       </figure>
 

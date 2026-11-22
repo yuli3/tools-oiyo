@@ -45,10 +45,10 @@ export function yearDays(year: number): string[] {
  * 연차 maxLeave일 이하로 만들 수 있는 연속 휴무 구간(앞뒤를 쉬는 날로 끝까지 늘린 것).
  * 시작일이 그 해에 걸친 것만, 연차를 1일 이상 쓰는 것만. 긴 순 → 연차 적은 순.
  */
-export function bridgeWindows(year: number, maxLeave: number, opts: { extra?: string[]; skip?: string[]; saturdayWork?: boolean; minDays?: number; /** 다른 나라 공휴일 표(있으면 KR 표 대신) */ holidays?: Set<string>; /** 이 날짜 이전에 시작하는 구간은 빼요 */ fromDate?: string; /** 평일 공휴일이 하나도 안 낀 구간은 빼요 */ requireHoliday?: boolean } = {}): BridgeWindow[] {
+export function bridgeWindows(year: number, maxLeave: number, opts: { extra?: string[]; skip?: string[]; saturdayWork?: boolean; minDays?: number; /** 다른 나라 공휴일 표(있으면 KR 표 대신) */ holidays?: Set<string>; /** 이 날짜 이전에 시작하는 구간은 빼요 */ fromDate?: string; /** 평일 공휴일이 하나도 안 낀 구간은 빼요 */ requireHoliday?: boolean; /** 주말이어도 출근하는 날(중국 调休 등) */ workdays?: Set<string> } = {}): BridgeWindow[] {
   const hol = opts.holidays ? new Set([...opts.holidays, ...(opts.extra ?? [])]) : holidaySet(year, opts.extra, opts.skip);
   const days = yearDays(year);
-  const off = days.map((d) => isOff(d, hol, opts.saturdayWork));
+  const off = days.map((d) => !opts.workdays?.has(d) && isOff(d, hol, opts.saturdayWork));
   const n = days.length;
   const seen = new Map<string, BridgeWindow>();
   for (let i = 0; i < n; i++) {
