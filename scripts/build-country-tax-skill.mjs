@@ -25,6 +25,7 @@ export const COUNTRY_SKILLS = {
   inheritance: { dir: "oiyo-world-inheritance-guide", libs: ["world-inheritance-pack-2026"], zip: "oiyo-world-inheritance-guide-skill.zip" },
   claims: { dir: "oiyo-world-claims-guide", libs: ["world-limitation-pack-2026"], zip: "oiyo-world-claims-guide-skill.zip" },
   employer: { dir: "oiyo-world-employer-cost-guide", libs: ["world-employer-cost-pack-2026"], zip: "oiyo-world-employer-cost-guide-skill.zip" },
+  company: { dir: "oiyo-world-company-calendar", libs: ["world-company-calendar-2026"], zip: "oiyo-world-company-calendar-skill.zip" },
 };
 export const skillDir = (c) => resolve(root, "skills", COUNTRY_SKILLS[c].dir);
 

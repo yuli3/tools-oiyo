@@ -2759,6 +2759,59 @@
           "eq": 7650
         }
       ]
+    },
+    {
+      "skill": "oiyo-world-company-calendar",
+      "id": "company-uk-march",
+      "ask": "Our company's year end is 31 March 2026. When are the Companies House accounts, Corporation Tax payment and CT600 due?",
+      "run": [
+        "uk",
+        {
+          "yearEnd": "2026-03-31"
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.dates.0.date",
+          "eq": "2026-12-31"
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-world-company-calendar",
+      "id": "company-us-june",
+      "ask": "My C corp has a June 30, 2026 fiscal year end. When is Form 1120 due?",
+      "run": [
+        "us",
+        {
+          "yearEnd": "2026-06-30",
+          "entity": "ccorp"
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.dates.0.date",
+          "eq": "2026-09-15"
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-world-company-calendar",
+      "id": "company-fr-greffe",
+      "ask": "Clôture au 31 décembre 2025, dépôt papier : jusqu'à quand pour approuver et déposer les comptes ?",
+      "run": [
+        "fr",
+        {
+          "yearEnd": "2025-12-31",
+          "online": false
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.dates.1.date",
+          "eq": "2026-07-31"
+        }
+      ]
     }
   ],
   "boundaries": {

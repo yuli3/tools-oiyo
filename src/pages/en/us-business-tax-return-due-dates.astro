@@ -1,0 +1,55 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/company/UsCompanyCalendar';
+// Company annual calendar (2026-11-22, world pro-gap #6). Engine: lib/world-company-calendar-2026.ts
+const c = {
+  "introTitle": "When your business return is due",
+  "intro": "A C corporation files Form 1120 by the 15th day of the 4th month after its tax year ends (June year ends: the 15th day of the 3rd month), with a 6-month extension on Form 7004 (7 months for June year ends). S corporations and partnerships file by the 15th day of the 3rd month.",
+  "formulaTitle": "The rules used",
+  "formulas": [
+    {
+      "title": "Form 1120",
+      "body": "15th day of the 4th month after year end; extension 6 months. June year end: 15th day of the 3rd month; extension 7 months."
+    },
+    {
+      "title": "Forms 1120-S and 1065",
+      "body": "15th day of the 3rd month after year end."
+    },
+    {
+      "title": "Weekends",
+      "body": "A due date on a weekend moves to the next business day."
+    }
+  ],
+  "howToTitle": "How to use",
+  "steps": [
+    "Pick the type of return.",
+    "Enter the tax year end.",
+    "Read the original and extended due dates."
+  ],
+  "faqTitle": "FAQ",
+  "faqs": [
+    {
+      "question": "Does an extension give more time to pay?",
+      "answer": "No, only to file."
+    },
+    {
+      "question": "Are federal holidays applied?",
+      "answer": "No, only weekends."
+    },
+    {
+      "question": "Is my input stored?",
+      "answer": "No, it stays in your browser."
+    }
+  ],
+  "disclaimer": "General information, not tax advice."
+};
+const sources: [string, string][] = [
+  [
+    "IRS — Form 7004 due date chart (2026)",
+    "https://www.irs.gov/pub/irs-efile/form-7004-due-date-chart-py2026-dated-10222026.pdf"
+  ]
+];
+---
+<DebtReliefPage slug="us-business-tax-return-due-dates" c={c} sources={sources} sourcesTitle="Sources" checked="IRS Form 7004 due date chart checked 2026-11-22">
+  <T client:load />
+</DebtReliefPage>
