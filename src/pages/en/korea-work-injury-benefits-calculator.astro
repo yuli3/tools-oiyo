@@ -1,0 +1,33 @@
+---
+// Korea work injury (산재) benefits in English (2026-11-22, pro-tools ongoing #6 EN versions). Engines: lib/kr-welfare-2026.ts, lib/kr-injury-disability-2026.ts
+// (same as /ko/industrial-accident-leave-pay-calculator/ and /ko/industrial-injury-disability-calculator/).
+import Layout from '../../components/Layout.astro';
+import ToolShell from '../../components/ToolShell.astro';
+import KrWorkInjuryEn from '../../components/tools/expat/KrWorkInjuryEn';
+import { DISABILITY_AS_OF } from '../../lib/kr-injury-disability-2026';
+
+const title = 'Korea work injury benefits calculator 2026 — leave pay (70%) and disability benefit';
+const description = 'Injured at work in Korea? Estimate 산재 leave pay (70% of average wage, minimum-wage floor, 2026 cap ₩268,299 a day) and the disability benefit by grade, lump sum or pension. The same rules apply to foreign workers.';
+const url = 'https://tools.oiyo.net/en/korea-work-injury-benefits-calculator/';
+const faqs = [
+  { q: 'Do foreign workers get 산재 (industrial accident) benefits?', a: 'Yes. Workplace accidents and work-related illness are covered for foreign workers too, even if your visa status has a problem. You can apply to COMWEL (근로복지공단) yourself, without your employer’s approval.' },
+  { q: 'How much is leave pay?', a: '70% of your average daily wage for each day you cannot work, if you need more than 3 days off. Low earners are raised to 90% or the minimum wage; the 2026 cap is ₩268,299 of average wage a day.' },
+  { q: 'Who decides the disability grade?', a: 'COMWEL decides it after your condition is fixed (치유). Grades 1–3 are paid as a pension, 4–7 as a pension or lump sum of your choice, and 8–14 as a lump sum.' },
+];
+const schema = [
+  { '@context': 'https://schema.org', '@type': 'WebApplication', name: title, url, inLanguage: 'en', description, applicationCategory: 'ReferenceApplication', operatingSystem: 'All', isAccessibleForFree: true },
+  { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) },
+];
+---
+<Layout title={title} description={description} locale="en" canonicalURL={url} keywords={['Korea industrial accident compensation', '산재 leave pay', 'Korea work injury foreign worker', 'COMWEL disability benefit', 'Korea workers compensation calculator']}>
+  <ToolShell title="Korea work injury benefits calculator" description={description}>
+    <p slot="meta" class="text-sm font-semibold">South Korea · checked {DISABILITY_AS_OF}</p>
+    <KrWorkInjuryEn client:load />
+    <section class="space-y-3 border-t border-border pt-4">
+      <h2 class="text-lg font-semibold">Questions</h2>
+      {faqs.map((f) => (<details class="rounded-md border border-border p-3"><summary class="min-h-11 cursor-pointer text-sm font-semibold">{f.q}</summary><p class="mt-2 text-sm leading-relaxed">{f.a}</p></details>))}
+      <p class="text-xs text-muted-foreground">Sources: Industrial Accident Compensation Insurance Act arts. 36, 52, 54, 57 and Annex 2; Ministry of Employment and Labor Notice 2025-84 (2026 cap and floor). Information only, not advice or representation. Also: <a class="underline" href="/en/korea-foreign-resident-guide/">Living in Korea: deadlines and rights</a> · Korean versions: <a class="underline" href="/ko/industrial-accident-leave-pay-calculator/">산재 휴업급여 계산기</a>, <a class="underline" href="/ko/industrial-injury-disability-calculator/">산재 장해급여 계산기</a>.</p>
+    </section>
+  </ToolShell>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+</Layout>
