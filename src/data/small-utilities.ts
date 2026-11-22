@@ -1531,6 +1531,296 @@ export const smallUtilities:Record<string,Record<Locale,{meta:{title:string;desc
       }
     }
   },
+  "face-ratio": {
+    "ko": {
+      "meta": {
+        "title": "얼굴 비율 분석 — 삼정오안·좌우 대칭을 사진으로 재 보기",
+        "description": "얼굴 사진 한 장으로 삼정(이마·코·턱 세로 비율), 오안(가로 5등분), 좌우 대칭, 입과 코 폭 비율을 재요. 사진은 서버로 보내지 않고 내 기기 안에서만 분석해요."
+      },
+      "content": {
+        "introTitle": "얼굴 비율 분석이란?",
+        "intro": "사진에서 얼굴 점 468개를 찾아 동양 관상·미술에서 오래 써 온 기준인 삼정오안과 좌우 대칭을 숫자로 보여 주는 도구예요. 예전 'AI 얼굴평가'처럼 외모에 점수를 매기지 않고, 잴 수 있는 비율만 알려 줘요.",
+        "formulaTitle": "무엇을 재나요",
+        "formulas": [
+          {
+            "title": "삼정",
+            "body": "머리선 근처~미간, 미간~코밑, 코밑~턱 끝 세 구간의 길이 비율이에요. 기준은 각 33%예요."
+          },
+          {
+            "title": "오안",
+            "body": "얼굴 폭을 눈 바깥·안쪽 끝으로 나눈 다섯 구간이에요. 기준은 각 20%(눈 하나 폭이 한 칸)예요."
+          },
+          {
+            "title": "좌우 대칭·입÷코",
+            "body": "눈·코·입·얼굴 윤곽의 좌우 대응점이 얼마나 같은 거리·높이에 있는지, 입 폭이 코 폭의 몇 배인지(기준 1.5배) 봐요."
+          }
+        ],
+        "howToTitle": "사용 방법",
+        "steps": [
+          "정면을 보고 찍은, 이마가 보이는 사진을 골라요.",
+          "'얼굴 사진 고르기'를 눌러요. 처음 한 번은 분석 도구를 받아요.",
+          "사진 위에 그려진 초록(삼정)·주황(오안) 선을 확인해요.",
+          "항목별 기준 근접도와 실제 비율을 읽어요."
+        ],
+        "faqTitle": "자주 묻는 질문",
+        "faqs": [
+          {
+            "question": "사진이 어딘가에 저장되나요?",
+            "answer": "아니요. 사진은 브라우저 안에서만 열리고 서버로 보내지 않아요. 분석 프로그램과 모델 파일만 처음에 내려받아요."
+          },
+          {
+            "question": "점수가 낮으면 못생겼다는 뜻인가요?",
+            "answer": "아니요. 기준 비율과 얼마나 가까운지일 뿐이에요. 실제 사람의 인상과 매력은 이 비율과 거의 상관이 없어요."
+          },
+          {
+            "question": "같은 사람인데 사진마다 숫자가 달라요.",
+            "answer": "고개 각도, 렌즈 왜곡(셀카는 코가 커 보임), 표정, 앞머리에 따라 바뀌어요. 정면·무표정 사진 여러 장의 평균을 보세요."
+          }
+        ],
+        "disclaimer": "이 도구는 재미와 참고용이에요. 의료·성형 상담이나 외모 평가를 대신하지 않아요."
+      }
+    },
+    "en": {
+      "meta": {
+        "title": "Face Proportion Analyzer — Facial Thirds, Fifths & Symmetry",
+        "description": "Measure facial thirds, facial fifths, left-right symmetry and the mouth-to-nose width ratio from one photo. The photo is analyzed on your device and never uploaded."
+      },
+      "content": {
+        "introTitle": "What is the face proportion analyzer?",
+        "intro": "It finds 468 points on a face photo and turns the classic artist's guides, facial thirds and fifths, plus left-right symmetry into numbers. Unlike old 'AI face rating' apps, it doesn't score looks. It only reports ratios you can measure.",
+        "formulaTitle": "What it measures",
+        "formulas": [
+          {
+            "title": "Facial thirds",
+            "body": "Lengths of hairline area to brow, brow to under the nose, and under the nose to chin. The reference is 33% each."
+          },
+          {
+            "title": "Facial fifths",
+            "body": "Face width split at the outer and inner eye corners into five parts. The reference is 20% each (one eye width per part)."
+          },
+          {
+            "title": "Symmetry and mouth÷nose",
+            "body": "How evenly matching left and right points of the eyes, nose, mouth and jaw sit, and how many nose widths the mouth spans (reference 1.5)."
+          }
+        ],
+        "howToTitle": "How to use",
+        "steps": [
+          "Pick a straight-on photo with your forehead visible.",
+          "Tap 'Choose a face photo'. The analysis tool downloads the first time.",
+          "Check the green (thirds) and orange (fifths) lines drawn on the photo.",
+          "Read each score and the actual ratios."
+        ],
+        "faqTitle": "FAQ",
+        "faqs": [
+          {
+            "question": "Is my photo saved anywhere?",
+            "answer": "No. The photo opens only in your browser and is never sent to a server. Only the analysis program and model file download at first."
+          },
+          {
+            "question": "Does a low score mean I'm unattractive?",
+            "answer": "No. It only shows closeness to reference ratios. Real attractiveness has very little to do with these numbers."
+          },
+          {
+            "question": "Different photos of the same person give different numbers.",
+            "answer": "Head angle, lens distortion (selfies enlarge the nose), expression and bangs all change it. Average several straight-on, neutral photos."
+          }
+        ],
+        "disclaimer": "This tool is for fun and reference only. It does not replace medical or cosmetic advice or any judgment of appearance."
+      }
+    },
+    "ja": {
+      "meta": {
+        "title": "顔の比率分析 — 三分割・五分割・左右対称を写真で測る",
+        "description": "顔写真1枚で縦の三分割(額・鼻・あご)、横の五分割、左右対称、口と鼻の幅の比率を測ります。写真はサーバーに送らず、端末の中だけで分析します。"
+      },
+      "content": {
+        "introTitle": "顔の比率分析とは?",
+        "intro": "写真から顔のポイント468点を見つけ、美術や似顔絵で使われてきた三分割・五分割と左右対称を数値で示すツールです。昔の「AI顔診断」のように容姿を採点せず、測れる比率だけを伝えます。",
+        "formulaTitle": "測るもの",
+        "formulas": [
+          {
+            "title": "縦の三分割",
+            "body": "生え際付近〜眉間、眉間〜鼻の下、鼻の下〜あご先の3区間の長さの比率です。基準は各33%です。"
+          },
+          {
+            "title": "横の五分割",
+            "body": "顔の幅を目尻・目頭で5つに分けた区間です。基準は各20%(目ひとつ分の幅)です。"
+          },
+          {
+            "title": "左右対称・口÷鼻",
+            "body": "目・鼻・口・輪郭の左右の対応点が同じ距離・高さにあるか、口の幅が鼻の幅の何倍か(基準1.5倍)を見ます。"
+          }
+        ],
+        "howToTitle": "使い方",
+        "steps": [
+          "正面から撮った、額が見える写真を選びます。",
+          "「顔写真を選ぶ」を押します。初回だけ分析ツールを読み込みます。",
+          "写真に描かれた緑(三分割)・オレンジ(五分割)の線を確認します。",
+          "項目ごとの基準への近さと実際の比率を読みます。"
+        ],
+        "faqTitle": "よくある質問",
+        "faqs": [
+          {
+            "question": "写真はどこかに保存されますか?",
+            "answer": "いいえ。写真はブラウザの中だけで開き、サーバーには送りません。最初に分析プログラムとモデルファイルだけをダウンロードします。"
+          },
+          {
+            "question": "点数が低いと顔が良くないということ?",
+            "answer": "いいえ。基準の比率にどれだけ近いかだけです。実際の印象や魅力はこの比率とほとんど関係ありません。"
+          },
+          {
+            "question": "同じ人でも写真ごとに数値が違います。",
+            "answer": "顔の角度、レンズのゆがみ(自撮りは鼻が大きく写る)、表情、前髪で変わります。正面・無表情の写真数枚の平均を見てください。"
+          }
+        ],
+        "disclaimer": "このツールは娯楽と参考のためのものです。医療・美容の相談や容姿の評価の代わりにはなりません。"
+      }
+    },
+    "zh": {
+      "meta": {
+        "title": "脸部比例分析 — 用照片测三庭五眼与左右对称",
+        "description": "用一张脸部照片测量三庭(额头·鼻子·下巴纵向比例)、五眼(横向五等分)、左右对称以及嘴宽与鼻宽之比。照片不会上传，只在你的设备上分析。"
+      },
+      "content": {
+        "introTitle": "什么是脸部比例分析?",
+        "intro": "它在照片上找出 468 个面部关键点，把绘画和传统相学中常用的三庭五眼和左右对称变成数字。它不像以前的“AI 颜值打分”那样给长相打分，只告诉你能测量的比例。",
+        "formulaTitle": "测什么",
+        "formulas": [
+          {
+            "title": "三庭",
+            "body": "发际线附近到眉间、眉间到鼻底、鼻底到下巴三段长度的比例。参考值各 33%。"
+          },
+          {
+            "title": "五眼",
+            "body": "以外眼角和内眼角把脸宽分成五段。参考值各 20%(一只眼睛的宽度)。"
+          },
+          {
+            "title": "左右对称·嘴÷鼻",
+            "body": "看眼、鼻、嘴和脸部轮廓左右对应点的距离与高度是否一致，以及嘴宽是鼻宽的几倍(参考 1.5 倍)。"
+          }
+        ],
+        "howToTitle": "使用方法",
+        "steps": [
+          "选择一张正面拍摄、露出额头的照片。",
+          "点“选择脸部照片”。首次使用会下载分析工具。",
+          "查看照片上画出的绿色(三庭)和橙色(五眼)线。",
+          "阅读各项与参考值的接近程度和实际比例。"
+        ],
+        "faqTitle": "常见问题",
+        "faqs": [
+          {
+            "question": "照片会被保存吗?",
+            "answer": "不会。照片只在浏览器里打开，不会发送到服务器。首次只会下载分析程序和模型文件。"
+          },
+          {
+            "question": "分数低就是长得不好看吗?",
+            "answer": "不是。它只表示与参考比例的接近程度。真实的印象和魅力与这些比例几乎无关。"
+          },
+          {
+            "question": "同一个人不同照片数字不一样。",
+            "answer": "头部角度、镜头畸变(自拍会让鼻子显大)、表情和刘海都会影响结果。请取几张正面、无表情照片的平均值。"
+          }
+        ],
+        "disclaimer": "本工具仅供娱乐和参考，不能代替医疗、整形咨询或任何外貌评价。"
+      }
+    },
+    "fr": {
+      "meta": {
+        "title": "Analyse des proportions du visage — tiers, cinquièmes et symétrie",
+        "description": "Mesurez les tiers du visage, les cinquièmes, la symétrie gauche-droite et le rapport largeur bouche/nez à partir d'une photo. L'analyse se fait sur votre appareil, sans envoi."
+      },
+      "content": {
+        "introTitle": "Qu'est-ce que l'analyse des proportions du visage ?",
+        "intro": "Elle repère 468 points sur une photo et traduit en chiffres les repères classiques du dessin, tiers et cinquièmes du visage, ainsi que la symétrie. Contrairement aux anciennes applis de « note de beauté IA », elle ne note pas l'apparence et ne donne que des rapports mesurables.",
+        "formulaTitle": "Ce qui est mesuré",
+        "formulas": [
+          {
+            "title": "Tiers du visage",
+            "body": "Longueurs de la zone de la racine des cheveux aux sourcils, des sourcils au dessous du nez, puis jusqu'au menton. La référence est 33 % chacun."
+          },
+          {
+            "title": "Cinquièmes du visage",
+            "body": "Largeur du visage découpée aux coins externes et internes des yeux en cinq parts. La référence est 20 % chacune (la largeur d'un œil)."
+          },
+          {
+            "title": "Symétrie et bouche÷nez",
+            "body": "Régularité des points gauche et droite des yeux, du nez, de la bouche et de la mâchoire, et combien de largeurs de nez couvre la bouche (référence 1,5)."
+          }
+        ],
+        "howToTitle": "Mode d'emploi",
+        "steps": [
+          "Choisissez une photo de face, front visible.",
+          "Touchez « Choisir une photo du visage ». L'outil se télécharge la première fois.",
+          "Regardez les lignes vertes (tiers) et orange (cinquièmes) tracées sur la photo.",
+          "Lisez chaque score et les rapports réels."
+        ],
+        "faqTitle": "Questions fréquentes",
+        "faqs": [
+          {
+            "question": "Ma photo est-elle enregistrée ?",
+            "answer": "Non. Elle s'ouvre uniquement dans le navigateur et n'est jamais envoyée à un serveur. Seuls le programme d'analyse et le fichier du modèle sont téléchargés au début."
+          },
+          {
+            "question": "Un score bas veut-il dire que je ne suis pas beau ?",
+            "answer": "Non. Il indique seulement la proximité avec des rapports de référence. L'attrait réel n'a presque rien à voir avec ces chiffres."
+          },
+          {
+            "question": "La même personne obtient des chiffres différents selon la photo.",
+            "answer": "L'angle de la tête, la déformation de l'objectif (le selfie grossit le nez), l'expression et la frange changent le résultat. Faites la moyenne de plusieurs photos de face, visage neutre."
+          }
+        ],
+        "disclaimer": "Cet outil est ludique et indicatif. Il ne remplace ni un avis médical ou esthétique ni un jugement sur l'apparence."
+      }
+    },
+    "es": {
+      "meta": {
+        "title": "Análisis de proporciones faciales — tercios, quintos y simetría",
+        "description": "Mide los tercios faciales, los quintos, la simetría izquierda-derecha y la proporción entre el ancho de la boca y la nariz con una foto. Se analiza en tu dispositivo y no se sube."
+      },
+      "content": {
+        "introTitle": "¿Qué es el análisis de proporciones faciales?",
+        "intro": "Encuentra 468 puntos en una foto del rostro y convierte en números las guías clásicas del dibujo, tercios y quintos faciales, además de la simetría. A diferencia de las antiguas apps de «puntuación de belleza con IA», no califica el aspecto: solo muestra proporciones que se pueden medir.",
+        "formulaTitle": "Qué mide",
+        "formulas": [
+          {
+            "title": "Tercios faciales",
+            "body": "Longitudes de la zona del nacimiento del pelo al entrecejo, del entrecejo a debajo de la nariz y de ahí a la barbilla. La referencia es 33 % cada uno."
+          },
+          {
+            "title": "Quintos faciales",
+            "body": "El ancho de la cara dividido en cinco partes por las esquinas externas e internas de los ojos. La referencia es 20 % cada una (el ancho de un ojo)."
+          },
+          {
+            "title": "Simetría y boca÷nariz",
+            "body": "Cuánto coinciden en distancia y altura los puntos izquierdo y derecho de ojos, nariz, boca y mandíbula, y cuántos anchos de nariz abarca la boca (referencia 1,5)."
+          }
+        ],
+        "howToTitle": "Cómo se usa",
+        "steps": [
+          "Elige una foto de frente con la frente a la vista.",
+          "Pulsa «Elegir una foto del rostro». La herramienta se descarga la primera vez.",
+          "Mira las líneas verdes (tercios) y naranjas (quintos) dibujadas sobre la foto.",
+          "Lee cada puntuación y las proporciones reales."
+        ],
+        "faqTitle": "Preguntas frecuentes",
+        "faqs": [
+          {
+            "question": "¿Se guarda mi foto en algún sitio?",
+            "answer": "No. La foto solo se abre en tu navegador y nunca se envía a un servidor. Al principio solo se descargan el programa de análisis y el archivo del modelo."
+          },
+          {
+            "question": "¿Una puntuación baja significa que soy poco atractivo?",
+            "answer": "No. Solo indica cercanía a proporciones de referencia. El atractivo real tiene muy poco que ver con estos números."
+          },
+          {
+            "question": "La misma persona da números distintos en cada foto.",
+            "answer": "El ángulo de la cabeza, la distorsión del objetivo (los selfis agrandan la nariz), la expresión y el flequillo lo cambian. Promedia varias fotos de frente y con gesto neutro."
+          }
+        ],
+        "disclaimer": "Esta herramienta es solo para entretenimiento y referencia. No sustituye un consejo médico o estético ni ningún juicio sobre el aspecto."
+      }
+    }
+  },
   "mouse-test": {
     "ko": {
       "meta": {

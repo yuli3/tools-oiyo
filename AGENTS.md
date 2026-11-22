@@ -58,7 +58,7 @@
 ## 간단계산기 (2026-11-22)
 
 - 세운 결정: 생활 계산기 모음 브랜드는 "간단계산기"(en Simple Calculators, ja かんたん計算機, zh 简单计算器, fr Calculatrices simples, es Calculadoras sencillas). 대상은 어르신·저시력·시각장애인이에요.
-- 허브 `/{locale}/simple-calculators/`, 개별 6종 `/{locale}/simple-calculators/{calculator,split-bill,exchange-rate,discount,days-left,card-installment}/`. 문구는 `src/data/simple-calculators.ts`, 화면은 `SimpleShell.astro` + `tools/SimpleCalc.tsx`, 계산은 `lib/simple-calc.ts`·`lib/bill-split.ts`.
+- 허브 `/{locale}/simple-calculators/`, 개별 10종(2026-11-22 2차에 나이·몇 시간 뒤·예금 이자·평수 추가, 목록은 `SIMPLE_TOOLS`). 문구는 `src/data/simple-calculators.ts`, 화면은 `SimpleShell.astro` + `tools/SimpleCalc.tsx`, 계산은 `lib/simple-calc.ts`·`lib/bill-split.ts`.
 - 겉은 입력 2~3개, 결과는 크게 한 문장(aria-live), "소리로 듣기", 버튼 56px 이상. 수수료율·송금 단위 같은 설정은 나라별 기본값으로 숨기고 "자세한 설정" 링크로 기존 계산기에 보내요. 기존 계산기 주소는 옮기지 않아요.
 - 허브는 전용 PWA manifest(`public/simple-calculators/{locale}.webmanifest`, Layout `manifest` prop)를 써요.
 

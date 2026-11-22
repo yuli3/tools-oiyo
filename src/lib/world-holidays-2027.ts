@@ -12,9 +12,10 @@
  * - FR: Code du travail L3133-1 jours fériés; Easter Monday 3/29, Ascension 5/6, Pentecost Monday 5/17.
  * - DE: Feiertagsgesetze der Länder; bundesweit 9 Tage, Landes-Feiertage per Bundesland.
  * - CN (round 3): 国务院办公厅关于2027年部分节假日安排的通知（国办发明电〔2026〕10号，2026-11-05）, incl. 调休 workdays.
+ * - TW (round 4): 行政院人事行政總處 116年政府行政機關辦公日曆表 (2026-05-21; 121 days off, 0 補行上班 after the 2025-06-13 rule change), incl. 補假.
  * - ES (round 3): BOE-A-2026-21254, Resolución de 8 de octubre de 2026 (fiestas laborales 2027), per comunidad autónoma.
  */
-export type Country = "jp" | "us" | "uk" | "fr" | "de" | "cn" | "es";
+export type Country = "jp" | "us" | "uk" | "fr" | "de" | "cn" | "es" | "tw";
 
 export const ES_REGIONS = ["AN", "AR", "AS", "IB", "CN", "CB", "CM", "CL", "CT", "EX", "GA", "MD", "MC", "NC", "PV", "RI", "VC", "CE", "ML"] as const;
 export type EsRegion = (typeof ES_REGIONS)[number];
@@ -68,6 +69,17 @@ export const HOLIDAYS_2027: Record<Country, Day[]> = {
     ...["01", "02", "03", "04", "05"].map((d) => ({ date: `2027-05-${d}`, name: "劳动节" })),
     { date: "2027-06-09", name: "端午节" }, { date: "2027-09-15", name: "中秋节" },
     ...["01", "02", "03", "04", "05", "06", "07"].map((d) => ({ date: `2027-10-${d}`, name: "国庆节" })),
+  ],
+  tw: [
+    { date: "2026-12-25", name: "行憲紀念日" }, { date: "2027-01-01", name: "開國紀念日" },
+    { date: "2027-02-04", name: "春節（除夕前一日）" }, { date: "2027-02-05", name: "除夕" }, { date: "2027-02-06", name: "春節" }, { date: "2027-02-07", name: "春節" },
+    { date: "2027-02-08", name: "春節" }, { date: "2027-02-09", name: "春節補假" }, { date: "2027-02-10", name: "春節補假" },
+    { date: "2027-02-28", name: "和平紀念日" }, { date: "2027-03-01", name: "和平紀念日補假" },
+    { date: "2027-04-04", name: "兒童節" }, { date: "2027-04-05", name: "清明節" }, { date: "2027-04-06", name: "兒童節補假" },
+    { date: "2027-04-30", name: "勞動節補假" }, { date: "2027-05-01", name: "勞動節" },
+    { date: "2027-06-09", name: "端午節" }, { date: "2027-09-15", name: "中秋節" }, { date: "2027-09-28", name: "教師節" },
+    { date: "2027-10-10", name: "國慶日" }, { date: "2027-10-11", name: "國慶日補假" }, { date: "2027-10-25", name: "臺灣光復暨金門古寧頭大捷紀念日" },
+    { date: "2027-12-24", name: "行憲紀念日補假" }, { date: "2027-12-25", name: "行憲紀念日" }, { date: "2027-12-31", name: "開國紀念日補假（2028）" },
   ],
   // Fiestas comunes a toda España (las 9 que tienen todas las comunidades); el resto va en ES_REGION_2027.
   es: [
@@ -133,6 +145,7 @@ export const OPTIONAL_2027: Record<Country, { id: string; dates: string[]; defau
   fr: [{ id: "solidarite", dates: [], defaultOn: false }, { id: "alsace", dates: ["2027-03-26", "2027-12-26"], defaultOn: false }],
   de: [{ id: "heiligabend", dates: ["2027-12-24", "2027-12-31"], defaultOn: false }],
   cn: [],
+  tw: [],
   es: [{ id: "nochebuena", dates: ["2027-12-24", "2027-12-31"], defaultOn: false }],
 };
 

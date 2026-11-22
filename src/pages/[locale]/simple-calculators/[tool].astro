@@ -3,11 +3,11 @@
 import Layout from '../../../components/Layout.astro';
 import SimpleShell from '../../../components/SimpleShell.astro';
 import SimpleCalc from '../../../components/tools/SimpleCalc';
-import { SIMPLE_COPY, SIMPLE_DETAIL, SIMPLE_UI, SIMPLE_LOCALES, simpleHref, type SimpleTool } from '../../../data/simple-calculators';
+import { SIMPLE_COPY, simpleDetailHref, SIMPLE_UI, SIMPLE_LOCALES, simpleHref, type SimpleTool } from '../../../data/simple-calculators';
 import { utilityJsonLd } from '../../../lib/utility-jsonld';
 import type { Locale } from '../../../lib/i18n';
 export function getStaticPaths() {
-  const tools = ['calculator', 'split-bill', 'exchange-rate', 'discount', 'days-left', 'card-installment'] as const;
+  const tools = ['calculator', 'split-bill', 'exchange-rate', 'discount', 'days-left', 'card-installment', 'age', 'time-after', 'interest', 'area'] as const;
   return (['ko', 'en', 'ja', 'zh', 'fr', 'es'] as const).flatMap((locale) => tools.map((tool) => ({ params: { locale, tool }, props: { locale, tool } })));
 }
 const { locale, tool } = Astro.props as { locale: Locale; tool: SimpleTool };
@@ -20,7 +20,7 @@ const schema = utilityJsonLd({ name: c.title, description: c.description, url, l
   <SimpleShell locale={locale} title={c.name} lead={c.help} current={tool}>
     <SimpleCalc client:load tool={tool} locale={locale} />
     <p class="text-lg leading-relaxed text-muted-foreground">{c.description}</p>
-    <a href={`/${locale}/${SIMPLE_DETAIL[tool]}/`} class="flex min-h-14 items-center justify-center rounded-xl border-2 border-border px-4 text-lg font-bold text-primary underline underline-offset-4 hover:border-primary">{ui.detail} →</a>
+    <a href={simpleDetailHref(locale, tool)} class="flex min-h-14 items-center justify-center rounded-xl border-2 border-border px-4 text-lg font-bold text-primary underline underline-offset-4 hover:border-primary">{ui.detail} →</a>
   </SimpleShell>
   <script type="application/ld+json" set:html={JSON.stringify(schema)} />
 </Layout>
