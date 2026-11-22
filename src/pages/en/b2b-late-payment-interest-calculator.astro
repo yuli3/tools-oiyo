@@ -1,0 +1,87 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/takehome/LatePaymentB2B';
+// B2B late payment interest (2026-11-22, world audience gap P3). Engine: lib/world-late-payment-2026.ts
+const c = {
+  "introTitle": "How much interest can a business charge on a late invoice?",
+  "intro": "When another business pays an invoice late, the law gives you interest at a statutory rate and a fixed compensation sum. This tool works it out for Germany, France, Spain and the UK, from each country's official rate for the half-year.",
+  "formulaTitle": "Rates used",
+  "formulas": [
+    {
+      "title": "Germany",
+      "body": "Basiszinssatz 1.52% (from 1 July 2026) + 9 points = 10.52% a year between businesses; 6.52% if the debtor is a consumer. Flat fee €40 (§ 288 BGB)."
+    },
+    {
+      "title": "France",
+      "body": "ECB rate + 10 points: 12.15% (1st half 2026), 12.40% (2nd half 2026); at least 3 times the legal rate. Fixed indemnity €40 per invoice (art. L441-10 Code de commerce)."
+    },
+    {
+      "title": "Spain",
+      "body": "ECB rate + 8 points: 10.40% for the 2nd half of 2026 (Ley 3/2004, BOE 1 July 2026)."
+    },
+    {
+      "title": "United Kingdom",
+      "body": "8% + the Bank of England reference rate you enter. Fixed sum £40 under £1,000, £70 to £9,999.99, £100 from £10,000 (Late Payment of Commercial Debts (Interest) Act 1998)."
+    }
+  ],
+  "howToTitle": "How to use it",
+  "steps": [
+    "Pick the law of the contract.",
+    "Enter the invoice amount and the due and payment dates.",
+    "For the UK, enter the reference base rate."
+  ],
+  "faqTitle": "FAQ",
+  "faqs": [
+    {
+      "question": "Can my contract set a different rate?",
+      "answer": "Often yes, within limits. This tool uses the statutory default only."
+    },
+    {
+      "question": "Does it write a demand letter?",
+      "answer": "No. It gives the figures; it does not send or file anything."
+    },
+    {
+      "question": "Is my data saved?",
+      "answer": "No, it stays in your browser."
+    }
+  ],
+  "disclaimer": "General information only, not legal advice."
+};
+const sources: [string, string][] = [
+  [
+    "IHK Stuttgart — Verzugszins (Stand 01.07.2026)",
+    "https://www.ihk.de/stuttgart/fuer-unternehmen/recht-und-steuern/wirtschaftsrecht/insolvenz-und-zwangsvollstreckung/verzugszins-676936"
+  ],
+  [
+    "Bundesbank — Basiszinssatz zum 1. Juli 2026",
+    "https://www.bundesbank.de/de/presse/pressemitteilungen/bekanntgabe-des-basiszinssatzes-zum-1-juli-2026-anpassung-auf-1-52--941386"
+  ],
+  [
+    "Service-public — Délais de paiement et pénalités de retard (F23211)",
+    "https://entreprendre.service-public.gouv.fr/vosdroits/F23211"
+  ],
+  [
+    "Service-public — Taux d'intérêt légal 2e semestre 2026",
+    "https://www.service-public.gouv.fr/entreprendre/actualites/A15398"
+  ],
+  [
+    "BOE — Interés de demora operaciones comerciales, 2º semestre 2026",
+    "https://boe.es/boe/dias/2026/07/01/pdfs/BOE-A-2026-14327.pdf"
+  ],
+  [
+    "Small Business Commissioner — Interest calculator guidance",
+    "https://www.smallbusinesscommissioner.gov.uk/help-and-guidance/interest-calculator/interest-calculator-guidance/"
+  ],
+  [
+    "GOV.UK — Claim debt recovery costs",
+    "https://www.gov.uk/late-commercial-payments-interest-debt-recovery/claim-debt-recovery-costs"
+  ],
+  [
+    "Bank of England — Bank Rate",
+    "https://www.bankofengland.co.uk/monetary-policy/the-interest-rate-bank-rate"
+  ]
+];
+---
+<DebtReliefPage slug="b2b-late-payment-interest-calculator" c={c} sources={sources} sourcesTitle="Sources" checked="Official rate pages checked 2026-11-22">
+  <T client:load />
+</DebtReliefPage>
