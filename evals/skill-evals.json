@@ -2258,6 +2258,163 @@
           "eq": 240000
         }
       ]
+    },
+    {
+      "skill": "oiyo-world-tenancy-guide",
+      "id": "tenancy-uk-cap",
+      "ask": "My rent in England is £1,300 a month and the landlord wants a £1,600 deposit, paid on 1 November 2026. Is that allowed and when must it be protected?",
+      "run": [
+        "uk",
+        {
+          "monthlyRent": 1300,
+          "deposit": 1600,
+          "received": "2026-11-01"
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.cap",
+          "eq": 1500
+        },
+        {
+          "path": "result.over",
+          "eq": 100
+        },
+        {
+          "path": "result.dates",
+          "has": {
+            "id": "protect",
+            "date": "2026-12-01"
+          }
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-world-tenancy-guide",
+      "id": "tenancy-ca-return",
+      "ask": "I'm moving out of my LA apartment on Dec 31, 2026 after 14 months. Rent $2,000, deposit $4,000. When do I get it back and what's the rent cap?",
+      "run": [
+        "us",
+        {
+          "state": "CA",
+          "rent": 2000,
+          "deposit": 4000,
+          "moveOut": "2026-12-31",
+          "monthsLived": 14,
+          "region": "la"
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.returnDays",
+          "eq": 21
+        },
+        {
+          "path": "result.maxIncreasePct",
+          "eq": 8.7
+        },
+        {
+          "path": "result.dates",
+          "has": {
+            "id": "return",
+            "date": "2027-01-21"
+          }
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-world-tenancy-guide",
+      "id": "tenancy-fr-restitution",
+      "ask": "Logement vide, loyer 800 € hors charges, dépôt 800 €, clés rendues le 1er décembre 2026 avec un état des lieux conforme. Quand dois-je récupérer mon dépôt ?",
+      "run": [
+        "fr",
+        {
+          "lease": "vide",
+          "rentHC": 800,
+          "deposit": 800,
+          "keysReturned": "2026-12-01",
+          "sameInventory": true
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.due",
+          "eq": "2027-01-01"
+        },
+        {
+          "path": "result.capMonths",
+          "eq": 1
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-world-tenancy-guide",
+      "id": "tenancy-es-irav",
+      "ask": "Pago 1.000 € de alquiler a un particular. ¿Cuánto me pueden subir este año?",
+      "run": [
+        "es",
+        {
+          "rent": 1000,
+          "fianza": 1000,
+          "extraGuarantee": 0,
+          "company": false
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.maxIrav",
+          "eq": 1025.4
+        },
+        {
+          "path": "result.years",
+          "eq": 5
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-world-tenancy-guide",
+      "id": "tenancy-jp-notice",
+      "ask": "普通借家で12月1日に解約を申し入れたら、いつ契約が終わりますか？家賃8万円、敷金16万円です。",
+      "run": [
+        "jp",
+        {
+          "rent": 80000,
+          "deposit": 160000,
+          "lease": "ordinary",
+          "noticeDate": "2026-12-01"
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.depositMonths",
+          "eq": 2
+        },
+        {
+          "path": "result.dates",
+          "has": {
+            "id": "tenant",
+            "date": "2027-03-01"
+          }
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-world-tenancy-guide",
+      "id": "tenancy-tw-cap",
+      "ask": "月租2萬，房東要收5萬押金，可以嗎？",
+      "run": [
+        "tw",
+        {
+          "rent": 20000,
+          "deposit": 50000
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.cap",
+          "eq": 40000
+        }
+      ]
     }
   ],
   "boundaries": {

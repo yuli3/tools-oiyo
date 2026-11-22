@@ -1,6 +1,6 @@
 // 8-jurisdiction residential tenancy pack (2026-11-22, plan-20 #17 "law packs, locally specialised").
 // Deposit cap, deposit return deadline, notice dates and rent-increase limits. General information and estimates only:
-// no legal advice, no representation, no filing.
+// no legal advice, no representation, no filing. Same code powers the oiyo-world-tenancy-guide skill and api.oiyo.net *_tenancy_* tools.
 // Facts: /mnt/project-files/notes/tenancy-facts-2026-11-21.md, every value read on an official or statute page on 2026-11-21
 // (e-Gov 法令検索, legislation.gov.uk / gov.uk, CA OAG / courts self-help / DRE guide, nysenate.gov / NY AG / NYC RGB,
 // service-public.gouv.fr / Légifrance / INSEE, BOE / INE, gov.cn reprints of 住房租赁条例 and 民法典, law.moj.gov.tw).
