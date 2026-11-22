@@ -136,6 +136,8 @@ export const debtReliefTools = [
   { locale: 'en', languageTag: 'en', ogLocale: 'en_GB', slug: "uk-stamp-duty-calculator-2026", title: "Stamp Duty calculator 2026 (England & Northern Ireland)", description: "Stamp Duty Land Tax on a home purchase band by band, with first-time buyer relief, the 5% higher rates for additional properties and the 2% non-resident surcharge, from GOV.UK.", jurisdiction: "🇬🇧 England & Northern Ireland (SDLT)" },
   // 2026-11-22 B2B late payment interest (world audience gap P3)
   { locale: 'en', languageTag: 'en', ogLocale: 'en_US', slug: "b2b-late-payment-interest-calculator", title: "Late payment interest between businesses (DE, FR, ES, UK)", description: "Statutory interest and fixed compensation on a late B2B invoice: Germany 10.52%, France ECB + 10 points, Spain 10.40%, UK 8% + base rate, with the €40 / £40-£100 sums.", jurisdiction: "🌐 Germany · France · Spain · UK (B2B late payment)" },
+  // 2026-11-22 parental pay and child benefit (world audience gap A3)
+  { locale: 'en', languageTag: 'en', ogLocale: 'en_US', slug: "parental-pay-calculator-2026", title: "Parental pay and child benefit calculator 2026 (UK, Japan, Germany)", description: "Statutory Maternity Pay and Child Benefit with the £60,000 charge, Japan's 育児休業給付金 with the August 2026 caps, and German Elterngeld and Kindergeld from § 2 BEEG.", jurisdiction: "🌐 UK · Japan · Germany (parental leave pay)" },
 ] as const;
 
 export const debtReliefForLocale = (locale: Locale) => debtReliefTools.filter((t) => t.locale === locale);

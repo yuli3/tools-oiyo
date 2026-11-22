@@ -1,0 +1,91 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/takehome/ParentalPay';
+// Parental pay and child benefit (2026-11-22, world audience gap A3). Engine: lib/world-parental-pay-2026.ts
+const c = {
+  "introTitle": "How much will I get on parental leave?",
+  "intro": "Pay during maternity or parental leave, and the monthly child benefit, from each country's official 2026 rates: Statutory Maternity Pay and Child Benefit in the UK, 育児休業給付金 in Japan, Elterngeld and Kindergeld in Germany.",
+  "formulaTitle": "Rates used",
+  "formulas": [
+    {
+      "title": "UK",
+      "body": "Statutory Maternity Pay for up to 39 weeks: 90% of average weekly earnings for 6 weeks, then £194.32 or 90% if lower for 33 weeks. Child Benefit £27.05 a week for the eldest child, £17.90 for each other child. High Income Child Benefit Charge: 1% per £200 of adjusted net income over £60,000, all of it over £80,000."
+    },
+    {
+      "title": "Japan",
+      "body": "育児休業給付金: 67% of 休業開始時賃金月額 for the first 180 days, 50% after. From 1 August 2026 the monthly caps are ¥332,454 (67%) and ¥248,100 (50%); the wage counted is between ¥96,090 and ¥496,200. 出生後休業支援給付金 adds 13% for up to 28 days (cap ¥60,205)."
+    },
+    {
+      "title": "Germany",
+      "body": "Elterngeld (§ 2 BEEG): 67% of net income before birth, rising to 100% below €1,000 and falling to 65% above €1,200; at least €300, at most €1,800 a month. ElterngeldPlus is half, for twice as long. No Elterngeld if taxable income is over €175,000. Kindergeld €259 per child a month from 1 January 2026."
+    }
+  ],
+  "howToTitle": "How to use it",
+  "steps": [
+    "Pick the country.",
+    "Enter your earnings before the leave.",
+    "Add the details for your country (children, months of leave, income after birth)."
+  ],
+  "faqTitle": "FAQ",
+  "faqs": [
+    {
+      "question": "Does it check whether I qualify?",
+      "answer": "No. Service and earnings conditions are not checked; it shows the amount if you qualify."
+    },
+    {
+      "question": "Is my employer's own scheme included?",
+      "answer": "No. Only statutory pay is shown; your contract may pay more."
+    },
+    {
+      "question": "Is my data saved?",
+      "answer": "No, it stays in your browser."
+    }
+  ],
+  "disclaimer": "General information only, not advice. Check with GOV.UK, Hello Work or your Elterngeldstelle."
+};
+const sources: [string, string][] = [
+  [
+    "GOV.UK — Maternity pay and leave: Pay",
+    "https://www.gov.uk/maternity-pay-leave/pay"
+  ],
+  [
+    "GOV.UK — Rates and thresholds for employers 2026 to 2027",
+    "https://www.gov.uk/guidance/rates-and-thresholds-for-employers-2026-to-2027"
+  ],
+  [
+    "GOV.UK — Child Benefit: What you'll get",
+    "https://www.gov.uk/child-benefit/what-youll-get"
+  ],
+  [
+    "GOV.UK — High Income Child Benefit Charge",
+    "https://www.gov.uk/child-benefit-tax-charge"
+  ],
+  [
+    "厚生労働省 — 支給限度額の変更 (令和8年8月1日)",
+    "https://www.mhlw.go.jp/content/001728499.pdf"
+  ],
+  [
+    "厚生労働省 — 出生後休業支援給付",
+    "https://www.mhlw.go.jp/content/11900000/001599643.pdf"
+  ],
+  [
+    "§ 2 BEEG — Höhe des Elterngeldes",
+    "https://www.gesetze-im-internet.de/beeg/__2.html"
+  ],
+  [
+    "Familienportal — Elterngeld",
+    "https://familienportal.de/bmbfsfj/themen/familie/familienleistungen/elterngeld"
+  ],
+  [
+    "BMBFSFJ — Kindergeld",
+    "https://www.bmbfsfj.bund.de/bmbfsfj/themen/familie/familienleistungen/kindergeld-73892"
+  ],
+  [
+    "Bundestag WD 8 — Elterngeld (18.02.2026)",
+    "https://www.bundestag.de/resource/blob/1161544/WD-8-012-26.pdf"
+  ]
+];
+---
+<DebtReliefPage slug="parental-pay-calculator-2026" c={c} sources={sources} sourcesTitle="Sources" checked="Official pages checked 2026-11-22">
+  <T client:load />
+</DebtReliefPage>
