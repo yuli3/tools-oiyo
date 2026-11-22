@@ -1,0 +1,63 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/takehome/SmallBusinessVat';
+// Small business VAT/GST registration (2026-11-22, world audience gap P6). Engine: lib/world-small-business-vat-2026.ts
+const c = {
+  "introTitle": "Do I have to charge VAT yet?",
+  "intro": "Small businesses in Germany can skip VAT under the Kleinunternehmer rule (§ 19 UStG) while turnover stays under the 2025 limits. In Singapore, GST registration becomes compulsory above S$1 million. This check tells you which side of the line you are on and, for Singapore, the dates to apply and register.",
+  "formulaTitle": "Rules used",
+  "formulas": [
+    {
+      "title": "Germany (from 1 January 2025)",
+      "body": "Kleinunternehmer if net turnover was at most €25,000 last year and is expected to be at most €100,000 this year (before 2025: €22,000 and €50,000 gross). Over €100,000 during the year: switch to regular VAT during the year; earlier turnover stays exempt. New businesses start as Kleinunternehmer without a forecast. Opting out binds you for five years. Invoices must say the turnover is exempt (§ 34 UStDV)."
+    },
+    {
+      "title": "Singapore",
+      "body": "Retrospective view: turnover over S$1 million at the end of a calendar year. Prospective view: you reasonably expect over S$1 million in the next 12 months; for forecasts from 1 July 2025, apply within 30 days and you are registered 2 months from the forecast date. GST is 9%. Late registration is backdated, with a fine of up to S$10,000 and a 10% penalty."
+    }
+  ],
+  "howToTitle": "How to use it",
+  "steps": [
+    "Pick the country.",
+    "Enter last year's turnover and what you expect this year or in the next 12 months.",
+    "For Singapore, enter the date you made the forecast."
+  ],
+  "faqTitle": "FAQ",
+  "faqs": [
+    {
+      "question": "Does it register me?",
+      "answer": "No. It shows whether you must register and the dates; you apply with the Finanzamt or IRAS yourself."
+    },
+    {
+      "question": "What is not checked?",
+      "answer": "Germany: the exact transaction where the switch happens and the limit in the year a business is founded. Singapore: the deadline under the retrospective view and voluntary registration."
+    },
+    {
+      "question": "Is my data saved?",
+      "answer": "No, it stays in your browser."
+    }
+  ],
+  "disclaimer": "General information only, not tax advice."
+};
+const sources: [string, string][] = [
+  [
+    "IHK Schwerin — Kleinunternehmerregelung 2025",
+    "https://www.ihk.de/schwerin/recht/steuern-und-finanzen/kleinunternehmerregelung-2025-6403002"
+  ],
+  [
+    "Ministerium der Finanzen Sachsen-Anhalt — PM 42/2024 (20.12.2024)",
+    "https://presse.sachsen-anhalt.de/wp-content/uploads/pdf/ministerium-der-finanzen_20_12_2024_Pressemitteilung_kleinunternehmer-neue-regeln-ab-2025-hoehere-umsatzgrenzen-und-mehr-flexibilitaet.pdf"
+  ],
+  [
+    "IRAS TaxBytes — Are you liable to register for GST",
+    "https://www.iras.gov.sg/who-we-are/what-we-do/annual-reports-and-publications/taxbytes-iras/gst/running-a-business-are-you-liable-to-register-for-gst-and-what-happens-if-you-register-late"
+  ],
+  [
+    "IRAS — Current GST rates",
+    "https://www.iras.gov.sg/taxes/goods-services-tax-(gst)/basics-of-gst/current-gst-rates"
+  ]
+];
+---
+<DebtReliefPage slug="small-business-vat-registration-check" c={c} sources={sources} sourcesTitle="Sources" checked="Official pages checked 2026-11-22">
+  <T client:load />
+</DebtReliefPage>
