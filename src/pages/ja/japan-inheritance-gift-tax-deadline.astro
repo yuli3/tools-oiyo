@@ -1,0 +1,71 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/inheritance/JpInheritance';
+// Inheritance and gift pack (2026-11-22, world pro-gap #3). Engine: lib/world-inheritance-pack-2026.ts
+const c = {
+  "introTitle": "相続税と贈与税、かかるかどうかと期限",
+  "intro": "相続税は遺産が基礎控除（3,000万円＋600万円×法定相続人の数）を超えるときにかかり、亡くなったことを知った日の翌日から10か月以内に申告・納税します。贈与税は1年間にもらった額が110万円を超えるときにかかり、翌年2月1日から3月15日までに申告します。",
+  "formulaTitle": "使っているルール",
+  "formulas": [
+    {
+      "title": "相続税の基礎控除",
+      "body": "3,000万円＋600万円×法定相続人の数（No.4152）。"
+    },
+    {
+      "title": "相続税の総額",
+      "body": "法定相続分に応ずる取得金額に速算表（10%〜55%）を当てはめて合計（No.4155）。"
+    },
+    {
+      "title": "贈与税",
+      "body": "基礎控除110万円。一般税率と特例税率の速算表（No.4408）。"
+    }
+  ],
+  "howToTitle": "使い方",
+  "steps": [
+    "相続税か贈与税かを選びます。",
+    "遺産の額と相続人の数（またはもらった額）を入れます。",
+    "税額の目安と期限を確認します。"
+  ],
+  "faqTitle": "よくある質問",
+  "faqs": [
+    {
+      "question": "配偶者の税額軽減は入っていますか？",
+      "answer": "入っていません。相続税の総額までの計算です。実際の納付額はこれより少なくなることがあります。"
+    },
+    {
+      "question": "小規模宅地等の特例は？",
+      "answer": "計算していません。土地の評価は税理士や税務署に確認してください。"
+    },
+    {
+      "question": "入力内容は保存されますか？",
+      "answer": "ブラウザの外には送りません。"
+    }
+  ],
+  "disclaimer": "一般的な情報と概算です。税務相談・申告代理ではありません。"
+};
+const sources: [string, string][] = [
+  [
+    "国税庁 No.4102 相続税がかかる場合",
+    "https://www.nta.go.jp/taxes/shiraberu/taxanswer/sozoku/4102.htm"
+  ],
+  [
+    "国税庁 No.4152 相続税の計算",
+    "https://www.nta.go.jp/taxes/shiraberu/taxanswer/sozoku/4152.htm"
+  ],
+  [
+    "国税庁 No.4155 相続税の税率",
+    "https://www.nta.go.jp/taxes/shiraberu/taxanswer/sozoku/4155.htm"
+  ],
+  [
+    "国税庁 No.4402 贈与税がかかる場合",
+    "https://www.nta.go.jp/taxes/shiraberu/taxanswer/zoyo/4402.htm"
+  ],
+  [
+    "国税庁 No.4408 贈与税の計算と税率",
+    "https://www.nta.go.jp/taxes/shiraberu/taxanswer/zoyo/4408.htm"
+  ]
+];
+---
+<DebtReliefPage slug="japan-inheritance-gift-tax-deadline" c={c} sources={sources} sourcesTitle="出典" checked="国税庁タックスアンサーで2026-11-22に確認">
+  <T client:load />
+</DebtReliefPage>

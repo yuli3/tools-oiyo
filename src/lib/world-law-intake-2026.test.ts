@@ -32,3 +32,9 @@ test("cooling-off questions route to the consumer tools", () => {
   assert.equal(intake({ country: "CN", question: "网购衣服七天无理由退货" }).matches[0].mcp, "check_cn_7day_return");
   assert.equal(intake({ country: "FR", question: "délai de rétractation pour un achat en ligne" }).matches[0].mcp, "check_fr_retractation");
 });
+
+test("inheritance questions route to the inheritance tools", () => {
+  assert.equal(intake({ country: "JP", question: "父の遺産の相続税はいつまでに申告？" }).matches[0].mcp, "calculate_jp_inheritance_gift_tax");
+  assert.equal(intake({ country: "UK", question: "Will my mum's estate pay inheritance tax?" }).matches[0].mcp, "calculate_uk_inheritance_tax");
+  assert.equal(intake({ country: "TW", question: "父親過世，遺產稅什麼時候申報" }).matches[0].mcp, "check_tw_estate_tax_deadline");
+});

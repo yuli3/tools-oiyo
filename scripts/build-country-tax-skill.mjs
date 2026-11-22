@@ -22,6 +22,7 @@ export const COUNTRY_SKILLS = {
   intake: { dir: "oiyo-world-law-intake", libs: ["world-law-intake-2026", "jp-tax-pack-2026", "japan-salary", "scenario", "us-tax-pack-2026", "fr-tax-pack-2026", "es-tax-pack-2026", "cn-tax-pack-2026", "uk-tax-pack-2026", "tw-tax-pack-2026"], zip: "oiyo-world-law-intake-skill.zip" },
   tenancy: { dir: "oiyo-world-tenancy-guide", libs: ["world-tenancy-pack-2026"], zip: "oiyo-world-tenancy-guide-skill.zip" },
   consumer: { dir: "oiyo-world-consumer-guide", libs: ["world-consumer-pack-2026"], zip: "oiyo-world-consumer-guide-skill.zip" },
+  inheritance: { dir: "oiyo-world-inheritance-guide", libs: ["world-inheritance-pack-2026"], zip: "oiyo-world-inheritance-guide-skill.zip" },
 };
 export const skillDir = (c) => resolve(root, "skills", COUNTRY_SKILLS[c].dir);
 

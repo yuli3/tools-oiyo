@@ -1,0 +1,63 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/inheritance/UsEstateGift';
+// Inheritance and gift pack (2026-11-22, world pro-gap #3). Engine: lib/world-inheritance-pack-2026.ts
+const c = {
+  "introTitle": "Federal estate and gift tax in 2026",
+  "intro": "In 2026 each person can leave or give up to $15,000,000 over their lifetime before federal estate or gift tax applies. Gifts of up to $19,000 per person per year don't count. An estate return (Form 706) is due 9 months after death; a gift tax return (Form 709) is due April 15 after the gift year.",
+  "formulaTitle": "The rules used",
+  "formulas": [
+    {
+      "title": "Basic exclusion",
+      "body": "$15,000,000 for 2026 ($13,990,000 for 2025)."
+    },
+    {
+      "title": "Annual exclusion",
+      "body": "$19,000 per recipient in 2026."
+    },
+    {
+      "title": "Due dates",
+      "body": "Form 706: 9 months after death, 6-month extension with Form 4768 (tax still due). Form 709: April 15."
+    }
+  ],
+  "howToTitle": "How to use",
+  "steps": [
+    "Enter the gross estate and date of death.",
+    "Enter gifts to one person this year.",
+    "Read how much is above the exclusions and the due dates."
+  ],
+  "faqTitle": "FAQ",
+  "faqs": [
+    {
+      "question": "What about state estate taxes?",
+      "answer": "Some states have their own; not covered here."
+    },
+    {
+      "question": "Is the estate tax amount calculated?",
+      "answer": "No, only the part above the exclusion."
+    },
+    {
+      "question": "Is my input stored?",
+      "answer": "No, it stays in your browser."
+    }
+  ],
+  "disclaimer": "General information, not tax advice."
+};
+const sources: [string, string][] = [
+  [
+    "IRS — What's new: estate and gift tax",
+    "https://www.irs.gov/businesses/small-businesses-self-employed/whats-new-estate-and-gift-tax"
+  ],
+  [
+    "IRS — Filing estate and gift tax returns",
+    "https://www.irs.gov/businesses/small-businesses-self-employed/filing-estate-and-gift-tax-returns"
+  ],
+  [
+    "IRS — Estate tax FAQ",
+    "https://www.irs.gov/businesses/small-businesses-self-employed/frequently-asked-questions-on-estate-taxes"
+  ]
+];
+---
+<DebtReliefPage slug="us-estate-gift-tax-exclusion-2026" c={c} sources={sources} sourcesTitle="Sources" checked="irs.gov checked 2026-11-22">
+  <T client:load />
+</DebtReliefPage>

@@ -1,0 +1,59 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/inheritance/TwEstate';
+// Inheritance and gift pack (2026-11-22, world pro-gap #3). Engine: lib/world-inheritance-pack-2026.ts
+const c = {
+  "introTitle": "遺產稅什麼時候要申報",
+  "intro": "115年9月11日修正公布的遺產及贈與稅法規定，遺產稅要在被繼承人死亡之次日起算六個月內申報；有正當理由可以在期限屆滿前書面申請延長，最多三個月。納稅義務人改為繼承人及受遺贈人，逾期改為按日加計利息。",
+  "formulaTitle": "使用的規則",
+  "formulas": [
+    {
+      "title": "申報期限",
+      "body": "死亡之次日起算六個月內（第23條）。"
+    },
+    {
+      "title": "延長",
+      "body": "期限屆滿前書面申請，以三個月為限（第26條）。"
+    },
+    {
+      "title": "繳納",
+      "body": "可分十八期以內繳納；滯納金刪除，按日加計利息（第30、51條）。"
+    }
+  ],
+  "howToTitle": "使用方式",
+  "steps": [
+    "填入死亡日期。",
+    "選擇是否申請延長。",
+    "確認申報期限。"
+  ],
+  "faqTitle": "常見問題",
+  "faqs": [
+    {
+      "question": "免稅額和扣除額是多少？",
+      "answer": "115年適用的金額由財政部公告，這裡沒有核對，所以不計算稅額。"
+    },
+    {
+      "question": "贈與稅什麼時候申報？",
+      "answer": "贈與稅期限這裡沒有核對，請洽國稅局。"
+    },
+    {
+      "question": "會保存輸入內容嗎？",
+      "answer": "不會，資料不離開瀏覽器。"
+    }
+  ],
+  "disclaimer": "一般資訊，非稅務意見。"
+};
+const sources: [string, string][] = [
+  [
+    "修正遺產及贈與稅法條文（全國法規資料庫）",
+    "https://law.moj.gov.tw/News/NewsDetail.aspx?msgid=199701"
+  ],
+  [
+    "財政部賦稅署 重要公告",
+    "https://www.dot.gov.tw/multiplehtml/06afbfc0e60e4ccb88f3f7f956aaacc7"
+  ]
+];
+---
+<DebtReliefPage slug="taiwan-estate-tax-filing-deadline" c={c} sources={sources} sourcesTitle="出處" checked="全國法規資料庫 2026-11-22 核對">
+  <T client:load />
+</DebtReliefPage>
