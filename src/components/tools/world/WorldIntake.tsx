@@ -1,16 +1,22 @@
 // World law intake: pick a country, type a question in any language, see the matching local tool and free help.
 // Data and matching: lib/world-law-intake-2026.ts (same code as the oiyo-world-law-intake skill and start_world_law_intake MCP tool).
 import { useMemo, useState } from "react";
-import { intake, WORLD_TOOLS, HELP, type Country } from "../../../lib/world-law-intake-2026";
+import { intake, WORLD_TOOLS, HELP, type Audience, type Country } from "../../../lib/world-law-intake-2026";
+import ChoiceChips from "../payroll/ChoiceChips";
 
-const COUNTRIES: [Country, string][] = [["JP", "🇯🇵 Japan"], ["US", "🇺🇸 United States (CA, NY)"], ["FR", "🇫🇷 France"], ["ES", "🇪🇸 Spain"], ["CN", "🇨🇳 China mainland"], ["UK", "🇬🇧 United Kingdom (England)"], ["TW", "🇹🇼 Taiwan"]];
+const COUNTRIES: [Country, string][] = [["JP", "🇯🇵 Japan"], ["US", "🇺🇸 United States (CA, NY)"], ["FR", "🇫🇷 France"], ["ES", "🇪🇸 Spain"], ["CN", "🇨🇳 China mainland"], ["UK", "🇬🇧 United Kingdom (England)"], ["TW", "🇹🇼 Taiwan"], ["DE", "🇩🇪 Germany"], ["SG", "🇸🇬 Singapore"]];
+type Who = "all" | Audience;
+const WHO: { value: Who; label: string }[] = [{ value: "all", label: "Everyone" }, { value: "person", label: "My own life" }, { value: "pro", label: "Business and advisers" }];
+const WHO_TAG: Record<Audience, string> = { person: "everyday", pro: "business" };
 const AREA: Record<string, string> = { tax: "Tax", labor: "Job ending", tenancy: "Renting", consumer: "Cancelling a purchase", claims: "Suing / time limits" };
 
 export default function WorldIntake() {
   const [country, setCountry] = useState<Country>("JP");
   const [q, setQ] = useState("");
-  const r = useMemo(() => intake({ country, question: q }), [country, q]);
-  const tools = WORLD_TOOLS.filter((w) => w.country === country);
+  const [who, setWho] = useState<Who>("all");
+  const aud = who === "all" ? undefined : who;
+  const r = useMemo(() => intake({ country, question: q, audience: aud }), [country, q, aud]);
+  const tools = WORLD_TOOLS.filter((w) => w.country === country && (!aud || w.audience === aud));
   return (
     <div className="space-y-5">
       <div className="grid gap-3 sm:grid-cols-3">
@@ -23,6 +29,8 @@ export default function WorldIntake() {
           <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="敷金が返ってこない / my landlord kept my deposit / me han despedido" className="mt-1 h-11 w-full rounded-md border border-border bg-background px-3 text-base" />
         </label>
       </div>
+      <ChoiceChips<Who> legend="Who is asking?" value={who} options={WHO} onChange={setWho} />
+      <p className="text-xs text-muted-foreground">My own life: job ending, renting, cancelling a purchase, suing, inheritance, residency. Business and advisers: filing calendars, penalties, appeals, depreciation, VAT, payroll cost, e-invoicing.</p>
       {q && (
         <div className="rounded-md border border-border bg-card px-4 py-3 text-sm" aria-live="polite">
           {r.matches.length ? (
@@ -39,7 +47,7 @@ export default function WorldIntake() {
           <section key={a} className="rounded-md border border-border px-4 py-3 text-sm">
             <h3 className="font-semibold">{AREA[a]}</h3>
             <ul className="mt-2 space-y-1">
-              {tools.filter((w) => w.area === a).map((w) => <li key={w.mcp}><a href={w.page} className="text-primary underline underline-offset-4">{w.title}</a></li>)}
+              {tools.filter((w) => w.area === a).map((w) => <li key={w.mcp}><a href={w.page} className="text-primary underline underline-offset-4">{w.title}</a>{who === "all" && <span className="ml-1 text-xs text-muted-foreground">· {WHO_TAG[w.audience]}</span>}</li>)}
             </ul>
             <p className="mt-3 text-xs text-muted-foreground">Free help: {HELP[country][a]}</p>
           </section>
