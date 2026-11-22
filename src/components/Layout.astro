@@ -26,15 +26,25 @@ const copy = shellOverride ?? ((languageTag==='zh-Hant-TW'||languageTag==='zh-Ha
 const home=homeURL ?? (locale==='ko'?'/':`/${locale}/`);
 const pageSlug = Astro.url.pathname.split('/').filter(Boolean)[1];
 
+// 2026-11-22 UI·UX 대수선: 패밀리 순서를 여섯 사이트 공통(tests·tools·game·wiki·blog·news)으로
+// 맞추고 show·api 를 뒤에 둔다. 그동안 언어와 무관하게 각 사이트 루트로 보내서 영어·일본어 방문자도
+// 한국어 홈에 떨어졌다. 이제 형제 사이트가 가진 언어면 그 언어 홈으로 보낸다(de·nl 은 en).
 const FAMILY = [
-  { host: "oiyo.net", name: "OIYO tests", label: "심리테스트" },
-  { host: "blog.oiyo.net", name: "OIYO blog", label: "강의·해설" },
-  { host: "wiki.oiyo.net", name: "OIYO wiki", label: "지식창고" },
-  { host: "game.oiyo.net", name: "OIYO game", label: "웹게임" },
-  { host: "news.oiyo.net", name: "OIYO news", label: "AI·증시뉴스" },
-  { host: "show.oiyo.net", name: "OIYO show", label: "AI 쇼케이스" },
-  { host: "api.oiyo.net", name: "OIYO api", label: "B2A 게이트웨이" },
-];
+  { host: "oiyo.net", name: "OIYO tests", label: "심리테스트", localePath: true },
+  { host: "tools.oiyo.net", name: "OIYO tools", label: "계산기·도구", localePath: "nonKo" },
+  { host: "game.oiyo.net", name: "OIYO game", label: "웹게임", localePath: true },
+  { host: "wiki.oiyo.net", name: "OIYO wiki", label: "지식백과", localePath: true },
+  { host: "blog.oiyo.net", name: "OIYO blog", label: "강의·해설", localePath: true },
+  { host: "news.oiyo.net", name: "OIYO news", label: "AI·증시뉴스", localePath: false },
+  { host: "show.oiyo.net", name: "OIYO show", label: "AI 쇼케이스", localePath: false },
+  { host: "api.oiyo.net", name: "OIYO api", label: "B2A 게이트웨이", localePath: false },
+] as const;
+const FAMILY_LOCALES = ["ko", "en", "ja", "zh", "fr", "es"];
+const familyLocale = FAMILY_LOCALES.includes(locale) ? locale : "en";
+const familyHref = (item: (typeof FAMILY)[number]) => {
+  const path = item.localePath === true || (item.localePath === "nonKo" && familyLocale !== "ko") ? `${familyLocale}/` : "";
+  return `https://${item.host}/${path}?utm_source=tools&utm_medium=footer&utm_campaign=family_nav`;
+};
 ---
 
 <!doctype html>
@@ -79,7 +89,7 @@ const FAMILY = [
           <div class="flex flex-wrap justify-center gap-x-6 gap-y-2 text-xs">
             {FAMILY.map((item) => (
               <a
-                href={`https://${item.host}/?utm_source=tools&utm_medium=footer&utm_campaign=family_nav`}
+                href={familyHref(item)}
                 class="hover:text-primary transition-colors"
               >
                 <span class="font-medium text-foreground">{item.name}</span>
