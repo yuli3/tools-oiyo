@@ -1,0 +1,55 @@
+---
+import DeToolPage from '../../components/DeToolPage.astro';
+import T from '../../components/tools/desg/DeIncomeTax';
+// Germany first pack (2026-11-22, world pro-gap #9). Engine: lib/world-de-sg-pack-2026.ts
+const c = {
+  "introTitle": "Wie viel Einkommensteuer fällt 2026 an?",
+  "intro": "Der Tarif nach § 32a EStG gilt ab dem Veranlagungszeitraum 2026: Bis 12.348 € (Grundfreibetrag) fällt keine Steuer an. Danach steigt der Steuersatz in zwei Zonen bis 42 % ab 69.879 € und 45 % ab 277.826 €. Bei Zusammenveranlagung gilt das Splitting.",
+  "formulaTitle": "Die verwendeten Regeln",
+  "formulas": [
+    {
+      "title": "Zonen",
+      "body": "bis 12.348 €: 0; 12.349–17.799 €: (914,51·y + 1.400)·y; 17.800–69.878 €: (173,10·z + 2.397)·z + 1.034,87; 69.879–277.825 €: 0,42·x − 11.135,63; ab 277.826 €: 0,45·x − 19.470,38."
+    },
+    {
+      "title": "y und z",
+      "body": "y = ein Zehntausendstel des Teils über 12.348 €, z = ein Zehntausendstel des Teils über 17.799 €. Ergebnis auf volle Euro abrunden."
+    },
+    {
+      "title": "Splitting",
+      "body": "Zweifacher Steuerbetrag für die Hälfte des gemeinsamen zu versteuernden Einkommens."
+    }
+  ],
+  "howToTitle": "So funktioniert es",
+  "steps": [
+    "Einzel- oder Zusammenveranlagung wählen.",
+    "Zu versteuerndes Einkommen eingeben.",
+    "Steuer, Grenz- und Durchschnittssteuersatz ablesen."
+  ],
+  "faqTitle": "Häufige Fragen",
+  "faqs": [
+    {
+      "question": "Ist das mein Bruttogehalt?",
+      "answer": "Nein. Eingabe ist das zu versteuernde Einkommen, also nach Werbungskosten, Sonderausgaben und Freibeträgen."
+    },
+    {
+      "question": "Sind Solidaritätszuschlag und Kirchensteuer enthalten?",
+      "answer": "Nein, sie werden hier nicht berechnet."
+    },
+    {
+      "question": "Werden meine Daten gespeichert?",
+      "answer": "Nein, die Berechnung läuft nur in Ihrem Browser."
+    }
+  ],
+  "disclaimer": "Allgemeine Information, keine Steuerberatung."
+};
+const sources: [string, string][] = [
+  [
+    "§ 32a EStG Einkommensteuertarif (gesetze-im-internet.de)",
+    "https://www.gesetze-im-internet.de/estg/__32a.html"
+  ]
+];
+---
+<DeToolPage slug="einkommensteuer-rechner-2026" c={c} sources={sources} checked="§ 32a EStG auf gesetze-im-internet.de am 2026-11-22 geprüft">
+  <T client:load />
+</DeToolPage>

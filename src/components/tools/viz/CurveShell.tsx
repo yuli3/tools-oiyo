@@ -36,6 +36,12 @@ export const TW_VIZ_TEXT: Partial<VizText> = {
   table: "以表格檢視", sweepMarks: "虛線是規則改變的位置。點選或拖曳圖表也能改變數值。", sweepPlain: "點選或拖曳圖表也能改變數值。",
 };
 
+/** German frame text for Germany pages (the shell has no German locale, so pages run on the English frame). */
+export const DE_VIZ_TEXT: Partial<VizText> = {
+  modeGroup: "Ansicht", easy: "Einfach", easyHint: "Nur die wichtigsten Angaben", expert: "Experte", expertHint: "Alle Werte und Quellen",
+  table: "Als Tabelle anzeigen", sweepMarks: "Gestrichelte Linien zeigen, wo sich die Regel ändert. Klicken oder ziehen ändert den Wert.", sweepPlain: "Klicken oder ziehen ändert den Wert.",
+};
+
 /** Date minus n years (rounded to whole months), as YYYY-MM-DD. */
 export const minusYears = (end: string, years: number) => startFor(end, years);
 /** Date plus n months, as YYYY-MM-DD (day clamped to month end). */

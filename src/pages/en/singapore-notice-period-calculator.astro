@@ -1,0 +1,55 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/desg/SgNotice';
+// Singapore first pack (2026-11-22, world pro-gap #9). Engine: lib/world-de-sg-pack-2026.ts
+const c = {
+  "introTitle": "How long is your notice period in Singapore?",
+  "intro": "If the employment contract does not set a notice period, the Employment Act minimum depends on length of service: 1 day under 26 weeks, 1 week up to 2 years, 2 weeks up to 5 years and 4 weeks for 5 years or more. The period includes the day notice is given.",
+  "formulaTitle": "The rules used",
+  "formulas": [
+    {
+      "title": "Statutory minimum",
+      "body": "Under 26 weeks 1 day; 26 weeks to under 2 years 1 week; 2 to under 5 years 2 weeks; 5 years or more 4 weeks."
+    },
+    {
+      "title": "Counting",
+      "body": "Includes the day notice is given, public holidays, rest days and non-working days."
+    },
+    {
+      "title": "Salary in lieu",
+      "body": "Either side can pay salary for the notice period instead. CPF is not payable on it."
+    }
+  ],
+  "howToTitle": "How to use it",
+  "steps": [
+    "Enter your start date.",
+    "Enter the day notice is given.",
+    "Add the contract notice period if there is one."
+  ],
+  "faqTitle": "FAQ",
+  "faqs": [
+    {
+      "question": "Can the contract set a longer period?",
+      "answer": "Yes. It must be the same for employer and employee."
+    },
+    {
+      "question": "Can notice be waived?",
+      "answer": "Yes, by mutual agreement, preferably in writing."
+    },
+    {
+      "question": "Is my data saved?",
+      "answer": "No, it stays in your browser."
+    }
+  ],
+  "disclaimer": "General information only, not legal advice."
+};
+const sources: [string, string][] = [
+  [
+    "MOM — Termination with notice",
+    "https://www.mom.gov.sg/employment-practices/termination-of-employment/termination-with-notice"
+  ]
+];
+---
+<DebtReliefPage slug="singapore-notice-period-calculator" c={c} sources={sources} sourcesTitle="Sources" checked="MOM page checked 2026-11-22">
+  <T client:load />
+</DebtReliefPage>

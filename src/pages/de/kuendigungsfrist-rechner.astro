@@ -1,0 +1,55 @@
+---
+import DeToolPage from '../../components/DeToolPage.astro';
+import T from '../../components/tools/desg/DeNotice';
+// Germany first pack (2026-11-22, world pro-gap #9). Engine: lib/world-de-sg-pack-2026.ts
+const c = {
+  "introTitle": "Wann endet das Arbeitsverhältnis nach einer Kündigung?",
+  "intro": "Die Grundkündigungsfrist beträgt vier Wochen zum 15. oder zum Ende eines Kalendermonats. Kündigt der Arbeitgeber, verlängert sich die Frist mit der Dauer des Arbeitsverhältnisses von einem Monat (2 Jahre) bis sieben Monate (20 Jahre), jeweils zum Monatsende. In einer vereinbarten Probezeit gelten zwei Wochen.",
+  "formulaTitle": "Die verwendeten Regeln",
+  "formulas": [
+    {
+      "title": "Grundfrist",
+      "body": "4 Wochen zum 15. oder zum Monatsende (§ 622 Abs. 1 BGB)."
+    },
+    {
+      "title": "Arbeitgeber",
+      "body": "Ab 2 Jahren 1 Monat, 5 Jahren 2, 8 Jahren 3, 10 Jahren 4, 12 Jahren 5, 15 Jahren 6, 20 Jahren 7 Monate zum Monatsende (Abs. 2)."
+    },
+    {
+      "title": "Probezeit",
+      "body": "Höchstens 6 Monate, Frist 2 Wochen (Abs. 3)."
+    }
+  ],
+  "howToTitle": "So funktioniert es",
+  "steps": [
+    "Wählen, wer kündigt.",
+    "Datum des Zugangs und Beginn des Arbeitsverhältnisses eingeben.",
+    "Den letzten Tag ablesen."
+  ],
+  "faqTitle": "Häufige Fragen",
+  "faqs": [
+    {
+      "question": "Gelten die langen Fristen auch, wenn ich selbst kündige?",
+      "answer": "Nein, sie gelten für die Kündigung durch den Arbeitgeber. Ihr Vertrag darf für Sie keine längere Frist vorsehen als für den Arbeitgeber."
+    },
+    {
+      "question": "Ist die Kündigung damit wirksam?",
+      "answer": "Das wird hier nicht geprüft (z. B. Kündigungsschutzgesetz)."
+    },
+    {
+      "question": "Werden meine Daten gespeichert?",
+      "answer": "Nein, die Berechnung läuft nur in Ihrem Browser."
+    }
+  ],
+  "disclaimer": "Allgemeine Information, keine Rechtsberatung."
+};
+const sources: [string, string][] = [
+  [
+    "§ 622 BGB Kündigungsfristen (gesetze-im-internet.de)",
+    "https://www.gesetze-im-internet.de/bgb/__622.html"
+  ]
+];
+---
+<DeToolPage slug="kuendigungsfrist-rechner" c={c} sources={sources} checked="§ 622 BGB auf gesetze-im-internet.de am 2026-11-22 geprüft">
+  <T client:load />
+</DeToolPage>

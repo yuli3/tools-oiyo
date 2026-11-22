@@ -28,6 +28,8 @@ export const COUNTRY_SKILLS = {
   company: { dir: "oiyo-world-company-calendar", libs: ["world-company-calendar-2026"], zip: "oiyo-world-company-calendar-skill.zip" },
   einvoice: { dir: "oiyo-world-einvoice-guide", libs: ["world-einvoice-pack-2026"], zip: "oiyo-world-einvoice-guide-skill.zip" },
   residency: { dir: "oiyo-world-tax-residency-guide", libs: ["world-tax-residency-2026"], zip: "oiyo-world-tax-residency-guide-skill.zip" },
+  de: { dir: "oiyo-de-guide", libs: ["world-de-sg-pack-2026"], zip: "oiyo-de-guide-skill.zip" },
+  sg: { dir: "oiyo-sg-guide", libs: ["world-de-sg-pack-2026"], zip: "oiyo-sg-guide-skill.zip" },
 };
 export const skillDir = (c) => resolve(root, "skills", COUNTRY_SKILLS[c].dir);
 
