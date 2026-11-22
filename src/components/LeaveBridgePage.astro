@@ -1,0 +1,38 @@
+---
+// 2027 leave-bridge pages for JP · US · UK · FR · DE (2026-11-22, think tank round 2).
+// One shell so the five pages stay identical in structure; copy lives in each page.
+import Layout from './Layout.astro';
+import ToolShell from './ToolShell.astro';
+import UtilityArticle, { type UtilityContent } from './UtilityArticle.astro';
+import WorldLeaveBridge2027 from './tools/WorldLeaveBridge2027';
+import { utilityJsonLd } from '../lib/utility-jsonld';
+import type { Country } from '../lib/world-holidays-2027';
+import type { Locale } from '../lib/i18n';
+
+interface Props {
+  country: Country; path: string; title: string; description: string; c: UtilityContent;
+  locale: Locale; languageTag: string; ogLocale: string; sources: [string, string][]; sourcesTitle: string;
+  related: [string, string][]; relatedTitle: string;
+}
+const p = Astro.props;
+const url = `https://tools.oiyo.net${p.path}`;
+const schema = utilityJsonLd({ name: p.title, description: p.description, url, locale: p.languageTag, steps: p.c.steps, faqs: p.c.faqs });
+const deShell = { all: 'Werkzeuge auf Deutsch', related: 'Weitere Werkzeuge', language: 'Sprache', license: 'Lizenz (Englisch)', note: 'Eingaben bleiben im Browser. Die Website verwendet Besuchsstatistiken und Werbung.' };
+const isDe = p.country === 'de';
+---
+<Layout title={p.title} description={p.description} locale={p.locale} languageTag={p.languageTag} ogLocale={p.ogLocale} canonicalURL={url}
+  shellOverride={isDe ? deShell : undefined} homeURL={isDe ? '/de/' : undefined} licenseURL={isDe ? 'https://blog.oiyo.net/en/license/' : undefined} familyTitle={isDe ? 'OIYO-Websites' : undefined}>
+  <ToolShell title={p.title} description={p.description}>
+    <WorldLeaveBridge2027 client:load country={p.country} />
+    <UtilityArticle c={p.c} />
+    <section class="mt-8 space-y-2 border-t border-border pt-6">
+      <h2 class="text-lg font-bold">{p.sourcesTitle}</h2>
+      <ul class="list-disc space-y-2 pl-5 text-sm">{p.sources.map(([name, href]) => <li><a href={href} class="text-primary underline underline-offset-4" rel="noopener">{name}</a></li>)}</ul>
+    </section>
+    <nav class="mt-8 space-y-1" aria-label={p.relatedTitle}>
+      <h2 class="text-base font-semibold">{p.relatedTitle}</h2>
+      <ul class="grid gap-x-6 sm:grid-cols-2">{p.related.map(([href, label]) => <li><a class="flex min-h-11 items-center text-sm text-primary underline underline-offset-4" href={href}>{label}</a></li>)}</ul>
+    </nav>
+  </ToolShell>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+</Layout>

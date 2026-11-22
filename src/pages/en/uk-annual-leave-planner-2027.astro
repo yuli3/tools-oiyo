@@ -1,0 +1,49 @@
+---
+// 2027 leave-bridge planner (2026-11-22, think tank round 2). Engine: lib/leave-bridge.ts + lib/world-holidays-2027.ts
+import LeaveBridgePage from '../../components/LeaveBridgePage.astro';
+const c = {
+  "introTitle": "Booking leave around 2027 bank holidays",
+  "intro": "England and Wales have eight bank holidays in 2027. Easter falls on 28 March, so Good Friday is 26 March and Easter Monday 29 March. Christmas Day and Boxing Day fall on a weekend, so the substitute days are Monday 27 and Tuesday 28 December, confirmed with 1 January and 3 May by Royal Proclamation. This planner checks every workday and shows the longest break for each number of leave days.",
+  "formulaTitle": "Best 2027 breaks",
+  "formulas": [
+    {
+      "title": "Easter: 4 days → 10",
+      "body": "Book Tue 30 March to Fri 2 April: off Fri 26 March to Sun 4 April."
+    },
+    {
+      "title": "Christmas: 3 days → 10",
+      "body": "Book 29–31 December: off Sat 25 December to Mon 3 January 2028."
+    },
+    {
+      "title": "May and August",
+      "body": "Early May (3 May), Spring (31 May) and Summer (30 August) are Mondays; add a Friday for 4 days."
+    }
+  ],
+  "howToTitle": "How to use it",
+  "steps": [
+    "Choose how many days of leave you can book; the longest break appears.",
+    "Tap a break in the list to see it on the year strip.",
+    "Add company closure days or tick Saturday work if needed."
+  ],
+  "faqTitle": "Common questions",
+  "faqs": [
+    {
+      "question": "What are the 2027 bank holidays in England and Wales?",
+      "answer": "1 Jan, 26 Mar (Good Friday), 29 Mar (Easter Monday), 3 May, 31 May, 30 Aug, 27 Dec and 28 Dec (substitute days for Christmas and Boxing Day)."
+    },
+    {
+      "question": "Does this cover Scotland and Northern Ireland?",
+      "answer": "No. Scotland and Northern Ireland have different bank holidays (for example 2 January in Scotland and 17 March and 12 July in Northern Ireland). Add them as extra days off."
+    },
+    {
+      "question": "Do I have a right to bank holidays off?",
+      "answer": "Not automatically. Your contract decides whether bank holidays are paid days off or come out of your 5.6 weeks of statutory leave."
+    }
+  ],
+  "disclaimer": "England and Wales bank holidays (Banking and Financial Dealings Act 1971 and the Royal Proclamation of 8 July 2026). Your contract decides your days off."
+};
+---
+<LeaveBridgePage country="uk" path="/en/uk-annual-leave-planner-2027/" locale="en" languageTag="en-GB" ogLocale="en_GB"
+  title={"2027 Annual Leave Planner (UK) — Make the Most of Bank Holidays"} description={"Plan 2027 annual leave around England and Wales bank holidays. Easter: 4 days of leave for 10 days off. Christmas: 3 days for 10. See the best break for 1 to 10 days."} c={c}
+  sources={[["GOV.UK — UK bank holidays", "https://www.gov.uk/bank-holidays"], ["Privy Council proclamation, 8 July 2026", "https://privycouncil.independent.gov.uk/wp-content/uploads/2026/07/2026-07-08-Proclamation-England-Wales-and-Northern-Ireland-Bank-Holiday.pdf"]]} sourcesTitle="Sources"
+  related={[["/en/gb-holiday-entitlement-calculator/", "UK holiday entitlement calculator"], ["/ja/yukyu-renkyu-2027/", "2027年 有給で連休カレンダー（日本）"], ["/en/us-pto-planner-2027/", "2027 PTO planner (US)"], ["/fr/ponts-2027/", "Ponts 2027 (France)"], ["/de/brueckentage-2027/", "Brückentage 2027 (Deutschland)"], ["/ko/annual-leave-combo-2027/", "2027 연차 꿀조합 (한국)"]]} relatedTitle={"2027 leave planners for other countries"} />
