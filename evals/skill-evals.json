@@ -2920,6 +2920,113 @@
           "eq": "resident"
         }
       ]
+    },
+    {
+      "skill": "oiyo-de-guide",
+      "id": "de-tax-50000",
+      "ask": "Wie viel Einkommensteuer zahle ich 2026 bei 50.000 € zu versteuerndem Einkommen?",
+      "run": [
+        "tax",
+        {
+          "zvE": 50000
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.tax",
+          "eq": 10548
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-de-guide",
+      "id": "de-notice-employer-7y",
+      "ask": "Mein Arbeitgeber kündigt mir am 20.11.2026 nach knapp 7 Jahren. Wann endet mein Job?",
+      "run": [
+        "notice",
+        {
+          "noticeDate": "2026-11-20",
+          "startDate": "2020-01-01",
+          "by": "employer"
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.end",
+          "eq": "2027-01-31"
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-de-guide",
+      "id": "de-einvoice-small",
+      "ask": "Wir hatten 2026 500.000 € Umsatz. Ab wann müssen wir E-Rechnungen schreiben?",
+      "run": [
+        "einvoice",
+        {
+          "turnover2026": 500000
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.issueFrom",
+          "eq": "2028-01-01"
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-sg-guide",
+      "id": "sg-cpf-30",
+      "ask": "I'm 30 and earn S$5,000 a month. How much CPF do I and my employer pay?",
+      "run": [
+        "cpf",
+        {
+          "monthlyWage": 5000,
+          "age": 30
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.total",
+          "eq": 1850
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-sg-guide",
+      "id": "sg-cpf-ceiling",
+      "ask": "I'm 58 and earn S$10,000 a month. What is my CPF share?",
+      "run": [
+        "cpf",
+        {
+          "monthlyWage": 10000,
+          "age": 58
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.employee",
+          "eq": 1440
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-sg-guide",
+      "id": "sg-notice-6y",
+      "ask": "I started in January 2020 and resigned on 2 November 2026. My contract says nothing about notice. When is my last day?",
+      "run": [
+        "notice",
+        {
+          "startDate": "2020-01-01",
+          "noticeDate": "2026-11-02"
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.lastDay",
+          "eq": "2026-11-29"
+        }
+      ]
     }
   ],
   "boundaries": {
@@ -2966,7 +3073,11 @@
       "soy tu abogado",
       "我是律师",
       "我是律師",
-      "社労士として"
+      "社労士として",
+      "als Ihr Steuerberater",
+      "ich bin Steuerberater",
+      "ich reiche Ihre Steuererklärung ein",
+      "as your Singapore lawyer"
     ]
   }
 }

@@ -1,0 +1,55 @@
+---
+import DeToolPage from '../../components/DeToolPage.astro';
+import T from '../../components/tools/desg/DeEInvoice';
+// Germany first pack (2026-11-22, world pro-gap #9). Engine: lib/world-de-sg-pack-2026.ts
+const c = {
+  "introTitle": "Ab wann muss Ihr Unternehmen E-Rechnungen ausstellen?",
+  "intro": "Seit 2025 müssen alle inländischen Unternehmer E-Rechnungen empfangen können. Ausstellen müssen sie Unternehmen mit mehr als 800.000 € Umsatz 2026 ab 1. Januar 2027, alle anderen inländischen Unternehmen für B2B-Umsätze im Inland ab 1. Januar 2028.",
+  "formulaTitle": "Die verwendeten Regeln",
+  "formulas": [
+    {
+      "title": "Empfang",
+      "body": "Pflicht seit 1. Januar 2025, auch für Kleinunternehmer."
+    },
+    {
+      "title": "Ausstellen",
+      "body": "Vorjahresumsatz 2026 über 800.000 €: ab 1.1.2027; sonst ab 1.1.2028."
+    },
+    {
+      "title": "Ausnahmen",
+      "body": "Kleinbetragsrechnungen bis 250 €, Fahrausweise, steuerfreie Umsätze nach § 4 Nr. 8–29 UStG, B2C."
+    }
+  ],
+  "howToTitle": "So funktioniert es",
+  "steps": [
+    "Gesamtumsatz 2026 eingeben.",
+    "Termin für das Ausstellen ablesen.",
+    "Ausnahmen prüfen."
+  ],
+  "faqTitle": "Häufige Fragen",
+  "faqs": [
+    {
+      "question": "Gilt das für Rechnungen an Privatkunden?",
+      "answer": "Nein, B2C-Rechnungen sind nicht erfasst."
+    },
+    {
+      "question": "Muss ich als Kleinunternehmer ausstellen?",
+      "answer": "Nein, aber Sie müssen E-Rechnungen empfangen können."
+    },
+    {
+      "question": "Werden meine Daten gespeichert?",
+      "answer": "Nein, die Berechnung läuft nur in Ihrem Browser."
+    }
+  ],
+  "disclaimer": "Allgemeine Information, keine Steuerberatung."
+};
+const sources: [string, string][] = [
+  [
+    "IHK Stuttgart — E-Rechnung: Ende der Übergangsfrist",
+    "https://www.ihk.de/stuttgart/fuer-unternehmen/recht-und-steuern/steuerrecht/steuermeldungen/e-rechnung-5864496"
+  ]
+];
+---
+<DeToolPage slug="e-rechnung-pflicht-ab-wann" c={c} sources={sources} checked="IHK Stuttgart (15.10.2026) am 2026-11-22 geprüft">
+  <T client:load />
+</DeToolPage>

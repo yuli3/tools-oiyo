@@ -1,0 +1,59 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/desg/SgCpf';
+// Singapore first pack (2026-11-22, world pro-gap #9). Engine: lib/world-de-sg-pack-2026.ts
+const c = {
+  "introTitle": "How much CPF do you and your employer pay from 2026?",
+  "intro": "From 1 January 2026, for monthly wages above $750, employees aged 55 and below pay 20% and employers 17% of ordinary wages. Rates for ages above 55 to 65 rose by 1.5 points. Ordinary wages count up to the $8,000 monthly ceiling.",
+  "formulaTitle": "The rules used",
+  "formulas": [
+    {
+      "title": "Rates (employer / employee)",
+      "body": "55 and below 17% / 20%; above 55 to 60 16% / 18%; above 60 to 65 12.5% / 12.5%; above 65 to 70 9% / 7.5%; above 70 7.5% / 5%."
+    },
+    {
+      "title": "Ordinary Wage ceiling",
+      "body": "$8,000 a month from 1 January 2026. Annual salary ceiling $102,000."
+    },
+    {
+      "title": "Low wages",
+      "body": "For wages of $750 or less, lower phased-in rates apply; not computed here."
+    }
+  ],
+  "howToTitle": "How to use it",
+  "steps": [
+    "Enter your monthly ordinary wage.",
+    "Enter your age.",
+    "Read the employee and employer shares."
+  ],
+  "faqTitle": "FAQ",
+  "faqs": [
+    {
+      "question": "Are bonuses included?",
+      "answer": "No. Additional wages are not computed here."
+    },
+    {
+      "question": "Is the amount rounded like CPF does?",
+      "answer": "No. CPF rounding rules are not applied."
+    },
+    {
+      "question": "Is my data saved?",
+      "answer": "No, it stays in your browser."
+    }
+  ],
+  "disclaimer": "General information only, not financial advice."
+};
+const sources: [string, string][] = [
+  [
+    "CPF — changes to contribution rates for senior workers from 1 January 2026",
+    "https://www.cpf.gov.sg/service/article/what-are-the-changes-to-the-cpf-contribution-rates-for-senior-workers-from-1-january-2026"
+  ],
+  [
+    "CPF — CPF-related changes taking place in 2026",
+    "https://www.cpf.gov.sg/member/infohub/news/news-releases/cpf-related-changes-taking-place-in-2026-what-you-need-to-know"
+  ]
+];
+---
+<DebtReliefPage slug="singapore-cpf-contribution-calculator-2026" c={c} sources={sources} sourcesTitle="Sources" checked="cpf.gov.sg checked 2026-11-22">
+  <T client:load />
+</DebtReliefPage>

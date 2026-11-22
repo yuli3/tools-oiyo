@@ -1,0 +1,28 @@
+---
+// German calculator pages (2026-11-22). German shell text on the English frame, like LaborNavigatorPage.
+import ToolShell from './ToolShell.astro';
+import Layout from './Layout.astro';
+import UtilityArticle, { type UtilityContent } from './UtilityArticle.astro';
+import { deTools } from '../data/de-tools';
+interface Props { slug: (typeof deTools)[number]['slug']; c: UtilityContent; sources: [string, string][]; checked: string }
+const { slug, c, sources, checked } = Astro.props;
+const t = deTools.find((x) => x.slug === slug)!;
+const url = `https://tools.oiyo.net/de/${t.slug}/`;
+const shell = { all: 'Werkzeuge auf Deutsch', related: 'Weitere Werkzeuge', language: 'Sprache', license: 'Lizenz (Englisch)', note: 'Eingaben bleiben im Browser. Die Website verwendet Besuchsstatistiken und Werbung.' };
+const others = deTools.filter((x) => x.slug !== slug);
+const schema = { '@context': 'https://schema.org', '@type': 'WebApplication', name: t.title, url, inLanguage: 'de-DE', description: t.description, applicationCategory: 'BusinessApplication', operatingSystem: 'All', isAccessibleForFree: true };
+---
+<Layout title={t.title} description={t.description} locale="en" languageTag="de-DE" ogLocale="de_DE" canonicalURL={url} shellOverride={shell} homeURL="/de/" licenseURL="https://blog.oiyo.net/en/license/" familyTitle="OIYO-Websites">
+  <ToolShell title={t.title} description={t.description}>
+    <p slot="meta" class="text-sm font-semibold">{t.jurisdiction}</p>
+    <slot />
+    <UtilityArticle c={c} />
+    <section class="space-y-2 border-t border-border pt-6">
+      <h2 class="text-lg font-bold">Quellen</h2>
+      <ul class="list-disc space-y-2 pl-5 text-sm">{sources.map(([name, href]) => <li><a href={href} class="text-primary underline underline-offset-4" rel="noopener">{name}</a></li>)}</ul>
+      <p class="text-xs text-muted-foreground">{checked}</p>
+    </section>
+    <nav class="space-y-2" aria-label={shell.related}><h2 class="text-lg font-semibold">{shell.related}</h2>{others.map((x) => <a href={`/de/${x.slug}/`} class="block rounded-lg border border-border p-3 text-sm text-primary underline">{x.title}</a>)}</nav>
+  </ToolShell>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+</Layout>
