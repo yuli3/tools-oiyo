@@ -89,3 +89,21 @@ test("TW minimum wage 2026/2027 shown, low wage warned", () => {
   const low = twLaborExit({ start: "2024-01-01", end: "2026-07-01", averageMonthlyWage: 20_000, system: "new" });
   assert.ok(low.items.some((i) => i.tone === "warn" && i.text.includes("196")));
 });
+
+test("FR préavis by service, doubled for disabled workers up to 3 months", () => {
+  assert.equal(frLaborExit({ start: "2026-01-01", end: "2026-05-01", monthlyReference: 2_000 }).preavisMonths, null);
+  assert.equal(frLaborExit({ start: "2025-06-01", end: "2026-07-01", monthlyReference: 2_000 }).preavisMonths, 1);
+  assert.equal(frLaborExit({ start: "2020-01-01", end: "2026-07-01", monthlyReference: 2_000 }).preavisMonths, 2);
+  assert.equal(frLaborExit({ start: "2020-01-01", end: "2026-07-01", monthlyReference: 2_000, disabled: true }).preavisMonths, 3);
+  assert.equal(frLaborExit({ start: "2025-06-01", end: "2026-07-01", monthlyReference: 2_000, disabled: true }).preavisMonths, 2);
+  assert.equal(frLaborExit({ start: "2020-01-01", end: "2026-07-01", monthlyReference: 2_000, mode: "rupture" }).preavisMonths, null);
+});
+
+test("CN annual leave by cumulative years and 1-year arbitration date", () => {
+  const r = cnLaborExit({ start: "2020-01-01", end: "2026-08-01", monthlyWage: 10_000 });
+  assert.equal(r.annualLeaveDays, 5);
+  assert.equal(r.dates.find((d) => d.id === "arbitration")?.date, "2027-08-01");
+  assert.equal(cnLaborExit({ start: "2020-01-01", end: "2026-08-01", monthlyWage: 10_000, cumulativeYears: 12 }).annualLeaveDays, 10);
+  assert.equal(cnLaborExit({ start: "2020-01-01", end: "2026-08-01", monthlyWage: 10_000, cumulativeYears: 20 }).annualLeaveDays, 15);
+  assert.equal(cnLaborExit({ start: "2026-01-01", end: "2026-08-01", monthlyWage: 10_000 }).annualLeaveDays, 0);
+});
