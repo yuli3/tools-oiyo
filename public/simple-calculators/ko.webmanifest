@@ -1,0 +1,26 @@
+{
+  "name": "간단계산기 · OIYO",
+  "short_name": "간단계산기",
+  "description": "큰 글씨로 쉽게 쓰는 생활 계산기",
+  "lang": "ko",
+  "id": "/ko/simple-calculators/",
+  "start_url": "/ko/simple-calculators/",
+  "scope": "/ko/simple-calculators/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#65a30d",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

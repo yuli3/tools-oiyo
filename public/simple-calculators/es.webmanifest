@@ -1,0 +1,26 @@
+{
+  "name": "Calculadoras sencillas · OIYO",
+  "short_name": "Calc sencilla",
+  "description": "Calculadoras con letra grande",
+  "lang": "es",
+  "id": "/es/simple-calculators/",
+  "start_url": "/es/simple-calculators/",
+  "scope": "/es/simple-calculators/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#65a30d",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

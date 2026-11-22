@@ -1,0 +1,175 @@
+---
+/**
+ * 카드 할부 수수료 계산기, 6개 언어 (2026-11-22, 간단계산기 출시와 함께).
+ * 나라별 기본값: 한국 잔액×연율÷12, 일본·미국·프랑스·스페인 원리금균등, 중국 월 고정 수수료.
+ * 쉬운 버전은 /{locale}/simple-calculators/card-installment/ 이에요.
+ */
+import Layout from '../../components/Layout.astro';
+import ToolShell from '../../components/ToolShell.astro';
+import UtilityArticle, { type UtilityContent } from '../../components/UtilityArticle.astro';
+import RelatedLinkList from '../../components/RelatedLinkList.astro';
+import CardInstallment from '../../components/tools/CardInstallment';
+import { utilityJsonLd } from '../../lib/utility-jsonld';
+import { SIMPLE_UI, simpleHref } from '../../data/simple-calculators';
+import type { Locale } from '../../lib/i18n';
+
+const LANGS = ['ko', 'en', 'ja', 'zh', 'fr', 'es'] as const;
+export function getStaticPaths() {
+  return (['ko', 'en', 'ja', 'zh', 'fr', 'es'] as const).map((locale) => ({ params: { locale }, props: { locale } }));
+}
+const { locale } = Astro.props as { locale: Locale };
+
+const P: Record<Locale, { title: string; description: string; c: UtilityContent; relatedTitle: string; related: [string, string][] }> = {
+  ko: {
+    title: '카드 할부 수수료 계산기 — 개월별 청구액·수수료 합계',
+    description: '결제 금액, 할부 개월, 연 수수료율을 넣으면 첫 달 청구액, 회차별 원금·수수료, 수수료 합계를 바로 보여 줘요. 국내 카드사 방식(남은 원금 × 연율 ÷ 12)으로 계산해요.',
+    c: {
+      introTitle: '할부 수수료는 남은 원금에만 붙어요',
+      intro: '국내 카드사는 할부 원금을 개월 수로 똑같이 나누고, 매달 남은 할부 원금에 연 수수료율을 12로 나눈 비율을 곱해 수수료를 매겨요. 그래서 첫 달 청구액이 가장 크고 갈수록 줄어요. 예를 들어 120만 원을 3개월, 연 12%로 나누면 수수료는 1만 2천 원, 8천 원, 4천 원으로 모두 2만 4천 원이에요.',
+      formulaTitle: '계산 방법',
+      formulas: [
+        { title: '회차 원금', body: '결제 금액 ÷ 할부 개월. 원 단위 나머지는 첫 달에 붙여요.' },
+        { title: '회차 수수료', body: '남은 할부 원금 × 연 수수료율 ÷ 12. 카드사에 따라 일수(÷365)로 계산하면 몇십 원 달라질 수 있어요.' },
+        { title: '무이자 할부', body: '수수료율을 0으로 두면 매달 원금만 나가요. 부분 무이자는 무이자 회차만큼 따로 계산하세요.' },
+      ],
+      howToTitle: '사용 방법',
+      steps: ['결제 금액을 넣어요.', '할부 개월을 골라요(2~60개월).', '카드사 안내문이나 앱에 있는 연 할부 수수료율을 넣어요.', '첫 달 청구액과 수수료 합계를 확인하고, 회차별 내역을 펼쳐 봐요.'],
+      faqTitle: '자주 묻는 질문',
+      faqs: [
+        { question: '할부 수수료율은 어디서 보나요?', answer: '카드사 앱의 "이용 안내"나 매출전표, 카드 상품설명서에 연 수수료율 구간(대개 연 7~19.9%)이 나와 있어요. 회원 등급과 개월 수에 따라 달라요.' },
+        { question: '왜 첫 달이 가장 비싼가요?', answer: '수수료를 남은 원금에 매기기 때문이에요. 원금이 줄수록 수수료도 줄어요.' },
+        { question: '중간에 다 갚으면요?', answer: '선결제하면 남은 회차 수수료는 내지 않아요. 이미 지난 회차 수수료만 내요.' },
+      ],
+      disclaimer: '추정치예요. 실제 청구액은 카드사의 일수 계산, 결제일, 원 단위 처리에 따라 조금 달라요.',
+    },
+    relatedTitle: '함께 쓰면 좋은 도구',
+    related: [['/ko/simple-calculators/card-installment/', '간단계산기: 할부하면 한 달에 얼마?'], ['/ko/dutch-pay-calculator/', 'N분의 1 계산기'], ['/ko/loan-calculator/', '대출 이자 계산기']],
+  },
+  en: {
+    title: 'Credit Card Installment Calculator — Monthly Payment & Total Interest',
+    description: 'Enter the purchase, number of months and APR to see the first payment, each month’s principal and interest, and the total cost. Switch between level payments, balance-based fees and fixed monthly plan fees.',
+    c: {
+      introTitle: 'What a card installment plan really costs',
+      intro: 'Paying a purchase off over a few months costs more than the sticker price unless the plan is 0%. This calculator shows the monthly payment and total interest three ways: a level payment at an APR (like paying a balance down), a fee on the remaining balance, and a fixed monthly plan fee charged on the original amount. The last one looks cheap but its effective APR is much higher than “fee × 12”.',
+      formulaTitle: 'How it is calculated',
+      formulas: [
+        { title: 'Level payment', body: 'Payment = P × r ÷ (1 − (1 + r)^−n), where r = APR ÷ 12.' },
+        { title: 'Balance-based fee', body: 'Equal principal each month; fee = remaining balance × APR ÷ 12.' },
+        { title: 'Fixed plan fee', body: 'Fee = original amount × monthly fee every month. We also show the effective APR.' },
+      ],
+      howToTitle: 'How to use',
+      steps: ['Enter the purchase amount.', 'Choose the number of months.', 'Pick the method your card uses and enter the APR or monthly fee.', 'Read the first payment and total interest, then open the schedule.'],
+      faqTitle: 'FAQ',
+      faqs: [
+        { question: 'Is a 1% monthly plan fee the same as 12% APR?', answer: 'No. Because the fee is charged on the original amount even as you pay it down, a 1% monthly fee over 12 months works out to roughly 21% APR.' },
+        { question: 'What about 0% promotions?', answer: 'Set the rate to 0. Check whether interest is deferred: some promotions charge all the interest if the balance is not cleared in time.' },
+      ],
+      disclaimer: 'Estimate only. Your card issuer’s statement is the final amount.',
+    },
+    relatedTitle: 'Related tools',
+    related: [['/en/simple-calculators/card-installment/', 'Simple version: monthly payment in large print'], ['/en/loan-calculator/', 'Loan calculator'], ['/en/dutch-pay-calculator/', 'Split the bill']],
+  },
+  ja: {
+    title: 'カード分割払い手数料計算 — 毎月の支払額と手数料の合計',
+    description: '利用金額・支払回数・実質年率を入れると、初回の支払額、回ごとの元金と手数料、手数料の合計がわかります。日本のカード会社に多い元利均等方式が初期設定です。',
+    c: {
+      introTitle: '分割払いの手数料はいくら？',
+      intro: '日本のクレジットカードの分割払いは、多くが元利均等方式で、毎月ほぼ同じ金額を払います。手数料率は実質年率で表示され、12〜15%前後が一般的です。2回払いは手数料なしのカードが多いので、0%で計算してください。',
+      formulaTitle: '計算方法',
+      formulas: [
+        { title: '元利均等', body: '毎月の支払額 = 元金 × 月利 ÷ (1 − (1 + 月利)^−回数)。月利 = 実質年率 ÷ 12。' },
+        { title: '元金均等', body: '元金を均等に分け、残高 × 年率 ÷ 12 の手数料を足します。' },
+        { title: '定額手数料', body: '元金 × 月の手数料率を毎月払う方式。実質年率も表示します。' },
+      ],
+      howToTitle: '使い方',
+      steps: ['利用金額を入れます。', '支払回数を選びます。', 'カード会社の実質年率を入れます。', '初回の支払額と手数料の合計を確認します。'],
+      faqTitle: 'よくある質問',
+      faqs: [
+        { question: 'リボ払いとの違いは？', answer: '分割払いは回数を決めて払い終わる方式、リボ払いは毎月の支払額を決める方式です。同じ年率でも、リボは支払いが長引くほど手数料が増えます。' },
+        { question: '2回払いに手数料はかかりますか？', answer: '多くのカード会社で2回払いとボーナス一括払いは手数料無料です。0%で計算してください。' },
+      ],
+      disclaimer: '概算です。実際の請求額はカード会社の計算方法によって異なります。',
+    },
+    relatedTitle: '関連ツール',
+    related: [['/ja/simple-calculators/card-installment/', 'かんたん版：毎月いくら？'], ['/ja/loan-calculator/', 'ローン計算'], ['/ja/dutch-pay-calculator/', '割り勘計算']],
+  },
+  zh: {
+    title: '信用卡分期手续费计算器 — 每期还款与实际年化利率',
+    description: '输入分期金额、期数和每期手续费率，算出每期还款、手续费合计和实际年化利率(IRR)。默认按国内信用卡分期“本金×每期费率”的固定手续费方式计算。',
+    c: {
+      introTitle: '每期0.6%的分期，实际年化是多少？',
+      intro: '国内信用卡分期通常按“分期本金×每期手续费率”每月收取固定手续费。本金逐月还掉，手续费却不变，所以实际年化利率大约是每期费率×12的1.8倍。例如12期、每期0.6%，名义7.2%，实际年化约13%。监管要求银行明示年化利率，本工具帮你核对。',
+      formulaTitle: '计算方式',
+      formulas: [
+        { title: '固定手续费', body: '每期手续费 = 分期本金 × 每期费率；每期本金 = 本金 ÷ 期数。' },
+        { title: '等额本息', body: '每月还款 = 本金 × 月利率 ÷ (1 − (1 + 月利率)^−期数)。' },
+        { title: '实际年化', body: '用每期实际还款额反推内部收益率(IRR) × 12。' },
+      ],
+      howToTitle: '使用方法',
+      steps: ['输入分期金额。', '选择期数。', '输入银行给出的每期手续费率。', '查看首期还款、手续费合计和实际年化利率。'],
+      faqTitle: '常见问题',
+      faqs: [
+        { question: '免息分期真的不要钱吗？', answer: '把费率设为0即可计算。注意有些“免息”会收一次性手续费或要求开通其他服务。' },
+        { question: '提前还款手续费还收吗？', answer: '各银行规定不同，有的仍收取剩余期数的全部手续费，请向发卡行确认。' },
+      ],
+      disclaimer: '估算结果，以发卡银行账单为准。',
+    },
+    relatedTitle: '相关工具',
+    related: [['/zh/simple-calculators/card-installment/', '简单版：每月还多少？'], ['/zh/loan-calculator/', '贷款计算器'], ['/zh/dutch-pay-calculator/', 'AA分摊']],
+  },
+  fr: {
+    title: 'Calcul du paiement en plusieurs fois par carte — mensualités et frais',
+    description: 'Entrez le montant, le nombre de mensualités et le TAEG pour voir la première mensualité, l’échéancier et le total des frais. Mensualités constantes, frais sur le restant dû ou frais fixes.',
+    c: {
+      introTitle: 'Combien coûte un paiement en 3, 4 ou 10 fois ?',
+      intro: 'Le paiement fractionné (3x, 4x) et le crédit renouvelable rattaché à la carte ne sont pas gratuits, sauf mention « sans frais ». Ce calculateur montre la mensualité et le coût total avec un TAEG, ou avec des frais fixes calculés sur le montant d’achat. Au-delà de 3 mois, le paiement fractionné relève du crédit à la consommation et le TAEG doit être indiqué.',
+      formulaTitle: 'Méthode',
+      formulas: [
+        { title: 'Mensualités constantes', body: 'M = C × t ÷ (1 − (1 + t)^−n), avec t = TAEG ÷ 12.' },
+        { title: 'Frais sur le restant dû', body: 'Capital égal chaque mois ; frais = restant dû × TAEG ÷ 12.' },
+        { title: 'Frais fixes', body: 'Frais = montant × taux mensuel chaque mois ; le taux effectif est affiché.' },
+      ],
+      howToTitle: 'Mode d’emploi',
+      steps: ['Entrez le montant de l’achat.', 'Choisissez le nombre de mensualités.', 'Entrez le TAEG ou les frais annoncés.', 'Lisez la première mensualité et le total des frais.'],
+      faqTitle: 'Questions fréquentes',
+      faqs: [{ question: 'Le 4x sans frais est-il vraiment gratuit ?', answer: 'Mettez le taux à 0. Vérifiez les frais de dossier et les pénalités en cas de retard.' }],
+      disclaimer: 'Estimation. Le montant final est celui de votre banque.',
+    },
+    relatedTitle: 'Outils liés',
+    related: [['/fr/simple-calculators/card-installment/', 'Version simple : combien par mois ?'], ['/fr/loan-calculator/', 'Calcul de prêt'], ['/fr/dutch-pay-calculator/', 'Partager l’addition']],
+  },
+  es: {
+    title: 'Calculadora de pago aplazado con tarjeta — cuota mensual e intereses',
+    description: 'Escribe el importe, el número de cuotas y la TAE para ver la primera cuota, el calendario y el total de intereses. Cuota constante, comisión sobre lo pendiente o comisión fija.',
+    c: {
+      introTitle: '¿Cuánto cuesta aplazar una compra con la tarjeta?',
+      intro: 'Fraccionar una compra con la tarjeta suele tener intereses (TAE habituales del 15 % al 25 %) salvo promociones sin intereses. Esta calculadora muestra la cuota mensual y el coste total con cuota constante, con comisión sobre el saldo pendiente o con una comisión fija mensual sobre el importe inicial, que tiene una tasa efectiva más alta de lo que parece.',
+      formulaTitle: 'Cómo se calcula',
+      formulas: [
+        { title: 'Cuota constante', body: 'Cuota = C × i ÷ (1 − (1 + i)^−n), con i = TAE ÷ 12.' },
+        { title: 'Sobre lo pendiente', body: 'Capital igual cada mes; comisión = pendiente × TAE ÷ 12.' },
+        { title: 'Comisión fija', body: 'Comisión = importe × tasa mensual cada mes; se muestra la tasa efectiva.' },
+      ],
+      howToTitle: 'Cómo se usa',
+      steps: ['Escribe el importe de la compra.', 'Elige el número de cuotas.', 'Escribe la TAE o la comisión de tu tarjeta.', 'Mira la primera cuota y el total de intereses.'],
+      faqTitle: 'Preguntas frecuentes',
+      faqs: [{ question: '¿Y si es sin intereses?', answer: 'Pon el tipo a 0. Revisa si hay comisión de apertura por aplazar.' }],
+      disclaimer: 'Estimación. El importe final es el que indique tu banco.',
+    },
+    relatedTitle: 'Herramientas relacionadas',
+    related: [['/es/simple-calculators/card-installment/', 'Versión sencilla: ¿cuánto al mes?'], ['/es/loan-calculator/', 'Calculadora de préstamos'], ['/es/dutch-pay-calculator/', 'Dividir la cuenta']],
+  },
+};
+const p = P[locale];
+const url = `https://tools.oiyo.net/${locale}/card-installment-calculator/`;
+const schema = utilityJsonLd({ name: p.title, description: p.description, url, locale, steps: p.c.steps, faqs: p.c.faqs });
+---
+<Layout title={p.title} description={p.description} locale={locale} availableLocales={[...LANGS]} canonicalURL={url}>
+  <ToolShell title={p.title} description={p.description}>
+    <a slot="meta" href={simpleHref(locale, 'card-installment')} class="inline-flex min-h-11 items-center text-sm font-semibold text-primary underline underline-offset-4">🔍 {SIMPLE_UI[locale].brand}</a>
+    <CardInstallment client:load locale={locale} />
+    <UtilityArticle c={p.c} />
+    <RelatedLinkList title={p.relatedTitle} links={p.related.map(([href, label]) => ({ href, label }))} locale={locale} />
+  </ToolShell>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+</Layout>

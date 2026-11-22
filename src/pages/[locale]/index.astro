@@ -14,6 +14,7 @@ import {converterCopy} from '../../lib/fx-copy';
 import {EXCHANGE_COPY} from '../../components/tools/ForeignExchangeFeeCalculator';
 import {utilityCatalog,utilityGroups,type UtilityGroup} from '../../data/utility-catalog';
 import {toolIcon} from '../../data/tool-art';
+import { SIMPLE_UI, simpleHref } from '../../data/simple-calculators';
 export function getStaticPaths(){return locales.filter(l=>l!=='ko').map(locale=>({params:{locale},props:{locale}}));}
 const {locale}=Astro.props as {locale:Exclude<Locale,'ko'>};
 
@@ -25,12 +26,14 @@ const HUB = {
   es: { heading: 'Herramientas en español', title: 'OIYO tools — calculadoras y utilidades del día a día', description: 'Calculadoras y herramientas de archivos que funcionan en tu navegador: dinero, impuestos, salud, fechas, unidades, imágenes, color, herramientas de desarrollo y herramientas laborales por país.', badge: ['100 % en el navegador', 'Tus datos no salen de tu dispositivo'], lead: 'El cálculo que necesitas, sin desplazamientos innecesarios. Este sitio usa estadísticas de visitas (Google Analytics) y publicidad (AdSense).', search: 'Busca por nombre o tarea (ej. préstamo, IMC, PDF)', searchLabel: 'Buscar herramientas', all: 'Todo', local: 'Normas por país', file: 'Archivos', langs: '6 idiomas', open: 'Abrir herramienta', more: 'Ver más herramientas', found: (n: number) => `${n} herramientas coinciden.`, none: 'Ninguna herramienta coincide. Prueba otra palabra.', count: (a: number, b: number) => `${a} / ${b} herramientas`, other: 'Otros idiomas' },
 }[locale];
 
+const CARD_INST: Record<Exclude<Locale,'ko'>, [string, string]> = {"en": ["Credit card installment calculator", "Monthly payment, schedule and total interest for card installment plans."], "ja": ["カード分割払い手数料計算", "毎月の支払額、回ごとの手数料、手数料の合計を計算します。"], "zh": ["信用卡分期手续费计算器", "计算每期还款、手续费合计和实际年化利率。"], "fr": ["Paiement en plusieurs fois par carte", "Mensualités, échéancier et total des frais."], "es": ["Pago aplazado con tarjeta", "Cuota mensual, calendario y total de intereses."]};
 type Card = { href: string; title: string; desc: string; group: string; category: string; badge: string; icon?: string; lang?: string };
 const country = [...debtReliefForLocale(locale), ...laborToolsForLocale(locale), ...regionalLaborForLocale(locale)];
 const cards: Card[] = [
   { href: `/${locale}/usage-cost-calculator/`, title: usageCostCopy[locale].title, desc: usageCostCopy[locale].description, group: 'money', category: utilityGroups.money[locale], badge: HUB.langs },
   { href: `/${locale}/currency-converter/`, title: converterCopy[locale].title, desc: converterCopy[locale].description, group: 'money', category: utilityGroups.money[locale], badge: HUB.langs },
   { href: `/${locale}/foreign-exchange-fee-calculator/`, title: EXCHANGE_COPY[locale][0], desc: EXCHANGE_COPY[locale][1], group: 'money', category: utilityGroups.money[locale], badge: HUB.langs },
+  { href: `/${locale}/card-installment-calculator/`, title: CARD_INST[locale][0], desc: CARD_INST[locale][1], group: 'money', category: utilityGroups.money[locale], badge: HUB.langs },
   { href: `/${locale}/loan-comparison-calculator/`, title: loanCopy[locale].title, desc: loanCopy[locale].description, group: 'money', category: utilityGroups.money[locale], badge: HUB.langs },
   ...country.map((t) => ({ href: `/${t.locale}/${t.slug}/`, title: t.title, desc: t.description, group: 'local', category: HUB.local, badge: t.jurisdiction.split(/[·・,]/)[0].trim(), lang: t.languageTag })),
   ...utilityCatalog.map((t) => ({ href: `/${locale}/${t.slug}/`, title: t.title[locale], desc: t.description[locale], group: t.group, category: utilityGroups[t.group][locale], badge: HUB.langs, icon: toolIcon(t.slug) })),
@@ -57,6 +60,12 @@ const on = 'border-primary bg-primary font-bold text-primary-foreground';
         <a href="/nl/" lang="nl" class="inline-flex min-h-11 items-center text-primary underline underline-offset-4">Nederlands</a>
       </nav>
     </div>
+
+    {/* 2026-11-22 간단계산기: 어르신·저시력 사용자용 큰 글씨 계산기 모음으로 가는 큰 입구. */}
+    <a href={simpleHref(locale)} class="mb-5 flex min-h-20 items-center gap-4 rounded-2xl border-2 border-primary bg-primary/5 p-4 text-foreground hover:bg-primary/10 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring">
+      <span aria-hidden="true" class="text-4xl">🧮</span>
+      <span class="flex flex-col"><span class="text-xl font-black">{SIMPLE_UI[locale].brand}</span><span class="text-sm text-muted-foreground">{SIMPLE_UI[locale].hubLead}</span></span>
+    </a>
 
     <div class="mb-4">
       <label for="tool-search" class="sr-only">{HUB.searchLabel}</label>

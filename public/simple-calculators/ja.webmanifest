@@ -1,0 +1,26 @@
+{
+  "name": "かんたん計算機 · OIYO",
+  "short_name": "かんたん計算",
+  "description": "大きな文字で使える暮らしの計算",
+  "lang": "ja",
+  "id": "/ja/simple-calculators/",
+  "start_url": "/ja/simple-calculators/",
+  "scope": "/ja/simple-calculators/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#65a30d",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

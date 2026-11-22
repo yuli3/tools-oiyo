@@ -15,6 +15,7 @@ import { krHealthTools } from "../data/kr-health";
 import { bizTools } from "../data/biz-tools";
 import { welfareTools } from "../data/welfare-tools";
 import { lawGuides } from "../data/law-guides";
+import { SIMPLE_UI, simpleHref } from '../data/simple-calculators';
 
 // 2026-10-17: 카드 설명의 법정 수치는 SSOT에서 읽고, blog.oiyo.net과 겹치지 않는
 // 고유 계산기와 2026-10-19 이관한 파일 도구를 정본 주소로 안내해요.
@@ -26,6 +27,7 @@ const tools = [
   { id: 'usage-cost-calculator', title: usageCostCopy.ko.title, desc: usageCostCopy.ko.description, href: '/ko/usage-cost-calculator/', category: '생활·사용비 비교', badge: '6개 언어' },
   { id: 'currency-converter', title: converterCopy.ko.title, desc: converterCopy.ko.description, href: '/ko/currency-converter/', category: '환율·해외 결제', badge: '6개 언어' },
   { id: 'foreign-exchange-fee-calculator', title: EXCHANGE_COPY.ko[0], desc: '현지 통화 결제와 DCC(원화 결제) 제시 금액을 같은 환율·수수료 가정으로 비교해요.', href: '/ko/foreign-exchange-fee-calculator/', category: '환율·해외 결제', badge: '6개 언어' },
+  { id: 'card-installment-calculator', title: '카드 할부 수수료 계산기', desc: '할부 개월과 연 수수료율로 첫 달 청구액, 회차별 수수료, 수수료 합계를 계산해요.', href: '/ko/card-installment-calculator/', category: '대출·상환 비교', badge: '6개 언어' },
   { id: 'loan-comparison-calculator', title: loanCopy.ko.title, desc: loanCopy.ko.description, href: '/ko/loan-comparison-calculator/', category: '대출·상환 비교', badge: '6개 언어' },
   { id: 'monitor-ppi-calculator', title: monitorPpiCopy.ko.title, desc: monitorPpiCopy.ko.description, href: '/ko/monitor-ppi-calculator/', category: '화면·디스플레이', badge: '6개 언어' },
   // 2026-10-27 W1/W2: screen, image, color and developer utilities migrated from Blog.
@@ -152,6 +154,12 @@ const tools = [
         {locales.filter(lang=>lang!=='ko').map(lang=><a href={`/${lang}/`} lang={lang} class="inline-flex min-h-11 items-center text-primary underline underline-offset-4">{{en:'English',ja:'日本語',zh:'中文',fr:'Français',es:'Español'}[lang]}</a>)}
       </nav>
     </div>
+
+    {/* 2026-11-22 간단계산기: 어르신·저시력 사용자용 큰 글씨 계산기 모음으로 가는 큰 입구. */}
+    <a href={simpleHref('ko')} class="mb-5 flex min-h-20 items-center gap-4 rounded-2xl border-2 border-primary bg-primary/5 p-4 text-foreground hover:bg-primary/10 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring">
+      <span aria-hidden="true" class="text-4xl">🧮</span>
+      <span class="flex flex-col"><span class="text-xl font-black">{SIMPLE_UI['ko'].brand}</span><span class="text-sm text-muted-foreground">{SIMPLE_UI['ko'].hubLead}</span></span>
+    </a>
 
     {/* WHY 2026-11-03 (impeccable pilot): 250여 개 카드를 모바일에서 끝없이 내리지 않도록 이름·설명 검색을 먼저 둬요. */}
     <div class="mb-4">

@@ -1,0 +1,59 @@
+---
+// 간단계산기 공통 틀 (2026-11-22). 어르신·저시력 사용자를 위해 큰 제목, "글씨 크게" 단추(전체 rem을 125%로),
+// 홈 화면에 두기 안내, 다른 간단계산기 큰 버튼 목록을 한 곳에서 그려요. ToolShell보다 단순하고 커요.
+import { SIMPLE_COPY, SIMPLE_ICON, SIMPLE_TOOLS, SIMPLE_UI, simpleHref, type SimpleTool } from '../data/simple-calculators';
+import type { Locale } from '../lib/i18n';
+interface Props { locale: Locale; title: string; lead?: string; current?: SimpleTool }
+const { locale, title, lead, current } = Astro.props;
+const ui = SIMPLE_UI[locale];
+const copy = SIMPLE_COPY[locale];
+const others = SIMPLE_TOOLS.filter((t) => t !== current);
+---
+<script is:inline>
+  try { if (localStorage.getItem('oiyo-simple-size') === 'xl') document.documentElement.classList.add('simple-xl'); } catch (e) {}
+</script>
+<article data-simple-shell class="mx-auto max-w-2xl space-y-6 px-4 py-6 text-lg sm:py-8">
+  <div class="flex flex-wrap items-center justify-between gap-3">
+    <a href={simpleHref(locale)} class="inline-flex min-h-12 items-center gap-2 text-lg font-bold text-primary underline underline-offset-4">
+      <span aria-hidden="true">🧮</span>{current ? ui.home : ui.brand}
+    </a>
+    <button type="button" data-simple-size aria-pressed="false" class="min-h-12 rounded-xl border-2 border-border bg-card px-4 text-lg font-bold text-foreground hover:border-primary focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring">
+      <span aria-hidden="true">🔍 </span><span data-label-big>{ui.bigger}</span><span data-label-normal hidden>{ui.smaller}</span>
+    </button>
+  </div>
+  <header class="space-y-3">
+    <h1 class="text-3xl font-black leading-tight tracking-tight text-foreground sm:text-4xl">{title}</h1>
+    {lead && <p class="text-xl leading-relaxed text-foreground">{lead}</p>}
+  </header>
+  <slot />
+  {current && (
+    <nav aria-label={ui.allTools} class="space-y-3 border-t-2 border-border pt-6">
+      <h2 class="text-2xl font-bold text-foreground">{ui.allTools}</h2>
+      <ul class="grid gap-3 sm:grid-cols-2">
+        {others.map((t) => (
+          <li><a href={simpleHref(locale, t)} class="flex min-h-16 items-center gap-3 rounded-xl border-2 border-border bg-card px-4 text-xl font-bold text-foreground hover:border-primary focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring"><span aria-hidden="true" class="text-3xl">{SIMPLE_ICON[t]}</span>{copy[t].name}</a></li>
+        ))}
+      </ul>
+    </nav>
+  )}
+  <section class="space-y-2 rounded-xl border-2 border-border p-4">
+    <h2 class="text-xl font-bold text-foreground"><span aria-hidden="true">📱 </span>{ui.install}</h2>
+    <p class="text-lg leading-relaxed text-foreground">{ui.installHow}</p>
+    <p class="text-base leading-relaxed text-muted-foreground">{ui.seniorNote}</p>
+  </section>
+</article>
+<script>
+  const btn = document.querySelector<HTMLButtonElement>('[data-simple-size]');
+  const sync = () => {
+    const on = document.documentElement.classList.contains('simple-xl');
+    btn?.setAttribute('aria-pressed', String(on));
+    btn?.querySelector('[data-label-big]')?.toggleAttribute('hidden', on);
+    btn?.querySelector('[data-label-normal]')?.toggleAttribute('hidden', !on);
+  };
+  sync();
+  btn?.addEventListener('click', () => {
+    const on = document.documentElement.classList.toggle('simple-xl');
+    try { localStorage.setItem('oiyo-simple-size', on ? 'xl' : 'normal'); } catch { /* storage blocked */ }
+    sync();
+  });
+</script>

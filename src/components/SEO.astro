@@ -11,6 +11,7 @@ interface Props {
   keywords?: string[];
   /** 404 등 색인하면 안 되는 페이지(2026-10-17, soft-404 방지). */
   noindex?: boolean;
+  manifest?: string;
 }
 
 const {
@@ -23,6 +24,7 @@ const {
   keywords = ["계산기", "실업급여", "주휴수당", "전기요금 누진제", "군 복무일 계산", "도시가스 요금", "분리배출", "체감온도", "영업일 판정", "OIYO", "tools"],
   noindex = false,
   ogLocale,
+  manifest = '/manifest.json',
 } = Astro.props;
 
 const robots = noindex ? "noindex, follow" : "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1";
@@ -45,7 +47,7 @@ const alternateSlug = Astro.url.pathname.split('/').filter(Boolean)[1];
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
 <link rel="icon" href="/favicon.ico" />
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-<link rel="manifest" href="/manifest.json" />
+<link rel="manifest" href={manifest} />
 <link rel="alternate" type="application/rss+xml" title="OIYO 도구" href="/rss.xml" />
 <meta name="generator" content={Astro.generator} />
 <meta name="theme-color" content="#65a30d" />

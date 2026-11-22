@@ -1,0 +1,44 @@
+---
+/**
+ * 간단계산기 허브 (2026-11-22, 세운 결정: 브랜드 "간단계산기", 대상 어르신·저시력·시각장애인).
+ * 큰 버튼 6개만 보여 줘요. 기존 계산기 주소는 그대로 두고 각 간단계산기 아래 "자세한 설정" 링크로 이어요.
+ */
+import Layout from '../../../components/Layout.astro';
+import SimpleShell from '../../../components/SimpleShell.astro';
+import { SIMPLE_COPY, SIMPLE_ICON, SIMPLE_TOOLS, SIMPLE_UI, SIMPLE_LOCALES, simpleHref } from '../../../data/simple-calculators';
+import type { Locale } from '../../../lib/i18n';
+export function getStaticPaths() {
+  return (['ko', 'en', 'ja', 'zh', 'fr', 'es'] as const).map((locale) => ({ params: { locale }, props: { locale } }));
+}
+const { locale } = Astro.props as { locale: Locale };
+const ui = SIMPLE_UI[locale];
+const copy = SIMPLE_COPY[locale];
+const url = `https://tools.oiyo.net${simpleHref(locale)}`;
+const schema = {
+  '@context': 'https://schema.org', '@type': 'CollectionPage', name: ui.hubTitle, description: ui.hubDescription, url, inLanguage: locale,
+  mainEntity: { '@type': 'ItemList', itemListElement: SIMPLE_TOOLS.map((t, i) => ({ '@type': 'ListItem', position: i + 1, name: copy[t].name, url: `https://tools.oiyo.net${simpleHref(locale, t)}` })) },
+};
+---
+<Layout title={ui.hubTitle} description={ui.hubDescription} locale={locale} availableLocales={[...SIMPLE_LOCALES]} canonicalURL={url} manifest={`/simple-calculators/${locale}.webmanifest`}>
+  <SimpleShell locale={locale} title={ui.brand} lead={ui.hubLead}>
+    <nav aria-label={ui.brand}>
+      <ul class="grid gap-4 sm:grid-cols-2">
+        {SIMPLE_TOOLS.map((t) => (
+          <li>
+            <a href={simpleHref(locale, t)} class="flex min-h-24 items-center gap-4 rounded-2xl border-2 border-border bg-card p-4 text-foreground hover:border-primary focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring">
+              <span aria-hidden="true" class="text-5xl">{SIMPLE_ICON[t]}</span>
+              <span class="flex flex-col"><span class="text-2xl font-black">{copy[t].name}</span><span class="text-lg text-muted-foreground">{copy[t].short}</span></span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+    <section class="space-y-3">
+      <h2 class="text-2xl font-bold text-foreground">{ui.howTitle}</h2>
+      <ol class="list-decimal space-y-2 pl-7 text-xl leading-relaxed text-foreground">
+        {ui.how.map((s) => <li>{s}</li>)}
+      </ol>
+    </section>
+  </SimpleShell>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+</Layout>
