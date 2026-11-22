@@ -144,6 +144,9 @@ export const debtReliefTools = [
   { locale: 'en', languageTag: 'en', ogLocale: 'en_US', slug: "overtime-cap-holiday-accrual-check", title: "36協定 overtime cap check and UK 12.07% holiday accrual", description: "Check monthly overtime against Japan's 45/360, 720, under-100 and 80-hour average caps (with driver, construction and doctor rules), and work out UK irregular-hours holiday at 12.07%.", jurisdiction: "🌐 Japan · UK (HR practice)" },
   // 2026-11-22 court fees (world audience gap P4)
   { locale: 'en', languageTag: 'en', ogLocale: 'en_US', slug: "court-fee-calculator-japan-germany", title: "Court fee calculator: Japan (訴訟手数料) and Germany (GKG)", description: "Court fee to file a civil claim from the statutory tables: Japan's 民訴費用法 別表第一 for suits, appeals, 支払督促 and 調停, and Germany's § 34 GKG with the 3.0, 1.0 and Mahnbescheid rates.", jurisdiction: "🌐 Japan · Germany (court fees)" },
+  // 2026-11-22 fresh start (world audience gap A5)
+  { locale: 'zh', languageTag: 'zh-Hant-TW', ogLocale: 'zh_TW', slug: "taiwan-debt-clearance-checker", title: "消債條例更生、清算檢查：能不能更生？先找銀行還是法院？", description: "依法院須知檢查是否為消債條例的消費者（五年內平均月營業額20萬元以下）、債務是否超過1,200萬元更生上限、要不要先向最大債權銀行前置協商，以及聲請費1,000元。", jurisdiction: "🇹🇼 臺灣 · 消費者債務清理條例" },
+  { locale: 'es', languageTag: 'es-ES', ogLocale: 'es_ES', slug: "segunda-oportunidad-plazo-sucesiones", title: "Ley de Segunda Oportunidad: requisitos de buena fe y plazo del Impuesto sobre Sucesiones", description: "Comprueba las causas que impiden exonerar deudas (art. 487 y 488 TRLC tras la Ley 16/2022) y calcula el plazo de 6 meses para presentar Sucesiones desde el fallecimiento.", jurisdiction: "🇪🇸 España · TRLC arts. 487-488 · Modelo 650" },
 ] as const;
 
 export const debtReliefForLocale = (locale: Locale) => debtReliefTools.filter((t) => t.locale === locale);

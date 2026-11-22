@@ -1,0 +1,59 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/tw/TwDebtClearance';
+// TW debt clearance (2026-11-22, world audience gap A5). Engine: lib/world-fresh-start-2026.ts
+const c = {
+  "introTitle": "欠債還不出來，可以用更生還是清算？",
+  "intro": "消費者債務清理條例讓還不出錢的人重新開始：「更生」是依法院認可的計畫分期還款、不必變賣財產；「清算」是變賣財產分配後，由法院決定是否免責。這個工具依法院須知，檢查你是不是條例的「消費者」、能不能選更生，以及第一步該找銀行還是法院。",
+  "formulaTitle": "依據",
+  "formulas": [
+    {
+      "title": "誰可以用",
+      "body": "五年內沒有從事營業活動，或五年內平均每月營業額在20萬元以下的債務人。"
+    },
+    {
+      "title": "更生或清算",
+      "body": "債務超過1,200萬元不能選更生，只能清算。更生方案最長六年、至少每三個月還款一次。清算後須經法院裁定免責，才免除其餘債務。"
+    },
+    {
+      "title": "前置協商",
+      "body": "有銀行、信用合作社的債務時，須先向最大債權銀行申請前置協商（不是向法院）。聲請費1,000元。"
+    }
+  ],
+  "howToTitle": "使用方式",
+  "steps": [
+    "輸入債務總額。",
+    "選擇有沒有銀行債務、五年內有沒有做生意。",
+    "看結果：可以選哪一種程序、第一步找誰。"
+  ],
+  "faqTitle": "常見問題",
+  "faqs": [
+    {
+      "question": "這個工具會幫我聲請嗎？",
+      "answer": "不會，只說明條件與步驟。可以洽法律扶助基金會或法院的訴訟輔導科。"
+    },
+    {
+      "question": "哪些債務不會免除？",
+      "answer": "罰金、罰鍰、怠金、追徵金及法定扶養費用等，更生或清算都不會免除；清算時稅捐等也不免除。"
+    },
+    {
+      "question": "資料會被保存嗎？",
+      "answer": "不會，只留在你的瀏覽器。"
+    }
+  ],
+  "disclaimer": "一般資訊，非法律意見。"
+};
+const sources: [string, string][] = [
+  [
+    "彰化地方法院 — 消費者債務清理條例須知",
+    "https://chd.judicial.gov.tw/tw/dl-56352-fc511316d12d47978bb909c50412d13b.html"
+  ],
+  [
+    "新北地方法院 — 消債Q&A",
+    "https://pcd.judicial.gov.tw/tw/lp-614-161.html"
+  ]
+];
+---
+<DebtReliefPage slug="taiwan-debt-clearance-checker" c={c} sources={sources} sourcesTitle="資料來源" checked="法院須知查證 2026-11-22">
+  <T client:load />
+</DebtReliefPage>

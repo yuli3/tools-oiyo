@@ -3498,6 +3498,40 @@
           "eq": 30000
         }
       ]
+    },
+    {
+      "skill": "oiyo-fresh-start-guide",
+      "id": "fresh-tw-over-cap",
+      "ask": "我欠了1300萬，可以更生嗎？",
+      "run": [
+        {
+          "topic": "tw_debt",
+          "totalDebt": 13000000
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.route",
+          "eq": "liquidation_only"
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-fresh-start-guide",
+      "id": "fresh-es-isd-deadline",
+      "ask": "Mi madre falleció el 31 de agosto de 2026. ¿Hasta cuándo tengo para Sucesiones?",
+      "run": [
+        {
+          "topic": "es_inheritance",
+          "death": "2026-08-31"
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.deadline",
+          "eq": "2027-02-28"
+        }
+      ]
     }
   ],
   "boundaries": {

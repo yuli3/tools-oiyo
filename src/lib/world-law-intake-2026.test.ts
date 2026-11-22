@@ -147,3 +147,11 @@ test("court fee questions route to the court fee tool", () => {
   assert.equal(r.matches[0].audience, "pro");
   assert.equal(intake({ country: "JP", question: "訴額300万円の訴訟の収入印紙はいくらですか" }).matches[0].mcp, "calculate_jp_court_fee");
 });
+
+test("fresh start questions route to the lay debt and inheritance tools", () => {
+  const r = intake({ country: "TW", question: "卡債還不出來，可以申請更生嗎？" });
+  assert.equal(r.matches[0].mcp, "check_tw_debt_clearance");
+  assert.equal(r.matches[0].audience, "person");
+  assert.equal(intake({ country: "ES", question: "¿Puedo acogerme a la ley de segunda oportunidad para cancelar deudas?" }).matches[0].mcp, "check_es_second_chance");
+  assert.equal(intake({ country: "ES", question: "¿Cuál es el plazo del impuesto de sucesiones tras el fallecimiento de mi padre?" }).matches[0].mcp, "get_es_inheritance_deadline");
+});
