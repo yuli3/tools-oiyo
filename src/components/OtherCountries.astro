@@ -1,0 +1,20 @@
+---
+// Same topic in other countries (2026-11-22). Data: src/data/country-topics.ts.
+import { otherCountryLinks, OTHER_COUNTRIES_HEADING, WORLD_GUIDE_LABEL } from '../data/country-topics';
+interface Props { current: string; lang: string }
+const { current, lang } = Astro.props;
+const links = otherCountryLinks(current);
+const heading = OTHER_COUNTRIES_HEADING[lang] ?? OTHER_COUNTRIES_HEADING.en;
+const guide = WORLD_GUIDE_LABEL[lang] ?? WORLD_GUIDE_LABEL.en;
+---
+{links.length > 0 && (
+  <nav class="space-y-2 border-t border-border pt-6" aria-label={heading}>
+    <h2 class="text-lg font-bold">{heading}</h2>
+    <ul class="grid gap-2 sm:grid-cols-2">
+      {links.map((l) => (
+        <li><a href={l.href} hreflang={l.lang} lang={l.lang} class="flex gap-2 rounded-lg border border-border p-3 text-sm text-primary underline-offset-4 hover:underline"><span aria-hidden="true">{l.flag}</span><span class="min-w-0 break-words">{l.title}</span></a></li>
+      ))}
+    </ul>
+    {current !== 'world-law-guide' && <p class="text-sm"><a href="/en/world-law-guide/" class="text-primary underline underline-offset-4">{guide}</a></p>}
+  </nav>
+)}

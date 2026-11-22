@@ -1,0 +1,49 @@
+---
+// 2027 leave-bridge planner (2026-11-22, think tank round 2). Engine: lib/leave-bridge.ts + lib/world-holidays-2027.ts
+import LeaveBridgePage from '../../components/LeaveBridgePage.astro';
+const c = {
+  "introTitle": "Where to put PTO in 2027",
+  "intro": "In 2027 most federal holidays land on Mondays, so they already make three-day weekends. The bigger wins come where an observed holiday is a Friday: Juneteenth is observed Friday, June 18, Christmas is observed Friday, December 24, and New Year’s Day 2028 is observed Friday, December 31, 2027. Four PTO days between them (Dec 27–30) give ten days off in a row. This planner checks every workday of 2027 and shows the longest break for each number of PTO days.",
+  "formulaTitle": "Best 2027 breaks",
+  "formulas": [
+    {
+      "title": "Christmas: 4 PTO → 10 days",
+      "body": "Take Dec 27–30 and you are off Fri Dec 24 to Sun Jan 2, 2028."
+    },
+    {
+      "title": "Thanksgiving: 1 PTO → 4 days",
+      "body": "Take Fri Nov 26, or tick the box if your employer gives it."
+    },
+    {
+      "title": "Monday holidays",
+      "body": "MLK Day, Presidents’ Day, Memorial Day, Labor Day and Columbus Day plus a Friday off make 4-day weekends."
+    }
+  ],
+  "howToTitle": "How to use it",
+  "steps": [
+    "Pick how many PTO days you can use; the longest break appears at once.",
+    "Tap a break in the list to see it on the year strip.",
+    "Add your company’s extra days off, or tick Saturday work, to fit your schedule."
+  ],
+  "faqTitle": "Common questions",
+  "faqs": [
+    {
+      "question": "What are the 2027 federal holidays?",
+      "answer": "Jan 1, Jan 18 (MLK), Feb 15 (Washington’s Birthday), May 31 (Memorial), Jun 18 (Juneteenth observed), Jul 5 (Independence Day observed), Sep 6 (Labor), Oct 11 (Columbus), Nov 11 (Veterans), Nov 25 (Thanksgiving), Dec 24 (Christmas observed) and Dec 31 (New Year 2028 observed)."
+    },
+    {
+      "question": "Does my private employer give all of these?",
+      "answer": "No law requires private employers to give federal holidays. Many give six to eight. Add or remove days to match your company."
+    },
+    {
+      "question": "Why is Dec 31, 2027 a holiday?",
+      "answer": "January 1, 2028 is a Saturday, so the federal holiday is observed on the Friday before."
+    }
+  ],
+  "disclaimer": "Federal holidays under 5 U.S.C. 6103 with weekend observance rules. Your employer’s holiday calendar and PTO policy decide your actual days off."
+};
+---
+<LeaveBridgePage country="us" path="/en/us-pto-planner-2027/" locale="en" languageTag="en-US" ogLocale="en_US"
+  title={"2027 PTO Planner — Turn Federal Holidays into Long Weekends"} description={"Plan 2027 PTO around US federal holidays. See the longest break for 1 to 10 PTO days and the best long weekends: Christmas 2027 gives 10 days off for 4 PTO days."} c={c}
+  sources={[["5 U.S.C. 6103 — Holidays", "https://www.law.cornell.edu/uscode/text/5/6103"], ["OPM federal holidays", "https://www.opm.gov/policy-data-oversight/pay-leave/federal-holidays/"]]} sourcesTitle="Sources"
+  related={[["/ja/yukyu-renkyu-2027/", "2027年 有給で連休カレンダー（日本）"], ["/en/uk-annual-leave-planner-2027/", "2027 annual leave planner (UK)"], ["/fr/ponts-2027/", "Ponts 2027 (France)"], ["/de/brueckentage-2027/", "Brückentage 2027 (Deutschland)"], ["/ko/annual-leave-combo-2027/", "2027 연차 꿀조합 (한국)"], ["/es/puentes-2027/", "Puentes 2027 (Spain)"], ["/zh/pinjia-2027/", "2027 China holiday planner (拼假)"]]} relatedTitle={"2027 leave planners for other countries"} />

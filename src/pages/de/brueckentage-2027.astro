@@ -1,0 +1,49 @@
+---
+// 2027 leave-bridge planner (2026-11-22, think tank round 2). Engine: lib/leave-bridge.ts + lib/world-holidays-2027.ts
+import LeaveBridgePage from '../../components/LeaveBridgePage.astro';
+const c = {
+  "introTitle": "Brückentage 2027",
+  "intro": "Ostern ist 2027 am 28. März, Karfreitag am 26. März, Christi Himmelfahrt am Donnerstag, 6. Mai, Fronleichnam am Donnerstag, 27. Mai. Der 1. Mai fällt auf einen Samstag, der 3. Oktober auf einen Sonntag, Weihnachten auf das Wochenende. Dieser Rechner prüft jeden Werktag 2027 mit den Feiertagen Ihres Bundeslands und zeigt, mit wie vielen Urlaubstagen Sie am längsten frei haben.",
+  "formulaTitle": "Die besten Brücken 2027",
+  "formulas": [
+    {
+      "title": "Ostern: 4 Tage → 10",
+      "body": "Urlaub Di 30.3. bis Fr 2.4.: frei von Karfreitag 26.3. bis So 4.4."
+    },
+    {
+      "title": "Himmelfahrt: 1 Tag → 4",
+      "body": "Brückentag Fr 7.5.: frei Do 6.5. bis So 9.5."
+    },
+    {
+      "title": "Fronleichnam: 1 Tag → 4",
+      "body": "In BW, BY, HE, NW, RP, SL: Brückentag Fr 28.5., frei 27.5. bis 30.5."
+    }
+  ],
+  "howToTitle": "So funktioniert es",
+  "steps": [
+    "Bundesland wählen und die Zahl der Urlaubstage einstellen.",
+    "Eine Brücke in der Liste antippen, um sie im Kalender zu sehen.",
+    "Heiligabend/Silvester, Samstagsarbeit oder Betriebsferien ergänzen."
+  ],
+  "faqTitle": "Häufige Fragen",
+  "faqs": [
+    {
+      "question": "Welche Feiertage gelten 2027 bundesweit?",
+      "answer": "Neujahr, Karfreitag (26.3.), Ostermontag (29.3.), 1. Mai (Samstag), Christi Himmelfahrt (6.5.), Pfingstmontag (17.5.), Tag der Deutschen Einheit (3.10., Sonntag) sowie 25. und 26. Dezember (Wochenende)."
+    },
+    {
+      "question": "Welche Landesfeiertage sind berücksichtigt?",
+      "answer": "Heilige Drei Könige (BW, BY, ST), Frauentag 8.3. (BE, MV), Fronleichnam (BW, BY, HE, NW, RP, SL), Weltkindertag 20.9. (TH), Allerheiligen 1.11. (BW, BY, NW, RP, SL) und Buß- und Bettag 17.11. (SN). Reformationstag und Mariä Himmelfahrt fallen 2027 auf einen Sonntag. Feiertage nur in Teilen eines Landes sind nicht enthalten."
+    },
+    {
+      "question": "Gibt es Ersatz für Feiertage am Wochenende?",
+      "answer": "Nein. In Deutschland werden Feiertage am Wochenende nicht nachgeholt."
+    }
+  ],
+  "disclaimer": "Gesetzliche Feiertage nach den Feiertagsgesetzen der Länder. Regionale Feiertage (z. B. Augsburger Friedensfest) und betriebliche Regelungen bitte selbst ergänzen."
+};
+---
+<LeaveBridgePage country="de" path="/de/brueckentage-2027/" locale="en" languageTag="de-DE" ogLocale="de_DE"
+  title={"Brückentage 2027 — Urlaub clever planen, nach Bundesland"} description={"Brückentage 2027 für alle 16 Bundesländer: Ostern mit 4 Urlaubstagen 10 Tage frei, Himmelfahrt und Fronleichnam mit je 1 Tag 4 Tage. Längste freie Zeit für 1 bis 10 Urlaubstage."} c={c}
+  sources={[["Bundesministerium des Innern — Feiertage", "https://www.bmi.bund.de/DE/themen/verfassung/staatliche-symbole/nationale-feiertage/nationale-feiertage-node.html"]]} sourcesTitle="Quellen"
+  related={[["/ja/yukyu-renkyu-2027/", "2027年 有給で連休カレンダー（日本）"], ["/en/us-pto-planner-2027/", "2027 PTO planner (US)"], ["/en/uk-annual-leave-planner-2027/", "2027 annual leave planner (UK)"], ["/fr/ponts-2027/", "Ponts 2027 (France)"], ["/ko/annual-leave-combo-2027/", "2027 연차 꿀조합 (한국)"], ["/es/puentes-2027/", "Puentes 2027 (España)"]]} relatedTitle={"Urlaubsplaner 2027 für andere Länder"} />

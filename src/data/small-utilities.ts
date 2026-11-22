@@ -1240,5 +1240,295 @@ export const smallUtilities:Record<string,Record<Locale,{meta:{title:string;desc
         "disclaimer": "Los resultados dependen de tus datos. Comprueba las condiciones reales o las normas de tu institución."
       }
     }
+  },
+  "dead-pixel-test": {
+    "ko": {
+      "meta": {
+        "title": "모니터 불량화소 테스트 — 데드픽셀·핫픽셀·빛샘 확인",
+        "description": "화면을 검정·흰색·빨강·초록·파랑·회색으로 가득 채워 불량화소(데드·핫·스턱 픽셀)와 얼룩, 밴딩을 눈으로 찾아요. 새 모니터·노트북·휴대폰 검수용, 설치 없이 바로 써요."
+      },
+      "content": {
+        "introTitle": "모니터 불량화소 테스트란?",
+        "intro": "화면 전체를 한 가지 색으로 채워서, 꺼지거나(데드 픽셀) 계속 켜져 있거나(핫 픽셀) 다른 색으로 굳은(스턱 픽셀) 점을 찾는 도구예요. 새 모니터나 노트북, 중고 기기를 받았을 때 교환 기간 안에 확인하는 데 써요.",
+        "formulaTitle": "무엇을 보나요",
+        "formulas": [
+          {
+            "title": "검정·흰색",
+            "body": "검정에서는 밝은 점, 흰색에서는 검은 점을 찾아요."
+          },
+          {
+            "title": "빨강·초록·파랑",
+            "body": "한 색에서만 다르게 보이는 점은 스턱 픽셀일 가능성이 커요."
+          },
+          {
+            "title": "회색·그라데이션·격자",
+            "body": "얼룩(무라), 계단처럼 끊기는 밴딩, 선명도를 봐요."
+          }
+        ],
+        "howToTitle": "사용 방법",
+        "steps": [
+          "화면을 깨끗이 닦고 밝기를 최대로 올려요.",
+          "\"전체 화면으로 테스트 시작\"을 눌러요.",
+          "화면을 누르거나 → 키로 색을 바꾸며 30cm 거리에서 구석까지 천천히 살펴요.",
+          "점이 보이면 다른 색에서도 같은 자리인지 확인하고 사진을 찍어 둬요."
+        ],
+        "faqTitle": "자주 묻는 질문",
+        "faqs": [
+          {
+            "question": "불량화소가 몇 개부터 교환되나요?",
+            "answer": "제조사와 판매처마다 기준이 달라요. 무결점 정책을 두는 곳도 있고 개수·위치 기준을 두는 곳도 있으니 구매처 보증 정책을 확인하세요."
+          },
+          {
+            "question": "먼지와 불량화소는 어떻게 구분하나요?",
+            "answer": "천으로 닦아서 사라지면 먼지예요. 색을 바꿔도 같은 자리에 남아 있으면 불량화소일 가능성이 커요."
+          },
+          {
+            "question": "휴대폰에서도 되나요?",
+            "answer": "네. 브라우저가 전체 화면을 지원하면 화면 전체로, 아니면 브라우저 창 크기만큼 채워요."
+          }
+        ],
+        "disclaimer": "이 도구는 눈으로 확인하도록 화면을 칠할 뿐 하드웨어를 진단하지 않아요. 교환·수리 판단은 판매처와 제조사 기준을 따르세요."
+      }
+    },
+    "en": {
+      "meta": {
+        "title": "Dead Pixel Test — Check Your Monitor for Dead, Stuck & Hot Pixels",
+        "description": "Fill the screen with black, white, red, green, blue and gray to spot dead, hot and stuck pixels, clouding and banding. For new monitors, laptops and phones, right in the browser."
+      },
+      "content": {
+        "introTitle": "What is the dead pixel test?",
+        "intro": "It fills the whole screen with one color at a time so you can spot pixels that stay dark (dead), stay lit (hot) or are stuck on another color. Use it when a new or used monitor, laptop or phone arrives, while you can still return it.",
+        "formulaTitle": "What to look for",
+        "formulas": [
+          {
+            "title": "Black and white",
+            "body": "Bright dots on black, dark dots on white."
+          },
+          {
+            "title": "Red, green, blue",
+            "body": "A dot that looks wrong on only one color is likely stuck."
+          },
+          {
+            "title": "Gray, gradient, grid",
+            "body": "Clouding (mura), banding and sharpness."
+          }
+        ],
+        "howToTitle": "How to use",
+        "steps": [
+          "Clean the screen and turn brightness up.",
+          "Press \"Start full-screen test\".",
+          "Tap or press → to change colors and scan slowly into the corners from about 30 cm away.",
+          "If you see a dot, check it on other colors and take a photo."
+        ],
+        "faqTitle": "FAQ",
+        "faqs": [
+          {
+            "question": "How many dead pixels qualify for a return?",
+            "answer": "It depends on the maker and the shop. Some have a zero-defect policy, others count pixels by number and position. Check your seller warranty."
+          },
+          {
+            "question": "Dust or dead pixel?",
+            "answer": "Dust wipes off with a cloth. A bad pixel stays in the same place when the color changes."
+          },
+          {
+            "question": "Does it work on phones?",
+            "answer": "Yes. It uses full screen where the browser allows it and fills the browser window otherwise."
+          }
+        ],
+        "disclaimer": "This tool only paints the screen so you can look; it does not diagnose hardware. Follow your seller and manufacturer rules for returns and repairs."
+      }
+    },
+    "ja": {
+      "meta": {
+        "title": "ドット抜けチェック — モニターの滅点・輝点・固定ドットを確認",
+        "description": "画面を黒・白・赤・緑・青・グレーで塗りつぶし、ドット抜け(滅点・輝点・固定ドット)やムラ、バンディングを目で確認します。新品モニター・ノートPC・スマホの検品に、インストール不要。"
+      },
+      "content": {
+        "introTitle": "ドット抜けチェックとは?",
+        "intro": "画面全体を1色ずつ塗りつぶし、消えたままの点(滅点)、光ったままの点(輝点)、別の色で固まった点を探すツールです。新品や中古のモニター・ノートPC・スマホが届いたら、返品期間内に確認しましょう。",
+        "formulaTitle": "見るポイント",
+        "formulas": [
+          {
+            "title": "黒・白",
+            "body": "黒では明るい点、白では黒い点を探します。"
+          },
+          {
+            "title": "赤・緑・青",
+            "body": "1色だけで違って見える点は固定ドットの可能性が高いです。"
+          },
+          {
+            "title": "グレー・グラデーション・格子",
+            "body": "ムラ、バンディング、鮮明さを確認します。"
+          }
+        ],
+        "howToTitle": "使い方",
+        "steps": [
+          "画面をきれいに拭き、明るさを最大にします。",
+          "「全画面でテスト開始」を押します。",
+          "タップか → キーで色を変え、30cmほどの距離から隅までゆっくり見ます。",
+          "点が見えたらほかの色でも同じ場所か確かめ、写真を撮っておきます。"
+        ],
+        "faqTitle": "よくある質問",
+        "faqs": [
+          {
+            "question": "何個から交換になりますか?",
+            "answer": "メーカーや販売店によって基準が違います。購入先の保証規定を確認してください。"
+          },
+          {
+            "question": "ほこりとの見分け方は?",
+            "answer": "布で拭いて消えればほこりです。色を変えても同じ場所に残ればドット抜けの可能性が高いです。"
+          },
+          {
+            "question": "スマホでも使えますか?",
+            "answer": "はい。ブラウザが対応していれば全画面、そうでなければブラウザの表示範囲を塗りつぶします。"
+          }
+        ],
+        "disclaimer": "このツールは目で確認するために画面を塗るだけで、ハードウェアを診断するものではありません。交換・修理の判断は販売店・メーカーの基準に従ってください。"
+      }
+    },
+    "zh": {
+      "meta": {
+        "title": "屏幕坏点测试 — 检查显示器坏点、亮点和卡色点",
+        "description": "用黑、白、红、绿、蓝、灰色填满屏幕，用眼睛找出坏点、亮点、卡色点以及云斑和色带。适合验收新显示器、笔记本和手机，无需安装。"
+      },
+      "content": {
+        "introTitle": "什么是屏幕坏点测试?",
+        "intro": "它一次用一种颜色填满整个屏幕，帮你找出一直不亮的点(坏点)、一直亮着的点(亮点)或停在其他颜色的点。收到新的或二手的显示器、笔记本、手机时，在退换期内检查一下。",
+        "formulaTitle": "看什么",
+        "formulas": [
+          {
+            "title": "黑色与白色",
+            "body": "黑屏找亮点，白屏找黑点。"
+          },
+          {
+            "title": "红绿蓝",
+            "body": "只在一种颜色下异常的点，多半是卡色点。"
+          },
+          {
+            "title": "灰色、渐变、棋盘",
+            "body": "检查云斑、色带断层和清晰度。"
+          }
+        ],
+        "howToTitle": "使用方法",
+        "steps": [
+          "擦干净屏幕并把亮度调到最高。",
+          "点击“全屏开始测试”。",
+          "点击屏幕或按 → 键换色，在约30厘米外慢慢看到四个角。",
+          "发现点后换几种颜色确认位置，并拍照留存。"
+        ],
+        "faqTitle": "常见问题",
+        "faqs": [
+          {
+            "question": "几个坏点可以换货?",
+            "answer": "各厂商和商家标准不同，请查看购买渠道的保修政策。"
+          },
+          {
+            "question": "怎么区分灰尘和坏点?",
+            "answer": "用布擦掉就消失的是灰尘；换颜色后仍在原处的多半是坏点。"
+          },
+          {
+            "question": "手机能用吗?",
+            "answer": "可以。浏览器支持时全屏显示，否则填满浏览器窗口。"
+          }
+        ],
+        "disclaimer": "本工具只是为了肉眼检查而给屏幕上色，不能诊断硬件。退换和维修请以商家和厂商标准为准。"
+      }
+    },
+    "fr": {
+      "meta": {
+        "title": "Test de pixels morts — Vérifier un écran (pixels morts, bloqués, chauds)",
+        "description": "Remplissez l'écran de noir, blanc, rouge, vert, bleu et gris pour repérer pixels morts, chauds et bloqués, taches et effet de bandes. Pour un nouvel écran, portable ou téléphone, sans installation."
+      },
+      "content": {
+        "introTitle": "Qu'est-ce que le test de pixels morts ?",
+        "intro": "Il remplit tout l'écran d'une seule couleur à la fois pour repérer les pixels qui restent éteints (morts), allumés (chauds) ou bloqués sur une autre couleur. À faire dès réception d'un écran, d'un portable ou d'un téléphone, neuf ou d'occasion, pendant le délai de retour.",
+        "formulaTitle": "Que regarder",
+        "formulas": [
+          {
+            "title": "Noir et blanc",
+            "body": "Points brillants sur le noir, points noirs sur le blanc."
+          },
+          {
+            "title": "Rouge, vert, bleu",
+            "body": "Un point anormal sur une seule couleur est probablement bloqué."
+          },
+          {
+            "title": "Gris, dégradé, damier",
+            "body": "Taches (mura), bandes et netteté."
+          }
+        ],
+        "howToTitle": "Mode d’emploi",
+        "steps": [
+          "Nettoyez l'écran et montez la luminosité.",
+          "Appuyez sur « Lancer le test en plein écran ».",
+          "Touchez ou appuyez sur → pour changer de couleur et balayez lentement jusqu’aux coins à 30 cm.",
+          "Si vous voyez un point, vérifiez-le sur d’autres couleurs et prenez une photo."
+        ],
+        "faqTitle": "Questions fréquentes",
+        "faqs": [
+          {
+            "question": "Combien de pixels morts pour un échange ?",
+            "answer": "Cela dépend du fabricant et du vendeur. Consultez la garantie de votre vendeur."
+          },
+          {
+            "question": "Poussière ou pixel mort ?",
+            "answer": "La poussière s'essuie. Un pixel défectueux reste au même endroit quand la couleur change."
+          },
+          {
+            "question": "Ça marche sur téléphone ?",
+            "answer": "Oui. En plein écran si le navigateur le permet, sinon dans la fenêtre du navigateur."
+          }
+        ],
+        "disclaimer": "Cet outil colore seulement l'écran pour un contrôle visuel ; il ne diagnostique pas le matériel. Pour un retour ou une réparation, suivez les règles du vendeur et du fabricant."
+      }
+    },
+    "es": {
+      "meta": {
+        "title": "Test de píxeles muertos — Revisa tu pantalla (muertos, atascados, calientes)",
+        "description": "Llena la pantalla de negro, blanco, rojo, verde, azul y gris para encontrar píxeles muertos, calientes y atascados, manchas y bandas. Para monitores, portátiles y móviles nuevos, sin instalar nada."
+      },
+      "content": {
+        "introTitle": "¿Qué es el test de píxeles muertos?",
+        "intro": "Llena toda la pantalla con un solo color cada vez para encontrar píxeles que siguen apagados (muertos), encendidos (calientes) o atascados en otro color. Úsalo al recibir un monitor, portátil o móvil, nuevo o usado, mientras aún puedas devolverlo.",
+        "formulaTitle": "Qué mirar",
+        "formulas": [
+          {
+            "title": "Negro y blanco",
+            "body": "Puntos brillantes sobre negro, puntos oscuros sobre blanco."
+          },
+          {
+            "title": "Rojo, verde, azul",
+            "body": "Un punto que solo falla en un color probablemente está atascado."
+          },
+          {
+            "title": "Gris, degradado, damero",
+            "body": "Manchas (mura), bandas y nitidez."
+          }
+        ],
+        "howToTitle": "Cómo usarlo",
+        "steps": [
+          "Limpia la pantalla y sube el brillo.",
+          "Pulsa «Empezar la prueba en pantalla completa».",
+          "Toca o pulsa → para cambiar de color y revisa despacio hasta las esquinas a unos 30 cm.",
+          "Si ves un punto, compruébalo con otros colores y haz una foto."
+        ],
+        "faqTitle": "Preguntas frecuentes",
+        "faqs": [
+          {
+            "question": "¿Cuántos píxeles muertos dan derecho a cambio?",
+            "answer": "Depende del fabricante y de la tienda. Revisa la garantía del vendedor."
+          },
+          {
+            "question": "¿Polvo o píxel muerto?",
+            "answer": "El polvo se quita con un paño. Un píxel defectuoso sigue en el mismo sitio al cambiar el color."
+          },
+          {
+            "question": "¿Funciona en el móvil?",
+            "answer": "Sí. Usa pantalla completa si el navegador lo permite y, si no, llena la ventana del navegador."
+          }
+        ],
+        "disclaimer": "Esta herramienta solo colorea la pantalla para revisarla a simple vista; no diagnostica el hardware. Para cambios o reparaciones sigue las normas del vendedor y del fabricante."
+      }
+    }
   }
 };

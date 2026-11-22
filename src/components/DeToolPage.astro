@@ -4,6 +4,7 @@ import ToolShell from './ToolShell.astro';
 import Layout from './Layout.astro';
 import UtilityArticle, { type UtilityContent } from './UtilityArticle.astro';
 import { deTools } from '../data/de-tools';
+import OtherCountries from './OtherCountries.astro';
 interface Props { slug: (typeof deTools)[number]['slug']; c: UtilityContent; sources: [string, string][]; checked: string }
 const { slug, c, sources, checked } = Astro.props;
 const t = deTools.find((x) => x.slug === slug)!;
@@ -22,6 +23,7 @@ const schema = { '@context': 'https://schema.org', '@type': 'WebApplication', na
       <ul class="list-disc space-y-2 pl-5 text-sm">{sources.map(([name, href]) => <li><a href={href} class="text-primary underline underline-offset-4" rel="noopener">{name}</a></li>)}</ul>
       <p class="text-xs text-muted-foreground">{checked}</p>
     </section>
+    <OtherCountries current={`de:${t.slug}`} lang="de" />
     <nav class="space-y-2" aria-label={shell.related}><h2 class="text-lg font-semibold">{shell.related}</h2>{others.map((x) => <a href={`/de/${x.slug}/`} class="block rounded-lg border border-border p-3 text-sm text-primary underline">{x.title}</a>)}</nav>
   </ToolShell>
   <script type="application/ld+json" set:html={JSON.stringify(schema)} />

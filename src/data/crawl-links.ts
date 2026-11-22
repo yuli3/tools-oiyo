@@ -69,6 +69,11 @@ const T = {
   maternity: L("maternity-leave-pay-calculator", "출산전후휴가 급여 계산기"),
   parental: L("parental-leave-calculator", "육아휴직 급여 계산기"),
   reducedHours: L("reduced-hours-childcare-pay-calculator", "육아기 근로시간 단축 급여 계산기"),
+  childHeight: L("child-height-calculator", "아이 예상 키 계산기"),
+  bodyFat: L("body-fat-calculator", "체지방률 계산기"),
+  heightWorld: L("height-world-travel", "내 키 세계여행"),
+  dday: L("dday-counter", "디데이 계산기"),
+  dateCalc: L("date-calculator", "날짜 계산기"),
 };
 
 export const CRAWL_LINKS: Record<string, CrawlLink[]> = {
@@ -93,5 +98,8 @@ export const CRAWL_LINKS: Record<string, CrawlLink[]> = {
   "brokerage-calculator": [T.dividend, T.savingsCmp, T.stockEtf],
   "subscription-points-calculator": [T.specialSupply, T.housingLoan, T.youthRent],
   "insurance-premium-calculator": [T.insBasics, T.disabilityClaim, T.copayCap, T.ltc],
-  "pregnancy-calculator": [T.maternity, T.parental, T.reducedHours],
+  "pregnancy-calculator": [T.maternity, T.parental, T.reducedHours, T.childHeight, T.dday],
+  // 2026-11-22: 옛 ahoxy 인기 페이지(아이 키 3,174 세션·디데이·체지방)의 301 목적지가 "발견됨 - 색인 안 됨"이에요.
+  "bmi-calculator": [T.bodyFat, T.childHeight, T.heightWorld],
+  "world-clock": [T.dday, T.dateCalc],
 };
