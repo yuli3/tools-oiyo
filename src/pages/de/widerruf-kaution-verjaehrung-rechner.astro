@@ -1,0 +1,75 @@
+---
+import DeToolPage from '../../components/DeToolPage.astro';
+import T from '../../components/tools/desg/DeFristen';
+// German everyday law pack (2026-11-22, world audience gap A4). Engine: lib/de-life-law-2026.ts
+const c = {
+  "introTitle": "Bis wann kann ich widerrufen, wie hoch darf die Kaution sein, wann verjährt mein Anspruch?",
+  "intro": "Drei häufige Fragen aus dem Alltag in einem Rechner: die 14-tägige Widerrufsfrist bei Online- und Haustürgeschäften, die Höchstgrenze der Mietkaution und die regelmäßige Verjährung von drei Jahren.",
+  "formulaTitle": "Die verwendeten Regeln",
+  "formulas": [
+    {
+      "title": "Widerruf",
+      "body": "14 Tage; rechtzeitige Absendung genügt. Ware: ab Erhalt; Dienstleistung und Strom/Gas/digitale Inhalte: ab Vertragsschluss. Ohne Information höchstens 12 Monate und 14 Tage (§§ 355, 356 BGB)."
+    },
+    {
+      "title": "Mietkaution",
+      "body": "Höchstens drei Monatsmieten ohne Betriebskosten, zahlbar in drei Raten (§ 551 BGB)."
+    },
+    {
+      "title": "Verjährung",
+      "body": "Drei Jahre ab Ende des Jahres, in dem der Anspruch entstand und Sie davon wussten; ohne Kenntnis spätestens 10 Jahre (§§ 195, 199 BGB)."
+    }
+  ],
+  "howToTitle": "So funktioniert es",
+  "steps": [
+    "Wählen Sie das Thema.",
+    "Geben Sie Datum oder Miete ein.",
+    "Lesen Sie Frist oder Höchstbetrag ab."
+  ],
+  "faqTitle": "Häufige Fragen",
+  "faqs": [
+    {
+      "question": "Gibt es Ausnahmen beim Widerruf?",
+      "answer": "Ja, z. B. für maßgefertigte Waren oder versiegelte Hygieneartikel (§ 312g BGB). Sie werden hier nicht geprüft."
+    },
+    {
+      "question": "Gilt die Verjährung auch für Mängel?",
+      "answer": "Gewährleistung und Mietansprüche haben eigene Fristen, die hier nicht berechnet werden."
+    },
+    {
+      "question": "Werden meine Daten gespeichert?",
+      "answer": "Nein, die Berechnung läuft nur in Ihrem Browser."
+    }
+  ],
+  "disclaimer": "Allgemeine Information, keine Rechtsberatung. Verbraucherzentralen helfen weiter."
+};
+const sources: [string, string][] = [
+  [
+    "§ 355 BGB",
+    "https://www.gesetze-im-internet.de/bgb/__355.html"
+  ],
+  [
+    "§ 356 BGB",
+    "https://www.gesetze-im-internet.de/bgb/__356.html"
+  ],
+  [
+    "§ 357 BGB",
+    "https://www.gesetze-im-internet.de/bgb/__357.html"
+  ],
+  [
+    "§ 551 BGB",
+    "https://www.gesetze-im-internet.de/bgb/__551.html"
+  ],
+  [
+    "§ 195 BGB",
+    "https://www.gesetze-im-internet.de/bgb/__195.html"
+  ],
+  [
+    "§ 199 BGB",
+    "https://www.gesetze-im-internet.de/bgb/__199.html"
+  ]
+];
+---
+<DeToolPage slug="widerruf-kaution-verjaehrung-rechner" c={c} sources={sources} checked="§§ 195, 199, 355-357, 551 BGB am 2026-11-22 geprüft">
+  <T client:load />
+</DeToolPage>

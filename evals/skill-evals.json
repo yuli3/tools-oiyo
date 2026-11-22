@@ -3274,6 +3274,41 @@
           "eq": 20000
         }
       ]
+    },
+    {
+      "skill": "oiyo-de-everyday-law-guide",
+      "id": "de-pfaendung-2026",
+      "ask": "Ich verdiene 2.000 € netto, keine Kinder. Wie viel darf gepfändet werden?",
+      "run": [
+        "pfaendung",
+        {
+          "net": 2000
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.seizable",
+          "eq": 288.82
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-de-everyday-law-guide",
+      "id": "de-erbschaft-kind",
+      "ask": "Ich erbe als Kind 1 Million Euro. Wie viel Erbschaftsteuer?",
+      "run": [
+        "erbschaft",
+        {
+          "value": 1000000,
+          "relation": "child"
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.tax",
+          "eq": 90000
+        }
+      ]
     }
   ],
   "boundaries": {

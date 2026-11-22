@@ -100,3 +100,12 @@ test("home purchase questions route to the layperson home purchase tools", () =>
   assert.equal(intake({ country: "JP", question: "マイホームを買うと不動産取得税と登録免許税はいくら？" }).matches[0].mcp, "calculate_jp_home_purchase_tax");
   assert.equal(intake({ country: "FR", question: "Combien de frais de notaire pour un achat immobilier ?" }).matches[0].mcp, "calculate_fr_home_purchase_tax");
 });
+
+test("German everyday law questions route to the DE life-law tools", () => {
+  assert.equal(intake({ country: "DE", question: "Wie viel Erbschaftsteuer zahle ich als Kind auf 1 Million Erbe?" }).matches[0].mcp, "calculate_de_inheritance_tax");
+  assert.equal(intake({ country: "DE", question: "Wie viel darf bei einer Lohnpfändung gepfändet werden?" }).matches[0].mcp, "calculate_de_garnishment");
+  assert.equal(intake({ country: "DE", question: "Mein Vermieter will 4 Monatsmieten Kaution, darf er das?" }).matches[0].mcp, "check_de_rent_deposit");
+  const w = intake({ country: "DE", question: "Bis wann kann ich den Widerruf für eine online gekaufte Jacke schicken?" });
+  assert.equal(w.matches[0].mcp, "check_de_withdrawal_deadline");
+  assert.equal(w.matches[0].audience, "person");
+});

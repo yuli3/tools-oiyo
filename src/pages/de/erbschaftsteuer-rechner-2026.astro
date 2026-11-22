@@ -1,0 +1,67 @@
+---
+import DeToolPage from '../../components/DeToolPage.astro';
+import T from '../../components/tools/desg/DeErbschaft';
+// German everyday law pack (2026-11-22, world audience gap A4). Engine: lib/de-life-law-2026.ts
+const c = {
+  "introTitle": "Wie viel Erbschaftsteuer fällt an?",
+  "intro": "Geben Sie den Wert Ihres Erwerbs ein und wählen Sie, in welchem Verhältnis Sie zum Erblasser stehen. Der Rechner zieht den persönlichen Freibetrag ab und wendet den Steuersatz Ihrer Steuerklasse an, mit dem Härteausgleich an den Stufengrenzen.",
+  "formulaTitle": "Die verwendeten Regeln",
+  "formulas": [
+    {
+      "title": "Freibeträge (§ 16)",
+      "body": "Ehegatte/Lebenspartner 500.000 €, Kinder 400.000 €, Enkel 200.000 €, übrige Klasse I 100.000 €, Klasse II und III 20.000 €."
+    },
+    {
+      "title": "Steuerklassen (§ 15)",
+      "body": "I: Ehegatte, Kinder, Enkel, Eltern beim Erbfall. II: Geschwister, Nichten, Neffen, Schwiegereltern u. a. III: alle übrigen."
+    },
+    {
+      "title": "Steuersätze (§ 19)",
+      "body": "Bis 75.000 € 7/15/30 %, bis 300.000 € 11/20/30 %, bis 600.000 € 15/25/30 %, bis 6 Mio. € 19/30/30 %, bis 13 Mio. € 23/35/50 %, bis 26 Mio. € 27/40/50 %, darüber 30/43/50 %."
+    },
+    {
+      "title": "Härteausgleich (§ 19 Abs. 3)",
+      "body": "Knapp über einer Stufengrenze wird der Mehrbetrag nur zur Hälfte (bis 30 %) bzw. zu drei Vierteln (über 30 %) belastet."
+    }
+  ],
+  "howToTitle": "So funktioniert es",
+  "steps": [
+    "Wählen Sie, wer erbt.",
+    "Geben Sie den Wert des Erwerbs ein.",
+    "Lesen Sie Freibetrag, Satz und Steuer ab."
+  ],
+  "faqTitle": "Häufige Fragen",
+  "faqs": [
+    {
+      "question": "Gilt das auch für Schenkungen?",
+      "answer": "Die Freibeträge und Sätze gelten auch für Schenkungen, aber Eltern sind bei Schenkungen in Steuerklasse II. Frühere Schenkungen der letzten 10 Jahre werden hier nicht addiert."
+    },
+    {
+      "question": "Was fehlt?",
+      "answer": "Versorgungsfreibetrag, Hausrat, Familienheim und Betriebsvermögen werden nicht berücksichtigt."
+    },
+    {
+      "question": "Werden meine Daten gespeichert?",
+      "answer": "Nein, die Berechnung läuft nur in Ihrem Browser."
+    }
+  ],
+  "disclaimer": "Allgemeine Information, keine Steuerberatung."
+};
+const sources: [string, string][] = [
+  [
+    "§ 15 ErbStG",
+    "https://www.gesetze-im-internet.de/erbstg_1974/__15.html"
+  ],
+  [
+    "§ 16 ErbStG",
+    "https://www.gesetze-im-internet.de/erbstg_1974/__16.html"
+  ],
+  [
+    "§ 19 ErbStG",
+    "https://www.gesetze-im-internet.de/erbstg_1974/__19.html"
+  ]
+];
+---
+<DeToolPage slug="erbschaftsteuer-rechner-2026" c={c} sources={sources} checked="§§ 15, 16, 19 ErbStG auf gesetze-im-internet.de am 2026-11-22 geprüft">
+  <T client:load />
+</DeToolPage>
