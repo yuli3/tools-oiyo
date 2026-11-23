@@ -1,0 +1,27 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import ExpertVisit from '../../components/tools/plan/ExpertVisit';
+// 2026-11-23 CHOSEUN "사람들이 전문가를 찾아가는 니즈". No legal/tax calculation.
+const c = {
+  introTitle: '세무사·노무사·법무사를 찾아가기 전에 무엇을 해 두면 좋을까?',
+  intro: '종합소득세, 부당해고, 상속등기, 영업정지, 전세 계약, 은퇴 준비처럼 사람들이 전문가를 찾아가는 일은 대부분 정해져 있어요. 전문가를 고르거나 하고 싶은 일을 적으면, 먼저 혼자 해 볼 수 있는 계산·확인 도구, 기한이 있는 할 일, 챙겨 갈 서류, 무료 공식 창구를 한 화면에 보여 줘요. 상담 시간과 비용을 줄이는 데 써 보세요.',
+  formulaTitle: '이렇게 정리했어요',
+  formulas: [
+    { title: '전문가 7곳', body: '세무사·공인노무사·공인회계사·법무사·행정사·공인중개사와 재무설계 상담을 다뤄요.' },
+    { title: '자주 찾는 일', body: '각 자격법의 업무 범위와 상담 플랫폼에서 많이 맡기는 일을 모아 정리했어요.' },
+    { title: '무료 창구', body: '국세청 126, 고용노동부 1350, 대한법률구조공단 132처럼 무료로 먼저 물어볼 곳을 함께 적었어요.' },
+  ],
+  howToTitle: '이렇게 써요',
+  steps: ['하고 싶은 일을 적거나 전문가를 골라요.', '도구로 숫자와 기한을 먼저 확인해요.', '챙겨 갈 서류를 체크하고 상담을 예약해요.'],
+  faqTitle: '자주 묻는 질문',
+  faqs: [
+    { question: '여기서 상담이나 대리를 해 주나요?', answer: '아니요. 자격사 사무소가 아니라 상담 전에 사실을 정리하는 무료 도구 모음이에요.' },
+    { question: '변호사에게 가야 하는 일은요?', answer: '소송 대리처럼 변호사만 할 수 있는 일은 전문가마다 따로 적어 뒀어요.' },
+  ],
+  disclaimer: '일반 정보이며 세무·법률·투자 자문이 아니에요. 개별 사안은 무료 공식 창구나 자격사에 확인하세요.',
+};
+const sources: [string, string][] = [['국가법령정보센터', 'https://www.law.go.kr/']];
+---
+<DebtReliefPage slug="before-expert-visit" c={c} sources={sources} sourcesTitle="출처" checked="확인: 2026-11-23">
+  <ExpertVisit client:load />
+</DebtReliefPage>
