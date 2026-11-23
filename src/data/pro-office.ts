@@ -28,7 +28,7 @@ const KR_HELP: Record<RoomId, string[]> = {
 };
 // 사무소에서 만든 보충 도구(상담 실무용). 맨 앞에 보여요.
 const KR_OFFICE_TOOLS: Partial<Record<RoomId, OfficeTool[]>> = {
-  tax: [{ href: "/ko/client-deadline-board/", title: "고객별 신고 마감 보드", who: "pro" }],
+  tax: [{ href: "/ko/client-deadline-board/", title: "고객별 신고 마감 보드", who: "pro" }, { href: "/ko/midyear-leaver-year-end-settlement/", title: "중도퇴사자 연말정산 미리보기", who: "public" }],
 };
 const krTitle = (slug: string) => TOOL_NAMES[slug] ?? lawGuides.find((g) => g.slug === slug)?.title ?? slug;
 function krRoom(id: RoomId): Room {

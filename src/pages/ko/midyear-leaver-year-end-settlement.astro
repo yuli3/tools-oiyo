@@ -1,0 +1,30 @@
+---
+// 중도퇴사자 연말정산 미리보기 (2026-11-23, 실무 오피스 새 계산 3종, 세운 승인). 계산: lib/kr-midyear-leaver-2026.ts
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import MidYearLeaver from "../../components/tools/office/MidYearLeaver";
+
+const title = "중도퇴사자 연말정산 계산기 — 퇴사 때 정산 vs 5월 신고 환급 비교";
+const description = "올해 중간에 퇴사했다면 회사가 퇴사월 급여에서 한 연말정산(본인공제·보험료·표준세액공제)과, 다음 해 5월 종합소득세 신고로 부양가족·카드·의료비·교육비·기부금·월세·연금저축을 더했을 때 환급액을 나란히 계산해요.";
+const shell = {
+  introTitle: "퇴사하면 연말정산은 어떻게 되나요",
+  intro: "회사는 퇴직하는 달 급여를 줄 때 그해 급여로 연말정산을 해요(소득세법 제137조). 이때는 서류를 거의 내지 않아 본인 기본공제와 4대보험료, 표준세액공제만 들어가는 경우가 많아요. 그해 다시 취업하지 않았다면 다음 해 5월 종합소득세 확정신고로 빠진 공제를 넣어 다시 정산할 수 있어요.",
+  howToTitle: "이렇게 써요",
+  steps: ["퇴사할 때 받은 근로소득원천징수영수증에서 총급여, 떼인 소득세, 국민연금, 건강·고용보험료를 옮겨 적어요.", "부양가족 수와 1~12월 카드·의료비·교육비·기부금·월세·연금저축을 넣어요.", "회사 정산 결과와 5월 신고 결과, 더 받는 돈을 비교해요.", "더 받을 돈이 있으면 5월에 홈택스에서 종합소득세를 신고해요."],
+  highlightsTitle: "알아 둘 것",
+  highlights: [
+    { title: "같은 해 재취업", body: "새 회사에 전 직장 근로소득원천징수영수증을 내면 새 회사가 두 회사 급여를 합쳐 연말정산해요. 이 경우 5월 신고는 필요 없어요." },
+    { title: "카드 공제 문턱", body: "카드 공제는 총급여의 25%를 넘게 쓴 부분부터예요. 퇴사로 총급여가 작아지면 문턱도 낮아져요. 카드·의료비는 1~12월 사용액을 넣어요." },
+    { title: "계산 엔진", body: "연말정산 계산기와 같은 엔진(2026 귀속 세율·공제)을 두 번 돌려요. 공제 요건(근로기간 중 지출 여부 등)은 항목마다 달라요." },
+  ],
+  disclaimer: "일반적인 경우의 추정이에요. 보험료·의료비·교육비 세액공제와 주택자금 공제는 근로 기간 중 지출만 인정되는 등 요건이 달라요. 실제 신고는 홈택스나 국세상담센터 126에 확인하세요.",
+};
+const faqs = [
+  { q: "퇴사했는데 회사가 연말정산을 안 했어요.", a: "퇴직하는 달 급여를 줄 때 정산하는 것이 원칙이에요. 근로소득원천징수영수증을 회사에 요청하고, 다음 해 5월 종합소득세 신고 때 함께 정산하면 돼요." },
+  { q: "실업급여도 소득에 들어가나요?", a: "구직급여는 비과세라 총급여에 넣지 않아요." },
+  { q: "신고 기한은 언제예요?", a: "2026년 귀속은 2027년 5월 31일까지 종합소득세 확정신고를 해요. 성실신고확인 대상이 아니면 같아요." },
+];
+---
+<KrFinancePage slug="midyear-leaver-year-end-settlement" locale="ko" title={title} description={description} shell={shell} faqs={faqs} koOnly group="money">
+  <MidYearLeaver client:load />
+  <p class="mt-4 text-sm text-muted-foreground">관련: <a class="underline underline-offset-4" href="/ko/year-end-settlement-calculator/">연말정산 계산기</a> · <a class="underline underline-offset-4" href="/ko/health-insurance-leaver-settlement/">퇴사 건강보험 정산</a> · <a class="underline underline-offset-4" href="/ko/pro-office/#KR/tax">실무 오피스 세무실</a></p>
+</KrFinancePage>
