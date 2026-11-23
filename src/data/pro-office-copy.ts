@@ -1,0 +1,142 @@
+// 전문가 사무소 허브의 화면 문구 (2026-11-23). 계산 없음: 방 이름, 층 이름, 접수 질문(결론을 바꾸는 사실을 먼저 묻는 질문), 결과지 문구.
+// 숫자 자리는 {n} (Astro island props라 함수를 넘길 수 없어요). 접수 질문은 사실을 모으는 질문일 뿐 법적 판단을 하지 않아요.
+import type { FloorId, OfficeLocale, RoomId } from "./pro-office.ts";
+
+export type OfficeCopy = {
+  building: string; lobby: string; lobbySub: string; directory: string; floorWord: string; ticket: string;
+  rooms: Record<RoomId, string>; roomDesc: Record<RoomId, string>; closed: string; enter: string; back: string;
+  public: string; pro: string; both: string; step1: string; step2: string; step3: string; step4: string;
+  help: string; skills: string; skillHint: string; mcp: string; mcpHint: string; noTools: string; pinned: string; pin: string; unpin: string;
+  sheet: string; sheetHint: string; client: string; notes: string; print: string; printed: string; sheetFooter: string;
+  countries: Record<FloorId, string>; intake: Record<RoomId, string[]>; gaps: string; asOf: string;
+};
+
+const C = (x: OfficeCopy) => x;
+export const OFFICE_COPY: Record<OfficeLocale, OfficeCopy> = {
+  ko: C({
+    building: "OIYO 실무 오피스", lobby: "1층 로비 · 안내 데스크", lobbySub: "어느 나라, 어떤 일인지 고르면 그 층의 방으로 안내해요. 실제 자격사 사무소가 아니라, 상담 전에 사실을 정리하고 숫자를 잡아 보는 도구 모음이에요.",
+    directory: "층별 안내", floorWord: "{n}층", ticket: "대기 번호",
+    rooms: { tax: "세무실", labor: "노무실", admin: "행정·생활실", legal: "법무실" },
+    roomDesc: { tax: "신고 기한, 세액, 가산세, 원천징수, 법인세", labor: "임금·퇴직금·해고·휴가·4대보험·산재", admin: "인허가·민원·임대차·소비자·통관", legal: "등기·공탁·소송비용·시효·가사·상속" },
+    closed: "준비 중인 방", enter: "들어가기", back: "로비로",
+    public: "고객(일반인)용", pro: "실무자용", both: "전체",
+    step1: "① 접수: 결론을 바꾸는 사실부터", step2: "② 상담 테이블: 계산·확인 도구", step3: "③ 서가: AI 도구(스킬·MCP)", step4: "④ 상담 결과지",
+    help: "무료 공식 창구", skills: "Claude 스킬", skillHint: "내려받아 Claude에 올리면 같은 공식으로 답해요.", mcp: "MCP 서버", mcpHint: "AI 에이전트에 이 주소를 연결하면 도구를 직접 불러요.",
+    noTools: "아직 이 방에는 도구가 없어요.", pinned: "즐겨찾기", pin: "즐겨찾기", unpin: "빼기",
+    sheet: "상담 결과지", sheetHint: "체크한 접수 항목, 쓴 도구, 메모를 한 장으로 인쇄해요. 입력값은 이 브라우저에만 있어요.", client: "상담 대상(선택)", notes: "메모", print: "결과지 인쇄", printed: "작성일",
+    sheetFooter: "일반 정보 정리용 메모예요. 법률·세무 자문이나 신고 대리가 아니에요. 개별 사안은 자격사나 무료 공식 창구에 확인하세요.",
+    countries: { KR: "한국 본관", JP: "일본", US: "미국", UK: "영국", FR: "프랑스", ES: "스페인", CN: "중국", TW: "대만", DE: "독일", SG: "싱가포르", CA: "캐나다", AU: "호주" },
+    intake: {
+      tax: ["누구의 세금인가요? (개인·개인사업자·법인)", "어느 과세기간·거래일인가요?", "소득·거래 종류와 금액을 서류로 확인했나요?", "신고·납부 기한이 지났나요, 남았나요?", "고지서·안내문을 받았나요? (받은 날짜)"],
+      labor: ["근로자인가요, 사업자(프리랜서)인가요?", "상시 근로자 수는 몇 명인가요?", "입사일·퇴사일(또는 사건 날짜)은요?", "근로계약서·급여명세서가 있나요?", "청구·신청 기한을 세 봤나요?"],
+      admin: ["어느 기관에 내는 일인가요?", "처분·통지를 받은 날짜는요?", "계약서·영수증·등기부 같은 증빙이 있나요?", "상대방(집주인·판매자·기관)과 이미 연락했나요?", "이의·취소·반환 기한이 남았나요?"],
+      legal: ["다툼의 상대방과 금액은요?", "사건이 생긴 날짜와 마지막 청구 날짜는요?", "합의서·차용증·판결문 같은 서류가 있나요?", "소송·조정·지급명령 중 어디까지 진행됐나요?", "상속·가족 관계라면 관계와 사망일은요?"],
+    },
+    gaps: "아직 도구가 없는 역량 {n}개 (제작 예정)", asOf: "기준일",
+  }),
+  en: C({
+    building: "OIYO Practice Office", lobby: "Ground floor · Reception", lobbySub: "Pick a country and a topic and we walk you to the right room. This is not a licensed adviser's office: it is a set of tools to sort the facts and rough out the numbers before you see one.",
+    directory: "Floor directory", floorWord: "Floor {n}", ticket: "Ticket",
+    rooms: { tax: "Tax room", labor: "Employment room", admin: "Housing & consumer room", legal: "Legal room" },
+    roomDesc: { tax: "Deadlines, tax due, penalties, withholding, corporate tax", labor: "Pay, notice, severance, leave, payroll cost", admin: "Renting, deposits, cancelling purchases, buying a home", legal: "Claims, limitation, small claims, court fees, inheritance" },
+    closed: "Room not open yet", enter: "Enter", back: "Back to reception",
+    public: "For clients", pro: "For practitioners", both: "All",
+    step1: "① Intake: the facts that change the answer", step2: "② Consultation table: calculators and checks", step3: "③ Library: AI tools (skills, MCP)", step4: "④ Meeting summary",
+    help: "Free official help", skills: "Claude skills", skillHint: "Download and add to Claude; it answers with the same formulas.", mcp: "MCP server", mcpHint: "Connect an AI agent to this address to call the tools directly.",
+    noTools: "No tools in this room yet.", pinned: "Pinned", pin: "Pin", unpin: "Unpin",
+    sheet: "Meeting summary", sheetHint: "Prints the intake items you ticked, the tools you used and your notes on one page. Everything stays in this browser.", client: "Client (optional)", notes: "Notes", print: "Print summary", printed: "Date",
+    sheetFooter: "General information notes only. Not legal or tax advice, and nothing was filed. For your own case, ask a licensed professional or the free official help listed.",
+    countries: { KR: "Korea", JP: "Japan", US: "United States", UK: "United Kingdom", FR: "France", ES: "Spain", CN: "Mainland China", TW: "Taiwan", DE: "Germany", SG: "Singapore", CA: "Canada", AU: "Australia" },
+    intake: {
+      tax: ["Whose tax is it? (individual, sole trader, company)", "Which tax year or transaction date?", "Are income and amounts backed by documents?", "Has the filing or payment deadline passed?", "Any letter or notice from the tax office? (date received)"],
+      labor: ["Employee or self-employed?", "How many employees does the employer have?", "Start date and end date (or date of the event)?", "Contract and payslips available?", "Have you counted the claim deadline?"],
+      admin: ["Who is the other side? (landlord, seller, agency)", "Date of the contract, purchase or notice?", "Contract, receipts or deposit records available?", "Already contacted the other side?", "Is the cancellation or return deadline still open?"],
+      legal: ["Who owes whom, and how much?", "Date it arose and date of the last demand?", "Any written agreement, IOU or judgment?", "How far has it gone (letter, small claim, court)?", "For an estate: relationship and date of death?"],
+    },
+    gaps: "{n} topics without a tool yet", asOf: "Checked",
+  }),
+  ja: C({
+    building: "OIYO 実務オフィス", lobby: "1階ロビー・受付", lobbySub: "国と相談の種類を選ぶと、その階の部屋へご案内します。士業の事務所ではなく、相談の前に事実を整理し、数字の目安をつかむための道具をまとめた場所です。",
+    directory: "フロア案内", floorWord: "{n}階", ticket: "受付番号",
+    rooms: { tax: "税務の部屋", labor: "労務の部屋", admin: "暮らし・行政の部屋", legal: "法務の部屋" },
+    roomDesc: { tax: "申告期限・税額・加算税・源泉徴収・法人税", labor: "給与・解雇・退職・有休・36協定・社会保険", admin: "賃貸・敷金・クーリング・オフ・住宅購入", legal: "時効・少額訴訟・訴訟費用・相続" },
+    closed: "準備中の部屋", enter: "入る", back: "受付へ戻る",
+    public: "相談者向け", pro: "実務家向け", both: "すべて",
+    step1: "① 受付：結論を変える事実から", step2: "② 相談テーブル：計算・確認ツール", step3: "③ 書架：AIツール（スキル・MCP）", step4: "④ 相談メモ",
+    help: "無料の公的窓口", skills: "Claude スキル", skillHint: "ダウンロードしてClaudeに追加すると、同じ計算式で答えます。", mcp: "MCP サーバー", mcpHint: "AIエージェントにこのアドレスを接続すると、ツールを直接呼び出せます。",
+    noTools: "この部屋にはまだツールがありません。", pinned: "お気に入り", pin: "お気に入り", unpin: "外す",
+    sheet: "相談メモ", sheetHint: "チェックした受付項目、使ったツール、メモを1枚に印刷します。入力内容はこのブラウザの中だけに残ります。", client: "相談者（任意）", notes: "メモ", print: "印刷する", printed: "作成日",
+    sheetFooter: "一般的な情報を整理したメモです。税務・法律相談や申告の代理ではありません。個別の事案は士業または無料の公的窓口にご確認ください。",
+    countries: { KR: "韓国", JP: "日本", US: "アメリカ", UK: "イギリス", FR: "フランス", ES: "スペイン", CN: "中国", TW: "台湾", DE: "ドイツ", SG: "シンガポール", CA: "カナダ", AU: "オーストラリア" },
+    intake: {
+      tax: ["誰の税金ですか？（個人・個人事業主・法人）", "どの年分・取引日ですか？", "収入や金額を書類で確認しましたか？", "申告・納付期限は過ぎていますか？", "税務署から通知は届いていますか？（受け取った日）"],
+      labor: ["労働者ですか、業務委託ですか？", "会社の従業員数は？", "入社日・退職日（または出来事の日）は？", "雇用契約書・給与明細はありますか？", "請求・申請の期限を数えましたか？"],
+      admin: ["相手は誰ですか？（大家・販売業者・役所）", "契約・購入・通知の日付は？", "契約書・領収書・敷金の記録はありますか？", "相手とすでに連絡しましたか？", "解約・返還の期限は残っていますか？"],
+      legal: ["相手と金額は？", "発生した日と最後に請求した日は？", "合意書・借用書・判決はありますか？", "内容証明・少額訴訟・訴訟のどこまで進みましたか？", "相続なら続柄と亡くなった日は？"],
+    },
+    gaps: "ツール未整備の項目 {n}件", asOf: "確認日",
+  }),
+  fr: C({
+    building: "Cabinet pratique OIYO", lobby: "Rez-de-chaussée · Accueil", lobbySub: "Choisissez un pays et un sujet : nous vous conduisons à la bonne salle. Ce n'est pas un cabinet de professionnels réglementés, mais des outils pour trier les faits et estimer les montants avant un rendez-vous.",
+    directory: "Plan des étages", floorWord: "Étage {n}", ticket: "Ticket",
+    rooms: { tax: "Fiscalité", labor: "Travail", admin: "Logement & consommation", legal: "Juridique" },
+    roomDesc: { tax: "Échéances, impôt, majorations, retenue à la source, IS", labor: "Salaire, licenciement, préavis, congés, coût employeur", admin: "Location, dépôt de garantie, rétractation, achat immobilier", legal: "Prescription, injonction de payer, frais de justice, succession" },
+    closed: "Salle en préparation", enter: "Entrer", back: "Retour à l'accueil",
+    public: "Pour les clients", pro: "Pour les professionnels", both: "Tout",
+    step1: "① Accueil : les faits qui changent la réponse", step2: "② Table de rendez-vous : calculs et vérifications", step3: "③ Bibliothèque : outils IA (skills, MCP)", step4: "④ Fiche de rendez-vous",
+    help: "Aide officielle gratuite", skills: "Skills Claude", skillHint: "À télécharger et ajouter à Claude : mêmes formules.", mcp: "Serveur MCP", mcpHint: "Connectez un agent IA à cette adresse pour appeler les outils.",
+    noTools: "Pas encore d'outil dans cette salle.", pinned: "Favoris", pin: "Favori", unpin: "Retirer",
+    sheet: "Fiche de rendez-vous", sheetHint: "Imprime les points cochés, les outils utilisés et vos notes sur une page. Tout reste dans ce navigateur.", client: "Client (facultatif)", notes: "Notes", print: "Imprimer la fiche", printed: "Date",
+    sheetFooter: "Notes d'information générale. Ni conseil juridique ou fiscal, ni démarche effectuée. Pour votre cas, consultez un professionnel ou l'aide officielle gratuite indiquée.",
+    countries: { KR: "Corée", JP: "Japon", US: "États-Unis", UK: "Royaume-Uni", FR: "France", ES: "Espagne", CN: "Chine continentale", TW: "Taïwan", DE: "Allemagne", SG: "Singapour", CA: "Canada", AU: "Australie" },
+    intake: {
+      tax: ["Quel contribuable ? (particulier, micro-entrepreneur, société)", "Quelle année ou date d'opération ?", "Revenus et montants justifiés par des pièces ?", "L'échéance de déclaration ou de paiement est-elle passée ?", "Courrier de l'administration reçu ? (date)"],
+      labor: ["Salarié ou indépendant ?", "Effectif de l'entreprise ?", "Date d'embauche et de fin (ou de l'événement) ?", "Contrat et bulletins de paie disponibles ?", "Délai de contestation déjà compté ?"],
+      admin: ["Qui est l'autre partie ? (bailleur, vendeur, administration)", "Date du bail, de l'achat ou de la notification ?", "Bail, reçus ou état des lieux disponibles ?", "Déjà contacté l'autre partie ?", "Le délai de rétractation ou de restitution court-il encore ?"],
+      legal: ["Qui doit quoi, et combien ?", "Date de naissance de la créance et dernière relance ?", "Écrit, reconnaissance de dette ou jugement ?", "Où en est-on (mise en demeure, injonction, tribunal) ?", "Succession : lien de parenté et date du décès ?"],
+    },
+    gaps: "{n} sujets sans outil pour l'instant", asOf: "Vérifié le",
+  }),
+  es: C({
+    building: "Despacho práctico OIYO", lobby: "Planta baja · Recepción", lobbySub: "Elige un país y un tema y te llevamos a la sala adecuada. No es un despacho de profesionales colegiados: son herramientas para ordenar los hechos y estimar las cifras antes de una consulta.",
+    directory: "Directorio de plantas", floorWord: "Planta {n}", ticket: "Turno",
+    rooms: { tax: "Fiscal", labor: "Laboral", admin: "Vivienda y consumo", legal: "Jurídico" },
+    roomDesc: { tax: "Plazos, cuotas, recargos, retenciones, Impuesto sobre Sociedades", labor: "Salario, despido, preaviso, vacaciones, coste empresa", admin: "Alquiler, fianza, desistimiento, compra de vivienda", legal: "Prescripción, reclamaciones, tasas, segunda oportunidad, sucesiones" },
+    closed: "Sala en preparación", enter: "Entrar", back: "Volver a recepción",
+    public: "Para clientes", pro: "Para profesionales", both: "Todo",
+    step1: "① Recepción: los hechos que cambian la respuesta", step2: "② Mesa de consulta: cálculos y comprobaciones", step3: "③ Biblioteca: herramientas IA (skills, MCP)", step4: "④ Hoja de consulta",
+    help: "Ayuda oficial gratuita", skills: "Skills de Claude", skillHint: "Descárgala y añádela a Claude: responde con las mismas fórmulas.", mcp: "Servidor MCP", mcpHint: "Conecta un agente de IA a esta dirección para usar las herramientas.",
+    noTools: "Aún no hay herramientas en esta sala.", pinned: "Favoritos", pin: "Favorito", unpin: "Quitar",
+    sheet: "Hoja de consulta", sheetHint: "Imprime en una hoja los puntos marcados, las herramientas usadas y tus notas. Todo se queda en este navegador.", client: "Cliente (opcional)", notes: "Notas", print: "Imprimir hoja", printed: "Fecha",
+    sheetFooter: "Notas de información general. No es asesoramiento jurídico ni fiscal y no se ha presentado nada. Para tu caso, consulta a un profesional o la ayuda oficial gratuita indicada.",
+    countries: { KR: "Corea", JP: "Japón", US: "Estados Unidos", UK: "Reino Unido", FR: "Francia", ES: "España", CN: "China continental", TW: "Taiwán", DE: "Alemania", SG: "Singapur", CA: "Canadá", AU: "Australia" },
+    intake: {
+      tax: ["¿De quién es el impuesto? (particular, autónomo, sociedad)", "¿Qué ejercicio o fecha de operación?", "¿Ingresos e importes justificados con documentos?", "¿Ha vencido el plazo de declaración o pago?", "¿Has recibido una notificación de Hacienda? (fecha)"],
+      labor: ["¿Trabajador por cuenta ajena o autónomo?", "¿Cuántos trabajadores tiene la empresa?", "¿Fecha de alta y de baja (o del hecho)?", "¿Contrato y nóminas disponibles?", "¿Has contado el plazo para reclamar?"],
+      admin: ["¿Quién es la otra parte? (arrendador, vendedor, administración)", "¿Fecha del contrato, la compra o la notificación?", "¿Contrato, recibos o justificante de fianza?", "¿Ya has contactado con la otra parte?", "¿Sigue abierto el plazo de desistimiento o devolución?"],
+      legal: ["¿Quién debe qué y cuánto?", "¿Fecha en que nació la deuda y última reclamación?", "¿Hay acuerdo escrito, reconocimiento de deuda o sentencia?", "¿Hasta dónde ha llegado (burofax, monitorio, juzgado)?", "Herencia: ¿parentesco y fecha de fallecimiento?"],
+    },
+    gaps: "{n} temas aún sin herramienta", asOf: "Revisado",
+  }),
+  zh: C({
+    building: "OIYO 实务办公室", lobby: "一楼大厅·前台", lobbySub: "选择国家和事务类型，我们会带你到对应楼层的房间。这里不是持证专业人士的事务所，而是在咨询前整理事实、估算数字的工具合集。",
+    directory: "楼层导览", floorWord: "{n}楼", ticket: "取号",
+    rooms: { tax: "税务室", labor: "劳动室", admin: "生活·行政室", legal: "法务室" },
+    roomDesc: { tax: "申报期限、税额、滞纳金、代扣代缴、企业所得税", labor: "工资、解除合同、经济补偿、年假、社保", admin: "租房押金、七天无理由退货、购房税费", legal: "诉讼时效、小额诉讼、遗产与赠与" },
+    closed: "筹备中的房间", enter: "进入", back: "回到前台",
+    public: "咨询者用", pro: "从业者用", both: "全部",
+    step1: "① 受理：先问会改变结论的事实", step2: "② 咨询桌：计算与核对工具", step3: "③ 书架：AI 工具（技能、MCP）", step4: "④ 咨询记录",
+    help: "免费官方渠道", skills: "Claude 技能", skillHint: "下载后加入 Claude，会用同样的公式回答。", mcp: "MCP 服务器", mcpHint: "把 AI 代理连接到这个地址即可直接调用工具。",
+    noTools: "这个房间还没有工具。", pinned: "收藏", pin: "收藏", unpin: "移除",
+    sheet: "咨询记录", sheetHint: "把勾选的受理事项、用过的工具和备注打印成一页。输入内容只保存在这个浏览器里。", client: "咨询对象（可选）", notes: "备注", print: "打印记录", printed: "日期",
+    sheetFooter: "仅为一般信息整理，不构成法律或税务意见，也未代为申报。具体个案请咨询持证专业人士或上述免费官方渠道。",
+    countries: { KR: "韩国", JP: "日本", US: "美国", UK: "英国", FR: "法国", ES: "西班牙", CN: "中国大陆", TW: "台湾", DE: "德国", SG: "新加坡", CA: "加拿大", AU: "澳大利亚" },
+    intake: {
+      tax: ["是谁的税？（个人、个体工商户、公司）", "哪个纳税年度或交易日期？", "收入和金额有凭证吗？", "申报或缴款期限是否已过？", "收到税务机关的通知了吗？（收到日期）"],
+      labor: ["是劳动者还是自由职业者？", "用人单位有多少员工？", "入职日期和离职日期（或事件日期）？", "有劳动合同和工资条吗？", "算过申请仲裁或请求的期限吗？"],
+      admin: ["对方是谁？（房东、卖家、机关）", "合同、购买或通知的日期？", "有合同、收据或押金凭证吗？", "已经联系过对方了吗？", "退货或退还的期限还在吗？"],
+      legal: ["谁欠谁、金额多少？", "发生日期和最后一次催收日期？", "有书面协议、借条或判决吗？", "进行到哪一步（催告、小额诉讼、起诉）？", "如涉及继承：亲属关系和死亡日期？"],
+    },
+    gaps: "尚无工具的事项 {n} 个", asOf: "核对日期",
+  }),
+};

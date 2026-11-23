@@ -1,0 +1,53 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import ProOffice from '../../components/tools/office/ProOffice';
+import { officeFloors, OFFICE_AS_OF } from '../../data/pro-office';
+import { OFFICE_COPY } from '../../data/pro-office-copy';
+// Practice office hub (2026-11-23). No new calculation: existing tools, MCP tools and Claude skills arranged as floors and rooms.
+const c = {
+  "introTitle": "実務オフィス",
+  "intro": "士業の方とその相談者のための道具を、事務所のように並べました。受付、国ごとのフロア、各フロアに4つの部屋。部屋ごとに、結論を変える受付質問、その国の公的資料にもとづく計算・確認ツール、AIツール、印刷できる相談メモがあります。",
+  "formulaTitle": "各部屋にあるもの",
+  "formulas": [
+    {
+      "title": "受付",
+      "body": "結論を変える5つの質問：誰の・いつの・どの書類・どの期限・どの通知。"
+    },
+    {
+      "title": "ツール",
+      "body": "その国の計算・確認ツール。相談者向け・実務家向けの印と、お気に入り。"
+    },
+    {
+      "title": "相談メモ",
+      "body": "チェックした質問、使ったツール、メモと無料の公的窓口を1枚に印刷。"
+    }
+  ],
+  "howToTitle": "使い方",
+  "steps": [
+    "フロア案内で国を選びます。",
+    "税務・労務・暮らし・法務の部屋に入ります。",
+    "受付質問にチェックし、使うツールを開いてメモに加えます。",
+    "相談メモを印刷して記録に残します。"
+  ],
+  "faqTitle": "よくある質問",
+  "faqs": [
+    {
+      "question": "税理士事務所や法律事務所ですか？",
+      "answer": "いいえ。無料のツールと一般的な情報で、相談・代理・申告はしません。各部屋に無料の公的窓口を載せています。"
+    },
+    {
+      "question": "入力内容は保存されますか？",
+      "answer": "チェック・メモ・相談者名はこのブラウザの中だけで、外部に送りません。"
+    }
+  ],
+  "disclaimer": "一般的な情報です。税務・法律相談ではありません。"
+};
+const sources: [string, string][] = [
+  ["OIYO MCP server (world)", "https://api.oiyo.net/mcp/world"],
+  ["oiyo-skills (GitHub)", "https://github.com/yuli3/oiyo-skills"],
+];
+const floors = officeFloors('ja');
+---
+<DebtReliefPage slug="senmonka-jimusho-tools" c={c} sources={sources} sourcesTitle="出典" checked="ツール一覧 2026-11-23 確認">
+  <ProOffice client:load locale="ja" floors={floors} copy={OFFICE_COPY['ja']} asOf={OFFICE_AS_OF} />
+</DebtReliefPage>

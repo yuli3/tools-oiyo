@@ -1,0 +1,53 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import ProOffice from '../../components/tools/office/ProOffice';
+import { officeFloors, OFFICE_AS_OF } from '../../data/pro-office';
+import { OFFICE_COPY } from '../../data/pro-office-copy';
+// Practice office hub (2026-11-23). No new calculation: existing tools, MCP tools and Claude skills arranged as floors and rooms.
+const c = {
+  "introTitle": "Practice office",
+  "intro": "Tools for advisers and their clients, arranged like an office: reception, one floor per country, four rooms per floor. Each room has the intake questions that change the answer, the calculators and checkers built on that country's official sources, the AI tools and a printable meeting summary.",
+  "formulaTitle": "What is in each room",
+  "formulas": [
+    {
+      "title": "Intake",
+      "body": "Five questions per room that change the answer: who, which period, which documents, which deadline, which notice."
+    },
+    {
+      "title": "Tools",
+      "body": "Calculators and checkers for that country, tagged for clients or for practitioners, with a pin to keep favourites."
+    },
+    {
+      "title": "Meeting summary",
+      "body": "Ticked questions, tools used and notes on one printable page, with the free official help channel."
+    }
+  ],
+  "howToTitle": "How to use it",
+  "steps": [
+    "Pick a floor (country) on the directory board.",
+    "Enter a room: tax, employment, housing and consumer, or legal.",
+    "Tick the intake questions, open the tools you need and tick them for the summary.",
+    "Print the meeting summary for the client file."
+  ],
+  "faqTitle": "FAQ",
+  "faqs": [
+    {
+      "question": "Is this a law or tax firm?",
+      "answer": "No. It is a set of free tools and general information. It does not give advice, represent anyone or file anything. Each room lists the free official help."
+    },
+    {
+      "question": "Is what I type saved?",
+      "answer": "Ticks, notes and the client name stay in this browser and are not sent anywhere. Pins are saved in this browser only."
+    }
+  ],
+  "disclaimer": "General information only, not legal or tax advice."
+};
+const sources: [string, string][] = [
+  ["OIYO MCP server (world)", "https://api.oiyo.net/mcp/world"],
+  ["oiyo-skills (GitHub)", "https://github.com/yuli3/oiyo-skills"],
+];
+const floors = officeFloors('en');
+---
+<DebtReliefPage slug="professional-office-tools" c={c} sources={sources} sourcesTitle="Sources" checked="Tool list checked 2026-11-23">
+  <ProOffice client:load locale="en" floors={floors} copy={OFFICE_COPY['en']} asOf={OFFICE_AS_OF} />
+</DebtReliefPage>

@@ -1,0 +1,30 @@
+---
+// 고객별 신고 마감 보드 (2026-11-23, 실무 오피스 보충 도구). 새 기한 값 없음: biz-checklist taxCalendar를 고객마다 돌려 합쳐요.
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import ClientDeadlineBoard from "../../components/tools/office/ClientDeadlineBoard";
+
+const title = "고객별 신고 마감 보드 — 맡은 고객의 세금·노무 마감을 한 화면에";
+const description = "고객마다 개인·법인, 일반·간이·면세, 직원 여부만 고르면 부가세·종합소득세·법인세·원천세·지급명세서·보수총액신고 마감을 날짜별로 모아 D-day로 보여 줘요. 인쇄와 달력 파일(.ics) 내려받기. 고객 목록은 브라우저에만 저장돼요.";
+const shell = {
+  introTitle: "이번 달 누구 일이 먼저인지",
+  intro: "실무자는 고객마다 다른 마감을 머릿속으로 맞춰요. 이 보드는 고객의 유형만 받아 법정 기한을 날짜별로 모으고, 같은 날 같은 신고를 하는 고객을 한 줄에 묶어요. 법정 기한이 토·일·공휴일이면 다음 영업일로 옮긴 날짜를 보여 줘요.",
+  howToTitle: "이렇게 써요",
+  steps: ["고객 이름(별칭 가능)과 사업자·부가세 유형, 직원 여부를 넣고 추가해요.", "원천세 반기납부나 성실신고확인 대상이면 고객 줄에서 체크해요.", "30·60·90·180일 중 볼 기간을 고르고, 고객 이름을 누르면 그 고객만 보여요.", "인쇄하거나 달력 파일(.ics)을 내려받아 구글·아웃룩 달력에 넣어요(3일 전 알림)."],
+  highlightsTitle: "담은 마감",
+  highlights: [
+    { title: "부가세", body: "일반과세 확정(1·7월)과 예정(법인 4·10월 신고, 개인 고지), 간이과세 1월 신고·7월 예정부과, 면세 개인 2월 사업장현황신고." },
+    { title: "소득세·법인세", body: "개인 5월(성실신고확인 6월) 종합소득세, 11월 중간예납 고지. 12월 결산 법인 3월(성실신고확인 4월) 법인세, 지방소득세, 8월 중간예납." },
+    { title: "직원·프리랜서", body: "매월(또는 반기) 원천세, 간이지급명세서, 2월 말 이자·배당·기타, 3월 10일 근로·퇴직 지급명세서, 3월 15일 보수총액신고." },
+  ],
+  disclaimer: "12월 결산 법인과 일반적인 경우 기준이에요. 업종·특례·연장 승인에 따라 기한이 달라질 수 있어요. 신고는 홈택스나 쓰는 세무 프로그램에서 하고, 개별 기한은 국세상담센터 126에 확인하세요.",
+};
+const faqs = [
+  { q: "고객 정보가 서버로 가나요?", a: "아니요. 목록은 이 브라우저의 저장공간에만 있고 어디에도 보내지 않아요. 다른 기기에서는 다시 넣어야 해요." },
+  { q: "세무 프로그램의 일정 관리를 대신하나요?", a: "아니요. 상담 자리에서 고객과 함께 보거나 주간 회의에서 출력해 보는 보충용이에요. 신고서 작성과 전자신고는 쓰는 프로그램에서 하세요." },
+  { q: "날짜는 어디서 오나요?", a: "부가가치세법·소득세법·법인세법·지방세법·보험료징수법의 법정 기한에 공휴일·대체공휴일을 반영한 날짜예요. 사업자 필수 할 일 체크리스트, 세금 마감 달력 구독과 같은 계산을 써요." },
+];
+---
+<KrFinancePage slug="client-deadline-board" locale="ko" title={title} description={description} shell={shell} faqs={faqs} koOnly group="money">
+  <ClientDeadlineBoard client:load />
+  <p class="mt-4 text-sm text-muted-foreground print:hidden">관련: <a class="underline underline-offset-4" href="/ko/pro-office/#KR/tax">실무 오피스 세무실</a> · <a class="underline underline-offset-4" href="/ko/calendar-subscribe/">세금 마감 달력 구독</a> · <a class="underline underline-offset-4" href="/ko/business-must-do-checklist/">사업자 필수 할 일</a> · <a class="underline underline-offset-4" href="/ko/tax-penalty-calculator/">가산세 계산</a></p>
+</KrFinancePage>
