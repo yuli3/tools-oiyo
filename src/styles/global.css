@@ -17,6 +17,16 @@
   --color-destructive: oklch(0.6 0.22 25);
   --color-destructive-foreground: oklch(0.99 0 0);
   --color-success: oklch(0.6 0.18 145);
+  /* 2026-11-23 실무 오피스(pro-office): 안내판·나무 문·상담 책상 색 */
+  --color-office-board: #1f2328;
+  --color-office-paper: #f3e9d2;
+  --color-office-brass: #d4b483;
+  --color-office-wood: #8a6a43;
+  --color-office-door: #f6efe3;
+  --color-office-door-dark: #2a2219;
+  --color-office-ink: #3b2a17;
+  --color-office-desk: #fffaf0;
+  --color-office-desk-dark: #1f1912;
 }
 
 @layer base {
@@ -50,4 +60,14 @@
 /* 2026-11-22 간단계산기 "글씨 크게": rem 기준 전체를 125%로 키워요(SimpleShell). */
 html.simple-xl {
   font-size: 125%;
+}
+
+/* 2026-11-23 실무 오피스: 인쇄하면 상담 결과지(#office-sheet)만 보여요. */
+@utility no-print {
+  @media print { display: none !important; }
+}
+@media print {
+  body:has(#office-sheet) * { visibility: hidden !important; }
+  body:has(#office-sheet) #office-sheet, body:has(#office-sheet) #office-sheet * { visibility: visible !important; }
+  #office-sheet { position: absolute; inset: 0; padding: 24px; border: none !important; }
 }

@@ -48,35 +48,34 @@ export default function ProOffice({ locale, floors, copy: t, asOf }: Props) {
 
   return (
     <div id="office-top" className="space-y-5 scroll-mt-20">
-      <style>{`@media print { body * { visibility: hidden !important; } #office-sheet, #office-sheet * { visibility: visible !important; } #office-sheet { position: absolute; inset: 0; padding: 24px; border: none !important; } #office-sheet .no-print { display: none !important; } }`}</style>
 
       {/* 건물 입구: 안내판 */}
-      <section aria-label={t.directory} className="overflow-hidden rounded-xl border border-border bg-[#1f2328] text-[#f3e9d2] shadow-sm">
+      <section aria-label={t.directory} className="overflow-hidden rounded-xl border border-border bg-office-board text-office-paper shadow-sm">
         <div className="flex items-center justify-between gap-3 border-b border-white/10 px-4 py-3">
           <p className="font-serif text-lg font-bold tracking-wide">{t.building}</p>
-          <p className="rounded bg-[#f3e9d2] px-2 py-1 font-mono text-sm font-bold text-[#1f2328]" aria-live="polite">{t.ticket} {ticket ?? "—"}</p>
+          <p className="rounded bg-office-paper px-2 py-1 font-mono text-sm font-bold text-office-board" aria-live="polite">{t.ticket} {ticket ?? "—"}</p>
         </div>
         {!board && floor && (
           <button type="button" onClick={() => setBoard(true)} className="flex min-h-12 w-full items-center gap-3 px-4 py-2 text-left text-sm hover:bg-white/5">
-            <span className="w-14 shrink-0 font-mono text-[#d4b483]">{fw(floorNo(floor.id))}</span>
+            <span className="w-14 shrink-0 font-mono text-office-brass">{fw(floorNo(floor.id))}</span>
             <span className="font-semibold">{floor.flag} {t.countries[floor.id]}</span>
-            <span className="ml-auto text-xs text-[#d4b483]">{t.directory} ▾</span>
+            <span className="ml-auto text-xs text-office-brass">{t.directory} ▾</span>
           </button>
         )}
         {board && <ol className="grid gap-px bg-white/10 sm:grid-cols-2">
           {[...floors].reverse().map((f) => (
-            <li key={f.id} className="bg-[#1f2328]">
+            <li key={f.id} className="bg-office-board">
               <button type="button" onClick={() => go(f.id)} aria-current={f.id === floorId ? "true" : undefined}
                 className={`flex min-h-12 w-full items-center gap-3 px-4 py-2 text-left text-sm hover:bg-white/5 ${f.id === floorId ? "bg-white/10" : ""}`}>
-                <span className="w-14 shrink-0 font-mono text-[#d4b483]">{fw(floorNo(f.id))}</span>
+                <span className="w-14 shrink-0 font-mono text-office-brass">{fw(floorNo(f.id))}</span>
                 <span className="whitespace-nowrap font-semibold">{f.flag} {t.countries[f.id]}</span>
-                <span className="ml-auto hidden text-right text-xs text-[#f3e9d2]/70 sm:block">{f.rooms.filter((r) => r.tools.length).map((r) => t.rooms[r.id]).join(" · ")}</span>
+                <span className="ml-auto hidden text-right text-xs text-office-paper/70 sm:block">{f.rooms.filter((r) => r.tools.length).map((r) => t.rooms[r.id]).join(" · ")}</span>
               </button>
             </li>
           ))}
-          <li className="bg-[#1f2328] sm:col-span-2">
+          <li className="bg-office-board sm:col-span-2">
             <button type="button" onClick={() => go(null)} className="flex min-h-12 w-full items-center gap-3 px-4 py-2 text-left text-sm hover:bg-white/5">
-              <span className="w-14 shrink-0 font-mono text-[#d4b483]">{fw(1)}</span>
+              <span className="w-14 shrink-0 font-mono text-office-brass">{fw(1)}</span>
               <span className="font-semibold">🛎️ {t.lobby}</span>
             </button>
           </li>
@@ -118,7 +117,7 @@ export default function ProOffice({ locale, floors, copy: t, asOf }: Props) {
 
       {/* 복도: 방 문 4개 */}
       {floor && !room && (
-        <section aria-label={t.countries[floor.id]} className="rounded-xl border border-border bg-[linear-gradient(180deg,hsl(var(--muted))_0%,transparent_60%)] p-4">
+        <section aria-label={t.countries[floor.id]} className="rounded-xl border border-border bg-linear-to-b from-muted to-transparent p-4">
           <h2 className="text-lg font-bold">{floor.flag} {t.countries[floor.id]} · {fw(floorNo(floor.id))}</h2>
           <ul className="mt-4 grid gap-4 sm:grid-cols-2">
             {floor.rooms.map((r) => {
@@ -126,12 +125,12 @@ export default function ProOffice({ locale, floors, copy: t, asOf }: Props) {
               return (
                 <li key={r.id}>
                   <button type="button" disabled={!open} onClick={() => go(floor.id, r.id)}
-                    className="group flex w-full flex-col rounded-t-[2rem] rounded-b-md border-2 border-[#8a6a43] bg-[#f6efe3] p-4 text-left text-[#3b2a17] shadow-sm transition hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:border-border disabled:bg-muted disabled:text-muted-foreground dark:bg-[#2a2219] dark:text-[#f3e9d2]">
-                    <span className="mx-auto rounded border border-[#8a6a43] bg-[#fffaf0] px-3 py-1 text-sm font-bold dark:bg-[#1f1912]">{ROOM_ICON[r.id]} {t.rooms[r.id]}</span>
+                    className="group flex w-full flex-col rounded-t-3xl rounded-b-md border-2 border-office-wood bg-office-door p-4 text-left text-office-ink shadow-sm transition hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:border-border disabled:bg-muted disabled:text-muted-foreground dark:bg-office-door-dark dark:text-office-paper">
+                    <span className="mx-auto rounded border border-office-wood bg-office-desk px-3 py-1 text-sm font-bold dark:bg-office-desk-dark">{ROOM_ICON[r.id]} {t.rooms[r.id]}</span>
                     <span className="mt-3 text-sm">{t.roomDesc[r.id]}</span>
                     <span className="mt-3 flex items-center justify-between text-xs">
                       <span>{open ? `${r.tools.length} tools · ${r.skills.length} skills` : t.closed}</span>
-                      {open && <span className="rounded-full bg-[#8a6a43] px-3 py-1 font-semibold text-white">{t.enter} →</span>}
+                      {open && <span className="rounded-full bg-office-wood px-3 py-1 font-semibold text-white">{t.enter} →</span>}
                     </span>
                   </button>
                 </li>
@@ -144,11 +143,11 @@ export default function ProOffice({ locale, floors, copy: t, asOf }: Props) {
       {/* 방 안: 상담 테이블 */}
       {floor && room && (
         <section className="space-y-4">
-          <div className="flex flex-wrap items-center justify-between gap-2 rounded-xl border-2 border-[#8a6a43] bg-[#f6efe3] px-4 py-3 text-[#3b2a17] dark:bg-[#2a2219] dark:text-[#f3e9d2]">
+          <div className="flex flex-wrap items-center justify-between gap-2 rounded-xl border-2 border-office-wood bg-office-door px-4 py-3 text-office-ink dark:bg-office-door-dark dark:text-office-paper">
             <h2 className="text-lg font-bold">{ROOM_ICON[room.id]} {floor.flag} {t.countries[floor.id]} · {t.rooms[room.id]}</h2>
-            <div role="group" aria-label={t.both} className="flex rounded-full border border-[#8a6a43] p-0.5 text-sm">
+            <div role="group" aria-label={t.both} className="flex rounded-full border border-office-wood p-0.5 text-sm">
               {(["all", "public", "pro"] as Who[]).map((w) => (
-                <button key={w} type="button" aria-pressed={who === w} onClick={() => setWho(w)} className={`min-h-9 rounded-full px-3 ${who === w ? "bg-[#8a6a43] text-white" : ""}`}>{w === "all" ? t.both : t[w]}</button>
+                <button key={w} type="button" aria-pressed={who === w} onClick={() => setWho(w)} className={`min-h-9 rounded-full px-3 ${who === w ? "bg-office-wood text-white" : ""}`}>{w === "all" ? t.both : t[w]}</button>
               ))}
             </div>
           </div>
@@ -172,7 +171,7 @@ export default function ProOffice({ locale, floors, copy: t, asOf }: Props) {
                     <li key={x.href} className="flex items-center gap-2 text-sm">
                       <input type="checkbox" aria-label={`${t.sheet}: ${x.title}`} className="h-5 w-5 shrink-0" checked={!!used[x.href]} onChange={(e) => setUsed({ ...used, [x.href]: e.target.checked })} />
                       <a href={x.href} className="min-h-11 flex-1 py-2 underline-offset-4 hover:underline">{x.title}</a>
-                      <span className={`shrink-0 rounded px-1.5 py-0.5 text-[11px] ${x.who === "pro" ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"}`}>{x.who === "pro" ? t.pro : t.public}</span>
+                      <span className={`shrink-0 rounded px-1.5 py-0.5 text-xs ${x.who === "pro" ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"}`}>{x.who === "pro" ? t.pro : t.public}</span>
                       <button type="button" onClick={() => togglePin(x.href)} aria-label={pins.includes(x.href) ? t.unpin : t.pin} className="min-h-11 min-w-11 shrink-0 text-lg">{pins.includes(x.href) ? "★" : "☆"}</button>
                     </li>
                   ))}
@@ -189,7 +188,7 @@ export default function ProOffice({ locale, floors, copy: t, asOf }: Props) {
               </>)}
               <p className="mt-3 text-xs text-muted-foreground">{t.mcp} · {t.mcpHint}</p>
               <code className="mt-1 block break-all rounded bg-muted px-2 py-1 text-xs">{floor.mcp}</code>
-              {room.tools.some((x) => x.mcp) && <p className="mt-2 break-words font-mono text-[11px] leading-5 text-muted-foreground">{room.tools.filter((x) => x.mcp).map((x) => x.mcp).join(", ")}</p>}
+              {room.tools.some((x) => x.mcp) && <p className="mt-2 break-words font-mono text-xs leading-5 text-muted-foreground">{room.tools.filter((x) => x.mcp).map((x) => x.mcp).join(", ")}</p>}
             </div>
 
             <div id="office-sheet" className="rounded-xl border border-border bg-background p-4">
