@@ -5,6 +5,7 @@ import { us401kLimit, usIraLimit, rothIraLimit, tradVsRoth, ukPensionRelief, COU
 import { socialSecurityTable, pmiDates, ukStudentLoan, nisaPlan, COUNTRY_FINANCE_2_VERIFIED_ON } from "./country-finance-2.mjs";
 import { lisaPlan, cpfRefund } from "./country-finance-3.mjs";
 import { caStressTest, cnComboLoan, jpHousingLoanCredit, COUNTRY_FINANCE_5_AS_OF } from "./country-finance-5.mjs";
+import { krNpsEarlyDefer, twLaborPensionVoluntary, deRiester, deBasisrente, auSuper, KR_NPS } from "./plan-gap-4-2026.mjs";
 import { jpIdecoMonthlyLimit, japanIdecoSaving, chinaPensionSaving, francePerSaving, frPerCeilingSalarie, spainPensionLimit, PENSION_AS_OF } from "./pension-countries.mjs";
 
 const S = (v) => (v === undefined || v === null ? "" : String(v));
@@ -24,6 +25,11 @@ export const EXAMPLES = {
   "fr-per": { revenusPro2025: 45000, revenu: 45000, couple: false, children: 0, versement: 5000, plafond: 0 },
   "es-pension": { individual: 1500, employer: 1000, workerEmployment: 2000, workIncomeOver60k: false, autonomo: 0, netIncome: 40000 },
   "sg-cpf-refund": { upfront: 50000, monthly: 1500, months: 120, rate: 2.5, price: 600000, loan: 400000 },
+  "kr-nps-early-defer": { birthYear: 1966, monthly: 1000000, mode: "early", earlyYears: 3, deferMonths: 12, deferSharePct: 100, untilAge: 85 },
+  "tw-labor-pension-voluntary": { monthlyWage: 50000, voluntaryPct: 6, marginalRatePct: 12 },
+  "de-riester": { vorjahresEinnahmen: 40000, eigenbeitrag: 1125, kinderVor2008: 0, kinderAb2008: 1, berufseinsteiger: false, grenzsteuersatzPct: 30 },
+  "de-basisrente": { jahr: 2025, beitrag: 5000, grvBeitraegeGesamt: 7440, zusammen: false, grenzsteuersatzPct: 30 },
+  "au-super": { year: "2025-26", salary: 120000, salarySacrifice: 10000, personalDeductible: 0, unusedCarryForward: 0, tsbUnder500k: true, div293Income: 120000, nonConcessional: 0, marginalRatePct: 32 },
   "ca-stress-test": { grossAnnualIncome: 120000, contractRatePct: 4.5, amortizationYears: 25, propertyTaxMonthly: 350, heatingMonthly: 100, condoFeesMonthly: 0, otherDebtMonthly: 500 },
 };
 const ASOF = { us: COUNTRY_PENSION_4_AS_OF, f2: COUNTRY_FINANCE_2_VERIFIED_ON, f5: COUNTRY_FINANCE_5_AS_OF, p: PENSION_AS_OF };
@@ -50,6 +56,11 @@ export function run(tool, input) {
     case "es-pension": return { asOf: ASOF.p, ...spainPensionLimit(x) };
     case "sg-cpf-refund": return { asOf: ASOF.f2, result: cpfRefund(S(x.upfront), S(x.monthly), S(x.months), S(x.rate), S(x.price), S(x.loan)) };
     case "ca-stress-test": return { asOf: ASOF.f5, ...caStressTest(x) };
+    case "kr-nps-early-defer": return { asOf: KR_NPS.asOf, ...krNpsEarlyDefer(x) };
+    case "tw-labor-pension-voluntary": return { asOf: KR_NPS.asOf, ...twLaborPensionVoluntary(x) };
+    case "de-riester": return { asOf: KR_NPS.asOf, ...deRiester(x) };
+    case "de-basisrente": return { asOf: KR_NPS.asOf, ...deBasisrente(x) };
+    case "au-super": return { asOf: KR_NPS.asOf, ...auSuper(x) };
     default: return null;
   }
 }

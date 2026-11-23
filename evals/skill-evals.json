@@ -3687,6 +3687,66 @@
           "eq": 4710
         }
       ]
+    },
+    {
+      "skill": "oiyo-financial-planning-guide",
+      "id": "plan-kr-nps-early",
+      "ask": "1966년생인데 국민연금을 3년 일찍 받으면 월 100만 원이 얼마가 돼요?",
+      "run": [
+        "kr-nps-early-defer",
+        {}
+      ],
+      "expect": [
+        {
+          "path": "result.monthly",
+          "eq": 820000
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-financial-planning-guide",
+      "id": "plan-tw-voluntary",
+      "ask": "月提繳工資5萬，自提6%一年多少？",
+      "run": [
+        "tw-labor-pension-voluntary",
+        {}
+      ],
+      "expect": [
+        {
+          "path": "result.annualVoluntary",
+          "eq": 36000
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-financial-planning-guide",
+      "id": "plan-de-riester",
+      "ask": "40.000 € Vorjahr, ein Kind ab 2008: wie hoch ist mein Riester-Mindesteigenbeitrag?",
+      "run": [
+        "de-riester",
+        {}
+      ],
+      "expect": [
+        {
+          "path": "result.mindesteigenbeitrag",
+          "eq": 1125
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-financial-planning-guide",
+      "id": "plan-au-super",
+      "ask": "I earn $120,000 and salary sacrifice $10,000. How much concessional cap is left in 2025-26?",
+      "run": [
+        "au-super",
+        {}
+      ],
+      "expect": [
+        {
+          "path": "result.roomLeft",
+          "eq": 5600
+        }
+      ]
     }
   ],
   "boundaries": {

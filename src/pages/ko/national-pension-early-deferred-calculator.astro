@@ -1,0 +1,32 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/plan/KrNpsEarlyDefer';
+// Financial planning room gap (2026-11-23). Engine: lib/plan-gap-4-2026.ts. Facts: notes/plan-gap-4-facts-2026-11-23.md
+const c = {
+  introTitle: '국민연금, 일찍 받을까 늦춰 받을까?',
+  intro: '노령연금은 출생연도에 따라 61~65세부터 받아요. 가입기간이 10년 이상이고 소득이 있는 업무를 하지 않으면 최대 5년 일찍 받을 수 있고(조기노령연금), 반대로 최대 5년 늦춰 더 많이 받을 수도 있어요(연기연금). 일찍 받으면 1년에 6%씩 줄고, 늦추면 한 달에 0.6%씩 늘어요. 이 계산기는 월액, 정한 나이까지의 합계, 합계가 역전되는 나이를 나란히 보여 줘요.',
+  formulaTitle: '계산에 쓰는 규칙',
+  formulas: [
+    { title: '수령 나이', body: '1953~56년생 61세(조기 56세), 1957~60년생 62세(57세), 1961~64년생 63세(58세), 1965~68년생 64세(59세), 1969년생 이후 65세(60세).' },
+    { title: '조기노령연금', body: '1년 일찍 94%, 2년 88%, 3년 82%, 4년 76%, 5년 70%. 공단 안내 표 기준이며 연 단위로만 계산해요.' },
+    { title: '연기연금', body: '늦춘 한 달마다 0.6%(1년 7.2%)를 단리로 더해요. 전부 또는 50·60·70·80·90%만 늦출 수 있고, 늦추지 않은 몫은 제때 받아요.' },
+    { title: '합계와 역전 나이', body: '물가 인상은 빼고 명목 금액으로 월별 누적 합계를 비교해요.' },
+  ],
+  howToTitle: '이렇게 써요',
+  steps: ['출생연도와 정상 수령 나이의 월 예상 연금액(부양가족연금 제외)을 넣어요.', '일찍 받기 또는 늦춰 받기를 고르고 기간을 정해요.', '월액, 합계, 역전 나이를 비교해요.'],
+  faqTitle: '자주 묻는 질문',
+  faqs: [
+    { question: '월 예상 연금액은 어디서 보나요?', answer: '국민연금공단 누리집의 「내 연금 알아보기」나 고객센터 1355에서 확인할 수 있어요.' },
+    { question: '조기 수령 중에 일하면 어떻게 되나요?', answer: '소득이 그해 A값(2026년 3,193,511원)을 넘는 업무를 하면 그 기간 동안 지급이 정지돼요.' },
+    { question: '세금이나 건강보험료도 반영되나요?', answer: '아니요. 연금이 늘면 소득세, 건강보험료, 기초연금에 영향을 줄 수 있어 공단 안내를 함께 확인하세요.' },
+  ],
+  disclaimer: '일반 정보이며 수령 시기 결정을 대신하지 않아요. 실제 금액은 국민연금공단 결정에 따라요.',
+};
+const sources: [string, string][] = [
+  ['국민연금공단 노령연금 안내', 'https://www.nps.or.kr/pnsinfo/ntpsklg/getOHAF0056M0.do'],
+  ['국민연금공단 급여 안내', 'https://www.nps.or.kr/pnsinfo/ntpsklg/getOHAF0048M0.do'],
+];
+---
+<DebtReliefPage slug="national-pension-early-deferred-calculator" c={c} sources={sources} sourcesTitle="출처" checked="공식 안내 확인: 2026-11-23">
+  <T client:load />
+</DebtReliefPage>

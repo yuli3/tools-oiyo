@@ -1,0 +1,29 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/plan/TwLaborPensionVoluntary';
+// Financial planning room gap (2026-11-23). Engine: lib/plan-gap-4-2026.ts
+const c = {
+  introTitle: '勞退自提6%划算嗎？',
+  intro: '適用勞基法的勞工，雇主每月至少要為你提繳工資6%到勞退個人專戶。你也可以在每月工資6%範圍內自願提繳，自提的金額不計入當年薪資所得課稅。本頁試算每年自提多少、大約少繳多少綜所稅，以及扣掉節稅後的實際負擔。',
+  formulaTitle: '計算方式',
+  formulas: [
+    { title: '自提金額', body: '月提繳工資 × 自提率（0～6%）× 12。' },
+    { title: '節稅', body: '自提金額 × 你的綜所稅邊際稅率（5%、12%、20%、30%、40%）。跨級距時實際節稅較少。' },
+    { title: '雇主提繳', body: '月提繳工資 × 6% × 12（法定最低）。' },
+  ],
+  howToTitle: '使用方式',
+  steps: ['輸入勞保局通知的月提繳工資。', '選擇自提率與你的邊際稅率。', '看每年自提金額、節稅與實際負擔。'],
+  faqTitle: '常見問題',
+  faqs: [
+    { question: '自提的錢什麼時候能領？', answer: '年滿60歲才能請領；工作年資滿15年可選月退休金或一次退休金，未滿15年請領一次退休金。' },
+    { question: '收益有保障嗎？', answer: '勞退基金運用收益不得低於當地銀行二年定期存款利率，不足由國庫補足。' },
+  ],
+  disclaimer: '一般資訊，不構成投資或稅務建議。',
+};
+const sources: [string, string][] = [
+  ['勞工退休金條例第14、23、24條（臺北市法規查詢系統）', 'https://laws.gov.taipei/Law/LawSearch/LawArticleContent/FL030634'],
+];
+---
+<DebtReliefPage slug="taiwan-labor-pension-voluntary-contribution" c={c} sources={sources} sourcesTitle="資料來源" checked="條文確認：2026-11-23">
+  <T client:load />
+</DebtReliefPage>
