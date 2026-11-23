@@ -1,17 +1,24 @@
 @import "tailwindcss";
 
 @theme {
-  --color-background: oklch(0.99 0 0);
-  --color-foreground: oklch(0.15 0.01 260);
-  --color-card: oklch(1 0 0);
-  --color-card-foreground: oklch(0.15 0.01 260);
-  --color-primary: oklch(0.51 0.16 145);
-  --color-primary-foreground: oklch(0.99 0 0);
-  --color-muted: oklch(0.96 0.005 260);
-  --color-muted-foreground: oklch(0.45 0.01 260);
-  --color-border: oklch(0.91 0.005 260);
-  --color-input: oklch(0.91 0.005 260);
-  --color-ring: oklch(0.55 0.17 145);
+  /* 2026-11-24 패밀리 테마 A안(세운 선택): 지면·글자·카드·경계는 패밀리 공통 녹색 지면
+     (원본 ~/coding/shared/tokens/oiyo-light.css)을 그대로 쓰고, 사이트 색 하나만 다르다.
+     tools 의 사이트 색은 청록(185°) — 지면 위 대비 5.65:1, 그 위 밝은 글자 6.27:1.
+     muted-foreground 는 원본(0.520)보다 어두운 0.47 — bg-muted 위 작은 글자도 AA 를 지키려고. */
+  --color-background: oklch(0.951 0.011 123.5);
+  --color-foreground: oklch(0.207 0.020 138.8);
+  --color-card: oklch(0.985 0.007 124.4);
+  --color-card-foreground: oklch(0.207 0.020 138.8);
+  --color-primary: oklch(0.47 0.085 185);
+  --color-primary-strong: oklch(0.41 0.085 185);
+  --color-primary-foreground: oklch(0.986 0.022 118);
+  --color-muted: oklch(0.926 0.020 125.8);
+  --color-muted-foreground: oklch(0.47 0.028 132.3);
+  --color-accent: oklch(0.915 0.038 125.2);
+  --color-surface-subtle: oklch(0.966 0.020 125.0);
+  --color-border: oklch(0.857 0.030 126.0);
+  --color-input: oklch(0.857 0.030 126.0);
+  --color-ring: oklch(0.60 0.07 185);
   --color-warning: oklch(0.7 0.16 75);
   --color-warning-foreground: oklch(0.2 0.05 75);
   --color-destructive: oklch(0.6 0.22 25);

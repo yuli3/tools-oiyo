@@ -539,7 +539,7 @@ ${preview
 
   const inputCls = "w-full rounded-lg border border-input px-3 py-2 text-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring";
   const buttonCls = "rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white transition hover:bg-primary/90";
-  const secondaryButtonCls = "rounded-lg border border-input bg-white px-3 py-2 text-sm font-semibold text-muted-foreground transition hover:bg-card disabled:opacity-50";
+  const secondaryButtonCls = "rounded-lg border border-input bg-card px-3 py-2 text-sm font-semibold text-muted-foreground transition hover:bg-card disabled:opacity-50";
 
   return (
     <ToolPanel title={t.title} subtitle={t.subtitle}>
