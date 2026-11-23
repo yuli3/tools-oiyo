@@ -1,0 +1,27 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import DemandLetter from '../../components/tools/plan/DemandLetter';
+// 2026-11-23 CHOSEUN "사람들이 전문가를 찾아가는 니즈". No legal/tax calculation.
+const c = {
+  introTitle: '내용증명, 무엇을 어떻게 적어야 할까?',
+  intro: '빌려준 돈, 전세·월세 보증금, 밀린 임금, 물품·용역 대금을 받지 못했거나 임대차를 갱신하지 않겠다고 알릴 때 내용증명을 많이 보내요. 상황을 고르고 이름·금액·날짜를 넣으면 독촉·통지 문안의 뼈대를 만들어 주고, 보내는 방법과 주의할 점을 함께 알려 줘요.',
+  formulaTitle: '이렇게 정리했어요',
+  formulas: [
+    { title: '문안 5종', body: '대여금, 보증금, 임금·퇴직금, 물품·용역 대금, 임대차 갱신 거절 통지.' },
+    { title: '사실만', body: '넣은 사실로만 문안을 만들고, 위협하거나 사실이 아닌 말은 쓰지 않아요.' },
+    { title: '그다음 절차', body: '지급명령·임차권등기명령·고용노동부 진정 같은 다음 단계를 함께 안내해요.' },
+  ],
+  howToTitle: '이렇게 써요',
+  steps: ['상황을 골라요.', '이름·금액·날짜를 넣어요.', '문안을 복사해 고친 뒤, 3부를 우체국 내용증명으로 보내요.'],
+  faqTitle: '자주 묻는 질문',
+  faqs: [
+    { question: '내용증명만 보내면 시효가 멈추나요?', answer: '보낸 뒤 6개월 안에 지급명령·소송 등을 해야 시효 중단 효과가 이어져요(민법 제174조).' },
+    { question: '입력한 내용이 저장되나요?', answer: '아니요. 문안은 이 브라우저 안에서만 만들어져요.' },
+  ],
+  disclaimer: '일반 정보이며 세무·법률·투자 자문이 아니에요. 개별 사안은 무료 공식 창구나 자격사에 확인하세요.',
+};
+const sources: [string, string][] = [['국가법령정보센터', 'https://www.law.go.kr/']];
+---
+<DebtReliefPage slug="demand-letter-builder" c={c} sources={sources} sourcesTitle="출처" checked="확인: 2026-11-23">
+  <DemandLetter client:load />
+</DebtReliefPage>
