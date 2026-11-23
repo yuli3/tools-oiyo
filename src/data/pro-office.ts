@@ -26,6 +26,10 @@ const KR_HELP: Record<RoomId, string[]> = {
   admin: ["정부민원안내콜센터 110", "정부24 민원"],
   legal: ["대한법률구조공단 132", "법원 전자소송·인터넷등기소"],
 };
+// 사무소에서 만든 보충 도구(상담 실무용). 맨 앞에 보여요.
+const KR_OFFICE_TOOLS: Partial<Record<RoomId, OfficeTool[]>> = {
+  tax: [{ href: "/ko/client-deadline-board/", title: "고객별 신고 마감 보드", who: "pro" }],
+};
 const krTitle = (slug: string) => TOOL_NAMES[slug] ?? lawGuides.find((g) => g.slug === slug)?.title ?? slug;
 function krRoom(id: RoomId): Room {
   const list = COMPETENCIES.filter((c) => KR_JOBS[id].includes(c.job));
@@ -37,7 +41,9 @@ function krRoom(id: RoomId): Room {
     else if (who === "public") prev.who = "public";
   }
   const skills = [...new Set(list.flatMap((c) => c.skills))].filter((s) => SKILLS[s]).map((s) => ({ id: s, zip: SKILLS[s].zip }));
-  return { id, tools: [...seen.values()], skills, help: KR_HELP[id], gaps: list.filter(isGap).length };
+  const own = KR_OFFICE_TOOLS[id] ?? [];
+  const tools = [...own, ...[...seen.values()].filter((t) => !own.some((o) => o.href === t.href))];
+  return { id, tools, skills, help: KR_HELP[id], gaps: list.filter(isGap).length };
 }
 
 // ── 해외 층: 분야(area) → 방 ──
