@@ -1,6 +1,6 @@
 ---
 name: oiyo-kr-life-desk
-description: Use when someone in Korea asks what to do for their job (유튜버·크리에이터, 배달 라이더·플랫폼 노동자, 카페·음식점 사장, 온라인 쇼핑몰, 프리랜서 개발자) or a life event (결혼, 출산, 이사·전월세, 이직·퇴사, 은퇴, 가족 사망). Lists the steps with legal deadlines, the tools.oiyo.net calculators to run and the free official help. No calculation.
+description: Use when someone in Korea asks what to do for their job (유튜버·크리에이터, 배달 라이더·플랫폼 노동자, 카페·음식점 사장, 온라인 쇼핑몰, 프리랜서 개발자, 학원·과외 강사, 집주인) or a life event (결혼, 출산, 이사·전월세, 집 사기, 교통사고, 이직·퇴사, 은퇴, 가족 사망). Lists the steps with legal deadlines, the tools.oiyo.net calculators to run and the free official help. No calculation.
 ---
 
 # 직업별 창구·인생 사건 내비 (OIYO)
@@ -17,8 +17,8 @@ description: Use when someone in Korea asks what to do for their job (유튜버�
 
 1. 하는 일이나 일어난 일을 물어요. 여러 개면 모두 열어요.
 2. `node scripts/desk.mjs find '<질문>'` 로 창구를 찾고, `node scripts/desk.mjs show <id>` 로 할 일·기한·도구·창구를 받아요. `node scripts/desk.mjs list` 는 전체 목록이에요.
-   - 직업: creator, rider, cafe, shop, dev
-   - 인생 사건: marriage, birth, move, quit, retire, death
+   - 직업: creator, rider, cafe, shop, dev, tutor, landlord
+   - 인생 사건: marriage, birth, move, homebuy, accident, quit, retire, death
 3. 시간 순서로 답하고, 기한에는 근거 조문을 붙여요. 금액이 궁금하면 `tools`의 링크를 알려 줘요.
 
 ## 출처

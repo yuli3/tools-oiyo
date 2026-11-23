@@ -38,7 +38,7 @@ export const lawGuides: { slug: string; domain?: DomainId; title: string; descri
   { slug: "join-leave-month-insurance-calculator", title: "입사·퇴사 달 4대보험료 계산기", description: "입사일·마지막 근무일로 연금·건강·장기요양·고용보험이 붙는 첫 달과 마지막 달, 달별 근로자 부담액." },
   { slug: "midyear-leaver-year-end-settlement", title: "중도퇴사자 연말정산 계산기", description: "퇴사할 때 회사가 한 연말정산과 다음 해 5월 종합소득세 신고로 부양가족·카드·의료비·월세를 더했을 때 환급액을 비교해요." },
   { slug: "client-deadline-board", title: "고객별 신고 마감 보드", description: "맡은 고객의 사업자 유형·부가세·직원 여부만 넣으면 부가세·종합소득세·법인세·원천세·지급명세서 마감을 날짜별로 모아 D-day, 인쇄, 달력 파일(.ics)로. 고객 목록은 브라우저에만." },
-  { slug: "pro-office", title: "실무 오피스(나라별 세무·노무·행정·법무 방)", description: "안내 데스크에서 나라를 고르고 세무실·노무실·행정·생활실·법무실에 들어가 접수 질문, 계산 도구, Claude 스킬·MCP, 상담 결과지 인쇄까지. 한국 본관과 해외 11개국." },
+  { slug: "pro-office", title: "실무 오피스(나라별 세무·노무·행정·법무 방)", description: "안내 데스크에서 나라를 고르고 세무실·노무실·행정·생활실·법무실·재무설계실(한국 본관은 보험실·부동산실·창업·경영실·복지·의료실까지)에 들어가 접수 질문, 계산 도구, Claude 스킬·MCP, 상담 결과지 인쇄까지. 한국 본관과 해외 11개국." },
   { slug: "pro-competency-map", title: "전문 직업 역량 지도", description: "세무·회계·노무·행정·등기·보험·관세·특허·감정평가·중개·건축·의료·가사·복지·경영·가맹·공동주택관리·산업안전 20개 직업의 역량 179개를 7가지로 분류하고, 역량마다 계산 도구·Claude 스킬·MCP를 연결했어요. 일반인도 쓰는 역량만 골라 볼 수 있어요." },
   { slug: "fine-reduction-calculator", title: "과태료 감경·가산금 계산기", description: "의견제출 기한 안 자진납부 20% 감경, 사회적 약자 50% 감경, 늦게 내면 가산금 3%와 매월 1.2%(최대 75%)를 계산해요." },
   { slug: "permit-document-checklist", title: "영업신고·허가 준비 서류 점검표", description: "음식점·통신판매업·미용업 신고 서류와 건축물 용도 같은 미리 확인할 점을 체크하고 사업자등록 기한을 계산해요." },

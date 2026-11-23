@@ -7,7 +7,7 @@ import { track } from "../viz/track";
 
 type Who = "all" | "public" | "pro";
 type Props = { locale: OfficeLocale; floors: Floor[]; copy: OfficeCopy; asOf: string };
-const ROOM_ICON: Record<RoomId, string> = { tax: "🧾", labor: "🤝", admin: "🏠", legal: "⚖️", plan: "📈" };
+const ROOM_ICON: Record<RoomId, string> = { tax: "🧾", labor: "🤝", admin: "🏛️", legal: "⚖️", insurance: "🛡️", realty: "🏠", biz: "🏪", welfare: "🩺", plan: "📈" };
 const PIN_KEY = "oiyo-office-pins";
 const load = (): string[] => { try { return JSON.parse(localStorage.getItem(PIN_KEY) || "[]"); } catch { return []; } };
 
@@ -27,7 +27,7 @@ export default function ProOffice({ locale, floors, copy: t, asOf }: Props) {
     setTicket(100 + Math.floor(Math.random() * 900));
     setPins(load());
     const [f, r] = decodeURIComponent(location.hash.slice(1)).split("/");
-    if (floors.some((x) => x.id === f)) { setFloorId(f as FloorId); setBoard(false); if (["tax", "labor", "admin", "legal", "plan"].includes(r)) setRoomId(r as RoomId); }
+    if (floors.some((x) => x.id === f)) { setFloorId(f as FloorId); setBoard(false); if (Object.keys(ROOM_ICON).includes(r)) setRoomId(r as RoomId); }
   }, [floors]);
   const go = (f: FloorId | null, r: RoomId | null = null) => {
     setFloorId(f); setRoomId(r); setChecked({}); setUsed({}); setBoard(!f);
@@ -69,7 +69,7 @@ export default function ProOffice({ locale, floors, copy: t, asOf }: Props) {
                 className={`flex min-h-12 w-full items-center gap-3 px-4 py-2 text-left text-sm hover:bg-white/5 ${f.id === floorId ? "bg-white/10" : ""}`}>
                 <span className="w-14 shrink-0 font-mono text-office-brass">{fw(floorNo(f.id))}</span>
                 <span className="whitespace-nowrap font-semibold">{f.flag} {t.countries[f.id]}</span>
-                <span className="ml-auto hidden text-right text-xs text-office-paper/70 sm:block">{f.rooms.filter((r) => r.tools.length).map((r) => t.rooms[r.id]).join(" · ")}</span>
+                <span className="ml-auto hidden text-right text-xs text-office-paper/70 sm:block">{f.rooms.filter((r) => r.tools.length).map((r) => (t.rooms[r.id] ?? r.id)).join(" · ")}</span>
               </button>
             </li>
           ))}
@@ -86,7 +86,7 @@ export default function ProOffice({ locale, floors, copy: t, asOf }: Props) {
       <nav id="office-path" aria-label="breadcrumb" className="scroll-mt-20 text-sm text-muted-foreground">
         <button type="button" className="underline-offset-4 hover:underline" onClick={() => go(null)}>{t.lobby}</button>
         {floor && <> › <button type="button" className="underline-offset-4 hover:underline" onClick={() => go(floor.id)}>{fw(floorNo(floor.id))} {floor.flag} {t.countries[floor.id]}</button></>}
-        {room && <> › <span className="font-semibold text-foreground">{t.rooms[room.id]}</span></>}
+        {room && <> › <span className="font-semibold text-foreground">{(t.rooms[room.id] ?? room.id)}</span></>}
       </nav>
 
       {/* 로비 */}
@@ -126,8 +126,8 @@ export default function ProOffice({ locale, floors, copy: t, asOf }: Props) {
                 <li key={r.id}>
                   <button type="button" disabled={!open} onClick={() => go(floor.id, r.id)}
                     className="group flex w-full flex-col rounded-t-3xl rounded-b-md border-2 border-office-wood bg-office-door p-4 text-left text-office-ink shadow-sm transition hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:border-border disabled:bg-muted disabled:text-muted-foreground dark:bg-office-door-dark dark:text-office-paper">
-                    <span className="mx-auto rounded border border-office-wood bg-office-desk px-3 py-1 text-sm font-bold dark:bg-office-desk-dark">{ROOM_ICON[r.id]} {t.rooms[r.id]}</span>
-                    <span className="mt-3 text-sm">{t.roomDesc[r.id]}</span>
+                    <span className="mx-auto rounded border border-office-wood bg-office-desk px-3 py-1 text-sm font-bold dark:bg-office-desk-dark">{ROOM_ICON[r.id]} {(t.rooms[r.id] ?? r.id)}</span>
+                    <span className="mt-3 text-sm">{(t.roomDesc[r.id] ?? "")}</span>
                     <span className="mt-3 flex items-center justify-between text-xs">
                       <span>{open ? `${r.tools.length} tools · ${r.skills.length} skills` : t.closed}</span>
                       {open && <span className="rounded-full bg-office-wood px-3 py-1 font-semibold text-white">{t.enter} →</span>}
@@ -144,7 +144,7 @@ export default function ProOffice({ locale, floors, copy: t, asOf }: Props) {
       {floor && room && (
         <section className="space-y-4">
           <div className="flex flex-wrap items-center justify-between gap-2 rounded-xl border-2 border-office-wood bg-office-door px-4 py-3 text-office-ink dark:bg-office-door-dark dark:text-office-paper">
-            <h2 className="text-lg font-bold">{ROOM_ICON[room.id]} {floor.flag} {t.countries[floor.id]} · {t.rooms[room.id]}</h2>
+            <h2 className="text-lg font-bold">{ROOM_ICON[room.id]} {floor.flag} {t.countries[floor.id]} · {(t.rooms[room.id] ?? room.id)}</h2>
             <div role="group" aria-label={t.both} className="flex rounded-full border border-office-wood p-0.5 text-sm">
               {(["all", "public", "pro"] as Who[]).map((w) => (
                 <button key={w} type="button" aria-pressed={who === w} onClick={() => setWho(w)} className={`min-h-9 rounded-full px-3 ${who === w ? "bg-office-wood text-white" : ""}`}>{w === "all" ? t.both : t[w]}</button>
@@ -156,7 +156,7 @@ export default function ProOffice({ locale, floors, copy: t, asOf }: Props) {
             <div className="rounded-xl border border-border p-4">
               <h3 className="font-semibold">{t.step1}</h3>
               <ul className="mt-2 space-y-1">
-                {t.intake[room.id].map((q) => (
+                {(t.intake[room.id] ?? []).map((q) => (
                   <li key={q}><label className="flex min-h-11 items-start gap-2 text-sm"><input type="checkbox" className="mt-1 h-5 w-5" checked={!!checked[q]} onChange={(e) => setChecked({ ...checked, [q]: e.target.checked })} />{q}</label></li>
                 ))}
               </ul>
@@ -194,9 +194,9 @@ export default function ProOffice({ locale, floors, copy: t, asOf }: Props) {
             <div id="office-sheet" className="rounded-xl border border-border bg-background p-4">
               <h3 className="font-semibold">🗂️ {t.sheet}</h3>
               <p className="no-print mt-1 text-xs text-muted-foreground">{t.sheetHint}</p>
-              <p className="mt-2 text-sm">{t.printed}: {today} · {floor.flag} {t.countries[floor.id]} · {t.rooms[room.id]}{ticket ? ` · #${ticket}` : ""}</p>
+              <p className="mt-2 text-sm">{t.printed}: {today} · {floor.flag} {t.countries[floor.id]} · {(t.rooms[room.id] ?? room.id)}{ticket ? ` · #${ticket}` : ""}</p>
               <label className="mt-2 block text-sm">{t.client}<input value={client} onChange={(e) => setClient(e.target.value)} className="mt-1 block min-h-11 w-full rounded-md border border-border bg-background px-3 text-base" /></label>
-              <ul className="mt-2 list-disc pl-5 text-sm">{t.intake[room.id].filter((q) => checked[q]).map((q) => <li key={q}>☑ {q}</li>)}</ul>
+              <ul className="mt-2 list-disc pl-5 text-sm">{(t.intake[room.id] ?? []).filter((q) => checked[q]).map((q) => <li key={q}>☑ {q}</li>)}</ul>
               <ul className="mt-1 list-disc pl-5 text-sm">{room.tools.filter((x) => used[x.href]).map((x) => <li key={x.href}>{x.title} <span className="text-xs text-muted-foreground">tools.oiyo.net{x.href}</span></li>)}</ul>
               <label className="mt-2 block text-sm">{t.notes}<textarea value={notes} onChange={(e) => setNotes(e.target.value)} rows={4} className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2 text-base" /></label>
               {room.help.length > 0 && <p className="mt-2 text-xs">{t.help}: {room.help.join(" · ")}</p>}
