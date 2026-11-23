@@ -1,0 +1,27 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import HouseholdCheckup from '../../components/tools/plan/HouseholdCheckup';
+// 2026-11-23 CHOSEUN "사람들이 전문가를 찾아가는 니즈". No legal/tax calculation.
+const c = {
+  introTitle: '우리 집 돈 흐름, 어디부터 손봐야 할까?',
+  intro: '재무 상담을 받으면 첫 시간에 비상금, 저축률, 대출 상환 비율, 보험료 비율부터 봐요. 한 달 실수령과 지출을 넣으면 네 가지 비율을 구하고, 흔히 쓰는 참고선과 비교해 먼저 고칠 곳을 표시해요. 상품을 추천하지 않아요.',
+  formulaTitle: '이렇게 정리했어요',
+  formulas: [
+    { title: '비상금', body: '바로 찾을 수 있는 예금 ÷ 한 달 생활비 (참고선 3~6개월).' },
+    { title: '저축률·대출 상환 비율', body: '한 달 저축, 대출 원리금 ÷ 실수령 (참고선 저축 20% 이상, 상환 40% 이하).' },
+    { title: '보험료 비율', body: '보장성 보험료 ÷ 실수령 (참고선 10% 이하).' },
+  ],
+  howToTitle: '이렇게 써요',
+  steps: ['한 달 실수령과 생활비를 넣어요.', '저축, 대출 상환, 보험료, 비상금을 넣어요.', '‘먼저 고쳐요’ 표시가 붙은 것부터 살펴봐요.'],
+  faqTitle: '자주 묻는 질문',
+  faqs: [
+    { question: '참고선은 법으로 정해진 기준인가요?', answer: '아니요. 재무 상담에서 흔히 쓰는 어림 기준이에요. 은행권 DSR 40%는 대출 규제 기준을 참고했어요.' },
+    { question: '보험을 해지하라는 뜻인가요?', answer: '아니요. 보장이 겹치거나 기간이 맞지 않는지 확인하라는 뜻이에요. 해지는 새 가입 여부와 함께 따져요.' },
+  ],
+  disclaimer: '일반 정보이며 세무·법률·투자 자문이 아니에요. 개별 사안은 무료 공식 창구나 자격사에 확인하세요.',
+};
+const sources: [string, string][] = [['국가법령정보센터', 'https://www.law.go.kr/']];
+---
+<DebtReliefPage slug="household-money-checkup" c={c} sources={sources} sourcesTitle="출처" checked="확인: 2026-11-23">
+  <HouseholdCheckup client:load />
+</DebtReliefPage>

@@ -1,0 +1,27 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import ConsultMemo from '../../components/tools/plan/ConsultMemo';
+// 2026-11-24 CHOSEUN "상담자 니즈에 따른 도구와 스킬 계속 추가". No legal/tax calculation.
+const c = {
+  introTitle: '상담 첫 10분을 아끼는 한 장 메모',
+  intro: '세무·노무·법무·부동산 상담은 시간 단위로 비용이 나가는 경우가 많아요. 무슨 일이 있었는지, 언제 무슨 일이 일어났는지, 금액과 묻고 싶은 것을 미리 적어 가면 상담이 빨라지고 빠뜨리는 것이 줄어요. 분야를 고르면 챙겨 갈 서류 중 빠진 것도 알려 줘요.',
+  formulaTitle: '이렇게 정리해요',
+  formulas: [
+    { title: '날짜순 경과', body: '적은 경과를 날짜순으로 정리해요. 시효·불복·신고 기한을 따질 때 가장 먼저 보는 부분이에요.' },
+    { title: '묻고 싶은 것', body: '질문을 번호로 정리해 상담에서 빠뜨리지 않게 해요.' },
+    { title: '빠진 서류', body: '분야별로 자주 필요한 서류 중 아직 챙기지 않은 것을 보여 줘요.' },
+  ],
+  howToTitle: '이렇게 써요',
+  steps: ['상담 분야를 골라요. 모르면 비워 둬요.', '무슨 일인지, 경과, 금액, 묻고 싶은 것을 적어요.', '메모를 복사해 상담 예약 때 보내거나 출력해 가요.'],
+  faqTitle: '자주 묻는 질문',
+  faqs: [
+    { question: '어디에 저장되나요?', answer: '저장하지 않아요. 메모는 이 브라우저 안에서만 만들어져요.' },
+    { question: '어느 전문가를 찾아야 할지 모르겠어요.', answer: '전문가 상담 전 준비 페이지에서 질문으로 분야를 찾을 수 있어요.' },
+  ],
+  disclaimer: '일반 정보이며 세무·법률 자문이 아니에요. 메모는 적은 사실만 정리하고 판단하지 않아요.',
+};
+const sources: [string, string][] = [['국가법령정보센터', 'https://www.law.go.kr/']];
+---
+<DebtReliefPage slug="consult-memo-builder" c={c} sources={sources} sourcesTitle="출처" checked="확인: 2026-11-24">
+  <ConsultMemo client:load />
+</DebtReliefPage>
