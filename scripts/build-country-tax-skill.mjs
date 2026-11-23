@@ -7,7 +7,7 @@ import { writeFileSync, mkdirSync, rmSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { execFileSync } from "node:child_process";
-import { renderSkillLib } from "./build-advisor-skill.mjs";
+import { renderSkillLib, renderSkillMjs } from "./build-advisor-skill.mjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 export const COUNTRY_SKILLS = {
@@ -41,7 +41,8 @@ export const COUNTRY_SKILLS = {
   corporate: { dir: "oiyo-world-corporate-tax-guide", libs: ["world-corporate-tax-2026"], zip: "oiyo-world-corporate-tax-guide-skill.zip" },
   withholding: { dir: "oiyo-world-withholding-guide", libs: ["world-withholding-2026"], zip: "oiyo-world-withholding-guide-skill.zip" },
   taxseason: { dir: "oiyo-world-tax-season-guide", libs: ["world-tax-season-2027", "us-tax-pack-2026", "japan-salary", "scenario"], zip: "oiyo-world-tax-season-guide-skill.zip" },
-  plan: { dir: "oiyo-financial-planning-guide", libs: ["country-pension-4", "country-finance-2", "country-finance-3", "country-finance-5", "pension-countries", "comprehensive-income-tax-countries", "year-end-settlement-countries", "plan-gap-4-2026"], zip: "oiyo-financial-planning-guide-skill.zip" },
+  plan: { dir: "oiyo-financial-planning-guide", libs: ["country-pension-4", "country-finance-2", "country-finance-3", "country-finance-5", "pension-countries", "comprehensive-income-tax-countries", "year-end-settlement-countries", "plan-gap-4-2026", "new-calc-5-2026", "kr-retirement-tax", "jp-tax-pack-2026", "uk-tax-pack-2026", "us-tax-pack-2026", "japan-salary", "scenario"], mjs: ["kr-rates-2026"], zip: "oiyo-financial-planning-guide-skill.zip" },
+  desk: { dir: "oiyo-kr-life-desk", libs: ["kr-desks-2026"], zip: "oiyo-kr-life-desk-skill.zip" },
   takehome: { dir: "oiyo-world-take-home-guide", libs: ["world-take-home-2026", "uk-tax-pack-2026", "us-tax-pack-2026", "japan-salary", "france-salary", "spain-salary", "scenario"], zip: "oiyo-world-take-home-guide-skill.zip" },
 };
 export const skillDir = (c) => resolve(root, "skills", COUNTRY_SKILLS[c].dir);
@@ -51,6 +52,7 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
   for (const [c, s] of Object.entries(COUNTRY_SKILLS)) {
     if (only && only !== c) continue;
     for (const name of s.libs) writeFileSync(resolve(skillDir(c), "scripts", `${name}.mjs`), renderSkillLib(name));
+    for (const name of s.mjs ?? []) writeFileSync(resolve(skillDir(c), "scripts", `${name}.mjs`), renderSkillMjs(name));
     const out = resolve(root, "public/downloads", s.zip);
     mkdirSync(dirname(out), { recursive: true });
     rmSync(out, { force: true });

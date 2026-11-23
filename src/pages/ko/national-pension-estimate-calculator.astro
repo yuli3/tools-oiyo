@@ -1,0 +1,50 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/plan/KrPensionEstimate';
+// New calc 5 (2026-11-23). Engine: lib/new-calc-5-2026.ts
+const c = {
+  "introTitle": "국민연금, 나는 얼마나 받을까?",
+  "intro": "노령연금은 모든 가입자의 평균 소득(A값)과 내 평균 소득(B값), 가입한 연도별 비례상수, 가입기간으로 정해져요. 가입기간이 10년 이상이어야 받고, 20년을 넘기면 한 해마다 5%씩 더해져요. 이 계산기는 국민연금공단이 안내하는 산식을 그대로 써서 지금 돈 가치로 어림해요.",
+  "formulaTitle": "계산에 쓰는 규칙",
+  "formulas": [
+    {
+      "title": "기본연금액",
+      "body": "Σ 비례상수 × (A + B) × 그 기간 가입월수 ÷ 전체 가입월수 × (1 + 0.05 × 20년 초과 월수 ÷ 12). 1988~1998년분은 A + 0.75B."
+    },
+    {
+      "title": "비례상수",
+      "body": "1988~1998 2.4, 1999~2007 1.8, 2008년 1.5에서 매년 0.015씩 내려 2025년 1.245, 2026년부터 1.29."
+    },
+    {
+      "title": "지급률",
+      "body": "가입 10년 50%, 1년마다 5%씩 올라 20년 이상 100%."
+    },
+    {
+      "title": "부양가족연금",
+      "body": "2026년 배우자 연 306,630원, 19세 미만 자녀·60세 이상 부모 1명당 연 204,360원."
+    }
+  ],
+  "howToTitle": "이렇게 써요",
+  "steps": [
+    "가입 시작 연도와 마지막으로 낼 연도를 넣어요.",
+    "평균 월 소득을 지금 돈 가치로 넣어요.",
+    "부양가족을 고르고 월 예상액을 확인해요."
+  ],
+  "faqTitle": "자주 묻는 질문",
+  "faqs": [
+    {
+      "question": "공단 예상액과 왜 다른가요?",
+      "answer": "과거 소득 재평가, 크레딧, 추납 같은 내 기록을 반영하지 않은 어림값이에요. 정확한 금액은 공단 「내 연금 알아보기」에서 확인하세요."
+    },
+    {
+      "question": "소득이 659만 원보다 많으면요?",
+      "answer": "기준소득월액 상한(2026.7~2027.6 659만 원)까지만 반영돼요."
+    }
+  ],
+  "disclaimer": "일반 정보이며 실제 연금액은 국민연금공단 결정에 따라요."
+};
+const sources: [string, string][] = [["국민연금공단 급여의 산정", "https://www.nps.or.kr/pnsinfo/ntpsklg/getOHAF0048M0.do"]];
+---
+<DebtReliefPage slug="national-pension-estimate-calculator" c={c} sources={sources} sourcesTitle="출처" checked="공단 안내 확인: 2026-11-23">
+  <T client:load />
+</DebtReliefPage>

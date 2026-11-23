@@ -6,6 +6,7 @@ import { socialSecurityTable, pmiDates, ukStudentLoan, nisaPlan, COUNTRY_FINANCE
 import { lisaPlan, cpfRefund } from "./country-finance-3.mjs";
 import { caStressTest, cnComboLoan, jpHousingLoanCredit, COUNTRY_FINANCE_5_AS_OF } from "./country-finance-5.mjs";
 import { krNpsEarlyDefer, twLaborPensionVoluntary, deRiester, deBasisrente, auSuper, KR_NPS } from "./plan-gap-4-2026.mjs";
+import { krPensionEstimate, krQuitPlan, jpFurusatoLimit, ukMarriageAllowance, NEW_CALC_5_AS_OF } from "./new-calc-5-2026.mjs";
 import { jpIdecoMonthlyLimit, japanIdecoSaving, chinaPensionSaving, francePerSaving, frPerCeilingSalarie, spainPensionLimit, PENSION_AS_OF } from "./pension-countries.mjs";
 
 const S = (v) => (v === undefined || v === null ? "" : String(v));
@@ -25,6 +26,10 @@ export const EXAMPLES = {
   "fr-per": { revenusPro2025: 45000, revenu: 45000, couple: false, children: 0, versement: 5000, plafond: 0 },
   "es-pension": { individual: 1500, employer: 1000, workerEmployment: 2000, workIncomeOver60k: false, autonomo: 0, netIncome: 40000 },
   "sg-cpf-refund": { upfront: 50000, monthly: 1500, months: 120, rate: 2.5, price: 600000, loan: 400000 },
+  "kr-nps-estimate": { startYear: 2010, endYear: 2040, monthlyIncome: 3000000, gapMonths: 0, spouse: false, dependents: 0 },
+  "kr-quit-plan": { monthlyWage: 3000000, years: 5, annualBonus: 0, annualLeavePay: 0, insuredYears: 5, age50OrDisabled: false, involuntary: true },
+  "jp-furusato": { residentIncomeLevy: 200000, incomeTaxRatePct: 10 },
+  "uk-marriage-allowance": { lowerIncome: 9000, higherIncome: 32000, scotland: false, married: true },
   "kr-nps-early-defer": { birthYear: 1966, monthly: 1000000, mode: "early", earlyYears: 3, deferMonths: 12, deferSharePct: 100, untilAge: 85 },
   "tw-labor-pension-voluntary": { monthlyWage: 50000, voluntaryPct: 6, marginalRatePct: 12 },
   "de-riester": { vorjahresEinnahmen: 40000, eigenbeitrag: 1125, kinderVor2008: 0, kinderAb2008: 1, berufseinsteiger: false, grenzsteuersatzPct: 30 },
@@ -56,6 +61,10 @@ export function run(tool, input) {
     case "es-pension": return { asOf: ASOF.p, ...spainPensionLimit(x) };
     case "sg-cpf-refund": return { asOf: ASOF.f2, result: cpfRefund(S(x.upfront), S(x.monthly), S(x.months), S(x.rate), S(x.price), S(x.loan)) };
     case "ca-stress-test": return { asOf: ASOF.f5, ...caStressTest(x) };
+    case "kr-nps-estimate": return { asOf: NEW_CALC_5_AS_OF, ...krPensionEstimate(x) };
+    case "kr-quit-plan": return { asOf: NEW_CALC_5_AS_OF, ...krQuitPlan(x) };
+    case "jp-furusato": return { asOf: NEW_CALC_5_AS_OF, ...jpFurusatoLimit(x) };
+    case "uk-marriage-allowance": return { asOf: NEW_CALC_5_AS_OF, ...ukMarriageAllowance(x) };
     case "kr-nps-early-defer": return { asOf: KR_NPS.asOf, ...krNpsEarlyDefer(x) };
     case "tw-labor-pension-voluntary": return { asOf: KR_NPS.asOf, ...twLaborPensionVoluntary(x) };
     case "de-riester": return { asOf: KR_NPS.asOf, ...deRiester(x) };

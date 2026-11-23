@@ -1,0 +1,46 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/plan/KrQuitPlan';
+// New calc 5 (2026-11-23). Engine: lib/new-calc-5-2026.ts
+const c = {
+  "introTitle": "퇴사하면 얼마를 받을까?",
+  "intro": "회사를 그만두면 퇴직금에서 퇴직소득세를 떼고 받고, 비자발적으로 그만뒀다면 실업급여도 받을 수 있어요. 이 계산기는 따로 흩어진 퇴직금·퇴직소득세·실업급여 계산을 한 번에 돌리고, 놓치면 안 되는 기한을 함께 보여 줘요.",
+  "formulaTitle": "계산에 쓰는 규칙",
+  "formulas": [
+    {
+      "title": "퇴직금",
+      "body": "1일 평균임금 × 30일 × 재직일수 ÷ 365. 평균임금은 퇴직 전 3개월 임금에 상여금·연차수당의 3/12을 더해 91일로 나눠요."
+    },
+    {
+      "title": "퇴직소득세",
+      "body": "근속연수공제 → 환산급여 → 환산급여공제 → 기본세율 → ÷12 × 근속연수, 지방소득세 10%."
+    },
+    {
+      "title": "실업급여",
+      "body": "1일 구직급여 = 평균임금의 60%(상한·하한 적용) × 나이·가입 기간별 소정급여일수(120~270일)."
+    }
+  ],
+  "howToTitle": "이렇게 써요",
+  "steps": [
+    "최근 3개월 월평균 임금과 근속기간을 넣어요.",
+    "고용보험 가입 기간과 퇴사 사유를 골라요.",
+    "합계와 기한을 확인해요."
+  ],
+  "faqTitle": "자주 묻는 질문",
+  "faqs": [
+    {
+      "question": "자진 퇴사도 실업급여를 받나요?",
+      "answer": "원칙은 아니지만 임금 체불, 통근 곤란 같은 정당한 사유가 있으면 받을 수 있어요. 「자진 퇴사 실업급여」에서 확인하세요."
+    },
+    {
+      "question": "건강보험은요?",
+      "answer": "퇴사하면 지역가입자로 바뀌어요. 임의계속가입과 비교는 「퇴사 건강보험 정산」에서 하세요."
+    }
+  ],
+  "disclaimer": "일반 정보이며 실제 금액은 회사 정산과 고용센터 결정에 따라요."
+};
+const sources: [string, string][] = [["국가법령정보센터", "https://www.law.go.kr/"]];
+---
+<DebtReliefPage slug="quit-one-stop-calculator" c={c} sources={sources} sourcesTitle="출처" checked="조문 확인: 2026-11-23">
+  <T client:load />
+</DebtReliefPage>
