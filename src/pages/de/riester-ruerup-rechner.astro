@@ -1,0 +1,31 @@
+---
+import DeToolPage from '../../components/DeToolPage.astro';
+import T from '../../components/tools/desg/DeRiester';
+// Financial planning room gap (2026-11-23). Engine: lib/plan-gap-4-2026.ts
+const c = {
+  introTitle: 'Was bringt Riester, was bringt Rürup?',
+  intro: 'Bei Riester gibt es eine Grundzulage von 175 € im Jahr, 185 € je Kind (geboren vor 2008) oder 300 € (ab 2008) und einmalig 200 € für Berufseinsteiger unter 25. Die volle Zulage gibt es nur mit dem Mindesteigenbeitrag: 4 % der rentenversicherungspflichtigen Einnahmen des Vorjahres, höchstens 2.100 €, abzüglich der Zulagen, mindestens 60 €. Beiträge und Zulage sind bis 2.100 € als Sonderausgaben abziehbar; das Finanzamt prüft, ob das günstiger ist als die Zulage. Bei der Basisrente (Rürup) zählen die Beiträge bis zum Höchstbetrag, auf den auch die gesetzlichen Rentenbeiträge angerechnet werden.',
+  formulaTitle: 'Die verwendeten Regeln',
+  formulas: [
+    { title: 'Zulagen (§§ 84, 85 EStG)', body: 'Grundzulage 175 €, Kinderzulage 185 € / 300 €, Berufseinsteiger-Bonus 200 €.' },
+    { title: 'Mindesteigenbeitrag (§ 86 EStG)', body: 'max(60 €, min(4 % der Vorjahreseinnahmen, 2.100 €) − Zulagen). Darunter wird die Zulage anteilig gekürzt.' },
+    { title: 'Günstigerprüfung (§ 10a EStG)', body: 'Sonderausgaben = min(Beitrag + Zulage, 2.100 €). Zusätzliche Erstattung = Steuerwirkung − Zulage, wenn positiv.' },
+    { title: 'Basisrente (§ 10 Abs. 3 EStG)', body: 'Höchstbetrag 2025: 29.343 € (zusammen 58.686 €), abzüglich gesetzlicher Rentenbeiträge. Der Wert für 2026 ist noch nicht amtlich bestätigt und wird nicht berechnet.' },
+  ],
+  howToTitle: 'So funktioniert es',
+  steps: ['Vorjahreseinnahmen, Eigenbeitrag und Kinder eingeben.', 'Grenzsteuersatz eintragen.', 'Zulage, Mindesteigenbeitrag und Erstattung ablesen; darunter die Basisrente prüfen.'],
+  faqTitle: 'Häufige Fragen',
+  faqs: [
+    { question: 'Ist das eine Empfehlung für einen Vertrag?', answer: 'Nein. Die Seite rechnet nur Zulagen und Steuerwirkung, sie bewertet keine Produkte oder Anbieter.' },
+    { question: 'Werden meine Daten gespeichert?', answer: 'Nein, die Berechnung läuft nur in Ihrem Browser.' },
+  ],
+  disclaimer: 'Allgemeine Information, keine Steuer- oder Anlageberatung.',
+};
+const sources: [string, string][] = [
+  ['§ 10a EStG (gesetze-im-internet.de)', 'https://www.gesetze-im-internet.de/estg/__10a.html'],
+  ['Deutsche Rentenversicherung Knappschaft-Bahn-See: Rechengrößen 2026', 'https://www.deutsche-rentenversicherung.de/KnappschaftBahnSee/DE/Aktuelles/Meldungen/2026/2026_01_02_Sozialversicherungsrechengroessen2026.html'],
+];
+---
+<DeToolPage slug="riester-ruerup-rechner" c={c} sources={sources} checked="§ 10a EStG und DRV-Werte am 2026-11-23 geprüft">
+  <T client:load />
+</DeToolPage>

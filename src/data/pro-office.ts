@@ -105,6 +105,7 @@ const PLAN_TOOLS: Partial<Record<FloorId, OfficeTool[]>> = {
     { href: "/ko/retirement-pension-db-dc-calculator/", title: "퇴직연금 DB vs DC", who: "public" },
     { href: "/ko/youth-future-savings-calculator/", title: "청년미래적금", who: "public" },
     { href: "/ko/savings-comparison-calculator/", title: "예적금 비교", who: "public" },
+    { href: "/ko/national-pension-early-deferred-calculator/", title: "국민연금 조기·연기 수령 비교", who: "public" },
   ],
   JP: [
     { href: "/ja/money-planner/", title: "給料の分け方・貯蓄プランナー", who: "public" },
@@ -141,6 +142,9 @@ const PLAN_TOOLS: Partial<Record<FloorId, OfficeTool[]>> = {
     { href: "/en/cpf-housing-refund-calculator/", title: "CPF housing refund", who: "public" },
   ],
   CA: [{ href: "/en/canada-mortgage-stress-test-calculator/", title: "Mortgage stress test", who: "public" }],
+  TW: [{ href: "/zh/taiwan-labor-pension-voluntary-contribution/", title: "勞退自提6%試算", who: "public" }],
+  DE: [{ href: "/de/riester-ruerup-rechner/", title: "Riester- und Rürup-Rechner", who: "public" }],
+  AU: [{ href: "/en/australia-super-contribution-caps-calculator/", title: "Super contribution caps and Division 293", who: "public" }],
 };
 const PLAN_HELP: Partial<Record<FloorId, string[]>> = {
   KR: ["금융감독원 1332 · 통합연금포털"],
@@ -153,10 +157,32 @@ const PLAN_HELP: Partial<Record<FloorId, string[]>> = {
   TW: ["勞動部勞工保險局 (02)2396-1266"],
   DE: ["Deutsche Rentenversicherung 0800 1000 4800"],
   SG: ["CPF Board (cpf.gov.sg)"],
+  AU: ["ATO 13 10 20 · Moneysmart (ASIC)"],
 };
 export const PLAN_FLOOR_TOOLS = PLAN_TOOLS;
+// 재무설계 길잡이 스킬(oiyo-financial-planning-guide)이 계산하는 나라와, 같은 계산의 MCP 도구(api.oiyo.net /v1/planning).
+const PLAN_SKILL_FLOORS: FloorId[] = ["KR", "US", "UK", "JP", "CN", "FR", "ES", "SG", "CA", "TW", "DE", "AU"];
+const PLAN_MCP: Record<string, string> = {
+  "/en/us-401k-ira-limits-calculator/": "calculate_us_retirement_limits",
+  "/en/social-security-claiming-age-calculator/": "calculate_us_social_security_claiming",
+  "/en/uk-pension-tax-relief-calculator/": "calculate_uk_pension_tax_relief",
+  "/en/lifetime-isa-bonus-calculator/": "plan_uk_lifetime_isa",
+  "/en/uk-student-loan-plan-2-plan-5-calculator/": "calculate_uk_student_loan_repayment",
+  "/ja/nisa-limit-planner/": "plan_jp_nisa_limits",
+  "/ja/housing-loan-deduction-calculator/": "calculate_jp_housing_loan_credit",
+  "/zh/personal-pension-tax-calculator/": "calculate_cn_personal_pension_tax",
+  "/zh/housing-provident-fund-combo-loan-calculator/": "calculate_cn_provident_fund_combo_loan",
+  "/en/cpf-housing-refund-calculator/": "calculate_sg_cpf_housing_refund",
+  "/en/canada-mortgage-stress-test-calculator/": "calculate_ca_mortgage_stress_test",
+  "/ko/national-pension-early-deferred-calculator/": "compare_kr_national_pension_early_deferred",
+  "/zh/taiwan-labor-pension-voluntary-contribution/": "calculate_tw_labor_pension_voluntary",
+  "/de/riester-ruerup-rechner/": "calculate_de_riester_ruerup",
+  "/en/australia-super-contribution-caps-calculator/": "calculate_au_super_contribution_caps",
+};
 function planRoom(fl: FloorId): Room {
-  return { id: "plan", tools: PLAN_TOOLS[fl] ?? [], skills: [], help: PLAN_HELP[fl] ?? [], gaps: 0 };
+  const tools = (PLAN_TOOLS[fl] ?? []).map((t) => (PLAN_MCP[t.href] && !t.mcp ? { ...t, mcp: PLAN_MCP[t.href] } : t));
+  const skills = PLAN_SKILL_FLOORS.includes(fl) ? [{ id: "oiyo-financial-planning-guide", zip: zip("oiyo-financial-planning-guide") }] : [];
+  return { id: "plan", tools, skills, help: PLAN_HELP[fl] ?? [], gaps: 0 };
 }
 
 export const FLAGS: Record<FloorId, string> = { KR: "🇰🇷", JP: "🇯🇵", US: "🇺🇸", UK: "🇬🇧", FR: "🇫🇷", ES: "🇪🇸", CN: "🇨🇳", TW: "🇹🇼", DE: "🇩🇪", SG: "🇸🇬", CA: "🇨🇦", AU: "🇦🇺" };

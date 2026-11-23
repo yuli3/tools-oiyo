@@ -41,6 +41,7 @@ export const COUNTRY_SKILLS = {
   corporate: { dir: "oiyo-world-corporate-tax-guide", libs: ["world-corporate-tax-2026"], zip: "oiyo-world-corporate-tax-guide-skill.zip" },
   withholding: { dir: "oiyo-world-withholding-guide", libs: ["world-withholding-2026"], zip: "oiyo-world-withholding-guide-skill.zip" },
   taxseason: { dir: "oiyo-world-tax-season-guide", libs: ["world-tax-season-2027", "us-tax-pack-2026", "japan-salary", "scenario"], zip: "oiyo-world-tax-season-guide-skill.zip" },
+  plan: { dir: "oiyo-financial-planning-guide", libs: ["country-pension-4", "country-finance-2", "country-finance-3", "country-finance-5", "pension-countries", "comprehensive-income-tax-countries", "year-end-settlement-countries", "plan-gap-4-2026"], zip: "oiyo-financial-planning-guide-skill.zip" },
   takehome: { dir: "oiyo-world-take-home-guide", libs: ["world-take-home-2026", "uk-tax-pack-2026", "us-tax-pack-2026", "japan-salary", "france-salary", "spain-salary", "scenario"], zip: "oiyo-world-take-home-guide-skill.zip" },
 };
 export const skillDir = (c) => resolve(root, "skills", COUNTRY_SKILLS[c].dir);

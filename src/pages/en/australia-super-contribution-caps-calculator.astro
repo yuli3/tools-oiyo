@@ -1,0 +1,31 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/plan/AuSuper';
+// Financial planning room gap (2026-11-23). Engine: lib/plan-gap-4-2026.ts
+const c = {
+  introTitle: 'How much more can you put into super this year?',
+  intro: 'Concessional (before-tax) contributions are your employer\'s super guarantee, salary sacrifice and personal contributions you claim as a deduction. They share one yearly cap: $30,000 in 2025-26 and $32,500 in 2026-27. If your total super balance was under $500,000, unused cap from the last five years can be carried forward. Your fund pays 15% tax on these contributions, and if your income plus contributions is over $250,000 you also pay Division 293 tax.',
+  formulaTitle: 'How it is calculated',
+  formulas: [
+    { title: 'Super guarantee', body: '12% of ordinary time earnings up to the maximum contribution base.' },
+    { title: 'Cap', body: 'Concessional cap plus unused carry-forward amounts if your total super balance was under $500,000.' },
+    { title: 'Division 293', body: '15% of the lesser of (income + concessional contributions − $250,000) and your taxable concessional contributions.' },
+    { title: 'Saving', body: 'Extra contributions × your marginal rate, less 15% contributions tax and Division 293.' },
+  ],
+  howToTitle: 'How to use it',
+  steps: ['Pick the financial year.', 'Enter your salary and any salary sacrifice or deductible personal contributions.', 'Add unused cap from ATO online services if you have it.', 'Read your room left, taxes and the rough saving.'],
+  faqTitle: 'FAQ',
+  faqs: [
+    { question: 'Where do I find my unused cap?', answer: 'In ATO online services through myGov, under Super, along with your total super balance.' },
+    { question: 'What if I go over the cap?', answer: 'Excess concessional contributions are added to your assessable income and taxed at your marginal rate with a tax offset. This page flags the excess but does not estimate that tax.' },
+  ],
+  disclaimer: 'General information only, not personal financial advice.',
+};
+const sources: [string, string][] = [
+  ['ATO: Division 293 tax on concessional contributions', 'https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/super/growing-and-keeping-track-of-your-super/caps-limits-and-tax-on-super-contributions/division-293-tax-on-concessional-contributions-by-high-income-earners'],
+  ['ATO: Tax on contributions', 'https://www.ato.gov.au/individuals/super/growing-your-super/adding-to-your-super/tax-on-contributions'],
+];
+---
+<DebtReliefPage slug="australia-super-contribution-caps-calculator" c={c} sources={sources} sourcesTitle="Sources" checked="ATO pages checked 2026-11-23">
+  <T client:load />
+</DebtReliefPage>

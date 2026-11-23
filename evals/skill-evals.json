@@ -3619,6 +3619,134 @@
           "eq": 70680
         }
       ]
+    },
+    {
+      "skill": "oiyo-financial-planning-guide",
+      "id": "plan-us-roth-62",
+      "ask": "I'm 62, single, MAGI $160,000. How much can I put into a 401(k) and a Roth IRA in 2026?",
+      "run": [
+        "us-limits",
+        {
+          "age": 62,
+          "magi": 160000,
+          "filing": "single"
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.k401.total",
+          "eq": 35750
+        },
+        {
+          "path": "result.roth",
+          "eq": 4590
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-financial-planning-guide",
+      "id": "plan-cn-pension",
+      "ask": "年收入30万，缴满12000元个人养老金能省多少税？",
+      "run": [
+        "cn-pension",
+        {}
+      ],
+      "expect": [
+        {
+          "path": "result.saving",
+          "eq": 2400
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-financial-planning-guide",
+      "id": "plan-ca-stress",
+      "ask": "I earn $120,000 and my contract rate is 4.5%. What is my stress test rate?",
+      "run": [
+        "ca-stress-test",
+        {}
+      ],
+      "expect": [
+        {
+          "path": "result.qualifyingRate",
+          "eq": 6.5
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-financial-planning-guide",
+      "id": "plan-fr-per",
+      "ask": "Je gagne 45 000 € et je verse 5 000 € sur un PER : quel plafond ?",
+      "run": [
+        "fr-per",
+        {}
+      ],
+      "expect": [
+        {
+          "path": "result.plafond",
+          "eq": 4710
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-financial-planning-guide",
+      "id": "plan-kr-nps-early",
+      "ask": "1966년생인데 국민연금을 3년 일찍 받으면 월 100만 원이 얼마가 돼요?",
+      "run": [
+        "kr-nps-early-defer",
+        {}
+      ],
+      "expect": [
+        {
+          "path": "result.monthly",
+          "eq": 820000
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-financial-planning-guide",
+      "id": "plan-tw-voluntary",
+      "ask": "月提繳工資5萬，自提6%一年多少？",
+      "run": [
+        "tw-labor-pension-voluntary",
+        {}
+      ],
+      "expect": [
+        {
+          "path": "result.annualVoluntary",
+          "eq": 36000
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-financial-planning-guide",
+      "id": "plan-de-riester",
+      "ask": "40.000 € Vorjahr, ein Kind ab 2008: wie hoch ist mein Riester-Mindesteigenbeitrag?",
+      "run": [
+        "de-riester",
+        {}
+      ],
+      "expect": [
+        {
+          "path": "result.mindesteigenbeitrag",
+          "eq": 1125
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-financial-planning-guide",
+      "id": "plan-au-super",
+      "ask": "I earn $120,000 and salary sacrifice $10,000. How much concessional cap is left in 2025-26?",
+      "run": [
+        "au-super",
+        {}
+      ],
+      "expect": [
+        {
+          "path": "result.roomLeft",
+          "eq": 5600
+        }
+      ]
     }
   ],
   "boundaries": {
