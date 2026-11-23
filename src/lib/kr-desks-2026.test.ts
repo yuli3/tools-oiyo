@@ -8,9 +8,9 @@ const exists = (href: string) => {
   return existsSync(new URL(`../pages/${loc}/${slug}.astro`, import.meta.url)) || existsSync(new URL(`../pages/[locale]/${slug}.astro`, import.meta.url));
 };
 
-test("직업 7곳, 인생 사건 16가지", () => {
+test("직업 7곳, 인생 사건 21가지", () => {
   assert.equal(KR_DESKS.filter((d) => d.kind === "job").length, 7);
-  assert.equal(KR_DESKS.filter((d) => d.kind === "event").length, 16);
+  assert.equal(KR_DESKS.filter((d) => d.kind === "event").length, 21);
   assert.equal(new Set(KR_DESKS.map((d) => d.id)).size, KR_DESKS.length);
 });
 
@@ -46,4 +46,13 @@ test("전문가를 찾게 되는 일도 질문으로 찾아요", () => {
   assert.equal(top("세무서 고지서 받았는데 경정청구"), "taxnotice");
   assert.equal(top("영업정지 행정처분 받았어요"), "suspension");
   assert.equal(top("보험금 거절 부지급"), "claimrefused");
+});
+
+test("상담을 많이 찾는 일 2도 질문으로 찾아요", () => {
+  const top = (q: string) => findDesks(q, "event")[0]?.id;
+  assert.equal(top("협의이혼하고 재산분할은 어떻게"), "divorce");
+  assert.equal(top("창업하려는데 사업자등록은 언제"), "startbiz");
+  assert.equal(top("가게 접으려고 폐업신고"), "closebiz");
+  assert.equal(top("일하다 다쳐서 산재 신청"), "injury");
+  assert.equal(top("쇼핑몰이 환불을 안 해줘요"), "refund");
 });

@@ -6,10 +6,12 @@
 //   node scripts/desk.mjs expert '<question>' | expert-show <tax|labor|cpa|court|admin|broker|plan>
 //   node scripts/desk.mjs letter '<json LetterInput>'
 //   node scripts/desk.mjs checkup '<json CheckupInput>'
+//   node scripts/desk.mjs memo '<json MemoInput>'
 import { KR_DESKS, KR_DESKS_AS_OF, deskById, findDesks } from "./kr-desks-2026.mjs";
 import { EXPERTS, findExpertNeeds, expertById } from "./expert-visit-2026.mjs";
 import { LETTER_TYPES, buildDemandLetter } from "./demand-letter-2026.mjs";
 import { householdCheckup } from "./household-checkup-2026.mjs";
+import { buildConsultMemo } from "./consult-memo-2026.mjs";
 
 const T = "https://tools.oiyo.net";
 const link = (t) => ({ ...t, url: `${T}${t.href}` });
@@ -23,11 +25,12 @@ export function run(cmd, arg, kind) {
   if (cmd === "expert-show") { const e = expertById(arg ?? ""); return e ? fullExpert(e) : null; }
   if (cmd === "letter") return arg ? buildDemandLetter(JSON.parse(arg)) : LETTER_TYPES;
   if (cmd === "checkup") return arg ? householdCheckup(JSON.parse(arg)) : null;
+  if (cmd === "memo") return arg ? buildConsultMemo(JSON.parse(arg)) : null;
   return null;
 }
 if (process.argv[1] && process.argv[1].endsWith("desk.mjs")) {
   const [cmd, arg, kind] = process.argv.slice(2);
   const result = run(cmd, arg, kind);
-  if (result === null) { console.error("usage: node scripts/desk.mjs list | find '<question>' [job|event] | show <id> | expert ['<question>'] | expert-show <id> | letter ['<json>'] | checkup '<json>'"); process.exit(2); }
+  if (result === null) { console.error("usage: node scripts/desk.mjs list | find '<question>' [job|event] | show <id> | expert ['<question>'] | expert-show <id> | letter ['<json>'] | checkup '<json>' | memo '<json>'"); process.exit(2); }
   console.log(JSON.stringify({ asOf: KR_DESKS_AS_OF, note: "General information only; no filing, tax or legal advice.", result }, null, 2));
 }
