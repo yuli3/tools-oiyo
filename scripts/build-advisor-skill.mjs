@@ -9,7 +9,9 @@ import { fileURLToPath } from "node:url";
 import { stripTypeScriptTypes } from "node:module";
 import { execFileSync } from "node:child_process";
 
-export const SKILL_LIBS = ["kr-vat-2026", "kr-payroll-2026", "kr-advisory-2026", "kr-business-day", "bookkeeping-bridge-2026", "kr-incorporation-2026", "kr-corp-tax-2026", "kr-tax-penalty-2026", "kr-accounting-schedules-2026", "kr-vat-credits-2026", "kr-audit-deferred-2026", "kr-nts-pack-2026"];
+export const SKILL_LIBS = ["kr-vat-2026", "kr-payroll-2026", "kr-advisory-2026", "kr-business-day", "bookkeeping-bridge-2026", "kr-incorporation-2026", "kr-corp-tax-2026", "kr-tax-penalty-2026", "kr-accounting-schedules-2026", "kr-vat-credits-2026", "kr-audit-deferred-2026", "kr-nts-pack-2026", "kr-withholding-table-2026", "kr-payroll-month-2026", "kr-year-end-2026", "kr-midyear-leaver-2026"];
+// Plain .mjs libs copied as they are (already JavaScript).
+export const SKILL_MJS = ["kr-rates-2026"];
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 export const SKILL_DIR = resolve(root, "skills/kr-tax-advisor");
 
@@ -19,8 +21,13 @@ export function renderSkillLib(name) {
   return `// GENERATED from tools-oiyo src/lib/${name}.ts by scripts/build-advisor-skill.mjs. Do not edit here.\n${code}`;
 }
 
+export function renderSkillMjs(name) {
+  return readFileSync(resolve(root, "src/lib", `${name}.mjs`), "utf8");
+}
+
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   for (const name of SKILL_LIBS) writeFileSync(resolve(SKILL_DIR, "scripts", `${name}.mjs`), renderSkillLib(name));
+  for (const name of SKILL_MJS) writeFileSync(resolve(SKILL_DIR, "scripts", `${name}.mjs`), renderSkillMjs(name));
   const out = resolve(root, "public/downloads/oiyo-kr-tax-advisor-skill.zip");
   mkdirSync(dirname(out), { recursive: true });
   rmSync(out, { force: true });

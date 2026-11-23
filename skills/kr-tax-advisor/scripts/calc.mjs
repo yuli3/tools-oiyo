@@ -7,6 +7,8 @@ import { depreciation, leaseSchedule, bondSchedule, externalAuditCheck, ACCT_NOT
 import { deferredTax, materiality, musSample, attributeSample, AUDIT_DEFERRED_NOTE, AUDIT_DEFERRED_AS_OF } from "./kr-audit-deferred-2026.mjs";
 import { withholdingStatement, studentLoanRepayment, bookVsEstimate, exemptBusinessReport, pensionIncomeChoice, NTS_PACK_NOTE, NTS_PACK_AS_OF } from "./kr-nts-pack-2026.mjs";
 import { corpTax, entertainmentLimit, CORP_TAX_AS_OF, CORP_TAX_NOTE } from "./kr-corp-tax-2026.mjs";
+import { simplifiedWithholding, joinLeaveMonths, PAYROLL_MONTH_AS_OF } from "./kr-payroll-month-2026.mjs";
+import { midYearLeaver, LEAVER_AS_OF } from "./kr-midyear-leaver-2026.mjs";
 import { valueUnlistedShares, familyBusinessInheritance, incorporationConversion, dcfValuation, dcfSensitivity, wacc, ADVISORY_AS_OF } from "./kr-advisory-2026.mjs";
 
 const EXAMPLES = {
@@ -32,6 +34,9 @@ const EXAMPLES = {
   "book-vs-estimate": { group: "personal", prevRevenue: 30000000, revenue: 50000000, newBusiness: false, actualExpense: 10000000, simpleRate: 64.1, simpleRateOver: 49.7, standardRate: 21.6, majorExpense: 3000000, otherIncome: 0, people: 1 },
   "exempt-report": { year: 2026, kind: "personal", vatFiledAll: false, mixed: false, unreported: 0 },
   "pension-income": { privatePension: 20000000, age: 66, lifelong: false, publicPension: 12000000, otherIncome: 0, people: 1 },
+  "withholding-table": { pay: 3500000, family: 4, children: 2, ratio: 100 },
+  "join-leave": { join: "2026-03-15", leave: "", monthlyPay: 3000000, pensionFromJoinMonth: false, untilMonth: "" },
+  leaver: { year: 2026, salaryToDate: 24000000, withheld: 600000, nationalPension: 1140000, healthEmployment: 1080000, extra: { persons: 1, card: { credit: 0, debit: 0 }, medical: 0, education: 0, donation: 0, rent: 0, rentEligible: false, pensionSavings: 0 } },
   wacc: { riskFree: 0.03, beta: 1.1, marketPremium: 0.06, sizePremium: 0.03, preTaxCostOfDebt: 0.055, taxRate: 0.22, debtWeight: 0.3 },
 };
 
@@ -65,5 +70,8 @@ else if (tool === "book-vs-estimate") result = { ...bookVsEstimate(input), note:
 else if (tool === "exempt-report") result = { ...exemptBusinessReport({ ...input, today: new Date().toISOString().slice(0, 10) }), note: NTS_PACK_NOTE, asOf: NTS_PACK_AS_OF };
 else if (tool === "pension-income") result = { ...pensionIncomeChoice(input), note: NTS_PACK_NOTE, asOf: NTS_PACK_AS_OF };
 else if (tool === "audit") result = { ...externalAuditCheck(input), note: ACCT_NOTE, acctAsOf: ACCT_AS_OF };
+else if (tool === "withholding-table") result = { ...simplifiedWithholding(input), note: "소득세법 시행령 [별표 2] 근로소득 간이세액표(2026.2.27 개정). 10원 미만 버림. 지방소득세 10%. 자녀 차감 적용 시기와 77만 원 미만 처리는 원문 미확인.", asOf: PAYROLL_MONTH_AS_OF };
+else if (tool === "join-leave") result = { ...joinLeaveMonths({ ...input, leave: input.leave || undefined, untilMonth: input.untilMonth || undefined }), note: "취득 다음 달부터 상실일 전날이 속한 달까지(1일 취득은 그 달부터). 국민연금은 희망하면 입사 달부터. 퇴사 달 고용보험은 실제 보수로 정산이라 금액을 더하지 않음(확인 필요).", asOf: PAYROLL_MONTH_AS_OF };
+else if (tool === "leaver") result = { ...midYearLeaver(input), note: "퇴사 때 회사 정산(본인 기본공제·4대보험·표준세액공제)과 다음 해 5월 종합소득세 신고를 비교한 어림. 같은 해 재취업하면 새 회사가 합산 정산.", asOf: LEAVER_AS_OF };
 else result = wacc(input);
 console.log(JSON.stringify({ tool, asOf: ADVISORY_AS_OF, isEstimate: true, input, result }, null, 2));
