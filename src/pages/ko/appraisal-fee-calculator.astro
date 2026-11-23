@@ -1,0 +1,30 @@
+---
+// 감정평가 수수료 계산기 (2026-11-24, 상담자 니즈: "감정평가사 수수료 계산기", "감정평가사 비용"). 계산: lib/kr-expert-fees-2026.ts
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import AppraisalFee from "../../components/tools/office/AppraisalFee";
+
+const title = "감정평가 수수료 계산기 2026 — 감정평가액별 하한·기준·상한";
+const description = "국토교통부 「감정평가법인등의 보수에 관한 기준」(2026. 2. 9.) 별표 그대로 감정평가액 구간별 수수료를 0.8~1.2배 범위로 계산해요. 착수금, 물건조사비, 10호 이상 공동주택 할인, 할증 대상, 철회 때 보수까지.";
+const shell = {
+  introTitle: "상속·증여·소송 전에 감정평가 비용부터 봐요",
+  intro: "상속세를 시가로 신고하거나, 경매·소송에서 가격을 다툴 때 감정평가를 받아요. 감정평가 보수는 국토교통부가 정한 기준을 따르고, 수수료는 감정평가액 구간마다 정해진 요율로 계산한 금액의 0.8배에서 1.2배 사이에서 협의해요. 이 계산기는 별표 표를 그대로 옮겼어요.",
+  howToTitle: "이렇게 써요",
+  steps: ["예상 감정평가액을 넣어요. 여러 물건을 한꺼번에 맡기면 총액을 넣어요.", "건물이 있으면 동 수를 넣어 물건조사비를 봐요.", "공동주택 10호 이상이거나 특수평가에 해당하면 골라요.", "하한·기준·상한 수수료 범위를 보고 견적과 비교해요."],
+  highlightsTitle: "원문 기준",
+  highlights: [
+    { title: "구간 요율", body: "5천만원 이하 25만원, 5억원까지 초과액의 1만분의 11, 10억원까지 1만분의 9 … 1조원 초과 1만분의 1. 5억원이면 기준 745,000원이에요." },
+    { title: "착수금·철회", body: "착수금은 예정액 수수료의 2분의 1까지. 감정평가법인 사정으로 반려하면 착수금의 1.5배를 돌려줘요." },
+    { title: "할증·할인", body: "법원 소송평가, 6개월 넘게 과거 시점 기준 평가 등은 할증 대상(최저 375,000원). 비슷한 공동주택 10호 이상은 20% 할인(최저 250,000원)." },
+  ],
+  disclaimer: "별표 수수료 범위만 계산해요. 여비 금액표, 할증 후 금액, 보상평가 특례(제7조), 부가가치세는 계산하지 않아요. 실제 보수는 감정평가법인이 착수 전에 고지하는 견적을 확인하세요.",
+};
+const faqs = [
+  { q: "수수료는 왜 범위로 나와요?", a: "별표가 구간별 기준 수수료와 함께 0.8배(하한)부터 1.2배(상한)까지를 정하고, 착수 전에 의뢰인과 요율을 협의하게 해요(제2조③)." },
+  { q: "상속세 신고 때 감정평가 수수료도 빼 주나요?", a: "상속세 신고용 감정평가 수수료는 500만원까지 상속재산에서 공제해요. 상속주택 감정평가 vs 공시가격 비교 도구에서 함께 볼 수 있어요." },
+  { q: "상담만 받아도 돈을 내나요?", a: "감정평가 관련 상담·자문은 구두·전화 1건 3만원, 서면 1건 10만원 범위에서 합의해 정해요(제11조)." },
+];
+---
+<KrFinancePage slug="appraisal-fee-calculator" locale="ko" title={title} description={description} shell={shell} faqs={faqs} koOnly group="money">
+  <AppraisalFee client:load />
+  <p class="mt-4 text-sm text-muted-foreground">관련: <a class="underline underline-offset-4" href="/ko/inherited-house-appraisal-vs-official-price-calculator/">상속주택 감정평가 vs 공시가격</a> · <a class="underline underline-offset-4" href="/ko/appraisal-compensation-calculator/">수용 보상 계산기</a> · <a class="underline underline-offset-4" href="/ko/pro-office/#KR/realty">실무 오피스 부동산실</a></p>
+</KrFinancePage>

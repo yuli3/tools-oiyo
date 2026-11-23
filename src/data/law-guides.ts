@@ -36,6 +36,8 @@ export const lawGuides: { slug: string; domain?: DomainId; title: string; descri
   { slug: "insurance-sales-compliance-checker", title: "보험 사은품 한도·승환 점검기", description: "월 보험료와 사은품 가액, 기존·신규 계약 날짜로 특별이익 한도(10%와 20만 원 중 적은 금액)와 승환계약 간주(1개월·6개월)를 판정해요. 설계사·대리점용." },
   { slug: "free-expert-representation-check", title: "무료 전문가 대리 자격 확인", description: "노동위원회 무료 대리(월평균임금 300만원 미만)와 국세 국선대리인(종합소득 5천만·재산 5억·청구 5천만 이하, 상속·증여·종부세 제외) 요건을 원문 숫자로 대조." },
   { slug: "capital-gains-necessary-expenses-check", title: "양도소득세 필요경비 점검", description: "중개보수·취득세·자본적 지출·명도비 등이 소득세법 시행령 제163조 필요경비 목록에 있는지 골라서 확인." },
+  { slug: "appraisal-fee-calculator", title: "감정평가 수수료 계산기 2026", description: "감정평가법인등의 보수에 관한 기준(2026. 2. 9.) 별표 구간 요율로 하한·기준·상한 수수료, 착수금, 물건조사비, 공동주택 할인·할증 대상." },
+  { slug: "legal-aid-eligibility-check", title: "법률구조공단 소송지원 대상 확인", description: "2026 기준 중위소득 125%·150%, 체불 근로자 평균 임금 400만원 미만, 소상공인 연매출 3억원 이하, 소득 제한 없는 대상까지 공단 대상자 안내로 대조." },
   { slug: "simplified-withholding-tax-calculator", title: "근로소득 간이세액표 계산기 2026", description: "별표2(2026. 2. 27. 개정) 표 그대로 월급여액·가족 수별 원천징수 소득세, 8~20세 자녀 차감, 80·100·120%, 1천만 원 초과 산식." },
   { slug: "join-leave-month-insurance-calculator", title: "입사·퇴사 달 4대보험료 계산기", description: "입사일·마지막 근무일로 연금·건강·장기요양·고용보험이 붙는 첫 달과 마지막 달, 달별 근로자 부담액." },
   { slug: "midyear-leaver-year-end-settlement", title: "중도퇴사자 연말정산 계산기", description: "퇴사할 때 회사가 한 연말정산과 다음 해 5월 종합소득세 신고로 부양가족·카드·의료비·월세를 더했을 때 환급액을 비교해요." },
