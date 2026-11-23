@@ -5,6 +5,7 @@ import ToolShell from './ToolShell.astro';
 import Layout from './Layout.astro';
 import UtilityArticle, { type UtilityContent } from './UtilityArticle.astro';
 import RelatedUtilities from './RelatedUtilities.astro';
+import KrSkillLink from './KrSkillLink.astro';
 import { locales, type Locale } from '../lib/i18n';
 import type { UtilityGroup } from '../data/utility-catalog';
 import { utilityJsonLd } from '../lib/utility-jsonld';
@@ -30,6 +31,7 @@ const schema = c ? ld : ld.slice(0, 1);
   <ToolShell title={title} description={description}>
     <slot />
     {note && <p class="text-xs text-muted-foreground">{note}</p>}
+    {locale === 'ko' && <KrSkillLink slug={slug} />}
     {c && <UtilityArticle c={c} />}
     <RelatedUtilities locale={locale} current={slug} group={group} />
   </ToolShell>
