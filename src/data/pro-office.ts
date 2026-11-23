@@ -7,7 +7,7 @@ import { lawGuides } from "./law-guides.ts";
 import { HELP, WORLD_TOOLS, type Area, type Country } from "../lib/world-law-intake-2026.ts";
 
 export const OFFICE_AS_OF = "2026-11-23";
-export type RoomId = "tax" | "labor" | "admin" | "legal" | "plan";
+export type RoomId = "tax" | "labor" | "admin" | "legal" | "trade" | "plan";
 export type OfficeLocale = "ko" | "en" | "ja" | "fr" | "es" | "zh";
 export type FloorId = "KR" | Country | "CA" | "AU";
 export type OfficeTool = { href: string; title: string; who: "pro" | "public"; mcp?: string };
@@ -15,16 +15,17 @@ export type OfficeSkill = { id: string; zip: string };
 export type Room = { id: RoomId; tools: OfficeTool[]; skills: OfficeSkill[]; help: string[]; gaps: number };
 export type Floor = { id: FloorId; flag: string; mcp: string; rooms: Room[] };
 
-export const ROOMS: RoomId[] = ["tax", "labor", "admin", "legal", "plan"];
+export const ROOMS: RoomId[] = ["tax", "labor", "admin", "legal", "trade", "plan"];
 const zip = (dir: string) => `/downloads/${dir === "kr-tax-advisor" ? "oiyo-kr-tax-advisor" : dir}-skill.zip`;
 
 // ── 한국 본관: 직업 → 방 ──
-const KR_JOBS: Record<Exclude<RoomId, "plan">, JobId[]> = { tax: ["tax", "cpa"], labor: ["labor", "safety"], admin: ["admin", "customs", "broker", "architect"], legal: ["court", "family", "patent"] };
+const KR_JOBS: Record<Exclude<RoomId, "plan">, JobId[]> = { tax: ["tax", "cpa"], labor: ["labor", "safety"], admin: ["admin", "broker", "architect"], legal: ["court", "family", "patent"], trade: ["customs"] };
 const KR_HELP: Record<Exclude<RoomId, "plan">, string[]> = {
   tax: ["국세상담센터 126", "홈택스 상담·전자신고"],
   labor: ["고용노동부 고객상담센터 1350", "근로복지공단 1588-0075"],
   admin: ["정부민원안내콜센터 110", "정부24 민원"],
   legal: ["대한법률구조공단 132", "법원 전자소송·인터넷등기소"],
+  trade: [],
 };
 // 사무소에서 만든 보충 도구(상담 실무용). 맨 앞에 보여요.
 const KR_OFFICE_TOOLS: Partial<Record<RoomId, OfficeTool[]>> = {
@@ -49,12 +50,12 @@ function krRoom(id: Exclude<RoomId, "plan">): Room {
 }
 
 // ── 해외 층: 분야(area) → 방 ──
-const AREA_ROOM: Record<Area, Exclude<RoomId, "plan">> = { tax: "tax", labor: "labor", tenancy: "admin", consumer: "admin", claims: "legal" };
+const AREA_ROOM: Record<Area, Exclude<RoomId, "plan" | "trade">> = { tax: "tax", labor: "labor", tenancy: "admin", consumer: "admin", claims: "legal" };
 const COUNTRY_TAX_SKILL: Partial<Record<FloorId, string[]>> = {
   JP: ["oiyo-jp-tax-guide"], US: ["oiyo-us-tax-guide"], FR: ["oiyo-fr-tax-guide"], ES: ["oiyo-es-tax-guide"], CN: ["oiyo-cn-tax-guide"], UK: ["oiyo-uk-tax-guide"], TW: ["oiyo-tw-tax-guide"], DE: ["oiyo-de-guide"], SG: ["oiyo-sg-guide"],
 };
 // Which countries each world skill really covers (from each SKILL.md description, 2026-11-23). A skill shows only on floors it covers.
-const WORLD_ROOM_SKILLS: Record<Exclude<RoomId, "plan">, [string, FloorId[]][]> = {
+const WORLD_ROOM_SKILLS: Record<Exclude<RoomId, "plan" | "trade">, [string, FloorId[]][]> = {
   tax: [["oiyo-world-tax-season-guide", ["US", "JP", "CA", "AU"]], ["oiyo-world-take-home-guide", ["JP", "UK", "US", "FR", "ES"]], ["oiyo-world-withholding-guide", ["JP", "US", "FR", "ES", "TW", "DE"]], ["oiyo-world-corporate-tax-guide", ["JP", "UK", "US", "FR", "ES", "DE"]], ["oiyo-small-business-vat-guide", ["DE", "SG"]], ["oiyo-world-einvoice-guide", ["FR", "JP", "ES"]], ["oiyo-world-tax-residency-guide", ["US", "UK", "ES", "TW", "JP", "FR"]], ["oiyo-world-company-calendar", ["JP", "UK", "US", "FR"]]],
   labor: [["oiyo-world-labor-guide", ["JP", "UK", "US", "FR", "ES", "CN", "TW"]], ["oiyo-labor-practice-guide", ["JP", "UK"]], ["oiyo-world-employer-cost-guide", ["JP", "UK", "US", "ES"]], ["oiyo-world-parental-pay-guide", ["UK", "JP", "DE"]]],
   admin: [["oiyo-world-tenancy-guide", ["JP", "UK", "US", "FR", "ES", "CN", "TW"]], ["oiyo-world-consumer-guide", ["JP", "UK", "FR", "ES", "CN", "TW", "US"]], ["oiyo-world-home-purchase-guide", ["UK", "JP", "FR", "ES", "CN"]]],
@@ -73,10 +74,10 @@ const EXTRA: Record<"CA" | "AU", OfficeTool[]> = {
     { href: "/en/australia-annual-leave-accrual-calculator/", title: "Annual leave accrual", who: "public" },
   ],
 };
-const EXTRA_ROOM: Record<string, Exclude<RoomId, "plan">> = { "canada-mortgage-stress-test-calculator": "admin", "canada-federal-vacation-calculator": "labor", "canada-federal-holiday-pay-calculator": "labor", "australia-job-offer-comparison": "labor", "australia-annual-leave-accrual-calculator": "labor" };
+const EXTRA_ROOM: Record<string, Exclude<RoomId, "plan" | "trade">> = { "canada-mortgage-stress-test-calculator": "admin", "canada-federal-vacation-calculator": "labor", "canada-federal-holiday-pay-calculator": "labor", "australia-job-offer-comparison": "labor", "australia-annual-leave-accrual-calculator": "labor" };
 const rel = (url: string) => url.replace("https://tools.oiyo.net", "");
 // 나라별 페이지 중 WORLD_TOOLS 목록에 빠져 어느 방에도 안 보이던 것(2026-11-23 점검, 21개). 새 계산 없음, 연결만 해요.
-const WORLD_EXTRA: Partial<Record<FloorId, Partial<Record<Exclude<RoomId, "plan">, OfficeTool[]>>>> = {
+const WORLD_EXTRA: Partial<Record<FloorId, Partial<Record<Exclude<RoomId, "plan" | "trade">, OfficeTool[]>>>> = {
   CN: { tax: [{ href: "/zh/china-tax-agent-scope/", title: "谁可以代办涉税业务？涉税专业服务与免费办税渠道", who: "public" }] },
   DE: { labor: [
     { href: "/de/germany-annual-leave-minimum/", title: "Gesetzlicher Mindesturlaub bei fester Arbeitswoche", who: "public" },
@@ -116,7 +117,7 @@ const WORLD_EXTRA: Partial<Record<FloorId, Partial<Record<Exclude<RoomId, "plan"
   },
 };
 export const WORLD_EXTRA_TOOLS = WORLD_EXTRA;
-function worldRoom(fl: FloorId, id: Exclude<RoomId, "plan">): Room {
+function worldRoom(fl: FloorId, id: Exclude<RoomId, "plan" | "trade">): Room {
   let tools: OfficeTool[];
   let help: string[] = [];
   if (fl === "CA" || fl === "AU") {
@@ -132,6 +133,24 @@ function worldRoom(fl: FloorId, id: Exclude<RoomId, "plan">): Room {
   tools = [...tools, ...extra];
   const skills = [...(id === "tax" ? COUNTRY_TAX_SKILL[fl] ?? [] : []), ...WORLD_ROOM_SKILLS[id].filter(([, c]) => c.includes(fl)).map(([s]) => s), ...(id === "tax" && fl !== "CA" && fl !== "AU" ? ["oiyo-world-law-intake"] : [])].map((s) => ({ id: s, zip: zip(s) }));
   return { id, tools, skills, help, gaps: 0 };
+}
+
+// ── 통관·무역실 (2026-11-23, 세운 요청: 다른 직업·사무소) ──
+// 한국 본관은 관세(customs) 직업 도구를 이 방으로 옮겼어요. 해외 층은 소액 수입(직구·소포) 면세·과세 기준을
+// 공식 원문으로 확인한 나라만 열어요(일본·영국·캐나다). 미국·EU·싱가포르·대만·호주·중국은 원문 미확인이라 비워 둬요.
+// 관세 분류·통관 대리·세율 계산은 하지 않아요.
+const TRADE_TOOLS: Partial<Record<FloorId, OfficeTool[]>> = {
+  JP: [{ href: "/ja/japan-import-10000-yen-duty-free/", title: "個人輸入1万円以下の免税チェック", who: "public" }],
+  UK: [{ href: "/en/uk-parcel-import-vat-duty-135/", title: "Parcel from abroad: VAT and duty check", who: "public" }],
+  CA: [{ href: "/en/canada-mail-import-20-exemption/", title: "Mail import: $20 exemption check", who: "public" }],
+};
+const TRADE_HELP: Partial<Record<FloorId, string[]>> = {
+  JP: ["税関 カスタムスアンサー"],
+  UK: ["GOV.UK Trade Tariff"],
+};
+export const TRADE_FLOOR_TOOLS = TRADE_TOOLS;
+function tradeRoom(fl: FloorId): Room {
+  return { id: "trade", tools: TRADE_TOOLS[fl] ?? [], skills: [], help: TRADE_HELP[fl] ?? [], gaps: 0 };
 }
 
 // ── 재무설계실 (2026-11-23, 세운 요청: 재무설계 전문가도 나라별로) ──
@@ -238,7 +257,7 @@ function planRoom(fl: FloorId): Room {
 export const FLAGS: Record<FloorId, string> = { KR: "🇰🇷", JP: "🇯🇵", US: "🇺🇸", UK: "🇬🇧", FR: "🇫🇷", ES: "🇪🇸", CN: "🇨🇳", TW: "🇹🇼", DE: "🇩🇪", SG: "🇸🇬", CA: "🇨🇦", AU: "🇦🇺" };
 const MCP = "https://api.oiyo.net/mcp";
 export function floor(id: FloorId): Floor {
-  return { id, flag: FLAGS[id], mcp: id === "KR" ? MCP : `${MCP}/world`, rooms: ROOMS.map((r) => (r === "plan" ? planRoom(id) : id === "KR" ? krRoom(r) : worldRoom(id, r))) };
+  return { id, flag: FLAGS[id], mcp: id === "KR" ? MCP : `${MCP}/world`, rooms: ROOMS.map((r) => (r === "plan" ? planRoom(id) : id === "KR" ? krRoom(r) : r === "trade" ? tradeRoom(id) : worldRoom(id, r))) };
 }
 export const FLOOR_ORDER: Record<OfficeLocale, FloorId[]> = {
   ko: ["KR", "JP", "US", "CN", "TW", "UK", "DE", "FR", "ES", "SG", "CA", "AU"],

@@ -7,7 +7,7 @@ import { track } from "../viz/track";
 
 type Who = "all" | "public" | "pro";
 type Props = { locale: OfficeLocale; floors: Floor[]; copy: OfficeCopy; asOf: string };
-const ROOM_ICON: Record<RoomId, string> = { tax: "🧾", labor: "🤝", admin: "🏠", legal: "⚖️", plan: "📈" };
+const ROOM_ICON: Record<RoomId, string> = { tax: "🧾", labor: "🤝", admin: "🏠", legal: "⚖️", trade: "📦", plan: "📈" };
 const PIN_KEY = "oiyo-office-pins";
 const load = (): string[] => { try { return JSON.parse(localStorage.getItem(PIN_KEY) || "[]"); } catch { return []; } };
 
@@ -27,7 +27,7 @@ export default function ProOffice({ locale, floors, copy: t, asOf }: Props) {
     setTicket(100 + Math.floor(Math.random() * 900));
     setPins(load());
     const [f, r] = decodeURIComponent(location.hash.slice(1)).split("/");
-    if (floors.some((x) => x.id === f)) { setFloorId(f as FloorId); setBoard(false); if (["tax", "labor", "admin", "legal", "plan"].includes(r)) setRoomId(r as RoomId); }
+    if (floors.some((x) => x.id === f)) { setFloorId(f as FloorId); setBoard(false); if (["tax", "labor", "admin", "legal", "trade", "plan"].includes(r)) setRoomId(r as RoomId); }
   }, [floors]);
   const go = (f: FloorId | null, r: RoomId | null = null) => {
     setFloorId(f); setRoomId(r); setChecked({}); setUsed({}); setBoard(!f);

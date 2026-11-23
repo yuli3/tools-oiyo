@@ -1,0 +1,51 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/trade/SmallParcel';
+// Small-parcel import tax check (2026-11-23, practice office trade room). Engine: lib/small-parcel-import-2026.ts
+const c = {
+  "introTitle": "個人輸入・海外通販の1万円以下免税",
+  "intro": "課税価格の合計が1万円以下の輸入品は、関税と消費税が免税になります。お酒やたばこの酒税・たばこ税など、消費税以外の内国消費税は免税になりません。",
+  "formulaTitle": "使っているルール",
+  "formulas": [
+    {
+      "title": "1万円以下",
+      "body": "1申告の課税価格の合計が1万円以下なら関税・消費税は免税。"
+    },
+    {
+      "title": "分割しても合計",
+      "body": "1インボイスの貨物を分けて申告しても、インボイス全体で判断します。"
+    },
+    {
+      "title": "例外",
+      "body": "特に定められた物品は1万円以下でも免税になりません（個人使用の贈与品は例外あり）。"
+    }
+  ],
+  "howToTitle": "使い方",
+  "steps": [
+    "課税価格の合計を入れます。",
+    "お酒・たばこが含まれるか選びます。",
+    "免税になるかを確認します。"
+  ],
+  "faqTitle": "よくある質問",
+  "faqs": [
+    {
+      "question": "1万円を超えたら税額はいくら？",
+      "answer": "関税率は品目と原産地で違うので、ここでは計算しません。税関の実行関税率表で確認してください。"
+    },
+    {
+      "question": "入力内容は保存されますか？",
+      "answer": "いいえ。ブラウザの外に送られません。"
+    }
+  ],
+  "disclaimer": "一般的な情報です。通関手続の代理や関税分類ではありません。"
+};
+const sources: [string, string][] = [
+  [
+    "税関 カスタムスアンサー1006 課税価格の合計額が1万円以下の物品の免税適用",
+    "https://www.customs.go.jp/tetsuzuki/c-answer/imtsukan/1006_jr.htm"
+  ]
+];
+---
+<DebtReliefPage slug="japan-import-10000-yen-duty-free" c={c} sources={sources} sourcesTitle="出典" checked="税関 2026-11-23 確認">
+  <T client:load country="jp" />
+</DebtReliefPage>

@@ -1,0 +1,46 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/trade/SmallParcel';
+// Small-parcel import tax check (2026-11-23, practice office trade room). Engine: lib/small-parcel-import-2026.ts
+const c = {
+  "introTitle": "Canada mail imports: the $20 exemption",
+  "intro": "Duties and taxes apply to international items imported by mail that exceed the $20 exemption. If you owe anything, it is shown on Form E14 attached to the item, and Canada Post charges a handling fee.",
+  "formulaTitle": "Rules used",
+  "formulas": [
+    {
+      "title": "$20",
+      "body": "Mail items worth $20 or less: no duty or tax."
+    },
+    {
+      "title": "Over $20",
+      "body": "Duty and/or taxes apply, shown on Form E14 (CBSA Postal Import Form)."
+    }
+  ],
+  "howToTitle": "How to use it",
+  "steps": [
+    "Enter the value of the item sent by mail.",
+    "See whether the $20 exemption applies."
+  ],
+  "faqTitle": "FAQ",
+  "faqs": [
+    {
+      "question": "What about courier shipments?",
+      "answer": "Courier and CUSMA thresholds are not covered here because we have not checked them."
+    },
+    {
+      "question": "Is what I type saved?",
+      "answer": "No. It stays in your browser."
+    }
+  ],
+  "disclaimer": "General information only, not a customs ruling."
+};
+const sources: [string, string][] = [
+  [
+    "CBSA Importing by mail",
+    "https://www.cbsa-asfc.gc.ca/import/personal-personnel/postal-postale-eng.html"
+  ]
+];
+---
+<DebtReliefPage slug="canada-mail-import-20-exemption" c={c} sources={sources} sourcesTitle="Sources" checked="CBSA checked 2026-11-23">
+  <T client:load country="ca" />
+</DebtReliefPage>
