@@ -13,6 +13,8 @@ export default defineConfig({
   output: "static",
   integrations: [
     sitemap({
+      // 블로그용 위젯(/ko/embed/)은 noindex라 사이트맵에서 빼요.
+      filter: (page) => !page.includes("/embed/"),
       serialize(item) {
         const d = lastmodFor(new URL(item.url).pathname, PAGE_DATES);
         return d ? { ...item, lastmod: d } : item;

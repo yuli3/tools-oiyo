@@ -1,0 +1,9 @@
+---
+// 얼굴 비율 분석 (2026-11-22). 옛 ahoxy.com/face 수요를 받는 도구. 문구: src/data/small-utilities.ts
+import SmallUtilityPage from '../../components/SmallUtilityPage.astro';
+import Tool from '../../components/tools/FaceRatio';
+import {locales,type Locale} from '../../lib/i18n';
+export function getStaticPaths(){return locales.map(locale=>({params:{locale},props:{locale}}));}
+const {locale}=Astro.props as {locale:Locale};
+---
+<SmallUtilityPage slug="face-ratio" locale={locale}><Tool locale={locale} client:visible/></SmallUtilityPage>

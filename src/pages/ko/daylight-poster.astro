@@ -1,0 +1,113 @@
+---
+// 우리 동네 1년 낮 길이 포스터 (2026-11-22, 창의 제안 #6 데이터 아트). 365일 일출·일몰을 한 장 그림으로.
+// 계산: lib/daylight.ts(NOAA 근사, astronomy-engine 대비 2분 안). 그림은 브라우저에서 SVG로 그리고 PNG로 저장해요.
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import { KR_CITIES, yearDaylight, hhmm } from "../../lib/daylight.ts";
+
+const seoul = yearDaylight(KR_CITIES[0].lat, KR_CITIES[0].lon, 2027, 9);
+const longest = seoul.reduce((a, b) => (b.length! > a.length! ? b : a));
+const shortest = seoul.reduce((a, b) => (b.length! < a.length! ? b : a));
+const title = "2027 우리 동네 낮과 밤 포스터 — 365일 해 뜨고 지는 시간을 한 장에";
+const description = `서울·부산·제주 등 도시를 고르면 2027년 365일의 일출·일몰을 한 장의 그림으로 그려 줘요. 서울은 ${longest.date.slice(5).replace("-", "월 ")}일 낮이 ${hhmm(longest.length!)}로 가장 길어요. PNG로 저장해 배경화면이나 출력용으로 쓰세요.`;
+const shell = {
+  introTitle: "1년을 한 장으로 보면",
+  intro: "가로는 1월 1일부터 12월 31일까지 365일, 세로는 하루 24시간이에요. 금색은 해가 떠 있는 시간, 남색은 밤이에요. 여름엔 금색이 길게, 겨울엔 짧게 줄어드는 모양이 도시마다 조금씩 달라요. 남쪽 제주는 여름과 겨울 차이가 서울보다 작고, 동쪽 독도는 전체가 위로 올라가요(해가 더 일찍 떠요).",
+  howToTitle: "만드는 방법",
+  steps: ["도시를 골라요.", "그림이 바로 바뀌어요. 가장 긴 낮·짧은 낮이 아래에 나와요.", "'PNG로 저장'을 눌러 휴대폰 배경이나 출력용으로 써요."],
+  highlightsTitle: "서울의 2027년",
+  highlights: [
+    { title: "가장 긴 낮", body: `${longest.date} · ${hhmm(longest.length!)} (일출 ${hhmm(longest.rise!)}, 일몰 ${hhmm(longest.set!)})` },
+    { title: "가장 짧은 낮", body: `${shortest.date} · ${hhmm(shortest.length!)} (일출 ${hhmm(shortest.rise!)}, 일몰 ${hhmm(shortest.set!)})` },
+    { title: "차이", body: `여름과 겨울 낮 길이 차이는 약 ${hhmm(longest.length! - shortest.length!)}이에요.` },
+    { title: "계산 기준", body: "해발 0m, 해의 윗부분이 지평선에 닿는 순간(대기 굴절 포함), 한국 표준시예요. 서머타임은 없어요." },
+  ],
+  disclaimer: "천문 근사식으로 계산해 1~2분 차이가 날 수 있어요. 산이나 건물이 가리면 실제로 보이는 시각은 달라요.",
+};
+const faqs = [
+  { q: "왜 일출이 가장 이른 날과 낮이 가장 긴 날이 다른가요?", a: "지구 궤도가 타원이고 자전축이 기울어 있어서(균시차) 해가 남쪽에 오는 시각이 1년 내내 조금씩 움직여요. 그래서 일출이 가장 이른 날은 하지보다 1주쯤 앞서요." },
+  { q: "그림을 써도 되나요?", a: "개인 배경화면·출력·블로그 글에 자유롭게 쓰세요. 출처(tools.oiyo.net)를 남겨 주면 고마워요." },
+];
+const cities = KR_CITIES.map((c) => ({ id: c.id, name: c.name, lat: c.lat, lon: c.lon, tz: c.tz }));
+const btn = "inline-flex min-h-11 items-center justify-center rounded-md border border-border px-3 text-sm font-medium text-foreground hover:bg-muted focus-visible:outline-2 focus-visible:outline-ring";
+---
+<KrFinancePage slug="daylight-poster" locale="ko" title={title} description={description} shell={shell} faqs={faqs} koOnly group="time">
+  <div class="flex flex-wrap items-end gap-3">
+    <label class="text-sm font-semibold">도시
+      <select id="dl-city" class="mt-1 block min-h-11 rounded-md border border-input bg-background px-3 text-base text-foreground">
+        {cities.map((c) => <option value={c.id}>{c.name}</option>)}
+      </select>
+    </label>
+    <button type="button" id="dl-save" class={btn}>PNG로 저장</button>
+  </div>
+  <div id="dl-poster" class="mt-4 overflow-hidden rounded-lg border border-border" role="img" aria-label="2027년 365일 일출·일몰 그림"></div>
+  <p id="dl-stats" aria-live="polite" class="mt-3 text-sm text-foreground"></p>
+  <p class="mt-4 text-xs text-muted-foreground">함께 보기: <a class="underline" href="/ko/calendar-subscribe/">24절기·공휴일 구독형 달력</a> · <a class="underline" href="https://oiyo.net/ko/sunrise-2027/">2027 새해 첫 일출 시간</a></p>
+  <script define:vars={{ cities }}>
+    window.__DL_CITIES = cities;
+  </script>
+  <script>
+    import { yearDaylight, hhmm } from "../../lib/daylight.ts";
+    type C = { id: string; name: string; lat: number; lon: number; tz: number };
+    const cities = (window as unknown as { __DL_CITIES: C[] }).__DL_CITIES;
+    const sel = document.getElementById("dl-city") as HTMLSelectElement;
+    const box = document.getElementById("dl-poster")!;
+    const stats = document.getElementById("dl-stats")!;
+    const W = 1080, H = 1350, X0 = 90, Y0 = 250, PW = 900, PH = 900;
+    const MONTHS = ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"];
+    let svgText = "";
+    function draw() {
+      const c = cities.find((x) => x.id === sel.value) ?? cities[0];
+      const days = yearDaylight(c.lat, c.lon, 2027, c.tz);
+      const cw = PW / days.length;
+      const y = (min: number) => Y0 + (min / 1440) * PH;
+      let bars = "";
+      days.forEach((d, i) => {
+        if (d.rise == null || d.set == null) return;
+        bars += `<rect x="${(X0 + i * cw).toFixed(2)}" y="${y(d.rise).toFixed(1)}" width="${(cw + 0.4).toFixed(2)}" height="${(y(d.set) - y(d.rise)).toFixed(1)}" fill="url(#g)"/>`;
+      });
+      let grid = "";
+      for (const h of [0, 6, 12, 18, 24]) grid += `<line x1="${X0}" x2="${X0 + PW}" y1="${y(h * 60)}" y2="${y(h * 60)}" stroke="#ffffff" stroke-opacity="0.18"/><text x="${X0 - 12}" y="${y(h * 60) + 6}" text-anchor="end" font-size="20" fill="#cbd5e1">${h}시</text>`;
+      let mon = 0;
+      days.forEach((d, i) => { if (d.date.endsWith("-01")) { grid += `<text x="${X0 + i * cw + 4}" y="${Y0 + PH + 34}" font-size="20" fill="#cbd5e1">${MONTHS[mon++]}</text>`; } });
+      const longest = days.reduce((a, b) => (b.length! > a.length! ? b : a));
+      const shortest = days.reduce((a, b) => (b.length! < a.length! ? b : a));
+      const li = days.indexOf(longest), si = days.indexOf(shortest);
+      const mark = (i: number, label: string, top: number) => `<line x1="${X0 + i * cw}" x2="${X0 + i * cw}" y1="${Y0 - 10}" y2="${Y0 + PH}" stroke="#fde68a" stroke-dasharray="4 6"/><text x="${Math.min(X0 + i * cw, X0 + PW - 10)}" y="${top}" text-anchor="${i > 300 ? "end" : "middle"}" font-size="22" fill="#fde68a">${label}</text>`;
+      svgText = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="100%" font-family="system-ui, sans-serif">
+<defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fbbf24"/><stop offset="0.5" stop-color="#fde68a"/><stop offset="1" stop-color="#f97316"/></linearGradient></defs>
+<rect width="${W}" height="${H}" fill="#0f172a"/>
+<text x="${X0}" y="110" font-size="56" font-weight="800" fill="#f8fafc">${c.name}의 2027년</text>
+<text x="${X0}" y="160" font-size="28" fill="#cbd5e1">365일, 해가 떠 있는 시간</text>
+<rect x="${X0}" y="${Y0}" width="${PW}" height="${PH}" fill="#1e293b"/>
+${bars}${grid}
+${mark(li, `가장 긴 낮 ${hhmm(longest.length!)}`, Y0 - 18)}${mark(si, `가장 짧은 낮 ${hhmm(shortest.length!)}`, Y0 - 18)}
+<text x="${X0}" y="${H - 60}" font-size="20" fill="#94a3b8">일출·일몰 천문 계산 (해발 0m, 표준시) · tools.oiyo.net/ko/daylight-poster</text>
+</svg>`;
+      box.innerHTML = svgText;
+      stats.textContent = `${c.name}: 가장 긴 낮 ${longest.date} ${hhmm(longest.length!)}, 가장 짧은 낮 ${shortest.date} ${hhmm(shortest.length!)}. 차이 ${hhmm(longest.length! - shortest.length!)}.`;
+    }
+    sel.addEventListener("change", draw);
+    draw();
+    document.getElementById("dl-save")?.addEventListener("click", () => {
+      const img = new Image();
+      const url = URL.createObjectURL(new Blob([svgText], { type: "image/svg+xml" }));
+      img.onload = () => {
+        const cv = document.createElement("canvas");
+        cv.width = W; cv.height = H;
+        cv.getContext("2d")!.drawImage(img, 0, 0, W, H);
+        URL.revokeObjectURL(url);
+        cv.toBlob((b) => {
+          if (!b) return;
+          const a = document.createElement("a");
+          a.href = URL.createObjectURL(b);
+          a.download = `daylight-2027-${sel.value}.png`;
+          a.click();
+          setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+        }, "image/png");
+      };
+      img.src = url;
+      const w = window as unknown as { gtag?: (...a: unknown[]) => void };
+      w.gtag?.("event", "daylight_poster_save", { city: sel.value });
+    });
+  </script>
+</KrFinancePage>

@@ -115,3 +115,52 @@ export function todayIso(d = new Date()): string {
   const p = (n: number) => String(n).padStart(2, '0');
   return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
 }
+
+// ── 나이 (2026-11-22 2차) ─────────────────────────────────
+/** 만 나이와 다음 생일까지 남은 날. 한국은 2023-06-28부터 법적·행정 나이를 만 나이로 통일했어요. */
+export function ageOn(birthIso: string, todayIsoStr: string) {
+  const b = /^(\d{4})-(\d{2})-(\d{2})$/.exec(birthIso);
+  const t = /^(\d{4})-(\d{2})-(\d{2})$/.exec(todayIsoStr);
+  if (!b || !t) return null;
+  const [by, bm, bd] = [Number(b[1]), Number(b[2]), Number(b[3])];
+  const [ty, tm, td] = [Number(t[1]), Number(t[2]), Number(t[3])];
+  if (Date.UTC(by, bm - 1, bd) > Date.UTC(ty, tm - 1, td)) return null;
+  const hadBirthday = tm > bm || (tm === bm && td >= bd);
+  const age = ty - by - (hadBirthday ? 0 : 1);
+  // 2월 29일생은 평년에 3월 1일로 셉니다.
+  const nextYear = hadBirthday && !(tm === bm && td === bd) ? ty + 1 : ty;
+  const leapOk = (y: number) => (y % 4 === 0 && y % 100 !== 0) || y % 400 === 0;
+  const nb = bm === 2 && bd === 29 && !leapOk(nextYear) ? `${nextYear}-03-01` : `${nextYear}-${b[2]}-${b[3]}`;
+  const toNext = tm === bm && td === bd ? 0 : (daysBetween(todayIsoStr, nb) ?? 0);
+  return { age, toNext, birthYear: by };
+}
+
+/** 띠(십이지). 양력 연도 기준 근사예요(설날 전 출생은 앞 해 띠일 수 있어요). index 0 = 쥐. */
+export function zodiacIndex(year: number) {
+  return (((year - 4) % 12) + 12) % 12;
+}
+
+// ── 몇 시간 뒤 ────────────────────────────────────────────
+/** "HH:MM"에 시간·분을 더한 시각과 며칠 뒤인지. */
+export function addTime(startHHMM: string, hours: number, minutes: number) {
+  const m = /^(\d{1,2}):(\d{2})$/.exec(startHHMM);
+  if (!m) return null;
+  const total = Number(m[1]) * 60 + Number(m[2]) + Math.max(0, Math.round(hours)) * 60 + Math.max(0, Math.round(minutes));
+  return { hour: Math.floor(total / 60) % 24, minute: total % 60, dayOffset: Math.floor(total / 1440) };
+}
+
+// ── 예금 이자 ─────────────────────────────────────────────
+/** 정기예금 단리 이자. taxRate는 이자소득세율(한국 일반과세 15.4%). */
+export function depositInterest(principal: number, annualPct: number, months: number, taxRate: number) {
+  const p = Math.max(0, principal);
+  const gross = (p * Math.max(0, annualPct) / 100) * (Math.max(0, months) / 12);
+  const tax = gross * Math.max(0, taxRate);
+  return { gross, tax, net: gross - tax, total: p + gross - tax };
+}
+
+// ── 넓이 ─────────────────────────────────────────────────
+/** 1평(坪) = 400/121 ㎡ ≈ 3.3058 ㎡, 1 ft² = 0.09290304 ㎡, 1 acre = 4046.8564224 ㎡. */
+export const AREA_M2: Record<string, number> = { pyeong: 400 / 121, m2: 1, ft2: 0.09290304, acre: 4046.8564224 };
+export function convertArea(value: number, from: string, to: string) {
+  return (value * AREA_M2[from]) / AREA_M2[to];
+}

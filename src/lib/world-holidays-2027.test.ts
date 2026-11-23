@@ -60,3 +60,12 @@ test("Spain 2027: 9 common days, regions add their own (BOE-A-2026-21254)", () =
   assert.ok(!holidays2027("es", { region: "CT" }).has("2027-03-25"));
   assert.ok(holidays2027("es", { region: "MD" }).has("2027-03-19"));
 });
+
+test("Taiwan 2027: 春節 2/4–2/10 with 補假, no 補行上班, 2 days of leave → 11 days", () => {
+  assert.equal(workdays2027("tw").size, 0);
+  const set = holidays2027("tw");
+  for (const d of ["2027-02-09", "2027-02-10", "2027-04-06", "2027-12-31"]) assert.ok(set.has(d), d);
+  const best = bestByLeave(2027, 2, { holidays: set, fromDate: "2027-01-01", requireHoliday: true });
+  assert.equal(best[1].best?.start, "2027-02-04");
+  assert.equal(best[1].best?.days, 11);
+});
