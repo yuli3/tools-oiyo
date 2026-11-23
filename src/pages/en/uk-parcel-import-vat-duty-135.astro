@@ -1,0 +1,51 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/trade/SmallParcel';
+// Small-parcel import tax check (2026-11-23, practice office trade room). Engine: lib/small-parcel-import-2026.ts
+const c = {
+  "introTitle": "Will I pay VAT or duty on a parcel from abroad?",
+  "intro": "In Great Britain, gifts worth £39 or less have no VAT. If you bought goods worth £135 or less yourself, the seller charges VAT at checkout. Above £135 you pay import VAT, and possibly Customs Duty, to the delivery company. Excise goods always pay.",
+  "formulaTitle": "Rules used",
+  "formulas": [
+    {
+      "title": "£39 gifts",
+      "body": "No VAT on gifts worth £39 or less."
+    },
+    {
+      "title": "£135",
+      "body": "Non-excise goods worth £135 or less: VAT at checkout, no Customs Duty."
+    },
+    {
+      "title": "Over £135",
+      "body": "Import VAT and possibly Customs Duty to the delivery company. Duty rate depends on the goods and origin."
+    }
+  ],
+  "howToTitle": "How to use it",
+  "steps": [
+    "Enter the value of the goods.",
+    "Tick if it is a gift or excise goods.",
+    "See what you may pay and to whom."
+  ],
+  "faqTitle": "FAQ",
+  "faqs": [
+    {
+      "question": "What duty rate applies?",
+      "answer": "It depends on the goods and where they came from. Check the UK Trade Tariff. It is not calculated here."
+    },
+    {
+      "question": "Does this cover Northern Ireland?",
+      "answer": "No. Northern Ireland has different rules for goods from the EU."
+    }
+  ],
+  "disclaimer": "General information only, not a customs or tax ruling."
+};
+const sources: [string, string][] = [
+  [
+    "GOV.UK Goods sent from abroad: tax and duty",
+    "https://www.gov.uk/goods-sent-from-abroad/tax-and-duty"
+  ]
+];
+---
+<DebtReliefPage slug="uk-parcel-import-vat-duty-135" c={c} sources={sources} sourcesTitle="Sources" checked="GOV.UK checked 2026-11-23">
+  <T client:load country="uk" />
+</DebtReliefPage>

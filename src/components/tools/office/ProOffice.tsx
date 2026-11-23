@@ -7,7 +7,7 @@ import { track } from "../viz/track";
 
 type Who = "all" | "public" | "pro";
 type Props = { locale: OfficeLocale; floors: Floor[]; copy: OfficeCopy; asOf: string };
-const ROOM_ICON: Record<RoomId, string> = { tax: "🧾", labor: "🤝", admin: "🏛️", legal: "⚖️", insurance: "🛡️", realty: "🏠", biz: "🏪", welfare: "🩺", plan: "📈" };
+const ROOM_ICON: Record<RoomId, string> = { tax: "🧾", labor: "🤝", admin: "🏛️", legal: "⚖️", trade: "📦", insurance: "🛡️", realty: "🏠", biz: "🏪", welfare: "🩺", plan: "📈" };
 const PIN_KEY = "oiyo-office-pins";
 const load = (): string[] => { try { return JSON.parse(localStorage.getItem(PIN_KEY) || "[]"); } catch { return []; } };
 
