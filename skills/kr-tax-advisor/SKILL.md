@@ -12,7 +12,7 @@ description: 한국 세무·회계 실무 상담 보조. 비상장주식 보충�
 1. MCP 서버 `https://api.oiyo.net/mcp`(Registry 이름 `io.github.yuli3/oiyo-calculations`)가 연결돼 있으면 그 도구를 쓴다.
    - `value_kr_unlisted_shares`, `calculate_kr_family_business_deduction`, `calculate_kr_incorporation_conversion`, `calculate_dcf_valuation`
 2. 코드 실행이 되면 이 스킬의 스크립트를 쓴다: `node scripts/calc.mjs <도구> '<JSON 입력>'` (Node 22 이상, 의존성 없음).
-   - 도구: `unlisted-shares`, `family-business`, `incorporation-conversion`, `dcf`, `wacc`, `corp-tax`(법인세 어림과 세무조정 한도), `entertainment`(기업업무추진비 한도), `penalty`(무신고·과소신고·납부지연·원천세 가산세와 감면), `depreciation`·`lease`·`bond`(결산 상각표), `audit`(다음 해 외부감사 대상 판정), `deferred-tax`(이연법인세), `materiality`·`sample`(감사 중요성·표본 크기), `deemed-input`·`card-credit`·`bad-debt`(부가세 공제), `withholding-statement`(지급명세서 기한·가산세), `student-loan`(학자금 의무상환), `book-vs-estimate`(장부 vs 추계), `exempt-report`(사업장현황신고), `pension-income`(사적연금 분리 vs 종합). 입력 예시는 `node scripts/calc.mjs help`.
+   - 도구: `unlisted-shares`, `family-business`, `incorporation-conversion`, `dcf`, `wacc`, `corp-tax`(법인세 어림과 세무조정 한도), `entertainment`(기업업무추진비 한도), `penalty`(무신고·과소신고·납부지연·원천세 가산세와 감면), `depreciation`·`lease`·`bond`(결산 상각표), `audit`(다음 해 외부감사 대상 판정), `deferred-tax`(이연법인세), `materiality`·`sample`(감사 중요성·표본 크기), `deemed-input`·`card-credit`·`bad-debt`(부가세 공제), `withholding-statement`(지급명세서 기한·가산세), `student-loan`(학자금 의무상환), `book-vs-estimate`(장부 vs 추계), `exempt-report`(사업장현황신고), `pension-income`(사적연금 분리 vs 종합), `withholding-table`(근로소득 간이세액표 월 원천징수), `join-leave`(입사·퇴사 달 4대보험), `leaver`(중도퇴사 연말정산 vs 5월 신고). 입력 예시는 `node scripts/calc.mjs help`.
 3. 둘 다 안 되면 계산하지 말고, 웹 계산기 링크(아래)를 주고 필요한 입력을 정리해 준다.
 
 ## 진행 순서
@@ -98,3 +98,9 @@ description: 한국 세무·회계 실무 상담 보조. 비상장주식 보충�
 - 요건 충족 여부(가업 경영 기간, 대표이사 재직, 사업무관자산 판정, 소비성서비스업 해당 등)는 판단하지 않고 "확인 필요"로 남긴다.
 - 고객 실명·주민번호·사업자번호는 메모에 쓰지 않는다. 사용자가 넣었다면 지워서 쓴다.
 - 기준일 이후 법이 바뀌었을 수 있으니, 메모 끝에 국가법령정보센터(law.go.kr) 원문 확인을 권한다.
+
+## 급여 담당자 월 실무 (withholding-table · join-leave · leaver)
+
+- `withholding-table`: 먼저 묻는다: 월급여(비과세 제외), 공제대상가족 수(본인 포함), 그중 8세 이상 20세 이하 자녀 수, 80·100·120% 선택. 소득세법 시행령 [별표 2](2026.2.27 개정) 표 그대로, 1천만 원 초과는 원문 산식. 자녀 차감 1명 20,830원, 2명 45,830원, 3명부터 1명당 33,330원 더. 10원 미만 버림, 지방소득세 10%.
+- `join-leave`: 먼저 묻는다: 입사일, 마지막 근무일(있으면), 보수월액, 국민연금 입사 달 납부 희망. 건강·장기요양·고용·국민연금은 취득 다음 달부터(1일 입사면 그 달부터), 상실일(퇴사 다음 날) 전날이 속한 달까지. 퇴사 달 고용보험은 금액을 더하지 않고 "확인 필요"로 말한다.
+- `leaver`: 먼저 묻는다: 1월~퇴사월 총급여, 떼인 소득세, 낸 국민연금·건강·고용보험, 그리고 5월 신고 때 더할 부양가족·카드·의료비·교육비·기부금·월세·연금저축. 회사 정산과 5월 신고 환급 차이를 보여 주고, 신고는 본인이 홈택스에서 한다고 말한다(대리 신고 안 함).
