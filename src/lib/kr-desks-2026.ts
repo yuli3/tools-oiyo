@@ -210,7 +210,7 @@ export const KR_DESKS: Desk[] = [
       { when: "퇴직 후 14일 안", what: "임금·퇴직금을 정산받아요.", law: "근로기준법 제36조" },
       { when: "그다음", what: "비자발적 이직이면 구직급여를 신청해요." },
     ],
-    tools: [T("/ko/dismissal-notice-pay-calculator/", "해고예고수당"), T("/ko/appeal-deadline-calculator/", "불복 기한 계산"), T("/ko/severance-calculator/", "퇴직금"), T("/ko/unemployment-benefits-calculator/", "실업급여"), T("/ko/labor-law-guide/", "노동 법령 길잡이")],
+    tools: [T("/ko/dismissal-notice-pay-calculator/", "해고예고수당"), T("/ko/appeal-deadline-calculator/", "불복 기한 계산"), T("/ko/free-expert-representation-check/", "무료 대리 자격 확인"), T("/ko/severance-calculator/", "퇴직금"), T("/ko/unemployment-benefits-calculator/", "실업급여"), T("/ko/labor-law-guide/", "노동 법령 길잡이")],
     help: ["고용노동부 1350", "노동위원회 (무료 권리구제 대리인 제도)", "대한법률구조공단 132"],
   },
   {
@@ -273,7 +273,7 @@ export const KR_DESKS: Desk[] = [
       { when: "고지(처분)를 안 날부터 90일 안", what: "이의신청·심사청구·심판청구 중 하나로 다툴 수 있어요.", law: "국세기본법 제61조·제66조·제68조" },
       { when: "세금을 더 냈다면 신고기한 후 5년 안", what: "경정청구로 돌려받을 수 있어요(빠뜨린 공제·감면).", law: "국세기본법 제45조의2" },
     ],
-    tools: [T("/ko/appeal-deadline-calculator/", "불복 기한 계산"), T("/ko/tax-penalty-calculator/", "가산세 계산"), T("/ko/dependent-deduction-checker/", "놓친 부양가족 공제"), T("/ko/tax-law-guide/", "세법 길잡이")],
+    tools: [T("/ko/free-expert-representation-check/", "국선대리인 요건 확인"), T("/ko/appeal-deadline-calculator/", "불복 기한 계산"), T("/ko/tax-penalty-calculator/", "가산세 계산"), T("/ko/dependent-deduction-checker/", "놓친 부양가족 공제"), T("/ko/tax-law-guide/", "세법 길잡이")],
     help: ["국세청 126", "국세청 납세자보호담당관(무료 영세납세자 국선대리인)"],
   },
   {
