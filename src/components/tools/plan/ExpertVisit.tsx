@@ -59,6 +59,7 @@ export default function ExpertVisit() {
             return <li key={k}><label className="flex min-h-11 items-center gap-3 text-sm"><input type="checkbox" className="size-5 shrink-0" checked={!!have[k]} onChange={(ev) => setHave({ ...have, [k]: ev.target.checked })} />{b}</label></li>;
           })}
         </ul>
+        <p className="mt-2 text-sm"><a href="/ko/consult-memo-builder/" className="text-primary underline underline-offset-4">상담에 가져갈 한 장 메모 만들기</a></p>
         <h3 className="mt-4 font-semibold">무료 공식 창구</h3>
         <p className="text-sm">{e.free.join(" · ")}</p>
         <p className="mt-3 rounded-md bg-muted px-3 py-2 text-xs leading-5">{e.lawyerWhen}</p>

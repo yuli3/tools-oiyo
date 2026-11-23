@@ -39,12 +39,12 @@ const KR_HELP: Record<Exclude<RoomId, "plan">, string[]> = {
 // 사무소에서 만든 보충 도구(상담 실무용). 맨 앞에 보여요.
 const KR_OFFICE_TOOLS: Partial<Record<RoomId, OfficeTool[]>> = {
   tax: [{ href: "/ko/client-deadline-board/", title: "고객별 신고 마감 보드", who: "pro" }, { href: "/ko/midyear-leaver-year-end-settlement/", title: "중도퇴사자 연말정산 미리보기", who: "public" }, { href: "/ko/simplified-withholding-tax-calculator/", title: "간이세액표 월 원천징수", who: "pro" }],
-  labor: [{ href: "/ko/life-event-navigator/#unpaid", title: "임금체불 때 할 일", who: "public" }, { href: "/ko/quit-one-stop-calculator/", title: "퇴사 원스톱 (퇴직금·세금·실업급여)", who: "public" }, { href: "/ko/join-leave-month-insurance-calculator/", title: "입사·퇴사 달 4대보험료", who: "pro" }],
-  admin: [{ href: "/ko/job-desk/", title: "직업별 세금·노무 창구", who: "public" }, { href: "/ko/before-expert-visit/", title: "전문가 상담 전 준비", who: "public" }, { href: "/ko/life-event-navigator/", title: "인생 사건 내비", who: "public" }],
+  labor: [{ href: "/ko/life-event-navigator/#unpaid", title: "임금체불 때 할 일", who: "public" }, { href: "/ko/life-event-navigator/#injury", title: "산재 때 할 일", who: "public" }, { href: "/ko/quit-one-stop-calculator/", title: "퇴사 원스톱 (퇴직금·세금·실업급여)", who: "public" }, { href: "/ko/join-leave-month-insurance-calculator/", title: "입사·퇴사 달 4대보험료", who: "pro" }],
+  admin: [{ href: "/ko/job-desk/", title: "직업별 세금·노무 창구", who: "public" }, { href: "/ko/before-expert-visit/", title: "전문가 상담 전 준비", who: "public" }, { href: "/ko/consult-memo-builder/", title: "상담 메모 만들기", who: "public" }, { href: "/ko/life-event-navigator/#refund", title: "온라인 구매 환불 거절", who: "public" }, { href: "/ko/life-event-navigator/", title: "인생 사건 내비", who: "public" }],
   insurance: [{ href: "/ko/life-event-navigator/#accident", title: "교통사고 때 할 일", who: "public" }],
   realty: [{ href: "/ko/life-event-navigator/#homebuy", title: "집 살 때 할 일·기한", who: "public" }, { href: "/ko/job-desk/#landlord", title: "집주인 창구", who: "public" }, { href: "/ko/life-event-navigator/#move", title: "이사·전월세 때 할 일", who: "public" }],
-  legal: [{ href: "/ko/demand-letter-builder/", title: "내용증명 작성 도우미", who: "public" }, { href: "/ko/life-event-navigator/#lend", title: "빌려준 돈 못 받을 때", who: "public" }],
-  biz: [{ href: "/ko/job-desk/#cafe", title: "가게 사장 창구", who: "public" }, { href: "/ko/business-must-do-checklist/", title: "사업자 필수 할 일", who: "public" }],
+  legal: [{ href: "/ko/demand-letter-builder/", title: "내용증명 작성 도우미", who: "public" }, { href: "/ko/life-event-navigator/#lend", title: "빌려준 돈 못 받을 때", who: "public" }, { href: "/ko/life-event-navigator/#divorce", title: "이혼할 때 할 일·기한", who: "public" }],
+  biz: [{ href: "/ko/life-event-navigator/#startbiz", title: "사업 시작할 때 할 일", who: "public" }, { href: "/ko/life-event-navigator/#closebiz", title: "폐업할 때 할 일", who: "public" }, { href: "/ko/job-desk/#cafe", title: "가게 사장 창구", who: "public" }, { href: "/ko/business-must-do-checklist/", title: "사업자 필수 할 일", who: "public" }],
 };
 const krTitle = (slug: string) => TOOL_NAMES[slug] ?? lawGuides.find((g) => g.slug === slug)?.title ?? slug;
 function krRoom(id: Exclude<RoomId, "plan">): Room {

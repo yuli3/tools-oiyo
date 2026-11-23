@@ -1,6 +1,6 @@
 ---
 name: oiyo-kr-life-desk
-description: Use when someone in Korea asks what to do for their job (유튜버·크리에이터, 배달 라이더·플랫폼 노동자, 카페·음식점 사장, 온라인 쇼핑몰, 프리랜서 개발자, 학원·과외 강사, 집주인) or a life event (결혼, 출산, 이사·전월세, 집 사기, 교통사고, 이직·퇴사, 은퇴, 가족 사망, 해고, 임금체불, 직장 내 괴롭힘, 빌려준 돈, 전세보증금 못 받음, 세금 고지서, 영업정지 처분, 보험금 거절), or is about to visit a tax, labor, accounting, court-filing, administrative, real-estate or financial-planning professional and wants to prepare. Lists the steps with legal deadlines, the tools.oiyo.net calculators to try first, papers to bring and free official help; drafts a 내용증명 skeleton from the user's facts; runs a simple household money checkup (rules of thumb, no tax).
+description: Use when someone in Korea asks what to do for their job (유튜버·크리에이터, 배달 라이더·플랫폼 노동자, 카페·음식점 사장, 온라인 쇼핑몰, 프리랜서 개발자, 학원·과외 강사, 집주인) or a life event (결혼, 출산, 이사·전월세, 집 사기, 교통사고, 이직·퇴사, 은퇴, 가족 사망, 해고, 임금체불, 직장 내 괴롭힘, 빌려준 돈, 전세보증금 못 받음, 세금 고지서, 영업정지 처분, 보험금 거절, 이혼, 창업, 폐업, 산재, 온라인 구매 환불), or is about to visit a tax, labor, accounting, court-filing, administrative, real-estate or financial-planning professional and wants to prepare. Lists the steps with legal deadlines, the tools.oiyo.net calculators to try first, papers to bring and free official help; drafts a 내용증명 skeleton or a one-page consultation memo from the user's facts; runs a simple household money checkup (rules of thumb, no tax).
 ---
 
 # 직업별 창구·인생 사건 내비 (OIYO)
@@ -18,13 +18,18 @@ description: Use when someone in Korea asks what to do for their job (유튜버�
 1. 하는 일이나 일어난 일을 물어요. 여러 개면 모두 열어요.
 2. `node scripts/desk.mjs find '<질문>'` 로 창구를 찾고, `node scripts/desk.mjs show <id>` 로 할 일·기한·도구·창구를 받아요. `node scripts/desk.mjs list` 는 전체 목록이에요.
    - 직업: creator, rider, cafe, shop, dev, tutor, landlord
-   - 인생 사건: marriage, birth, move, homebuy, accident, quit, retire, death, dismissal, unpaid, harassment, lend, deposit, taxnotice, suspension, claimrefused
+   - 인생 사건: marriage, birth, move, homebuy, accident, quit, retire, death, dismissal, unpaid, harassment, lend, deposit, taxnotice, suspension, claimrefused, divorce, startbiz, closebiz, injury, refund
 3. 시간 순서로 답하고, 기한에는 근거 조문을 붙여요. 금액이 궁금하면 `tools`의 링크를 알려 줘요.
 
 ## 전문가를 찾아가기 전
 
 - `node scripts/desk.mjs expert '<질문>'` 로 어떤 전문가가 흔히 맡는 일인지, 먼저 해 볼 도구, 챙길 서류, 무료 창구를 받아요. `expert-show <tax|labor|cpa|court|admin|broker|plan>` 는 한 분야 전체예요.
 - 누구를 찾아갈지 알려 줄 때만 직업 이름을 써요. 특정 사무소·상품을 추천하지 않아요.
+
+## 상담 메모
+
+- `node scripts/desk.mjs memo '{"expert":"labor","situation":"..","events":[{"date":"2026-10-31","what":"퇴사"}],"amount":6000000,"wants":"..","questions":[".."],"have":[]}'` 로 상담에 가져갈 한 장 메모를 만들어요. expert를 비우면 situation으로 분야를 찾아요.
+- 사용자가 말한 사실만 넣어요. 빈 칸은 "(적지 않음)"으로 두고 지어내지 않아요. `missing`은 더 챙기면 좋은 서류예요.
 
 ## 내용증명 뼈대
 
@@ -37,4 +42,4 @@ description: Use when someone in Korea asks what to do for their job (유튜버�
 
 ## 출처
 
-tools.oiyo.net/ko/job-desk/ · /ko/life-event-navigator/ (같은 데이터). 부가가치세법 제8·48·49조, 소득세법 제70·78·128조, 주민등록법 제16조, 가족관계등록법 제44·84·85조, 민법 제1019조, 상속세 및 증여세법 제67조, 근로자퇴직급여 보장법 제9조, 근로기준법 제26~28·36·37·76조의3, 민법 제162·174조, 주택임대차보호법 제3조의3·3조의7·6조, 국세기본법 제45조의2·61·66·68·81조의15, 행정심판법 제27조, 행정소송법 제20조, 상법 제662조. /ko/before-expert-visit/ · /ko/demand-letter-builder/ · /ko/household-money-checkup/.
+tools.oiyo.net/ko/job-desk/ · /ko/life-event-navigator/ (같은 데이터). 부가가치세법 제8·48·49조, 소득세법 제70·78·128조, 주민등록법 제16조, 가족관계등록법 제44·84·85조, 민법 제1019조, 상속세 및 증여세법 제67조, 근로자퇴직급여 보장법 제9조, 근로기준법 제26~28·36·37·76조의3, 민법 제162·174조, 주택임대차보호법 제3조의3·3조의7·6조, 국세기본법 제45조의2·61·66·68·81조의15, 행정심판법 제27조, 행정소송법 제20조, 상법 제662조, 민법 제836조의2·839조의2, 가족관계등록법 제75조, 부가가치세법 제5·8·49·67조, 산업재해보상보험법 제41·112조, 근로기준법 제17·23조, 전자상거래법 제17·18조, 방문판매법 제8조. /ko/before-expert-visit/ · /ko/demand-letter-builder/ · /ko/household-money-checkup/ · /ko/consult-memo-builder/.
