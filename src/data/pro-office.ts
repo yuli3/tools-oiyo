@@ -42,7 +42,8 @@ const KR_OFFICE_TOOLS: Partial<Record<RoomId, OfficeTool[]>> = {
   labor: [{ href: "/ko/quit-one-stop-calculator/", title: "퇴사 원스톱 (퇴직금·세금·실업급여)", who: "public" }, { href: "/ko/join-leave-month-insurance-calculator/", title: "입사·퇴사 달 4대보험료", who: "pro" }],
   admin: [{ href: "/ko/job-desk/", title: "직업별 세금·노무 창구", who: "public" }, { href: "/ko/life-event-navigator/", title: "인생 사건 내비", who: "public" }],
   insurance: [{ href: "/ko/life-event-navigator/#accident", title: "교통사고 때 할 일", who: "public" }],
-  realty: [{ href: "/ko/life-event-navigator/#homebuy", title: "집 살 때 할 일·기한", who: "public" }, { href: "/ko/job-desk/#landlord", title: "집주인 창구", who: "public" }, { href: "/ko/life-event-navigator/#move", title: "이사·전월세 때 할 일", who: "public" }],
+  realty: [{ href: "/ko/life-event-navigator/#homebuy", title: "집 살 때 할 일·기한", who: "public" }, { href: "/ko/job-desk/#landlord", title: "집주인 창구", who: "public" }, { href: "/ko/life-event-navigator/#move", title: "이사·전월세 때 할 일", who: "public" }, { href: "/ko/appraisal-fee-calculator/", title: "감정평가 수수료", who: "public" }],
+  legal: [{ href: "/ko/legal-aid-eligibility-check/", title: "법률구조공단 소송지원 대상", who: "public" }],
   biz: [{ href: "/ko/job-desk/#cafe", title: "가게 사장 창구", who: "public" }, { href: "/ko/business-must-do-checklist/", title: "사업자 필수 할 일", who: "public" }],
 };
 const krTitle = (slug: string) => TOOL_NAMES[slug] ?? lawGuides.find((g) => g.slug === slug)?.title ?? slug;
