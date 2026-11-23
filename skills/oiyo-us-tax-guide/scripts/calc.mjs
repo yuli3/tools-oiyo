@@ -1,11 +1,12 @@
 #!/usr/bin/env node
 // US federal tax and accounting guide CLI. Math lives in us-tax-pack-2026.mjs (same code as the tools.oiyo.net /en/ pages and api.oiyo.net MCP).
 //   node scripts/calc.mjs <tool> '<json>'
-//   tool: calendar | selfemployment | estimated | penalty | appeal | depreciation | scope
+//   tool: calendar | california | selfemployment | estimated | penalty | appeal | depreciation | scope
 import * as us from "./us-tax-pack-2026.mjs";
 
 const TOOLS = {
   calendar: (x) => us.usTaxCalendar(x),
+  california: (x) => us.caIncomeTax2025(x),
   selfemployment: (x) => us.usSelfEmployment(x),
   estimated: (x) => us.usEstimatedTax(x),
   penalty: (x) => us.usPenalty(x),

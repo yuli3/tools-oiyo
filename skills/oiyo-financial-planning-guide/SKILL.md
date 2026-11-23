@@ -19,14 +19,14 @@ A question-first guide that checks each country's own scheme limits, tax relief 
 1. Ask what the money is for and when it is needed (retirement, home, education, emergency fund), the country, monthly income, spending and saving, current savings and debts (balance, rate, term), and the pension or tax-free accounts already held. Ask how big a fall they could live with only to frame the trade-off, never to pick products.
 2. Run `node scripts/calc.mjs <tool> '<json>'` (missing fields fall back to the example; `node scripts/calc.mjs help` lists all):
    - US: `us-limits` (401(k), IRA, Roth phase-out by age, MAGI, filing), `us-trad-vs-roth`, `us-social-security` (claiming at 62–70), `us-pmi` (PMI removal dates)
-   - UK: `uk-pension-relief` (SIPP/personal pension relief 2026/27), `uk-lisa` (Lifetime ISA bonus), `uk-student-loan` (Plan 2/5 repay or write-off)
-   - Japan: `jp-nisa` (新NISA 枠), `jp-ideco` (拠出限度額と節税額), `jp-housing-loan` (住宅ローン控除 0.7%)
+   - UK: `uk-marriage-allowance` (£1,260 transfer, up to £252), `uk-pension-relief` (SIPP/personal pension relief 2026/27), `uk-lisa` (Lifetime ISA bonus), `uk-student-loan` (Plan 2/5 repay or write-off)
+   - Japan: `jp-furusato` (ふるさと納税 控除上限の目安), `jp-nisa` (新NISA 枠), `jp-ideco` (拠出限度額と節税額), `jp-housing-loan` (住宅ローン控除 0.7%)
    - China: `cn-pension` (个人养老金 12000元扣除), `cn-combo-loan` (公积金组合贷)
    - France: `fr-per` (plafond PER et économie d'impôt)
    - Spain: `es-pension` (límite de reducción por planes de pensiones)
    - Singapore: `sg-cpf-refund` (CPF housing refund with accrued interest)
    - Canada: `ca-stress-test` (minimum qualifying rate, GDS, TDS)
-   - Korea: `kr-nps-early-defer` (국민연금 조기 1–5년 6%/년 감액 · 연기 1–60개월 0.6%/월 가산, 누적·역전 나이)
+   - Korea: `kr-nps-estimate` (노령연금 예상 월액, 공단 산식·A값·지급률), `kr-quit-plan` (퇴직금·퇴직소득세·실업급여 합계와 기한), `kr-nps-early-defer` (국민연금 조기 1–5년 6%/년 감액 · 연기 1–60개월 0.6%/월 가산, 누적·역전 나이)
    - Taiwan: `tw-labor-pension-voluntary` (勞退自提 0–6% 與節稅)
    - Germany: `de-riester` (Zulagen, Mindesteigenbeitrag, Günstigerprüfung), `de-basisrente` (Rürup Höchstbetrag; 2026 not confirmed → returns verified: false)
    - Australia: `au-super` (concessional cap, carry-forward, 15% tax, Division 293)
@@ -39,7 +39,7 @@ US CFPB, Social Security Administration · UK MoneyHelper, Pension Wise · Japan
 
 ## Not covered yet
 
-Germany bAV and the 2026 Basisrente Höchstbetrag; Taiwan 月提繳分級表 limits; Australia excess-contribution tax and bring-forward balance tests; Korea 국민연금 예상 수령액 itself (ask the person for the NPS estimate) and monthly early-claim rates. Say so instead of estimating.
+Germany bAV and the 2026 Basisrente Höchstbetrag; Taiwan 月提繳分級表 limits; Australia excess-contribution tax and bring-forward balance tests; Korea 국민연금 재평가·크레딧 (the estimate is in today's money; the NPS record is exact) and monthly early-claim rates; 크리에이터 세금. Say so instead of estimating.
 
 ## Sources
 

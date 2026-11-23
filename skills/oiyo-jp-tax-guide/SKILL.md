@@ -29,6 +29,7 @@ description: 日本の個人事業主・フリーランス・小規模事業者�
 | tool | 使う場面 | 入力 JSON |
 |---|---|---|
 | `calendar` | 申告・納付期限の一覧（土日は翌平日） | `{year, started?: "YYYY-MM-DD", consumptionTax?: bool, prepaid?: bool, today?}` |
+| `furusato` | ふるさと納税の控除上限の目安と内訳（所得割額×0.2÷(90%−税率×1.021)+2,000円） | `{residentIncomeLevy, incomeTaxRatePct: 5|10|20|23|33|40|45, donation?}` |
 | `blue` | 白色と青色10万・55万・65万円の税額比較 | `{income: 事業所得, otherDeductions?: 基礎控除以外の所得控除}` |
 | `consumption` | 納税義務の判定と計算方法の比較（標準税率10%） | `{year, baseSales, specSales?, specWages?, invoice?, wasExempt?, sales, purchases?, type?: 1-6, simpleFiled?}` |
 | `penalty` | 加算税・延滞税（令和8年 2.8%/9.1%） | `{kind: "none"|"under", stage: "voluntary"|"notice"|"audit", tax, original?, fraud?, deadline?, paid?}` |

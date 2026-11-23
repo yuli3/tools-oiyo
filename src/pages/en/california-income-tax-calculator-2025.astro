@@ -1,0 +1,42 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/plan/CaIncomeTax';
+// New calc 5 (2026-11-23). Engine: lib/new-calc-5-2026.ts
+const c = {
+  "introTitle": "How much California income tax do you owe for 2025?",
+  "intro": "California taxes income in nine brackets from 1% to 12.3%. This calculator uses the Franchise Tax Board’s 2025 rate schedules for single filers (Schedule X) and married couples filing jointly (Schedule Y). Enter your California taxable income, after deductions, to see the tax before credits.",
+  "formulaTitle": "How it is calculated",
+  "formulas": [
+    {
+      "title": "Schedule X (single)",
+      "body": "1% to $11,079, 2% to $26,264, 4% to $41,452, 6% to $57,542, 8% to $72,724, 9.3% to $371,479, 10.3% to $445,771, 11.3% to $742,953, 12.3% above."
+    },
+    {
+      "title": "Schedule Y (joint)",
+      "body": "Brackets roughly double: 9.3% from $145,448 and 12.3% above $1,485,906."
+    }
+  ],
+  "howToTitle": "How to use it",
+  "steps": [
+    "Enter your California taxable income for 2025.",
+    "Pick your filing status.",
+    "Read the tax, marginal and average rates."
+  ],
+  "faqTitle": "FAQ",
+  "faqs": [
+    {
+      "question": "Does it include the extra 1% over $1 million?",
+      "answer": "No. The Mental Health Services Tax and credits are not included."
+    },
+    {
+      "question": "What about other states?",
+      "answer": "Other states are not covered yet."
+    }
+  ],
+  "disclaimer": "General information only, not tax advice."
+};
+const sources: [string, string][] = [["FTB 2025 Form 540 tax rate schedules", "https://www.ftb.ca.gov/forms/2025/2025-540-tax-rate-schedules.pdf"]];
+---
+<DebtReliefPage slug="california-income-tax-calculator-2025" c={c} sources={sources} sourcesTitle="Sources" checked="FTB schedules checked 2026-11-23">
+  <T client:load />
+</DebtReliefPage>

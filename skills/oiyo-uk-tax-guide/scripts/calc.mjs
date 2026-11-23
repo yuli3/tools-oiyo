@@ -6,6 +6,7 @@ import * as uk from "./uk-tax-pack-2026.mjs";
 
 const TOOLS = {
   calendar: (x) => uk.ukTaxCalendar(x),
+  marriageallowance: (x) => uk.ukMarriageAllowance(x),
   selfemployed: (x) => uk.ukSelfEmployed(x),
   incometax: (x) => uk.ukIncomeTax(x.total),
   mtd: (x) => ({ from: uk.ukMtdStart(x) }),
