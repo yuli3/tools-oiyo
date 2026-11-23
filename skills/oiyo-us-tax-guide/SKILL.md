@@ -29,6 +29,7 @@ Helps people working in the United States see **what is due when** and **what th
 | tool | Use | Input JSON |
 |---|---|---|
 | `calendar` | Federal deadlines for a tax year | `{taxYear, selfEmployed?, pays1099?, extension?, entity?: "none"|"partnership"|"scorp"|"ccorp", today?}` |
+| `california` | California income tax, tax year 2025 (FTB Schedules X and Y; no MHST or credits) | `{taxableIncome, filing: "single"|"mfj"}` |
 | `selfemployment` | SE tax, Additional Medicare, QBI, 2026 income tax | `{net, filing?: "single"|"mfj", wages?, otherIncome?}` |
 | `estimated` | Safe harbor and four payments | `{priorTax, priorAgi, mfs?, priorFullYear?, currentTax, withholding?, taxYear?}` |
 | `penalty` | Late filing / late payment penalties and interest | `{tax, due, filed?, paid?, extension?, installment?}` |

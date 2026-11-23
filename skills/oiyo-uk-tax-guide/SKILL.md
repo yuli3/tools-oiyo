@@ -29,6 +29,7 @@ Helps people working in the UK see **what is due when** and **what the published
 | tool | Use | Input JSON |
 |---|---|---|
 | `calendar` | Self Assessment, MTD, Corporation Tax and VAT dates (`taxYear` 2025 = 2025-26) | `{taxYear, newToSA?, mtd?, companyYearEnd?, vatPeriodEnd?, today?}` |
+| `marriageallowance` | Marriage Allowance: £1,260 transfer, up to £252 saving, Scottish rates, backdating from 2022 to 2023 | `{lowerIncome, higherIncome, scotland, married}` |
 | `selfemployed` | Income Tax on profit, Class 4 and Class 2 NI, MTD start | `{profit, otherIncome?, qi2425?, qi2526?, qi2627?}` |
 | `incometax` | 2026-27 Income Tax (England, Wales, NI) with allowance taper | `{total}` |
 | `mtd` | Making Tax Digital start date from qualifying income | `{qi2425?, qi2526?, qi2627?}` |

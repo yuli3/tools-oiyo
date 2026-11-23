@@ -1,11 +1,12 @@
 #!/usr/bin/env node
 // 日本の税務・会計ガイド CLI。計算は jp-tax-pack-2026.mjs（tools.oiyo.net の日本ページ・api.oiyo.net MCP と同じコード）。
 //   node scripts/calc.mjs <tool> '<json>'
-//   tool: calendar | blue | consumption | penalty | appeal | depreciation | scope
+//   tool: calendar | furusato | blue | consumption | penalty | appeal | depreciation | scope
 import * as jp from "./jp-tax-pack-2026.mjs";
 
 const TOOLS = {
   calendar: (x) => jp.jpTaxCalendar(x),
+  furusato: (x) => jp.jpFurusatoLimit(x),
   blue: (x) => jp.jpBlueReturn(x),
   consumption: (x) => jp.jpConsumptionTax(x),
   penalty: (x) => jp.jpPenalty(x),

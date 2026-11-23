@@ -29,7 +29,8 @@ const KR_HELP: Record<Exclude<RoomId, "plan">, string[]> = {
 // 사무소에서 만든 보충 도구(상담 실무용). 맨 앞에 보여요.
 const KR_OFFICE_TOOLS: Partial<Record<RoomId, OfficeTool[]>> = {
   tax: [{ href: "/ko/client-deadline-board/", title: "고객별 신고 마감 보드", who: "pro" }, { href: "/ko/midyear-leaver-year-end-settlement/", title: "중도퇴사자 연말정산 미리보기", who: "public" }, { href: "/ko/simplified-withholding-tax-calculator/", title: "간이세액표 월 원천징수", who: "pro" }],
-  labor: [{ href: "/ko/join-leave-month-insurance-calculator/", title: "입사·퇴사 달 4대보험료", who: "pro" }],
+  labor: [{ href: "/ko/quit-one-stop-calculator/", title: "퇴사 원스톱 (퇴직금·세금·실업급여)", who: "public" }, { href: "/ko/join-leave-month-insurance-calculator/", title: "입사·퇴사 달 4대보험료", who: "pro" }],
+  admin: [{ href: "/ko/job-desk/", title: "직업별 세금·노무 창구", who: "public" }, { href: "/ko/life-event-navigator/", title: "인생 사건 내비", who: "public" }],
 };
 const krTitle = (slug: string) => TOOL_NAMES[slug] ?? lawGuides.find((g) => g.slug === slug)?.title ?? slug;
 function krRoom(id: Exclude<RoomId, "plan">): Room {
@@ -105,11 +106,13 @@ const PLAN_TOOLS: Partial<Record<FloorId, OfficeTool[]>> = {
     { href: "/ko/retirement-pension-db-dc-calculator/", title: "퇴직연금 DB vs DC", who: "public" },
     { href: "/ko/youth-future-savings-calculator/", title: "청년미래적금", who: "public" },
     { href: "/ko/savings-comparison-calculator/", title: "예적금 비교", who: "public" },
+    { href: "/ko/national-pension-estimate-calculator/", title: "국민연금 예상 수령액", who: "public" },
     { href: "/ko/national-pension-early-deferred-calculator/", title: "국민연금 조기·연기 수령 비교", who: "public" },
   ],
   JP: [
     { href: "/ja/money-planner/", title: "給料の分け方・貯蓄プランナー", who: "public" },
     { href: "/ja/nisa-limit-planner/", title: "新NISA 枠プランナー", who: "public" },
+    { href: "/ja/furusato-nozei-limit-calculator/", title: "ふるさと納税 控除上限", who: "public" },
     { href: "/ja/pension-tax-calculator/", title: "iDeCo 受取時の税金", who: "public" },
     { href: "/ja/housing-loan-deduction-calculator/", title: "住宅ローン控除", who: "public" },
   ],
@@ -134,6 +137,7 @@ const PLAN_TOOLS: Partial<Record<FloorId, OfficeTool[]>> = {
   ],
   UK: [
     { href: "/en/uk-pension-tax-relief-calculator/", title: "Pension tax relief", who: "public" },
+    { href: "/en/uk-marriage-allowance-calculator/", title: "Marriage Allowance", who: "public" },
     { href: "/en/lifetime-isa-bonus-calculator/", title: "Lifetime ISA bonus", who: "public" },
     { href: "/en/uk-student-loan-plan-2-plan-5-calculator/", title: "Student loan Plan 2 / Plan 5", who: "public" },
   ],
@@ -175,6 +179,9 @@ const PLAN_MCP: Record<string, string> = {
   "/en/cpf-housing-refund-calculator/": "calculate_sg_cpf_housing_refund",
   "/en/canada-mortgage-stress-test-calculator/": "calculate_ca_mortgage_stress_test",
   "/ko/national-pension-early-deferred-calculator/": "compare_kr_national_pension_early_deferred",
+  "/ko/national-pension-estimate-calculator/": "estimate_kr_national_pension",
+  "/ja/furusato-nozei-limit-calculator/": "calculate_jp_furusato_limit",
+  "/en/uk-marriage-allowance-calculator/": "check_uk_marriage_allowance",
   "/zh/taiwan-labor-pension-voluntary-contribution/": "calculate_tw_labor_pension_voluntary",
   "/de/riester-ruerup-rechner/": "calculate_de_riester_ruerup",
   "/en/australia-super-contribution-caps-calculator/": "calculate_au_super_contribution_caps",

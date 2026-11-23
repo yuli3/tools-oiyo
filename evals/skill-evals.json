@@ -3747,6 +3747,36 @@
           "eq": 5600
         }
       ]
+    },
+    {
+      "skill": "oiyo-financial-planning-guide",
+      "id": "plan-jp-furusato",
+      "ask": "住民税の所得割額が20万円、所得税率10%です。ふるさと納税はいくらまで？",
+      "run": [
+        "jp-furusato",
+        {}
+      ],
+      "expect": [
+        {
+          "path": "result.limit",
+          "eq": 52131
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-financial-planning-guide",
+      "id": "plan-uk-marriage",
+      "ask": "I earn £9,000 and my wife earns £32,000. Can we use Marriage Allowance?",
+      "run": [
+        "uk-marriage-allowance",
+        {}
+      ],
+      "expect": [
+        {
+          "path": "result.yearlySaving",
+          "eq": 252
+        }
+      ]
     }
   ],
   "boundaries": {

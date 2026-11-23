@@ -1,0 +1,50 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/plan/JpFurusato';
+// New calc 5 (2026-11-23). Engine: lib/new-calc-5-2026.ts
+const c = {
+  "introTitle": "ふるさと納税、いくらまでなら2,000円負担で済む？",
+  "intro": "ふるさと納税は、寄附額から2,000円を引いた分が所得税と住民税から控除されます。住民税の特例分は所得割額の2割が上限なので、それを超えると自己負担が増えます。住民税決定通知書の所得割額と所得税率を入れると、上限の目安と内訳がわかります。",
+  "formulaTitle": "計算式",
+  "formulas": [
+    {
+      "title": "所得税",
+      "body": "（寄附額−2,000円）×所得税率×1.021（復興特別所得税を含む）"
+    },
+    {
+      "title": "住民税 基本分",
+      "body": "（寄附額−2,000円）×10%"
+    },
+    {
+      "title": "住民税 特例分",
+      "body": "（寄附額−2,000円）×（90%−所得税率×1.021）、上限は所得割額×20%"
+    },
+    {
+      "title": "上限の目安",
+      "body": "所得割額×0.2÷（90%−所得税率×1.021）+2,000円"
+    }
+  ],
+  "howToTitle": "使い方",
+  "steps": [
+    "住民税決定通知書で所得割額を確認します。",
+    "所得税の税率を選びます。",
+    "寄附予定額を入れると内訳と実質負担がわかります。"
+  ],
+  "faqTitle": "よくある質問",
+  "faqs": [
+    {
+      "question": "ワンストップ特例とは？",
+      "answer": "確定申告が不要な給与所得者等で寄附先が5団体以内なら、各自治体への申請で確定申告が不要になり、全額が翌年度の住民税から控除されます。"
+    },
+    {
+      "question": "上限はぴったり正確ですか？",
+      "answer": "目安です。寄附する時点では所得割額と税率が確定していません。"
+    }
+  ],
+  "disclaimer": "一般的な情報です。税務相談ではありません。"
+};
+const sources: [string, string][] = [["総務省 ふるさと納税 控除の仕組み", "https://www.soumu.go.jp/main_sosiki/jichi_zeisei/czaisei/czaisei_seido/furusato/mechanism/deduction.html"], ["川崎市 寄附金税額控除の計算方法", "https://www.city.kawasaki.jp/230/cmsfiles/contents/0000017/17235/keisanhouhou.pdf"]];
+---
+<DebtReliefPage slug="furusato-nozei-limit-calculator" c={c} sources={sources} sourcesTitle="出典" checked="公式資料確認：2026-11-23">
+  <T client:load />
+</DebtReliefPage>
