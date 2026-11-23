@@ -30,3 +30,17 @@ test("6개 언어 모두 재무설계실 이름·설명·접수 질문 5개가 �
     assert.equal(c.intake.plan.length, 5, loc);
   }
 });
+
+test("한국 본관에는 보험·부동산·창업경영·복지의료 방이 있고 도구가 비어 있지 않아요", () => {
+  const kr = floor("KR");
+  for (const id of ["insurance", "realty", "biz", "welfare"] as const) {
+    const r = kr.rooms.find((x) => x.id === id);
+    assert.ok(r && r.tools.length >= 3, id);
+    for (const t of r.tools) assert.ok(pageExists(t.href.split("#")[0]), `${id} ${t.href}`);
+    assert.ok(r.help.length > 0 && r.skills.length > 0, id);
+    assert.equal(OFFICE_COPY.ko.intake[id]?.length, 5, id);
+  }
+  assert.equal(kr.rooms[kr.rooms.length - 1].id, "plan");
+  // 해외 층은 기존 다섯 방 그대로예요.
+  assert.deepEqual(floor("JP").rooms.map((r) => r.id), ROOMS);
+});

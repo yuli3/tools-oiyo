@@ -8,9 +8,9 @@ const exists = (href: string) => {
   return existsSync(new URL(`../pages/${loc}/${slug}.astro`, import.meta.url)) || existsSync(new URL(`../pages/[locale]/${slug}.astro`, import.meta.url));
 };
 
-test("직업 5곳, 인생 사건 6가지", () => {
-  assert.equal(KR_DESKS.filter((d) => d.kind === "job").length, 5);
-  assert.equal(KR_DESKS.filter((d) => d.kind === "event").length, 6);
+test("직업 7곳, 인생 사건 8가지", () => {
+  assert.equal(KR_DESKS.filter((d) => d.kind === "job").length, 7);
+  assert.equal(KR_DESKS.filter((d) => d.kind === "event").length, 8);
   assert.equal(new Set(KR_DESKS.map((d) => d.id)).size, KR_DESKS.length);
 });
 
@@ -27,4 +27,11 @@ test("질문으로 창구를 찾아요", () => {
   assert.equal(findDesks("배민 라이더인데 다쳤어요")[0].id, "rider");
   assert.equal(findDesks("아버지가 돌아가셔서 상속포기", "event")[0].id, "death");
   assert.equal(findDesks("전혀 관계없는 말").length, 0);
+});
+
+test("새 창구도 질문으로 찾아요", () => {
+  assert.equal(findDesks("학원 강사인데 3.3% 떼여요", "job")[0]?.id, "tutor");
+  assert.equal(findDesks("집 사려는데 취득세랑 등기", "event")[0]?.id, "homebuy");
+  assert.equal(findDesks("교통사고 과실 합의", "event")[0]?.id, "accident");
+  assert.equal(findDesks("세입자한테 월세 받는 집주인", "job")[0]?.id, "landlord");
 });

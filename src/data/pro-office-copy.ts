@@ -1,14 +1,14 @@
 // 전문가 사무소 허브의 화면 문구 (2026-11-23). 계산 없음: 방 이름, 층 이름, 접수 질문(결론을 바꾸는 사실을 먼저 묻는 질문), 결과지 문구.
 // 숫자 자리는 {n} (Astro island props라 함수를 넘길 수 없어요). 접수 질문은 사실을 모으는 질문일 뿐 법적 판단을 하지 않아요.
-import type { FloorId, OfficeLocale, RoomId } from "./pro-office.ts";
+import type { BaseRoomId, FloorId, KrRoomId, OfficeLocale } from "./pro-office.ts";
 
 export type OfficeCopy = {
   building: string; lobby: string; lobbySub: string; directory: string; floorWord: string; ticket: string;
-  rooms: Record<RoomId, string>; roomDesc: Record<RoomId, string>; closed: string; enter: string; back: string;
+  rooms: Record<BaseRoomId, string> & Partial<Record<KrRoomId, string>>; roomDesc: Record<BaseRoomId, string> & Partial<Record<KrRoomId, string>>; closed: string; enter: string; back: string;
   public: string; pro: string; both: string; step1: string; step2: string; step3: string; step4: string;
   help: string; skills: string; skillHint: string; mcp: string; mcpHint: string; noTools: string; pinned: string; pin: string; unpin: string;
   sheet: string; sheetHint: string; client: string; notes: string; print: string; printed: string; sheetFooter: string;
-  countries: Record<FloorId, string>; intake: Record<RoomId, string[]>; gaps: string; asOf: string;
+  countries: Record<FloorId, string>; intake: Record<BaseRoomId, string[]> & Partial<Record<KrRoomId, string[]>>; gaps: string; asOf: string;
 };
 
 const C = (x: OfficeCopy) => x;
@@ -16,8 +16,8 @@ export const OFFICE_COPY: Record<OfficeLocale, OfficeCopy> = {
   ko: C({
     building: "OIYO 실무 오피스", lobby: "1층 로비 · 안내 데스크", lobbySub: "어느 나라, 어떤 일인지 고르면 그 층의 방으로 안내해요. 실제 자격사 사무소가 아니라, 상담 전에 사실을 정리하고 숫자를 잡아 보는 도구 모음이에요.",
     directory: "층별 안내", floorWord: "{n}층", ticket: "대기 번호",
-    rooms: { tax: "세무실", labor: "노무실", admin: "행정·생활실", legal: "법무실", plan: "재무설계실" },
-    roomDesc: { tax: "신고 기한, 세액, 가산세, 원천징수, 법인세", labor: "임금·퇴직금·해고·휴가·4대보험·산재", admin: "인허가·민원·임대차·소비자·통관", legal: "등기·공탁·소송비용·시효·가사·상속", plan: "저축·연금·절세계좌·대출 상환·노후 준비" },
+    rooms: { tax: "세무실", labor: "노무실", admin: "행정·생활실", legal: "법무실", insurance: "보험실", realty: "부동산실", biz: "창업·경영실", welfare: "복지·의료실", plan: "재무설계실" },
+    roomDesc: { tax: "신고 기한, 세액, 가산세, 원천징수, 법인세", labor: "임금·퇴직금·해고·휴가·4대보험·산재", admin: "인허가·민원·소비자·통관", legal: "등기·공탁·소송비용·시효·가사·상속", insurance: "보험금 청구·실손·교통사고·모집 규제·보험료", realty: "중개·전월세·매매·등기·감정평가·공동주택 관리", biz: "창업·사업계획·가맹·자금·경영 진단", welfare: "복지 급여·의료비·간병·장기요양·진료기록", plan: "저축·연금·절세계좌·대출 상환·노후 준비" },
     closed: "준비 중인 방", enter: "들어가기", back: "로비로",
     public: "고객(일반인)용", pro: "실무자용", both: "전체",
     step1: "① 접수: 결론을 바꾸는 사실부터", step2: "② 상담 테이블: 계산·확인 도구", step3: "③ 서가: AI 도구(스킬·MCP)", step4: "④ 상담 결과지",
@@ -31,6 +31,10 @@ export const OFFICE_COPY: Record<OfficeLocale, OfficeCopy> = {
       labor: ["근로자인가요, 사업자(프리랜서)인가요?", "상시 근로자 수는 몇 명인가요?", "입사일·퇴사일(또는 사건 날짜)은요?", "근로계약서·급여명세서가 있나요?", "청구·신청 기한을 세 봤나요?"],
       admin: ["어느 기관에 내는 일인가요?", "처분·통지를 받은 날짜는요?", "계약서·영수증·등기부 같은 증빙이 있나요?", "상대방(집주인·판매자·기관)과 이미 연락했나요?", "이의·취소·반환 기한이 남았나요?"],
       legal: ["다툼의 상대방과 금액은요?", "사건이 생긴 날짜와 마지막 청구 날짜는요?", "합의서·차용증·판결문 같은 서류가 있나요?", "소송·조정·지급명령 중 어디까지 진행됐나요?", "상속·가족 관계라면 관계와 사망일은요?"],
+      insurance: ["어떤 보험(실손·자동차·생명·손해)인가요?", "사고·진단 날짜와 청구한 날짜는요?", "약관·증권·진단서·영수증이 있나요?", "보험사가 거절·삭감한 이유를 서면으로 받았나요?", "청구 기한(3년)을 세 봤나요?"],
+      realty: ["매매인가요, 전세·월세인가요?", "계약일·잔금일·입주일은요?", "등기부등본·건축물대장을 확인했나요?", "보증금·대출 금액과 집값(시세)은요?", "신고(거래·임대차·취득세) 기한이 남았나요?"],
+      biz: ["업종과 개업(예정)일은요?", "혼자인가요, 직원을 둘 건가요?", "가맹(프랜차이즈)인가요?", "예상 월 매출과 고정비는요?", "사업자등록과 인허가를 마쳤나요?"],
+      welfare: ["누구를 위한 상담인가요? (본인·부모·자녀)", "가구원 수와 소득·재산은 대략 얼마인가요?", "장애·질병·요양 등급이 있나요?", "이미 받고 있는 급여·지원이 있나요?", "진단서·의료비 영수증 같은 서류가 있나요?"],
       plan: ["한 달 실수령액과 고정 지출은 얼마인가요?", "비상금(생활비 몇 달치)이 있나요?", "연금저축·IRP·ISA 같은 절세계좌를 쓰고 있나요?", "갚고 있는 대출의 금리와 남은 기간은요?", "목표 시점(주택·은퇴·교육)과 금액은요?"],
     },
     gaps: "아직 도구가 없는 역량 {n}개 (제작 예정)", asOf: "기준일",
@@ -38,8 +42,8 @@ export const OFFICE_COPY: Record<OfficeLocale, OfficeCopy> = {
   en: C({
     building: "OIYO Practice Office", lobby: "Ground floor · Reception", lobbySub: "Pick a country and a topic and we walk you to the right room. This is not a licensed adviser's office: it is a set of tools to sort the facts and rough out the numbers before you see one.",
     directory: "Floor directory", floorWord: "Floor {n}", ticket: "Ticket",
-    rooms: { tax: "Tax room", labor: "Employment room", admin: "Housing & consumer room", legal: "Legal room", plan: "Financial planning room" },
-    roomDesc: { tax: "Deadlines, tax due, penalties, withholding, corporate tax", labor: "Pay, notice, severance, leave, payroll cost", admin: "Renting, deposits, cancelling purchases, buying a home", legal: "Claims, limitation, small claims, court fees, inheritance", plan: "Saving, pensions, tax-advantaged accounts, debt, retirement" },
+    rooms: { tax: "Tax room", labor: "Employment room", admin: "Housing & consumer room", legal: "Legal room", insurance: "Insurance room", realty: "Property room", biz: "Business start-up room", welfare: "Welfare & health room", plan: "Financial planning room" },
+    roomDesc: { tax: "Deadlines, tax due, penalties, withholding, corporate tax", labor: "Pay, notice, severance, leave, payroll cost", admin: "Renting, deposits, cancelling purchases, buying a home", legal: "Claims, limitation, small claims, court fees, inheritance", insurance: "Insurance claims, medical expense cover, car accidents, sales rules", realty: "Brokerage, renting, buying, registration, valuation, apartment management", biz: "Starting a business, franchises, funding, management checks", welfare: "Benefits, medical costs, long-term care, medical records", plan: "Saving, pensions, tax-advantaged accounts, debt, retirement" },
     closed: "Room not open yet", enter: "Enter", back: "Back to reception",
     public: "For clients", pro: "For practitioners", both: "All",
     step1: "① Intake: the facts that change the answer", step2: "② Consultation table: calculators and checks", step3: "③ Library: AI tools (skills, MCP)", step4: "④ Meeting summary",
@@ -53,6 +57,10 @@ export const OFFICE_COPY: Record<OfficeLocale, OfficeCopy> = {
       labor: ["Employee or self-employed?", "How many employees does the employer have?", "Start date and end date (or date of the event)?", "Contract and payslips available?", "Have you counted the claim deadline?"],
       admin: ["Who is the other side? (landlord, seller, agency)", "Date of the contract, purchase or notice?", "Contract, receipts or deposit records available?", "Already contacted the other side?", "Is the cancellation or return deadline still open?"],
       legal: ["Who owes whom, and how much?", "Date it arose and date of the last demand?", "Any written agreement, IOU or judgment?", "How far has it gone (letter, small claim, court)?", "For an estate: relationship and date of death?"],
+      insurance: ["Which policy (medical expense, car, life, non-life)?", "Date of the accident or diagnosis, and of the claim?", "Policy terms, certificate, medical notes and receipts at hand?", "Did the insurer refuse or cut the claim in writing, and why?", "Have you counted the 3-year claim deadline?"],
+      realty: ["Buying, or renting (jeonse or monthly rent)?", "Contract, balance payment and move-in dates?", "Have you checked the land registry and building register?", "Deposit, loan amount and market price?", "Are reporting or acquisition-tax deadlines still open?"],
+      biz: ["Line of business and opening date?", "Alone, or hiring staff?", "Is it a franchise?", "Expected monthly sales and fixed costs?", "Business registration and permits done?"],
+      welfare: ["Who is the consultation for (self, parent, child)?", "Household size and rough income and assets?", "Any disability, illness or long-term care grade?", "Benefits or support already received?", "Medical certificates or receipts at hand?"],
       plan: ["What is your monthly take-home pay and fixed spending?", "Do you have an emergency fund (how many months of spending)?", "Which tax-advantaged accounts or pensions do you already use?", "What debts do you have, at what rate and for how long?", "What goal (home, retirement, education), how much and by when?"],
     },
     gaps: "{n} topics without a tool yet", asOf: "Checked",

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { KR_DESKS, findDesks } from "../../../lib/kr-desks-2026";
 
 const field = "mt-1 min-h-11 w-full min-w-0 rounded-lg border border-input bg-background px-3 text-base";
@@ -8,6 +8,11 @@ export default function KrDesk({ kind }: { kind: "job" | "event" }) {
   const [id, setId] = useState(list[0].id);
   const [q, setQ] = useState("");
   const [done, setDone] = useState<Record<string, boolean>>({});
+  // 사무소 방에서 #landlord 같은 주소로 들어오면 그 창구를 바로 열어요.
+  useEffect(() => {
+    const h = window.location.hash.slice(1);
+    if (list.some((x) => x.id === h)) setId(h);
+  }, []);
   const hits = q.trim() ? findDesks(q, kind) : [];
   const d = list.find((x) => x.id === id) ?? list[0];
   return (
@@ -16,7 +21,7 @@ export default function KrDesk({ kind }: { kind: "job" | "event" }) {
       {q.trim() && <p className="text-sm text-muted-foreground">{hits.length ? "맞는 창구를 골라 보세요." : "맞는 창구를 찾지 못했어요. 아래에서 직접 골라 주세요."}</p>}
       <div className="flex flex-wrap gap-2" role="tablist">
         {(hits.length ? hits : list).map((x) => (
-          <button key={x.id} type="button" role="tab" aria-selected={x.id === d.id} onClick={() => setId(x.id)} className={`min-h-11 rounded-full border px-4 text-sm ${x.id === d.id ? "border-primary bg-primary text-primary-foreground" : "border-border bg-background"}`}>{x.icon} {x.title}</button>
+          <button key={x.id} type="button" role="tab" aria-selected={x.id === d.id} onClick={() => { setId(x.id); history.replaceState(null, "", `#${x.id}`); }} className={`min-h-11 rounded-full border px-4 text-sm ${x.id === d.id ? "border-primary bg-primary text-primary-foreground" : "border-border bg-background"}`}>{x.icon} {x.title}</button>
         ))}
       </div>
       <section className="rounded-xl border border-border bg-card p-4" aria-live="polite">
