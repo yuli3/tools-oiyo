@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { aboveTenMillion, childReduction, joinLeaveMonths, simplifiedWithholding } from "./kr-payroll-month-2026.ts";
-import { WITHHOLDING_TABLE } from "../data/kr-withholding-table-2026.ts";
+import { WITHHOLDING_TABLE } from "./kr-withholding-table-2026.ts";
 import { employeeInsurance2026 } from "./kr-rates-2026.mjs";
 
 test("표 구조: 770~10,000천원 646구간이 끊김 없이 이어져요", () => {

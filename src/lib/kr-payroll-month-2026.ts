@@ -9,7 +9,7 @@
 //    노인장기요양보험법 제8조(건강보험과 함께 징수), 보험료징수법 제16조의4(고용·산재: 월 중간 입사는 다음 달부터, 1일이면 그 달부터).
 //    월 보험료는 kr-rates-2026 employeeInsurance2026(2026 요율·상하한)을 그대로 써요.
 //    고용보험 퇴사 달 처리는 원문 미확인이라 "확인 필요"로만 표시하고 금액을 더하지 않아요.
-import { WITHHOLDING_10M, WITHHOLDING_TABLE } from "../data/kr-withholding-table-2026.ts";
+import { WITHHOLDING_10M, WITHHOLDING_TABLE } from "./kr-withholding-table-2026.ts";
 import { employeeInsurance2026 } from "./kr-rates-2026.mjs";
 
 export const PAYROLL_MONTH_AS_OF = "2026-11-23";
