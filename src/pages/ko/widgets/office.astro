@@ -26,7 +26,7 @@ const shell = {
 };
 const faqs = [
   { q: "계산기를 더 넣을 수 있나요?", a: "지금은 다섯 가지예요. 많이 쓰이는 순서대로 더할게요." },
-  { q: "출처 링크를 없앨 수 있나요?", a: "시제품에서는 안 돼요. 정식 상품에서 유료 선택지로 검토하고 있어요." },
+  { q: "출처 링크를 없앨 수 있나요?", a: "무료 위젯에서는 안 돼요. 맞춤 제작으로 뺄 수 있어요. 사무소용 위젯 소개 페이지(/ko/office-widgets/)에서 문의해 주세요." },
   { q: "방문자 입력이 사무소에 전달되나요?", a: "아니요. 계산은 방문자의 브라우저 안에서만 해요. 연락은 방문자가 전화 버튼을 눌러야 이어져요." },
 ];
 const input = "mt-1 min-h-11 w-full rounded-md border border-input bg-background px-3 text-base text-foreground";
@@ -59,7 +59,7 @@ const btn = "inline-flex min-h-11 items-center justify-center rounded-md border 
   </div>
   <p aria-live="polite" id="office-status" class="mt-2 text-sm text-foreground"></p>
   <iframe id="office-preview" title="위젯 미리 보기" width="100%" height="900" class="mt-4 rounded-lg border border-border"></iframe>
-  <p class="mt-4 text-xs text-muted-foreground">함께 보기: <a class="underline" href="/ko/widgets/">블로그용 무료 위젯</a> · <a class="underline" href="/ko/tax-advisor-toolkit/">세무·회계 실무 도구 모음</a></p>
+  <p class="mt-4 text-xs text-muted-foreground">함께 보기: <a class="underline" href="/ko/office-widgets/">사무소용 위젯 소개·맞춤 제작 문의</a> · <a class="underline" href="/ko/widgets/">블로그용 무료 위젯</a> · <a class="underline" href="/ko/tax-advisor-toolkit/">세무·회계 실무 도구 모음</a></p>
   <script>
     const form = document.getElementById("office-form") as HTMLFormElement;
     const code = document.getElementById("office-code") as HTMLTextAreaElement;
