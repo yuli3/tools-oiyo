@@ -1,0 +1,68 @@
+---
+/**
+ * Turkey size, thaw and roast-time planner (2026-11-23, weekly think tank). en only:
+ * Thanksgiving (US, Nov 26, 2026) and Christmas (US/UK) are when people search it, every year.
+ * Times: USDA FSIS "Let's Talk Turkey" timetable. Math: lib/turkey.ts
+ */
+import Layout from '../../components/Layout.astro';
+import ToolShell from '../../components/ToolShell.astro';
+import UtilityArticle, { type UtilityContent } from '../../components/UtilityArticle.astro';
+import RelatedLinkList from '../../components/RelatedLinkList.astro';
+import TurkeyPlanner from '../../components/tools/world/TurkeyPlanner';
+import { utilityJsonLd } from '../../lib/utility-jsonld';
+
+const title = 'Turkey Calculator — Size, Thawing Time & Roasting Time by Weight';
+const description = 'How big a turkey for your guests, when to start thawing it, and when it goes in the oven. USDA roasting times at 325°F for unstuffed and stuffed turkeys, worked back from the time you want to carve.';
+const c: UtilityContent = {
+  introTitle: 'Plan the turkey backwards from dinner',
+  intro: 'A frozen turkey needs days, not hours: about one day in the fridge for every 4 to 5 pounds. Then it roasts for roughly 3 to 5 hours at 325°F depending on weight and whether it is stuffed, and rests 20 minutes before carving. Most turkey mistakes are timing mistakes, so this planner starts from the time you want to carve and works back to when it goes in the oven and when it comes out of the freezer. Thanksgiving 2026 is Thursday, November 26.',
+  formulaTitle: 'The numbers it uses',
+  formulas: [
+    { title: 'Thawing', body: 'Fridge: 24 hours per 4–5 lb (this tool plans with 4 lb). Cold water: 30 minutes per lb, changing the water every 30 minutes, then cook right away.' },
+    { title: 'Roasting at 325°F (unstuffed)', body: '8–12 lb 2¾–3 h · 12–14 lb 3–3¾ h · 14–18 lb 3¾–4¼ h · 18–20 lb 4¼–4½ h · 20–24 lb 4½–5 h.' },
+    { title: 'Roasting at 325°F (stuffed)', body: '8–12 lb 3–3½ h · 12–14 lb 3½–4 h · 14–18 lb 4–4¼ h · 18–20 lb 4¼–4¾ h · 20–24 lb 4¾–5¼ h.' },
+    { title: 'Done', body: '165°F (74°C) in the thickest part of the inner thigh without touching bone, and 165°F in the center of any stuffing. Rest 20 minutes.' },
+  ],
+  howToTitle: 'How to use it',
+  steps: [
+    'Easy mode: enter the number of guests; the tool suggests a turkey size (about 1¼ lb per person, 1½ lb for leftovers).',
+    'Expert mode: enter your turkey’s weight in pounds or kilograms.',
+    'Choose stuffed or unstuffed and how you will thaw it.',
+    'Set the time you want to carve. The schedule shows when to start thawing, when the oven goes on and when to start checking the temperature.',
+  ],
+  faqTitle: 'Common questions',
+  faqs: [
+    { question: 'How long does a 20 lb turkey take to thaw?', answer: 'In the fridge, 4 to 5 days (24 hours per 4–5 lb). In cold water, about 10 hours at 30 minutes per pound, changing the water every 30 minutes.' },
+    { question: 'How long to cook a 15 lb turkey?', answer: 'At 325°F, an unstuffed 14–18 lb turkey takes about 3¾ to 4¼ hours; stuffed, 4 to 4¼ hours. Go by the thermometer: 165°F in the inner thigh.' },
+    { question: 'How much turkey per person?', answer: 'A common rule is about 1¼ lb of whole turkey per person, or 1½ lb if you want leftovers. The bones make up a good part of the weight.' },
+    { question: 'When should I take the turkey out of the freezer for Thanksgiving?', answer: 'For a fridge thaw, count back one day per 4 lb from Thursday morning. A 16 lb turkey should move to the fridge by Sunday, November 22, 2026.' },
+    { question: 'Can I cook a turkey in Celsius?', answer: 'Yes. 325°F is about 163°C (fan ovens often run 15–20°C lower). Switch the unit to kilograms in expert mode; the times follow the same table.' },
+    { question: 'Are my inputs saved?', answer: 'The numbers stay in this page only. The site uses analytics and advertising.' },
+  ],
+  disclaimer: 'Times are estimates from the USDA timetable for a conventional oven at 325°F. Ovens and birds vary: a food thermometer reading of 165°F decides when it is done.',
+};
+const related = [
+  ['/en/black-friday-calculator/', 'Black Friday calculator'],
+  ['/en/secret-santa-generator/', 'Secret Santa generator'],
+  ['/en/us-pto-planner-2027/', '2027 PTO planner (US)'],
+  ['/en/unit-price-calculator/', 'Unit price calculator'],
+];
+const url = 'https://tools.oiyo.net/en/turkey-calculator/';
+const schema = utilityJsonLd({ name: title, description, url, locale: 'en', steps: c.steps, faqs: c.faqs });
+---
+<Layout title={title} description={description} locale="en" canonicalURL={url}>
+  <ToolShell title={title} description={description}>
+    <TurkeyPlanner client:load />
+    <UtilityArticle c={c} />
+    <section class="space-y-2 border-t border-border pt-6">
+      <h2 class="text-lg font-bold">Sources</h2>
+      <ul class="list-disc space-y-2 pl-5 text-sm">
+        <li><a href="https://www.fsis.usda.gov/sites/default/files/media_file/2021-04/Lets_Talk_Turkey.pdf" class="text-primary underline underline-offset-4" rel="noopener">USDA FSIS: Let’s Talk Turkey (PDF)</a></li>
+        <li><a href="https://www.health.state.mn.us/people/foodsafety/foods/turkey.html" class="text-primary underline underline-offset-4" rel="noopener">Minnesota Department of Health: Turkey — safe thawing and cooking</a></li>
+      </ul>
+      <p class="text-xs text-muted-foreground">Checked 2026-11-23.</p>
+    </section>
+    <RelatedLinkList title="More holiday math" links={related.map(([href, label]) => ({ href, label }))} locale="en" />
+  </ToolShell>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+</Layout>
