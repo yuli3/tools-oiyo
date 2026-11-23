@@ -72,3 +72,46 @@ test('area 평 to m2', () => {
   assert.equal(Math.round(convertArea(34, 'pyeong', 'm2') * 100) / 100, 112.4);
   assert.equal(Math.round(convertArea(84, 'm2', 'pyeong') * 100) / 100, 25.41);
 });
+
+test('compare unit price', async () => {
+  const { comparePrice } = await import('./simple-calc.ts');
+  const r = comparePrice({ price: 3000, qty: 500 }, { price: 5000, qty: 1000 })!;
+  assert.equal(r.cheaper, 'b');
+  assert.equal(r.ua, 6);
+  assert.equal(r.ub, 5);
+  assert.ok(Math.abs(r.savePct - 16.6667) < 0.001);
+  assert.equal(comparePrice({ price: 1000, qty: 2 }, { price: 2000, qty: 4 })!.cheaper, 'same');
+  assert.equal(comparePrice({ price: 1000, qty: 0 }, { price: 2000, qty: 4 }), null);
+});
+
+test('percent change', async () => {
+  const { percentChange } = await import('./simple-calc.ts');
+  assert.deepEqual(percentChange(10000, 12300), { pct: 23, diff: 2300 });
+  assert.equal(percentChange(200, 150)!.pct, -25);
+  assert.equal(percentChange(0, 100), null);
+});
+
+test('pills left counts today as day one', async () => {
+  const { pillsLeft } = await import('./simple-calc.ts');
+  const r = pillsLeft(30, 3, '2026-11-24')!;
+  assert.equal(r.days, 10);
+  assert.equal(r.extra, 0);
+  assert.equal(r.lastDay, '2026-12-03');
+  assert.equal(r.refillBy, '2026-11-30');
+  const s = pillsLeft(5, 2, '2026-12-31')!;
+  assert.equal(s.days, 2);
+  assert.equal(s.extra, 1);
+  assert.equal(s.lastDay, '2027-01-01');
+  assert.equal(s.refillBy, '2026-12-31');
+  assert.equal(pillsLeft(1, 2, '2026-11-24')!.lastDay, null);
+});
+
+test('bmi and temperature', async () => {
+  const { bmiValue, FT_IN_TO_CM, LB_TO_KG, convertTemp } = await import('./simple-calc.ts');
+  assert.ok(Math.abs(bmiValue(170, 65)! - 22.49) < 0.01);
+  assert.equal(bmiValue(170, 5), null);
+  assert.ok(Math.abs(FT_IN_TO_CM(5, 7) - 170.18) < 0.001);
+  assert.ok(Math.abs(LB_TO_KG(150) - 68.0389) < 0.001);
+  assert.equal(convertTemp(100, 'c'), 212);
+  assert.equal(convertTemp(98.6, 'f').toFixed(1), '37.0');
+});

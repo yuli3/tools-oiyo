@@ -1,14 +1,13 @@
 ---
-// 간단계산기 개별 페이지 6종 × 6개 언어 (2026-11-22). 계산 로직은 src/lib/simple-calc.ts·bill-split.ts.
+// 간단계산기 개별 페이지(SIMPLE_TOOLS 전부) × 6개 언어 (2026-11-22, 3차 11-24에 15종). 계산 로직은 src/lib/simple-calc.ts·bill-split.ts.
 import Layout from '../../../components/Layout.astro';
 import SimpleShell from '../../../components/SimpleShell.astro';
 import SimpleCalc from '../../../components/tools/SimpleCalc';
-import { SIMPLE_COPY, simpleDetailHref, SIMPLE_UI, SIMPLE_LOCALES, simpleHref, type SimpleTool } from '../../../data/simple-calculators';
+import { SIMPLE_COPY, simpleDetailHref, SIMPLE_UI, SIMPLE_LOCALES, SIMPLE_TOOLS, simpleHref, type SimpleTool } from '../../../data/simple-calculators';
 import { utilityJsonLd } from '../../../lib/utility-jsonld';
 import type { Locale } from '../../../lib/i18n';
 export function getStaticPaths() {
-  const tools = ['calculator', 'split-bill', 'exchange-rate', 'discount', 'days-left', 'card-installment', 'age', 'time-after', 'interest', 'area'] as const;
-  return (['ko', 'en', 'ja', 'zh', 'fr', 'es'] as const).flatMap((locale) => tools.map((tool) => ({ params: { locale, tool }, props: { locale, tool } })));
+  return SIMPLE_LOCALES.flatMap((locale) => SIMPLE_TOOLS.map((tool) => ({ params: { locale, tool }, props: { locale, tool } })));
 }
 const { locale, tool } = Astro.props as { locale: Locale; tool: SimpleTool };
 const ui = SIMPLE_UI[locale];
