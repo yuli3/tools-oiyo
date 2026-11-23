@@ -164,3 +164,48 @@ export const AREA_M2: Record<string, number> = { pyeong: 400 / 121, m2: 1, ft2: 
 export function convertArea(value: number, from: string, to: string) {
   return (value * AREA_M2[from]) / AREA_M2[to];
 }
+
+// ── 3차 (2026-11-24): 어느 게 더 싼가·몇 % 올랐나·약 며칠 치·비만도·온도 ─────────
+/** 두 물건의 단위 가격(가격 ÷ 양)을 비교해요. 양이 0이면 비교하지 않아요. */
+export function comparePrice(a: { price: number; qty: number }, b: { price: number; qty: number }) {
+  if (!(a.price > 0 && a.qty > 0 && b.price > 0 && b.qty > 0)) return null;
+  const ua = a.price / a.qty;
+  const ub = b.price / b.qty;
+  const diff = Math.abs(ua - ub) / Math.max(ua, ub);
+  // 1천분의 1보다 작은 차이는 같은 값으로 봐요(반올림 오차).
+  const cheaper: 'a' | 'b' | 'same' = diff < 0.001 ? 'same' : ua < ub ? 'a' : 'b';
+  return { ua, ub, cheaper, savePct: diff * 100 };
+}
+
+/** 예전 값 → 지금 값 변화율(%)과 차이. 예전 값이 0 이하면 계산하지 않아요. */
+export function percentChange(before: number, after: number) {
+  if (!(before > 0) || !(after >= 0)) return null;
+  return { pct: ((after - before) / before) * 100, diff: after - before };
+}
+
+/** 남은 알 수와 하루 먹는 알 수로 며칠 치인지, 마지막 날(오늘 포함)을 알려 줘요. */
+export function pillsLeft(count: number, perDay: number, todayIsoStr: string) {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(todayIsoStr);
+  if (!m || !(count > 0) || !(perDay > 0)) return null;
+  const days = Math.floor(count / perDay);
+  const extra = count - days * perDay;
+  const at = (offset: number) => {
+    const d = new Date(Date.UTC(Number(m[1]), Number(m[2]) - 1, Number(m[3]) + offset));
+    return d.toISOString().slice(0, 10);
+  };
+  // 오늘 먹을 약도 남은 알 수에 들어 있다고 봐요. 마지막 날 = 오늘 + (며칠 치 − 1).
+  return { days, extra, lastDay: days > 0 ? at(days - 1) : null, refillBy: days > 3 ? at(days - 4) : at(0) };
+}
+
+/** BMI = 몸무게(kg) ÷ 키(m)². 키 50~250cm, 몸무게 10~300kg 밖이면 계산하지 않아요. */
+export function bmiValue(heightCm: number, weightKg: number) {
+  if (!(heightCm >= 50 && heightCm <= 250 && weightKg >= 10 && weightKg <= 300)) return null;
+  return weightKg / (heightCm / 100) ** 2;
+}
+export const FT_IN_TO_CM = (ft: number, inch: number) => (ft * 12 + inch) * 2.54;
+export const LB_TO_KG = (lb: number) => lb * 0.45359237;
+
+/** 섭씨·화씨 바꾸기. */
+export function convertTemp(value: number, from: 'c' | 'f') {
+  return from === 'c' ? value * 9 / 5 + 32 : (value - 32) * 5 / 9;
+}

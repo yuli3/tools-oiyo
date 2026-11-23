@@ -1,6 +1,6 @@
 'use client';
 /**
- * 간단계산기 (2026-11-22). 어르신·저시력·시각장애인용 큰 글씨 계산기 6종.
+ * 간단계산기 (2026-11-22, 3차 2026-11-24). 어르신·저시력·시각장애인용 큰 글씨 계산기 15종.
  * 규칙: 입력 2~3개, 결과는 크게 한 문장(aria-live), "소리로 듣기", 버튼 최소 56px, 키보드 완전 지원.
  * 수수료율·송금 단위 같은 설정은 나라별 기본값으로 숨기고, 자세한 계산기는 페이지 아래 링크로 보내요.
  */
@@ -9,7 +9,9 @@ import type { Locale } from '../../lib/i18n';
 import type { SimpleTool } from '../../data/simple-calculators';
 import { SIMPLE_UI } from '../../data/simple-calculators';
 import { splitBill, cardInstallment, type InstallmentMethod } from '../../lib/bill-split';
-import { pressKey, initialCalc, koreanUnits, parseAmount, discount, daysBetween, todayIso, ageOn, zodiacIndex, addTime, depositInterest, convertArea, type CalcState } from '../../lib/simple-calc';
+import { pressKey, initialCalc, koreanUnits, parseAmount, discount, daysBetween, todayIso, ageOn, zodiacIndex, addTime, depositInterest, convertArea, comparePrice, percentChange, pillsLeft, bmiValue, FT_IN_TO_CM, LB_TO_KG, convertTemp, type CalcState } from '../../lib/simple-calc';
+import { BMI_BANDS } from '../../lib/health-scenarios';
+import { BMI_BANDS_L, NORMAL_TOP } from '../../lib/health-i18n';
 import { convertViaKrw, validateFeed } from '../../lib/fx-feed.mjs';
 
 const INTL: Record<Locale, string> = { ko: 'ko-KR', en: 'en-US', ja: 'ja-JP', zh: 'zh-CN', fr: 'fr-FR', es: 'es-ES' };
@@ -464,6 +466,215 @@ function Area({ locale }: { locale: Locale }) {
   );
 }
 
+// ── 3차(2026-11-24): 어느 게 더 싼가·몇 % 올랐나·약 며칠 치·비만도·온도 ─────────
+interface W3 {
+  itemA: string; itemB: string; priceOf: string; qtyOf: string; qtyHint: string;
+  cheaper: (which: string, pct: string) => string; same: string; perUnit: (a: string, b: string) => string;
+  before: string; after: string; up: (pct: string) => string; down: (pct: string) => string; flat: string; more: (v: string) => string; less: (v: string) => string;
+  pillCount: string; pillUnit: string; perDay: string; perDayUnit: (n: number) => string;
+  pillDays: (n: number, last: string) => string; pillShort: string; refill: (d: string) => string; refillNow: string; pillExtra: (n: number) => string;
+  height: string; weight: string; ft: string; inch: string; lb: string; imperial: string;
+  bmiMain: (v: string, band: string) => string; bmiSub: (h: string, lo: string, hi: string) => string;
+  temp: string; minus: string; tempMain: (a: string, b: string) => string; reverse: string; fever: string;
+}
+const W3_: Record<Locale, W3> = {
+  ko: {
+    itemA: '첫째 물건', itemB: '둘째 물건', priceOf: '가격', qtyOf: '양 (g·ml·개)', qtyHint: '양은 두 물건 모두 같은 단위로 넣으세요.',
+    cheaper: (w, p) => `${josa(w, '이', '가')} ${p} 더 싸요.`, same: '두 물건 값이 같아요.', perUnit: (a, b) => `양 1당 가격: 첫째 ${a}, 둘째 ${b}.`,
+    before: '예전 값', after: '지금 값', up: (p) => `${p} 올랐어요.`, down: (p) => `${p} 내렸어요.`, flat: '값이 그대로예요.', more: (v) => `예전보다 ${v} 더 내요.`, less: (v) => `예전보다 ${v} 덜 내요.`,
+    pillCount: '남은 약 개수', pillUnit: '알', perDay: '하루에 몇 알?', perDayUnit: (n) => `${n}알`,
+    pillDays: (n, l) => `${n}일 치 남았어요. ${l}까지 드실 수 있어요.`, pillShort: '오늘 먹을 양보다 적게 남았어요.', refill: (d) => `${d}쯤 미리 병원이나 약국에 가 보세요.`, refillNow: '오늘 바로 약을 새로 타세요.', pillExtra: (n) => `(${n}알이 더 남아요.)`,
+    height: '키', weight: '몸무게', ft: '피트', inch: '인치', lb: '파운드', imperial: '피트·파운드로 넣기',
+    bmiMain: (v, b) => `BMI ${v}, '${b}'이에요.`, bmiSub: (h, lo, hi) => `키 ${h}의 정상 몸무게는 ${lo}~${hi}예요. 대한비만학회 기준(23 미만 정상, 25부터 비만)이고, 근육이 많으면 높게 나올 수 있어요.`,
+    temp: '온도', minus: '영하(−)', tempMain: (a, b) => `${josa(a, '은', '는')} ${josa(b, '이에요', '예요')}.`, reverse: '거꾸로 바꾸기', fever: '몸 온도라면 37.5℃ 이상은 열이 있는 편이에요.',
+  },
+  en: {
+    itemA: 'Item 1', itemB: 'Item 2', priceOf: 'Price', qtyOf: 'Size (oz, g, count)', qtyHint: 'Use the same unit for both sizes.',
+    cheaper: (w, p) => `${w} is cheaper by ${p}.`, same: 'Both cost the same per unit.', perUnit: (a, b) => `Price per unit: item 1 ${a}, item 2 ${b}.`,
+    before: 'Old amount', after: 'New amount', up: (p) => `It went up ${p}.`, down: (p) => `It went down ${p}.`, flat: 'No change.', more: (v) => `You pay ${v} more.`, less: (v) => `You pay ${v} less.`,
+    pillCount: 'Pills left', pillUnit: 'pills', perDay: 'Pills a day', perDayUnit: (n) => `${n} a day`,
+    pillDays: (n, l) => `${n} days left. They last until ${l}.`, pillShort: 'Fewer pills than one day’s dose are left.', refill: (d) => `Ask for a refill around ${d}.`, refillNow: 'Ask for a refill today.', pillExtra: (n) => `(${n} extra left over.)`,
+    height: 'Height', weight: 'Weight', ft: 'feet', inch: 'inches', lb: 'pounds', imperial: 'Use feet and pounds',
+    bmiMain: (v, b) => `BMI ${v}: “${b}”.`, bmiSub: (h, lo, hi) => `For ${h}, a healthy weight is ${lo} to ${hi} (WHO: 18.5 to 24.9). Muscle can push BMI up.`,
+    temp: 'Temperature', minus: 'Below zero (−)', tempMain: (a, b) => `${a} is ${b}.`, reverse: 'Convert the other way', fever: 'For body temperature, 100.4°F (38°C) or higher is a fever.',
+  },
+  ja: {
+    itemA: '1つ目の商品', itemB: '2つ目の商品', priceOf: '値段', qtyOf: '量（g・ml・個）', qtyHint: '量は2つとも同じ単位で入れてください。',
+    cheaper: (w, p) => `${w}の方が${p}安いです。`, same: '2つとも同じ値段です。', perUnit: (a, b) => `量1あたり：1つ目 ${a}、2つ目 ${b}。`,
+    before: '前の金額', after: '今の金額', up: (p) => `${p}上がりました。`, down: (p) => `${p}下がりました。`, flat: '変わっていません。', more: (v) => `前より${v}多く払います。`, less: (v) => `前より${v}少なく払います。`,
+    pillCount: '残っている薬の数', pillUnit: '錠', perDay: '1日に何錠？', perDayUnit: (n) => `${n}錠`,
+    pillDays: (n, l) => `${n}日分あります。${l}まで飲めます。`, pillShort: '1日分より少なくなっています。', refill: (d) => `${d}ごろ、早めに病院か薬局へ行きましょう。`, refillNow: '今日、薬を受け取りに行きましょう。', pillExtra: (n) => `（${n}錠余ります）`,
+    height: '身長', weight: '体重', ft: 'フィート', inch: 'インチ', lb: 'ポンド', imperial: 'フィート・ポンドで入れる',
+    bmiMain: (v, b) => `BMI ${v}で「${b}」です。`, bmiSub: (h, lo, hi) => `身長${h}の普通体重は${lo}〜${hi}です（日本肥満学会：25以上は肥満）。筋肉が多いと高めに出ます。`,
+    temp: '温度', minus: '氷点下（−）', tempMain: (a, b) => `${a}は${b}です。`, reverse: '逆に変換', fever: '体温なら、37.5℃以上は発熱の目安です。',
+  },
+  zh: {
+    itemA: '第一件', itemB: '第二件', priceOf: '价格', qtyOf: '数量（克·毫升·个）', qtyHint: '两件的数量请用同一单位。',
+    cheaper: (w, p) => `${w}更便宜，便宜 ${p}。`, same: '两件单价一样。', perUnit: (a, b) => `每单位价格：第一件 ${a}，第二件 ${b}。`,
+    before: '原来的金额', after: '现在的金额', up: (p) => `涨了 ${p}。`, down: (p) => `降了 ${p}。`, flat: '没有变化。', more: (v) => `比原来多付 ${v}。`, less: (v) => `比原来少付 ${v}。`,
+    pillCount: '剩余药片', pillUnit: '片', perDay: '每天吃几片？', perDayUnit: (n) => `${n}片`,
+    pillDays: (n, l) => `还够 ${n} 天，可以吃到${l}。`, pillShort: '剩下的不够一天的量。', refill: (d) => `请在${d}左右提前去医院或药店配药。`, refillNow: '请今天就去配药。', pillExtra: (n) => `（还多出 ${n} 片）`,
+    height: '身高', weight: '体重', ft: '英尺', inch: '英寸', lb: '磅', imperial: '用英尺和磅输入',
+    bmiMain: (v, b) => `BMI ${v}，属于“${b}”。`, bmiSub: (h, lo, hi) => `身高${h}的正常体重是${lo}~${hi}（中国成人标准：24起超重，28起肥胖）。肌肉多的人数值会偏高。`,
+    temp: '温度', minus: '零下（−）', tempMain: (a, b) => `${a} 等于 ${b}。`, reverse: '反向换算', fever: '如果是体温，37.3℃以上算发热。',
+  },
+  fr: {
+    itemA: 'Produit 1', itemB: 'Produit 2', priceOf: 'Prix', qtyOf: 'Quantité (g, ml, pièces)', qtyHint: 'Utilisez la même unité pour les deux.',
+    cheaper: (w, p) => `Le ${w.toLowerCase()} est moins cher de ${p}.`, same: 'Les deux coûtent pareil à l’unité.', perUnit: (a, b) => `Prix par unité : produit 1 ${a}, produit 2 ${b}.`,
+    before: 'Ancien montant', after: 'Nouveau montant', up: (p) => `Hausse de ${p}.`, down: (p) => `Baisse de ${p}.`, flat: 'Aucun changement.', more: (v) => `Vous payez ${v} de plus.`, less: (v) => `Vous payez ${v} de moins.`,
+    pillCount: 'Comprimés restants', pillUnit: 'comprimés', perDay: 'Par jour', perDayUnit: (n) => `${n} par jour`,
+    pillDays: (n, l) => `Il reste ${n} jours. Ils durent jusqu’au ${l}.`, pillShort: 'Il reste moins qu’une journée de traitement.', refill: (d) => `Pensez à renouveler vers le ${d}.`, refillNow: 'Renouvelez dès aujourd’hui.', pillExtra: (n) => `(${n} en plus)`,
+    height: 'Taille', weight: 'Poids', ft: 'pieds', inch: 'pouces', lb: 'livres', imperial: 'Saisir en pieds et livres',
+    bmiMain: (v, b) => `IMC ${v} : « ${b} ».`, bmiSub: (h, lo, hi) => `Pour ${h}, le poids normal va de ${lo} à ${hi} (OMS : 18,5 à 24,9). Les muscles font monter l’IMC.`,
+    temp: 'Température', minus: 'Sous zéro (−)', tempMain: (a, b) => `${a} = ${b}.`, reverse: 'Convertir dans l’autre sens', fever: 'Pour la température du corps, on parle de fièvre à partir de 38 °C.',
+  },
+  es: {
+    itemA: 'Producto 1', itemB: 'Producto 2', priceOf: 'Precio', qtyOf: 'Cantidad (g, ml, unidades)', qtyHint: 'Usa la misma unidad en los dos.',
+    cheaper: (w, p) => `El ${w.toLowerCase()} es más barato, un ${p}.`, same: 'Los dos cuestan lo mismo por unidad.', perUnit: (a, b) => `Precio por unidad: producto 1 ${a}, producto 2 ${b}.`,
+    before: 'Importe anterior', after: 'Importe actual', up: (p) => `Ha subido un ${p}.`, down: (p) => `Ha bajado un ${p}.`, flat: 'No ha cambiado.', more: (v) => `Pagas ${v} más.`, less: (v) => `Pagas ${v} menos.`,
+    pillCount: 'Pastillas que quedan', pillUnit: 'pastillas', perDay: 'Al día', perDayUnit: (n) => `${n} al día`,
+    pillDays: (n, l) => `Quedan para ${n} días. Llegan hasta el ${l}.`, pillShort: 'Quedan menos que la dosis de un día.', refill: (d) => `Pide más hacia el ${d}.`, refillNow: 'Pide más hoy mismo.', pillExtra: (n) => `(sobran ${n})`,
+    height: 'Altura', weight: 'Peso', ft: 'pies', inch: 'pulgadas', lb: 'libras', imperial: 'Usar pies y libras',
+    bmiMain: (v, b) => `IMC ${v}: «${b}».`, bmiSub: (h, lo, hi) => `Para ${h}, el peso normal va de ${lo} a ${hi} (OMS: 18,5 a 24,9). El músculo sube el IMC.`,
+    temp: 'Temperatura', minus: 'Bajo cero (−)', tempMain: (a, b) => `${a} = ${b}.`, reverse: 'Convertir al revés', fever: 'Si es la temperatura del cuerpo, desde 38 °C se considera fiebre.',
+  },
+};
+const qtyNum = (v: string) => parseAmount(v.replace(/,/g, ''));
+
+function UnitPrice({ locale }: { locale: Locale }) {
+  const w = W3_[locale]; const cur = HOME[locale];
+  const [pa, setPa] = useState(''); const [qa, setQa] = useState('');
+  const [pb, setPb] = useState(''); const [qb, setQb] = useState('');
+  const r = comparePrice({ price: qtyNum(pa), qty: qtyNum(qa) }, { price: qtyNum(pb), qty: qtyNum(qb) });
+  const per = (v: number) => (locale === 'ko'
+    ? `${new Intl.NumberFormat('ko-KR', { maximumFractionDigits: 2 }).format(v)}원`
+    : new Intl.NumberFormat(INTL[locale], { style: 'currency', currency: cur, minimumFractionDigits: 0, maximumFractionDigits: dpOf(cur) + 2 }).format(v));
+  const pct = r ? new Intl.NumberFormat(INTL[locale], { style: 'percent', maximumFractionDigits: 0 }).format(Math.round(r.savePct) / 100) : '';
+  const main = !r ? W_[locale].enter : r.cheaper === 'same' ? w.same : w.cheaper(r.cheaper === 'a' ? w.itemA : w.itemB, pct);
+  const suffix = locale === 'ko' ? '원' : cur;
+  const box = (title: string, id: string, p: string, sp: (v: string) => void, q: string, sq: (v: string) => void, win: boolean) => (
+    <fieldset className={`space-y-4 rounded-2xl border-2 p-4 ${win ? 'border-primary bg-primary/5' : 'border-border'}`}>
+      <legend className="px-2 text-2xl font-black text-foreground">{title}{win ? ' ✅' : ''}</legend>
+      <AmountInput locale={locale} id={`${id}-p`} label={w.priceOf} value={p} onChange={sp} suffix={suffix} />
+      <AmountInput locale={locale} id={`${id}-q`} label={w.qtyOf} value={q} onChange={sq} />
+    </fieldset>
+  );
+  return (
+    <div className="space-y-6">
+      {box(w.itemA, 'sc-ua', pa, setPa, qa, setQa, r?.cheaper === 'a')}
+      {box(w.itemB, 'sc-ub', pb, setPb, qb, setQb, r?.cheaper === 'b')}
+      <p className="text-lg text-muted-foreground">{w.qtyHint}</p>
+      <Answer locale={locale} main={main} sub={r ? w.perUnit(per(r.ua), per(r.ub)) : undefined} />
+    </div>
+  );
+}
+
+function PercentChange({ locale }: { locale: Locale }) {
+  const w = W3_[locale]; const cur = HOME[locale]; const money = useMoney(locale);
+  const [a, setA] = useState(''); const [b, setB] = useState('');
+  const r = b ? percentChange(qtyNum(a), qtyNum(b)) : null;
+  const pf = new Intl.NumberFormat(INTL[locale], { style: 'percent', maximumFractionDigits: 1 });
+  const pct = r ? pf.format(Math.abs(Math.round(r.pct * 10) / 10) / 100) : '';
+  const flat = r ? Math.abs(r.pct) < 0.05 : false;
+  const main = !r ? W_[locale].enter : flat ? w.flat : r.pct > 0 ? w.up(pct) : w.down(pct);
+  const sub = r && !flat ? (r.diff > 0 ? w.more(money(r.diff, cur)) : w.less(money(-r.diff, cur))) : undefined;
+  const suffix = locale === 'ko' ? '원' : cur;
+  return (
+    <div className="space-y-6">
+      <AmountInput locale={locale} id="sc-before" label={w.before} value={a} onChange={setA} suffix={suffix} />
+      <AmountInput locale={locale} id="sc-after" label={w.after} value={b} onChange={setB} suffix={suffix} />
+      <Answer locale={locale} main={main} sub={sub} />
+    </div>
+  );
+}
+
+function Pills({ locale }: { locale: Locale }) {
+  const w = W3_[locale];
+  const [count, setCount] = useState('');
+  const [perDay, setPerDay] = useState(1);
+  const [today, setToday] = useState('');
+  useEffect(() => { setToday(todayIso()); }, []);
+  const n = Math.floor(qtyNum(count));
+  const r = today && n > 0 ? pillsLeft(n, perDay, today) : null;
+  const fmt = (iso: string) => new Intl.DateTimeFormat(INTL[locale], { month: 'long', day: 'numeric', weekday: 'short', timeZone: 'UTC' }).format(new Date(`${iso}T00:00:00Z`));
+  const main = !r ? W_[locale].enter : r.lastDay ? w.pillDays(r.days, fmt(r.lastDay)) : w.pillShort;
+  const sub = !r ? undefined : [r.days > 3 ? w.refill(fmt(r.refillBy)) : w.refillNow, r.extra > 0 && r.days > 0 ? w.pillExtra(r.extra) : ''].filter(Boolean).join(' ');
+  return (
+    <div className="space-y-6">
+      <AmountInput locale={locale} id="sc-pills" label={w.pillCount} value={count} onChange={setCount} suffix={w.pillUnit} />
+      <Chips label={w.perDay} options={[1, 2, 3, 4, 6]} value={perDay} onChange={setPerDay} show={w.perDayUnit} />
+      <Answer locale={locale} main={main} sub={sub} />
+    </div>
+  );
+}
+
+function Bmi({ locale }: { locale: Locale }) {
+  const w = W3_[locale];
+  const [imperial, setImperial] = useState(locale === 'en');
+  const [h, setH] = useState(''); const [wt, setWt] = useState('');
+  const [ft, setFt] = useState(''); const [inch, setInch] = useState(''); const [lb, setLb] = useState('');
+  const hCm = imperial ? FT_IN_TO_CM(qtyNum(ft), qtyNum(inch)) : qtyNum(h);
+  const wKg = imperial ? LB_TO_KG(qtyNum(lb)) : qtyNum(wt);
+  const v = bmiValue(hCm, wKg);
+  const nf = new Intl.NumberFormat(INTL[locale], { maximumFractionDigits: 1, minimumFractionDigits: 1 });
+  const bands = locale === 'ko' ? BMI_BANDS : BMI_BANDS_L[locale as Exclude<Locale, 'ko'>];
+  const top = locale === 'ko' ? 23 : NORMAL_TOP[locale as Exclude<Locale, 'ko'>];
+  const band = v != null ? bands.find((b) => v < b.max)!.label : '';
+  const lo = 18.5 * (hCm / 100) ** 2; const hi = (top - 0.1) * (hCm / 100) ** 2;
+  const sp = locale === 'ko' || locale === 'ja' || locale === 'zh' ? '' : ' ';
+  const kg = (x: number) => (imperial ? `${Math.round(x / 0.45359237)}${sp}lb` : `${nf.format(x)}${sp}kg`);
+  const hShow = imperial ? `${qtyNum(ft)}′${qtyNum(inch)}″` : `${qtyNum(h)}${sp}cm`;
+  const main = v != null ? w.bmiMain(nf.format(v), band) : W_[locale].enter;
+  const sub = v != null ? w.bmiSub(hShow, kg(lo), kg(hi)) : undefined;
+  return (
+    <div className="space-y-6">
+      {imperial ? (
+        <div className="grid grid-cols-2 gap-3">
+          <AmountInput locale={locale} id="sc-ft" label={`${w.height} (${w.ft})`} value={ft} onChange={setFt} />
+          <AmountInput locale={locale} id="sc-in" label={w.inch} value={inch} onChange={setInch} />
+        </div>
+      ) : <AmountInput locale={locale} id="sc-h" label={w.height} value={h} onChange={setH} suffix="cm" />}
+      {imperial
+        ? <AmountInput locale={locale} id="sc-lb" label={w.weight} value={lb} onChange={setLb} suffix={w.lb} />
+        : <AmountInput locale={locale} id="sc-w" label={w.weight} value={wt} onChange={setWt} suffix="kg" />}
+      <label className={`${bigBtn} ${imperial ? btnOn : btnOff} flex cursor-pointer items-center gap-3 text-lg`}>
+        <input type="checkbox" className="size-6 accent-primary" checked={imperial} onChange={(e) => setImperial(e.target.checked)} />
+        <span>{w.imperial}</span>
+      </label>
+      <Answer locale={locale} main={main} sub={sub} />
+    </div>
+  );
+}
+
+const TEMP_FROM: Record<Locale, 'c' | 'f'> = { ko: 'f', ja: 'f', zh: 'f', fr: 'f', es: 'f', en: 'c' };
+function Temperature({ locale }: { locale: Locale }) {
+  const w = W3_[locale];
+  const [value, setValue] = useState('');
+  const [neg, setNeg] = useState(false);
+  const [from, setFrom] = useState<'c' | 'f'>(TEMP_FROM[locale]);
+  const to = from === 'c' ? 'f' : 'c';
+  const raw = qtyNum(value);
+  const x = neg ? -raw : raw;
+  const out = convertTemp(x, from);
+  const nf = new Intl.NumberFormat(INTL[locale], { maximumFractionDigits: 1 });
+  const sym = (u: 'c' | 'f') => (u === 'c' ? '℃' : '℉');
+  const sp = locale === 'fr' || locale === 'es' ? ' ' : '';
+  const show = (n: number, u: 'c' | 'f') => `${nf.format(Math.round(n * 10) / 10)}${sp}${sym(u)}`;
+  const celsius = from === 'c' ? x : out;
+  const main = value ? w.tempMain(show(x, from), show(out, to)) : W_[locale].enter;
+  const sub = value && celsius >= 35 && celsius <= 43 ? w.fever : undefined;
+  return (
+    <div className="space-y-6">
+      <div className="flex items-end gap-3">
+        <div className="flex-1"><AmountInput locale={locale} id="sc-temp" label={w.temp} value={value} onChange={setValue} suffix={sym(from)} /></div>
+        <button type="button" aria-pressed={neg} onClick={() => setNeg((v) => !v)} className={`${bigBtn} ${neg ? btnOn : btnOff} min-h-16 text-lg`}>{w.minus}</button>
+      </div>
+      <button type="button" onClick={() => setFrom(to)} className={`${bigBtn} ${btnOff} w-full text-lg`}>⇅ {w.reverse}: {sym(to)} → {sym(from)}</button>
+      <Answer locale={locale} main={main} sub={sub} />
+    </div>
+  );
+}
+
 const KEYS = ['C', '⌫', '%', '÷', '7', '8', '9', '×', '4', '5', '6', '-', '1', '2', '3', '+', '0', '00', '.', '='];
 function DeskCalculator({ locale }: { locale: Locale }) {
   const w = W_[locale];
@@ -522,6 +733,11 @@ export default function SimpleCalc({ tool, locale }: { tool: SimpleTool; locale:
     if (tool === 'time-after') return <TimeAfter locale={locale} />;
     if (tool === 'interest') return <Interest locale={locale} />;
     if (tool === 'area') return <Area locale={locale} />;
+    if (tool === 'unit-price') return <UnitPrice locale={locale} />;
+    if (tool === 'percent-change') return <PercentChange locale={locale} />;
+    if (tool === 'pills') return <Pills locale={locale} />;
+    if (tool === 'bmi') return <Bmi locale={locale} />;
+    if (tool === 'temperature') return <Temperature locale={locale} />;
     return <Installment locale={locale} />;
   }, [tool, locale]);
   return <div data-simple-calc={tool}>{body}</div>;
