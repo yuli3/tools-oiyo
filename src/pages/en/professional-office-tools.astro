@@ -6,7 +6,7 @@ import { OFFICE_COPY } from '../../data/pro-office-copy';
 // Practice office hub (2026-11-23). No new calculation: existing tools, MCP tools and Claude skills arranged as floors and rooms.
 const c = {
   "introTitle": "Practice office",
-  "intro": "Tools for advisers and their clients, arranged like an office: reception, one floor per country, four rooms per floor. Each room has the intake questions that change the answer, the calculators and checkers built on that country's official sources, the AI tools and a printable meeting summary.",
+  "intro": "Tools for advisers and their clients, arranged like an office: reception, one floor per country, five rooms per floor. Each room has the intake questions that change the answer, the calculators and checkers built on that country's official sources, the AI tools and a printable meeting summary.",
   "formulaTitle": "What is in each room",
   "formulas": [
     {
@@ -25,7 +25,7 @@ const c = {
   "howToTitle": "How to use it",
   "steps": [
     "Pick a floor (country) on the directory board.",
-    "Enter a room: tax, employment, housing and consumer, or legal.",
+    "Enter a room: tax, employment, housing and consumer, legal, or financial planning.",
     "Tick the intake questions, open the tools you need and tick them for the summary.",
     "Print the meeting summary for the client file."
   ],
@@ -40,7 +40,7 @@ const c = {
       "answer": "Ticks, notes and the client name stay in this browser and are not sent anywhere. Pins are saved in this browser only."
     }
   ],
-  "disclaimer": "General information only, not legal or tax advice."
+  "disclaimer": "General information only, not legal, tax or investment advice."
 };
 const sources: [string, string][] = [
   ["OIYO MCP server (world)", "https://api.oiyo.net/mcp/world"],

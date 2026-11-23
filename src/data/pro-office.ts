@@ -7,7 +7,7 @@ import { lawGuides } from "./law-guides.ts";
 import { HELP, WORLD_TOOLS, type Area, type Country } from "../lib/world-law-intake-2026.ts";
 
 export const OFFICE_AS_OF = "2026-11-23";
-export type RoomId = "tax" | "labor" | "admin" | "legal";
+export type RoomId = "tax" | "labor" | "admin" | "legal" | "plan";
 export type OfficeLocale = "ko" | "en" | "ja" | "fr" | "es" | "zh";
 export type FloorId = "KR" | Country | "CA" | "AU";
 export type OfficeTool = { href: string; title: string; who: "pro" | "public"; mcp?: string };
@@ -15,12 +15,12 @@ export type OfficeSkill = { id: string; zip: string };
 export type Room = { id: RoomId; tools: OfficeTool[]; skills: OfficeSkill[]; help: string[]; gaps: number };
 export type Floor = { id: FloorId; flag: string; mcp: string; rooms: Room[] };
 
-export const ROOMS: RoomId[] = ["tax", "labor", "admin", "legal"];
+export const ROOMS: RoomId[] = ["tax", "labor", "admin", "legal", "plan"];
 const zip = (dir: string) => `/downloads/${dir === "kr-tax-advisor" ? "oiyo-kr-tax-advisor" : dir}-skill.zip`;
 
 // ── 한국 본관: 직업 → 방 ──
-const KR_JOBS: Record<RoomId, JobId[]> = { tax: ["tax", "cpa"], labor: ["labor", "safety"], admin: ["admin", "customs", "broker", "architect"], legal: ["court", "family", "patent"] };
-const KR_HELP: Record<RoomId, string[]> = {
+const KR_JOBS: Record<Exclude<RoomId, "plan">, JobId[]> = { tax: ["tax", "cpa"], labor: ["labor", "safety"], admin: ["admin", "customs", "broker", "architect"], legal: ["court", "family", "patent"] };
+const KR_HELP: Record<Exclude<RoomId, "plan">, string[]> = {
   tax: ["국세상담센터 126", "홈택스 상담·전자신고"],
   labor: ["고용노동부 고객상담센터 1350", "근로복지공단 1588-0075"],
   admin: ["정부민원안내콜센터 110", "정부24 민원"],
@@ -32,7 +32,7 @@ const KR_OFFICE_TOOLS: Partial<Record<RoomId, OfficeTool[]>> = {
   labor: [{ href: "/ko/join-leave-month-insurance-calculator/", title: "입사·퇴사 달 4대보험료", who: "pro" }],
 };
 const krTitle = (slug: string) => TOOL_NAMES[slug] ?? lawGuides.find((g) => g.slug === slug)?.title ?? slug;
-function krRoom(id: RoomId): Room {
+function krRoom(id: Exclude<RoomId, "plan">): Room {
   const list = COMPETENCIES.filter((c) => KR_JOBS[id].includes(c.job));
   const seen = new Map<string, OfficeTool>();
   for (const c of list) for (const s of c.tools) {
@@ -48,12 +48,12 @@ function krRoom(id: RoomId): Room {
 }
 
 // ── 해외 층: 분야(area) → 방 ──
-const AREA_ROOM: Record<Area, RoomId> = { tax: "tax", labor: "labor", tenancy: "admin", consumer: "admin", claims: "legal" };
+const AREA_ROOM: Record<Area, Exclude<RoomId, "plan">> = { tax: "tax", labor: "labor", tenancy: "admin", consumer: "admin", claims: "legal" };
 const COUNTRY_TAX_SKILL: Partial<Record<FloorId, string[]>> = {
   JP: ["oiyo-jp-tax-guide"], US: ["oiyo-us-tax-guide"], FR: ["oiyo-fr-tax-guide"], ES: ["oiyo-es-tax-guide"], CN: ["oiyo-cn-tax-guide"], UK: ["oiyo-uk-tax-guide"], TW: ["oiyo-tw-tax-guide"], DE: ["oiyo-de-guide"], SG: ["oiyo-sg-guide"],
 };
 // Which countries each world skill really covers (from each SKILL.md description, 2026-11-23). A skill shows only on floors it covers.
-const WORLD_ROOM_SKILLS: Record<RoomId, [string, FloorId[]][]> = {
+const WORLD_ROOM_SKILLS: Record<Exclude<RoomId, "plan">, [string, FloorId[]][]> = {
   tax: [["oiyo-world-tax-season-guide", ["US", "JP", "CA", "AU"]], ["oiyo-world-take-home-guide", ["JP", "UK", "US", "FR", "ES"]], ["oiyo-world-withholding-guide", ["JP", "US", "FR", "ES", "TW", "DE"]], ["oiyo-world-corporate-tax-guide", ["JP", "UK", "US", "FR", "ES", "DE"]], ["oiyo-small-business-vat-guide", ["DE", "SG"]], ["oiyo-world-einvoice-guide", ["FR", "JP", "ES"]], ["oiyo-world-tax-residency-guide", ["US", "UK", "ES", "TW", "JP", "FR"]], ["oiyo-world-company-calendar", ["JP", "UK", "US", "FR"]]],
   labor: [["oiyo-world-labor-guide", ["JP", "UK", "US", "FR", "ES", "CN", "TW"]], ["oiyo-labor-practice-guide", ["JP", "UK"]], ["oiyo-world-employer-cost-guide", ["JP", "UK", "US", "ES"]], ["oiyo-world-parental-pay-guide", ["UK", "JP", "DE"]]],
   admin: [["oiyo-world-tenancy-guide", ["JP", "UK", "US", "FR", "ES", "CN", "TW"]], ["oiyo-world-consumer-guide", ["JP", "UK", "FR", "ES", "CN", "TW", "US"]], ["oiyo-world-home-purchase-guide", ["UK", "JP", "FR", "ES", "CN"]]],
@@ -72,9 +72,9 @@ const EXTRA: Record<"CA" | "AU", OfficeTool[]> = {
     { href: "/en/australia-annual-leave-accrual-calculator/", title: "Annual leave accrual", who: "public" },
   ],
 };
-const EXTRA_ROOM: Record<string, RoomId> = { "canada-mortgage-stress-test-calculator": "admin", "canada-federal-vacation-calculator": "labor", "canada-federal-holiday-pay-calculator": "labor", "australia-job-offer-comparison": "labor", "australia-annual-leave-accrual-calculator": "labor" };
+const EXTRA_ROOM: Record<string, Exclude<RoomId, "plan">> = { "canada-mortgage-stress-test-calculator": "admin", "canada-federal-vacation-calculator": "labor", "canada-federal-holiday-pay-calculator": "labor", "australia-job-offer-comparison": "labor", "australia-annual-leave-accrual-calculator": "labor" };
 const rel = (url: string) => url.replace("https://tools.oiyo.net", "");
-function worldRoom(fl: FloorId, id: RoomId): Room {
+function worldRoom(fl: FloorId, id: Exclude<RoomId, "plan">): Room {
   let tools: OfficeTool[];
   let help: string[] = [];
   if (fl === "CA" || fl === "AU") {
@@ -90,10 +90,79 @@ function worldRoom(fl: FloorId, id: RoomId): Room {
   return { id, tools, skills, help, gaps: 0 };
 }
 
+// ── 재무설계실 (2026-11-23, 세운 요청: 재무설계 전문가도 나라별로) ──
+// 새 계산은 없어요. 나라마다 이미 있는 저축·연금·절세계좌·대출 도구를 그 나라 제도 이름 그대로 모아요.
+// 해외 무료 창구는 2026-11-23에 공식 사이트에서 이름·번호를 확인한 것만 적었어요(확인 못 한 나라는 비워 둠).
+// 투자 권유·상품 추천은 하지 않아요. 방 이름은 분야(재무설계)로만 부르고 자격 이름을 쓰지 않아요.
+const PLAN_TOOLS: Partial<Record<FloorId, OfficeTool[]>> = {
+  KR: [
+    { href: "/ko/money-planner/", title: "월급 나누기·저축 플래너", who: "public" },
+    { href: "/ko/tax-savings-roadmap/", title: "절세 로드맵", who: "public" },
+    { href: "/ko/isa-calculator/", title: "ISA 계산기", who: "public" },
+    { href: "/ko/isa-vs-pension-calculator/", title: "ISA vs 연금저축", who: "public" },
+    { href: "/ko/pension-tax-calculator/", title: "연금저축·IRP 세액공제", who: "public" },
+    { href: "/ko/private-pension-separate-tax-calculator/", title: "사적연금 분리과세 vs 종합과세", who: "pro" },
+    { href: "/ko/retirement-pension-db-dc-calculator/", title: "퇴직연금 DB vs DC", who: "public" },
+    { href: "/ko/youth-future-savings-calculator/", title: "청년미래적금", who: "public" },
+    { href: "/ko/savings-comparison-calculator/", title: "예적금 비교", who: "public" },
+  ],
+  JP: [
+    { href: "/ja/money-planner/", title: "給料の分け方・貯蓄プランナー", who: "public" },
+    { href: "/ja/nisa-limit-planner/", title: "新NISA 枠プランナー", who: "public" },
+    { href: "/ja/pension-tax-calculator/", title: "iDeCo 受取時の税金", who: "public" },
+    { href: "/ja/housing-loan-deduction-calculator/", title: "住宅ローン控除", who: "public" },
+  ],
+  CN: [
+    { href: "/zh/money-planner/", title: "工资分配与储蓄规划器", who: "public" },
+    { href: "/zh/personal-pension-tax-calculator/", title: "个人养老金 缴费抵税", who: "public" },
+    { href: "/zh/pension-tax-calculator/", title: "个人养老金 领取个税", who: "public" },
+    { href: "/zh/housing-provident-fund-combo-loan-calculator/", title: "公积金组合贷款", who: "public" },
+  ],
+  FR: [
+    { href: "/fr/money-planner/", title: "Planificateur de budget et d’épargne", who: "public" },
+    { href: "/fr/pension-tax-calculator/", title: "Fiscalité de sortie du PER", who: "public" },
+    { href: "/fr/france-surendettement-budget/", title: "Budget et surendettement", who: "public" },
+  ],
+  ES: [
+    { href: "/es/money-planner/", title: "Planificador de nómina y ahorro", who: "public" },
+    { href: "/es/pension-tax-calculator/", title: "Rescate del plan de pensiones", who: "public" },
+  ],
+  US: [
+    { href: "/en/us-401k-ira-limits-calculator/", title: "401(k) and IRA limits", who: "public" },
+    { href: "/en/social-security-claiming-age-calculator/", title: "Social Security claiming age", who: "public" },
+  ],
+  UK: [
+    { href: "/en/uk-pension-tax-relief-calculator/", title: "Pension tax relief", who: "public" },
+    { href: "/en/lifetime-isa-bonus-calculator/", title: "Lifetime ISA bonus", who: "public" },
+    { href: "/en/uk-student-loan-plan-2-plan-5-calculator/", title: "Student loan Plan 2 / Plan 5", who: "public" },
+  ],
+  SG: [
+    { href: "/en/singapore-cpf-contribution-calculator-2026/", title: "CPF contributions 2026", who: "public" },
+    { href: "/en/cpf-housing-refund-calculator/", title: "CPF housing refund", who: "public" },
+  ],
+  CA: [{ href: "/en/canada-mortgage-stress-test-calculator/", title: "Mortgage stress test", who: "public" }],
+};
+const PLAN_HELP: Partial<Record<FloorId, string[]>> = {
+  KR: ["금융감독원 1332 · 통합연금포털"],
+  JP: ["金融庁 金融サービス利用者相談室 0570-016811", "日本年金機構 ねんきんダイヤル"],
+  US: ["Social Security Administration (ssa.gov)"],
+  UK: ["Check your State Pension forecast (GOV.UK)", "MoneyHelper pension calculator"],
+  FR: ["Banque de France 34 14", "Info Retraite (simulateurs)"],
+  ES: ["Banco de España · Portal del Cliente Bancario", "Seguridad Social 901 166 565"],
+  CN: ["人社 12333"],
+  TW: ["勞動部勞工保險局 (02)2396-1266"],
+  DE: ["Deutsche Rentenversicherung 0800 1000 4800"],
+  SG: ["CPF Board (cpf.gov.sg)"],
+};
+export const PLAN_FLOOR_TOOLS = PLAN_TOOLS;
+function planRoom(fl: FloorId): Room {
+  return { id: "plan", tools: PLAN_TOOLS[fl] ?? [], skills: [], help: PLAN_HELP[fl] ?? [], gaps: 0 };
+}
+
 export const FLAGS: Record<FloorId, string> = { KR: "🇰🇷", JP: "🇯🇵", US: "🇺🇸", UK: "🇬🇧", FR: "🇫🇷", ES: "🇪🇸", CN: "🇨🇳", TW: "🇹🇼", DE: "🇩🇪", SG: "🇸🇬", CA: "🇨🇦", AU: "🇦🇺" };
 const MCP = "https://api.oiyo.net/mcp";
 export function floor(id: FloorId): Floor {
-  return { id, flag: FLAGS[id], mcp: id === "KR" ? MCP : `${MCP}/world`, rooms: ROOMS.map((r) => (id === "KR" ? krRoom(r) : worldRoom(id, r))) };
+  return { id, flag: FLAGS[id], mcp: id === "KR" ? MCP : `${MCP}/world`, rooms: ROOMS.map((r) => (r === "plan" ? planRoom(id) : id === "KR" ? krRoom(r) : worldRoom(id, r))) };
 }
 export const FLOOR_ORDER: Record<OfficeLocale, FloorId[]> = {
   ko: ["KR", "JP", "US", "CN", "TW", "UK", "DE", "FR", "ES", "SG", "CA", "AU"],
