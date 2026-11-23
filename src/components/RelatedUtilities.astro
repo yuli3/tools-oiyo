@@ -9,6 +9,7 @@ import { lawGuides } from '../data/law-guides';
 import { krHealthTools, enHealthTools } from '../data/kr-health';
 import { utilityLabels, type Locale } from '../lib/i18n';
 import { CRAWL_LINKS } from '../data/crawl-links';
+import { CRAWL_LINKS_INTL } from '../data/crawl-links-intl';
 interface Props { locale: Locale; current: string; group: UtilityGroup }
 const { locale, current, group } = Astro.props;
 const isBiz = locale === 'ko' && bizTools.some((t) => t.slug === current);
@@ -35,6 +36,13 @@ if (locale === 'ko' && CRAWL_LINKS[current]) {
   const fresh = CRAWL_LINKS[current].map((l) => ({ href: `/ko/${l.slug}/`, label: l.label }));
   const seen = new Set(fresh.map((l) => l.href));
   links.splice(0, links.length, ...fresh, ...links.filter((l) => !seen.has(l.href)));
+}
+// WHY 2026-11-23: en·ja·zh·fr·es 색인 페이지 → 아직 안 읽힌 금융·세금·급여 도구(scripts/build-crawl-links-intl.mjs).
+// 주제가 다른 페이지에도 걸리므로 맨 앞이 아니라 뒤에 붙여요. 접힌 목록이어도 HTML에 있어 크롤러는 읽어요.
+const intl = locale === 'ko' ? undefined : CRAWL_LINKS_INTL[locale]?.[current];
+if (intl) {
+  const seen = new Set(links.map((l) => l.href));
+  links.push(...intl.map((l) => ({ href: `/${locale}/${l.slug}/`, label: l.label })).filter((l) => !seen.has(l.href)));
 }
 ---
 <RelatedLinkList title={isBiz ? '경영 도구' : isWelfare ? '생활 지원금·노동권 도구' : isLaw ? '법령 길잡이' : utilityGroups[group][locale]} links={links} locale={locale} />
