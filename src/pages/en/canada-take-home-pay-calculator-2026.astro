@@ -1,0 +1,33 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/season/CaTakeHome2026';
+// Canada take-home 2026 (2026-11-23, overseas tax season pack). Engine: lib/world-tax-season-2027.ts
+const c = {
+  introTitle: "How much of your salary do you keep in Canada in 2026?",
+  intro: "This estimate takes federal and provincial income tax, CPP, CPP2 and EI from your salary, using the CRA's 2026 payroll rates. It covers Ontario, British Columbia and Alberta.",
+  formulaTitle: "The rules used",
+  formulas: [
+    { title: "Federal tax", body: "14% up to $58,523, 20.5% to $117,045, 26% to $181,440, 29% to $258,482 and 33% above. Credits at 14% for the basic personal amount ($16,452, reduced at high incomes), the Canada employment amount ($1,501), base CPP and EI." },
+    { title: "CPP and EI", body: "CPP 5.95% of earnings between $3,500 and $74,600, CPP2 4% from $74,600 to $85,000, EI 1.63% up to $68,900." },
+    { title: "Province", body: "Ontario 5.05% to 13.16% plus surtax and Health Premium; British Columbia 5.60% to 20.50%; Alberta 8% to 15%." },
+  ],
+  howToTitle: "How to use it",
+  steps: ["Enter your yearly salary before tax.", "Choose your province.", "Read the yearly and monthly take-home."],
+  faqTitle: "FAQ",
+  faqs: [
+    { question: "Why is BC's lowest rate 5.60%?", answer: "British Columbia raised its lowest rate from 5.06% to 5.60% for 2026, effective in payroll from July 1, 2026." },
+    { question: "Is Quebec included?", answer: "Not yet. Quebec uses QPP and QPIP and its own income tax." },
+    { question: "Is my data saved?", answer: "No, it stays in your browser." },
+  ],
+  disclaimer: "General information only, not tax advice.",
+};
+const sources: [string, string][] = [
+  ["CRA — Income tax rates and income thresholds (payroll)", "https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll/payroll-deductions-contributions/income-tax/reducing-remuneration-subject-income-tax.html"],
+  ["CRA — CPP contribution rates, maximums and exemptions", "https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll/payroll-deductions-contributions/canada-pension-plan-cpp/cpp-contribution-rates-maximums-exemptions.html"],
+  ["CRA — EI premium rates and maximums", "https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll/payroll-deductions-contributions/employment-insurance-ei/ei-premium-rates-maximums.html"],
+  ["CRA — T4127 Payroll Deductions Formulas, July 1, 2026", "https://www.canada.ca/en/revenue-agency/services/forms-publications/payroll/t4127-payroll-deductions-formulas/t4127-jul/t4127-jul-payroll-deductions-formulas.html"],
+];
+---
+<DebtReliefPage slug="canada-take-home-pay-calculator-2026" c={c} sources={sources} sourcesTitle="Sources" checked="CRA 2026 payroll pages, T4032-ON/BC/AB and T4127 (July 2026) checked 2026-11-23">
+  <T client:load />
+</DebtReliefPage>

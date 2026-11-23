@@ -1,0 +1,31 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/season/UsRefund2026';
+// US 2026 refund estimate (2026-11-23, overseas tax season pack). Engine: lib/world-tax-season-2027.ts
+const c = {
+  introTitle: "Will you get a tax refund for 2026?",
+  intro: "Your refund is what your employer withheld (W-2 box 2) minus your 2026 federal tax after credits. This estimate uses the 2026 standard deduction and brackets and the child tax credit of up to $2,200 a child, of which up to $1,700 can be refunded even if you owe no tax.",
+  formulaTitle: "The rules used",
+  formulas: [
+    { title: "Standard deduction 2026", body: "$16,100 single, $32,200 married filing jointly, $24,150 head of household, plus $1,650 ($2,050 if unmarried) for each person 65 or older or blind." },
+    { title: "Child tax credit", body: "Up to $2,200 for each child under 17. Up to $1,700 a child is refundable, limited to 15% of earned income over $2,500. It shrinks by $50 per $1,000 of income over $200,000 ($400,000 married filing jointly)." },
+    { title: "Refund", body: "Federal tax withheld plus the refundable credit, minus tax after credits. A negative number is a balance due by the April deadline." },
+  ],
+  howToTitle: "How to use it",
+  steps: ["Find box 1 and box 2 on your 2026 W-2 (or your last pay stub of the year).", "Choose your filing status and the number of children under 17.", "Read the refund, or the amount you may owe, and the deadline."],
+  faqTitle: "FAQ",
+  faqs: [
+    { question: "When will my refund arrive?", answer: "Refunds that include the refundable child tax credit or the EITC are held until mid-February by law. Others usually come within weeks of e-filing." },
+    { question: "Does it include the new deductions for tips or overtime?", answer: "No. The IRS lists no tax on tips, overtime, car loan interest and the enhanced senior deduction for 2026, but their amounts are not computed here. If one applies, your refund can be larger." },
+    { question: "Does this file my return?", answer: "No. It is an estimate only. To file for free, see IRS Free File or a VITA site." },
+  ],
+  disclaimer: "General information only, not tax advice.",
+};
+const sources: [string, string][] = [
+  ["IRS — Rev. Proc. 2025-32 (2026 inflation adjustments)", "https://www.irs.gov/pub/irs-drop/rp-25-32.pdf"],
+  ["IRS — Get ready to file your taxes", "https://www.irs.gov/individuals/get-ready-to-file-your-taxes"],
+];
+---
+<DebtReliefPage slug="us-tax-refund-estimator-2026" c={c} sources={sources} sourcesTitle="Sources" checked="Rev. Proc. 2025-32 and IRS Get ready to file (updated 10 November 2026) checked 2026-11-23">
+  <T client:load />
+</DebtReliefPage>

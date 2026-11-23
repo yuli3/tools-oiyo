@@ -1,0 +1,34 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/season/AuTakeHome';
+// Australia take-home 2026-27 (2026-11-23, overseas tax season pack). Engine: lib/world-tax-season-2027.ts
+const c = {
+  introTitle: "How much do you take home in Australia in 2026-27?",
+  intro: "From 1 July 2026 the 16% rate drops to 15%. This estimate takes resident income tax, the low income tax offset and the 2% Medicare levy from your salary, and shows the 12% super your employer pays on top.",
+  formulaTitle: "The rules used",
+  formulas: [
+    { title: "Resident tax 2026-27", body: "Nil to $18,200; 15% to $45,000; $4,020 plus 30% to $135,000; $31,020 plus 37% to $190,000; $51,370 plus 45% above." },
+    { title: "Low income tax offset", body: "$700 up to $37,500, reducing by 5c per $1 to $45,000 and by 1.5c per $1 until it ends at $66,667." },
+    { title: "Medicare levy and super", body: "2% Medicare levy, reduced or nil at low incomes. Super guarantee 12% paid by the employer." },
+  ],
+  howToTitle: "How to use it",
+  steps: ["Enter your yearly pay before tax.", "Say whether that number already includes super.", "Read the yearly and fortnightly take-home."],
+  faqTitle: "FAQ",
+  faqs: [
+    { question: "What changes on 1 July 2027?", answer: "The 15% rate falls again to 14%. The other brackets for 2027-28 have not been published on the ATO rates page yet." },
+    { question: "Does it work for working holiday makers or foreign residents?", answer: "No. Those rates are different and are not included." },
+    { question: "Is my data saved?", answer: "No, it stays in your browser." },
+  ],
+  disclaimer: "General information only, not tax advice.",
+};
+const sources: [string, string][] = [
+  ["ATO — Tax rates: Australian residents", "https://www.ato.gov.au/tax-rates-and-codes/tax-rates-australian-residents"],
+  ["ATO — Personal income tax: new tax cuts for every Australian taxpayer", "https://www.ato.gov.au/about-ato/new-legislation/in-detail/individuals/personal-income-tax-new-tax-cuts-for-every-australian-taxpayer"],
+  ["ATO — Low income tax offset", "https://www.ato.gov.au/individuals-and-families/income-deductions-offsets-and-records/tax-offsets/low-income-tax-offset"],
+  ["ATO — Medicare levy reduction for low-income earners", "https://www.ato.gov.au/individuals-and-families/medicare-and-private-health-insurance/medicare-levy/medicare-levy-reduction/medicare-levy-reduction-for-low-income-earners"],
+  ["ATO — The final SG rate increase (12% from 1 July 2025)", "https://www.ato.gov.au/businesses-and-organisations/small-business-newsroom/the-final-sg-rate-increase-is-coming-on-1-july"],
+];
+---
+<DebtReliefPage slug="australia-take-home-pay-calculator-2026-27" c={c} sources={sources} sourcesTitle="Sources" checked="ATO tax rates (updated 13 August 2026), LITO, Medicare levy and SG pages checked 2026-11-23">
+  <T client:load />
+</DebtReliefPage>
