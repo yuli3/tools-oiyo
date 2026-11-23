@@ -75,6 +75,47 @@ const EXTRA: Record<"CA" | "AU", OfficeTool[]> = {
 };
 const EXTRA_ROOM: Record<string, Exclude<RoomId, "plan">> = { "canada-mortgage-stress-test-calculator": "admin", "canada-federal-vacation-calculator": "labor", "canada-federal-holiday-pay-calculator": "labor", "australia-job-offer-comparison": "labor", "australia-annual-leave-accrual-calculator": "labor" };
 const rel = (url: string) => url.replace("https://tools.oiyo.net", "");
+// 나라별 페이지 중 WORLD_TOOLS 목록에 빠져 어느 방에도 안 보이던 것(2026-11-23 점검, 21개). 새 계산 없음, 연결만 해요.
+const WORLD_EXTRA: Partial<Record<FloorId, Partial<Record<Exclude<RoomId, "plan">, OfficeTool[]>>>> = {
+  CN: { tax: [{ href: "/zh/china-tax-agent-scope/", title: "谁可以代办涉税业务？涉税专业服务与免费办税渠道", who: "public" }] },
+  DE: { labor: [
+    { href: "/de/germany-annual-leave-minimum/", title: "Gesetzlicher Mindesturlaub bei fester Arbeitswoche", who: "public" },
+    { href: "/de/germany-gross-offer-comparison/", title: "Bestätigte Brutto-Gehaltsangebote vergleichen", who: "public" },
+    { href: "/de/germany-work-rest-guide/", title: "Arbeitszeit und Ruhezeiten: Unterlagen prüfen", who: "public" },
+  ] },
+  ES: { labor: [
+    { href: "/es/spain-final-pay-checklist/", title: "Revisar el finiquito: documentos y conceptos", who: "public" },
+    { href: "/es/spain-salary-payments-comparison/", title: "Comparar salario en 12 o 14 pagas: bruto anual", who: "public" },
+  ] },
+  FR: { labor: [{ href: "/fr/france-resignation-notice-guide/", title: "Trouver son préavis de démission", who: "public" }] },
+  JP: { labor: [
+    { href: "/ja/japan-overtime-calculator/", title: "日本の残業・深夜・法定休日手当を計算", who: "public" },
+    { href: "/ja/japan-fixed-overtime-comparison/", title: "固定残業代と実際の時間外手当を比較", who: "public" },
+  ] },
+  SG: { labor: [
+    { href: "/en/singapore-overtime-calculator/", title: "Singapore monthly-rated overtime pay breakdown", who: "public" },
+    { href: "/en/singapore-rest-day-pay-calculator/", title: "Singapore rest-day pay: employer vs employee request", who: "public" },
+    { href: "/en/singapore-incomplete-month-calculator/", title: "Singapore incomplete-month salary calculator", who: "public" },
+  ] },
+  TW: {
+    tax: [{ href: "/zh/taiwan-tax-agent-scope/", title: "誰可以代理報稅？記帳士、會計師的業務範圍與免費稅務諮詢", who: "public" }],
+    labor: [
+      { href: "/zh/taiwan-annual-leave-calculator/", title: "台灣特休天數與週年制日曆", who: "public" },
+      { href: "/zh/taiwan-overtime-pay-calculator/", title: "台灣月薪制加班費：平日、休息日與國定假日", who: "public" },
+      { href: "/zh/taiwan-lianjia-2027/", title: "2027年（民國116年）連假與請假攻略", who: "public" },
+    ],
+  },
+  UK: {
+    tax: [{ href: "/en/uk-tax-adviser-registration-free-help/", title: "Who can deal with HMRC for you? Tax adviser registration and free tax help", who: "public" }],
+    labor: [{ href: "/en/uk-annual-leave-planner-2027/", title: "Booking leave around 2027 bank holidays", who: "public" }],
+    legal: [{ href: "/en/uk-debt-relief-options/", title: "UK debt options: DRO, IVA or bankruptcy (England & Wales)", who: "public" }],
+  },
+  US: {
+    labor: [{ href: "/en/us-pto-planner-2027/", title: "Where to put PTO in 2027", who: "public" }],
+    legal: [{ href: "/en/us-bankruptcy-income-worksheet/", title: "US bankruptcy income worksheet — six-month average", who: "public" }],
+  },
+};
+export const WORLD_EXTRA_TOOLS = WORLD_EXTRA;
 function worldRoom(fl: FloorId, id: Exclude<RoomId, "plan">): Room {
   let tools: OfficeTool[];
   let help: string[] = [];
@@ -87,6 +128,8 @@ function worldRoom(fl: FloorId, id: Exclude<RoomId, "plan">): Room {
       .map((t) => ({ href: rel(t.page), title: t.title, who: t.audience === "pro" ? "pro" : "public", mcp: t.mcp }));
     help = [...new Set((Object.keys(AREA_ROOM) as Area[]).filter((a) => AREA_ROOM[a] === id).map((a) => HELP[c][a]).filter(Boolean))];
   }
+  const extra = (WORLD_EXTRA[fl]?.[id] ?? []).filter((x) => !tools.some((t) => t.href === x.href));
+  tools = [...tools, ...extra];
   const skills = [...(id === "tax" ? COUNTRY_TAX_SKILL[fl] ?? [] : []), ...WORLD_ROOM_SKILLS[id].filter(([, c]) => c.includes(fl)).map(([s]) => s), ...(id === "tax" && fl !== "CA" && fl !== "AU" ? ["oiyo-world-law-intake"] : [])].map((s) => ({ id: s, zip: zip(s) }));
   return { id, tools, skills, help, gaps: 0 };
 }
