@@ -1,0 +1,31 @@
+---
+// 무료 전문가 대리 자격 확인 (2026-11-23, 전문가 니즈 조사: "노무사 무료 상담", "국선 세무대리인" 연관검색어). 계산: lib/kr-free-expert-2026.ts
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import FreeExpertAgent from "../../components/tools/office/FreeExpertAgent";
+
+const title = "무료 전문가 대리 자격 확인 — 노동위원회 무료 대리·국세 국선대리인";
+const description = "부당해고·차별 사건은 월평균임금 300만원 미만이면 노동위원회가 변호사·공인노무사를 무료로 붙여 줘요. 세금 불복은 종합소득 5천만원·재산 5억원·청구 5천만원 이하면 국선대리인을 신청할 수 있어요. 법령 원문 기준으로 바로 확인해요.";
+const shell = {
+  introTitle: "돈 때문에 전문가를 못 부르는 경우를 위한 제도예요",
+  intro: "전문가를 찾는 검색에서 가장 많이 붙는 말이 '무료 상담'과 '비용'이에요. 법에는 일정 소득 아래면 나라가 대리인을 정해 주는 제도가 두 가지 있어요. 노동위원회 사건의 권리구제업무 대리와, 국세 불복·고충민원의 국선대리인이에요. 이 도구는 두 제도의 요건을 원문 숫자 그대로 대조해요.",
+  howToTitle: "이렇게 써요",
+  steps: ["해고·징계·차별 같은 노동 사건인지, 세금 불복인지 골라요.", "노동 사건이면 월평균임금을 넣어요.", "세금이면 개인·법인을 고르고 소득, 재산, 다투는 세액, 세목을 넣어요.", "요건을 모두 갖추면 해당 노동위원회나 재결청(세무서·지방국세청·조세심판원)에 신청서를 내요."],
+  highlightsTitle: "원문 기준",
+  highlights: [
+    { title: "노동위원회 무료 대리", body: "월평균임금 300만원 미만(고용노동부고시 제2021-131호). 판정·결정·승인·인정·차별시정 사건. 보수는 노동위원회가 1건당 70만원 이하로 지급해요(시행규칙 제6조)." },
+    { title: "국세 국선대리인(개인)", body: "종합소득금액 5천만원 이하, 소유 재산 5억원 이하, 청구 금액 5천만원 이하, 상속세·증여세·종합부동산세 제외(국세기본법 제59조의2, 시행령 제48조의2)." },
+    { title: "국세 국선대리인(법인)", body: "수입금액 3억원 이하, 자산가액 5억원 이하, 청구 금액 5천만원 이하. 신청을 받은 날부터 5일 안에 선정 결과를 알려 줘요." },
+  ],
+  disclaimer: "요건 대조만 해요. 선정 여부는 노동위원회와 재결청이 정해요. 대한법률구조공단·마을세무사·마을변호사 같은 다른 무료 창구는 운영 기준을 원문으로 확인하지 못해 넣지 않았어요(법률구조공단 132, 국세상담센터 126에 문의).",
+};
+const faqs = [
+  { q: "월급이 정확히 300만원이면요?", a: "고시는 '300만원 미만'이라 300만원은 대상이 아니에요." },
+  { q: "소유 재산에는 무엇이 들어가요?", a: "토지와 건물, 승용자동차, 전세금(임차보증금 포함), 골프·콘도회원권, 주식·출자지분의 평가 가액 합계예요(시행령 제48조의2③2)." },
+  { q: "어느 해 소득으로 봐요?", a: "종합소득 신고기한(5월) 전에 신청하면 전전 과세기간, 신고기한 뒤면 직전 과세기간의 종합소득금액으로 봐요." },
+  { q: "이미 노무사를 선임했으면요?", a: "다른 변호사·공인노무사를 대리인으로 선임하면 무료 대리인 선임은 취소돼요(시행규칙 제3조②1)." },
+];
+---
+<KrFinancePage slug="free-expert-representation-check" locale="ko" title={title} description={description} shell={shell} faqs={faqs} koOnly group="money">
+  <FreeExpertAgent client:load />
+  <p class="mt-4 text-sm text-muted-foreground">관련: <a class="underline underline-offset-4" href="/ko/appeal-deadline-calculator/">불복 기한 계산기</a> · <a class="underline underline-offset-4" href="/ko/dismissal-notice-pay-calculator/">해고예고수당</a> · <a class="underline underline-offset-4" href="/ko/pro-office/#KR/labor">실무 오피스 노무실</a> · <a class="underline underline-offset-4" href="/ko/pro-office/#KR/tax">세무실</a></p>
+</KrFinancePage>
