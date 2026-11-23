@@ -155,8 +155,25 @@ const PLAN_HELP: Partial<Record<FloorId, string[]>> = {
   SG: ["CPF Board (cpf.gov.sg)"],
 };
 export const PLAN_FLOOR_TOOLS = PLAN_TOOLS;
+// 재무설계 길잡이 스킬(oiyo-financial-planning-guide)이 계산하는 나라와, 같은 계산의 MCP 도구(api.oiyo.net /v1/planning).
+const PLAN_SKILL_FLOORS: FloorId[] = ["KR", "US", "UK", "JP", "CN", "FR", "ES", "SG", "CA"];
+const PLAN_MCP: Record<string, string> = {
+  "/en/us-401k-ira-limits-calculator/": "calculate_us_retirement_limits",
+  "/en/social-security-claiming-age-calculator/": "calculate_us_social_security_claiming",
+  "/en/uk-pension-tax-relief-calculator/": "calculate_uk_pension_tax_relief",
+  "/en/lifetime-isa-bonus-calculator/": "plan_uk_lifetime_isa",
+  "/en/uk-student-loan-plan-2-plan-5-calculator/": "calculate_uk_student_loan_repayment",
+  "/ja/nisa-limit-planner/": "plan_jp_nisa_limits",
+  "/ja/housing-loan-deduction-calculator/": "calculate_jp_housing_loan_credit",
+  "/zh/personal-pension-tax-calculator/": "calculate_cn_personal_pension_tax",
+  "/zh/housing-provident-fund-combo-loan-calculator/": "calculate_cn_provident_fund_combo_loan",
+  "/en/cpf-housing-refund-calculator/": "calculate_sg_cpf_housing_refund",
+  "/en/canada-mortgage-stress-test-calculator/": "calculate_ca_mortgage_stress_test",
+};
 function planRoom(fl: FloorId): Room {
-  return { id: "plan", tools: PLAN_TOOLS[fl] ?? [], skills: [], help: PLAN_HELP[fl] ?? [], gaps: 0 };
+  const tools = (PLAN_TOOLS[fl] ?? []).map((t) => (PLAN_MCP[t.href] && !t.mcp ? { ...t, mcp: PLAN_MCP[t.href] } : t));
+  const skills = PLAN_SKILL_FLOORS.includes(fl) ? [{ id: "oiyo-financial-planning-guide", zip: zip("oiyo-financial-planning-guide") }] : [];
+  return { id: "plan", tools, skills, help: PLAN_HELP[fl] ?? [], gaps: 0 };
 }
 
 export const FLAGS: Record<FloorId, string> = { KR: "🇰🇷", JP: "🇯🇵", US: "🇺🇸", UK: "🇬🇧", FR: "🇫🇷", ES: "🇪🇸", CN: "🇨🇳", TW: "🇹🇼", DE: "🇩🇪", SG: "🇸🇬", CA: "🇨🇦", AU: "🇦🇺" };
