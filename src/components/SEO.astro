@@ -110,12 +110,20 @@ const alternateSlug = Astro.url.pathname.split('/').filter(Boolean)[1];
 <!-- Google AdSense -->
 {!noindex && <script is:inline define:vars={{ googleAdsenseId }}>
   // 2026-10-18: local/preview and noindex pages must not request production ads.
+  // 2026-11-23 LCP: 광고 스크립트가 첫 화면 서체·CSS와 대역폭을 다투지 않게 load 뒤에 붙인다
+  // (oiyo-astro #146과 같은 처방). 자동 광고 자리·data-overlays(상단 앵커 끔)는 그대로.
   if (location.hostname === 'tools.oiyo.net') {
-    var adLoader = document.createElement('script');
-    adLoader.async = true;
-    adLoader.crossOrigin = 'anonymous';
-    adLoader.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=' + googleAdsenseId;
-    adLoader.setAttribute('data-overlays', 'bottom');
-    document.head.appendChild(adLoader);
+    var adsDone = false;
+    var loadAds = function () {
+      if (adsDone) return; adsDone = true;
+      var adLoader = document.createElement('script');
+      adLoader.async = true;
+      adLoader.crossOrigin = 'anonymous';
+      adLoader.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=' + googleAdsenseId;
+      adLoader.setAttribute('data-overlays', 'bottom');
+      document.head.appendChild(adLoader);
+    };
+    if (document.readyState === 'complete') loadAds();
+    else window.addEventListener('load', loadAds, { once: true });
   }
 </script>}
