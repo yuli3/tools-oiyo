@@ -25,7 +25,7 @@ const shell = {
 };
 const faqs = [
   { q: "돈을 내야 하나요?", a: "아니요. 개인 블로그·회사 홈페이지 모두 무료예요. 출처 링크만 남겨 주세요." },
-  { q: "우리 회사 로고로 바꿀 수 있나요?", a: "지금은 안 돼요. 세무·노무 사무소용 맞춤 위젯이 필요하면 사이트 아래 연락처로 알려 주세요." },
+  { q: "우리 회사 로고로 바꿀 수 있나요?", a: "사무소 이름·전화번호·색은 무료로 넣을 수 있어요. 로고나 출처 표시 빼기 같은 맞춤 제작은 세무·노무 사무소용 위젯 소개 페이지(/ko/office-widgets/)에서 문의해 주세요." },
   { q: "다른 계산기도 넣고 싶어요", a: "많이 요청되는 계산기부터 더할게요. 지금은 다섯 가지예요." },
 ];
 const tools = EMBEDDABLE_TOOLS.map((t) => ({ ...t, snippet: toolEmbedSnippet(t), embed: toolEmbedUrl(t.slug), page: toolPageUrl(t.slug) }));
@@ -50,7 +50,7 @@ const btn = "inline-flex min-h-11 items-center justify-center rounded-md border 
     ))}
   </ul>
   <p aria-live="polite" id="widget-status" class="mt-3 text-sm text-foreground"></p>
-  <p class="mt-4 text-sm text-foreground">세무·노무 사무소라면 <a class="underline" href="/ko/widgets/office/">우리 사무소 이름과 전화번호를 넣은 위젯</a>을 만들 수 있어요.</p>
+  <p class="mt-4 text-sm text-foreground">세무·노무 사무소라면 <a class="underline" href="/ko/widgets/office/">우리 사무소 이름과 전화번호를 넣은 위젯</a>을 만들 수 있어요. 맞춤 제작은 <a class="underline" href="/ko/office-widgets/">사무소용 위젯 소개</a>에서 문의해요.</p>
   <p class="mt-4 text-xs text-muted-foreground">함께 보기: <a class="underline" href="/ko/calendar-subscribe/">공휴일·세금 마감 구독형 달력</a></p>
   <script>
     const status = document.getElementById("widget-status");
