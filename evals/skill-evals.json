@@ -3532,6 +3532,93 @@
           "eq": "2027-02-28"
         }
       ]
+    },
+    {
+      "skill": "oiyo-world-tax-season-guide",
+      "id": "season-us-refund-mfj-2kids",
+      "ask": "We're married, made $50,000 in 2026 with $2,000 federal withheld and have two kids. What refund should we expect?",
+      "run": [
+        "us-refund",
+        {
+          "wages": 50000,
+          "withheld": 2000,
+          "filing": "mfj",
+          "children": 2
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.refund",
+          "eq": 4620
+        },
+        {
+          "path": "result.actc",
+          "eq": 2620
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-world-tax-season-guide",
+      "id": "season-jp-kakutei-medical",
+      "ask": "年収500万円、源泉徴収税額12万円、社会保険料75万円で、医療費が30万円かかりました。確定申告でいくら戻りますか？",
+      "run": [
+        "jp-kakutei",
+        {
+          "salary": 5000000,
+          "withheld": 120000,
+          "social": 750000,
+          "medical": 300000
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.refund",
+          "eq": 39900
+        },
+        {
+          "path": "result.due",
+          "eq": "2027-03-15"
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-world-tax-season-guide",
+      "id": "season-ca-on-80k",
+      "ask": "I earn $80,000 in Ontario. What's my take-home in 2026?",
+      "run": [
+        "ca",
+        {
+          "annual": 80000,
+          "province": "on"
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.net",
+          "eq": 60302.62
+        }
+      ]
+    },
+    {
+      "skill": "oiyo-world-tax-season-guide",
+      "id": "season-au-90k",
+      "ask": "What's my take-home on a $90,000 salary in Australia from July 2026?",
+      "run": [
+        "au",
+        {
+          "annual": 90000
+        }
+      ],
+      "expect": [
+        {
+          "path": "result.incomeTax",
+          "eq": 17520
+        },
+        {
+          "path": "result.net",
+          "eq": 70680
+        }
+      ]
     }
   ],
   "boundaries": {

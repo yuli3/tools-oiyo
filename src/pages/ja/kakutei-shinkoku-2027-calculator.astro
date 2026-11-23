@@ -1,0 +1,33 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/season/JpKakutei2026';
+// 令和8年分 確定申告の目安（2026-11-23、海外税務シーズン4種）。計算: lib/world-tax-season-2027.ts
+const c = {
+  introTitle: "令和8年分の確定申告、還付はいくら？",
+  intro: "会社員でも、医療費が多かった年やふるさと納税をした年は、確定申告で税金が戻ることがあります。令和8年分は基礎控除が最大104万円、給与所得控除の最低額が74万円に上がりました。源泉徴収票の数字を入れると、還付か納付の目安と期限がわかります。",
+  formulaTitle: "計算のしくみ",
+  formulas: [
+    { title: "所得", body: "給与の支払金額から給与所得控除（令和8年分は最低74万円）を引いて給与所得を出し、給与以外の所得を足します。" },
+    { title: "所得控除", body: "社会保険料、基礎控除（合計所得489万円以下は104万円、655万円以下は67万円、それ以上は62万円）、医療費控除（10万円または所得の5%を超えた分、上限200万円）、寄附金控除（寄附額−2,000円）。" },
+    { title: "税額と還付", body: "課税所得（1,000円未満切捨て）に税率5%〜45%をかけ、復興特別所得税2.1%を加えます。源泉徴収税額との差が還付（＋）か納付（−）です。" },
+  ],
+  howToTitle: "使い方",
+  steps: ["源泉徴収票の「支払金額」「源泉徴収税額」「社会保険料等の金額」を入れます。", "医療費やふるさと納税の金額を入れます。", "還付・納付の目安と、期限までの日数を確認します。"],
+  faqTitle: "よくある質問",
+  faqs: [
+    { question: "令和8年分の確定申告はいつ？", answer: "窓口の受付は令和9年2月16日（火）から、申告期限・納期限は3月15日（月）です。還付申告は2月15日以前でも提出できます。" },
+    { question: "会社員でも申告が必要な人は？", answer: "給与収入が2,000万円を超える人や、給与以外の所得が20万円を超える人などです。給与が1か所で全額源泉徴収され、ほかの所得が20万円以下なら、還付を受けたいときだけ申告すれば足ります。" },
+    { question: "入力した内容は保存されますか？", answer: "いいえ。入力値はブラウザの中だけで計算し、サーバーには送りません。" },
+  ],
+  disclaimer: "一般的な情報です。税務相談や申告の代行ではありません。",
+};
+const sources: [string, string][] = [
+  ["国税庁 No.2020 確定申告", "https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/2020.htm"],
+  ["国税庁 暮らしの税情報（令和8年度版）申告と納税", "https://www.nta.go.jp/publication/pamph/koho/kurashi/html/06_1.htm"],
+  ["国税庁 令和8年度税制改正による所得税の基礎控除の引上げ等について", "https://www.nta.go.jp/users/gensen/2026kiso/index.htm"],
+  ["国税庁 No.2024 確定申告を忘れたとき", "https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/2024.htm"],
+];
+---
+<DebtReliefPage slug="kakutei-shinkoku-2027-calculator" c={c} sources={sources} sourcesTitle="出典" checked="国税庁の各ページ（令和8年4月1日現在の法令等）を2026-11-23に確認">
+  <T client:load />
+</DebtReliefPage>
