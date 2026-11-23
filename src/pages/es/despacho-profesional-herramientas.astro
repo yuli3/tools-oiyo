@@ -1,0 +1,53 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import ProOffice from '../../components/tools/office/ProOffice';
+import { officeFloors, OFFICE_AS_OF } from '../../data/pro-office';
+import { OFFICE_COPY } from '../../data/pro-office-copy';
+// Practice office hub (2026-11-23). No new calculation: existing tools, MCP tools and Claude skills arranged as floors and rooms.
+const c = {
+  "introTitle": "Despacho práctico",
+  "intro": "Herramientas para profesionales y sus clientes, ordenadas como un despacho: recepción, una planta por país y cuatro salas por planta. En cada sala, las preguntas que cambian la respuesta, las calculadoras basadas en fuentes oficiales del país, las herramientas de IA y una hoja imprimible.",
+  "formulaTitle": "En cada sala",
+  "formulas": [
+    {
+      "title": "Recepción",
+      "body": "Cinco preguntas por sala que cambian la respuesta: quién, qué periodo, qué documentos, qué plazo, qué notificación."
+    },
+    {
+      "title": "Herramientas",
+      "body": "Calculadoras y comprobaciones del país, marcadas para clientes o profesionales, con favoritos."
+    },
+    {
+      "title": "Hoja",
+      "body": "Preguntas marcadas, herramientas usadas y notas en una hoja imprimible, con la ayuda oficial gratuita."
+    }
+  ],
+  "howToTitle": "Cómo usarlo",
+  "steps": [
+    "Elige una planta (país) en el directorio.",
+    "Entra en una sala: fiscal, laboral, vivienda y consumo o jurídico.",
+    "Marca las preguntas, abre las herramientas y márcalas para la hoja.",
+    "Imprime la hoja de consulta para el expediente."
+  ],
+  "faqTitle": "Preguntas",
+  "faqs": [
+    {
+      "question": "¿Es un despacho de abogados o asesores?",
+      "answer": "No. Son herramientas gratuitas e información general: no asesora, no representa ni presenta nada. Cada sala indica la ayuda oficial gratuita."
+    },
+    {
+      "question": "¿Se guarda lo que escribo?",
+      "answer": "Las marcas, notas y el nombre del cliente se quedan en este navegador y no se envían a ningún sitio."
+    }
+  ],
+  "disclaimer": "Información general, no asesoramiento jurídico ni fiscal."
+};
+const sources: [string, string][] = [
+  ["OIYO MCP server (world)", "https://api.oiyo.net/mcp/world"],
+  ["oiyo-skills (GitHub)", "https://github.com/yuli3/oiyo-skills"],
+];
+const floors = officeFloors('es');
+---
+<DebtReliefPage slug="despacho-profesional-herramientas" c={c} sources={sources} sourcesTitle="Fuentes" checked="Lista revisada el 2026-11-23">
+  <ProOffice client:load locale="es" floors={floors} copy={OFFICE_COPY['es']} asOf={OFFICE_AS_OF} />
+</DebtReliefPage>

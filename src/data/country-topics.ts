@@ -22,6 +22,7 @@ export const COUNTRY_TOPICS: Record<string, readonly string[]> = {
   taxResidency: ['us-substantial-presence-test-calculator', 'uk-statutory-residence-test-calculator', 'residencia-fiscal-espana-183-dias', 'taiwan-tax-resident-183-31-days'],
   takeHome: ['uk-take-home-pay-calculator-2026', 'us-take-home-pay-calculator-2026', 'canada-take-home-pay-calculator-2026', 'australia-take-home-pay-calculator-2026-27', 'de:einkommensteuer-rechner-2026'],
   taxReturnSeason: ['kakutei-shinkoku-2027-calculator', 'us-tax-refund-estimator-2026', 'uk-self-assessment-deadlines-2026'],
+  proOffice: ['professional-office-tools', 'senmonka-jimusho-tools', 'cabinet-conseil-outils', 'despacho-profesional-herramientas', 'zhuanye-shiwusuo-gongju'],
   debtRelief: ['personal-rehabilitation-calculator', 'kojin-saisei-calculator', 'uk-debt-relief-options', 'us-bankruptcy-income-worksheet', 'france-surendettement-budget', 'taiwan-debt-clearance-checker', 'segunda-oportunidad-plazo-sucesiones', 'de:pfaendungsfreigrenze-rechner-2026'],
   retirementSavings: ['nisa-limit-planner', 'lifetime-isa-bonus-calculator', 'uk-pension-tax-relief-calculator', 'us-401k-ira-limits-calculator', 'personal-pension-tax-calculator', 'hong-kong-tvc-tax-deduction-calculator'],
   homeLoan: ['housing-loan-deduction-calculator', 'pmi-removal-date-calculator', 'canada-mortgage-stress-test-calculator', 'housing-provident-fund-combo-loan-calculator', 'cpf-housing-refund-calculator', 'uk-stamp-duty-calculator-2026'],
