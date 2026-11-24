@@ -40,6 +40,8 @@ export const lawGuides: { slug: string; domain?: DomainId; title: string; descri
   { slug: "legal-aid-eligibility-check", title: "법률구조공단 소송지원 대상 확인", description: "2026 기준 중위소득 125%·150%, 체불 근로자 평균 임금 400만원 미만, 소상공인 연매출 3억원 이하, 소득 제한 없는 대상까지 공단 대상자 안내로 대조." },
   { slug: "payroll-ledger-builder", title: "급여대장 만들기 2026", description: "직원 여러 명의 4대보험(2026 요율)·간이세액표 소득세·차인지급액과 합계를 계산하고 엑셀에서 여는 CSV로 내려받기." },
   { slug: "housing-lease-report-checker", title: "전월세 신고 대상·기한·과태료 확인", description: "보증금 6천만원·월세 30만원 초과 여부, 체결일부터 30일 기한, 시행령 별표 3 과태료(2만~30만원), 전입신고·확정일자 의제." },
+  { slug: "employment-contract-checker", title: "근로계약서 점검", description: "정규·기간제·단시간별 필수 기재사항(근로기준법 제17조·시행령 제8조, 기간제법 제17조)과 서면 교부, 500만원 이하 벌금·과태료, 4명 이하·주 15시간 미만 예외." },
+  { slug: "health-insurance-dependent-checker", title: "건강보험 피부양자 자격 점검", description: "관계·동거별 부양요건(시행규칙 별표 1)과 연 소득 2천만원·사업소득·재산세 과세표준 기준(별표 1의2), 90일 신고 규칙." },
   { slug: "simplified-withholding-tax-calculator", title: "근로소득 간이세액표 계산기 2026", description: "별표2(2026. 2. 27. 개정) 표 그대로 월급여액·가족 수별 원천징수 소득세, 8~20세 자녀 차감, 80·100·120%, 1천만 원 초과 산식." },
   { slug: "join-leave-month-insurance-calculator", title: "입사·퇴사 달 4대보험료 계산기", description: "입사일·마지막 근무일로 연금·건강·장기요양·고용보험이 붙는 첫 달과 마지막 달, 달별 근로자 부담액." },
   { slug: "midyear-leaver-year-end-settlement", title: "중도퇴사자 연말정산 계산기", description: "퇴사할 때 회사가 한 연말정산과 다음 해 5월 종합소득세 신고로 부양가족·카드·의료비·월세를 더했을 때 환급액을 비교해요." },

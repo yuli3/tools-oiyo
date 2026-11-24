@@ -1,0 +1,30 @@
+---
+// 건강보험 피부양자 자격 점검 (2026-11-24, 니즈: "건강보험 피부양자 자격", "피부양자 등록 누가", "피부양자 등록 기간"). 계산: lib/kr-office-checks-2026.ts
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import DependentCheck from "../../components/tools/office/DependentCheck";
+
+const title = "건강보험 피부양자 자격 점검 — 관계·동거별 부양요건과 소득 2천만원·재산 기준";
+const description = "부모·자녀·배우자 부모·형제자매 등 직장가입자와의 관계와 동거 여부로 부양요건을 먼저 보고, 연 소득 2천만원·사업소득·재산세 과세표준(5억4천만원·9억원, 형제자매 1억8천만원) 기준을 함께 점검해요. 90일 신고 규칙까지.";
+const shell = {
+  introTitle: "누구를 피부양자로 올릴 수 있는지부터 봐요",
+  intro: "피부양자는 관계와 동거 여부에 따른 부양요건, 그리고 소득·재산요건을 모두 충족해야 해요(국민건강보험법 시행규칙 제2조). 따로 사는 부모는 함께 사는 형제자매가 있으면 그 형제자매의 소득을 보고, 형제자매는 나이·장애 등 조건과 더 낮은 재산 기준을 적용해요.",
+  howToTitle: "이렇게 써요",
+  steps: ["직장가입자와의 관계와 같이 사는지를 골라요.", "피부양자가 될 사람의 연간 소득, 사업소득, 재산세 과세표준을 넣어요.", "기혼이면 배우자도 소득요건을 충족하는지 체크해요.", "조건이 남으면 가족관계 서류로 공단에 확인해요."],
+  highlightsTitle: "원문 기준",
+  highlights: [
+    { title: "소득", body: "연간 소득 합계 2천만원 이하, 사업소득 없음(사업자등록 없거나 장애·상이 등이면서 연 500만원 이하는 없는 것으로 봄). 기혼자는 부부 모두(별표 1의2)." },
+    { title: "재산", body: "재산세 과세표준 합 5억4천만원 이하, 또는 9억원 이하이면서 연 소득 1천만원 이하. 형제자매는 1억8천만원 이하." },
+    { title: "신고", body: "직장가입자 자격 취득일·변동일부터 90일 안에 신고하면 그날로 취득, 넘기면 신고서를 낸 날부터(시행규칙 제2조②)." },
+  ],
+  disclaimer: "부양요건 표와 금액 기준을 대조해요. 소득을 어느 해 자료로 보는지, 재산 평가는 공단 자료가 기준이에요. 보험료를 계산하려면 건강보험료 계산기를 쓰세요.",
+};
+const faqs = [
+  { q: "따로 사는 부모님도 올릴 수 있어요?", a: "부모와 함께 사는 형제자매가 없거나, 있어도 그 형제자매가 보수·소득이 없으면 부양을 인정해요(별표 1)." },
+  { q: "며느리·사위는요?", a: "같이 살면 인정하고, 따로 살면 인정하지 않아요(별표 1 제6호)." },
+  { q: "형제자매는 누구나 돼요?", a: "30세 미만, 65세 이상, 등록 장애인, 상이등급 국가유공자·보훈보상대상자 중 하나이고 미혼 등 조건을 갖춰야 해요. 재산 기준도 1억8천만원으로 낮아요." },
+];
+---
+<KrFinancePage slug="health-insurance-dependent-checker" locale="ko" title={title} description={description} shell={shell} faqs={faqs} koOnly group="money">
+  <DependentCheck client:load />
+  <p class="mt-4 text-sm text-muted-foreground">관련: <a class="underline underline-offset-4" href="/ko/health-insurance-calculator/">건강보험료 계산기</a> · <a class="underline underline-offset-4" href="/ko/health-insurance-leaver-settlement/">퇴사 건강보험 정산</a> · <a class="underline underline-offset-4" href="/ko/pro-office/#KR/welfare">실무 오피스 복지의료실</a></p>
+</KrFinancePage>
