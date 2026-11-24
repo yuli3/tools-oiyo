@@ -1,0 +1,20 @@
+{
+  "name": "duedesk",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "DueDesk: statutory filing deadlines for accounting firms' clients, as Jira work, with a Rovo agent and MCP tools.",
+  "license": "MIT",
+  "scripts": {
+    "test": "node --test test/*.test.js",
+    "lint": "forge lint"
+  },
+  "dependencies": {
+    "@forge/api": "^8.5.1",
+    "@forge/bridge": "^7.4.0",
+    "@forge/kvs": "^2.1.3",
+    "@forge/react": "^12.6.0",
+    "@forge/resolver": "^2.0.2",
+    "react": "^18.3.1"
+  }
+}

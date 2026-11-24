@@ -1,0 +1,191 @@
+modules:
+  jira:projectPage:
+    - key: duedesk-project-page
+      resource: main
+      resolver:
+        function: resolver
+      render: native
+      title: DueDesk
+      layout: basic
+
+  rovo:agent:
+    - key: duedesk-agent
+      name: DueDesk
+      description: Tracks statutory company filing deadlines for an accounting firm's clients in Japan, the UK, the US, France and South Korea, and turns them into Jira work.
+      prompt: >
+        You are DueDesk, an assistant for accountants and company secretaries who look after many client companies
+        in several countries. You help them never miss a statutory filing deadline.
+
+        Jobs you can do:
+        a. Answer "what is due" questions: use get-upcoming-deadlines (optionally with a client name and a number of days).
+           Present results as a table with Client, Filing, Due, Days left and Jira issue. Put overdue and this-week items first
+           and say clearly which have no Jira task yet.
+        b. Add a client: collect the client name, the country (JP, UK, US, FR or KR) and the financial year end date (YYYY-MM-DD).
+           For US ask whether it is a C corporation, S corporation or partnership. Then call add-client.
+        c. Create Jira tasks for filings: call create-filing-tasks. If the user is not in a Jira project and no project is known,
+           ask for the project key first.
+        d. Draft a reminder email to a client: call get-client-reminder-facts, then write a short, polite email in the client's
+           business language (English unless asked otherwise) listing each upcoming filing, its due date and what the firm needs
+           from the client. Do not invent amounts or penalties beyond the facts returned.
+        e. Explain a deadline: call explain-deadlines and quote the source it returns.
+
+        Rules: dates come only from the actions, never from your own memory. Always mention that public holidays are not applied
+        and that this is general information, not tax advice, when you give dates. Never claim anything was filed.
+      conversationStarters:
+        - What filings are due for my clients in the next 30 days?
+        - Which deadlines are overdue or have no Jira task yet?
+        - Create Jira tasks for every filing due in the next 3 months
+        - Draft a reminder email to Thames Robotics about their upcoming filings
+      actions:
+        - get-upcoming-deadlines
+        - add-client
+        - create-filing-tasks
+        - get-client-reminder-facts
+        - explain-deadlines
+
+  rovo:mcp:
+    - key: duedesk-mcp
+      name: DueDesk filing deadlines
+      tools:
+        - get-upcoming-deadlines
+        - add-client
+        - create-filing-tasks
+        - get-client-reminder-facts
+        - explain-deadlines
+
+  action:
+    - key: get-upcoming-deadlines
+      name: Get upcoming filing deadlines
+      function: getUpcomingDeadlines
+      actionVerb: GET
+      description: >
+        Returns open statutory filing deadlines for the firm's clients (from 30 days ago to N days ahead), with due date,
+        days left, urgency, linked Jira issue and status, late-filing consequence and legal source.
+      inputs:
+        days:
+          title: Days ahead
+          type: integer
+          required: false
+          description: How many days ahead to look. Default 60.
+        client:
+          title: Client
+          type: string
+          required: false
+          description: Optional client name or id to filter by.
+    - key: add-client
+      name: Add client
+      function: addClientAction
+      actionVerb: CREATE
+      description: Saves a client company with its country and financial year end so its filing deadlines are tracked.
+      inputs:
+        name:
+          title: Client name
+          type: string
+          required: true
+          description: Legal name of the client company.
+        country:
+          title: Country
+          type: string
+          required: true
+          description: One of JP, UK, US, FR, KR.
+        yearEnd:
+          title: Financial year end
+          type: string
+          required: true
+          description: Financial year end date in YYYY-MM-DD, for example 2026-12-31.
+        entity:
+          title: US entity type
+          type: string
+          required: false
+          description: For US clients only. ccorp, scorp or partnership.
+    - key: create-filing-tasks
+      name: Create Jira filing tasks
+      function: createFilingTasks
+      actionVerb: CREATE
+      description: Creates one Jira task per upcoming filing deadline that has no task yet, with due date, labels and source. Never duplicates.
+      inputs:
+        projectKey:
+          title: Jira project key
+          type: string
+          required: false
+          description: The Jira project for the tasks. Defaults to the current project or the last one used.
+        client:
+          title: Client
+          type: string
+          required: false
+          description: Optional client name to create tasks for only that client.
+        days:
+          title: Days ahead
+          type: integer
+          required: false
+          description: How many days ahead to create tasks for. Default 120.
+    - key: get-client-reminder-facts
+      name: Get facts for a client reminder
+      function: getClientReminderFacts
+      actionVerb: GET
+      description: Returns one client's upcoming filings with due dates, status and sources, to draft a reminder email to that client.
+      inputs:
+        client:
+          title: Client
+          type: string
+          required: true
+          description: Client name or id.
+        days:
+          title: Days ahead
+          type: integer
+          required: false
+          description: Default 90.
+    - key: explain-deadlines
+      name: Explain deadlines
+      function: explainDeadlines
+      actionVerb: GET
+      description: Plain-language explanation of each upcoming deadline, how its date is computed, the legal source and the late-filing consequence.
+      inputs:
+        client:
+          title: Client
+          type: string
+          required: false
+          description: Optional client name or id.
+        days:
+          title: Days ahead
+          type: integer
+          required: false
+          description: Default 90.
+
+  scheduledTrigger:
+    - key: duedesk-daily
+      function: dailyCheck
+      interval: day
+
+  function:
+    - key: resolver
+      handler: index.handler
+    - key: getUpcomingDeadlines
+      handler: index.getUpcomingDeadlines
+    - key: addClientAction
+      handler: index.addClientAction
+    - key: createFilingTasks
+      handler: index.createFilingTasks
+    - key: getClientReminderFacts
+      handler: index.getClientReminderFacts
+    - key: explainDeadlines
+      handler: index.explainDeadlines
+    - key: dailyCheck
+      handler: index.dailyCheck
+
+resources:
+  - key: main
+    path: src/frontend/index.jsx
+
+permissions:
+  scopes:
+    - read:jira-work
+    - write:jira-work
+    - storage:app
+
+app:
+  runtime:
+    name: nodejs24.x
+    memoryMB: 256
+    architecture: arm64
+  id: ari:cloud:ecosystem::app/00000000-0000-0000-0000-000000000000
