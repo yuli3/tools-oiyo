@@ -36,3 +36,38 @@ test("rejects incomplete answers; case file round-trips per flow", () => {
   assert.equal(parseCasePrepFile("lend", "{bad"), null);
   assert.notEqual(caseFileKey("lend"), "oiyo-case-v1");
 });
+
+import { existsSync } from "node:fs";
+const exists = (href: string) => {
+  const [, loc, slug] = href.split("/");
+  return existsSync(new URL(`../pages/${loc}/${slug}.astro`, import.meta.url)) || existsSync(new URL(`../pages/[locale]/${slug}.astro`, import.meta.url));
+};
+
+test("every flow links only to real pages, including its own page", () => {
+  for (const f of Object.values(CASE_FLOWS)) {
+    assert.ok(exists(`/ko/${f.slug}/`), f.slug);
+    for (const t of [...(f.tools ?? []), ...f.extraTools]) assert.ok(exists(t.href), `${f.id} ${t.href}`);
+  }
+});
+
+test("yearend: job change, side income, dual income, missed deduction", () => {
+  const r = buildCasePrep("yearend", { answers: { work: "moved", other: "biz", family: "dual", home: "rent", missed: "yes" }, dates: { deadline: "2027-01-31" } });
+  assert.ok(r.checks.some((c) => c.includes("이전 회사의 근로소득 원천징수영수증")));
+  assert.ok(r.checks.some((c) => c.includes("제70조")));
+  assert.ok(r.checks.some((c) => c.includes("경정청구")));
+  assert.ok(r.laws.includes("소득세법 제137조"));
+  assert.ok(r.memo.includes("세무사"));
+  assert.ok(r.memo.includes("- 2027-01-31 회사 연말정산 서류 마감"));
+});
+
+test("inherit: debts after 3 months points to special qualified acceptance and 법무사", () => {
+  const r = buildCasePrep("inherit", { answers: { elapsed: "over", debt: "more", will: "yes", heirs: "dispute", house: "yes", income: "yes" } });
+  assert.ok(r.checks.some((c) => c.includes("특별한정승인")));
+  assert.ok(!r.checks.some((c) => c.includes("제1019조 제1항")));
+  assert.ok(r.checks.some((c) => c.includes("검인")));
+  assert.ok(r.checks.some((c) => c.includes("지방세법 제20조")));
+  assert.ok(r.memo.includes("법무사"));
+  const t = buildCasePrep("inherit", { answers: { elapsed: "m1", debt: "asset", will: "no", heirs: "agree", house: "no", income: "no" } });
+  assert.ok(t.memo.includes("세무사"));
+  assert.ok(!t.tools.some((x) => x.href === "/ko/inheritance-consult-prep/"));
+});

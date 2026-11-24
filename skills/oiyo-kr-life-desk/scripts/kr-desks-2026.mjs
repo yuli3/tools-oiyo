@@ -197,7 +197,7 @@ export const KR_DESKS         = [
       { when: "6개월 안(사망한 달의 말일부터)", what: "상속세를 신고·납부해요.", law: "상속세 및 증여세법 제67조" },
       { when: "그 뒤", what: "상속 부동산 등기와 상속분을 정리해요." },
     ],
-    tools: [T("/ko/after-death-checklist/", "사망 뒤 할 일 순서"), T("/ko/inheritance-gift-filing-deadline-calculator/", "상속·증여 신고 기한"), T("/ko/inheritance-share-calculator/", "법정 상속분·유류분"), T("/ko/inheritance-tax-calculator/", "상속세 계산"), T("/ko/self-registration-cost-calculator/", "셀프 등기 비용")],
+    tools: [T("/ko/inheritance-consult-prep/", "상담 준비서 만들기"), T("/ko/after-death-checklist/", "사망 뒤 할 일 순서"), T("/ko/inheritance-gift-filing-deadline-calculator/", "상속·증여 신고 기한"), T("/ko/inheritance-share-calculator/", "법정 상속분·유류분"), T("/ko/inheritance-tax-calculator/", "상속세 계산"), T("/ko/self-registration-cost-calculator/", "셀프 등기 비용")],
     help: ["정부24 안심상속", "대한법률구조공단 132", "국세청 126"],
   },
   // ── 전문가를 찾게 되는 일 (2026-11-23, CHOSEUN "사람들이 전문가를 찾아가는 니즈") ──

@@ -1,0 +1,28 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/plan/CasePrepFlow';
+// AI 전문가 집중 계획 4번 상황 (2026-11-25). Logic: lib/case-prep-2026.ts (consult-memo-2026 재사용, 세금 계산 없음).
+const c = {
+  introTitle: '연말정산, 회사에 서류 내기 전에 한 번에 정리',
+  intro: '회사를 옮겼는지, 다른 소득이 있는지, 가족 공제와 집 형태를 고르면 챙길 서류와 일정, 빠뜨리기 쉬운 공제, 근거 조문을 한 화면에 모아 줘요. 날짜를 넣으면 회사 담당자나 국세청 126에 물어볼 준비서가 만들어지고, 이 브라우저에 저장해 두었다가 1월에 이어서 쓸 수 있어요.',
+  formulaTitle: '이렇게 정리해요',
+  formulas: [
+    { title: '세금은 계산하지 않아요', body: '환급액이나 낼 세금은 여기서 계산하지 않아요. 금액은 이어지는 미리보기와 공제 계산기에서 확인해요.' },
+    { title: '일정', body: '회사는 2월 급여 때 정산하고(소득세법 제137조) 3월 10일까지 지급명세서를 내요(제164조). 빠뜨린 공제는 5월 종합소득세 신고나 5년 안 경정청구로 챙겨요.' },
+    { title: '저장', body: '저장을 누를 때만 이 브라우저에 남아요. 서버로 보내지 않아요.' },
+  ],
+  howToTitle: '이렇게 써요',
+  steps: ['올해 근무 상황과 소득, 가족, 집 형태를 골라요.', '회사 서류 마감일처럼 아는 날짜를 넣어요.', '먼저 확인할 것과 챙길 서류를 읽어요.', '준비서를 복사해 두고 1월 간소화 자료가 열리면 다시 불러와요.'],
+  faqTitle: '자주 묻는 질문',
+  faqs: [
+    { question: '간소화 자료는 언제 볼 수 있나요?', answer: '보통 1월 중순에 홈택스에서 열려요. 정확한 날짜는 국세청 공지를 확인하세요.' },
+    { question: '회사에 다니지 않는데 연말정산을 해야 하나요?', answer: '연말에 다니는 회사가 없으면 회사가 정산해 주지 않아요. 빠뜨린 공제는 5월 종합소득세 신고 때 직접 넣어요.' },
+    { question: '저장한 내용은 어디에 있나요?', answer: '이 기기의 이 브라우저에만 있어요. "지우기"로 언제든 지울 수 있어요.' },
+  ],
+  disclaimer: '일반 정보이며 세무 자문이 아니에요. 개별 사안은 국세청 126이나 세무사에게 확인하세요.',
+};
+const sources: [string, string][] = [['국가법령정보센터 소득세법', 'https://www.law.go.kr/법령/소득세법'], ['국가법령정보센터 국세기본법', 'https://www.law.go.kr/법령/국세기본법'], ['국세청 홈택스', 'https://www.hometax.go.kr']];
+---
+<DebtReliefPage slug="year-end-settlement-consult-prep" c={c} sources={sources} sourcesTitle="출처" checked="조문 확인: 2026-11-25">
+  <T client:load flow="yearend" />
+</DebtReliefPage>

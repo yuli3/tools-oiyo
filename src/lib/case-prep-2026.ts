@@ -6,7 +6,7 @@ import { KR_DESKS, type Desk } from "./kr-desks-2026.ts";
 import { buildConsultMemo } from "./consult-memo-2026.ts";
 
 export const CASE_PREP_AS_OF = "2026-11-24";
-export type CaseFlowId = "deposit" | "lend";
+export type CaseFlowId = "deposit" | "lend" | "yearend" | "inherit";
 export type Choice = { id: string; label: string };
 export type Question = { id: string; label: string; choices: Choice[] };
 export type DateField = { id: string; label: string; what: string };
@@ -18,16 +18,22 @@ export type CaseInput = {
   questions?: string[];
 };
 type Rule = { when: (a: Record<string, string>, x: CaseInput) => boolean; text: string };
+type Step = { when: string; what: string; law?: string };
+type Link = { href: string; title: string };
 export type CaseFlow = {
   id: CaseFlowId;
-  desk: string;
-  expert: string; // EXPERTS id (consult-memo)
+  slug: string; // /ko/<slug>/
+  desk?: string; // kr-desks-2026 id. 없으면 아래 steps·tools·help를 써요.
+  steps?: Step[];
+  tools?: Link[];
+  help?: string[];
+  expert: string | ((a: Record<string, string>) => string); // EXPERTS id (consult-memo)
   title: string;
   amountLabel: string;
   questions: Question[];
   dates: DateField[];
   rules: Rule[];
-  extraTools: { href: string; title: string }[];
+  extraTools: Link[];
 };
 
 const yn = (yes: string, no: string): Choice[] => [{ id: "yes", label: yes }, { id: "no", label: no }, { id: "unknown", label: "모르겠어요" }];
@@ -35,6 +41,7 @@ const yn = (yes: string, no: string): Choice[] => [{ id: "yes", label: yes }, { 
 export const CASE_FLOWS: Record<CaseFlowId, CaseFlow> = {
   deposit: {
     id: "deposit",
+    slug: "deposit-return-consult-prep",
     desk: "deposit",
     expert: "court",
     title: "전세·월세 보증금",
@@ -67,6 +74,7 @@ export const CASE_FLOWS: Record<CaseFlowId, CaseFlow> = {
   },
   lend: {
     id: "lend",
+    slug: "unpaid-loan-consult-prep",
     desk: "lend",
     expert: "court",
     title: "빌려준 돈",
@@ -97,6 +105,82 @@ export const CASE_FLOWS: Record<CaseFlowId, CaseFlow> = {
     ],
     extraTools: [{ href: "/ko/job-exit-consult-prep/", title: "퇴사·해고·체불 상담 준비서" }],
   },
+
+  yearend: {
+    id: "yearend",
+    slug: "year-end-settlement-consult-prep",
+    expert: "tax",
+    title: "연말정산",
+    amountLabel: "작년 총급여(원, 아는 경우)",
+    questions: [
+      { id: "work", label: "올해 회사는 어땠나요?", choices: [{ id: "same", label: "한 회사에 계속 다녔어요" }, { id: "moved", label: "중간에 회사를 옮겼어요" }, { id: "quit", label: "중간에 그만두고 지금은 안 다녀요" }] },
+      { id: "other", label: "월급 말고 다른 소득이 있나요?", choices: [{ id: "none", label: "없어요" }, { id: "biz", label: "프리랜서·사업·임대 소득" }, { id: "fin", label: "이자·배당이 많아요" }] },
+      { id: "family", label: "가족 공제는요?", choices: [{ id: "single", label: "저만 공제받아요" }, { id: "dep", label: "부모님·자녀를 공제받아요" }, { id: "dual", label: "맞벌이라 누가 받을지 정해야 해요" }] },
+      { id: "home", label: "사는 집은요?", choices: [{ id: "own", label: "자가·가족 집" }, { id: "rent", label: "월세" }, { id: "jeonse", label: "전세(전세대출 포함)" }] },
+      { id: "missed", label: "작년이나 그 전에 빠뜨린 공제가 있나요?", choices: yn("있는 것 같아요", "없어요") },
+    ],
+    dates: [
+      { id: "join", label: "지금 회사 입사일", what: "지금 회사 입사" },
+      { id: "leave", label: "이전 회사 퇴사일", what: "이전 회사 퇴사" },
+      { id: "deadline", label: "회사가 정한 서류 마감일", what: "회사 연말정산 서류 마감" },
+    ],
+    steps: [
+      { when: "1월 중순", what: "홈택스 연말정산 간소화 서비스가 열리면 의료비·카드·보험료 같은 자료를 조회하고 내려받아요." },
+      { when: "회사가 정한 마감일까지", what: "소득·세액공제 신고서와 간소화에 없는 영수증을 회사에 내요.", law: "소득세법 제140조" },
+      { when: "2월 급여", what: "회사가 정산해서 더 낸 세금은 돌려주고 덜 낸 세금은 걷어요.", law: "소득세법 제137조" },
+      { when: "3월", what: "회사가 지급명세서를 내요(3월 10일까지). 근로소득 원천징수영수증을 받아 두세요.", law: "소득세법 제164조" },
+      { when: "5월", what: "빠뜨린 공제나 다른 소득은 종합소득세 신고 때 함께 정리해요.", law: "소득세법 제70조" },
+    ],
+    tools: [{ href: "/ko/year-end-settlement-preview-2026/", title: "연말정산 미리보기" }, { href: "/ko/midyear-leaver-year-end-settlement/", title: "중도퇴사자 연말정산" }, { href: "/ko/dependent-deduction-checker/", title: "부양가족 공제 확인" }, { href: "/ko/medical-expense-tax-credit-calculator/", title: "의료비 세액공제" }, { href: "/ko/monthly-rent-tax-credit-calculator/", title: "월세 세액공제" }, { href: "/ko/simplified-withholding-tax-calculator/", title: "간이세액표 월 원천징수" }],
+    help: ["국세청 126", "홈택스 연말정산 간소화 서비스"],
+    rules: [
+      { when: () => true, text: "홈택스 간소화 자료는 보통 1월 중순에 열려요. 회사마다 서류 마감일이 달라서 먼저 마감일을 확인하세요." },
+      { when: (a) => a.work === "moved", text: "올해 회사를 옮겼다면 이전 회사의 근로소득 원천징수영수증을 지금 회사에 내서 합쳐서 정산해요. 내지 않으면 5월에 직접 종합소득세를 신고해야 해요." },
+      { when: (a) => a.work === "quit", text: "연말에 다니는 회사가 없으면 퇴사할 때 회사가 한 정산으로 끝나서 의료비·카드·부양가족 공제가 빠졌을 수 있어요. 다음 해 5월 종합소득세 신고 때 추가하세요." },
+      { when: (a) => a.other === "biz", text: "프리랜서·사업·임대 소득이 있으면 연말정산과 따로 5월에 종합소득세를 신고해요(소득세법 제70조). 3.3% 원천징수 영수증과 경비 자료를 모아 두세요." },
+      { when: (a) => a.other === "fin", text: "이자·배당 같은 금융소득이 한 해 2천만 원을 넘으면 다른 소득과 합쳐 5월에 종합소득세를 신고해요(소득세법 제14조)." },
+      { when: (a) => a.family === "dep", text: "부모님·자녀 같은 부양가족은 한 사람만 공제받을 수 있어요. 형제자매와 겹치면 나중에 세금과 가산세를 낼 수 있으니 미리 정하세요." },
+      { when: (a) => a.family === "dual", text: "맞벌이는 부양가족과 의료비·카드 공제를 누구에게 몰지에 따라 결과가 달라요. 두 사람 급여로 미리보기를 각각 돌려 보세요." },
+      { when: (a) => a.home === "rent", text: "월세 세액공제는 무주택 세대주 같은 요건이 있고 간소화 자료에 나오지 않는 경우가 많아요. 임대차계약서, 주민등록등본, 월세 이체 내역을 준비하세요." },
+      { when: (a) => a.home === "jeonse", text: "전세대출 원리금 상환액 공제는 금융기관 자료가 간소화에 나오는지 확인하고, 없으면 은행에서 증명서를 받아요." },
+      { when: (a) => a.missed === "yes", text: "예전에 빠뜨린 공제는 신고기한 다음 날부터 5년 안에 경정청구로 돌려받을 수 있어요(국세기본법 제45조의2). 그해 원천징수영수증을 준비하세요." },
+      { when: () => true, text: "안경·교복비, 일부 기부금처럼 간소화에 안 나오는 자료는 영수증을 따로 받아야 해요." },
+    ],
+    extraTools: [],
+  },
+  inherit: {
+    id: "inherit",
+    slug: "inheritance-consult-prep",
+    desk: "death",
+    expert: (a) => (a.debt === "more" || a.debt === "unknown" ? "court" : "tax"),
+    title: "상속",
+    amountLabel: "아는 재산(원, 대략)",
+    questions: [
+      { id: "elapsed", label: "돌아가신 지 얼마나 됐나요?", choices: [{ id: "m1", label: "1개월이 안 됐어요" }, { id: "m3", label: "1~3개월" }, { id: "over", label: "3개월이 넘었어요" }] },
+      { id: "debt", label: "빚과 재산 중 어느 쪽이 많아 보이나요?", choices: [{ id: "asset", label: "재산이 더 많아요" }, { id: "more", label: "빚이 더 많아요" }, { id: "unknown", label: "모르겠어요" }] },
+      { id: "will", label: "유언장이 있나요?", choices: yn("있어요", "없어요") },
+      { id: "heirs", label: "상속인끼리는요?", choices: [{ id: "agree", label: "나누는 데 합의됐어요" }, { id: "dispute", label: "다툼이 있어요" }, { id: "who", label: "상속인이 누구인지부터 모르겠어요" }] },
+      { id: "house", label: "부동산이 있나요?", choices: yn("있어요", "없어요") },
+      { id: "income", label: "돌아가신 분에게 사업·임대 소득이 있었나요?", choices: yn("있었어요", "없었어요") },
+    ],
+    dates: [
+      { id: "death", label: "돌아가신 날", what: "사망(상속 개시)" },
+      { id: "knew", label: "빚이 있는 걸 안 날", what: "빚이 있는 것을 앎" },
+      { id: "report", label: "사망신고한 날", what: "사망신고" },
+    ],
+    rules: [
+      { when: (a) => a.elapsed === "m1", text: "사망신고는 사망을 안 날부터 1개월 안에 해요. 신고할 때 정부24 안심상속 원스톱 서비스를 함께 신청하면 재산과 빚을 한 번에 조회할 수 있어요." },
+      { when: (a) => a.debt !== "asset" && a.elapsed !== "over", text: "빚이 더 많거나 잘 모르면 상속이 시작된 것을 안 날부터 3개월 안에 가정법원에 상속포기나 한정승인을 신청해요(민법 제1019조 제1항). 그 전에 재산을 쓰거나 팔면 단순승인으로 볼 수 있어요(민법 제1026조)." },
+      { when: (a) => a.debt !== "asset" && a.elapsed === "over", text: "3개월이 지났어도 빚이 더 많다는 걸 중대한 과실 없이 늦게 알았다면, 안 날부터 3개월 안에 특별한정승인을 신청할 수 있어요(민법 제1019조 제3항). 빚을 알게 된 날짜를 꼭 적어 두세요." },
+      { when: (a) => a.will === "yes", text: "자필로 쓴 유언장은 가정법원의 검인을 받아야 해요(민법 제1091조). 유언장을 뜯거나 고치지 말고 그대로 보관하세요." },
+      { when: (a) => a.heirs === "dispute", text: "상속인끼리 나누는 협의가 안 되면 가정법원에 상속재산분할 심판을 청구해요(민법 제1013조). 유류분은 증여·유증을 안 날부터 1년, 상속이 시작된 날부터 10년 안에 청구해요(민법 제1117조)." },
+      { when: (a) => a.heirs === "who", text: "돌아가신 분의 가족관계증명서와 기본증명서로 상속인을 확인해요. 법정 상속분은 아래 계산기로 볼 수 있어요(민법 제1000조·제1009조)." },
+      { when: (a) => a.house === "yes", text: "상속 부동산은 상속이 시작된 달의 말일부터 6개월 안에 취득세를 신고·납부하고 상속등기를 해요(지방세법 제20조)." },
+      { when: (a) => a.income === "yes", text: "돌아가신 분에게 사업·임대 소득이 있었다면 상속인이 상속이 시작된 달의 말일부터 6개월 안에 그해 소득세를 신고해요(소득세법 제74조)." },
+      { when: () => true, text: "상속세는 상속이 시작된 달의 말일부터 6개월 안에 신고해요(상속세 및 증여세법 제67조). 낼 세금이 없어 보여도 상담 때 재산 목록을 가져가세요." },
+    ],
+    extraTools: [],
+  },
 };
 
 const dateRe = /^\d{4}-\d{2}-\d{2}$/;
@@ -110,8 +194,9 @@ export function buildCasePrep(id: CaseFlowId, x: CaseInput) {
   const flow = CASE_FLOWS[id];
   if (!flow) throw new Error("flow");
   if (!isValidInput(flow, x)) throw new Error("answers");
-  const d = desk(flow.desk);
-  const self = `/ko/${id === "deposit" ? "deposit-return-consult-prep" : "unpaid-loan-consult-prep"}/`;
+  const dk = flow.desk ? desk(flow.desk) : undefined;
+  const d = { title: dk?.title ?? flow.title, steps: flow.steps ?? dk?.steps ?? [], tools: flow.tools ?? dk?.tools ?? [], help: flow.help ?? dk?.help ?? [] };
+  const self = `/ko/${flow.slug}/`;
   const tools = [...new Map([...d.tools, ...flow.extraTools].filter((t) => t.href !== self).map((t) => [t.href, t])).values()];
   const laws = [...new Set(d.steps.map((s) => s.law).filter(Boolean) as string[])];
   const checks = flow.rules.filter((r) => r.when(x.answers, x)).map((r) => r.text);
@@ -119,7 +204,7 @@ export function buildCasePrep(id: CaseFlowId, x: CaseInput) {
     .map((f) => (x.dates?.[f.id] && dateRe.test(x.dates[f.id]) ? { date: x.dates[f.id], what: f.what } : null))
     .filter(Boolean) as { date: string; what: string }[];
   const situation = `${flow.title} · ${flow.questions.map((q) => q.choices.find((c) => c.id === x.answers[q.id])?.label).join(" · ")}`;
-  const memo = buildConsultMemo({ expert: flow.expert, situation, events, amount: x.amount, wants: x.wants, questions: x.questions });
+  const memo = buildConsultMemo({ expert: typeof flow.expert === "function" ? flow.expert(x.answers) : flow.expert, situation, events, amount: x.amount, wants: x.wants, questions: x.questions });
   const text = [
     memo.text,
     "",
