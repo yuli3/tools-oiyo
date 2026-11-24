@@ -102,8 +102,8 @@ const WORLD_EXTRA: Partial<Record<FloorId, Partial<Record<Exclude<BaseRoomId, "p
     { href: "/es/spain-final-pay-checklist/", title: "Revisar el finiquito: documentos y conceptos", who: "public" },
     { href: "/es/spain-salary-payments-comparison/", title: "Comparar salario en 12 o 14 pagas: bruto anual", who: "public" },
   ] },
-  FR: { labor: [{ href: "/fr/france-resignation-notice-guide/", title: "Trouver son préavis de démission", who: "public" }] },
-  JP: { labor: [
+  FR: { labor: [{ href: "/fr/france-resignation-notice-guide/", title: "Trouver son préavis de démission", who: "public" }], legal: [{ href: "/fr/aide-juridictionnelle-plafonds-2026/", title: "Aide juridictionnelle : plafonds 2026", who: "public" }] },
+  JP: { legal: [{ href: "/ja/houterasu-eligibility-check/", title: "法テラスの収入・資産基準チェック", who: "public" }], labor: [
     { href: "/ja/japan-overtime-calculator/", title: "日本の残業・深夜・法定休日手当を計算", who: "public" },
     { href: "/ja/japan-fixed-overtime-comparison/", title: "固定残業代と実際の時間外手当を比較", who: "public" },
   ] },

@@ -1,0 +1,28 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/legal/WorldLegalAid';
+// Aide juridictionnelle : plafonds 2026 (2026-11-24, world needs: "aide juridictionnelle plafond", "aide juridictionnelle simulation"). Engine: lib/world-legal-aid-2026.ts
+const c = {
+  introTitle: "Avocat trop cher ? Vérifiez l'aide juridictionnelle",
+  intro: "L'aide juridictionnelle prend en charge tout ou partie des frais d'avocat et de justice si votre revenu fiscal de référence et votre patrimoine ne dépassent pas des plafonds qui dépendent du nombre de personnes du foyer fiscal. Selon le revenu, la prise en charge est de 100 %, 55 % ou 25 %.",
+  formulaTitle: "Les plafonds utilisés",
+  formulas: [
+    { title: "Personne seule", body: "100 % jusqu'à 12 957 € de RFR, 55 % jusqu'à 15 316 €, 25 % jusqu'à 19 433 €. Patrimoine mobilier 12 957 €, immobilier 38 866 €." },
+    { title: "Foyer de 4", body: "100 % jusqu'à 19 095 €, 55 % jusqu'à 21 454 €, 25 % jusqu'à 25 570 €. Patrimoine mobilier 19 095 €, immobilier 57 276 €." },
+    { title: "Patrimoine", body: "Si un des deux plafonds de patrimoine est dépassé, il n'y a ni aide totale ni partielle (résidence principale exclue)." },
+  ],
+  howToTitle: "Mode d'emploi",
+  steps: ["Indiquez le nombre de personnes du foyer fiscal (1 à 5).", "Saisissez votre revenu fiscal de référence.", "Saisissez votre épargne et votre patrimoine immobilier hors résidence principale.", "Lisez le taux de prise en charge estimé."],
+  faqTitle: "Questions fréquentes",
+  faqs: [
+    { question: "Je n'ai pas de revenu fiscal de référence.", answer: "On retient le double de vos revenus imposables des 6 derniers mois, après un abattement de 10 %." },
+    { question: "Je divorce : faut-il compter le patrimoine de mon conjoint ?", answer: "Non, si la procédure vous oppose à un membre du foyer fiscal, l'examen du patrimoine est individualisé." },
+    { question: "Et à partir de 6 personnes ?", answer: "Ce calcul s'arrête à 5 personnes. Utilisez le simulateur officiel sur Service-Public." },
+  ],
+  disclaimer: "Information générale fondée sur la fiche Service-Public F18074 (circulaire du 16 janvier 2026). La décision appartient au bureau d'aide juridictionnelle.",
+};
+const sources: [string, string][] = [["Service-Public — Aide juridictionnelle lors d'une procédure en France (F18074)", "https://www.service-public.gouv.fr/particuliers/vosdroits/F18074"]];
+---
+<DebtReliefPage slug="aide-juridictionnelle-plafonds-2026" c={c} sources={sources} sourcesTitle="Sources" checked="Service-Public, vérifié le 2026-11-24">
+  <T client:load country="fr" />
+</DebtReliefPage>

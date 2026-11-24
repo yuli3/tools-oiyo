@@ -1,0 +1,28 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/legal/WorldLegalAid';
+// 法テラス 無料法律相談の資力基準チェック (2026-11-24, world needs: "法テラス 収入要件", "弁護士 費用 払えない"). Engine: lib/world-legal-aid-2026.ts
+const c = {
+  introTitle: "弁護士費用が払えないとき、まず法テラスの基準を確認",
+  intro: "法テラス（日本司法支援センター）は、収入と資産が一定基準以下の人に弁護士・司法書士との無料法律相談と、依頼費用の立替えを行っています。基準は家族人数と住んでいる地域で変わり、家賃・住宅ローンは限度額まで収入から差し引けます。",
+  formulaTitle: "使っている基準",
+  formulas: [
+    { title: "収入", body: "手取り平均月収（賞与込み）。一級地の1人200,200円、3人299,200円。それ以外の地域は1人182,000円。5人目からは1人ごとに33,000円（一級地）・30,000円を加算。" },
+    { title: "資産", body: "現金・預貯金。1人180万円、2人250万円、3人270万円、4人以上300万円以下。" },
+    { title: "家賃控除", body: "家賃・住宅ローンを1人41,000円（23区53,000円）〜4人71,000円（23区92,000円）まで収入から控除。" },
+  ],
+  howToTitle: "使い方",
+  steps: ["同居の家族人数を入れます。", "本人と配偶者の手取り月収、家賃・住宅ローン、預貯金を入れます。", "住んでいる地域を選びます。", "基準内なら、近くの法テラスに予約します（0570-078374）。"],
+  faqTitle: "よくある質問",
+  faqs: [
+    { question: "離婚の相談でも配偶者の収入を足しますか？", answer: "配偶者が相手方の事件では、本人の収入と資産だけで判断します。" },
+    { question: "何回まで無料ですか？", answer: "1回30分、同じ問題につき3回までです。刑事事件の相談は対象外です。" },
+    { question: "基準を少し超えたら？", answer: "医療費や教育費などやむを得ない事情があれば、基準を満たす可能性があります。法テラスに相談してください。" },
+  ],
+  disclaimer: "一般的な情報です。利用の可否と立替えの審査は法テラスが行います。5人以上の家賃控除限度額は公表表にないため計算していません。",
+};
+const sources: [string, string][] = [["法テラス 無料法律相談のご利用の流れ（収入・資産基準）", "https://www.houterasu.or.jp/site/soudan-tatekae/goriyounonagare.html"]];
+---
+<DebtReliefPage slug="houterasu-eligibility-check" c={c} sources={sources} sourcesTitle="出典" checked="法テラス 2026-11-24 確認">
+  <T client:load country="jp" />
+</DebtReliefPage>
