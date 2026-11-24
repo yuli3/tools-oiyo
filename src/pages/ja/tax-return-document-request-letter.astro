@@ -1,0 +1,39 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/world/WorldClientDocs';
+// Practitioner tool (2026-11-24, CHOSEUN: tools for each country's professionals). Engine: lib/world-client-docs-2026.ts
+const c = {
+  "introTitle": "確定申告の書類、何をいつ頼む？",
+  "intro": "給与の還付申告、個人事業、不動産所得、住宅ローン控除1年目ごとに、お客様に頼む書類の一覧と依頼文を作ります。受け取った書類にチェックすると、未着分だけの再依頼文に変わります。期限は入力した日付だけを使います。",
+  "formulaTitle": "このツールの範囲",
+  "formulas": [
+    {
+      "title": "計算しません",
+      "body": "書類の一覧と依頼文だけを作ります。期限は入力した日付をそのまま使います。"
+    }
+  ],
+  "howToTitle": "使い方",
+  "steps": [
+    "申告の種類を選びます。",
+    "お客様名・事務所名・提出期限を入れます。",
+    "依頼文をコピーして送り、届いた書類にチェックします。",
+    "未着分の再依頼文をコピーします。"
+  ],
+  "faqTitle": "よくある質問",
+  "faqs": [
+    {
+      "question": "書類の一覧は完全ですか？",
+      "answer": "よく使う書類の目安です。お客様の事情に合わせて「追加で依頼する書類」に書き足してください。"
+    },
+    {
+      "question": "入力は保存されますか？",
+      "answer": "いいえ。ブラウザの中だけで動き、保存も送信もしません。"
+    }
+  ],
+  "disclaimer": "一般的な目安です。申告に必要な書類は個別の事情で変わります。"
+};
+const sources: [string, string][] = [["国税庁 確定申告書等作成コーナー", "https://www.keisan.nta.go.jp/"]];
+---
+<DebtReliefPage slug="tax-return-document-request-letter" c={c} sources={sources} sourcesTitle="出典" checked="2026-11-24">
+  <T client:load country="jp" />
+</DebtReliefPage>

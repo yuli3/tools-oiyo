@@ -1,0 +1,39 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/world/WorldClientDocs';
+// Practitioner tool (2026-11-24, CHOSEUN: tools for each country's professionals). Engine: lib/world-client-docs-2026.ts
+const c = {
+  "introTitle": "Quelles pièces demander avant la déclaration de revenus ?",
+  "intro": "Choisissez salarié, indépendant, propriétaire bailleur ou placements : l'outil liste les pièces habituelles et rédige la demande au client. Cochez ce qui arrive : la relance ne reprend que les pièces manquantes. La date est celle que vous saisissez.",
+  "formulaTitle": "Ce que couvre l'outil",
+  "formulas": [
+    {
+      "title": "Aucun calcul",
+      "body": "L'outil liste les pièces et rédige le texte. La date est celle saisie."
+    }
+  ],
+  "howToTitle": "Mode d'emploi",
+  "steps": [
+    "Choisir la situation du client.",
+    "Saisir le nom du client, du cabinet et une date.",
+    "Copier la demande puis cocher les pièces reçues.",
+    "Copier la relance pour les pièces manquantes."
+  ],
+  "faqTitle": "Questions fréquentes",
+  "faqs": [
+    {
+      "question": "La liste est-elle complète ?",
+      "answer": "Elle reprend les pièces courantes. Ajoutez le reste dans « Autres pièces »."
+    },
+    {
+      "question": "Mes saisies sont-elles enregistrées ?",
+      "answer": "Non, tout reste dans votre navigateur."
+    }
+  ],
+  "disclaimer": "Liste indicative, pas un conseil fiscal."
+};
+const sources: [string, string][] = [["impots.gouv.fr — Déclarer ses revenus", "https://www.impots.gouv.fr/particulier/questions/je-declare-mes-revenus-en-ligne-comment-faire"]];
+---
+<DebtReliefPage slug="declaration-revenus-pieces-a-demander-client" c={c} sources={sources} sourcesTitle="Sources" checked="2026-11-24">
+  <T client:load country="fr" />
+</DebtReliefPage>

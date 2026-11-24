@@ -1,0 +1,39 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/world/WorldClientDocs';
+// Practitioner tool (2026-11-24, CHOSEUN: tools for each country's professionals). Engine: lib/world-client-docs-2026.ts
+const c = {
+  "introTitle": "¿Qué documentos pedir antes de la declaración de la renta?",
+  "intro": "Elija asalariado, autónomo, arrendador o ahorro: la herramienta lista los documentos habituales y redacta la solicitud al cliente. Marque lo recibido y el recordatorio solo incluye lo que falta. La fecha es la que usted escribe.",
+  "formulaTitle": "Qué cubre",
+  "formulas": [
+    {
+      "title": "Sin cálculos",
+      "body": "Solo lista documentos y redacta el texto. La fecha es la que usted escribe."
+    }
+  ],
+  "howToTitle": "Cómo se usa",
+  "steps": [
+    "Elija la situación del cliente.",
+    "Escriba el nombre del cliente, la asesoría y una fecha.",
+    "Copie la solicitud y marque lo que llega.",
+    "Copie el recordatorio de lo que falta."
+  ],
+  "faqTitle": "Preguntas frecuentes",
+  "faqs": [
+    {
+      "question": "¿La lista es completa?",
+      "answer": "Recoge lo habitual. Añada lo demás en «Otros documentos»."
+    },
+    {
+      "question": "¿Se guarda algo?",
+      "answer": "No, todo queda en su navegador."
+    }
+  ],
+  "disclaimer": "Lista orientativa, no es asesoramiento fiscal."
+};
+const sources: [string, string][] = [["Agencia Tributaria — Renta", "https://sede.agenciatributaria.gob.es/Sede/Renta.html"]];
+---
+<DebtReliefPage slug="renta-documentacion-pedir-cliente" c={c} sources={sources} sourcesTitle="Fuentes" checked="2026-11-24">
+  <T client:load country="es" />
+</DebtReliefPage>

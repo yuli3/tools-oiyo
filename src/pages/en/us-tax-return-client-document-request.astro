@@ -1,0 +1,39 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/world/WorldClientDocs';
+// Practitioner tool (2026-11-24, CHOSEUN: tools for each country's professionals). Engine: lib/world-client-docs-2026.ts
+const c = {
+  "introTitle": "What to ask clients for before you prepare a 1040",
+  "intro": "Pick the return type — wage earner, self-employed, investments, family and education — and get the usual list of forms (W-2, 1099s, 1098s) plus a ready-to-send request. Tick what has arrived and the reminder lists only what is still missing. The send-by date is the one you type.",
+  "formulaTitle": "What it covers",
+  "formulas": [
+    {
+      "title": "No calculation",
+      "body": "It only lists documents and drafts the text. The date is the one you enter."
+    }
+  ],
+  "howToTitle": "How to use it",
+  "steps": [
+    "Pick the return type.",
+    "Add the client name, your firm and a send-by date.",
+    "Copy the request, then tick items as they arrive.",
+    "Copy the reminder for what is still missing."
+  ],
+  "faqTitle": "Questions",
+  "faqs": [
+    {
+      "question": "Is the list complete?",
+      "answer": "It covers the common forms. Add anything specific to the client in the extra box."
+    },
+    {
+      "question": "Is anything saved?",
+      "answer": "No. It runs only in your browser."
+    }
+  ],
+  "disclaimer": "A general checklist, not tax advice. Each client may need more."
+};
+const sources: [string, string][] = [["IRS — Gather your documents", "https://www.irs.gov/individuals/get-ready-to-file-your-taxes"]];
+---
+<DebtReliefPage slug="us-tax-return-client-document-request" c={c} sources={sources} sourcesTitle="Sources" checked="2026-11-24">
+  <T client:load country="us" />
+</DebtReliefPage>
