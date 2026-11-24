@@ -250,19 +250,19 @@ export const KR_DESKS         = [
       { when: "다툼이 있으면", what: "소송(3천만 원 이하는 소액사건)이나 조정을 해요." },
       { when: "기한", what: "일반 대여금은 10년, 상사채권은 5년이 지나면 소멸해요.", law: "민법 제162조, 상법 제64조" },
     ],
-    tools: [T("/ko/demand-letter-builder/", "내용증명 작성 도우미"), T("/ko/legal-interest-calculator/", "지연이자"), T("/ko/statute-limitations-calculator/", "소멸시효"), T("/ko/litigation-cost-calculator/", "소송 비용")],
+    tools: [T("/ko/unpaid-loan-consult-prep/", "상담 준비서 만들기"), T("/ko/demand-letter-builder/", "내용증명 작성 도우미"), T("/ko/legal-interest-calculator/", "지연이자"), T("/ko/statute-limitations-calculator/", "소멸시효"), T("/ko/litigation-cost-calculator/", "소송 비용")],
     help: ["대한법률구조공단 132", "전자소송(ecfs.scourt.go.kr)"],
   },
   {
     id: "deposit", kind: "event", icon: "🏚️", title: "전세·월세 보증금을 못 돌려받을 때", who: "계약이 끝났는데 보증금을 못 받은 임차인",
     keywords: ["보증금 안", "보증금을 못", "못 받", "못 돌려", "전세금 반환", "임차권등기", "깡통", "전세사기", "보증금 반환"],
     steps: [
-      { when: "계약 끝나기 6개월~2개월 전", what: "갱신하지 않겠다는 뜻을 집주인에게 알려요(문자보다 내용증명이 확실해요).", law: "주택임대차보호법 제6조" },
+      { when: "계약 끝나기 2개월 전까지", what: "갱신하지 않겠다는 뜻을 집주인에게 알려요(문자보다 내용증명이 확실해요).", law: "주택임대차보호법 제6조" },
       { when: "계약이 끝났는데 못 받으면", what: "이사 가기 전에 임차권등기명령을 신청하고 등기가 된 것을 확인해요. 그래야 대항력·우선변제권이 유지돼요.", law: "주택임대차보호법 제3조의3" },
       { when: "보증보험에 들었다면", what: "보증기관에 이행청구를 해요." },
       { when: "그래도 안 되면", what: "보증금반환 지급명령이나 소송, 주택임대차분쟁조정을 신청해요." },
     ],
-    tools: [T("/ko/demand-letter-builder/", "내용증명 작성 도우미"), T("/ko/jeonse-guarantee-calculator/", "전세보증금 안전성"), T("/ko/auction-distribution-calculator/", "경매 배당 순서"), T("/ko/legal-interest-calculator/", "지연이자")],
+    tools: [T("/ko/deposit-return-consult-prep/", "상담 준비서 만들기"), T("/ko/demand-letter-builder/", "내용증명 작성 도우미"), T("/ko/jeonse-guarantee-calculator/", "전세보증금 안전성"), T("/ko/auction-distribution-calculator/", "경매 배당 순서"), T("/ko/legal-interest-calculator/", "지연이자")],
     help: ["주택도시보증공사 1566-9009", "대한법률구조공단 132 (주택임대차분쟁조정)", "전세피해지원센터"],
   },
   {
