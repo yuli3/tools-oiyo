@@ -1,0 +1,28 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/plan/CasePrepFlow';
+// AI 전문가 집중 계획 2번 상황 (2026-11-24). Logic: lib/case-prep-2026.ts (kr-desks-2026 deposit + consult-memo-2026 재사용, 계산 없음).
+const c = {
+  introTitle: '전세·월세 보증금을 못 돌려받을 때, 상담 전에 한 번에 정리',
+  intro: '지금 어느 단계인지, 전입신고·확정일자·임차권등기·보증보험을 했는지 고르면 먼저 확인할 것과 할 일, 근거 조문, 무료 창구를 한 화면에 모아 줘요. 날짜와 보증금을 넣으면 법률구조공단·전세피해지원센터 상담에 가져갈 준비서가 만들어지고, 이 브라우저에 저장해 두었다가 이어서 쓸 수 있어요.',
+  formulaTitle: '이렇게 정리해요',
+  formulas: [
+    { title: '판단하지 않아요', body: '보증금을 얼마나 돌려받을 수 있는지, 순위가 어떻게 되는지는 판단하지 않아요. 조문에 적힌 요건과 할 일만 보여 줘요.' },
+    { title: '순서가 중요해요', body: '임차권등기가 등기부에 올라간 것을 확인한 뒤 이사해야 대항력과 우선변제권이 유지돼요(주택임대차보호법 제3조의3).' },
+    { title: '저장', body: '저장을 누를 때만 이 브라우저에 남아요. 서버로 보내지 않아요.' },
+  ],
+  howToTitle: '이렇게 써요',
+  steps: ['지금 단계와 집 상황을 골라요.', '아는 날짜와 보증금을 넣어요.', '먼저 확인할 것과 할 일을 읽어요.', '상담 준비서를 복사하거나 인쇄해서 상담에 가져가요.'],
+  faqTitle: '자주 묻는 질문',
+  faqs: [
+    { question: '계약이 아직 안 끝났는데 써도 되나요?', answer: '네. "계약이 아직 안 끝났어요"를 고르면 갱신 거절을 언제까지 알려야 하는지부터 보여 줘요.' },
+    { question: '임차권등기명령은 어디서 신청하나요?', answer: '집이 있는 곳을 관할하는 법원에 신청해요. 서류 작성은 법무사에게 맡기거나 대한법률구조공단 132에서 도움을 받을 수 있어요.' },
+    { question: '저장한 내용은 어디에 있나요?', answer: '이 기기의 이 브라우저에만 있어요. "지우기"로 언제든 지울 수 있어요.' },
+  ],
+  disclaimer: '일반 정보이며 법률 자문이 아니에요. 개별 사안은 무료 공식 창구나 자격사에 확인하세요.',
+};
+const sources: [string, string][] = [['국가법령정보센터 주택임대차보호법', 'https://www.law.go.kr/법령/주택임대차보호법'], ['국가법령정보센터 민사집행법', 'https://www.law.go.kr/법령/민사집행법']];
+---
+<DebtReliefPage slug="deposit-return-consult-prep" c={c} sources={sources} sourcesTitle="출처" checked="조문 확인: 2026-11-24">
+  <T client:load flow="deposit" />
+</DebtReliefPage>
