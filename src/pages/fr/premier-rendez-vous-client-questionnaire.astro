@@ -1,0 +1,39 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/world/WorldIntakeMemo';
+// Practitioner tool (2026-11-24, CHOSEUN: tools for each country's professionals). Engine: lib/world-intake-memo-2026.ts
+const c = {
+  "introTitle": "Que demander au premier rendez-vous ?",
+  "intro": "Les questions habituelles d'un premier rendez-vous en impôts, droit du travail, famille et dettes. Saisissez les réponses : l'outil rédige une note avec les points à vérifier et les parties pour la vérification des conflits.",
+  "formulaTitle": "Ce que couvre l'outil",
+  "formulas": [
+    {
+      "title": "Ni calcul ni conseil",
+      "body": "L'outil liste les questions habituelles et met vos notes en forme. Il n'évalue pas le dossier et ne calcule aucun délai."
+    }
+  ],
+  "howToTitle": "Mode d'emploi",
+  "steps": [
+    "Choisir le domaine.",
+    "Saisir le client, la date et les autres parties.",
+    "Noter les réponses sous chaque question.",
+    "Copier la note dans le dossier."
+  ],
+  "faqTitle": "Questions fréquentes",
+  "faqs": [
+    {
+      "question": "Faut-il tout demander ?",
+      "answer": "Non. Les questions vides restent dans la note sous « À vérifier »."
+    },
+    {
+      "question": "Mes saisies sont-elles enregistrées ?",
+      "answer": "Non, tout reste dans votre navigateur."
+    }
+  ],
+  "disclaimer": "Questionnaire indicatif, pas un conseil juridique ou fiscal."
+};
+const sources: [string, string][] = [["Service-Public — Aide juridictionnelle (F18074)", "https://www.service-public.gouv.fr/particuliers/vosdroits/F18074"]];
+---
+<DebtReliefPage slug="premier-rendez-vous-client-questionnaire" c={c} sources={sources} sourcesTitle="Sources" checked="2026-11-24">
+  <T client:load country="fr" />
+</DebtReliefPage>

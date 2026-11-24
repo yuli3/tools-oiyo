@@ -1,0 +1,39 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/world/WorldIntakeMemo';
+// Practitioner tool (2026-11-24, CHOSEUN: tools for each country's professionals). Engine: lib/world-intake-memo-2026.ts
+const c = {
+  "introTitle": "初回相談で何を聞く？",
+  "intro": "税金、労働、家族・借金の初回相談でよく聞く項目を並べました。聞き取った内容を入れると、相談メモにまとめ、まだ確認していない項目と利益相反の確認が必要な相手方を一緒に書き出します。",
+  "formulaTitle": "このツールの範囲",
+  "formulas": [
+    {
+      "title": "計算も判断もしません",
+      "body": "初回相談でよく聞く項目を並べ、聞き取った内容をメモにまとめるだけです。法的な判断や期限の計算はしません。"
+    }
+  ],
+  "howToTitle": "使い方",
+  "steps": [
+    "分野を選びます。",
+    "相談者名と相談日、相手方を入れます。",
+    "聞き取った内容を各項目に書きます。",
+    "相談メモをコピーして記録に残します。"
+  ],
+  "faqTitle": "よくある質問",
+  "faqs": [
+    {
+      "question": "項目は全部聞く必要がありますか？",
+      "answer": "いいえ。空欄の項目は「未確認の項目」としてメモに残るので、次回の確認に使えます。"
+    },
+    {
+      "question": "入力は保存されますか？",
+      "answer": "いいえ。ブラウザの中だけで動き、保存も送信もしません。"
+    }
+  ],
+  "disclaimer": "聞き取りの目安です。法的な判断や期限の確認は個別に行ってください。"
+};
+const sources: [string, string][] = [["法テラス 無料法律相談のご利用の流れ", "https://www.houterasu.or.jp/site/soudan-tatekae/goriyounonagare.html"]];
+---
+<DebtReliefPage slug="first-consultation-intake-sheet" c={c} sources={sources} sourcesTitle="出典" checked="2026-11-24">
+  <T client:load country="jp" />
+</DebtReliefPage>
