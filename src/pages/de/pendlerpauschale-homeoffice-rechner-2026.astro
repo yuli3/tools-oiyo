@@ -1,0 +1,31 @@
+---
+import DeToolPage from '../../components/DeToolPage.astro';
+import T from '../../components/tools/desg/DeCommute';
+// Pendlerpauschale 2026 (2026-11-24, world needs scan: "Pendlerpauschale 2026", "Homeoffice-Pauschale"). Engine: lib/de-tax-return-2026.ts
+const c = {
+  "introTitle": "Pendlerpauschale und Homeoffice-Pauschale 2026",
+  "intro": "Seit 2026 gilt die Entfernungspauschale einheitlich mit 38 Cent ab dem ersten Kilometer der einfachen Strecke, für jeden Tag, an dem Sie zur Arbeit fahren. Für Tage im Homeoffice gibt es 6 € pro Tag, höchstens 210 Tage. Erst wenn alle Werbungskosten zusammen mehr als 1.230 € ergeben, bringt die Angabe in der Steuererklärung zusätzlich etwas.",
+  "formulaTitle": "Die verwendeten Werte 2026",
+  "formulas": [
+    { "title": "Entfernungspauschale", "body": "0,38 € je vollem Kilometer der einfachen Strecke, je Arbeitstag im Betrieb. Ohne eigenes Auto höchstens 4.500 € im Jahr." },
+    { "title": "Homeoffice", "body": "6 € je Tag, höchstens 210 Tage (1.260 €). Nicht für Tage, an denen Sie die Pendlerpauschale ansetzen." },
+    { "title": "Pauschbetrag", "body": "Arbeitnehmer-Pauschbetrag 1.230 € im Jahr, ohne Belege." }
+  ],
+  "howToTitle": "So funktioniert es",
+  "steps": ["Einfache Entfernung in Kilometern eingeben.", "Büro- und Homeoffice-Tage eingeben.", "Andere Werbungskosten (Arbeitsmittel, Fortbildung) ergänzen."],
+  "faqTitle": "Häufige Fragen",
+  "faqs": [
+    { "question": "Wie viel Steuer spare ich?", "answer": "Das hängt von Ihrem Grenzsteuersatz ab. Der Rechner zeigt den Betrag über 1.230 €; mit dem Einkommensteuer-Rechner sehen Sie den Steuersatz." },
+    { "question": "Zählen Hin- und Rückweg?", "answer": "Nein, nur die einfache Strecke, auf volle Kilometer abgerundet." },
+    { "question": "Werden meine Daten gespeichert?", "answer": "Nein, die Berechnung läuft nur in Ihrem Browser." }
+  ],
+  "disclaimer": "Allgemeine Information, keine Steuerberatung. Sonderfälle (Behinderung, doppelte Haushaltsführung, Arbeitszimmer) sind nicht enthalten."
+};
+const sources: [string, string][] = [
+  ["ADAC: Pendlerpauschale 2026", "https://www.adac.de/rund-ums-fahrzeug/auto-kaufen-verkaufen/autokosten/pendlerpauschale/"],
+  ["Handwerksblatt: 38 Cent ab dem ersten Kilometer", "https://www.handwerksblatt.de/betriebsfuehrung/hoehere-pendlerpauschale-38-cent-ab-dem-ersten-kilometer"]
+];
+---
+<DeToolPage slug="pendlerpauschale-homeoffice-rechner-2026" c={c} sources={sources} checked="Werte 2026 am 2026-11-24 bei ADAC und Handwerksblatt geprüft">
+  <T client:load />
+</DeToolPage>

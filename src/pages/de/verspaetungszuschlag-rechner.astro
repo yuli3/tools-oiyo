@@ -1,0 +1,31 @@
+---
+import DeToolPage from '../../components/DeToolPage.astro';
+import T from '../../components/tools/desg/DeLateSurcharge';
+// Steuererklärung zu spät (2026-11-24, world needs scan: "Steuererklärung Frist verpasst"). Engine: lib/de-tax-return-2026.ts
+const c = {
+  "introTitle": "Steuererklärung zu spät: wie hoch ist der Verspätungszuschlag?",
+  "intro": "Die Einkommensteuererklärung 2025 war ohne Steuerberater bis 31. Juli 2026 abzugeben. Wer später abgibt, kann einen Verspätungszuschlag zahlen müssen: 0,25 % der Nachzahlung für jeden angefangenen Monat, mindestens 25 € je Monat, höchstens 25.000 €. Wer eine Erstattung bekommt, zahlt in der Regel keinen Pflicht-Zuschlag.",
+  "formulaTitle": "Die verwendeten Regeln",
+  "formulas": [
+    { "title": "Betrag", "body": "0,25 % der festgesetzten Steuer abzüglich Vorauszahlungen und Steuerabzug, je angefangenen Monat, mindestens 25 € je Monat (§ 152 Abs. 5 AO)." },
+    { "title": "Höchstbetrag", "body": "Auf volle Euro abgerundet, höchstens 25.000 € (§ 152 Abs. 10 AO)." },
+    { "title": "Pflicht oder Ermessen", "body": "Pflicht, wenn die Erklärung nicht binnen 14 Monaten nach Ablauf des Kalenderjahrs abgegeben wird. Ausnahmen: verlängerte Frist, Steuer 0 € oder Erstattung (§ 152 Abs. 2, 3 AO)." }
+  ],
+  "howToTitle": "So funktioniert es",
+  "steps": ["Festgesetzte Einkommensteuer aus dem Bescheid oder Ihrer Schätzung eingeben.", "Vorauszahlungen und einbehaltene Lohnsteuer eingeben.", "Angefangene Monate seit Fristende eingeben."],
+  "faqTitle": "Häufige Fragen",
+  "faqs": [
+    { "question": "Ich bekomme Geld zurück. Muss ich trotzdem zahlen?", "answer": "Übersteigt die Steuer Ihre Vorauszahlungen und die Lohnsteuer nicht, entfällt der Pflicht-Zuschlag (§ 152 Abs. 3 Nr. 2, 3 AO). Nach Ermessen ist ein Zuschlag möglich, aber selten." },
+    { "question": "Welche Frist gilt mit Steuerberater?", "answer": "Mit Berater gilt eine längere Frist. Das genaue Datum wird hier nicht berechnet; fragen Sie Ihre Kanzlei oder Ihren Lohnsteuerhilfeverein." },
+    { "question": "Werden meine Daten gespeichert?", "answer": "Nein, die Berechnung läuft nur in Ihrem Browser." }
+  ],
+  "disclaimer": "Allgemeine Information, keine Steuerberatung. Säumniszuschläge auf zu spät gezahlte Steuer und Zinsen sind nicht enthalten."
+};
+const sources: [string, string][] = [
+  ["§ 152 AO Verspätungszuschlag (gesetze-im-internet.de)", "https://www.gesetze-im-internet.de/ao_1977/__152.html"],
+  ["Stiftung Warentest: Frist für die Steuererklärung", "https://www.test.de/Steuererklaerung-Frist-Abgabe-5619211-0/"]
+];
+---
+<DeToolPage slug="verspaetungszuschlag-rechner" c={c} sources={sources} checked="§ 152 AO auf gesetze-im-internet.de am 2026-11-24 geprüft">
+  <T client:load />
+</DeToolPage>
