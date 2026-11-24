@@ -93,17 +93,17 @@ const rel = (url: string) => url.replace("https://tools.oiyo.net", "");
 // 나라별 페이지 중 WORLD_TOOLS 목록에 빠져 어느 방에도 안 보이던 것(2026-11-23 점검, 21개). 새 계산 없음, 연결만 해요.
 const WORLD_EXTRA: Partial<Record<FloorId, Partial<Record<Exclude<BaseRoomId, "plan" | "trade">, OfficeTool[]>>>> = {
   CN: { tax: [{ href: "/zh/china-tax-agent-scope/", title: "谁可以代办涉税业务？涉税专业服务与免费办税渠道", who: "public" }] },
-  DE: { tax: [{ href: "/de/steuererklaerung-unterlagen-anfordern/", title: "Steuererklärung: Unterlagen beim Mandanten anfordern", who: "pro" }], labor: [
+  DE: { tax: [{ href: "/de/steuererklaerung-unterlagen-anfordern/", title: "Steuererklärung: Unterlagen beim Mandanten anfordern", who: "pro" }, { href: "/de/erstgespraech-mandant-checkliste/", title: "Erstgespräch mit Mandanten: Checkliste", who: "pro" }], labor: [
     { href: "/de/germany-annual-leave-minimum/", title: "Gesetzlicher Mindesturlaub bei fester Arbeitswoche", who: "public" },
     { href: "/de/germany-gross-offer-comparison/", title: "Bestätigte Brutto-Gehaltsangebote vergleichen", who: "public" },
     { href: "/de/germany-work-rest-guide/", title: "Arbeitszeit und Ruhezeiten: Unterlagen prüfen", who: "public" },
   ] },
-  ES: { tax: [{ href: "/es/renta-documentacion-pedir-cliente/", title: "Renta: documentación que pedir al cliente", who: "pro" }], labor: [
+  ES: { tax: [{ href: "/es/renta-documentacion-pedir-cliente/", title: "Renta: documentación que pedir al cliente", who: "pro" }, { href: "/es/primera-consulta-cliente-cuestionario/", title: "Primera consulta con el cliente: cuestionario", who: "pro" }], labor: [
     { href: "/es/spain-final-pay-checklist/", title: "Revisar el finiquito: documentos y conceptos", who: "public" },
     { href: "/es/spain-salary-payments-comparison/", title: "Comparar salario en 12 o 14 pagas: bruto anual", who: "public" },
   ] },
-  FR: { tax: [{ href: "/fr/declaration-revenus-pieces-a-demander-client/", title: "Déclaration de revenus : pièces à demander au client", who: "pro" }], labor: [{ href: "/fr/france-resignation-notice-guide/", title: "Trouver son préavis de démission", who: "public" }], legal: [{ href: "/fr/aide-juridictionnelle-plafonds-2026/", title: "Aide juridictionnelle : plafonds 2026", who: "public" }] },
-  JP: { tax: [{ href: "/ja/tax-return-document-request-letter/", title: "確定申告の書類依頼文メーカー", who: "pro" }], legal: [{ href: "/ja/houterasu-eligibility-check/", title: "法テラスの収入・資産基準チェック", who: "public" }], labor: [
+  FR: { tax: [{ href: "/fr/declaration-revenus-pieces-a-demander-client/", title: "Déclaration de revenus : pièces à demander au client", who: "pro" }, { href: "/fr/premier-rendez-vous-client-questionnaire/", title: "Premier rendez-vous client : questionnaire", who: "pro" }], labor: [{ href: "/fr/france-resignation-notice-guide/", title: "Trouver son préavis de démission", who: "public" }], legal: [{ href: "/fr/aide-juridictionnelle-plafonds-2026/", title: "Aide juridictionnelle : plafonds 2026", who: "public" }] },
+  JP: { tax: [{ href: "/ja/tax-return-document-request-letter/", title: "確定申告の書類依頼文メーカー", who: "pro" }, { href: "/ja/first-consultation-intake-sheet/", title: "初回相談ヒアリングシート", who: "pro" }], legal: [{ href: "/ja/houterasu-eligibility-check/", title: "法テラスの収入・資産基準チェック", who: "public" }], labor: [
     { href: "/ja/japan-overtime-calculator/", title: "日本の残業・深夜・法定休日手当を計算", who: "public" },
     { href: "/ja/japan-fixed-overtime-comparison/", title: "固定残業代と実際の時間外手当を比較", who: "public" },
   ] },
@@ -121,12 +121,12 @@ const WORLD_EXTRA: Partial<Record<FloorId, Partial<Record<Exclude<BaseRoomId, "p
     ],
   },
   UK: {
-    tax: [{ href: "/en/uk-self-assessment-client-records-request/", title: "Self Assessment client records request", who: "pro" }, { href: "/en/uk-tax-adviser-registration-free-help/", title: "Who can deal with HMRC for you? Tax adviser registration and free tax help", who: "public" }],
+    tax: [{ href: "/en/uk-self-assessment-client-records-request/", title: "Self Assessment client records request", who: "pro" }, { href: "/en/uk-client-intake-checklist/", title: "UK client intake checklist for a first consultation", who: "pro" }, { href: "/en/uk-tax-adviser-registration-free-help/", title: "Who can deal with HMRC for you? Tax adviser registration and free tax help", who: "public" }],
     labor: [{ href: "/en/uk-annual-leave-planner-2027/", title: "Booking leave around 2027 bank holidays", who: "public" }],
     legal: [{ href: "/en/uk-debt-relief-options/", title: "UK debt options: DRO, IVA or bankruptcy (England & Wales)", who: "public" }],
   },
   US: {
-    tax: [{ href: "/en/us-tax-return-client-document-request/", title: "Client document request for a 1040", who: "pro" }],
+    tax: [{ href: "/en/us-tax-return-client-document-request/", title: "Client document request for a 1040", who: "pro" }, { href: "/en/us-client-intake-checklist/", title: "US client intake checklist for a first consultation", who: "pro" }],
     labor: [{ href: "/en/us-pto-planner-2027/", title: "Where to put PTO in 2027", who: "public" }],
     legal: [{ href: "/en/us-bankruptcy-income-worksheet/", title: "US bankruptcy income worksheet — six-month average", who: "public" }],
   },
