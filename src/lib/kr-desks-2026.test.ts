@@ -8,9 +8,9 @@ const exists = (href: string) => {
   return existsSync(new URL(`../pages/${loc}/${slug}.astro`, import.meta.url)) || existsSync(new URL(`../pages/[locale]/${slug}.astro`, import.meta.url));
 };
 
-test("직업 7곳, 인생 사건 23가지", () => {
+test("직업 7곳, 인생 사건 24가지", () => {
   assert.equal(KR_DESKS.filter((d) => d.kind === "job").length, 7);
-  assert.equal(KR_DESKS.filter((d) => d.kind === "event").length, 23);
+  assert.equal(KR_DESKS.filter((d) => d.kind === "event").length, 24);
   assert.equal(new Set(KR_DESKS.map((d) => d.id)).size, KR_DESKS.length);
 });
 
@@ -62,4 +62,5 @@ test("사기·상가 임대차도 질문으로 찾아요", () => {
   assert.equal(top("보이스피싱으로 송금했어요"), "fraud");
   assert.equal(top("중고거래 사기를 당했어요"), "fraud");
   assert.equal(top("상가 권리금을 건물주가 막아요"), "shoplease");
+  assert.equal(top("회사가 3.3% 사업소득으로 신고해서 근로장려금이 안 돼요"), "misreport");
 });
