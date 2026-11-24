@@ -1,0 +1,30 @@
+---
+// 주택 임대차(전월세) 신고 대상·기한·과태료 (2026-11-24, 니즈: "임대차 신고 안하면 벌금", "임대차 계약 신고 기한", "임대차 신고 누가"). 계산: lib/kr-office-tasks-2026.ts
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import LeaseReport from "../../components/tools/office/LeaseReport";
+
+const title = "전월세 신고 대상·기한·과태료 확인 — 보증금 6천만원·월세 30만원 기준";
+const description = "주택 임대차 계약이 신고 대상인지(보증금 6천만원 초과 또는 월세 30만원 초과), 언제까지 신고해야 하는지, 늦으면 과태료가 얼마인지 부동산 거래신고법 시행령 별표 3 그대로 계산해요. 전입신고·갱신·확정일자까지.";
+const shell = {
+  introTitle: "전월세 계약하면 30일 안에 신고해요",
+  intro: "중개사무소와 집주인이 계약 뒤에 가장 많이 묻는 것이 '임대차 신고 해야 하나요, 안 하면 얼마예요?'예요. 일정 금액을 넘는 주택 임대차 계약은 체결일부터 30일 안에 임대인과 임차인이 함께 신고해야 해요. 이 도구는 대상 여부와 기한, 늦었을 때 별표 3 과태료를 계산해요.",
+  howToTitle: "이렇게 써요",
+  steps: ["보증금과 월세, 계약 체결일을 넣어요.", "같은 조건으로 기간만 늘린 갱신이면 체크해요.", "임차인이 전입신고를 했으면 체크해요. 전입신고를 하면 임대차 신고를 한 것으로 봐요.", "신고는 주택 소재지 신고관청에 해요. 조례로 읍·면·동이나 출장소에 맡긴 곳도 있어요(법 제6조의2⑤)."],
+  highlightsTitle: "원문 기준",
+  highlights: [
+    { title: "대상", body: "보증금 6천만원 초과 또는 월 차임 30만원 초과. 보증금·차임 증감 없이 기간만 늘린 갱신은 제외(시행령 제4조의3)." },
+    { title: "과태료", body: "계약금액(보증금 + 월세 × 200)과 늦은 기간으로 2만원~30만원. 거짓 신고 100만원(별표 3 마목, 법 제28조⑤)." },
+    { title: "전입신고·확정일자", body: "임차인이 전입신고를 하면 신고한 것으로 보고, 계약서를 내고 신고를 마치면 확정일자를 받은 것으로 봐요(법 제6조의5)." },
+  ],
+  disclaimer: "개별기준 금액을 보여 줘요. 신고관청은 위반 동기·결과 등을 보고 2분의 1 범위에서 늘리거나 줄일 수 있고, 자진 신고하면 감경·면제할 수 있어요. 기한은 민법 기간 계산(초일 불산입)으로 셌어요.",
+};
+const faqs = [
+  { q: "누가 신고해요?", a: "임대인과 임차인이 함께 신고해요. 한쪽이 거부하면 다른 쪽이 혼자 신고할 수 있어요(법 제6조의2③)." },
+  { q: "월세 30만원이면요?", a: "월 차임 30만원 '초과'가 기준이라 정확히 30만원이고 보증금이 6천만원 이하면 대상이 아니에요." },
+  { q: "보증금을 올려서 다시 계약했어요.", a: "보증금이나 월세가 바뀐 갱신은 신고 대상이에요. 이미 신고한 계약의 금액이 바뀌면 30일 안에 변경 신고를 해요(법 제6조의3)." },
+];
+---
+<KrFinancePage slug="housing-lease-report-checker" locale="ko" title={title} description={description} shell={shell} faqs={faqs} koOnly group="money">
+  <LeaseReport client:load />
+  <p class="mt-4 text-sm text-muted-foreground">관련: <a class="underline underline-offset-4" href="/ko/brokerage-calculator/">중개보수 계산기</a> · <a class="underline underline-offset-4" href="/ko/life-event-navigator/#move">이사·전월세 때 할 일</a> · <a class="underline underline-offset-4" href="/ko/pro-office/#KR/realty">실무 오피스 부동산실</a></p>
+</KrFinancePage>
