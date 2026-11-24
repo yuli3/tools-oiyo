@@ -173,7 +173,7 @@ export const KR_DESKS         = [
       { when: "건강보험", what: "지역가입자 보험료와 임의계속가입을 비교해요." },
       { when: "다음 해 5월 또는 새 회사 연말정산", what: "중도퇴사 연말정산을 마무리해요." },
     ],
-    tools: [T("/ko/severance-calculator/", "퇴직금 계산"), T("/ko/retirement-tax-calculator/", "퇴직소득세"), T("/ko/unemployment-benefits-calculator/", "실업급여"), T("/ko/voluntary-quit-unemployment-checker/", "자진 퇴사 실업급여"), T("/ko/health-insurance-leaver-settlement/", "퇴사 건강보험 정산"), T("/ko/midyear-leaver-year-end-settlement/", "중도퇴사 연말정산")],
+    tools: [T("/ko/job-exit-consult-prep/", "상담 준비서 만들기"), T("/ko/severance-calculator/", "퇴직금 계산"), T("/ko/retirement-tax-calculator/", "퇴직소득세"), T("/ko/unemployment-benefits-calculator/", "실업급여"), T("/ko/voluntary-quit-unemployment-checker/", "자진 퇴사 실업급여"), T("/ko/health-insurance-leaver-settlement/", "퇴사 건강보험 정산"), T("/ko/midyear-leaver-year-end-settlement/", "중도퇴사 연말정산")],
     help: ["고용노동부 1350", "국민건강보험공단 1577-1000"],
   },
   {
@@ -211,7 +211,7 @@ export const KR_DESKS         = [
       { when: "퇴직 후 14일 안", what: "임금·퇴직금을 정산받아요.", law: "근로기준법 제36조" },
       { when: "그다음", what: "비자발적 이직이면 구직급여를 신청해요." },
     ],
-    tools: [T("/ko/dismissal-notice-pay-calculator/", "해고예고수당"), T("/ko/appeal-deadline-calculator/", "불복 기한 계산"), T("/ko/free-expert-representation-check/", "무료 대리 자격 확인"), T("/ko/severance-calculator/", "퇴직금"), T("/ko/unemployment-benefits-calculator/", "실업급여"), T("/ko/labor-law-guide/", "노동 법령 길잡이")],
+    tools: [T("/ko/job-exit-consult-prep/", "상담 준비서 만들기"), T("/ko/dismissal-notice-pay-calculator/", "해고예고수당"), T("/ko/appeal-deadline-calculator/", "불복 기한 계산"), T("/ko/free-expert-representation-check/", "무료 대리 자격 확인"), T("/ko/severance-calculator/", "퇴직금"), T("/ko/unemployment-benefits-calculator/", "실업급여"), T("/ko/labor-law-guide/", "노동 법령 길잡이")],
     help: ["고용노동부 1350", "노동위원회 (무료 권리구제 대리인 제도)", "대한법률구조공단 132"],
   },
   {
@@ -224,7 +224,7 @@ export const KR_DESKS         = [
       { when: "회사가 못 주면", what: "체불 임금등 확인서를 받아 대지급금을 신청할 수 있는지 봐요." },
       { when: "3년 안", what: "임금채권은 3년이 지나면 소멸해요.", law: "근로기준법 제49조" },
     ],
-    tools: [T("/ko/unpaid-wage-guarantee-calculator/", "대지급금 계산"), T("/ko/severance-calculator/", "퇴직금"), T("/ko/legal-interest-calculator/", "지연이자"), T("/ko/statute-limitations-calculator/", "소멸시효")],
+    tools: [T("/ko/job-exit-consult-prep/", "상담 준비서 만들기"), T("/ko/unpaid-wage-guarantee-calculator/", "대지급금 계산"), T("/ko/severance-calculator/", "퇴직금"), T("/ko/legal-interest-calculator/", "지연이자"), T("/ko/statute-limitations-calculator/", "소멸시효")],
     help: ["고용노동부 1350", "근로복지공단 1588-0075", "대한법률구조공단 132"],
   },
   {
