@@ -39,6 +39,7 @@ export const lawGuides: { slug: string; domain?: DomainId; title: string; descri
   { slug: "appraisal-fee-calculator", title: "감정평가 수수료 계산기 2026", description: "감정평가법인등의 보수에 관한 기준(2026. 2. 9.) 별표 구간 요율로 하한·기준·상한 수수료, 착수금, 물건조사비, 공동주택 할인·할증 대상." },
   { slug: "legal-aid-eligibility-check", title: "법률구조공단 소송지원 대상 확인", description: "2026 기준 중위소득 125%·150%, 체불 근로자 평균 임금 400만원 미만, 소상공인 연매출 3억원 이하, 소득 제한 없는 대상까지 공단 대상자 안내로 대조." },
   { slug: "payroll-ledger-builder", title: "급여대장 만들기 2026", description: "직원 여러 명의 4대보험(2026 요율)·간이세액표 소득세·차인지급액과 합계를 계산하고 엑셀에서 여는 CSV로 내려받기." },
+  { slug: "annual-leave-ledger", title: "연차 관리대장", description: "직원 여러 명의 입사일과 쓴 일수로 근로기준법 제60조 발생 연차·남은 일수·사용 기한·다음 발생일을 보고 CSV로 내려받기." },
   { slug: "housing-lease-report-checker", title: "전월세 신고 대상·기한·과태료 확인", description: "보증금 6천만원·월세 30만원 초과 여부, 체결일부터 30일 기한, 시행령 별표 3 과태료(2만~30만원), 전입신고·확정일자 의제." },
   { slug: "employment-contract-checker", title: "근로계약서 점검", description: "정규·기간제·단시간별 필수 기재사항(근로기준법 제17조·시행령 제8조, 기간제법 제17조)과 서면 교부, 500만원 이하 벌금·과태료, 4명 이하·주 15시간 미만 예외." },
   { slug: "health-insurance-dependent-checker", title: "건강보험 피부양자 자격 점검", description: "관계·동거별 부양요건(시행규칙 별표 1)과 연 소득 2천만원·사업소득·재산세 과세표준 기준(별표 1의2), 90일 신고 규칙." },

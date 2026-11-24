@@ -1,0 +1,30 @@
+---
+// 연차 관리대장 (2026-11-24, 사무소 실무 니즈: "연차 관리대장", "연차 관리 엑셀"). 계산: lib/leave-ledger-2026.ts → lib/kr-annual-leave.ts
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import LeaveLedger from "../../components/tools/office/LeaveLedger";
+
+const title = "연차 관리대장 — 직원별 발생·사용·남은 연차와 사용 기한, 엑셀 내려받기";
+const description = "직원 여러 명의 입사일과 쓴 일수를 넣으면 근로기준법 제60조 기준 발생 연차, 남은 일수, 사용 기한, 다음 발생일을 한 번에 보여 주고 엑셀에서 여는 CSV로 내려받아요.";
+const shell = {
+  introTitle: "직원 연차, 표 하나로 관리해요",
+  intro: "사무소와 작은 회사가 자주 찾는 양식이 연차 관리대장이에요. 입사일만 넣으면 1년 미만 월차(매달 1일, 최대 11일), 1년 15일, 3년 차부터 2년마다 1일(최대 25일)을 계산하고, 지금 가진 연차를 언제까지 써야 하는지 알려 줘요.",
+  howToTitle: "이렇게 써요",
+  steps: ["기준일을 고르고 직원마다 입사일을 넣어요.", "지금 연차에서 이미 쓴 일수를 넣어요(반차는 0.5).", "남은 일수와 사용 기한을 확인해요. 사용 촉진은 사용 촉진 일정 도구로 이어서 봐요.", "CSV로 내려받아 엑셀에서 보관해요."],
+  highlightsTitle: "계산 기준",
+  highlights: [
+    { title: "발생", body: "근로기준법 제60조(현행 조문). 1년(또는 1개월) 근로를 마친 다음 날 근로관계가 있어야 생겨요." },
+    { title: "사용 기한", body: "제60조: 1년간 쓰지 않으면 소멸해요. 1년 미만 월차는 최초 1년 근로가 끝날 때까지 써야 해요." },
+    { title: "가정", body: "상시 5명 이상, 매달 개근·출근율 80% 이상, 입사일 기준이에요. 결근·휴직이 있으면 일수가 달라져요." },
+  ],
+  disclaimer: "2026. 6. 9. 개정된 연차 조항(시간 단위 사용 등)은 시행 전이라 반영하지 않았어요. 회계연도 기준 관리, 출근율 80% 미만, 육아휴직 기간 등은 따로 확인하세요. 직원 이름 대신 별칭을 써도 돼요.",
+};
+const faqs = [
+  { q: "5명 미만 사업장도 써요?", a: "상시 5명 미만 사업장에는 연차유급휴가 규정이 적용되지 않아요. 회사 규정으로 주는 휴가라면 그 규정을 따르세요." },
+  { q: "회계연도 기준으로 주고 있어요", a: "이 표는 입사일 기준이에요. 회계연도 기준이라도 퇴사할 때 입사일 기준보다 적게 주면 차이를 정산해야 해요." },
+  { q: "파일은 어디에 저장돼요?", a: "계산과 CSV 만들기는 모두 브라우저 안에서 해요. 서버로 보내지 않아요." },
+];
+---
+<KrFinancePage slug="annual-leave-ledger" locale="ko" title={title} description={description} shell={shell} faqs={faqs} koOnly group="money">
+  <LeaveLedger client:load />
+  <p class="mt-4 text-sm text-muted-foreground">관련: <a class="underline underline-offset-4" href="/ko/annual-leave-promotion-planner/">연차 사용 촉진 일정</a> · <a class="underline underline-offset-4" href="/ko/payroll-ledger-builder/">급여대장 만들기</a> · <a class="underline underline-offset-4" href="/ko/pro-office/#KR/labor">실무 오피스 노무실</a></p>
+</KrFinancePage>
