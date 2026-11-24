@@ -1,0 +1,39 @@
+---
+import DeToolPage from '../../components/DeToolPage.astro';
+import T from '../../components/tools/world/WorldIntakeMemo';
+// Practitioner tool (2026-11-24, CHOSEUN: tools for each country's professionals). Engine: lib/world-intake-memo-2026.ts
+const c = {
+  "introTitle": "Was im Erstgespräch fragen?",
+  "intro": "Die üblichen Fragen für das Erstgespräch zu Steuern, Arbeitsrecht sowie Familie und Schulden. Tragen Sie die Antworten ein: Das Werkzeug erstellt eine Notiz mit offenen Punkten und der Gegenseite für die Kollisionsprüfung.",
+  "formulaTitle": "Was das Werkzeug tut",
+  "formulas": [
+    {
+      "title": "Keine Berechnung, keine Beratung",
+      "body": "Es listet die üblichen Fragen für das Erstgespräch und fasst Ihre Notizen zusammen. Es bewertet den Fall nicht und berechnet keine Fristen."
+    }
+  ],
+  "howToTitle": "So funktioniert es",
+  "steps": [
+    "Bereich wählen.",
+    "Mandant, Datum und Gegenseite eingeben.",
+    "Antworten bei jeder Frage notieren.",
+    "Notiz kopieren und zur Akte nehmen."
+  ],
+  "faqTitle": "Häufige Fragen",
+  "faqs": [
+    {
+      "question": "Muss ich alles fragen?",
+      "answer": "Nein. Leere Fragen bleiben in der Notiz unter „Noch zu klären“."
+    },
+    {
+      "question": "Wird etwas gespeichert?",
+      "answer": "Nein, alles bleibt im Browser."
+    }
+  ],
+  "disclaimer": "Allgemeine Checkliste, keine Rechts- oder Steuerberatung."
+};
+const sources: [string, string][] = [["ELSTER — Einkommensteuererklärung", "https://www.elster.de/eportal/start"]];
+---
+<DeToolPage slug="erstgespraech-mandant-checkliste" c={c} sources={sources} checked="2026-11-24">
+  <T client:load country="de" />
+</DeToolPage>

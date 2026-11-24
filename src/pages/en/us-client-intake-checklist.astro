@@ -1,0 +1,39 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/world/WorldIntakeMemo';
+// Practitioner tool (2026-11-24, CHOSEUN: tools for each country's professionals). Engine: lib/world-intake-memo-2026.ts
+const c = {
+  "introTitle": "What to ask at a first consultation",
+  "intro": "The usual first-meeting questions for tax, employment, and family and debt matters. Type the client's answers and get a memo that lists what is still to confirm and which other parties need a conflict check.",
+  "formulaTitle": "What it covers",
+  "formulas": [
+    {
+      "title": "No calculation, no advice",
+      "body": "It lists the usual first-meeting questions and turns your notes into a memo. It does not assess the case or compute deadlines."
+    }
+  ],
+  "howToTitle": "How to use it",
+  "steps": [
+    "Pick the area.",
+    "Add the client, the date and any other parties.",
+    "Note the answers next to each question.",
+    "Copy the memo into your file."
+  ],
+  "faqTitle": "Questions",
+  "faqs": [
+    {
+      "question": "Do I have to ask everything?",
+      "answer": "No. Blank questions stay in the memo under \"Still to confirm\" for the next call."
+    },
+    {
+      "question": "Is anything saved?",
+      "answer": "No. It runs only in your browser."
+    }
+  ],
+  "disclaimer": "A general checklist, not legal or tax advice."
+};
+const sources: [string, string][] = [["IRS — Gather your documents", "https://www.irs.gov/individuals/get-ready-to-file-your-taxes"]];
+---
+<DebtReliefPage slug="us-client-intake-checklist" c={c} sources={sources} sourcesTitle="Sources" checked="2026-11-24">
+  <T client:load country="us" />
+</DebtReliefPage>

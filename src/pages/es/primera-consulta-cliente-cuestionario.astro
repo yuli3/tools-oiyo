@@ -1,0 +1,39 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/world/WorldIntakeMemo';
+// Practitioner tool (2026-11-24, CHOSEUN: tools for each country's professionals). Engine: lib/world-intake-memo-2026.ts
+const c = {
+  "introTitle": "¿Qué preguntar en la primera consulta?",
+  "intro": "Las preguntas habituales de una primera consulta fiscal, laboral o de familia y deudas. Escriba las respuestas y obtenga una nota con lo pendiente de confirmar y la otra parte para revisar conflictos.",
+  "formulaTitle": "Qué cubre",
+  "formulas": [
+    {
+      "title": "Sin cálculos ni asesoramiento",
+      "body": "Lista las preguntas habituales y ordena sus notas. No valora el caso ni calcula plazos."
+    }
+  ],
+  "howToTitle": "Cómo se usa",
+  "steps": [
+    "Elija el área.",
+    "Escriba el cliente, la fecha y la otra parte.",
+    "Anote las respuestas en cada pregunta.",
+    "Copie la nota al expediente."
+  ],
+  "faqTitle": "Preguntas frecuentes",
+  "faqs": [
+    {
+      "question": "¿Hay que preguntarlo todo?",
+      "answer": "No. Lo que quede en blanco aparece en la nota como «Pendiente de confirmar»."
+    },
+    {
+      "question": "¿Se guarda algo?",
+      "answer": "No, todo queda en su navegador."
+    }
+  ],
+  "disclaimer": "Cuestionario orientativo, no es asesoramiento jurídico ni fiscal."
+};
+const sources: [string, string][] = [["Agencia Tributaria — Renta", "https://sede.agenciatributaria.gob.es/Sede/Renta.html"]];
+---
+<DebtReliefPage slug="primera-consulta-cliente-cuestionario" c={c} sources={sources} sourcesTitle="Fuentes" checked="2026-11-24">
+  <T client:load country="es" />
+</DebtReliefPage>
