@@ -1,0 +1,23 @@
+---
+import DeToolPage from '../../components/DeToolPage.astro';
+import T from '../../components/tools/world/WorldClientDocs';
+// Practitioner tool (2026-11-24, CHOSEUN: tools for each country's professionals). Engine: lib/world-client-docs-2026.ts
+const c = {
+  "introTitle": "Welche Unterlagen beim Mandanten anfordern?",
+  "intro": "Für Arbeitnehmer, Selbstständige (EÜR), Vermieter und Rentner listet das Werkzeug die üblichen Unterlagen und schreibt die Anfrage an den Mandanten. Haken Sie ab, was eingegangen ist: die Erinnerung nennt nur die fehlenden Belege. Das Datum ist das, das Sie eingeben.",
+  "formulaTitle": "Was das Werkzeug tut",
+  "formulas": [{ "title": "Keine Berechnung", "body": "Nur Liste und Text. Fristen werden nicht berechnet." }],
+  "howToTitle": "So funktioniert es",
+  "steps": ["Fall wählen.", "Namen des Mandanten, der Kanzlei und ein Datum eingeben.", "Anfrage kopieren und eingegangene Unterlagen abhaken.", "Erinnerung für fehlende Unterlagen kopieren."],
+  "faqTitle": "Häufige Fragen",
+  "faqs": [
+    { "question": "Ist die Liste vollständig?", "answer": "Sie enthält die üblichen Unterlagen. Weiteres im Feld „Weitere Unterlagen“ ergänzen." },
+    { "question": "Werden Daten gespeichert?", "answer": "Nein, alles bleibt in Ihrem Browser." }
+  ],
+  "disclaimer": "Allgemeine Checkliste, keine Steuerberatung."
+};
+const sources: [string, string][] = [["ELSTER — Einkommensteuererklärung", "https://www.elster.de/eportal/start"]];
+---
+<DeToolPage slug="steuererklaerung-unterlagen-anfordern" c={c} sources={sources} checked="2026-11-24">
+  <T client:load country="de" />
+</DeToolPage>

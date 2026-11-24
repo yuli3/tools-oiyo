@@ -1,0 +1,39 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import T from '../../components/tools/world/WorldClientDocs';
+// Practitioner tool (2026-11-24, CHOSEUN: tools for each country's professionals). Engine: lib/world-client-docs-2026.ts
+const c = {
+  "introTitle": "What to ask clients for before a Self Assessment return",
+  "intro": "Choose employee with other income, self-employed, landlord or capital gains, and get the usual records (P60, P11D, rent statements, completion statements) and a ready-to-send letter. Tick what has arrived and the reminder lists only what is missing. The date is the one you type.",
+  "formulaTitle": "What it covers",
+  "formulas": [
+    {
+      "title": "No calculation",
+      "body": "It only lists documents and drafts the text. The date is the one you enter."
+    }
+  ],
+  "howToTitle": "How to use it",
+  "steps": [
+    "Choose the client type.",
+    "Add the client name, your firm and a date.",
+    "Copy the letter, then tick items as they arrive.",
+    "Copy the reminder for what is still missing."
+  ],
+  "faqTitle": "Questions",
+  "faqs": [
+    {
+      "question": "Is the list complete?",
+      "answer": "It covers the usual records. Add anything else in the extra box."
+    },
+    {
+      "question": "Is anything saved?",
+      "answer": "No. It runs only in your browser."
+    }
+  ],
+  "disclaimer": "A general checklist, not tax advice."
+};
+const sources: [string, string][] = [["GOV.UK — Self Assessment tax returns", "https://www.gov.uk/self-assessment-tax-returns"]];
+---
+<DebtReliefPage slug="uk-self-assessment-client-records-request" c={c} sources={sources} sourcesTitle="Sources" checked="2026-11-24">
+  <T client:load country="uk" />
+</DebtReliefPage>
