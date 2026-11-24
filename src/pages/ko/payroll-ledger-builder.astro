@@ -1,0 +1,30 @@
+---
+// 급여대장 만들기 (2026-11-24, 사무소 실무 니즈: "2026년 급여대장 엑셀", "급여대장 자동화", "급여대장 소득세 계산"). 계산: lib/kr-office-tasks-2026.ts
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import PayrollLedger from "../../components/tools/office/PayrollLedger";
+
+const title = "급여대장 만들기 2026 — 직원별 4대보험·간이세액표 소득세·차인지급액, 엑셀 내려받기";
+const description = "직원 여러 명의 기본급·수당·비과세·공제가족을 넣으면 2026 요율 4대보험과 간이세액표(2026. 2. 27. 개정) 소득세·지방소득세, 차인지급액과 합계를 한 번에 계산하고 엑셀에서 여는 CSV로 내려받아요.";
+const shell = {
+  introTitle: "매달 급여대장, 엑셀 수식 없이 만들어요",
+  intro: "급여 담당자와 세무·노무 사무소가 매달 하는 일이 급여대장 작성이에요. 사용자는 근로자별로 임금대장을 만들고, 기본급·수당·공제 내역과 근로일수·근로시간수를 적어야 해요(근로기준법 시행령 제27조). 이 도구는 직원별 공제액과 차인지급액을 계산하고 CSV로 내려받게 해요.",
+  howToTitle: "이렇게 써요",
+  steps: ["귀속월을 고르고 직원마다 기본급·수당·비과세(식대 등)를 넣어요.", "공제대상가족 수와 8~20세 자녀 수를 넣으면 간이세액표 소득세가 맞춰져요.", "근로일수·근로시간·연장·야간·휴일 시간수도 넣어요(임금대장 기재사항).", "CSV로 내려받아 엑셀에서 열고, 생년월일·입사일·업무를 더해 보관해요."],
+  highlightsTitle: "계산 기준",
+  highlights: [
+    { title: "소득세", body: "소득세법 시행령 별표2 간이세액표(2026. 2. 27. 개정) 100% 기준, 8~20세 자녀 차감, 지방소득세 10%." },
+    { title: "4대보험", body: "2026 근로자 부담분: 국민연금(기준소득월액 상하한), 건강보험·장기요양, 고용보험. 보수는 비과세를 뺀 금액으로 봐요." },
+    { title: "임금명세서", body: "임금을 줄 때는 임금 총액, 구성항목별 금액, 공제 항목별 금액을 적은 임금명세서도 함께 줘야 해요(시행령 제27조의2)." },
+  ],
+  disclaimer: "월 정기 급여 기준 계산이에요. 입사·퇴사 달 보험료, 연말정산 정산분, 80·120% 원천징수 선택, 산재보험·사업주 부담분은 넣지 않았어요. 직원 이름 대신 별칭을 써도 돼요.",
+};
+const faqs = [
+  { q: "비과세는 얼마까지 넣어요?", a: "회사가 실제로 비과세로 처리하는 금액을 넣어요. 식대 같은 비과세 한도는 항목마다 달라서 이 도구가 대신 판단하지 않아요." },
+  { q: "입사한 달 보험료는요?", a: "월 중간 입사·퇴사 달은 보험마다 부과 달이 달라요. 입사·퇴사 달 4대보험 계산기로 따로 확인하세요." },
+  { q: "파일은 어디에 저장돼요?", a: "계산과 CSV 만들기는 모두 브라우저 안에서 해요. 서버로 보내지 않아요." },
+];
+---
+<KrFinancePage slug="payroll-ledger-builder" locale="ko" title={title} description={description} shell={shell} faqs={faqs} koOnly group="money">
+  <PayrollLedger client:load />
+  <p class="mt-4 text-sm text-muted-foreground">관련: <a class="underline underline-offset-4" href="/ko/simplified-withholding-tax-calculator/">간이세액표 원천징수</a> · <a class="underline underline-offset-4" href="/ko/join-leave-month-insurance-calculator/">입사·퇴사 달 4대보험료</a> · <a class="underline underline-offset-4" href="/ko/pro-office/#KR/labor">실무 오피스 노무실</a></p>
+</KrFinancePage>
