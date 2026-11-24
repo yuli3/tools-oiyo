@@ -1,0 +1,27 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import DocRequest from '../../components/tools/plan/DocRequest';
+// 2026-11-24 CHOSEUN "상담자 니즈에 따른 도구와 스킬 계속 추가". No legal/tax calculation.
+const c = {
+  introTitle: '매달 하는 자료 요청, 문자 한 번으로',
+  intro: '세무·회계 사무실이 신고철마다 가장 많은 시간을 쓰는 일은 수임처에 자료를 요청하고, 빠진 것을 확인해 다시 요청하는 일이에요. 업무 종류를 고르면 요청 문자를 만들어 주고, 받은 자료를 체크하면 빠진 것만 다시 부탁하는 문자를 만들어 줘요.',
+  formulaTitle: '이렇게 정리했어요',
+  formulas: [
+    { title: '업무 6종', body: '종합소득세, 부가가치세, 연말정산, 법인 결산, 월 급여·원천세, 상속·증여세.' },
+    { title: '재요청', body: '체크하지 않은 자료만 모아 짧은 재요청 문자를 만들어요.' },
+    { title: '기한', body: '자료 받을 날짜만 넣어요. 신고 기한은 고객별 신고 마감 보드에서 계산해요.' },
+  ],
+  howToTitle: '이렇게 써요',
+  steps: ['업무 종류를 골라요.', '고객·사무실 이름과 날짜를 넣고 첫 요청 문자를 복사해 보내요.', '자료가 오면 체크하고 재요청 문자를 보내요.'],
+  faqTitle: '자주 묻는 질문',
+  faqs: [
+    { question: '고객 정보가 저장되나요?', answer: '아니요. 이 브라우저 안에서만 문자를 만들고 저장하지 않아요.' },
+    { question: '목록에 없는 자료는요?', answer: '더 받을 자료 칸에 한 줄씩 적으면 문자에 함께 들어가요.' },
+  ],
+  disclaimer: '자료 목록은 흔히 필요한 것을 모은 예시예요. 고객 사정에 맞게 고쳐 쓰세요.',
+};
+const sources: [string, string][] = [['국가법령정보센터', 'https://www.law.go.kr/']];
+---
+<DebtReliefPage slug="client-document-request" c={c} sources={sources} sourcesTitle="출처" checked="확인: 2026-11-24">
+  <DocRequest client:load />
+</DebtReliefPage>

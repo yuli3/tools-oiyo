@@ -1,0 +1,27 @@
+---
+import DebtReliefPage from '../../components/DebtReliefPage.astro';
+import WorkerStatusCheck from '../../components/tools/plan/WorkerStatusCheck';
+// 2026-11-24 CHOSEUN "상담자 니즈에 따른 도구와 스킬 계속 추가". No legal/tax calculation.
+const c = {
+  introTitle: '프리랜서 계약인데 근로자일까?',
+  intro: '3.3%를 떼는 프리랜서·위탁 계약으로 일했는데 퇴직금이나 연차를 받을 수 있는지 묻는 상담이 가장 많아요. 법원은 계약서 이름보다 실제로 어떻게 일했는지를 봐요. 판례가 드는 요소를 하나씩 체크해 근로자 쪽 요소가 얼마나 되는지 확인하고, 상담 전에 모아 둘 자료를 알려 줘요.',
+  formulaTitle: '이렇게 봐요',
+  formulas: [
+    { title: '핵심 4가지', body: '업무 내용 지정, 규정 적용, 구체적 지휘·감독, 근무 시간·장소 지정.' },
+    { title: '독립성', body: '장비를 스스로 대는지, 대신 일할 사람을 쓸 수 있는지, 손실 위험을 지는지.' },
+    { title: '보수·계속성', body: '일한 시간에 따른 보수인지, 고정급, 전속·계속 근무.' },
+  ],
+  howToTitle: '이렇게 써요',
+  steps: ['실제로 일한 방식에 맞는 항목을 체크해요.', '근로자 쪽 요소 수와 핵심 요소 수를 봐요.', '자료를 모아 상담 메모와 함께 상담해요.'],
+  faqTitle: '자주 묻는 질문',
+  faqs: [
+    { question: '근로자로 판정해 주나요?', answer: '아니요. 요소를 세어 보여 줄 뿐이고, 판단은 노동청·노동위원회·법원이 해요.' },
+    { question: '4대보험에 가입하지 않았으면 근로자가 아닌가요?', answer: '그것만으로 단정하지 않아요. 회사가 정할 수 있는 사정이라 보조 요소로만 봐요.' },
+  ],
+  disclaimer: '일반 정보이며 노무·법률 자문이 아니에요. 개별 사안은 고용노동부 1350이나 대한법률구조공단 132에 확인하세요.',
+};
+const sources: [string, string][] = [['국가법령정보센터', 'https://www.law.go.kr/']];
+---
+<DebtReliefPage slug="worker-status-check" c={c} sources={sources} sourcesTitle="출처" checked="확인: 2026-11-24">
+  <WorkerStatusCheck client:load />
+</DebtReliefPage>
