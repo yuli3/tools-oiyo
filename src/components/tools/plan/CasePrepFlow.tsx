@@ -1,5 +1,6 @@
 // 상황별 상담 준비서 (보증금·빌려준 돈). Logic: lib/case-prep-2026.ts. 사건 파일은 이 브라우저(localStorage)에만 저장해요.
 import { useEffect, useState } from "react";
+import EasyRead from "../EasyRead";
 import { CASE_FLOWS, buildCasePrep, caseFileKey, isValidInput, parseCasePrepFile, toCasePrepFile, type CaseFlowId, type CaseInput } from "../../../lib/case-prep-2026";
 
 const field = "mt-1 min-h-11 w-full min-w-0 rounded-lg border border-input bg-background px-3 text-base";
@@ -61,6 +62,13 @@ export default function CasePrepFlow({ flow: id }: { flow: CaseFlowId }) {
             </div>
             <label className="block text-sm">묻고 싶은 것 (한 줄에 하나)<textarea className={`${field} min-h-20 py-2`} value={questions} onChange={(e) => { setQuestions(e.target.value); touch(); }} /></label>
           </section>
+          <EasyRead
+            items={[
+              ...r.checks.map((c) => ({ kind: "warn" as const, text: c })),
+              ...r.steps.map((st) => ({ kind: "todo" as const, text: `${st.when}: ${st.what}${st.law ? ` (${st.law})` : ""}` })),
+              ...r.help.map((h) => ({ kind: "call" as const, text: h })),
+            ]}
+          />
           <section className="rounded-xl border border-border bg-card p-4">
             <h2 className="text-lg font-bold">먼저 확인할 것</h2>
             <ul className="mt-2 list-disc space-y-1 pl-5 text-sm">{r.checks.map((c) => <li key={c}>{c}</li>)}</ul>

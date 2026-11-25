@@ -8,6 +8,8 @@ import { useSaved, CopyMemo } from "../biz/common";
 import ChoiceChips from "../payroll/ChoiceChips";
 import BarTrack from "../viz/BarTrack";
 import DeadlineChart from "../viz/DeadlineChart";
+import EasyRead from "../EasyRead";
+import type { EasyItem } from "../../../lib/easy-read-2026";
 import ModeToggle from "../viz/ModeToggle";
 import MoneyField from "../viz/MoneyField";
 import { track } from "../viz/track";
@@ -243,6 +245,15 @@ export default function LawGuide({ domain: fixed }: { domain?: DomainId }) {
           ))}
         </section>
       )}
+
+      <EasyRead
+        items={[
+          ...r.deadlines.map((d): EasyItem => ({ kind: d.daysLeft < 0 ? "warn" : "date", text: `${d.label}: ${d.due}까지예요 (${d.cite}). ${d.daysLeft < 0 ? `이미 ${-d.daysLeft}일 지났어요.` : `${d.daysLeft}일 남았어요.`}` })),
+          ...r.flags.map((f): EasyItem => ({ kind: f.tone === "warn" ? "warn" : "todo", text: f.cite ? `${f.text} (${f.cite})` : f.text })),
+          ...(r.handOff ? [{ kind: "call", text: r.handOff } as EasyItem] : []),
+          ...(r.documents.length ? [{ kind: "doc", text: `가져갈 서류: ${r.documents.join(", ")}` } as EasyItem] : []),
+        ]}
+      />
 
       {r.deadlines.length > 0 && (
         <section className="space-y-3">

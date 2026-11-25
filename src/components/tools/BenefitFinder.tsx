@@ -1,4 +1,5 @@
 import { useState } from "react";
+import EasyRead from "./EasyRead";
 import {
   AGE_LABEL,
   findBenefits,
@@ -115,6 +116,16 @@ export default function BenefitFinder() {
         <p className="text-sm text-muted-foreground">
           해당 {matches.length}개, 조건 확인 {checks.length}개
         </p>
+        <EasyRead
+          keepOrder
+          items={[
+            ...matches.flatMap((r) => [
+              { kind: "money" as const, text: `${r.benefit.name}: ${r.benefit.amount}` },
+              { kind: "call" as const, text: `신청: ${r.benefit.apply}` },
+            ]),
+            ...checks.map((r) => ({ kind: "todo" as const, text: `${r.benefit.name}: ${r.unknown.length ? `${r.unknown.join(", ")} 조건이 맞으면 받을 수 있어요.` : "조건을 확인해 보세요."}` })),
+          ]}
+        />
         {matches.length > 0 && (
           <section>
             <h2 className="text-lg font-semibold text-foreground">받을 수 있어요</h2>
