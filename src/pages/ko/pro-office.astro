@@ -2,6 +2,7 @@
 // 전문가 사무소 허브 (2026-11-23, 세운 요청). 새 계산 없음: 기존 도구·MCP·Claude 스킬을 건물 → 층(나라) → 방(세무·노무·행정·법무·통관·재무설계)으로 묶었어요.
 // 자격 명칭을 이름에 쓰지 않아요. 실제 자격사 사무소가 아니라 상담 전 정리용 도구 모음이에요.
 import KrFinancePage from "../../components/KrFinancePage.astro";
+import OfficeTeamInterest from "../../components/office/OfficeTeamInterest.astro";
 import ProOffice from "../../components/tools/office/ProOffice";
 import { officeFloors, OFFICE_AS_OF, OFFICE_SLUGS } from "../../data/pro-office";
 import { OFFICE_COPY } from "../../data/pro-office-copy";
@@ -33,4 +34,5 @@ const other = [["en", "English"], ["ja", "日本語"], ["fr", "Français"], ["es
 <KrFinancePage slug="pro-office" locale="ko" title={title} description={description} shell={shell} faqs={faqs} koOnly group="money">
   <ProOffice client:load locale="ko" floors={floors} copy={OFFICE_COPY.ko} asOf={OFFICE_AS_OF} />
   <p class="mt-4 text-sm text-muted-foreground">다른 언어: {other.map(([l, n], i) => (<>{i ? " · " : ""}<a class="underline underline-offset-4" href={`/${l}/${OFFICE_SLUGS[l]}/`}>{n}</a></>))} · 관련: <a class="underline underline-offset-4" href="/ko/pro-competency-map/">전문 직업 역량 지도</a> · <a class="underline underline-offset-4" href="/ko/law-guide/">법령 길잡이</a> · <a class="underline underline-offset-4" href="/ko/tax-advisor-toolkit/">세무·회계 실무 도구 모음</a></p>
+  <OfficeTeamInterest page="pro-office" />
 </KrFinancePage>

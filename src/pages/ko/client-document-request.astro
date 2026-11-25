@@ -1,6 +1,7 @@
 ---
 import DebtReliefPage from '../../components/DebtReliefPage.astro';
 import DocRequest from '../../components/tools/plan/DocRequest';
+import OfficeTeamInterest from '../../components/office/OfficeTeamInterest.astro';
 // 2026-11-24 CHOSEUN "상담자 니즈에 따른 도구와 스킬 계속 추가". No legal/tax calculation.
 const c = {
   introTitle: '매달 하는 자료 요청, 문자 한 번으로',
@@ -24,4 +25,5 @@ const sources: [string, string][] = [['국가법령정보센터', 'https://www.l
 ---
 <DebtReliefPage slug="client-document-request" c={c} sources={sources} sourcesTitle="출처" checked="확인: 2026-11-24">
   <DocRequest client:load />
+  <OfficeTeamInterest page="client-document-request" />
 </DebtReliefPage>

@@ -22,3 +22,15 @@ test("mailto는 문의 주소 하나로만 가고 값은 인코딩돼요", () =>
   assert.ok(!m.includes("&to="));
   assert.ok(m.includes("%26"));
 });
+
+test("office team interest mail carries price and page", async () => {
+  const { officeTeamMailto, OFFICE_TEAM_PRICE_KRW, OFFICE_TEAM_FEATURES } = await import("./office-inquiry.ts");
+  const href = officeTeamMailto("client-deadline-board", "가나\n세무회계");
+  assert.ok(href.startsWith("mailto:support@oiyo.net?subject="));
+  const body = decodeURIComponent(href.split("&body=")[1]);
+  assert.match(body, /29,000원/);
+  assert.match(body, /client-deadline-board/);
+  assert.match(decodeURIComponent(href), /\[팀 기능 미리 신청\] 가나 세무회계/);
+  assert.equal(OFFICE_TEAM_PRICE_KRW, 29000);
+  assert.equal(OFFICE_TEAM_FEATURES.length, 3);
+});
