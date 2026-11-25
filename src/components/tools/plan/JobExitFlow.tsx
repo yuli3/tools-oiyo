@@ -1,5 +1,6 @@
 // 퇴사·해고·임금체불 상담 흐름. Logic: lib/job-exit-flow-2026.ts. 사건 파일은 이 브라우저(localStorage)에만 저장해요.
 import { useEffect, useState } from "react";
+import EasyRead from "../EasyRead";
 import { CASE_FILE_KEY, EXIT_HOW, EXIT_UNPAID, buildJobExitFlow, parseCaseFile, toCaseFile, type ExitHow, type ExitInput, type ExitUnpaid } from "../../../lib/job-exit-flow-2026";
 
 const field = "mt-1 min-h-11 w-full min-w-0 rounded-lg border border-input bg-background px-3 text-base";
@@ -67,6 +68,12 @@ export default function JobExitFlow() {
             </div>
             <label className="block text-sm">묻고 싶은 것 (한 줄에 하나)<textarea className={`${field} min-h-20 py-2`} value={questions} onChange={(e) => { setQuestions(e.target.value); touch(); }} /></label>
           </section>
+          <EasyRead
+            items={[
+              ...r.checks.map((c) => ({ kind: "warn" as const, text: c })),
+              ...r.steps.flatMap((d) => d.steps.map((st) => ({ kind: "todo" as const, text: `${st.when}: ${st.what}${st.law ? ` (${st.law})` : ""}` }))),
+            ]}
+          />
           {r.checks.length > 0 && (
             <section className="rounded-xl border border-border bg-card p-4">
               <h2 className="text-lg font-bold">먼저 확인할 것</h2>
