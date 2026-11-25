@@ -1,0 +1,39 @@
+---
+// 우리집 가구 배치 시뮬레이터 (2026-11-25). AI 빌더 조사 2부(company-brain #216) 적용 3번:
+// 분양 평면도 한 장으로 가구 배치를 계획한 사례(28만 뷰)를 누구나 쓰는 도구로. 로직 lib/furniture-layout.ts.
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import FurnitureLayout from "../../components/tools/home/FurnitureLayout";
+
+const title = "우리집 가구 배치 시뮬레이터 — 분양 평면도에 침대·소파 넣어 보기";
+const description = "24평·34평·45평 아파트와 원룸 평면에 침대·소파·옷장·냉장고를 실제 크기(cm)로 끌어다 놓아 봐요. 겹침·벽 넘음·60cm 미만 통로를 바로 알려 주고, 분양 도면 이미지를 깔아 축척을 맞출 수도 있어요. 설치·가입 없이 무료.";
+const shell = {
+  introTitle: "이사 전에 가구가 들어가는지",
+  intro: "분양 도면이나 이사 갈 집의 방 크기만 알면, 지금 쓰는 침대와 소파가 들어가는지, 들어가도 지나다닐 길이 남는지 미리 볼 수 있어요. 가구는 실제 크기로 그려지고, 겹치거나 벽을 넘으면 빨갛게, 통로가 60cm보다 좁으면 주황색으로 표시돼요.",
+  howToTitle: "이렇게 써요",
+  steps: [
+    "집 구조를 골라요. 24평·34평·45평 아파트, 원룸, 또는 방 하나 크기를 직접 넣을 수 있어요.",
+    "가구 버튼을 누르면 '넣을 방' 가운데에 놓여요. 손가락이나 마우스로 끌어 옮기고 '90° 돌리기'로 방향을 바꿔요.",
+    "위의 한 문장과 '방마다 얼마나 찼나'에서 겹침·좁은 통로·답답함을 확인해요.",
+    "전문가 모드에서는 분양 도면 이미지를 깔고, 도면에 적힌 치수 하나로 축척을 맞추거나 방 크기를 mm로 맞춰요.",
+    "'공유 주소 복사'로 가족과 배치를 나누고, 'PNG로 저장'으로 이미지로 남겨요.",
+  ],
+  highlightsTitle: "알아 두면 좋은 크기",
+  highlights: [
+    { title: "통로", body: "한 사람이 지나가려면 60cm, 편하게 다니려면 90cm쯤 필요해요. 침대 옆·옷장 앞은 60cm 이상 남겨요." },
+    { title: "침대", body: "퀸 150×200cm, 킹 160×200cm(매트리스). 프레임과 헤드보드가 있으면 가로·세로가 5~15cm 더 커요." },
+    { title: "식탁", body: "4인 식탁 140×80cm는 의자를 빼고 앉을 자리까지 둘레로 약 75cm씩 더 필요해요." },
+    { title: "도면 치수", body: "분양 도면의 치수는 보통 벽 중심선 기준 mm라, 실제 안쪽 크기는 벽 두께만큼 작아요. 가구가 1~2cm 차이로 들어가면 실측을 꼭 해요." },
+  ],
+  disclaimer: "예시 평면은 흔한 판상형 구조를 단순화한 거라 실제 단지 도면과 달라요. 문·창문·콘센트·몰딩·걸레받이는 그리지 않았어요. 가구를 사기 전에는 현장 실측과 제품 상세 치수를 확인하세요.",
+};
+const faqs = [
+  { q: "분양 도면 이미지가 서버로 올라가나요?", a: "아니요. 이미지는 이 기기의 브라우저 화면에서만 쓰고 어디에도 보내지 않아요. 새로고침하면 다시 골라야 해요. 가구 배치는 이 브라우저에 저장되고, 공유 주소에는 가구 위치만 들어가요." },
+  { q: "도면 축척은 어떻게 맞추나요?", a: "전문가 모드에서 도면 이미지를 고른 뒤 '축척 맞추기'를 누르고, 도면에 치수(예: 3,900)가 적힌 벽의 양 끝 두 점을 차례로 눌러요. 그 길이를 mm로 넣고 적용하면 가구가 도면 위에서 실제 크기로 보여요." },
+  { q: "34평인데 왜 전용 84㎡로 나오나요?", a: "아파트 '34평형'은 공용 면적까지 더한 공급면적 기준이고, 실제 집 안 넓이는 전용 84㎡(약 25평)예요. 이 도구의 예시 평면은 발코니를 확장했다고 보고 그렸어요." },
+  { q: "3D로도 볼 수 있나요?", a: "지금은 위에서 내려다본 평면만 있어요. 높이가 중요한 가구(이층침대·키 큰 장)는 창문·에어컨 위치와 함께 현장에서 확인하세요." },
+];
+---
+<KrFinancePage slug="furniture-layout-planner" locale="ko" title={title} description={description} shell={shell} faqs={faqs} koOnly group="calc">
+  <FurnitureLayout client:load />
+  <p class="mt-4 text-sm text-muted-foreground">함께 보기: <a class="underline underline-offset-4" href="/ko/simple-calculators/">간단계산기(평수 계산)</a> · <a class="underline underline-offset-4" href="/ko/building-coverage-floor-area-ratio-calculator/">건폐율·용적률 계산</a> · <a class="underline underline-offset-4" href="https://news.oiyo.net/ai/wow/">AI로 만든 놀라운 것</a></p>
+</KrFinancePage>

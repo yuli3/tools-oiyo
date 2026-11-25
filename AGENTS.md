@@ -68,3 +68,7 @@
 - 블로그 위젯: `/ko/embed/<slug>/`(noindex, 사이트맵 제외, `_headers`에서 `/ko/embed/*`만 X-Frame-Options 해제). 목록은 `src/data/embeddable-tools.ts`, 코드 복사 페이지 `/ko/widgets/`. 붙여 넣는 코드의 iframe 바깥 출처 링크를 지우지 않아요.
 - 사무소용 화이트라벨 위젯(시제품): `/ko/widgets/office/`가 `/ko/embed/<tool>/?office=&tel=&site=&color=` 코드를 만들어요. 값은 주소에만 있고 embed 페이지가 textContent·검증된 href로만 넣어요. GA4 `office_widget_build`.
 - 낮 길이 포스터: `/ko/daylight-poster/`, 계산 `lib/daylight.ts`(NOAA 근사, 테스트로 astronomy-engine 대비 2분 안).
+
+## 우리집 가구 배치 (2026-11-25)
+- `/ko/furniture-layout-planner/`(company-brain #216 적용 3번). 로직 `src/lib/furniture-layout.ts`(예시 평면 5종·가구 31종 cm·겹침/벽 넘음/60cm 통로 검사·방별 점유율·공유 주소 `#p=`), 화면 `components/tools/home/FurnitureLayout.tsx`.
+- 예시 평면은 흔한 구조의 단순화라 특정 단지 도면이 아니라고 화면에 밝혀요. 도면 이미지는 브라우저 objectURL로만 쓰고 업로드·주소 저장하지 않아요. SVG 색은 PNG 저장 때문에 `INK` 상수 값으로 둬요.
