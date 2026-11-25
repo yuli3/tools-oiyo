@@ -12,7 +12,7 @@ const href = officeTeamMailto(page);
     {OFFICE_TEAM_FEATURES.map((f) => <li>{f}</li>)}
   </ul>
   <p class="mt-3 text-base"><strong>예상 가격: 사무소당 월 {OFFICE_TEAM_PRICE_KRW.toLocaleString("ko-KR")}원</strong>(VAT 별도). 지금은 결제나 가입이 없어요. 필요하면 메일로 알려 주세요. 신청이 모이면 먼저 연락드려요.</p>
-  <a class="team-interest-send mt-4 inline-flex min-h-11 items-center justify-center rounded-md bg-primary px-4 text-sm font-semibold text-primary-foreground hover:bg-primary/90 focus-visible:outline-2 focus-visible:outline-ring" href={href}>메일로 미리 신청하기</a>
+  <a data-team-send class="mt-4 inline-flex min-h-11 items-center justify-center rounded-md bg-primary px-4 text-sm font-semibold text-primary-foreground hover:bg-primary/90 focus-visible:outline-2 focus-visible:outline-ring" href={href}>메일로 미리 신청하기</a>
 </section>
 <script>
   const gtag = (...a: unknown[]) => (window as unknown as { gtag?: (...a: unknown[]) => void }).gtag?.(...a);
@@ -20,6 +20,6 @@ const href = officeTeamMailto(page);
     const page = s.dataset.teamPage ?? "";
     let seen = false;
     new IntersectionObserver((es, o) => { if (!seen && es.some((e) => e.isIntersecting)) { seen = true; gtag("event", "office_team_view", { page }); o.disconnect(); } }).observe(s);
-    s.querySelector(".team-interest-send")?.addEventListener("click", () => gtag("event", "office_team_interest", { page, price_krw: 29000 }));
+    s.querySelector("[data-team-send]")?.addEventListener("click", () => gtag("event", "office_team_interest", { page, price_krw: 29000 }));
   });
 </script>
