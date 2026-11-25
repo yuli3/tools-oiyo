@@ -13,7 +13,7 @@ import { execFileSync } from "node:child_process";
 import { renderSkillLib } from "./build-advisor-skill.mjs";
 
 // 2026-11-17: 역량 지도 빈칸을 채운 실무 도구(pro-practice-*)도 같은 스킬에 넣어요. scenario는 그 의존성이에요.
-export const LAW_SKILL_LIBS = ["kr-expert-guide-2026", "kr-law-packs-2026", "kr-legal-2026", "kr-business-day", "pro-practice-2026", "pro-practice-guides-2026", "scenario", "privacy-check-2026", "freelance-contract-check-2026", "kr-public-forms-2026", "kr-appeal-deadlines-2026", "kr-inheritance-share-2026", "kr-auction-distribution-2026", "kr-customs-pack-2026", "kr-workforce-2026", "kr-license-points-2026", "kr-appraisal-2026", "kr-ip-deadlines-2026", "kr-franchise-housing-2026", "kr-injury-disability-2026", "kr-court-deposit-2026", "kr-vat-2026", "kr-payroll-2026", "kr-real-estate-tax", "kr-self-registration-2026", "kr-f27-points-2026", "kr-industrial-safety-2026"];
+export const LAW_SKILL_LIBS = ["kr-expert-guide-2026", "kr-law-packs-2026", "kr-legal-2026", "kr-business-day", "pro-practice-2026", "pro-practice-guides-2026", "scenario", "privacy-check-2026", "freelance-contract-check-2026", "kr-public-forms-2026", "kr-appeal-deadlines-2026", "kr-inheritance-share-2026", "kr-auction-distribution-2026", "kr-customs-pack-2026", "kr-workforce-2026", "kr-license-points-2026", "kr-appraisal-2026", "kr-ip-deadlines-2026", "kr-franchise-housing-2026", "kr-injury-disability-2026", "kr-court-deposit-2026", "kr-vat-2026", "kr-payroll-2026", "kr-real-estate-tax", "kr-self-registration-2026", "kr-f27-points-2026", "kr-industrial-safety-2026", "kr-office-checks-2026", "kr-income-tax-mistakes-2026"];
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 export const LAW_SKILL_DIR = resolve(root, "skills/oiyo-kr-law-guide");
 
