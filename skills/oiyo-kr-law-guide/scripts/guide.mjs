@@ -11,6 +11,8 @@
 //   node scripts/guide.mjs calc breach '{"knownAt":"2026-11-20T09:00","affected":1200,"sensitive":false,"hacking":false}'
 //   node scripts/guide.mjs calc policy <처리방침.txt> '{"website":true,"outsource":true}'
 //   node scripts/guide.mjs calc contract <계약서.txt> '{"creative":true,"registered":false}' [계약 금액]
+//   node scripts/guide.mjs calc employment '{"kind":"partTime","written":["wage","hours"],"handedOver":false,"weeklyHours":20}'   (근로계약서 필수 항목)
+//   node scripts/guide.mjs calc mistakes '{"wagePlus":"yes","dependentShared":"unknown"}'   (종합소득세 신고 전 실수 11가지, yes|no|unknown)
 //   node scripts/guide.mjs calc appeal 2026-11-20 [분야 id] [오늘]   (불복·이의·청구 기한 전 분야)
 //   node scripts/guide.mjs calc inherit '{"family":{"spouse":true,"children":2,"parents":0,"siblings":0},"estate":300000000,"gifts":{"child1":200000000}}'
 //   node scripts/guide.mjs calc auction '{"sale":200000000,"region":"seoul","baseDate":"2023-05-01","tenants":[{"label":"임차인","deposit":150000000,"date":"2024-03-02"}],"claims":[{"label":"근저당","amount":120000000,"date":"2023-05-01","kind":"mortgage"}]}' [오늘]
@@ -33,6 +35,8 @@ import { analyzeEntries, claimPlain, claimResult, csmPlain, csmResult, dutyPlain
 import { GUIDES, guideBySlug, guideDeadlines, recordCheck, recordText } from "./pro-practice-guides-2026.mjs";
 import { breachClock, checkPolicy } from "./privacy-check-2026.mjs";
 import { checkContract } from "./freelance-contract-check-2026.mjs";
+import { contractCheck } from "./kr-office-checks-2026.mjs";
+import { MISTAKE_QUESTIONS, checkMistakes } from "./kr-income-tax-mistakes-2026.mjs";
 import { appealsFrom, APPEAL_NOTE } from "./kr-appeal-deadlines-2026.mjs";
 import { legalHeirs, reserveShortfall, INHERIT_NOTE } from "./kr-inheritance-share-2026.mjs";
 import { auctionDistribution, AUCTION_NOTE } from "./kr-auction-distribution-2026.mjs";
@@ -89,6 +93,13 @@ switch (cmd) {
     } else if (a1 === "contract") {
       // a2: 계약서 텍스트 파일, a3: 상황 JSON {"creative":true,"registered":false}, a4: 계약 금액(원)
       print(checkContract(readFileSync(a2, "utf8"), a3 ? JSON.parse(a3) : {}, a4 ? Number(a4) : undefined));
+    } else if (a1 === "employment") {
+      // a2: {"kind":"regular|fixedTerm|partTime","written":[적힌 항목 id],"handedOver":bool,"small":bool,"weeklyHours":n}
+      const i = JSON.parse(a2 ?? "{}");
+      print(contractCheck({ kind: i.kind ?? "regular", small: !!i.small, weeklyHours: i.weeklyHours, written: i.written ?? [], handedOver: !!i.handedOver }));
+    } else if (a1 === "mistakes") {
+      // a2: {질문 id: "yes|no|unknown"} — 질문 목록은 a2 없이 부르면 나와요.
+      print(a2 ? checkMistakes(JSON.parse(a2)) : { questions: MISTAKE_QUESTIONS });
     } else if (a1 === "appeal") {
       // a2: 통지를 받은 날 YYYY-MM-DD, a3: 분야 id(선택, 예: tax, customs, appraisal), a4: 오늘(선택)
       print({ from: a2, deadlines: appealsFrom(a2, a4 ?? new Date().toISOString().slice(0, 10), a3 || undefined), note: APPEAL_NOTE });
@@ -171,7 +182,7 @@ switch (cmd) {
       const i = JSON.parse(a2 ?? "{}");
       print({ result: CALC[a1][0](i), plain: CALC[a1][1](i) });
     } else {
-      console.error(`calc: ${Object.keys(CALC).join(", ")}, entries, record, breach, policy, contract, appeal, inherit, auction, customs, workforce, points, surcharge, appraisal, compensation, ip, franchise, apartment, disability, deposit, registration, f27, serious, report, education, staffing`);
+      console.error(`calc: ${Object.keys(CALC).join(", ")}, entries, record, breach, policy, contract, employment, mistakes, appeal, inherit, auction, customs, workforce, points, surcharge, appraisal, compensation, ip, franchise, apartment, disability, deposit, registration, f27, serious, report, education, staffing`);
       process.exit(1);
     }
     break;
