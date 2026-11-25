@@ -18,6 +18,7 @@ const T = {
   exemptReport: L("exempt-business-report-checker", "사업장현황신고 점검"),
   statement: L("withholding-statement-penalty-calculator", "지급명세서 기한·가산세 계산기"),
   freelanceContract: L("freelance-contract-check", "프리랜서 계약서 점검"),
+  incomeTaxMistakes: L("income-tax-filing-mistake-check", "종합소득세 신고 전 실수 점검"),
   taxPenalty: L("tax-penalty-calculator", "국세 가산세 계산기"),
   expenseRatio: L("expense-ratio-calculator", "경비율 vs 장부 소득 비교"),
   pensionChoice: L("private-pension-separate-tax-calculator", "사적연금 분리 vs 종합과세 계산기"),

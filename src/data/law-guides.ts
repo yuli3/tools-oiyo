@@ -31,6 +31,7 @@ export const lawGuides: { slug: string; domain?: DomainId; title: string; descri
   { slug: "franchise-contract-check", title: "가맹계약 기한 점검", description: "정보공개서 숙려 14일(자문 7일), 가맹계약서 14일 전 제공, 가맹금 반환 요구 4개월, 갱신 요구 180~90일 전, 갱신요구권 10년, 해지 절차(2개월 유예·2회 서면)를 날짜로 점검해요." },
   { slug: "apartment-management-check", title: "아파트 하자담보·관리 점검", description: "하자담보책임기간(마감 2년·설비 3년·구조 5년·내력구조부 10년) 만료일, 의무관리대상 판정, 장기수선충당금 적립 시작과 계획 검토 시점을 보여 줘요." },
   { slug: "appeal-deadline-calculator", title: "불복·이의신청 기한 계산기", description: "통지를 받은 날 하나로 세금·관세·행정·수용·공시가격·특허·노동·복지·의료·가사 분야의 불복·이의·청구 마감일을 휴일까지 따져 한 번에 계산해요." },
+  { slug: "income-tax-filing-mistake-check", title: "종합소득세 신고 전 실수 점검", description: "연말정산 후 다른 소득, 3.3% 정산, 기타소득·금융소득·사적연금 기준, 부양가족 중복 공제, 무기장가산세, 단순경비율 대상, 지난 신고 고치기까지 자주 틀리는 11가지를 예·아니요로 점검해요." },
   { slug: "freelance-contract-check", title: "프리랜서·외주 계약서 읽기 점검", description: "받은 계약서를 붙여 넣으면 업무 범위·지급일·3.3%·저작권·수정 횟수·해지 정산 중 빠진 항목과, 권리 전부 양도·수정 무제한·고객사 결제 후 지급·출퇴근 같은 조심할 문장을 찾고 받을 돈을 계산해요." },
   { slug: "privacy-breach-policy-check", title: "개인정보 유출 72시간·처리방침 점검", description: "유출을 알게 된 시각부터 72시간 통지·신고 마감과 신고 대상 여부를 계산하고, 처리방침을 붙여 넣으면 빠진 필수 항목을 찾아 줘요." },
   { slug: "insurance-sales-compliance-checker", title: "보험 사은품 한도·승환 점검기", description: "월 보험료와 사은품 가액, 기존·신규 계약 날짜로 특별이익 한도(10%와 20만 원 중 적은 금액)와 승환계약 간주(1개월·6개월)를 판정해요. 설계사·대리점용." },
