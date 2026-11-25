@@ -1,0 +1,31 @@
+---
+// 종합소득세 신고 전 실수 점검 (2026-11-25, AI 빌더 조사 추천 3번). 엔진: lib/kr-income-tax-mistakes-2026.ts (api MCP check_kr_income_tax_filing_mistakes와 같은 코드)
+import KrFinancePage from "../../components/KrFinancePage.astro";
+import IncomeTaxMistakeCheck from "../../components/tools/lawguide/IncomeTaxMistakeCheck";
+
+const title = "종합소득세 신고 전 실수 점검 — 자주 틀리는 11가지 패턴";
+const description = "연말정산 후 다른 소득, 3.3% 정산, 기타소득 300만원·금융소득 2천만원·사적연금 1,500만원 기준, 주택 임대 수입, 부양가족 중복·소득 초과 공제, 무기장가산세, 단순경비율 대상, 지난 신고 고치기를 예·아니요로 점검하고 근거 조문을 보여 줘요. 세액은 계산하지 않아요.";
+const ko = {
+  introTitle: "신고 버튼 누르기 전에",
+  intro: "종합소득세는 계산보다 빠뜨림에서 더 많이 틀려요. 질문에 예·아니요·모름으로 답하면, 내가 걸리는 실수 패턴과 고치는 방법을 조문과 함께 보여 줘요.",
+  howToTitle: "사용 방법",
+  steps: ["질문마다 예·아니요·모름을 눌러요. 모르면 모름으로 두세요.", "걸린 패턴과 할 일을 확인해요. '쉬운 말로 보기'를 누르면 한 줄씩 보여 줘요.", "전문가 모드에서 메모를 복사해 홈택스 신고나 상담 때 써요."],
+  highlightsTitle: "주요 특징",
+  highlights: [
+    { title: "실수 패턴 11가지", body: "합산 누락, 중복 공제, 무기장가산세처럼 자주 생기는 일을 골라요." },
+    { title: "근거 조문", body: "패턴마다 소득세법·국세기본법 조문을 함께 적어요." },
+    { title: "미확인 표시", body: "모름으로 둔 질문은 따로 모아 확인할 목록으로 보여 줘요." },
+    { title: "개인정보 안전", body: "답은 서버로 보내지 않고 이 브라우저에만 남아요." },
+  ],
+  disclaimer: "법령 정보와 점검 도구예요. 세액을 계산하거나 신고를 대신하지 않아요. 내 경우에 맞는지는 홈택스 안내문과 세무서(126)에서 확인하세요.",
+};
+const faqs = [
+  { q: "회사에서 연말정산을 받았는데 또 신고해야 하나요?", a: "근로소득만 있으면 안 해도 돼요(소득세법 제73조). 3.3% 프리랜서·사업·임대 소득이 함께 있으면 합쳐서 5월에 신고해요(제70조)." },
+  { q: "3.3%를 뗐으면 끝 아닌가요?", a: "3.3%는 미리 낸 세금이에요(제127조). 5월 신고로 최종 세금과 비교해 더 냈으면 돌려받고, 덜 냈으면 더 내요." },
+  { q: "부모님을 형과 제가 둘 다 공제받으면요?", a: "한 사람은 한 명만 공제받아요(시행령 제106조). 겹치면 나중에 덜 낸 세금과 가산세를 내요. 누가 공제받을지 미리 정하세요." },
+];
+---
+<KrFinancePage slug="income-tax-filing-mistake-check" locale="ko" title={title} description={description} shell={ko} faqs={faqs} koOnly>
+  <IncomeTaxMistakeCheck client:load />
+  <p class="mt-4 text-xs text-muted-foreground">근거: 소득세법 제14조·제50조·제64조의2·제64조의4·제70조·제70조의2·제73조·제81조의5·제127조·제168조, 시행령 제106조·제143조, 국세기본법 제45조·제45조의2·제45조의3·제48조, 지방세법 제95조. <a class="underline" href="/ko/freelancer-tax-calculator/">프리랜서 세금 계산기</a> · <a class="underline" href="/ko/tax-penalty-calculator/">가산세 계산기</a> · <a class="underline" href="/ko/law-guide/">법령 길잡이</a></p>
+</KrFinancePage>
