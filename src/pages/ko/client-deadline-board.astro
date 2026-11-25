@@ -1,6 +1,7 @@
 ---
 // 고객별 신고 마감 보드 (2026-11-23, 실무 오피스 보충 도구). 새 기한 값 없음: biz-checklist taxCalendar를 고객마다 돌려 합쳐요.
 import KrFinancePage from "../../components/KrFinancePage.astro";
+import OfficeTeamInterest from "../../components/office/OfficeTeamInterest.astro";
 import ClientDeadlineBoard from "../../components/tools/office/ClientDeadlineBoard";
 
 const title = "고객별 신고 마감 보드 — 맡은 고객의 세금·노무 마감을 한 화면에";
@@ -27,4 +28,5 @@ const faqs = [
 <KrFinancePage slug="client-deadline-board" locale="ko" title={title} description={description} shell={shell} faqs={faqs} koOnly group="money">
   <ClientDeadlineBoard client:load />
   <p class="mt-4 text-sm text-muted-foreground print:hidden">관련: <a class="underline underline-offset-4" href="/ko/pro-office/#KR/tax">실무 오피스 세무실</a> · <a class="underline underline-offset-4" href="/ko/calendar-subscribe/">세금 마감 달력 구독</a> · <a class="underline underline-offset-4" href="/ko/business-must-do-checklist/">사업자 필수 할 일</a> · <a class="underline underline-offset-4" href="/ko/tax-penalty-calculator/">가산세 계산</a></p>
+  <OfficeTeamInterest page="client-deadline-board" />
 </KrFinancePage>

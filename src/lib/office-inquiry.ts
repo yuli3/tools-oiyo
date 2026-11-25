@@ -37,3 +37,29 @@ export function officeInquiryMailto(q: OfficeInquiry): string {
   const params = `subject=${encodeURIComponent(officeInquirySubject(q))}&body=${encodeURIComponent(officeInquiryBody(q))}`;
   return `mailto:${OFFICE_INQUIRY_EMAIL}?${params}`;
 }
+
+// 사무소 팀 기능 수요 확인 (2026-11-25, 싱크탱크 RT-07 유료 시험). 결제·가입 없이 예상 가격만 보여 주고 메일 신청 수를 셉니다.
+// 비교 기준: 세모리포트 베이직 월 10만원(VAT 별도, 거래처 무제한).
+export const OFFICE_TEAM_PRICE_KRW = 29000;
+export const OFFICE_TEAM_FEATURES = [
+  "직원 여러 명이 같은 고객 마감 보드를 함께 보기",
+  "고객별 자료 요청 링크를 보내고 받은 서류를 체크하기",
+  "마감 3일 전·당일 메일 알림",
+] as const;
+
+export function officeTeamMailto(page: string, office = ""): string {
+  const name = clip(office, 40);
+  const subject = name ? `[팀 기능 미리 신청] ${name}` : "[팀 기능 미리 신청]";
+  const body = [
+    "안녕하세요. 사무소 팀 기능이 나오면 써 보고 싶어요.",
+    "",
+    `사무소 이름: ${name}`,
+    "직원 수: ",
+    "맡은 고객 수: ",
+    `본 페이지: ${clip(page, 80)}`,
+    `예상 가격 월 ${OFFICE_TEAM_PRICE_KRW.toLocaleString("ko-KR")}원(VAT 별도)이면: 쓰겠다 / 비싸다 / 더 낼 수 있다`,
+    "",
+    "가장 필요한 기능:",
+  ].join("\n");
+  return `mailto:${OFFICE_INQUIRY_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+}
