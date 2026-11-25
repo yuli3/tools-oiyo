@@ -8,6 +8,7 @@ import MoneyField from "./viz/MoneyField";
 import ScenarioTool from "./viz/ScenarioTool";
 import { exactWon } from "./viz/format";
 import YearEndSettlementCalculator from "./YearEndSettlementCalculator";
+import SimplifiedPdfImport from "./nts/SimplifiedPdfImport";
 
 const KEYS = ["salary", "persons", "children", "withheld", "credit", "debit", "pension", "medical", "rent"] as const;
 type Key = (typeof KEYS)[number];
@@ -28,6 +29,13 @@ export default function KrYearEndScenario() {
           keys: ["salary", "withheld"],
           body: (
             <div className="space-y-3">
+              <SimplifiedPdfImport
+                note="쉬운 계산에는 카드(일반)·연금저축·IRP·의료비·월세만 넣어요. 전통시장·대중교통·보험료 같은 나머지는 아래 '전체 항목으로 계산하기'에서 PDF를 한 번 더 넣으면 채워져요."
+                onApply={(f) => edit(
+                  { credit: f.credit ?? 0, debit: f.debit ?? 0, pension: (f.pensionSavings ?? 0) + (f.irp ?? 0), medical: (f.medical ?? 0) + (f.medicalSpecific ?? 0), rent: f.rent ?? 0 },
+                  ["credit", "debit", "pension", "medical", "rent"],
+                )}
+              />
               <MoneyField label="1년 연봉(식대 같은 비과세는 빼고)" value={input.salary} onChange={(v) => edit({ salary: v, withheld: estimateWithheld(v, input.persons) }, ["salary"])} />
               <MoneyField label="회사가 1년 동안 뗀 소득세(모르면 그대로 두세요)" value={input.withheld} onChange={(v) => edit({ withheld: v }, ["withheld"])} />
               <p className="text-xs text-muted-foreground">급여명세서의 소득세를 12달 더한 값이에요. 비워 두면 연봉으로 어림한 값을 써요.</p>
@@ -68,6 +76,7 @@ export default function KrYearEndScenario() {
       ]}
       expert={({ input, edit }) => (
         <div className="space-y-3">
+          <p className="rounded-md border border-primary/40 bg-background px-3 py-2 text-sm text-foreground">간소화 PDF가 있으면 아래 결과의 '전체 항목으로 계산하기'를 열고 PDF를 넣으세요. 보험료·카드·연금·기부금 칸이 한 번에 채워져요(브라우저 안에서만 읽어요).</p>
           <div className="grid gap-3 sm:grid-cols-3">
             <MoneyField label="총급여" value={input.salary} onChange={(v) => edit({ salary: v }, ["salary"])} />
             <MoneyField label="기납부세액(소득세)" value={input.withheld} onChange={(v) => edit({ withheld: v }, ["withheld"])} />

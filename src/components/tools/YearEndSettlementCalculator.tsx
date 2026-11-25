@@ -8,6 +8,7 @@ import {
     type SavingLeverId,
     type YearEndInput,
 } from '../../lib/kr-year-end-2026';
+import SimplifiedPdfImport from './nts/SimplifiedPdfImport';
 
 type Locale = 'ko' | 'en';
 
@@ -544,6 +545,7 @@ const YearEndSettlementCalculator: React.FC<{ locale?: Locale }> = ({ locale = '
                 <h2 className="text-xl font-black text-foreground">{t.title}</h2>
                 <button type="button" onClick={() => setForm(DEFAULTS)} className="min-h-11 shrink-0 whitespace-nowrap rounded-md border border-border bg-muted px-3 text-xs font-bold hover:bg-muted/70">{locale === "ko" ? "초기화" : "Reset"}</button>
             </div>
+            {locale === 'ko' && <div className="mb-5"><SimplifiedPdfImport onApply={(fill) => { setForm((f) => ({ ...f, ...sanitize(fill) })); setStatus(t.loaded); }} /></div>}
             <div className="flex flex-col gap-5 sm:gap-8">
                 <p className="text-center text-sm font-medium text-muted-foreground">{t.desc}</p>
 
